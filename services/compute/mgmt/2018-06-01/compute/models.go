@@ -41,6 +41,25 @@ func PossibleAccessLevelValues() []AccessLevel {
 	return []AccessLevel{None, Read}
 }
 
+// AggregatedReplicationState enumerates the values for aggregated replication state.
+type AggregatedReplicationState string
+
+const (
+	// Completed ...
+	Completed AggregatedReplicationState = "Completed"
+	// Failed ...
+	Failed AggregatedReplicationState = "Failed"
+	// InProgress ...
+	InProgress AggregatedReplicationState = "InProgress"
+	// Unknown ...
+	Unknown AggregatedReplicationState = "Unknown"
+)
+
+// PossibleAggregatedReplicationStateValues returns an array of possible values for the AggregatedReplicationState const type.
+func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
+	return []AggregatedReplicationState{Completed, Failed, InProgress, Unknown}
+}
+
 // CachingTypes enumerates the values for caching types.
 type CachingTypes string
 
@@ -209,11 +228,13 @@ const (
 	FromImage DiskCreateOption = "FromImage"
 	// Import ...
 	Import DiskCreateOption = "Import"
+	// Restore ...
+	Restore DiskCreateOption = "Restore"
 )
 
 // PossibleDiskCreateOptionValues returns an array of possible values for the DiskCreateOption const type.
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
-	return []DiskCreateOption{Attach, Copy, Empty, FromImage, Import}
+	return []DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore}
 }
 
 // DiskCreateOptionTypes enumerates the values for disk create option types.
@@ -233,6 +254,23 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
 }
 
+// HostCaching enumerates the values for host caching.
+type HostCaching string
+
+const (
+	// HostCachingNone ...
+	HostCachingNone HostCaching = "None"
+	// HostCachingReadOnly ...
+	HostCachingReadOnly HostCaching = "ReadOnly"
+	// HostCachingReadWrite ...
+	HostCachingReadWrite HostCaching = "ReadWrite"
+)
+
+// PossibleHostCachingValues returns an array of possible values for the HostCaching const type.
+func PossibleHostCachingValues() []HostCaching {
+	return []HostCaching{HostCachingNone, HostCachingReadOnly, HostCachingReadWrite}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -244,6 +282,25 @@ const (
 // PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return []InstanceViewTypes{InstanceView}
+}
+
+// IntervalInMins enumerates the values for interval in mins.
+type IntervalInMins string
+
+const (
+	// FiveMins ...
+	FiveMins IntervalInMins = "FiveMins"
+	// SixtyMins ...
+	SixtyMins IntervalInMins = "SixtyMins"
+	// ThirtyMins ...
+	ThirtyMins IntervalInMins = "ThirtyMins"
+	// ThreeMins ...
+	ThreeMins IntervalInMins = "ThreeMins"
+)
+
+// PossibleIntervalInMinsValues returns an array of possible values for the IntervalInMins const type.
+func PossibleIntervalInMinsValues() []IntervalInMins {
+	return []IntervalInMins{FiveMins, SixtyMins, ThirtyMins, ThreeMins}
 }
 
 // IPVersion enumerates the values for ip version.
@@ -338,17 +395,124 @@ func PossibleProtocolTypesValues() []ProtocolTypes {
 	return []ProtocolTypes{HTTP, HTTPS}
 }
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateMigrating ...
+	ProvisioningStateMigrating ProvisioningState = "Migrating"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating ...
+	ProvisioningStateUpdating ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateMigrating, ProvisioningStateSucceeded, ProvisioningStateUpdating}
+}
+
+// ProvisioningState1 enumerates the values for provisioning state 1.
+type ProvisioningState1 string
+
+const (
+	// ProvisioningState1Creating ...
+	ProvisioningState1Creating ProvisioningState1 = "Creating"
+	// ProvisioningState1Deleting ...
+	ProvisioningState1Deleting ProvisioningState1 = "Deleting"
+	// ProvisioningState1Failed ...
+	ProvisioningState1Failed ProvisioningState1 = "Failed"
+	// ProvisioningState1Migrating ...
+	ProvisioningState1Migrating ProvisioningState1 = "Migrating"
+	// ProvisioningState1Succeeded ...
+	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+	// ProvisioningState1Updating ...
+	ProvisioningState1Updating ProvisioningState1 = "Updating"
+)
+
+// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Migrating, ProvisioningState1Succeeded, ProvisioningState1Updating}
+}
+
+// ProvisioningState2 enumerates the values for provisioning state 2.
+type ProvisioningState2 string
+
+const (
+	// ProvisioningState2Creating ...
+	ProvisioningState2Creating ProvisioningState2 = "Creating"
+	// ProvisioningState2Deleting ...
+	ProvisioningState2Deleting ProvisioningState2 = "Deleting"
+	// ProvisioningState2Failed ...
+	ProvisioningState2Failed ProvisioningState2 = "Failed"
+	// ProvisioningState2Migrating ...
+	ProvisioningState2Migrating ProvisioningState2 = "Migrating"
+	// ProvisioningState2Succeeded ...
+	ProvisioningState2Succeeded ProvisioningState2 = "Succeeded"
+	// ProvisioningState2Updating ...
+	ProvisioningState2Updating ProvisioningState2 = "Updating"
+)
+
+// PossibleProvisioningState2Values returns an array of possible values for the ProvisioningState2 const type.
+func PossibleProvisioningState2Values() []ProvisioningState2 {
+	return []ProvisioningState2{ProvisioningState2Creating, ProvisioningState2Deleting, ProvisioningState2Failed, ProvisioningState2Migrating, ProvisioningState2Succeeded, ProvisioningState2Updating}
+}
+
+// ReplicationState enumerates the values for replication state.
+type ReplicationState string
+
+const (
+	// ReplicationStateCompleted ...
+	ReplicationStateCompleted ReplicationState = "Completed"
+	// ReplicationStateFailed ...
+	ReplicationStateFailed ReplicationState = "Failed"
+	// ReplicationStateReplicating ...
+	ReplicationStateReplicating ReplicationState = "Replicating"
+	// ReplicationStateUnknown ...
+	ReplicationStateUnknown ReplicationState = "Unknown"
+)
+
+// PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
+func PossibleReplicationStateValues() []ReplicationState {
+	return []ReplicationState{ReplicationStateCompleted, ReplicationStateFailed, ReplicationStateReplicating, ReplicationStateUnknown}
+}
+
+// ReplicationStatusTypes enumerates the values for replication status types.
+type ReplicationStatusTypes string
+
+const (
+	// ReplicationStatusTypesReplicationStatus ...
+	ReplicationStatusTypesReplicationStatus ReplicationStatusTypes = "ReplicationStatus"
+)
+
+// PossibleReplicationStatusTypesValues returns an array of possible values for the ReplicationStatusTypes const type.
+func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
+	return []ReplicationStatusTypes{ReplicationStatusTypesReplicationStatus}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
 const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeNone ...
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeSystemAssignedUserAssigned ...
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	// ResourceIdentityTypeUserAssigned ...
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
+	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned, ResourceIdentityTypeSystemAssignedUserAssigned, ResourceIdentityTypeUserAssigned}
 }
 
 // ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
@@ -389,11 +553,13 @@ type ResourceSkuRestrictionsType string
 const (
 	// Location ...
 	Location ResourceSkuRestrictionsType = "Location"
+	// Zone ...
+	Zone ResourceSkuRestrictionsType = "Zone"
 )
 
 // PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return []ResourceSkuRestrictionsType{Location}
+	return []ResourceSkuRestrictionsType{Location, Zone}
 }
 
 // RollingUpgradeActionType enumerates the values for rolling upgrade action type.
@@ -415,19 +581,34 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 type RollingUpgradeStatusCode string
 
 const (
-	// Cancelled ...
-	Cancelled RollingUpgradeStatusCode = "Cancelled"
-	// Completed ...
-	Completed RollingUpgradeStatusCode = "Completed"
-	// Faulted ...
-	Faulted RollingUpgradeStatusCode = "Faulted"
-	// RollingForward ...
-	RollingForward RollingUpgradeStatusCode = "RollingForward"
+	// RollingUpgradeStatusCodeCancelled ...
+	RollingUpgradeStatusCodeCancelled RollingUpgradeStatusCode = "Cancelled"
+	// RollingUpgradeStatusCodeCompleted ...
+	RollingUpgradeStatusCodeCompleted RollingUpgradeStatusCode = "Completed"
+	// RollingUpgradeStatusCodeFaulted ...
+	RollingUpgradeStatusCodeFaulted RollingUpgradeStatusCode = "Faulted"
+	// RollingUpgradeStatusCodeRollingForward ...
+	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = "RollingForward"
 )
 
 // PossibleRollingUpgradeStatusCodeValues returns an array of possible values for the RollingUpgradeStatusCode const type.
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
-	return []RollingUpgradeStatusCode{Cancelled, Completed, Faulted, RollingForward}
+	return []RollingUpgradeStatusCode{RollingUpgradeStatusCodeCancelled, RollingUpgradeStatusCodeCompleted, RollingUpgradeStatusCodeFaulted, RollingUpgradeStatusCodeRollingForward}
+}
+
+// ScaleTier enumerates the values for scale tier.
+type ScaleTier string
+
+const (
+	// S100 ...
+	S100 ScaleTier = "S100"
+	// S30 ...
+	S30 ScaleTier = "S30"
+)
+
+// PossibleScaleTierValues returns an array of possible values for the ScaleTier const type.
+func PossibleScaleTierValues() []ScaleTier {
+	return []ScaleTier{S100, S30}
 }
 
 // SettingNames enumerates the values for setting names.
@@ -443,6 +624,23 @@ const (
 // PossibleSettingNamesValues returns an array of possible values for the SettingNames const type.
 func PossibleSettingNamesValues() []SettingNames {
 	return []SettingNames{AutoLogon, FirstLogonCommands}
+}
+
+// SnapshotStorageAccountTypes enumerates the values for snapshot storage account types.
+type SnapshotStorageAccountTypes string
+
+const (
+	// PremiumLRS ...
+	PremiumLRS SnapshotStorageAccountTypes = "Premium_LRS"
+	// StandardLRS ...
+	StandardLRS SnapshotStorageAccountTypes = "Standard_LRS"
+	// StandardZRS ...
+	StandardZRS SnapshotStorageAccountTypes = "Standard_ZRS"
+)
+
+// PossibleSnapshotStorageAccountTypesValues returns an array of possible values for the SnapshotStorageAccountTypes const type.
+func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
+	return []SnapshotStorageAccountTypes{PremiumLRS, StandardLRS, StandardZRS}
 }
 
 // StatusLevelTypes enumerates the values for status level types.
@@ -466,15 +664,17 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 type StorageAccountTypes string
 
 const (
-	// PremiumLRS ...
-	PremiumLRS StorageAccountTypes = "Premium_LRS"
-	// StandardLRS ...
-	StandardLRS StorageAccountTypes = "Standard_LRS"
+	// StorageAccountTypesPremiumLRS ...
+	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
+	// StorageAccountTypesStandardLRS ...
+	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
+	// StorageAccountTypesStandardSSDLRS ...
+	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
 )
 
 // PossibleStorageAccountTypesValues returns an array of possible values for the StorageAccountTypes const type.
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
-	return []StorageAccountTypes{PremiumLRS, StandardLRS}
+	return []StorageAccountTypes{StorageAccountTypesPremiumLRS, StorageAccountTypesStandardLRS, StorageAccountTypesStandardSSDLRS}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -492,6 +692,72 @@ const (
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{Automatic, Manual, Rolling}
+}
+
+// UpgradeOperationInvoker enumerates the values for upgrade operation invoker.
+type UpgradeOperationInvoker string
+
+const (
+	// UpgradeOperationInvokerPlatform ...
+	UpgradeOperationInvokerPlatform UpgradeOperationInvoker = "Platform"
+	// UpgradeOperationInvokerUnknown ...
+	UpgradeOperationInvokerUnknown UpgradeOperationInvoker = "Unknown"
+	// UpgradeOperationInvokerUser ...
+	UpgradeOperationInvokerUser UpgradeOperationInvoker = "User"
+)
+
+// PossibleUpgradeOperationInvokerValues returns an array of possible values for the UpgradeOperationInvoker const type.
+func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
+	return []UpgradeOperationInvoker{UpgradeOperationInvokerPlatform, UpgradeOperationInvokerUnknown, UpgradeOperationInvokerUser}
+}
+
+// UpgradeState enumerates the values for upgrade state.
+type UpgradeState string
+
+const (
+	// UpgradeStateCancelled ...
+	UpgradeStateCancelled UpgradeState = "Cancelled"
+	// UpgradeStateCompleted ...
+	UpgradeStateCompleted UpgradeState = "Completed"
+	// UpgradeStateFaulted ...
+	UpgradeStateFaulted UpgradeState = "Faulted"
+	// UpgradeStateRollingForward ...
+	UpgradeStateRollingForward UpgradeState = "RollingForward"
+)
+
+// PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
+func PossibleUpgradeStateValues() []UpgradeState {
+	return []UpgradeState{UpgradeStateCancelled, UpgradeStateCompleted, UpgradeStateFaulted, UpgradeStateRollingForward}
+}
+
+// VirtualMachineEvictionPolicyTypes enumerates the values for virtual machine eviction policy types.
+type VirtualMachineEvictionPolicyTypes string
+
+const (
+	// Deallocate ...
+	Deallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
+	// Delete ...
+	Delete VirtualMachineEvictionPolicyTypes = "Delete"
+)
+
+// PossibleVirtualMachineEvictionPolicyTypesValues returns an array of possible values for the VirtualMachineEvictionPolicyTypes const type.
+func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
+	return []VirtualMachineEvictionPolicyTypes{Deallocate, Delete}
+}
+
+// VirtualMachinePriorityTypes enumerates the values for virtual machine priority types.
+type VirtualMachinePriorityTypes string
+
+const (
+	// Low ...
+	Low VirtualMachinePriorityTypes = "Low"
+	// Regular ...
+	Regular VirtualMachinePriorityTypes = "Regular"
+)
+
+// PossibleVirtualMachinePriorityTypesValues returns an array of possible values for the VirtualMachinePriorityTypes const type.
+func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
+	return []VirtualMachinePriorityTypes{Low, Regular}
 }
 
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
@@ -561,6 +827,18 @@ const (
 	VirtualMachineSizeTypesStandardA8V2 VirtualMachineSizeTypes = "Standard_A8_v2"
 	// VirtualMachineSizeTypesStandardA9 ...
 	VirtualMachineSizeTypesStandardA9 VirtualMachineSizeTypes = "Standard_A9"
+	// VirtualMachineSizeTypesStandardB1ms ...
+	VirtualMachineSizeTypesStandardB1ms VirtualMachineSizeTypes = "Standard_B1ms"
+	// VirtualMachineSizeTypesStandardB1s ...
+	VirtualMachineSizeTypesStandardB1s VirtualMachineSizeTypes = "Standard_B1s"
+	// VirtualMachineSizeTypesStandardB2ms ...
+	VirtualMachineSizeTypesStandardB2ms VirtualMachineSizeTypes = "Standard_B2ms"
+	// VirtualMachineSizeTypesStandardB2s ...
+	VirtualMachineSizeTypesStandardB2s VirtualMachineSizeTypes = "Standard_B2s"
+	// VirtualMachineSizeTypesStandardB4ms ...
+	VirtualMachineSizeTypesStandardB4ms VirtualMachineSizeTypes = "Standard_B4ms"
+	// VirtualMachineSizeTypesStandardB8ms ...
+	VirtualMachineSizeTypesStandardB8ms VirtualMachineSizeTypes = "Standard_B8ms"
 	// VirtualMachineSizeTypesStandardD1 ...
 	VirtualMachineSizeTypesStandardD1 VirtualMachineSizeTypes = "Standard_D1"
 	// VirtualMachineSizeTypesStandardD11 ...
@@ -581,22 +859,46 @@ const (
 	VirtualMachineSizeTypesStandardD14V2 VirtualMachineSizeTypes = "Standard_D14_v2"
 	// VirtualMachineSizeTypesStandardD15V2 ...
 	VirtualMachineSizeTypesStandardD15V2 VirtualMachineSizeTypes = "Standard_D15_v2"
+	// VirtualMachineSizeTypesStandardD16sV3 ...
+	VirtualMachineSizeTypesStandardD16sV3 VirtualMachineSizeTypes = "Standard_D16s_v3"
+	// VirtualMachineSizeTypesStandardD16V3 ...
+	VirtualMachineSizeTypesStandardD16V3 VirtualMachineSizeTypes = "Standard_D16_v3"
 	// VirtualMachineSizeTypesStandardD1V2 ...
 	VirtualMachineSizeTypesStandardD1V2 VirtualMachineSizeTypes = "Standard_D1_v2"
 	// VirtualMachineSizeTypesStandardD2 ...
 	VirtualMachineSizeTypesStandardD2 VirtualMachineSizeTypes = "Standard_D2"
+	// VirtualMachineSizeTypesStandardD2sV3 ...
+	VirtualMachineSizeTypesStandardD2sV3 VirtualMachineSizeTypes = "Standard_D2s_v3"
 	// VirtualMachineSizeTypesStandardD2V2 ...
 	VirtualMachineSizeTypesStandardD2V2 VirtualMachineSizeTypes = "Standard_D2_v2"
+	// VirtualMachineSizeTypesStandardD2V3 ...
+	VirtualMachineSizeTypesStandardD2V3 VirtualMachineSizeTypes = "Standard_D2_v3"
 	// VirtualMachineSizeTypesStandardD3 ...
 	VirtualMachineSizeTypesStandardD3 VirtualMachineSizeTypes = "Standard_D3"
+	// VirtualMachineSizeTypesStandardD32sV3 ...
+	VirtualMachineSizeTypesStandardD32sV3 VirtualMachineSizeTypes = "Standard_D32s_v3"
+	// VirtualMachineSizeTypesStandardD32V3 ...
+	VirtualMachineSizeTypesStandardD32V3 VirtualMachineSizeTypes = "Standard_D32_v3"
 	// VirtualMachineSizeTypesStandardD3V2 ...
 	VirtualMachineSizeTypesStandardD3V2 VirtualMachineSizeTypes = "Standard_D3_v2"
 	// VirtualMachineSizeTypesStandardD4 ...
 	VirtualMachineSizeTypesStandardD4 VirtualMachineSizeTypes = "Standard_D4"
+	// VirtualMachineSizeTypesStandardD4sV3 ...
+	VirtualMachineSizeTypesStandardD4sV3 VirtualMachineSizeTypes = "Standard_D4s_v3"
 	// VirtualMachineSizeTypesStandardD4V2 ...
 	VirtualMachineSizeTypesStandardD4V2 VirtualMachineSizeTypes = "Standard_D4_v2"
+	// VirtualMachineSizeTypesStandardD4V3 ...
+	VirtualMachineSizeTypesStandardD4V3 VirtualMachineSizeTypes = "Standard_D4_v3"
 	// VirtualMachineSizeTypesStandardD5V2 ...
 	VirtualMachineSizeTypesStandardD5V2 VirtualMachineSizeTypes = "Standard_D5_v2"
+	// VirtualMachineSizeTypesStandardD64sV3 ...
+	VirtualMachineSizeTypesStandardD64sV3 VirtualMachineSizeTypes = "Standard_D64s_v3"
+	// VirtualMachineSizeTypesStandardD64V3 ...
+	VirtualMachineSizeTypesStandardD64V3 VirtualMachineSizeTypes = "Standard_D64_v3"
+	// VirtualMachineSizeTypesStandardD8sV3 ...
+	VirtualMachineSizeTypesStandardD8sV3 VirtualMachineSizeTypes = "Standard_D8s_v3"
+	// VirtualMachineSizeTypesStandardD8V3 ...
+	VirtualMachineSizeTypesStandardD8V3 VirtualMachineSizeTypes = "Standard_D8_v3"
 	// VirtualMachineSizeTypesStandardDS1 ...
 	VirtualMachineSizeTypesStandardDS1 VirtualMachineSizeTypes = "Standard_DS1"
 	// VirtualMachineSizeTypesStandardDS11 ...
@@ -609,10 +911,18 @@ const (
 	VirtualMachineSizeTypesStandardDS12V2 VirtualMachineSizeTypes = "Standard_DS12_v2"
 	// VirtualMachineSizeTypesStandardDS13 ...
 	VirtualMachineSizeTypesStandardDS13 VirtualMachineSizeTypes = "Standard_DS13"
+	// VirtualMachineSizeTypesStandardDS132V2 ...
+	VirtualMachineSizeTypesStandardDS132V2 VirtualMachineSizeTypes = "Standard_DS13-2_v2"
+	// VirtualMachineSizeTypesStandardDS134V2 ...
+	VirtualMachineSizeTypesStandardDS134V2 VirtualMachineSizeTypes = "Standard_DS13-4_v2"
 	// VirtualMachineSizeTypesStandardDS13V2 ...
 	VirtualMachineSizeTypesStandardDS13V2 VirtualMachineSizeTypes = "Standard_DS13_v2"
 	// VirtualMachineSizeTypesStandardDS14 ...
 	VirtualMachineSizeTypesStandardDS14 VirtualMachineSizeTypes = "Standard_DS14"
+	// VirtualMachineSizeTypesStandardDS144V2 ...
+	VirtualMachineSizeTypesStandardDS144V2 VirtualMachineSizeTypes = "Standard_DS14-4_v2"
+	// VirtualMachineSizeTypesStandardDS148V2 ...
+	VirtualMachineSizeTypesStandardDS148V2 VirtualMachineSizeTypes = "Standard_DS14-8_v2"
 	// VirtualMachineSizeTypesStandardDS14V2 ...
 	VirtualMachineSizeTypesStandardDS14V2 VirtualMachineSizeTypes = "Standard_DS14_v2"
 	// VirtualMachineSizeTypesStandardDS15V2 ...
@@ -633,26 +943,72 @@ const (
 	VirtualMachineSizeTypesStandardDS4V2 VirtualMachineSizeTypes = "Standard_DS4_v2"
 	// VirtualMachineSizeTypesStandardDS5V2 ...
 	VirtualMachineSizeTypesStandardDS5V2 VirtualMachineSizeTypes = "Standard_DS5_v2"
+	// VirtualMachineSizeTypesStandardE16sV3 ...
+	VirtualMachineSizeTypesStandardE16sV3 VirtualMachineSizeTypes = "Standard_E16s_v3"
+	// VirtualMachineSizeTypesStandardE16V3 ...
+	VirtualMachineSizeTypesStandardE16V3 VirtualMachineSizeTypes = "Standard_E16_v3"
+	// VirtualMachineSizeTypesStandardE2sV3 ...
+	VirtualMachineSizeTypesStandardE2sV3 VirtualMachineSizeTypes = "Standard_E2s_v3"
+	// VirtualMachineSizeTypesStandardE2V3 ...
+	VirtualMachineSizeTypesStandardE2V3 VirtualMachineSizeTypes = "Standard_E2_v3"
+	// VirtualMachineSizeTypesStandardE3216V3 ...
+	VirtualMachineSizeTypesStandardE3216V3 VirtualMachineSizeTypes = "Standard_E32-16_v3"
+	// VirtualMachineSizeTypesStandardE328sV3 ...
+	VirtualMachineSizeTypesStandardE328sV3 VirtualMachineSizeTypes = "Standard_E32-8s_v3"
+	// VirtualMachineSizeTypesStandardE32sV3 ...
+	VirtualMachineSizeTypesStandardE32sV3 VirtualMachineSizeTypes = "Standard_E32s_v3"
+	// VirtualMachineSizeTypesStandardE32V3 ...
+	VirtualMachineSizeTypesStandardE32V3 VirtualMachineSizeTypes = "Standard_E32_v3"
+	// VirtualMachineSizeTypesStandardE4sV3 ...
+	VirtualMachineSizeTypesStandardE4sV3 VirtualMachineSizeTypes = "Standard_E4s_v3"
+	// VirtualMachineSizeTypesStandardE4V3 ...
+	VirtualMachineSizeTypesStandardE4V3 VirtualMachineSizeTypes = "Standard_E4_v3"
+	// VirtualMachineSizeTypesStandardE6416sV3 ...
+	VirtualMachineSizeTypesStandardE6416sV3 VirtualMachineSizeTypes = "Standard_E64-16s_v3"
+	// VirtualMachineSizeTypesStandardE6432sV3 ...
+	VirtualMachineSizeTypesStandardE6432sV3 VirtualMachineSizeTypes = "Standard_E64-32s_v3"
+	// VirtualMachineSizeTypesStandardE64sV3 ...
+	VirtualMachineSizeTypesStandardE64sV3 VirtualMachineSizeTypes = "Standard_E64s_v3"
+	// VirtualMachineSizeTypesStandardE64V3 ...
+	VirtualMachineSizeTypesStandardE64V3 VirtualMachineSizeTypes = "Standard_E64_v3"
+	// VirtualMachineSizeTypesStandardE8sV3 ...
+	VirtualMachineSizeTypesStandardE8sV3 VirtualMachineSizeTypes = "Standard_E8s_v3"
+	// VirtualMachineSizeTypesStandardE8V3 ...
+	VirtualMachineSizeTypesStandardE8V3 VirtualMachineSizeTypes = "Standard_E8_v3"
 	// VirtualMachineSizeTypesStandardF1 ...
 	VirtualMachineSizeTypesStandardF1 VirtualMachineSizeTypes = "Standard_F1"
 	// VirtualMachineSizeTypesStandardF16 ...
 	VirtualMachineSizeTypesStandardF16 VirtualMachineSizeTypes = "Standard_F16"
 	// VirtualMachineSizeTypesStandardF16s ...
 	VirtualMachineSizeTypesStandardF16s VirtualMachineSizeTypes = "Standard_F16s"
+	// VirtualMachineSizeTypesStandardF16sV2 ...
+	VirtualMachineSizeTypesStandardF16sV2 VirtualMachineSizeTypes = "Standard_F16s_v2"
 	// VirtualMachineSizeTypesStandardF1s ...
 	VirtualMachineSizeTypesStandardF1s VirtualMachineSizeTypes = "Standard_F1s"
 	// VirtualMachineSizeTypesStandardF2 ...
 	VirtualMachineSizeTypesStandardF2 VirtualMachineSizeTypes = "Standard_F2"
 	// VirtualMachineSizeTypesStandardF2s ...
 	VirtualMachineSizeTypesStandardF2s VirtualMachineSizeTypes = "Standard_F2s"
+	// VirtualMachineSizeTypesStandardF2sV2 ...
+	VirtualMachineSizeTypesStandardF2sV2 VirtualMachineSizeTypes = "Standard_F2s_v2"
+	// VirtualMachineSizeTypesStandardF32sV2 ...
+	VirtualMachineSizeTypesStandardF32sV2 VirtualMachineSizeTypes = "Standard_F32s_v2"
 	// VirtualMachineSizeTypesStandardF4 ...
 	VirtualMachineSizeTypesStandardF4 VirtualMachineSizeTypes = "Standard_F4"
 	// VirtualMachineSizeTypesStandardF4s ...
 	VirtualMachineSizeTypesStandardF4s VirtualMachineSizeTypes = "Standard_F4s"
+	// VirtualMachineSizeTypesStandardF4sV2 ...
+	VirtualMachineSizeTypesStandardF4sV2 VirtualMachineSizeTypes = "Standard_F4s_v2"
+	// VirtualMachineSizeTypesStandardF64sV2 ...
+	VirtualMachineSizeTypesStandardF64sV2 VirtualMachineSizeTypes = "Standard_F64s_v2"
+	// VirtualMachineSizeTypesStandardF72sV2 ...
+	VirtualMachineSizeTypesStandardF72sV2 VirtualMachineSizeTypes = "Standard_F72s_v2"
 	// VirtualMachineSizeTypesStandardF8 ...
 	VirtualMachineSizeTypesStandardF8 VirtualMachineSizeTypes = "Standard_F8"
 	// VirtualMachineSizeTypesStandardF8s ...
 	VirtualMachineSizeTypesStandardF8s VirtualMachineSizeTypes = "Standard_F8s"
+	// VirtualMachineSizeTypesStandardF8sV2 ...
+	VirtualMachineSizeTypesStandardF8sV2 VirtualMachineSizeTypes = "Standard_F8s_v2"
 	// VirtualMachineSizeTypesStandardG1 ...
 	VirtualMachineSizeTypesStandardG1 VirtualMachineSizeTypes = "Standard_G1"
 	// VirtualMachineSizeTypesStandardG2 ...
@@ -671,8 +1027,16 @@ const (
 	VirtualMachineSizeTypesStandardGS3 VirtualMachineSizeTypes = "Standard_GS3"
 	// VirtualMachineSizeTypesStandardGS4 ...
 	VirtualMachineSizeTypesStandardGS4 VirtualMachineSizeTypes = "Standard_GS4"
+	// VirtualMachineSizeTypesStandardGS44 ...
+	VirtualMachineSizeTypesStandardGS44 VirtualMachineSizeTypes = "Standard_GS4-4"
+	// VirtualMachineSizeTypesStandardGS48 ...
+	VirtualMachineSizeTypesStandardGS48 VirtualMachineSizeTypes = "Standard_GS4-8"
 	// VirtualMachineSizeTypesStandardGS5 ...
 	VirtualMachineSizeTypesStandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
+	// VirtualMachineSizeTypesStandardGS516 ...
+	VirtualMachineSizeTypesStandardGS516 VirtualMachineSizeTypes = "Standard_GS5-16"
+	// VirtualMachineSizeTypesStandardGS58 ...
+	VirtualMachineSizeTypesStandardGS58 VirtualMachineSizeTypes = "Standard_GS5-8"
 	// VirtualMachineSizeTypesStandardH16 ...
 	VirtualMachineSizeTypesStandardH16 VirtualMachineSizeTypes = "Standard_H16"
 	// VirtualMachineSizeTypesStandardH16m ...
@@ -693,14 +1057,54 @@ const (
 	VirtualMachineSizeTypesStandardL4s VirtualMachineSizeTypes = "Standard_L4s"
 	// VirtualMachineSizeTypesStandardL8s ...
 	VirtualMachineSizeTypesStandardL8s VirtualMachineSizeTypes = "Standard_L8s"
+	// VirtualMachineSizeTypesStandardM12832ms ...
+	VirtualMachineSizeTypesStandardM12832ms VirtualMachineSizeTypes = "Standard_M128-32ms"
+	// VirtualMachineSizeTypesStandardM12864ms ...
+	VirtualMachineSizeTypesStandardM12864ms VirtualMachineSizeTypes = "Standard_M128-64ms"
+	// VirtualMachineSizeTypesStandardM128ms ...
+	VirtualMachineSizeTypesStandardM128ms VirtualMachineSizeTypes = "Standard_M128ms"
+	// VirtualMachineSizeTypesStandardM128s ...
+	VirtualMachineSizeTypesStandardM128s VirtualMachineSizeTypes = "Standard_M128s"
+	// VirtualMachineSizeTypesStandardM6416ms ...
+	VirtualMachineSizeTypesStandardM6416ms VirtualMachineSizeTypes = "Standard_M64-16ms"
+	// VirtualMachineSizeTypesStandardM6432ms ...
+	VirtualMachineSizeTypesStandardM6432ms VirtualMachineSizeTypes = "Standard_M64-32ms"
+	// VirtualMachineSizeTypesStandardM64ms ...
+	VirtualMachineSizeTypesStandardM64ms VirtualMachineSizeTypes = "Standard_M64ms"
+	// VirtualMachineSizeTypesStandardM64s ...
+	VirtualMachineSizeTypesStandardM64s VirtualMachineSizeTypes = "Standard_M64s"
 	// VirtualMachineSizeTypesStandardNC12 ...
 	VirtualMachineSizeTypesStandardNC12 VirtualMachineSizeTypes = "Standard_NC12"
+	// VirtualMachineSizeTypesStandardNC12sV2 ...
+	VirtualMachineSizeTypesStandardNC12sV2 VirtualMachineSizeTypes = "Standard_NC12s_v2"
+	// VirtualMachineSizeTypesStandardNC12sV3 ...
+	VirtualMachineSizeTypesStandardNC12sV3 VirtualMachineSizeTypes = "Standard_NC12s_v3"
 	// VirtualMachineSizeTypesStandardNC24 ...
 	VirtualMachineSizeTypesStandardNC24 VirtualMachineSizeTypes = "Standard_NC24"
 	// VirtualMachineSizeTypesStandardNC24r ...
 	VirtualMachineSizeTypesStandardNC24r VirtualMachineSizeTypes = "Standard_NC24r"
+	// VirtualMachineSizeTypesStandardNC24rsV2 ...
+	VirtualMachineSizeTypesStandardNC24rsV2 VirtualMachineSizeTypes = "Standard_NC24rs_v2"
+	// VirtualMachineSizeTypesStandardNC24rsV3 ...
+	VirtualMachineSizeTypesStandardNC24rsV3 VirtualMachineSizeTypes = "Standard_NC24rs_v3"
+	// VirtualMachineSizeTypesStandardNC24sV2 ...
+	VirtualMachineSizeTypesStandardNC24sV2 VirtualMachineSizeTypes = "Standard_NC24s_v2"
+	// VirtualMachineSizeTypesStandardNC24sV3 ...
+	VirtualMachineSizeTypesStandardNC24sV3 VirtualMachineSizeTypes = "Standard_NC24s_v3"
 	// VirtualMachineSizeTypesStandardNC6 ...
 	VirtualMachineSizeTypesStandardNC6 VirtualMachineSizeTypes = "Standard_NC6"
+	// VirtualMachineSizeTypesStandardNC6sV2 ...
+	VirtualMachineSizeTypesStandardNC6sV2 VirtualMachineSizeTypes = "Standard_NC6s_v2"
+	// VirtualMachineSizeTypesStandardNC6sV3 ...
+	VirtualMachineSizeTypesStandardNC6sV3 VirtualMachineSizeTypes = "Standard_NC6s_v3"
+	// VirtualMachineSizeTypesStandardND12s ...
+	VirtualMachineSizeTypesStandardND12s VirtualMachineSizeTypes = "Standard_ND12s"
+	// VirtualMachineSizeTypesStandardND24rs ...
+	VirtualMachineSizeTypesStandardND24rs VirtualMachineSizeTypes = "Standard_ND24rs"
+	// VirtualMachineSizeTypesStandardND24s ...
+	VirtualMachineSizeTypesStandardND24s VirtualMachineSizeTypes = "Standard_ND24s"
+	// VirtualMachineSizeTypesStandardND6s ...
+	VirtualMachineSizeTypesStandardND6s VirtualMachineSizeTypes = "Standard_ND6s"
 	// VirtualMachineSizeTypesStandardNV12 ...
 	VirtualMachineSizeTypesStandardNV12 VirtualMachineSizeTypes = "Standard_NV12"
 	// VirtualMachineSizeTypesStandardNV24 ...
@@ -711,90 +1115,12 @@ const (
 
 // PossibleVirtualMachineSizeTypesValues returns an array of possible values for the VirtualMachineSizeTypes const type.
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
-	return []VirtualMachineSizeTypes{VirtualMachineSizeTypesBasicA0, VirtualMachineSizeTypesBasicA1, VirtualMachineSizeTypesBasicA2, VirtualMachineSizeTypesBasicA3, VirtualMachineSizeTypesBasicA4, VirtualMachineSizeTypesStandardA0, VirtualMachineSizeTypesStandardA1, VirtualMachineSizeTypesStandardA10, VirtualMachineSizeTypesStandardA11, VirtualMachineSizeTypesStandardA1V2, VirtualMachineSizeTypesStandardA2, VirtualMachineSizeTypesStandardA2mV2, VirtualMachineSizeTypesStandardA2V2, VirtualMachineSizeTypesStandardA3, VirtualMachineSizeTypesStandardA4, VirtualMachineSizeTypesStandardA4mV2, VirtualMachineSizeTypesStandardA4V2, VirtualMachineSizeTypesStandardA5, VirtualMachineSizeTypesStandardA6, VirtualMachineSizeTypesStandardA7, VirtualMachineSizeTypesStandardA8, VirtualMachineSizeTypesStandardA8mV2, VirtualMachineSizeTypesStandardA8V2, VirtualMachineSizeTypesStandardA9, VirtualMachineSizeTypesStandardD1, VirtualMachineSizeTypesStandardD11, VirtualMachineSizeTypesStandardD11V2, VirtualMachineSizeTypesStandardD12, VirtualMachineSizeTypesStandardD12V2, VirtualMachineSizeTypesStandardD13, VirtualMachineSizeTypesStandardD13V2, VirtualMachineSizeTypesStandardD14, VirtualMachineSizeTypesStandardD14V2, VirtualMachineSizeTypesStandardD15V2, VirtualMachineSizeTypesStandardD1V2, VirtualMachineSizeTypesStandardD2, VirtualMachineSizeTypesStandardD2V2, VirtualMachineSizeTypesStandardD3, VirtualMachineSizeTypesStandardD3V2, VirtualMachineSizeTypesStandardD4, VirtualMachineSizeTypesStandardD4V2, VirtualMachineSizeTypesStandardD5V2, VirtualMachineSizeTypesStandardDS1, VirtualMachineSizeTypesStandardDS11, VirtualMachineSizeTypesStandardDS11V2, VirtualMachineSizeTypesStandardDS12, VirtualMachineSizeTypesStandardDS12V2, VirtualMachineSizeTypesStandardDS13, VirtualMachineSizeTypesStandardDS13V2, VirtualMachineSizeTypesStandardDS14, VirtualMachineSizeTypesStandardDS14V2, VirtualMachineSizeTypesStandardDS15V2, VirtualMachineSizeTypesStandardDS1V2, VirtualMachineSizeTypesStandardDS2, VirtualMachineSizeTypesStandardDS2V2, VirtualMachineSizeTypesStandardDS3, VirtualMachineSizeTypesStandardDS3V2, VirtualMachineSizeTypesStandardDS4, VirtualMachineSizeTypesStandardDS4V2, VirtualMachineSizeTypesStandardDS5V2, VirtualMachineSizeTypesStandardF1, VirtualMachineSizeTypesStandardF16, VirtualMachineSizeTypesStandardF16s, VirtualMachineSizeTypesStandardF1s, VirtualMachineSizeTypesStandardF2, VirtualMachineSizeTypesStandardF2s, VirtualMachineSizeTypesStandardF4, VirtualMachineSizeTypesStandardF4s, VirtualMachineSizeTypesStandardF8, VirtualMachineSizeTypesStandardF8s, VirtualMachineSizeTypesStandardG1, VirtualMachineSizeTypesStandardG2, VirtualMachineSizeTypesStandardG3, VirtualMachineSizeTypesStandardG4, VirtualMachineSizeTypesStandardG5, VirtualMachineSizeTypesStandardGS1, VirtualMachineSizeTypesStandardGS2, VirtualMachineSizeTypesStandardGS3, VirtualMachineSizeTypesStandardGS4, VirtualMachineSizeTypesStandardGS5, VirtualMachineSizeTypesStandardH16, VirtualMachineSizeTypesStandardH16m, VirtualMachineSizeTypesStandardH16mr, VirtualMachineSizeTypesStandardH16r, VirtualMachineSizeTypesStandardH8, VirtualMachineSizeTypesStandardH8m, VirtualMachineSizeTypesStandardL16s, VirtualMachineSizeTypesStandardL32s, VirtualMachineSizeTypesStandardL4s, VirtualMachineSizeTypesStandardL8s, VirtualMachineSizeTypesStandardNC12, VirtualMachineSizeTypesStandardNC24, VirtualMachineSizeTypesStandardNC24r, VirtualMachineSizeTypesStandardNC6, VirtualMachineSizeTypesStandardNV12, VirtualMachineSizeTypesStandardNV24, VirtualMachineSizeTypesStandardNV6}
+	return []VirtualMachineSizeTypes{VirtualMachineSizeTypesBasicA0, VirtualMachineSizeTypesBasicA1, VirtualMachineSizeTypesBasicA2, VirtualMachineSizeTypesBasicA3, VirtualMachineSizeTypesBasicA4, VirtualMachineSizeTypesStandardA0, VirtualMachineSizeTypesStandardA1, VirtualMachineSizeTypesStandardA10, VirtualMachineSizeTypesStandardA11, VirtualMachineSizeTypesStandardA1V2, VirtualMachineSizeTypesStandardA2, VirtualMachineSizeTypesStandardA2mV2, VirtualMachineSizeTypesStandardA2V2, VirtualMachineSizeTypesStandardA3, VirtualMachineSizeTypesStandardA4, VirtualMachineSizeTypesStandardA4mV2, VirtualMachineSizeTypesStandardA4V2, VirtualMachineSizeTypesStandardA5, VirtualMachineSizeTypesStandardA6, VirtualMachineSizeTypesStandardA7, VirtualMachineSizeTypesStandardA8, VirtualMachineSizeTypesStandardA8mV2, VirtualMachineSizeTypesStandardA8V2, VirtualMachineSizeTypesStandardA9, VirtualMachineSizeTypesStandardB1ms, VirtualMachineSizeTypesStandardB1s, VirtualMachineSizeTypesStandardB2ms, VirtualMachineSizeTypesStandardB2s, VirtualMachineSizeTypesStandardB4ms, VirtualMachineSizeTypesStandardB8ms, VirtualMachineSizeTypesStandardD1, VirtualMachineSizeTypesStandardD11, VirtualMachineSizeTypesStandardD11V2, VirtualMachineSizeTypesStandardD12, VirtualMachineSizeTypesStandardD12V2, VirtualMachineSizeTypesStandardD13, VirtualMachineSizeTypesStandardD13V2, VirtualMachineSizeTypesStandardD14, VirtualMachineSizeTypesStandardD14V2, VirtualMachineSizeTypesStandardD15V2, VirtualMachineSizeTypesStandardD16sV3, VirtualMachineSizeTypesStandardD16V3, VirtualMachineSizeTypesStandardD1V2, VirtualMachineSizeTypesStandardD2, VirtualMachineSizeTypesStandardD2sV3, VirtualMachineSizeTypesStandardD2V2, VirtualMachineSizeTypesStandardD2V3, VirtualMachineSizeTypesStandardD3, VirtualMachineSizeTypesStandardD32sV3, VirtualMachineSizeTypesStandardD32V3, VirtualMachineSizeTypesStandardD3V2, VirtualMachineSizeTypesStandardD4, VirtualMachineSizeTypesStandardD4sV3, VirtualMachineSizeTypesStandardD4V2, VirtualMachineSizeTypesStandardD4V3, VirtualMachineSizeTypesStandardD5V2, VirtualMachineSizeTypesStandardD64sV3, VirtualMachineSizeTypesStandardD64V3, VirtualMachineSizeTypesStandardD8sV3, VirtualMachineSizeTypesStandardD8V3, VirtualMachineSizeTypesStandardDS1, VirtualMachineSizeTypesStandardDS11, VirtualMachineSizeTypesStandardDS11V2, VirtualMachineSizeTypesStandardDS12, VirtualMachineSizeTypesStandardDS12V2, VirtualMachineSizeTypesStandardDS13, VirtualMachineSizeTypesStandardDS132V2, VirtualMachineSizeTypesStandardDS134V2, VirtualMachineSizeTypesStandardDS13V2, VirtualMachineSizeTypesStandardDS14, VirtualMachineSizeTypesStandardDS144V2, VirtualMachineSizeTypesStandardDS148V2, VirtualMachineSizeTypesStandardDS14V2, VirtualMachineSizeTypesStandardDS15V2, VirtualMachineSizeTypesStandardDS1V2, VirtualMachineSizeTypesStandardDS2, VirtualMachineSizeTypesStandardDS2V2, VirtualMachineSizeTypesStandardDS3, VirtualMachineSizeTypesStandardDS3V2, VirtualMachineSizeTypesStandardDS4, VirtualMachineSizeTypesStandardDS4V2, VirtualMachineSizeTypesStandardDS5V2, VirtualMachineSizeTypesStandardE16sV3, VirtualMachineSizeTypesStandardE16V3, VirtualMachineSizeTypesStandardE2sV3, VirtualMachineSizeTypesStandardE2V3, VirtualMachineSizeTypesStandardE3216V3, VirtualMachineSizeTypesStandardE328sV3, VirtualMachineSizeTypesStandardE32sV3, VirtualMachineSizeTypesStandardE32V3, VirtualMachineSizeTypesStandardE4sV3, VirtualMachineSizeTypesStandardE4V3, VirtualMachineSizeTypesStandardE6416sV3, VirtualMachineSizeTypesStandardE6432sV3, VirtualMachineSizeTypesStandardE64sV3, VirtualMachineSizeTypesStandardE64V3, VirtualMachineSizeTypesStandardE8sV3, VirtualMachineSizeTypesStandardE8V3, VirtualMachineSizeTypesStandardF1, VirtualMachineSizeTypesStandardF16, VirtualMachineSizeTypesStandardF16s, VirtualMachineSizeTypesStandardF16sV2, VirtualMachineSizeTypesStandardF1s, VirtualMachineSizeTypesStandardF2, VirtualMachineSizeTypesStandardF2s, VirtualMachineSizeTypesStandardF2sV2, VirtualMachineSizeTypesStandardF32sV2, VirtualMachineSizeTypesStandardF4, VirtualMachineSizeTypesStandardF4s, VirtualMachineSizeTypesStandardF4sV2, VirtualMachineSizeTypesStandardF64sV2, VirtualMachineSizeTypesStandardF72sV2, VirtualMachineSizeTypesStandardF8, VirtualMachineSizeTypesStandardF8s, VirtualMachineSizeTypesStandardF8sV2, VirtualMachineSizeTypesStandardG1, VirtualMachineSizeTypesStandardG2, VirtualMachineSizeTypesStandardG3, VirtualMachineSizeTypesStandardG4, VirtualMachineSizeTypesStandardG5, VirtualMachineSizeTypesStandardGS1, VirtualMachineSizeTypesStandardGS2, VirtualMachineSizeTypesStandardGS3, VirtualMachineSizeTypesStandardGS4, VirtualMachineSizeTypesStandardGS44, VirtualMachineSizeTypesStandardGS48, VirtualMachineSizeTypesStandardGS5, VirtualMachineSizeTypesStandardGS516, VirtualMachineSizeTypesStandardGS58, VirtualMachineSizeTypesStandardH16, VirtualMachineSizeTypesStandardH16m, VirtualMachineSizeTypesStandardH16mr, VirtualMachineSizeTypesStandardH16r, VirtualMachineSizeTypesStandardH8, VirtualMachineSizeTypesStandardH8m, VirtualMachineSizeTypesStandardL16s, VirtualMachineSizeTypesStandardL32s, VirtualMachineSizeTypesStandardL4s, VirtualMachineSizeTypesStandardL8s, VirtualMachineSizeTypesStandardM12832ms, VirtualMachineSizeTypesStandardM12864ms, VirtualMachineSizeTypesStandardM128ms, VirtualMachineSizeTypesStandardM128s, VirtualMachineSizeTypesStandardM6416ms, VirtualMachineSizeTypesStandardM6432ms, VirtualMachineSizeTypesStandardM64ms, VirtualMachineSizeTypesStandardM64s, VirtualMachineSizeTypesStandardNC12, VirtualMachineSizeTypesStandardNC12sV2, VirtualMachineSizeTypesStandardNC12sV3, VirtualMachineSizeTypesStandardNC24, VirtualMachineSizeTypesStandardNC24r, VirtualMachineSizeTypesStandardNC24rsV2, VirtualMachineSizeTypesStandardNC24rsV3, VirtualMachineSizeTypesStandardNC24sV2, VirtualMachineSizeTypesStandardNC24sV3, VirtualMachineSizeTypesStandardNC6, VirtualMachineSizeTypesStandardNC6sV2, VirtualMachineSizeTypesStandardNC6sV3, VirtualMachineSizeTypesStandardND12s, VirtualMachineSizeTypesStandardND24rs, VirtualMachineSizeTypesStandardND24s, VirtualMachineSizeTypesStandardND6s, VirtualMachineSizeTypesStandardNV12, VirtualMachineSizeTypesStandardNV24, VirtualMachineSizeTypesStandardNV6}
 }
 
 // AccessURI a disk access SAS uri.
 type AccessURI struct {
 	autorest.Response `json:"-"`
-	// AccessURIOutput - Operation output data (raw JSON)
-	*AccessURIOutput `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessURI.
-func (au AccessURI) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if au.AccessURIOutput != nil {
-		objectMap["properties"] = au.AccessURIOutput
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccessURI struct.
-func (au *AccessURI) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var accessURIOutput AccessURIOutput
-				err = json.Unmarshal(*v, &accessURIOutput)
-				if err != nil {
-					return err
-				}
-				au.AccessURIOutput = &accessURIOutput
-			}
-		}
-	}
-
-	return nil
-}
-
-// AccessURIOutput azure properties, including output.
-type AccessURIOutput struct {
-	// AccessURIRaw - Operation output data (raw JSON)
-	*AccessURIRaw `json:"output,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessURIOutput.
-func (auo AccessURIOutput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if auo.AccessURIRaw != nil {
-		objectMap["output"] = auo.AccessURIRaw
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccessURIOutput struct.
-func (auo *AccessURIOutput) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "output":
-			if v != nil {
-				var accessURIRaw AccessURIRaw
-				err = json.Unmarshal(*v, &accessURIRaw)
-				if err != nil {
-					return err
-				}
-				auo.AccessURIRaw = &accessURIRaw
-			}
-		}
-	}
-
-	return nil
-}
-
-// AccessURIRaw this object gets 'bubbled up' through flattening.
-type AccessURIRaw struct {
 	// AccessSAS - A SAS uri for accessing a disk.
 	AccessSAS *string `json:"accessSAS,omitempty"`
 }
@@ -841,6 +1167,12 @@ type APIErrorBase struct {
 	Target *string `json:"target,omitempty"`
 	// Message - The error message.
 	Message *string `json:"message,omitempty"`
+}
+
+// AutoOSUpgradePolicy the configuration parameters used for performing automatic OS upgrade.
+type AutoOSUpgradePolicy struct {
+	// DisableAutoRollback - Whether OS image rollback feature should be disabled. Default value is false.
+	DisableAutoRollback *bool `json:"disableAutoRollback,omitempty"`
 }
 
 // AvailabilitySet specifies information about the availability set that the virtual machine should be assigned to.
@@ -1087,6 +1419,73 @@ type AvailabilitySetProperties struct {
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
 }
 
+// AvailabilitySetUpdate specifies information about the availability set that the virtual machine should be
+// assigned to. Only tags may be updated.
+type AvailabilitySetUpdate struct {
+	*AvailabilitySetProperties `json:"properties,omitempty"`
+	// Sku - Sku of the availability set
+	Sku *Sku `json:"sku,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AvailabilitySetUpdate.
+func (asu AvailabilitySetUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asu.AvailabilitySetProperties != nil {
+		objectMap["properties"] = asu.AvailabilitySetProperties
+	}
+	if asu.Sku != nil {
+		objectMap["sku"] = asu.Sku
+	}
+	if asu.Tags != nil {
+		objectMap["tags"] = asu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AvailabilitySetUpdate struct.
+func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var availabilitySetProperties AvailabilitySetProperties
+				err = json.Unmarshal(*v, &availabilitySetProperties)
+				if err != nil {
+					return err
+				}
+				asu.AvailabilitySetProperties = &availabilitySetProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				asu.Sku = &sku
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				asu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // BootDiagnostics boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot
 // to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log.
 // <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from
@@ -1104,6 +1503,11 @@ type BootDiagnosticsInstanceView struct {
 	ConsoleScreenshotBlobURI *string `json:"consoleScreenshotBlobUri,omitempty"`
 	// SerialConsoleLogBlobURI - The Linux serial console log blob Uri.
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
+}
+
+// CloudError an error response from the Gallery service.
+type CloudError struct {
+	Error *APIError `json:"error,omitempty"`
 }
 
 // ContainerService container service.
@@ -1480,7 +1884,7 @@ type ContainerServiceWindowsProfile struct {
 
 // CreationData data used when creating a disk.
 type CreationData struct {
-	// CreateOption - This enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy'
+	// CreateOption - This enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy', 'Restore'
 	CreateOption DiskCreateOption `json:"createOption,omitempty"`
 	// StorageAccountID - If createOption is Import, the Azure Resource Manager identifier of the storage account containing the blob to import as a disk. Required only if the blob is in a different subscription
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
@@ -1504,6 +1908,8 @@ type DataDisk struct {
 	Image *VirtualHardDisk `json:"image,omitempty"`
 	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
+	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
@@ -1522,6 +1928,12 @@ type DataDiskImage struct {
 type DiagnosticsProfile struct {
 	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
+}
+
+// Disallowed describes the disallowed disk types.
+type Disallowed struct {
+	// DiskTypes - A list of disk types.
+	DiskTypes *[]string `json:"diskTypes,omitempty"`
 }
 
 // Disk disk resource.
@@ -1847,7 +2259,7 @@ type DisksDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DisksDeleteFuture) Result(client DisksClient) (osr OperationStatusResponse, err error) {
+func (future *DisksDeleteFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1858,13 +2270,7 @@ func (future *DisksDeleteFuture) Result(client DisksClient) (osr OperationStatus
 		err = azure.NewAsyncOpIncompleteError("compute.DisksDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.DisksDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1896,9 +2302,9 @@ func (future *DisksGrantAccessFuture) Result(client DisksClient) (au AccessURI, 
 	return
 }
 
-// DiskSku the disks and snapshots sku name. Can be Standard_LRS or Premium_LRS.
+// DiskSku the disks sku name. Can be Standard_LRS, Premium_LRS, or StandardSSD_LRS.
 type DiskSku struct {
-	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS'
+	// Name - The sku name. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
 	Name StorageAccountTypes `json:"name,omitempty"`
 	// Tier - The sku tier.
 	Tier *string `json:"tier,omitempty"`
@@ -1911,7 +2317,7 @@ type DisksRevokeAccessFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DisksRevokeAccessFuture) Result(client DisksClient) (osr OperationStatusResponse, err error) {
+func (future *DisksRevokeAccessFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -1922,13 +2328,7 @@ func (future *DisksRevokeAccessFuture) Result(client DisksClient) (osr Operation
 		err = azure.NewAsyncOpIncompleteError("compute.DisksRevokeAccessFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RevokeAccessResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.DisksRevokeAccessFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -2045,6 +2445,911 @@ type EncryptionSettings struct {
 	KeyEncryptionKey *KeyVaultAndKeyReference `json:"keyEncryptionKey,omitempty"`
 }
 
+// GalleriesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type GalleriesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleriesCreateOrUpdateFuture) Result(client GalleriesClient) (g Gallery, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleriesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleriesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if g.Response.Response, err = future.GetResult(sender); err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
+		g, err = client.CreateOrUpdateResponder(g.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleriesCreateOrUpdateFuture", "Result", g.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type GalleriesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleriesDeleteFuture) Result(client GalleriesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleriesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleriesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// Gallery specifies information about the gallery that you want to create or update.
+type Gallery struct {
+	autorest.Response  `json:"-"`
+	*GalleryProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Gallery.
+func (g Gallery) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if g.GalleryProperties != nil {
+		objectMap["properties"] = g.GalleryProperties
+	}
+	if g.ID != nil {
+		objectMap["id"] = g.ID
+	}
+	if g.Name != nil {
+		objectMap["name"] = g.Name
+	}
+	if g.Type != nil {
+		objectMap["type"] = g.Type
+	}
+	if g.Location != nil {
+		objectMap["location"] = g.Location
+	}
+	if g.Tags != nil {
+		objectMap["tags"] = g.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Gallery struct.
+func (g *Gallery) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryProperties GalleryProperties
+				err = json.Unmarshal(*v, &galleryProperties)
+				if err != nil {
+					return err
+				}
+				g.GalleryProperties = &galleryProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				g.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				g.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				g.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				g.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				g.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
+type GalleryArtifactPublishingProfileBase struct {
+	// Regions - The regions where the artifact is going to be published.
+	Regions *[]string              `json:"regions,omitempty"`
+	Source  *GalleryArtifactSource `json:"source,omitempty"`
+}
+
+// GalleryArtifactSource the source of the gallery artifact.
+type GalleryArtifactSource struct {
+	ManagedImage *ManagedArtifact `json:"managedImage,omitempty"`
+}
+
+// GalleryDataDiskImage this is the data disk image.
+type GalleryDataDiskImage struct {
+	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
+	Lun *int32 `json:"lun,omitempty"`
+	// SizeInGB - It indicates the size of the VHD to create.
+	SizeInGB *int32 `json:"sizeInGB,omitempty"`
+	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
+	HostCaching HostCaching `json:"hostCaching,omitempty"`
+}
+
+// GalleryDiskImage this is the disk image base class.
+type GalleryDiskImage struct {
+	// SizeInGB - It indicates the size of the VHD to create.
+	SizeInGB *int32 `json:"sizeInGB,omitempty"`
+	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
+	HostCaching HostCaching `json:"hostCaching,omitempty"`
+}
+
+// GalleryIdentifier describes the gallery unique name.
+type GalleryIdentifier struct {
+	// UniqueName - The unique name of the gallery
+	UniqueName *string `json:"uniqueName,omitempty"`
+}
+
+// GalleryImage specifies information about the gallery image that you want to create or update.
+type GalleryImage struct {
+	autorest.Response       `json:"-"`
+	*GalleryImageProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryImage.
+func (gi GalleryImage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gi.GalleryImageProperties != nil {
+		objectMap["properties"] = gi.GalleryImageProperties
+	}
+	if gi.ID != nil {
+		objectMap["id"] = gi.ID
+	}
+	if gi.Name != nil {
+		objectMap["name"] = gi.Name
+	}
+	if gi.Type != nil {
+		objectMap["type"] = gi.Type
+	}
+	if gi.Location != nil {
+		objectMap["location"] = gi.Location
+	}
+	if gi.Tags != nil {
+		objectMap["tags"] = gi.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryImage struct.
+func (gi *GalleryImage) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryImageProperties GalleryImageProperties
+				err = json.Unmarshal(*v, &galleryImageProperties)
+				if err != nil {
+					return err
+				}
+				gi.GalleryImageProperties = &galleryImageProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gi.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				gi.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gi.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryImageIdentifier this is the gallery image identifier.
+type GalleryImageIdentifier struct {
+	// Publisher - The gallery image publisher name.
+	Publisher *string `json:"publisher,omitempty"`
+	// Offer - The gallery image offer name.
+	Offer *string `json:"offer,omitempty"`
+	// Sku - The gallery image sku name.
+	Sku *string `json:"sku,omitempty"`
+}
+
+// GalleryImageList the List Gallery Images operation response.
+type GalleryImageList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of gallery images.
+	Value *[]GalleryImage `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of gallery images. Call ListNext() with this to fetch the next page of gallery images.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryImageListIterator provides access to a complete listing of GalleryImage values.
+type GalleryImageListIterator struct {
+	i    int
+	page GalleryImageListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryImageListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryImageListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryImageListIterator) Response() GalleryImageList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryImageListIterator) Value() GalleryImage {
+	if !iter.page.NotDone() {
+		return GalleryImage{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gil GalleryImageList) IsEmpty() bool {
+	return gil.Value == nil || len(*gil.Value) == 0
+}
+
+// galleryImageListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gil GalleryImageList) galleryImageListPreparer() (*http.Request, error) {
+	if gil.NextLink == nil || len(to.String(gil.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gil.NextLink)))
+}
+
+// GalleryImageListPage contains a page of GalleryImage values.
+type GalleryImageListPage struct {
+	fn  func(GalleryImageList) (GalleryImageList, error)
+	gil GalleryImageList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryImageListPage) Next() error {
+	next, err := page.fn(page.gil)
+	if err != nil {
+		return err
+	}
+	page.gil = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryImageListPage) NotDone() bool {
+	return !page.gil.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryImageListPage) Response() GalleryImageList {
+	return page.gil
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryImageListPage) Values() []GalleryImage {
+	if page.gil.IsEmpty() {
+		return nil
+	}
+	return *page.gil.Value
+}
+
+// GalleryImageProperties describes the properties of a gallery image.
+type GalleryImageProperties struct {
+	// Description - The description of this gallery image resource.
+	Description *string `json:"description,omitempty"`
+	// Eula - The Eula agreement for the gallery image.
+	Eula *string `json:"eula,omitempty"`
+	// PrivacyStatementURI - The privacy statement uri.
+	PrivacyStatementURI *string `json:"privacyStatementUri,omitempty"`
+	// ReleaseNoteURI - The release note uri.
+	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
+	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
+	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// OsState - The OS State. Possible values include: 'Generalized', 'Specialized'
+	OsState OperatingSystemStateTypes `json:"osState,omitempty"`
+	// EndOfLifeDate - The end of life of this gallery image.
+	EndOfLifeDate *date.Time                       `json:"endOfLifeDate,omitempty"`
+	Identifier    *GalleryImageIdentifier          `json:"identifier,omitempty"`
+	Recommended   *RecommendedMachineConfiguration `json:"recommended,omitempty"`
+	Disallowed    *Disallowed                      `json:"disallowed,omitempty"`
+	PurchasePlan  *ImagePurchasePlan               `json:"purchasePlan,omitempty"`
+	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Failed', 'ProvisioningState1Succeeded', 'ProvisioningState1Deleting', 'ProvisioningState1Migrating'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+}
+
+// GalleryImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type GalleryImagesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryImagesCreateOrUpdateFuture) Result(client GalleryImagesClient) (gi GalleryImage, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryImagesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryImagesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gi.Response.Response, err = future.GetResult(sender); err == nil && gi.Response.Response.StatusCode != http.StatusNoContent {
+		gi, err = client.CreateOrUpdateResponder(gi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryImagesCreateOrUpdateFuture", "Result", gi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryImagesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type GalleryImagesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryImagesDeleteFuture) Result(client GalleryImagesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryImagesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryImagesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// GalleryImageVersion specifies information about the gallery image version that you want to create or update.
+type GalleryImageVersion struct {
+	autorest.Response              `json:"-"`
+	*GalleryImageVersionProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryImageVersion.
+func (giv GalleryImageVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if giv.GalleryImageVersionProperties != nil {
+		objectMap["properties"] = giv.GalleryImageVersionProperties
+	}
+	if giv.ID != nil {
+		objectMap["id"] = giv.ID
+	}
+	if giv.Name != nil {
+		objectMap["name"] = giv.Name
+	}
+	if giv.Type != nil {
+		objectMap["type"] = giv.Type
+	}
+	if giv.Location != nil {
+		objectMap["location"] = giv.Location
+	}
+	if giv.Tags != nil {
+		objectMap["tags"] = giv.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryImageVersion struct.
+func (giv *GalleryImageVersion) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryImageVersionProperties GalleryImageVersionProperties
+				err = json.Unmarshal(*v, &galleryImageVersionProperties)
+				if err != nil {
+					return err
+				}
+				giv.GalleryImageVersionProperties = &galleryImageVersionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				giv.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				giv.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				giv.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				giv.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				giv.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryImageVersionList the List Gallery Image version operation response.
+type GalleryImageVersionList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of gallery image versions.
+	Value *[]GalleryImageVersion `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of gallery image versions. Call ListNext() with this to fetch the next page of gallery image versions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryImageVersionListIterator provides access to a complete listing of GalleryImageVersion values.
+type GalleryImageVersionListIterator struct {
+	i    int
+	page GalleryImageVersionListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryImageVersionListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryImageVersionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryImageVersionListIterator) Response() GalleryImageVersionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryImageVersionListIterator) Value() GalleryImageVersion {
+	if !iter.page.NotDone() {
+		return GalleryImageVersion{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (givl GalleryImageVersionList) IsEmpty() bool {
+	return givl.Value == nil || len(*givl.Value) == 0
+}
+
+// galleryImageVersionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (givl GalleryImageVersionList) galleryImageVersionListPreparer() (*http.Request, error) {
+	if givl.NextLink == nil || len(to.String(givl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(givl.NextLink)))
+}
+
+// GalleryImageVersionListPage contains a page of GalleryImageVersion values.
+type GalleryImageVersionListPage struct {
+	fn   func(GalleryImageVersionList) (GalleryImageVersionList, error)
+	givl GalleryImageVersionList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryImageVersionListPage) Next() error {
+	next, err := page.fn(page.givl)
+	if err != nil {
+		return err
+	}
+	page.givl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryImageVersionListPage) NotDone() bool {
+	return !page.givl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryImageVersionListPage) Response() GalleryImageVersionList {
+	return page.givl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryImageVersionListPage) Values() []GalleryImageVersion {
+	if page.givl.IsEmpty() {
+		return nil
+	}
+	return *page.givl.Value
+}
+
+// GalleryImageVersionProperties describes the properties of a gallery image version.
+type GalleryImageVersionProperties struct {
+	PublishingProfile *GalleryImageVersionPublishingProfile `json:"publishingProfile,omitempty"`
+	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
+	ProvisioningState ProvisioningState2                 `json:"provisioningState,omitempty"`
+	StorageProfile    *GalleryImageVersionStorageProfile `json:"storageProfile,omitempty"`
+	ReplicationStatus *ReplicationStatus                 `json:"replicationStatus,omitempty"`
+}
+
+// GalleryImageVersionPublishingProfile the publishing profile of a gallery image version.
+type GalleryImageVersionPublishingProfile struct {
+	// ScaleTier - The scale tier of the gallery image version. Valid values are 'S30' and 'S100'. Possible values include: 'S30', 'S100'
+	ScaleTier ScaleTier `json:"scaleTier,omitempty"`
+	// ExcludeFromLatest - The flag means that if it is set to true, people deploying VMs with 'latest' as version will not use this version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	// PublishedDate - The time when the gallery image version is published.
+	PublishedDate *date.Time `json:"publishedDate,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery image version.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// Regions - The regions where the artifact is going to be published.
+	Regions *[]string              `json:"regions,omitempty"`
+	Source  *GalleryArtifactSource `json:"source,omitempty"`
+}
+
+// GalleryImageVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryImageVersionsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryImageVersionsCreateOrUpdateFuture) Result(client GalleryImageVersionsClient) (giv GalleryImageVersion, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryImageVersionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if giv.Response.Response, err = future.GetResult(sender); err == nil && giv.Response.Response.StatusCode != http.StatusNoContent {
+		giv, err = client.CreateOrUpdateResponder(giv.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsCreateOrUpdateFuture", "Result", giv.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryImageVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type GalleryImageVersionsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryImageVersionsDeleteFuture) Result(client GalleryImageVersionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryImageVersionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// GalleryImageVersionStorageProfile this is the storage profile of a gallery image version.
+type GalleryImageVersionStorageProfile struct {
+	OsDiskImage *GalleryOSDiskImage `json:"osDiskImage,omitempty"`
+	// DataDiskImages - A list of data disk images.
+	DataDiskImages *[]GalleryDataDiskImage `json:"dataDiskImages,omitempty"`
+}
+
+// GalleryList the List Galleries operation response.
+type GalleryList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of galleries.
+	Value *[]Gallery `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of galleries. Call ListNext() with this to fetch the next page of galleries.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryListIterator provides access to a complete listing of Gallery values.
+type GalleryListIterator struct {
+	i    int
+	page GalleryListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryListIterator) Response() GalleryList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryListIterator) Value() Gallery {
+	if !iter.page.NotDone() {
+		return Gallery{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gl GalleryList) IsEmpty() bool {
+	return gl.Value == nil || len(*gl.Value) == 0
+}
+
+// galleryListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gl GalleryList) galleryListPreparer() (*http.Request, error) {
+	if gl.NextLink == nil || len(to.String(gl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gl.NextLink)))
+}
+
+// GalleryListPage contains a page of Gallery values.
+type GalleryListPage struct {
+	fn func(GalleryList) (GalleryList, error)
+	gl GalleryList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryListPage) Next() error {
+	next, err := page.fn(page.gl)
+	if err != nil {
+		return err
+	}
+	page.gl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryListPage) NotDone() bool {
+	return !page.gl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryListPage) Response() GalleryList {
+	return page.gl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryListPage) Values() []Gallery {
+	if page.gl.IsEmpty() {
+		return nil
+	}
+	return *page.gl.Value
+}
+
+// GalleryOSDiskImage this is the OS disk image.
+type GalleryOSDiskImage struct {
+	// SizeInGB - It indicates the size of the VHD to create.
+	SizeInGB *int32 `json:"sizeInGB,omitempty"`
+	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
+	HostCaching HostCaching `json:"hostCaching,omitempty"`
+}
+
+// GalleryProperties describes the properties of a gallery.
+type GalleryProperties struct {
+	// Description - The description of this gallery resource.
+	Description *string            `json:"description,omitempty"`
+	Identifier  *GalleryIdentifier `json:"identifier,omitempty"`
+	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateDeleting', 'ProvisioningStateMigrating'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
 // GrantAccessData data used for requesting a SAS.
 type GrantAccessData struct {
 	// Access - Possible values include: 'None', 'Read'
@@ -2055,7 +3360,7 @@ type GrantAccessData struct {
 
 // HardwareProfile specifies the hardware settings for the virtual machine.
 type HardwareProfile struct {
-	// VMSize - Specifies the size of the virtual machine. For more information about virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-sizes?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> The available VM sizes depend on region and availability set. For a list of available sizes use these APIs:  <br><br> [List all available virtual machine sizes in an availability set](virtualmachines-list-sizes-availability-set.md) <br><br> [List all available virtual machine sizes in a region](virtualmachines-list-sizes-region.md) <br><br> [List all available virtual machine sizes for resizing](virtualmachines-list-sizes-for-resizing.md). Possible values include: 'VirtualMachineSizeTypesBasicA0', 'VirtualMachineSizeTypesBasicA1', 'VirtualMachineSizeTypesBasicA2', 'VirtualMachineSizeTypesBasicA3', 'VirtualMachineSizeTypesBasicA4', 'VirtualMachineSizeTypesStandardA0', 'VirtualMachineSizeTypesStandardA1', 'VirtualMachineSizeTypesStandardA2', 'VirtualMachineSizeTypesStandardA3', 'VirtualMachineSizeTypesStandardA4', 'VirtualMachineSizeTypesStandardA5', 'VirtualMachineSizeTypesStandardA6', 'VirtualMachineSizeTypesStandardA7', 'VirtualMachineSizeTypesStandardA8', 'VirtualMachineSizeTypesStandardA9', 'VirtualMachineSizeTypesStandardA10', 'VirtualMachineSizeTypesStandardA11', 'VirtualMachineSizeTypesStandardA1V2', 'VirtualMachineSizeTypesStandardA2V2', 'VirtualMachineSizeTypesStandardA4V2', 'VirtualMachineSizeTypesStandardA8V2', 'VirtualMachineSizeTypesStandardA2mV2', 'VirtualMachineSizeTypesStandardA4mV2', 'VirtualMachineSizeTypesStandardA8mV2', 'VirtualMachineSizeTypesStandardD1', 'VirtualMachineSizeTypesStandardD2', 'VirtualMachineSizeTypesStandardD3', 'VirtualMachineSizeTypesStandardD4', 'VirtualMachineSizeTypesStandardD11', 'VirtualMachineSizeTypesStandardD12', 'VirtualMachineSizeTypesStandardD13', 'VirtualMachineSizeTypesStandardD14', 'VirtualMachineSizeTypesStandardD1V2', 'VirtualMachineSizeTypesStandardD2V2', 'VirtualMachineSizeTypesStandardD3V2', 'VirtualMachineSizeTypesStandardD4V2', 'VirtualMachineSizeTypesStandardD5V2', 'VirtualMachineSizeTypesStandardD11V2', 'VirtualMachineSizeTypesStandardD12V2', 'VirtualMachineSizeTypesStandardD13V2', 'VirtualMachineSizeTypesStandardD14V2', 'VirtualMachineSizeTypesStandardD15V2', 'VirtualMachineSizeTypesStandardDS1', 'VirtualMachineSizeTypesStandardDS2', 'VirtualMachineSizeTypesStandardDS3', 'VirtualMachineSizeTypesStandardDS4', 'VirtualMachineSizeTypesStandardDS11', 'VirtualMachineSizeTypesStandardDS12', 'VirtualMachineSizeTypesStandardDS13', 'VirtualMachineSizeTypesStandardDS14', 'VirtualMachineSizeTypesStandardDS1V2', 'VirtualMachineSizeTypesStandardDS2V2', 'VirtualMachineSizeTypesStandardDS3V2', 'VirtualMachineSizeTypesStandardDS4V2', 'VirtualMachineSizeTypesStandardDS5V2', 'VirtualMachineSizeTypesStandardDS11V2', 'VirtualMachineSizeTypesStandardDS12V2', 'VirtualMachineSizeTypesStandardDS13V2', 'VirtualMachineSizeTypesStandardDS14V2', 'VirtualMachineSizeTypesStandardDS15V2', 'VirtualMachineSizeTypesStandardF1', 'VirtualMachineSizeTypesStandardF2', 'VirtualMachineSizeTypesStandardF4', 'VirtualMachineSizeTypesStandardF8', 'VirtualMachineSizeTypesStandardF16', 'VirtualMachineSizeTypesStandardF1s', 'VirtualMachineSizeTypesStandardF2s', 'VirtualMachineSizeTypesStandardF4s', 'VirtualMachineSizeTypesStandardF8s', 'VirtualMachineSizeTypesStandardF16s', 'VirtualMachineSizeTypesStandardG1', 'VirtualMachineSizeTypesStandardG2', 'VirtualMachineSizeTypesStandardG3', 'VirtualMachineSizeTypesStandardG4', 'VirtualMachineSizeTypesStandardG5', 'VirtualMachineSizeTypesStandardGS1', 'VirtualMachineSizeTypesStandardGS2', 'VirtualMachineSizeTypesStandardGS3', 'VirtualMachineSizeTypesStandardGS4', 'VirtualMachineSizeTypesStandardGS5', 'VirtualMachineSizeTypesStandardH8', 'VirtualMachineSizeTypesStandardH16', 'VirtualMachineSizeTypesStandardH8m', 'VirtualMachineSizeTypesStandardH16m', 'VirtualMachineSizeTypesStandardH16r', 'VirtualMachineSizeTypesStandardH16mr', 'VirtualMachineSizeTypesStandardL4s', 'VirtualMachineSizeTypesStandardL8s', 'VirtualMachineSizeTypesStandardL16s', 'VirtualMachineSizeTypesStandardL32s', 'VirtualMachineSizeTypesStandardNC6', 'VirtualMachineSizeTypesStandardNC12', 'VirtualMachineSizeTypesStandardNC24', 'VirtualMachineSizeTypesStandardNC24r', 'VirtualMachineSizeTypesStandardNV6', 'VirtualMachineSizeTypesStandardNV12', 'VirtualMachineSizeTypesStandardNV24'
+	// VMSize - Specifies the size of the virtual machine. For more information about virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-sizes?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> The available VM sizes depend on region and availability set. For a list of available sizes use these APIs:  <br><br> [List all available virtual machine sizes in an availability set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes) <br><br> [List all available virtual machine sizes in a region](https://docs.microsoft.com/rest/api/compute/virtualmachinesizes/list) <br><br> [List all available virtual machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). Possible values include: 'VirtualMachineSizeTypesBasicA0', 'VirtualMachineSizeTypesBasicA1', 'VirtualMachineSizeTypesBasicA2', 'VirtualMachineSizeTypesBasicA3', 'VirtualMachineSizeTypesBasicA4', 'VirtualMachineSizeTypesStandardA0', 'VirtualMachineSizeTypesStandardA1', 'VirtualMachineSizeTypesStandardA2', 'VirtualMachineSizeTypesStandardA3', 'VirtualMachineSizeTypesStandardA4', 'VirtualMachineSizeTypesStandardA5', 'VirtualMachineSizeTypesStandardA6', 'VirtualMachineSizeTypesStandardA7', 'VirtualMachineSizeTypesStandardA8', 'VirtualMachineSizeTypesStandardA9', 'VirtualMachineSizeTypesStandardA10', 'VirtualMachineSizeTypesStandardA11', 'VirtualMachineSizeTypesStandardA1V2', 'VirtualMachineSizeTypesStandardA2V2', 'VirtualMachineSizeTypesStandardA4V2', 'VirtualMachineSizeTypesStandardA8V2', 'VirtualMachineSizeTypesStandardA2mV2', 'VirtualMachineSizeTypesStandardA4mV2', 'VirtualMachineSizeTypesStandardA8mV2', 'VirtualMachineSizeTypesStandardB1s', 'VirtualMachineSizeTypesStandardB1ms', 'VirtualMachineSizeTypesStandardB2s', 'VirtualMachineSizeTypesStandardB2ms', 'VirtualMachineSizeTypesStandardB4ms', 'VirtualMachineSizeTypesStandardB8ms', 'VirtualMachineSizeTypesStandardD1', 'VirtualMachineSizeTypesStandardD2', 'VirtualMachineSizeTypesStandardD3', 'VirtualMachineSizeTypesStandardD4', 'VirtualMachineSizeTypesStandardD11', 'VirtualMachineSizeTypesStandardD12', 'VirtualMachineSizeTypesStandardD13', 'VirtualMachineSizeTypesStandardD14', 'VirtualMachineSizeTypesStandardD1V2', 'VirtualMachineSizeTypesStandardD2V2', 'VirtualMachineSizeTypesStandardD3V2', 'VirtualMachineSizeTypesStandardD4V2', 'VirtualMachineSizeTypesStandardD5V2', 'VirtualMachineSizeTypesStandardD2V3', 'VirtualMachineSizeTypesStandardD4V3', 'VirtualMachineSizeTypesStandardD8V3', 'VirtualMachineSizeTypesStandardD16V3', 'VirtualMachineSizeTypesStandardD32V3', 'VirtualMachineSizeTypesStandardD64V3', 'VirtualMachineSizeTypesStandardD2sV3', 'VirtualMachineSizeTypesStandardD4sV3', 'VirtualMachineSizeTypesStandardD8sV3', 'VirtualMachineSizeTypesStandardD16sV3', 'VirtualMachineSizeTypesStandardD32sV3', 'VirtualMachineSizeTypesStandardD64sV3', 'VirtualMachineSizeTypesStandardD11V2', 'VirtualMachineSizeTypesStandardD12V2', 'VirtualMachineSizeTypesStandardD13V2', 'VirtualMachineSizeTypesStandardD14V2', 'VirtualMachineSizeTypesStandardD15V2', 'VirtualMachineSizeTypesStandardDS1', 'VirtualMachineSizeTypesStandardDS2', 'VirtualMachineSizeTypesStandardDS3', 'VirtualMachineSizeTypesStandardDS4', 'VirtualMachineSizeTypesStandardDS11', 'VirtualMachineSizeTypesStandardDS12', 'VirtualMachineSizeTypesStandardDS13', 'VirtualMachineSizeTypesStandardDS14', 'VirtualMachineSizeTypesStandardDS1V2', 'VirtualMachineSizeTypesStandardDS2V2', 'VirtualMachineSizeTypesStandardDS3V2', 'VirtualMachineSizeTypesStandardDS4V2', 'VirtualMachineSizeTypesStandardDS5V2', 'VirtualMachineSizeTypesStandardDS11V2', 'VirtualMachineSizeTypesStandardDS12V2', 'VirtualMachineSizeTypesStandardDS13V2', 'VirtualMachineSizeTypesStandardDS14V2', 'VirtualMachineSizeTypesStandardDS15V2', 'VirtualMachineSizeTypesStandardDS134V2', 'VirtualMachineSizeTypesStandardDS132V2', 'VirtualMachineSizeTypesStandardDS148V2', 'VirtualMachineSizeTypesStandardDS144V2', 'VirtualMachineSizeTypesStandardE2V3', 'VirtualMachineSizeTypesStandardE4V3', 'VirtualMachineSizeTypesStandardE8V3', 'VirtualMachineSizeTypesStandardE16V3', 'VirtualMachineSizeTypesStandardE32V3', 'VirtualMachineSizeTypesStandardE64V3', 'VirtualMachineSizeTypesStandardE2sV3', 'VirtualMachineSizeTypesStandardE4sV3', 'VirtualMachineSizeTypesStandardE8sV3', 'VirtualMachineSizeTypesStandardE16sV3', 'VirtualMachineSizeTypesStandardE32sV3', 'VirtualMachineSizeTypesStandardE64sV3', 'VirtualMachineSizeTypesStandardE3216V3', 'VirtualMachineSizeTypesStandardE328sV3', 'VirtualMachineSizeTypesStandardE6432sV3', 'VirtualMachineSizeTypesStandardE6416sV3', 'VirtualMachineSizeTypesStandardF1', 'VirtualMachineSizeTypesStandardF2', 'VirtualMachineSizeTypesStandardF4', 'VirtualMachineSizeTypesStandardF8', 'VirtualMachineSizeTypesStandardF16', 'VirtualMachineSizeTypesStandardF1s', 'VirtualMachineSizeTypesStandardF2s', 'VirtualMachineSizeTypesStandardF4s', 'VirtualMachineSizeTypesStandardF8s', 'VirtualMachineSizeTypesStandardF16s', 'VirtualMachineSizeTypesStandardF2sV2', 'VirtualMachineSizeTypesStandardF4sV2', 'VirtualMachineSizeTypesStandardF8sV2', 'VirtualMachineSizeTypesStandardF16sV2', 'VirtualMachineSizeTypesStandardF32sV2', 'VirtualMachineSizeTypesStandardF64sV2', 'VirtualMachineSizeTypesStandardF72sV2', 'VirtualMachineSizeTypesStandardG1', 'VirtualMachineSizeTypesStandardG2', 'VirtualMachineSizeTypesStandardG3', 'VirtualMachineSizeTypesStandardG4', 'VirtualMachineSizeTypesStandardG5', 'VirtualMachineSizeTypesStandardGS1', 'VirtualMachineSizeTypesStandardGS2', 'VirtualMachineSizeTypesStandardGS3', 'VirtualMachineSizeTypesStandardGS4', 'VirtualMachineSizeTypesStandardGS5', 'VirtualMachineSizeTypesStandardGS48', 'VirtualMachineSizeTypesStandardGS44', 'VirtualMachineSizeTypesStandardGS516', 'VirtualMachineSizeTypesStandardGS58', 'VirtualMachineSizeTypesStandardH8', 'VirtualMachineSizeTypesStandardH16', 'VirtualMachineSizeTypesStandardH8m', 'VirtualMachineSizeTypesStandardH16m', 'VirtualMachineSizeTypesStandardH16r', 'VirtualMachineSizeTypesStandardH16mr', 'VirtualMachineSizeTypesStandardL4s', 'VirtualMachineSizeTypesStandardL8s', 'VirtualMachineSizeTypesStandardL16s', 'VirtualMachineSizeTypesStandardL32s', 'VirtualMachineSizeTypesStandardM64s', 'VirtualMachineSizeTypesStandardM64ms', 'VirtualMachineSizeTypesStandardM128s', 'VirtualMachineSizeTypesStandardM128ms', 'VirtualMachineSizeTypesStandardM6432ms', 'VirtualMachineSizeTypesStandardM6416ms', 'VirtualMachineSizeTypesStandardM12864ms', 'VirtualMachineSizeTypesStandardM12832ms', 'VirtualMachineSizeTypesStandardNC6', 'VirtualMachineSizeTypesStandardNC12', 'VirtualMachineSizeTypesStandardNC24', 'VirtualMachineSizeTypesStandardNC24r', 'VirtualMachineSizeTypesStandardNC6sV2', 'VirtualMachineSizeTypesStandardNC12sV2', 'VirtualMachineSizeTypesStandardNC24sV2', 'VirtualMachineSizeTypesStandardNC24rsV2', 'VirtualMachineSizeTypesStandardNC6sV3', 'VirtualMachineSizeTypesStandardNC12sV3', 'VirtualMachineSizeTypesStandardNC24sV3', 'VirtualMachineSizeTypesStandardNC24rsV3', 'VirtualMachineSizeTypesStandardND6s', 'VirtualMachineSizeTypesStandardND12s', 'VirtualMachineSizeTypesStandardND24s', 'VirtualMachineSizeTypesStandardND24rs', 'VirtualMachineSizeTypesStandardNV6', 'VirtualMachineSizeTypesStandardNV12', 'VirtualMachineSizeTypesStandardNV24'
 	VMSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
 }
 
@@ -2183,7 +3488,7 @@ type ImageDataDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'StandardLRS', 'PremiumLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -2313,7 +3618,7 @@ type ImageOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'StandardLRS', 'PremiumLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -2325,6 +3630,16 @@ type ImageProperties struct {
 	StorageProfile *ImageStorageProfile `json:"storageProfile,omitempty"`
 	// ProvisioningState - The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ImagePurchasePlan describes the gallery image purchase plan. This is used by marketplace images.
+type ImagePurchasePlan struct {
+	// Name - The plan ID.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher ID.
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The product ID.
+	Product *string `json:"product,omitempty"`
 }
 
 // ImageReference specifies information about the image to use. You can specify information about platform images,
@@ -2378,7 +3693,7 @@ type ImagesDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ImagesDeleteFuture) Result(client ImagesClient) (osr OperationStatusResponse, err error) {
+func (future *ImagesDeleteFuture) Result(client ImagesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -2389,13 +3704,7 @@ func (future *ImagesDeleteFuture) Result(client ImagesClient) (osr OperationStat
 		err = azure.NewAsyncOpIncompleteError("compute.ImagesDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.ImagesDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -2405,6 +3714,88 @@ type ImageStorageProfile struct {
 	OsDisk *ImageOSDisk `json:"osDisk,omitempty"`
 	// DataDisks - Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
 	DataDisks *[]ImageDataDisk `json:"dataDisks,omitempty"`
+	// ZoneResilient - Specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only in regions that provide Zone Redundant Storage (ZRS).
+	ZoneResilient *bool `json:"zoneResilient,omitempty"`
+}
+
+// ImagesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ImagesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ImagesUpdateFuture) Result(client ImagesClient) (i Image, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.ImagesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.ImagesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
+		i, err = client.UpdateResponder(i.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.ImagesUpdateFuture", "Result", i.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ImageUpdate the source user image virtual hard disk. Only tags may be updated.
+type ImageUpdate struct {
+	*ImageProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ImageUpdate.
+func (iu ImageUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iu.ImageProperties != nil {
+		objectMap["properties"] = iu.ImageProperties
+	}
+	if iu.Tags != nil {
+		objectMap["tags"] = iu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ImageUpdate struct.
+func (iu *ImageUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var imageProperties ImageProperties
+				err = json.Unmarshal(*v, &imageProperties)
+				if err != nil {
+					return err
+				}
+				iu.ImageProperties = &imageProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				iu.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // InnerError inner error details.
@@ -2588,10 +3979,91 @@ type ListVirtualMachineImageResource struct {
 	Value             *[]VirtualMachineImageResource `json:"value,omitempty"`
 }
 
-// LongRunningOperationProperties compute-specific operation properties, including output
-type LongRunningOperationProperties struct {
-	// Output - Operation output data (raw JSON)
-	Output interface{} `json:"output,omitempty"`
+// LogAnalyticsExportRequestRateByIntervalFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LogAnalyticsExportRequestRateByIntervalFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LogAnalyticsExportRequestRateByIntervalFuture) Result(client LogAnalyticsClient) (laor LogAnalyticsOperationResult, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.LogAnalyticsExportRequestRateByIntervalFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.LogAnalyticsExportRequestRateByIntervalFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if laor.Response.Response, err = future.GetResult(sender); err == nil && laor.Response.Response.StatusCode != http.StatusNoContent {
+		laor, err = client.ExportRequestRateByIntervalResponder(laor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.LogAnalyticsExportRequestRateByIntervalFuture", "Result", laor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LogAnalyticsExportThrottledRequestsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type LogAnalyticsExportThrottledRequestsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LogAnalyticsExportThrottledRequestsFuture) Result(client LogAnalyticsClient) (laor LogAnalyticsOperationResult, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.LogAnalyticsExportThrottledRequestsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.LogAnalyticsExportThrottledRequestsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if laor.Response.Response, err = future.GetResult(sender); err == nil && laor.Response.Response.StatusCode != http.StatusNoContent {
+		laor, err = client.ExportThrottledRequestsResponder(laor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.LogAnalyticsExportThrottledRequestsFuture", "Result", laor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// LogAnalyticsInputBase api input base class for LogAnalytics Api.
+type LogAnalyticsInputBase struct {
+	// BlobContainerSasURI - SAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
+	BlobContainerSasURI *string `json:"blobContainerSasUri,omitempty"`
+	// FromTime - From time of the query
+	FromTime *date.Time `json:"fromTime,omitempty"`
+	// ToTime - To time of the query
+	ToTime *date.Time `json:"toTime,omitempty"`
+	// GroupByThrottlePolicy - Group query result by Throttle Policy applied.
+	GroupByThrottlePolicy *bool `json:"groupByThrottlePolicy,omitempty"`
+	// GroupByOperationName - Group query result by  by Operation Name.
+	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
+	// GroupByResourceName - Group query result by Resource Name.
+	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+}
+
+// LogAnalyticsOperationResult logAnalytics operation status response
+type LogAnalyticsOperationResult struct {
+	autorest.Response `json:"-"`
+	// Properties - LogAnalyticsOutput
+	Properties *LogAnalyticsOutput `json:"properties,omitempty"`
+}
+
+// LogAnalyticsOutput logAnalytics output properties
+type LogAnalyticsOutput struct {
+	// Output - Output file Uri path to blob container.
+	Output *string `json:"output,omitempty"`
 }
 
 // MaintenanceRedeployStatus maintenance Operation Status.
@@ -2612,9 +4084,15 @@ type MaintenanceRedeployStatus struct {
 	LastOperationMessage *string `json:"lastOperationMessage,omitempty"`
 }
 
+// ManagedArtifact the managed artifact.
+type ManagedArtifact struct {
+	// ID - The managed artifact id.
+	ID *string `json:"id,omitempty"`
+}
+
 // ManagedDiskParameters the parameters of a managed disk.
 type ManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'StandardLRS', 'PremiumLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -2684,19 +4162,89 @@ type NetworkProfile struct {
 	NetworkInterfaces *[]NetworkInterfaceReference `json:"networkInterfaces,omitempty"`
 }
 
-// OperationStatusResponse operation status response
-type OperationStatusResponse struct {
+// OperationListResult the List Compute Operation operation response.
+type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Name - Operation ID
-	Name *string `json:"name,omitempty"`
-	// Status - Operation status
-	Status *string `json:"status,omitempty"`
-	// StartTime - Start time of the operation
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the operation
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// Error - Api error
-	Error *APIError `json:"error,omitempty"`
+	// Value - The list of compute operations
+	Value *[]OperationValue `json:"value,omitempty"`
+}
+
+// OperationValue describes the properties of a Compute Operation value.
+type OperationValue struct {
+	// Origin - The origin of the compute operation.
+	Origin *string `json:"origin,omitempty"`
+	// Name - The name of the compute operation.
+	Name                   *string `json:"name,omitempty"`
+	*OperationValueDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationValue.
+func (ov OperationValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ov.Origin != nil {
+		objectMap["origin"] = ov.Origin
+	}
+	if ov.Name != nil {
+		objectMap["name"] = ov.Name
+	}
+	if ov.OperationValueDisplay != nil {
+		objectMap["display"] = ov.OperationValueDisplay
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OperationValue struct.
+func (ov *OperationValue) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "origin":
+			if v != nil {
+				var origin string
+				err = json.Unmarshal(*v, &origin)
+				if err != nil {
+					return err
+				}
+				ov.Origin = &origin
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ov.Name = &name
+			}
+		case "display":
+			if v != nil {
+				var operationValueDisplay OperationValueDisplay
+				err = json.Unmarshal(*v, &operationValueDisplay)
+				if err != nil {
+					return err
+				}
+				ov.OperationValueDisplay = &operationValueDisplay
+			}
+		}
+	}
+
+	return nil
+}
+
+// OperationValueDisplay describes the properties of a Compute Operation Value Display.
+type OperationValueDisplay struct {
+	// Operation - The display name of the compute operation.
+	Operation *string `json:"operation,omitempty"`
+	// Resource - The display name of the resource the operation applies to.
+	Resource *string `json:"resource,omitempty"`
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Provider - The resource provider for the operation.
+	Provider *string `json:"provider,omitempty"`
 }
 
 // OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For more
@@ -2715,6 +4263,8 @@ type OSDisk struct {
 	Image *VirtualHardDisk `json:"image,omitempty"`
 	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
+	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
@@ -2772,6 +4322,59 @@ type PurchasePlan struct {
 	Product *string `json:"product,omitempty"`
 }
 
+// RecommendedMachineConfiguration describes the recommended machine configuration.
+type RecommendedMachineConfiguration struct {
+	VCPUs  *ResourceRange `json:"vCPUs,omitempty"`
+	Memory *ResourceRange `json:"memory,omitempty"`
+}
+
+// RecoveryWalkResponse response after calling a manual recovery walk
+type RecoveryWalkResponse struct {
+	autorest.Response `json:"-"`
+	// WalkPerformed - Whether the recovery walk was performed
+	WalkPerformed *bool `json:"walkPerformed,omitempty"`
+	// NextPlatformUpdateDomain - The next update domain that needs to be walked. Null means walk spanning all update domains has been completed
+	NextPlatformUpdateDomain *int32 `json:"nextPlatformUpdateDomain,omitempty"`
+}
+
+// RegionalReplicationStatus this is the regional replication status.
+type RegionalReplicationStatus struct {
+	// Region - The region where the gallery image version is published to.
+	Region *string `json:"region,omitempty"`
+	// State - This is the regional replication state. Possible values include: 'ReplicationStateUnknown', 'ReplicationStateReplicating', 'ReplicationStateCompleted', 'ReplicationStateFailed'
+	State ReplicationState `json:"state,omitempty"`
+	// Details - The details of the replication status.
+	Details *string `json:"details,omitempty"`
+	// Progress - It indicates progress of the replication job.
+	Progress *int32 `json:"progress,omitempty"`
+}
+
+// ReplicationStatus this is the replication status of the gallery image version.
+type ReplicationStatus struct {
+	// AggregatedState - This is the aggregated replication status based on the regional replication status. Possible values include: 'Unknown', 'InProgress', 'Completed', 'Failed'
+	AggregatedState AggregatedReplicationState `json:"aggregatedState,omitempty"`
+	// Summary - This is a summary of replication status for each region.
+	Summary *[]RegionalReplicationStatus `json:"summary,omitempty"`
+}
+
+// RequestRateByIntervalInput api request input for LogAnalytics getRequestRateByInterval Api.
+type RequestRateByIntervalInput struct {
+	// IntervalLength - Interval value in minutes used to create LogAnalytics call rate logs. Possible values include: 'ThreeMins', 'FiveMins', 'ThirtyMins', 'SixtyMins'
+	IntervalLength IntervalInMins `json:"intervalLength,omitempty"`
+	// BlobContainerSasURI - SAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
+	BlobContainerSasURI *string `json:"blobContainerSasUri,omitempty"`
+	// FromTime - From time of the query
+	FromTime *date.Time `json:"fromTime,omitempty"`
+	// ToTime - To time of the query
+	ToTime *date.Time `json:"toTime,omitempty"`
+	// GroupByThrottlePolicy - Group query result by Throttle Policy applied.
+	GroupByThrottlePolicy *bool `json:"groupByThrottlePolicy,omitempty"`
+	// GroupByOperationName - Group query result by  by Operation Name.
+	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
+	// GroupByResourceName - Group query result by Resource Name.
+	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+}
+
 // Resource the Resource model definition.
 type Resource struct {
 	// ID - Resource Id
@@ -2807,6 +4410,14 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ResourceRange describes the resource range.
+type ResourceRange struct {
+	// Min - The minimum number of the resource.
+	Min *int32 `json:"min,omitempty"`
+	// Max - The maximum number of the resource.
+	Max *int32 `json:"max,omitempty"`
+}
+
 // ResourceSku describes an available Compute SKU.
 type ResourceSku struct {
 	// ResourceType - The type of resource the SKU applies to.
@@ -2825,6 +4436,8 @@ type ResourceSku struct {
 	Capacity *ResourceSkuCapacity `json:"capacity,omitempty"`
 	// Locations - The set of locations that the SKU is available.
 	Locations *[]string `json:"locations,omitempty"`
+	// LocationInfo - A list of locations and availability zones in those locations where the SKU is available.
+	LocationInfo *[]ResourceSkuLocationInfo `json:"locationInfo,omitempty"`
 	// APIVersions - The api versions that support this SKU.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
 	// Costs - Metadata for retrieving price info.
@@ -2865,12 +4478,30 @@ type ResourceSkuCosts struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// ResourceSkuLocationInfo ...
+type ResourceSkuLocationInfo struct {
+	// Location - Location of the SKU
+	Location *string `json:"location,omitempty"`
+	// Zones - List of availability zones where the SKU is supported.
+	Zones *[]string `json:"zones,omitempty"`
+}
+
+// ResourceSkuRestrictionInfo ...
+type ResourceSkuRestrictionInfo struct {
+	// Locations - Locations where the SKU is restricted
+	Locations *[]string `json:"locations,omitempty"`
+	// Zones - List of availability zones where the SKU is restricted.
+	Zones *[]string `json:"zones,omitempty"`
+}
+
 // ResourceSkuRestrictions describes scaling information of a SKU.
 type ResourceSkuRestrictions struct {
-	// Type - The type of restrictions. Possible values include: 'Location'
+	// Type - The type of restrictions. Possible values include: 'Location', 'Zone'
 	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
 	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
 	Values *[]string `json:"values,omitempty"`
+	// RestrictionInfo - The information about the restriction where the SKU cannot be used.
+	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
 	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }
@@ -2977,23 +4608,14 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 	return *page.rsr.Value
 }
 
-// ResourceUpdate the Resource model definition.
-type ResourceUpdate struct {
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	Sku  *DiskSku           `json:"sku,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceUpdate.
-func (ru ResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ru.Tags != nil {
-		objectMap["tags"] = ru.Tags
-	}
-	if ru.Sku != nil {
-		objectMap["sku"] = ru.Sku
-	}
-	return json.Marshal(objectMap)
+// RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation.
+type RollbackStatusInfo struct {
+	// SuccessfullyRolledbackInstanceCount - The number of instances which have been successfully rolled back.
+	SuccessfullyRolledbackInstanceCount *int32 `json:"successfullyRolledbackInstanceCount,omitempty"`
+	// FailedRolledbackInstanceCount - The number of instances which failed to rollback.
+	FailedRolledbackInstanceCount *int32 `json:"failedRolledbackInstanceCount,omitempty"`
+	// RollbackError - Error details if OS rollback failed.
+	RollbackError *APIError `json:"rollbackError,omitempty"`
 }
 
 // RollingUpgradePolicy the configuration parameters used while performing a rolling upgrade.
@@ -3022,7 +4644,7 @@ type RollingUpgradeProgressInfo struct {
 
 // RollingUpgradeRunningStatus information about the current running state of the overall upgrade.
 type RollingUpgradeRunningStatus struct {
-	// Code - Code indicating the current status of the upgrade. Possible values include: 'RollingForward', 'Cancelled', 'Completed', 'Faulted'
+	// Code - Code indicating the current status of the upgrade. Possible values include: 'RollingUpgradeStatusCodeRollingForward', 'RollingUpgradeStatusCodeCancelled', 'RollingUpgradeStatusCodeCompleted', 'RollingUpgradeStatusCodeFaulted'
 	Code RollingUpgradeStatusCode `json:"code,omitempty"`
 	// StartTime - Start time of the upgrade.
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -3318,119 +4940,11 @@ type RunCommandParameterDefinition struct {
 	Required *bool `json:"required,omitempty"`
 }
 
-// RunCommandResult run command operation response.
+// RunCommandResult ...
 type RunCommandResult struct {
-	autorest.Response           `json:"-"`
-	*RunCommandResultProperties `json:"properties,omitempty"`
-	// Name - Operation ID
-	Name *string `json:"name,omitempty"`
-	// Status - Operation status
-	Status *string `json:"status,omitempty"`
-	// StartTime - Start time of the operation
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - End time of the operation
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// Error - Api error
-	Error *APIError `json:"error,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RunCommandResult.
-func (rcr RunCommandResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rcr.RunCommandResultProperties != nil {
-		objectMap["properties"] = rcr.RunCommandResultProperties
-	}
-	if rcr.Name != nil {
-		objectMap["name"] = rcr.Name
-	}
-	if rcr.Status != nil {
-		objectMap["status"] = rcr.Status
-	}
-	if rcr.StartTime != nil {
-		objectMap["startTime"] = rcr.StartTime
-	}
-	if rcr.EndTime != nil {
-		objectMap["endTime"] = rcr.EndTime
-	}
-	if rcr.Error != nil {
-		objectMap["error"] = rcr.Error
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for RunCommandResult struct.
-func (rcr *RunCommandResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var runCommandResultProperties RunCommandResultProperties
-				err = json.Unmarshal(*v, &runCommandResultProperties)
-				if err != nil {
-					return err
-				}
-				rcr.RunCommandResultProperties = &runCommandResultProperties
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				rcr.Name = &name
-			}
-		case "status":
-			if v != nil {
-				var status string
-				err = json.Unmarshal(*v, &status)
-				if err != nil {
-					return err
-				}
-				rcr.Status = &status
-			}
-		case "startTime":
-			if v != nil {
-				var startTime date.Time
-				err = json.Unmarshal(*v, &startTime)
-				if err != nil {
-					return err
-				}
-				rcr.StartTime = &startTime
-			}
-		case "endTime":
-			if v != nil {
-				var endTime date.Time
-				err = json.Unmarshal(*v, &endTime)
-				if err != nil {
-					return err
-				}
-				rcr.EndTime = &endTime
-			}
-		case "error":
-			if v != nil {
-				var errorVar APIError
-				err = json.Unmarshal(*v, &errorVar)
-				if err != nil {
-					return err
-				}
-				rcr.Error = &errorVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// RunCommandResultProperties compute-specific operation properties, including output
-type RunCommandResultProperties struct {
-	// Output - Operation output data (raw JSON)
-	Output interface{} `json:"output,omitempty"`
+	autorest.Response `json:"-"`
+	// Value - Run command operation response.
+	Value *[]InstanceViewStatus `json:"value,omitempty"`
 }
 
 // Sku describes a virtual machine scale set sku.
@@ -3447,8 +4961,8 @@ type Sku struct {
 type Snapshot struct {
 	autorest.Response `json:"-"`
 	// ManagedBy - Unused. Always Null.
-	ManagedBy       *string  `json:"managedBy,omitempty"`
-	Sku             *DiskSku `json:"sku,omitempty"`
+	ManagedBy       *string      `json:"managedBy,omitempty"`
+	Sku             *SnapshotSku `json:"sku,omitempty"`
 	*DiskProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -3512,7 +5026,7 @@ func (s *Snapshot) UnmarshalJSON(body []byte) error {
 			}
 		case "sku":
 			if v != nil {
-				var sku DiskSku
+				var sku SnapshotSku
 				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err
@@ -3717,7 +5231,7 @@ type SnapshotsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *SnapshotsDeleteFuture) Result(client SnapshotsClient) (osr OperationStatusResponse, err error) {
+func (future *SnapshotsDeleteFuture) Result(client SnapshotsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -3728,13 +5242,7 @@ func (future *SnapshotsDeleteFuture) Result(client SnapshotsClient) (osr Operati
 		err = azure.NewAsyncOpIncompleteError("compute.SnapshotsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.SnapshotsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -3766,6 +5274,14 @@ func (future *SnapshotsGrantAccessFuture) Result(client SnapshotsClient) (au Acc
 	return
 }
 
+// SnapshotSku the snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
+type SnapshotSku struct {
+	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardZRS'
+	Name SnapshotStorageAccountTypes `json:"name,omitempty"`
+	// Tier - The sku tier.
+	Tier *string `json:"tier,omitempty"`
+}
+
 // SnapshotsRevokeAccessFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SnapshotsRevokeAccessFuture struct {
@@ -3774,7 +5290,7 @@ type SnapshotsRevokeAccessFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (osr OperationStatusResponse, err error) {
+func (future *SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -3785,13 +5301,7 @@ func (future *SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (osr O
 		err = azure.NewAsyncOpIncompleteError("compute.SnapshotsRevokeAccessFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RevokeAccessResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.SnapshotsRevokeAccessFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -3828,7 +5338,7 @@ type SnapshotUpdate struct {
 	*DiskUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	Sku  *DiskSku           `json:"sku,omitempty"`
+	Sku  *SnapshotSku       `json:"sku,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotUpdate.
@@ -3875,7 +5385,7 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 			}
 		case "sku":
 			if v != nil {
-				var sku DiskSku
+				var sku SnapshotSku
 				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err
@@ -3932,6 +5442,22 @@ type SubResourceReadOnly struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// ThrottledRequestsInput api request input for LogAnalytics getThrottledRequests Api.
+type ThrottledRequestsInput struct {
+	// BlobContainerSasURI - SAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
+	BlobContainerSasURI *string `json:"blobContainerSasUri,omitempty"`
+	// FromTime - From time of the query
+	FromTime *date.Time `json:"fromTime,omitempty"`
+	// ToTime - To time of the query
+	ToTime *date.Time `json:"toTime,omitempty"`
+	// GroupByThrottlePolicy - Group query result by Throttle Policy applied.
+	GroupByThrottlePolicy *bool `json:"groupByThrottlePolicy,omitempty"`
+	// GroupByOperationName - Group query result by  by Operation Name.
+	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
+	// GroupByResourceName - Group query result by Resource Name.
+	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+}
+
 // UpdateResource the Update Resource model definition.
 type UpdateResource struct {
 	// Tags - Resource tags
@@ -3947,6 +5473,42 @@ func (ur UpdateResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UpgradeOperationHistoricalStatusInfo virtual Machine Scale Set OS Upgrade History operation response.
+type UpgradeOperationHistoricalStatusInfo struct {
+	// Properties - Information about the properties of the upgrade operation.
+	Properties *UpgradeOperationHistoricalStatusInfoProperties `json:"properties,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+}
+
+// UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale Set.
+type UpgradeOperationHistoricalStatusInfoProperties struct {
+	// RunningStatus - Information about the overall status of the upgrade operation.
+	RunningStatus *UpgradeOperationHistoryStatus `json:"runningStatus,omitempty"`
+	// Progress - Counts of the VM's in each state.
+	Progress *RollingUpgradeProgressInfo `json:"progress,omitempty"`
+	// Error - Error Details for this upgrade if there are any.
+	Error *APIError `json:"error,omitempty"`
+	// StartedBy - Invoker of the Upgrade Operation. Possible values include: 'UpgradeOperationInvokerUnknown', 'UpgradeOperationInvokerUser', 'UpgradeOperationInvokerPlatform'
+	StartedBy UpgradeOperationInvoker `json:"startedBy,omitempty"`
+	// TargetImageReference - Image Reference details
+	TargetImageReference *ImageReference `json:"targetImageReference,omitempty"`
+	// RollbackInfo - Information about OS rollback if performed
+	RollbackInfo *RollbackStatusInfo `json:"rollbackInfo,omitempty"`
+}
+
+// UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.
+type UpgradeOperationHistoryStatus struct {
+	// Code - Code indicating the current status of the upgrade. Possible values include: 'UpgradeStateRollingForward', 'UpgradeStateCancelled', 'UpgradeStateCompleted', 'UpgradeStateFaulted'
+	Code UpgradeState `json:"code,omitempty"`
+	// StartTime - Start time of the upgrade.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - End time of the upgrade.
+	EndTime *date.Time `json:"endTime,omitempty"`
+}
+
 // UpgradePolicy describes an upgrade policy - automatic, manual, or rolling.
 type UpgradePolicy struct {
 	// Mode - Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are  automatically updated at the same time. Possible values include: 'Automatic', 'Manual', 'Rolling'
@@ -3955,6 +5517,8 @@ type UpgradePolicy struct {
 	RollingUpgradePolicy *RollingUpgradePolicy `json:"rollingUpgradePolicy,omitempty"`
 	// AutomaticOSUpgrade - Whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available.
 	AutomaticOSUpgrade *bool `json:"automaticOSUpgrade,omitempty"`
+	// AutoOSUpgradePolicy - Configuration parameters used for performing automatic OS Upgrade.
+	AutoOSUpgradePolicy *AutoOSUpgradePolicy `json:"autoOSUpgradePolicy,omitempty"`
 }
 
 // Usage describes Compute Resource Usage.
@@ -4185,63 +5749,19 @@ type VirtualMachineCaptureParameters struct {
 	OverwriteVhds *bool `json:"overwriteVhds,omitempty"`
 }
 
-// VirtualMachineCaptureResult resource Id.
+// VirtualMachineCaptureResult output of virtual machine capture operation.
 type VirtualMachineCaptureResult struct {
-	autorest.Response                      `json:"-"`
-	*VirtualMachineCaptureResultProperties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	// Schema - the schema of the captured virtual machine
+	Schema *string `json:"$schema,omitempty"`
+	// ContentVersion - the version of the content
+	ContentVersion *string `json:"contentVersion,omitempty"`
+	// Parameters - parameters of the captured virtual machine
+	Parameters interface{} `json:"parameters,omitempty"`
+	// Resources - a list of resource items of the captured virtual machine
+	Resources *[]interface{} `json:"resources,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for VirtualMachineCaptureResult.
-func (vmcr VirtualMachineCaptureResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if vmcr.VirtualMachineCaptureResultProperties != nil {
-		objectMap["properties"] = vmcr.VirtualMachineCaptureResultProperties
-	}
-	if vmcr.ID != nil {
-		objectMap["id"] = vmcr.ID
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineCaptureResult struct.
-func (vmcr *VirtualMachineCaptureResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var virtualMachineCaptureResultProperties VirtualMachineCaptureResultProperties
-				err = json.Unmarshal(*v, &virtualMachineCaptureResultProperties)
-				if err != nil {
-					return err
-				}
-				vmcr.VirtualMachineCaptureResultProperties = &virtualMachineCaptureResultProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				vmcr.ID = &ID
-			}
-		}
-	}
-
-	return nil
-}
-
-// VirtualMachineCaptureResultProperties compute-specific operation properties, including output
-type VirtualMachineCaptureResultProperties struct {
-	// Output - Operation output data (raw JSON)
-	Output interface{} `json:"output,omitempty"`
 }
 
 // VirtualMachineExtension describes a Virtual Machine Extension.
@@ -4559,7 +6079,7 @@ type VirtualMachineExtensionsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachineExtensionsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachineExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4570,13 +6090,7 @@ func (future *VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachine
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -4694,12 +6208,14 @@ type VirtualMachineHealthStatus struct {
 
 // VirtualMachineIdentity identity for the virtual machine.
 type VirtualMachineIdentity struct {
-	// PrincipalID - The principal id of virtual machine identity.
+	// PrincipalID - The principal id of virtual machine identity. This property will only be provided for a system assigned identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - The tenant id associated with the virtual machine.
+	// TenantID - The tenant id associated with the virtual machine. This property will only be provided for a system assigned identity.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for the virtual machine. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity. Possible values include: 'SystemAssigned'
+	// Type - The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
+	// IdentityIds - The list of user identities associated with the Virtual Machine. The user identity references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/identities/{identityName}'.
+	IdentityIds *[]string `json:"identityIds,omitempty"`
 }
 
 // VirtualMachineImage describes a Virtual Machine Image.
@@ -4841,6 +6357,12 @@ type VirtualMachineInstanceView struct {
 	PlatformUpdateDomain *int32 `json:"platformUpdateDomain,omitempty"`
 	// PlatformFaultDomain - Specifies the fault domain of the virtual machine.
 	PlatformFaultDomain *int32 `json:"platformFaultDomain,omitempty"`
+	// ComputerName - The computer name assigned to the virtual machine.
+	ComputerName *string `json:"computerName,omitempty"`
+	// OsName - The Operating System running on the virtual machine.
+	OsName *string `json:"osName,omitempty"`
+	// OsVersion - The version of Operating System running on the virtual machine.
+	OsVersion *string `json:"osVersion,omitempty"`
 	// RdpThumbPrint - The Remote desktop certificate thumbprint.
 	RdpThumbPrint *string `json:"rdpThumbPrint,omitempty"`
 	// VMAgent - The VM Agent running on the virtual machine.
@@ -5156,6 +6678,8 @@ type VirtualMachineScaleSetDataDisk struct {
 	Lun *int32 `json:"lun,omitempty"`
 	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
+	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - The create option. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
@@ -5397,7 +6921,7 @@ type VirtualMachineScaleSetExtensionsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client VirtualMachineScaleSetExtensionsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client VirtualMachineScaleSetExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -5408,24 +6932,20 @@ func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client Virtua
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetExtensionsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
 // VirtualMachineScaleSetIdentity identity for the virtual machine scale set.
 type VirtualMachineScaleSetIdentity struct {
-	// PrincipalID - The principal id of virtual machine scale set identity.
+	// PrincipalID - The principal id of virtual machine scale set identity. This property will only be provided for a system assigned identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - The tenant id associated with the virtual machine scale set.
+	// TenantID - The tenant id associated with the virtual machine scale set. This property will only be provided for a system assigned identity.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for the virtual machine scale set. Currently, the only supported type is 'SystemAssigned', which implicitly creates an identity. Possible values include: 'SystemAssigned'
+	// Type - The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine scale set. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
+	// IdentityIds - The list of user identities associated with the virtual machine scale set. The user identity references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/identities/{identityName}'.
+	IdentityIds *[]string `json:"identityIds,omitempty"`
 }
 
 // VirtualMachineScaleSetInstanceView the instance view of a virtual machine scale set.
@@ -5529,6 +7049,118 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 	// LoadBalancerInboundNatPools - Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer
 	LoadBalancerInboundNatPools *[]SubResource `json:"loadBalancerInboundNatPools,omitempty"`
+}
+
+// VirtualMachineScaleSetIPTag contains the IP tag associated with the public IP address.
+type VirtualMachineScaleSetIPTag struct {
+	// IPTagType - IP tag type. Example: FirstPartyUsage.
+	IPTagType *string `json:"ipTagType,omitempty"`
+	// Tag - IP tag associated with the public IP. Example: SQL, Storage etc.
+	Tag *string `json:"tag,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistory list of Virtual Machine Scale Set OS Upgrade History operation
+// response.
+type VirtualMachineScaleSetListOSUpgradeHistory struct {
+	autorest.Response `json:"-"`
+	// Value - The list of OS upgrades performed on the virtual machine scale set.
+	Value *[]UpgradeOperationHistoricalStatusInfo `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of history of upgrades.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryIterator provides access to a complete listing of
+// UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryIterator struct {
+	i    int
+	page VirtualMachineScaleSetListOSUpgradeHistoryPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *VirtualMachineScaleSetListOSUpgradeHistoryIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Value() UpgradeOperationHistoricalStatusInfo {
+	if !iter.page.NotDone() {
+		return UpgradeOperationHistoricalStatusInfo{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) IsEmpty() bool {
+	return vmsslouh.Value == nil || len(*vmsslouh.Value) == 0
+}
+
+// virtualMachineScaleSetListOSUpgradeHistoryPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) virtualMachineScaleSetListOSUpgradeHistoryPreparer() (*http.Request, error) {
+	if vmsslouh.NextLink == nil || len(to.String(vmsslouh.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(vmsslouh.NextLink)))
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryPage contains a page of UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryPage struct {
+	fn       func(VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)
+	vmsslouh VirtualMachineScaleSetListOSUpgradeHistory
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *VirtualMachineScaleSetListOSUpgradeHistoryPage) Next() error {
+	next, err := page.fn(page.vmsslouh)
+	if err != nil {
+		return err
+	}
+	page.vmsslouh = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) NotDone() bool {
+	return !page.vmsslouh.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return page.vmsslouh
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOperationHistoricalStatusInfo {
+	if page.vmsslouh.IsEmpty() {
+		return nil
+	}
+	return *page.vmsslouh.Value
 }
 
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.
@@ -5841,7 +7473,7 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
 type VirtualMachineScaleSetManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'StandardLRS', 'PremiumLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -5932,6 +7564,8 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings `json:"dnsSettings,omitempty"`
 	// IPConfigurations - Specifies the IP configurations of the network interface.
 	IPConfigurations *[]VirtualMachineScaleSetIPConfiguration `json:"ipConfigurations,omitempty"`
+	// EnableIPForwarding - Whether IP forwarding enabled on this NIC.
+	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
 }
 
 // VirtualMachineScaleSetNetworkProfile describes a virtual machine scale set network profile.
@@ -5948,6 +7582,8 @@ type VirtualMachineScaleSetOSDisk struct {
 	Name *string `json:"name,omitempty"`
 	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
+	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
@@ -5992,6 +7628,10 @@ type VirtualMachineScaleSetProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SinglePlacementGroup - When true this limits the scale set to a single placement group, of max size 100 virtual machines.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
+	// ZoneBalance - Whether to force stictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+	ZoneBalance *bool `json:"zoneBalance,omitempty"`
+	// PlatformFaultDomainCount - Fault Domain count for each placement group.
+	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfiguration describes a virtual machines scale set IP Configuration's
@@ -6061,6 +7701,8 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 	// DNSSettings - The dns settings to be applied on the publicIP addresses .
 	DNSSettings *VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings `json:"dnsSettings,omitempty"`
+	// IPTags - The list of IP tags associated with the public IP address.
+	IPTags *[]VirtualMachineScaleSetIPTag `json:"ipTags,omitempty"`
 }
 
 // VirtualMachineScaleSetRollingUpgradesCancelFuture an abstraction for monitoring and retrieving the results of a
@@ -6071,7 +7713,7 @@ type VirtualMachineScaleSetRollingUpgradesCancelFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetRollingUpgradesCancelFuture) Result(client VirtualMachineScaleSetRollingUpgradesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetRollingUpgradesCancelFuture) Result(client VirtualMachineScaleSetRollingUpgradesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6082,13 +7724,7 @@ func (future *VirtualMachineScaleSetRollingUpgradesCancelFuture) Result(client V
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetRollingUpgradesCancelFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.CancelResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetRollingUpgradesCancelFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6100,7 +7736,7 @@ type VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture) Result(client VirtualMachineScaleSetRollingUpgradesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture) Result(client VirtualMachineScaleSetRollingUpgradesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6111,13 +7747,7 @@ func (future *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture) Result(
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.StartOSUpgradeResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6158,7 +7788,7 @@ type VirtualMachineScaleSetsDeallocateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsDeallocateFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsDeallocateFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6169,13 +7799,7 @@ func (future *VirtualMachineScaleSetsDeallocateFuture) Result(client VirtualMach
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeallocateFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeallocateResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6187,7 +7811,7 @@ type VirtualMachineScaleSetsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6198,13 +7822,7 @@ func (future *VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineS
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6216,7 +7834,7 @@ type VirtualMachineScaleSetsDeleteInstancesFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsDeleteInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsDeleteInstancesFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6227,13 +7845,7 @@ func (future *VirtualMachineScaleSetsDeleteInstancesFuture) Result(client Virtua
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteInstancesFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteInstancesResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6259,6 +7871,29 @@ type VirtualMachineScaleSetSkuCapacity struct {
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
 }
 
+// VirtualMachineScaleSetsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetsPerformMaintenanceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetsPerformMaintenanceFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPerformMaintenanceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsPerformMaintenanceFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // VirtualMachineScaleSetsPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VirtualMachineScaleSetsPowerOffFuture struct {
@@ -6267,7 +7902,7 @@ type VirtualMachineScaleSetsPowerOffFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsPowerOffFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsPowerOffFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6278,13 +7913,30 @@ func (future *VirtualMachineScaleSetsPowerOffFuture) Result(client VirtualMachin
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsPowerOffFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.PowerOffResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetsRedeployFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachineScaleSetsRedeployFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetsRedeployFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRedeployFuture", "Result", future.Response(), "Polling failure")
+		return
 	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsRedeployFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6296,7 +7948,7 @@ type VirtualMachineScaleSetsReimageAllFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsReimageAllFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsReimageAllFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6307,13 +7959,7 @@ func (future *VirtualMachineScaleSetsReimageAllFuture) Result(client VirtualMach
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsReimageAllFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.ReimageAllResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageAllFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6325,7 +7971,7 @@ type VirtualMachineScaleSetsReimageFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsReimageFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsReimageFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6336,13 +7982,7 @@ func (future *VirtualMachineScaleSetsReimageFuture) Result(client VirtualMachine
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsReimageFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.ReimageResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6354,7 +7994,7 @@ type VirtualMachineScaleSetsRestartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6365,13 +8005,7 @@ func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachine
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsRestartFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RestartResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6383,7 +8017,7 @@ type VirtualMachineScaleSetsStartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsStartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsStartFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6394,13 +8028,7 @@ func (future *VirtualMachineScaleSetsStartFuture) Result(client VirtualMachineSc
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsStartFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.StartResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6451,7 +8079,7 @@ type VirtualMachineScaleSetsUpdateInstancesFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetsUpdateInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetsUpdateInstancesFuture) Result(client VirtualMachineScaleSetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6462,13 +8090,7 @@ func (future *VirtualMachineScaleSetsUpdateInstancesFuture) Result(client Virtua
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsUpdateInstancesFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.UpdateInstancesResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -6732,6 +8354,8 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings `json:"dnsSettings,omitempty"`
 	// IPConfigurations - The virtual machine scale set IP Configuration.
 	IPConfigurations *[]VirtualMachineScaleSetUpdateIPConfiguration `json:"ipConfigurations,omitempty"`
+	// EnableIPForwarding - Whether IP forwarding enabled on this NIC.
+	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
 }
 
 // VirtualMachineScaleSetUpdateNetworkProfile describes a virtual machine scale set network profile.
@@ -6745,6 +8369,8 @@ type VirtualMachineScaleSetUpdateNetworkProfile struct {
 type VirtualMachineScaleSetUpdateOSDisk struct {
 	// Caching - The caching type. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
+	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// Image - The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
 	// VhdContainers - The list of virtual hard disk container uris.
@@ -7063,6 +8689,8 @@ type VirtualMachineScaleSetVMInstanceView struct {
 	RdpThumbPrint *string `json:"rdpThumbPrint,omitempty"`
 	// VMAgent - The VM Agent running on the virtual machine.
 	VMAgent *VirtualMachineAgentInstanceView `json:"vmAgent,omitempty"`
+	// MaintenanceRedeployStatus - The Maintenance Operation status on the virtual machine.
+	MaintenanceRedeployStatus *MaintenanceRedeployStatus `json:"maintenanceRedeployStatus,omitempty"`
 	// Disks - The disks information.
 	Disks *[]DiskInstanceView `json:"disks,omitempty"`
 	// Extensions - The extensions information.
@@ -7194,6 +8822,10 @@ type VirtualMachineScaleSetVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string `json:"licenseType,omitempty"`
+	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low'
+	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.
@@ -7230,7 +8862,7 @@ type VirtualMachineScaleSetVMsDeallocateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsDeallocateFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsDeallocateFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7241,13 +8873,7 @@ func (future *VirtualMachineScaleSetVMsDeallocateFuture) Result(client VirtualMa
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeallocateFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeallocateResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7259,7 +8885,7 @@ type VirtualMachineScaleSetVMsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7270,13 +8896,30 @@ func (future *VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachin
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetVMsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetVMsPerformMaintenanceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetVMsPerformMaintenanceFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture", "Result", future.Response(), "Polling failure")
+		return
 	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7288,7 +8931,7 @@ type VirtualMachineScaleSetVMsPowerOffFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7299,13 +8942,30 @@ func (future *VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMach
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPowerOffFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.PowerOffResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetVMsRedeployFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetVMsRedeployFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetVMsRedeployFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRedeployFuture", "Result", future.Response(), "Polling failure")
+		return
 	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRedeployFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7317,7 +8977,7 @@ type VirtualMachineScaleSetVMsReimageAllFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsReimageAllFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsReimageAllFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7328,13 +8988,7 @@ func (future *VirtualMachineScaleSetVMsReimageAllFuture) Result(client VirtualMa
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsReimageAllFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.ReimageAllResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageAllFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7346,7 +9000,7 @@ type VirtualMachineScaleSetVMsReimageFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsReimageFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsReimageFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7357,13 +9011,7 @@ func (future *VirtualMachineScaleSetVMsReimageFuture) Result(client VirtualMachi
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsReimageFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.ReimageResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7375,7 +9023,7 @@ type VirtualMachineScaleSetVMsRestartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsRestartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsRestartFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7386,11 +9034,34 @@ func (future *VirtualMachineScaleSetVMsRestartFuture) Result(client VirtualMachi
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRestartFuture")
 		return
 	}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetVMsRunCommandFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetVMsRunCommandFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetVMsRunCommandFuture) Result(client VirtualMachineScaleSetVMsClient) (rcr RunCommandResult, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRunCommandFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRunCommandFuture")
+		return
+	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RestartResponder(osr.Response.Response)
+	if rcr.Response.Response, err = future.GetResult(sender); err == nil && rcr.Response.Response.StatusCode != http.StatusNoContent {
+		rcr, err = client.RunCommandResponder(rcr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", osr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRunCommandFuture", "Result", rcr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -7404,7 +9075,7 @@ type VirtualMachineScaleSetVMsStartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMsStartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachineScaleSetVMsStartFuture) Result(client VirtualMachineScaleSetVMsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7415,11 +9086,34 @@ func (future *VirtualMachineScaleSetVMsStartFuture) Result(client VirtualMachine
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsStartFuture")
 		return
 	}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachineScaleSetVMsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachineScaleSetVMsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetVMsUpdateFuture) Result(client VirtualMachineScaleSetVMsClient) (vmssv VirtualMachineScaleSetVM, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsUpdateFuture")
+		return
+	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.StartResponder(osr.Response.Response)
+	if vmssv.Response.Response, err = future.GetResult(sender); err == nil && vmssv.Response.Response.StatusCode != http.StatusNoContent {
+		vmssv, err = client.UpdateResponder(vmssv.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", osr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsUpdateFuture", "Result", vmssv.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -7462,7 +9156,7 @@ type VirtualMachinesConvertToManagedDisksFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesConvertToManagedDisksFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesConvertToManagedDisksFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7473,13 +9167,7 @@ func (future *VirtualMachinesConvertToManagedDisksFuture) Result(client VirtualM
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesConvertToManagedDisksFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.ConvertToManagedDisksResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesConvertToManagedDisksFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7520,7 +9208,7 @@ type VirtualMachinesDeallocateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesDeallocateFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesDeallocateFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7531,13 +9219,7 @@ func (future *VirtualMachinesDeallocateFuture) Result(client VirtualMachinesClie
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeallocateFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeallocateResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7549,7 +9231,7 @@ type VirtualMachinesDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7560,13 +9242,7 @@ func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) 
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.DeleteResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7601,7 +9277,7 @@ type VirtualMachinesPerformMaintenanceFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesPerformMaintenanceFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesPerformMaintenanceFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7612,13 +9288,7 @@ func (future *VirtualMachinesPerformMaintenanceFuture) Result(client VirtualMach
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesPerformMaintenanceFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.PerformMaintenanceResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPerformMaintenanceFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7630,7 +9300,7 @@ type VirtualMachinesPowerOffFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7641,13 +9311,7 @@ func (future *VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesPowerOffFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.PowerOffResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7659,7 +9323,7 @@ type VirtualMachinesRedeployFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7670,13 +9334,7 @@ func (future *VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRedeployFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RedeployResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7688,7 +9346,7 @@ type VirtualMachinesRestartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7699,13 +9357,7 @@ func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient)
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRestartFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.RestartResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7745,7 +9397,7 @@ type VirtualMachinesStartFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
+func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -7756,13 +9408,7 @@ func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesStartFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osr.Response.Response, err = future.GetResult(sender); err == nil && osr.Response.Response.StatusCode != http.StatusNoContent {
-		osr, err = client.StartResponder(osr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", osr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -7773,6 +9419,129 @@ type VirtualMachineStatusCodeCount struct {
 	Code *string `json:"code,omitempty"`
 	// Count - The number of instances having a particular status code.
 	Count *int32 `json:"count,omitempty"`
+}
+
+// VirtualMachinesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachinesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachinesUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
+		VM, err = client.UpdateResponder(VM.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VirtualMachineUpdate describes a Virtual Machine Update.
+type VirtualMachineUpdate struct {
+	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
+	Plan                      *Plan `json:"plan,omitempty"`
+	*VirtualMachineProperties `json:"properties,omitempty"`
+	// Identity - The identity of the virtual machine, if configured.
+	Identity *VirtualMachineIdentity `json:"identity,omitempty"`
+	// Zones - The virtual machine zones.
+	Zones *[]string `json:"zones,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineUpdate.
+func (vmu VirtualMachineUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmu.Plan != nil {
+		objectMap["plan"] = vmu.Plan
+	}
+	if vmu.VirtualMachineProperties != nil {
+		objectMap["properties"] = vmu.VirtualMachineProperties
+	}
+	if vmu.Identity != nil {
+		objectMap["identity"] = vmu.Identity
+	}
+	if vmu.Zones != nil {
+		objectMap["zones"] = vmu.Zones
+	}
+	if vmu.Tags != nil {
+		objectMap["tags"] = vmu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineUpdate struct.
+func (vmu *VirtualMachineUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "plan":
+			if v != nil {
+				var plan Plan
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				vmu.Plan = &plan
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineProperties VirtualMachineProperties
+				err = json.Unmarshal(*v, &virtualMachineProperties)
+				if err != nil {
+					return err
+				}
+				vmu.VirtualMachineProperties = &virtualMachineProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity VirtualMachineIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				vmu.Identity = &identity
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				vmu.Zones = &zones
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vmu.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // WindowsConfiguration specifies Windows operating system settings on the virtual machine.

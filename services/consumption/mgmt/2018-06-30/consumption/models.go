@@ -1382,9 +1382,9 @@ type ProxyResource struct {
 	ETag *string `json:"eTag,omitempty"`
 }
 
-// ReservationDetails reservation details resource.
-type ReservationDetails struct {
-	*ReservationDetailsProperties `json:"properties,omitempty"`
+// ReservationDetail reservation detail resource.
+type ReservationDetail struct {
+	*ReservationDetailProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1395,11 +1395,11 @@ type ReservationDetails struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ReservationDetails.
-func (rd ReservationDetails) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ReservationDetail.
+func (rd ReservationDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rd.ReservationDetailsProperties != nil {
-		objectMap["properties"] = rd.ReservationDetailsProperties
+	if rd.ReservationDetailProperties != nil {
+		objectMap["properties"] = rd.ReservationDetailProperties
 	}
 	if rd.ID != nil {
 		objectMap["id"] = rd.ID
@@ -1416,8 +1416,8 @@ func (rd ReservationDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ReservationDetails struct.
-func (rd *ReservationDetails) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ReservationDetail struct.
+func (rd *ReservationDetail) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1427,12 +1427,12 @@ func (rd *ReservationDetails) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var reservationDetailsProperties ReservationDetailsProperties
-				err = json.Unmarshal(*v, &reservationDetailsProperties)
+				var reservationDetailProperties ReservationDetailProperties
+				err = json.Unmarshal(*v, &reservationDetailProperties)
 				if err != nil {
 					return err
 				}
-				rd.ReservationDetailsProperties = &reservationDetailsProperties
+				rd.ReservationDetailProperties = &reservationDetailProperties
 			}
 		case "id":
 			if v != nil {
@@ -1476,16 +1476,36 @@ func (rd *ReservationDetails) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ReservationDetailProperties the properties of the reservation detail.
+type ReservationDetailProperties struct {
+	// ReservationOrderID - The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
+	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
+	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
+	ReservationID *string `json:"reservationId,omitempty"`
+	// SkuName - This is the ARM Sku name. It can be used to join with the servicetype field in additoinalinfo in usage records.
+	SkuName *string `json:"skuName,omitempty"`
+	// ReservedHours - This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
+	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
+	// UsageDate - The date on which consumption occurred.
+	UsageDate *date.Time `json:"usageDate,omitempty"`
+	// UsedHours - This is the total hours used by the instance.
+	UsedHours *decimal.Decimal `json:"usedHours,omitempty"`
+	// InstanceID - This identifier is the name of the resource or the fully qualified Resource ID.
+	InstanceID *string `json:"instanceId,omitempty"`
+	// TotalReservedQuantity - This is the total count of instances that are reserved for the reservationid.
+	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
+}
+
 // ReservationDetailsListResult result of listing reservation details.
 type ReservationDetailsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of reservation details.
-	Value *[]ReservationDetails `json:"value,omitempty"`
+	Value *[]ReservationDetail `json:"value,omitempty"`
 	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ReservationDetailsListResultIterator provides access to a complete listing of ReservationDetails values.
+// ReservationDetailsListResultIterator provides access to a complete listing of ReservationDetail values.
 type ReservationDetailsListResultIterator struct {
 	i    int
 	page ReservationDetailsListResultPage
@@ -1519,9 +1539,9 @@ func (iter ReservationDetailsListResultIterator) Response() ReservationDetailsLi
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ReservationDetailsListResultIterator) Value() ReservationDetails {
+func (iter ReservationDetailsListResultIterator) Value() ReservationDetail {
 	if !iter.page.NotDone() {
-		return ReservationDetails{}
+		return ReservationDetail{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -1543,7 +1563,7 @@ func (rdlr ReservationDetailsListResult) reservationDetailsListResultPreparer() 
 		autorest.WithBaseURL(to.String(rdlr.NextLink)))
 }
 
-// ReservationDetailsListResultPage contains a page of ReservationDetails values.
+// ReservationDetailsListResultPage contains a page of ReservationDetail values.
 type ReservationDetailsListResultPage struct {
 	fn   func(ReservationDetailsListResult) (ReservationDetailsListResult, error)
 	rdlr ReservationDetailsListResult
@@ -1571,35 +1591,15 @@ func (page ReservationDetailsListResultPage) Response() ReservationDetailsListRe
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ReservationDetailsListResultPage) Values() []ReservationDetails {
+func (page ReservationDetailsListResultPage) Values() []ReservationDetail {
 	if page.rdlr.IsEmpty() {
 		return nil
 	}
 	return *page.rdlr.Value
 }
 
-// ReservationDetailsProperties the properties of the reservation details.
-type ReservationDetailsProperties struct {
-	// ReservationOrderID - The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
-	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
-	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
-	ReservationID *string `json:"reservationId,omitempty"`
-	// SkuName - This is the ARM Sku name. It can be used to join with the servicetype field in additoinalinfo in usage records.
-	SkuName *string `json:"skuName,omitempty"`
-	// ReservedHours - This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
-	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
-	// UsageDate - The date on which consumption occurred.
-	UsageDate *date.Time `json:"usageDate,omitempty"`
-	// UsedHours - This is the total hours used by the instance.
-	UsedHours *decimal.Decimal `json:"usedHours,omitempty"`
-	// InstanceID - This identifier is the name of the resource or the fully qualified Resource ID.
-	InstanceID *string `json:"instanceId,omitempty"`
-	// TotalReservedQuantity - This is the total count of instances that are reserved for the reservationid.
-	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
-}
-
-// ReservationRecommendations reservation recommendations resource.
-type ReservationRecommendations struct {
+// ReservationRecommendation reservation recommendation resource.
+type ReservationRecommendation struct {
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1611,12 +1611,12 @@ type ReservationRecommendations struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Sku - Resource sku
-	Sku                                   *string `json:"sku,omitempty"`
-	*ReservationRecommendationsProperties `json:"properties,omitempty"`
+	Sku                                  *string `json:"sku,omitempty"`
+	*ReservationRecommendationProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ReservationRecommendations.
-func (rr ReservationRecommendations) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ReservationRecommendation.
+func (rr ReservationRecommendation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rr.ID != nil {
 		objectMap["id"] = rr.ID
@@ -1636,14 +1636,14 @@ func (rr ReservationRecommendations) MarshalJSON() ([]byte, error) {
 	if rr.Sku != nil {
 		objectMap["sku"] = rr.Sku
 	}
-	if rr.ReservationRecommendationsProperties != nil {
-		objectMap["properties"] = rr.ReservationRecommendationsProperties
+	if rr.ReservationRecommendationProperties != nil {
+		objectMap["properties"] = rr.ReservationRecommendationProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ReservationRecommendations struct.
-func (rr *ReservationRecommendations) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ReservationRecommendation struct.
+func (rr *ReservationRecommendation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1707,12 +1707,12 @@ func (rr *ReservationRecommendations) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var reservationRecommendationsProperties ReservationRecommendationsProperties
-				err = json.Unmarshal(*v, &reservationRecommendationsProperties)
+				var reservationRecommendationProperties ReservationRecommendationProperties
+				err = json.Unmarshal(*v, &reservationRecommendationProperties)
 				if err != nil {
 					return err
 				}
-				rr.ReservationRecommendationsProperties = &reservationRecommendationsProperties
+				rr.ReservationRecommendationProperties = &reservationRecommendationProperties
 			}
 		}
 	}
@@ -1720,16 +1720,38 @@ func (rr *ReservationRecommendations) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ReservationRecommendationProperties the properties of the reservation recommendation.
+type ReservationRecommendationProperties struct {
+	// LookBackPeriod - The number of days of usage to look back for recommendation.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
+	// MeterID - The meter id (GUID)
+	MeterID *uuid.UUID `json:"meterId,omitempty"`
+	// Term - RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty"`
+	// CostWithNoReservedInstances - The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *decimal.Decimal `json:"costWithNoReservedInstances,omitempty"`
+	// RecommendedQuantity - Recomended quality for reserved instances.
+	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
+	// TotalCostWithReservedInstances - The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *decimal.Decimal `json:"totalCostWithReservedInstances,omitempty"`
+	// NetSavings - Total estimated savings with reserved instances.
+	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	// FirstUsageDate - The usage date for looking back.
+	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
+	// Scope - Shared or single recommendation.
+	Scope *string `json:"scope,omitempty"`
+}
+
 // ReservationRecommendationsListResult result of listing reservation recommendations.
 type ReservationRecommendationsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of reservation recommendations.
-	Value *[]ReservationRecommendations `json:"value,omitempty"`
+	Value *[]ReservationRecommendation `json:"value,omitempty"`
 	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ReservationRecommendationsListResultIterator provides access to a complete listing of ReservationRecommendations
+// ReservationRecommendationsListResultIterator provides access to a complete listing of ReservationRecommendation
 // values.
 type ReservationRecommendationsListResultIterator struct {
 	i    int
@@ -1764,9 +1786,9 @@ func (iter ReservationRecommendationsListResultIterator) Response() ReservationR
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ReservationRecommendationsListResultIterator) Value() ReservationRecommendations {
+func (iter ReservationRecommendationsListResultIterator) Value() ReservationRecommendation {
 	if !iter.page.NotDone() {
-		return ReservationRecommendations{}
+		return ReservationRecommendation{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -1788,7 +1810,7 @@ func (rrlr ReservationRecommendationsListResult) reservationRecommendationsListR
 		autorest.WithBaseURL(to.String(rrlr.NextLink)))
 }
 
-// ReservationRecommendationsListResultPage contains a page of ReservationRecommendations values.
+// ReservationRecommendationsListResultPage contains a page of ReservationRecommendation values.
 type ReservationRecommendationsListResultPage struct {
 	fn   func(ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)
 	rrlr ReservationRecommendationsListResult
@@ -1816,38 +1838,118 @@ func (page ReservationRecommendationsListResultPage) Response() ReservationRecom
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ReservationRecommendationsListResultPage) Values() []ReservationRecommendations {
+func (page ReservationRecommendationsListResultPage) Values() []ReservationRecommendation {
 	if page.rrlr.IsEmpty() {
 		return nil
 	}
 	return *page.rrlr.Value
 }
 
-// ReservationRecommendationsProperties the properties of the reservation recommendations.
-type ReservationRecommendationsProperties struct {
-	// LookBackPeriod - The number of days of usage to look back for recommendations.
-	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
-	// MeterID - The meter id (GUID)
-	MeterID *uuid.UUID `json:"meterId,omitempty"`
-	// Term - RI recommendations in one or three year terms.
-	Term *string `json:"term,omitempty"`
-	// CostWithNoReservedInstances - The total amount of cost without reserved instances.
-	CostWithNoReservedInstances *decimal.Decimal `json:"costWithNoReservedInstances,omitempty"`
-	// RecommendedQuantity - Recomended quality for reserved instances.
-	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
-	// TotalCostWithReservedInstances - The total amount of cost with reserved instances.
-	TotalCostWithReservedInstances *decimal.Decimal `json:"totalCostWithReservedInstances,omitempty"`
-	// NetSavings - Total estimated savings with reserved instances.
-	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
-	// FirstUsageDate - The usage date for looking back.
-	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
-	// Scope - Shared or single recommendation.
-	Scope *string `json:"scope,omitempty"`
+// ReservationSummariesListResult result of listing reservation summaries.
+type ReservationSummariesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of reservation summaries.
+	Value *[]ReservationSummary `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ReservationSummaries reservation summaries resource.
-type ReservationSummaries struct {
-	*ReservationSummariesProperties `json:"properties,omitempty"`
+// ReservationSummariesListResultIterator provides access to a complete listing of ReservationSummary values.
+type ReservationSummariesListResultIterator struct {
+	i    int
+	page ReservationSummariesListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ReservationSummariesListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ReservationSummariesListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ReservationSummariesListResultIterator) Response() ReservationSummariesListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ReservationSummariesListResultIterator) Value() ReservationSummary {
+	if !iter.page.NotDone() {
+		return ReservationSummary{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rslr ReservationSummariesListResult) IsEmpty() bool {
+	return rslr.Value == nil || len(*rslr.Value) == 0
+}
+
+// reservationSummariesListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rslr ReservationSummariesListResult) reservationSummariesListResultPreparer() (*http.Request, error) {
+	if rslr.NextLink == nil || len(to.String(rslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rslr.NextLink)))
+}
+
+// ReservationSummariesListResultPage contains a page of ReservationSummary values.
+type ReservationSummariesListResultPage struct {
+	fn   func(ReservationSummariesListResult) (ReservationSummariesListResult, error)
+	rslr ReservationSummariesListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ReservationSummariesListResultPage) Next() error {
+	next, err := page.fn(page.rslr)
+	if err != nil {
+		return err
+	}
+	page.rslr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ReservationSummariesListResultPage) NotDone() bool {
+	return !page.rslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ReservationSummariesListResultPage) Response() ReservationSummariesListResult {
+	return page.rslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ReservationSummariesListResultPage) Values() []ReservationSummary {
+	if page.rslr.IsEmpty() {
+		return nil
+	}
+	return *page.rslr.Value
+}
+
+// ReservationSummary reservation summary resource.
+type ReservationSummary struct {
+	*ReservationSummaryProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1858,11 +1960,11 @@ type ReservationSummaries struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ReservationSummaries.
-func (rs ReservationSummaries) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ReservationSummary.
+func (rs ReservationSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rs.ReservationSummariesProperties != nil {
-		objectMap["properties"] = rs.ReservationSummariesProperties
+	if rs.ReservationSummaryProperties != nil {
+		objectMap["properties"] = rs.ReservationSummaryProperties
 	}
 	if rs.ID != nil {
 		objectMap["id"] = rs.ID
@@ -1879,8 +1981,8 @@ func (rs ReservationSummaries) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ReservationSummaries struct.
-func (rs *ReservationSummaries) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ReservationSummary struct.
+func (rs *ReservationSummary) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1890,12 +1992,12 @@ func (rs *ReservationSummaries) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var reservationSummariesProperties ReservationSummariesProperties
-				err = json.Unmarshal(*v, &reservationSummariesProperties)
+				var reservationSummaryProperties ReservationSummaryProperties
+				err = json.Unmarshal(*v, &reservationSummaryProperties)
 				if err != nil {
 					return err
 				}
-				rs.ReservationSummariesProperties = &reservationSummariesProperties
+				rs.ReservationSummaryProperties = &reservationSummaryProperties
 			}
 		case "id":
 			if v != nil {
@@ -1939,110 +2041,8 @@ func (rs *ReservationSummaries) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ReservationSummariesListResult result of listing reservation summaries.
-type ReservationSummariesListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of reservation summaries.
-	Value *[]ReservationSummaries `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ReservationSummariesListResultIterator provides access to a complete listing of ReservationSummaries values.
-type ReservationSummariesListResultIterator struct {
-	i    int
-	page ReservationSummariesListResultPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ReservationSummariesListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ReservationSummariesListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ReservationSummariesListResultIterator) Response() ReservationSummariesListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ReservationSummariesListResultIterator) Value() ReservationSummaries {
-	if !iter.page.NotDone() {
-		return ReservationSummaries{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (rslr ReservationSummariesListResult) IsEmpty() bool {
-	return rslr.Value == nil || len(*rslr.Value) == 0
-}
-
-// reservationSummariesListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (rslr ReservationSummariesListResult) reservationSummariesListResultPreparer() (*http.Request, error) {
-	if rslr.NextLink == nil || len(to.String(rslr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(rslr.NextLink)))
-}
-
-// ReservationSummariesListResultPage contains a page of ReservationSummaries values.
-type ReservationSummariesListResultPage struct {
-	fn   func(ReservationSummariesListResult) (ReservationSummariesListResult, error)
-	rslr ReservationSummariesListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ReservationSummariesListResultPage) Next() error {
-	next, err := page.fn(page.rslr)
-	if err != nil {
-		return err
-	}
-	page.rslr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ReservationSummariesListResultPage) NotDone() bool {
-	return !page.rslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ReservationSummariesListResultPage) Response() ReservationSummariesListResult {
-	return page.rslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ReservationSummariesListResultPage) Values() []ReservationSummaries {
-	if page.rslr.IsEmpty() {
-		return nil
-	}
-	return *page.rslr.Value
-}
-
-// ReservationSummariesProperties the properties of the reservation summaries.
-type ReservationSummariesProperties struct {
+// ReservationSummaryProperties the properties of the reservation summary.
+type ReservationSummaryProperties struct {
 	// ReservationOrderID - The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction. A reservation order contains reservations. The reservation order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
 	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.

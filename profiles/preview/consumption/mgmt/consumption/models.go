@@ -21,6 +21,7 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-06-30/consumption"
 
+type BalancesClient = original.BalancesClient
 type BudgetsClient = original.BudgetsClient
 
 const (
@@ -30,11 +31,7 @@ const (
 type BaseClient = original.BaseClient
 type CostTagsClient = original.CostTagsClient
 type ForecastsClient = original.ForecastsClient
-type GetBalancesByBillingAccountClient = original.GetBalancesByBillingAccountClient
 type MarketplacesClient = original.MarketplacesClient
-type MarketplacesByBillingAccountClient = original.MarketplacesByBillingAccountClient
-type MarketplacesByDepartmentClient = original.MarketplacesByDepartmentClient
-type MarketplacesByEnrollmentAccountsClient = original.MarketplacesByEnrollmentAccountsClient
 type BillingFrequency = original.BillingFrequency
 
 const (
@@ -165,6 +162,12 @@ type ReservationsSummariesClient = original.ReservationsSummariesClient
 type TagsClient = original.TagsClient
 type UsageDetailsClient = original.UsageDetailsClient
 
+func NewBalancesClient(subscriptionID string) BalancesClient {
+	return original.NewBalancesClient(subscriptionID)
+}
+func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string) BalancesClient {
+	return original.NewBalancesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBudgetsClient(subscriptionID string) BudgetsClient {
 	return original.NewBudgetsClient(subscriptionID)
 }
@@ -189,35 +192,11 @@ func NewForecastsClient(subscriptionID string) ForecastsClient {
 func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
 	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGetBalancesByBillingAccountClient(subscriptionID string) GetBalancesByBillingAccountClient {
-	return original.NewGetBalancesByBillingAccountClient(subscriptionID)
-}
-func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) GetBalancesByBillingAccountClient {
-	return original.NewGetBalancesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
 	return original.NewMarketplacesClient(subscriptionID)
 }
 func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
 	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMarketplacesByBillingAccountClient(subscriptionID string) MarketplacesByBillingAccountClient {
-	return original.NewMarketplacesByBillingAccountClient(subscriptionID)
-}
-func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByBillingAccountClient {
-	return original.NewMarketplacesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepartmentClient {
-	return original.NewMarketplacesByDepartmentClient(subscriptionID)
-}
-func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
-	return original.NewMarketplacesByDepartmentClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMarketplacesByEnrollmentAccountsClient(subscriptionID string) MarketplacesByEnrollmentAccountsClient {
-	return original.NewMarketplacesByEnrollmentAccountsClient(subscriptionID)
-}
-func NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByEnrollmentAccountsClient {
-	return original.NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleBillingFrequencyValues() []BillingFrequency {
 	return original.PossibleBillingFrequencyValues()

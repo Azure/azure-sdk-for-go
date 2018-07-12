@@ -1271,6 +1271,8 @@ type PriceSheetProperties struct {
 	UnitPrice *decimal.Decimal `json:"unitPrice,omitempty"`
 	// CurrencyCode - Currency Code
 	CurrencyCode *string `json:"currencyCode,omitempty"`
+	// OfferID - Offer Id
+	OfferID *string `json:"offerId,omitempty"`
 }
 
 // PriceSheetResult an pricesheet resource.
@@ -2344,6 +2346,14 @@ type UsageDetailProperties struct {
 	ConsumedService *string `json:"consumedService,omitempty"`
 	// CostCenter - The cost center of this department if it is a department and a costcenter exists
 	CostCenter *string `json:"costCenter,omitempty"`
+	// PartNumber - Part Number
+	PartNumber *string `json:"partNumber,omitempty"`
+	// ResourceGUID - Resource Guid
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
+	// OfferID - Offer Id
+	OfferID *string `json:"offerId,omitempty"`
+	// ChargesBilledSeparately - Charges billed separately
+	ChargesBilledSeparately *bool `json:"chargesBilledSeparately,omitempty"`
 	// Location - Resource Location
 	Location *string `json:"location,omitempty"`
 	// AdditionalProperties - Additional details of this usage item. By default this is not populated, unless it's specified in $expand.

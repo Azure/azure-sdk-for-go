@@ -6682,7 +6682,7 @@ type VirtualMachineScaleSetDataDisk struct {
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - The create option. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *VirtualMachineScaleSetManagedDiskParameters `json:"managedDisk,omitempty"`
@@ -7586,6 +7586,8 @@ type VirtualMachineScaleSetOSDisk struct {
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
+	// DiskSizeGB - Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// Image - Specifies information about the unmanaged user image to base the scale set on.
@@ -8371,6 +8373,8 @@ type VirtualMachineScaleSetUpdateOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
+	// DiskSizeGB - Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// Image - The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
 	// VhdContainers - The list of virtual hard disk container uris.
@@ -8503,6 +8507,8 @@ type VirtualMachineScaleSetVM struct {
 	Plan *Plan `json:"plan,omitempty"`
 	// Resources - The virtual machine child extension resources.
 	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
+	// Zones - The virtual machine zones.
+	Zones *[]string `json:"zones,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -8532,6 +8538,9 @@ func (vmssv VirtualMachineScaleSetVM) MarshalJSON() ([]byte, error) {
 	}
 	if vmssv.Resources != nil {
 		objectMap["resources"] = vmssv.Resources
+	}
+	if vmssv.Zones != nil {
+		objectMap["zones"] = vmssv.Zones
 	}
 	if vmssv.ID != nil {
 		objectMap["id"] = vmssv.ID
@@ -8604,6 +8613,15 @@ func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmssv.Resources = &resources
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				vmssv.Zones = &zones
 			}
 		case "id":
 			if v != nil {

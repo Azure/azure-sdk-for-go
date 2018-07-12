@@ -43,7 +43,7 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 // Get get all available tag keys for a billing account.
 // Parameters:
 // billingAccountID - billingAccount ID
-func (client TagsClient) Get(ctx context.Context, billingAccountID string) (result Tags, err error) {
+func (client TagsClient) Get(ctx context.Context, billingAccountID string) (result TagsResult, err error) {
 	req, err := client.GetPreparer(ctx, billingAccountID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", nil, "Failure preparing request")
@@ -93,7 +93,7 @@ func (client TagsClient) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TagsClient) GetResponder(resp *http.Response) (result Tags, err error) {
+func (client TagsClient) GetResponder(resp *http.Response) (result TagsResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

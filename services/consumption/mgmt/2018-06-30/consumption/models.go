@@ -2113,8 +2113,8 @@ type TagProperties struct {
 	Tags *[]Tag `json:"tags,omitempty"`
 }
 
-// Tags a resource listing all tags.
-type Tags struct {
+// TagsResult a resource listing all tags.
+type TagsResult struct {
 	autorest.Response `json:"-"`
 	*TagProperties    `json:"properties,omitempty"`
 	// ID - Resource Id.
@@ -2127,29 +2127,29 @@ type Tags struct {
 	ETag *string `json:"eTag,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for Tags.
-func (t Tags) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for TagsResult.
+func (tr TagsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if t.TagProperties != nil {
-		objectMap["properties"] = t.TagProperties
+	if tr.TagProperties != nil {
+		objectMap["properties"] = tr.TagProperties
 	}
-	if t.ID != nil {
-		objectMap["id"] = t.ID
+	if tr.ID != nil {
+		objectMap["id"] = tr.ID
 	}
-	if t.Name != nil {
-		objectMap["name"] = t.Name
+	if tr.Name != nil {
+		objectMap["name"] = tr.Name
 	}
-	if t.Type != nil {
-		objectMap["type"] = t.Type
+	if tr.Type != nil {
+		objectMap["type"] = tr.Type
 	}
-	if t.ETag != nil {
-		objectMap["eTag"] = t.ETag
+	if tr.ETag != nil {
+		objectMap["eTag"] = tr.ETag
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Tags struct.
-func (t *Tags) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for TagsResult struct.
+func (tr *TagsResult) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -2164,7 +2164,7 @@ func (t *Tags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				t.TagProperties = &tagProperties
+				tr.TagProperties = &tagProperties
 			}
 		case "id":
 			if v != nil {
@@ -2173,7 +2173,7 @@ func (t *Tags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				t.ID = &ID
+				tr.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -2182,7 +2182,7 @@ func (t *Tags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				t.Name = &name
+				tr.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -2191,7 +2191,7 @@ func (t *Tags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				t.Type = &typeVar
+				tr.Type = &typeVar
 			}
 		case "eTag":
 			if v != nil {
@@ -2200,7 +2200,7 @@ func (t *Tags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				t.ETag = &eTag
+				tr.ETag = &eTag
 			}
 		}
 	}

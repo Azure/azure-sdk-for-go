@@ -513,7 +513,7 @@ func (client MarketplacesClient) ListByDepartmentComplete(ctx context.Context, d
 	return
 }
 
-// ListByEnrollmentAccounts lists the marketplaces for a scope by enrollmentAccountId and current billing period.
+// ListByEnrollmentAccount lists the marketplaces for a scope by enrollmentAccountId and current billing period.
 // Marketplaces are available via this API only for May 1, 2014 or later.
 // Parameters:
 // enrollmentAccountID - enrollmentAccount ID
@@ -524,40 +524,40 @@ func (client MarketplacesClient) ListByDepartmentComplete(ctx context.Context, d
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
-func (client MarketplacesClient) ListByEnrollmentAccounts(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+func (client MarketplacesClient) ListByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.MarketplacesClient", "ListByEnrollmentAccounts", err.Error())
+		return result, validation.NewError("consumption.MarketplacesClient", "ListByEnrollmentAccount", err.Error())
 	}
 
-	result.fn = client.listByEnrollmentAccountsNextResults
-	req, err := client.ListByEnrollmentAccountsPreparer(ctx, enrollmentAccountID, filter, top, skiptoken)
+	result.fn = client.listByEnrollmentAccountNextResults
+	req, err := client.ListByEnrollmentAccountPreparer(ctx, enrollmentAccountID, filter, top, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccount", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByEnrollmentAccountsSender(req)
+	resp, err := client.ListByEnrollmentAccountSender(req)
 	if err != nil {
 		result.mlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccount", resp, "Failure sending request")
 		return
 	}
 
-	result.mlr, err = client.ListByEnrollmentAccountsResponder(resp)
+	result.mlr, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccounts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByEnrollmentAccountsPreparer prepares the ListByEnrollmentAccounts request.
-func (client MarketplacesClient) ListByEnrollmentAccountsPreparer(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+// ListByEnrollmentAccountPreparer prepares the ListByEnrollmentAccount request.
+func (client MarketplacesClient) ListByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
@@ -584,16 +584,16 @@ func (client MarketplacesClient) ListByEnrollmentAccountsPreparer(ctx context.Co
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByEnrollmentAccountsSender sends the ListByEnrollmentAccounts request. The method will close the
+// ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client MarketplacesClient) ListByEnrollmentAccountsSender(req *http.Request) (*http.Response, error) {
+func (client MarketplacesClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListByEnrollmentAccountsResponder handles the response to the ListByEnrollmentAccounts request. The method always
+// ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client MarketplacesClient) ListByEnrollmentAccountsResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+func (client MarketplacesClient) ListByEnrollmentAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -604,30 +604,30 @@ func (client MarketplacesClient) ListByEnrollmentAccountsResponder(resp *http.Re
 	return
 }
 
-// listByEnrollmentAccountsNextResults retrieves the next set of results, if any.
-func (client MarketplacesClient) listByEnrollmentAccountsNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+// listByEnrollmentAccountNextResults retrieves the next set of results, if any.
+func (client MarketplacesClient) listByEnrollmentAccountNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
 	req, err := lastResults.marketplacesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByEnrollmentAccountsSender(req)
+	resp, err := client.ListByEnrollmentAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByEnrollmentAccountsResponder(resp)
+	result, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByEnrollmentAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesClient) ListByEnrollmentAccountsComplete(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.ListByEnrollmentAccounts(ctx, enrollmentAccountID, filter, top, skiptoken)
+// ListByEnrollmentAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MarketplacesClient) ListByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListByEnrollmentAccount(ctx, enrollmentAccountID, filter, top, skiptoken)
 	return
 }
 
@@ -871,7 +871,7 @@ func (client MarketplacesClient) ListForBillingPeriodByDepartmentComplete(ctx co
 	return
 }
 
-// ListForBillingPeriodByEnrollmentAccounts lists the marketplaces for a scope by billing period and
+// ListForBillingPeriodByEnrollmentAccount lists the marketplaces for a scope by billing period and
 // enrollmentAccountId. Marketplaces are available via this API only for May 1, 2014 or later.
 // Parameters:
 // enrollmentAccountID - enrollmentAccount ID
@@ -883,40 +883,40 @@ func (client MarketplacesClient) ListForBillingPeriodByDepartmentComplete(ctx co
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
-func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccounts(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccounts", err.Error())
+		return result, validation.NewError("consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccount", err.Error())
 	}
 
-	result.fn = client.listForBillingPeriodByEnrollmentAccountsNextResults
-	req, err := client.ListForBillingPeriodByEnrollmentAccountsPreparer(ctx, enrollmentAccountID, billingPeriodName, filter, top, skiptoken)
+	result.fn = client.listForBillingPeriodByEnrollmentAccountNextResults
+	req, err := client.ListForBillingPeriodByEnrollmentAccountPreparer(ctx, enrollmentAccountID, billingPeriodName, filter, top, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccounts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccount", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListForBillingPeriodByEnrollmentAccountsSender(req)
+	resp, err := client.ListForBillingPeriodByEnrollmentAccountSender(req)
 	if err != nil {
 		result.mlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccounts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure sending request")
 		return
 	}
 
-	result.mlr, err = client.ListForBillingPeriodByEnrollmentAccountsResponder(resp)
+	result.mlr, err = client.ListForBillingPeriodByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccounts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListForBillingPeriodByEnrollmentAccountsPreparer prepares the ListForBillingPeriodByEnrollmentAccounts request.
-func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsPreparer(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+// ListForBillingPeriodByEnrollmentAccountPreparer prepares the ListForBillingPeriodByEnrollmentAccount request.
+func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName":   autorest.Encode("path", billingPeriodName),
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
@@ -944,16 +944,16 @@ func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsPrepare
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListForBillingPeriodByEnrollmentAccountsSender sends the ListForBillingPeriodByEnrollmentAccounts request. The method will close the
+// ListForBillingPeriodByEnrollmentAccountSender sends the ListForBillingPeriodByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsSender(req *http.Request) (*http.Response, error) {
+func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListForBillingPeriodByEnrollmentAccountsResponder handles the response to the ListForBillingPeriodByEnrollmentAccounts request. The method always
+// ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -964,29 +964,29 @@ func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsRespond
 	return
 }
 
-// listForBillingPeriodByEnrollmentAccountsNextResults retrieves the next set of results, if any.
-func (client MarketplacesClient) listForBillingPeriodByEnrollmentAccountsNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+// listForBillingPeriodByEnrollmentAccountNextResults retrieves the next set of results, if any.
+func (client MarketplacesClient) listForBillingPeriodByEnrollmentAccountNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
 	req, err := lastResults.marketplacesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListForBillingPeriodByEnrollmentAccountsSender(req)
+	resp, err := client.ListForBillingPeriodByEnrollmentAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListForBillingPeriodByEnrollmentAccountsResponder(resp)
+	result, err = client.ListForBillingPeriodByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListForBillingPeriodByEnrollmentAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountsComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.ListForBillingPeriodByEnrollmentAccounts(ctx, enrollmentAccountID, billingPeriodName, filter, top, skiptoken)
+// ListForBillingPeriodByEnrollmentAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListForBillingPeriodByEnrollmentAccount(ctx, enrollmentAccountID, billingPeriodName, filter, top, skiptoken)
 	return
 }

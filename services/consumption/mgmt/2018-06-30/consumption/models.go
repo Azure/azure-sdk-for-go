@@ -550,20 +550,8 @@ type BudgetTimePeriod struct {
 	EndDate *date.Time `json:"endDate,omitempty"`
 }
 
-// CostTagProperties the properties of the cost tag.
-type CostTagProperties struct {
-	// Key - Cost tag key.
-	Key *string `json:"key,omitempty"`
-}
-
-// CostTagsModel the cost tag.
-type CostTagsModel struct {
-	// CostTags - Cost tags.
-	CostTags *[]CostTagProperties `json:"costTags,omitempty"`
-}
-
-// CostTagsResult a cost tag resource.
-type CostTagsResult struct {
+// CostTag a cost tag resource.
+type CostTag struct {
 	autorest.Response `json:"-"`
 	*CostTagsModel    `json:"properties,omitempty"`
 	// ID - Resource Id.
@@ -576,29 +564,29 @@ type CostTagsResult struct {
 	ETag *string `json:"eTag,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for CostTagsResult.
-func (ctr CostTagsResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for CostTag.
+func (ct CostTag) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ctr.CostTagsModel != nil {
-		objectMap["properties"] = ctr.CostTagsModel
+	if ct.CostTagsModel != nil {
+		objectMap["properties"] = ct.CostTagsModel
 	}
-	if ctr.ID != nil {
-		objectMap["id"] = ctr.ID
+	if ct.ID != nil {
+		objectMap["id"] = ct.ID
 	}
-	if ctr.Name != nil {
-		objectMap["name"] = ctr.Name
+	if ct.Name != nil {
+		objectMap["name"] = ct.Name
 	}
-	if ctr.Type != nil {
-		objectMap["type"] = ctr.Type
+	if ct.Type != nil {
+		objectMap["type"] = ct.Type
 	}
-	if ctr.ETag != nil {
-		objectMap["eTag"] = ctr.ETag
+	if ct.ETag != nil {
+		objectMap["eTag"] = ct.ETag
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for CostTagsResult struct.
-func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for CostTag struct.
+func (ct *CostTag) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -613,7 +601,7 @@ func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ctr.CostTagsModel = &costTagsModel
+				ct.CostTagsModel = &costTagsModel
 			}
 		case "id":
 			if v != nil {
@@ -622,7 +610,7 @@ func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ctr.ID = &ID
+				ct.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -631,7 +619,7 @@ func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ctr.Name = &name
+				ct.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -640,7 +628,7 @@ func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ctr.Type = &typeVar
+				ct.Type = &typeVar
 			}
 		case "eTag":
 			if v != nil {
@@ -649,12 +637,24 @@ func (ctr *CostTagsResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ctr.ETag = &eTag
+				ct.ETag = &eTag
 			}
 		}
 	}
 
 	return nil
+}
+
+// CostTagProperties the properties of the cost tag.
+type CostTagProperties struct {
+	// Key - Cost tag key.
+	Key *string `json:"key,omitempty"`
+}
+
+// CostTagsModel the cost tag.
+type CostTagsModel struct {
+	// CostTags - Cost tags.
+	CostTags *[]CostTagProperties `json:"costTags,omitempty"`
 }
 
 // CurrentSpend the current amount of cost which is being tracked for a budget.

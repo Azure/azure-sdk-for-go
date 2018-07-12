@@ -46,7 +46,7 @@ func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTag
 // Parameters:
 // billingAccountID - billingAccount ID
 // parameters - parameters supplied to the Create cost tags operation.
-func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostTagsResult) (result CostTagsResult, err error) {
+func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostTag) (result CostTag, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, billingAccountID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -69,7 +69,7 @@ func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountI
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostTagsResult) (*http.Request, error) {
+func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostTag) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
@@ -98,7 +98,7 @@ func (client CostTagsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (result CostTagsResult, err error) {
+func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (result CostTag, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -112,7 +112,7 @@ func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Get get cost tags for a billing account.
 // Parameters:
 // billingAccountID - billingAccount ID
-func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (result CostTagsResult, err error) {
+func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (result CostTag, err error) {
 	req, err := client.GetPreparer(ctx, billingAccountID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", nil, "Failure preparing request")
@@ -162,7 +162,7 @@ func (client CostTagsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client CostTagsClient) GetResponder(resp *http.Response) (result CostTagsResult, err error) {
+func (client CostTagsClient) GetResponder(resp *http.Response) (result CostTag, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

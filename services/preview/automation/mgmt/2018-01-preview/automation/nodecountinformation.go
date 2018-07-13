@@ -78,7 +78,7 @@ func (client NodeCountInformationClient) Get(ctx context.Context, resourceGroupN
 func (client NodeCountInformationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"countType":             autorest.Encode("path", client.CountType),
+		"countType":             autorest.Encode("path", client.CountType1),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}

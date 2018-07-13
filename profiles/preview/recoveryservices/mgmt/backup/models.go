@@ -1040,7 +1040,6 @@ type TokenInformation = original.TokenInformation
 type ValidateIaasVMRestoreOperationRequest = original.ValidateIaasVMRestoreOperationRequest
 type BasicValidateOperationRequest = original.BasicValidateOperationRequest
 type ValidateOperationRequest = original.ValidateOperationRequest
-type ValidateOperationRequestResource = original.ValidateOperationRequestResource
 type ValidateOperationResponse = original.ValidateOperationResponse
 type ValidateOperationsResponse = original.ValidateOperationsResponse
 type BasicValidateRestoreOperationRequest = original.BasicValidateRestoreOperationRequest

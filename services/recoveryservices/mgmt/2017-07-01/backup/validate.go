@@ -44,7 +44,7 @@ func NewValidateClientWithBaseURI(baseURI string, subscriptionID string) Validat
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // parameters - resource validate operation request
-func (client ValidateClient) Operation(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource) (result ValidateOperationsResponse, err error) {
+func (client ValidateClient) Operation(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (result ValidateOperationsResponse, err error) {
 	req, err := client.OperationPreparer(ctx, vaultName, resourceGroupName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ValidateClient", "Operation", nil, "Failure preparing request")
@@ -67,7 +67,7 @@ func (client ValidateClient) Operation(ctx context.Context, vaultName string, re
 }
 
 // OperationPreparer prepares the Operation request.
-func (client ValidateClient) OperationPreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource) (*http.Request, error) {
+func (client ValidateClient) OperationPreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

@@ -215,7 +215,7 @@ func (client JobClient) GetResponder(resp *http.Response) (result Job, err error
 // automationAccountName - the name of the automation account.
 // jobName - the name of the job to be created.
 // clientRequestID - identifies this specific client request.
-func (client JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
+func (client JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -280,13 +280,12 @@ func (client JobClient) GetOutputSender(req *http.Request) (*http.Response, erro
 
 // GetOutputResponder handles the response to the GetOutput request. The method always
 // closes the http.Response Body.
-func (client JobClient) GetOutputResponder(resp *http.Response) (result String, err error) {
+func (client JobClient) GetOutputResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -297,7 +296,7 @@ func (client JobClient) GetOutputResponder(resp *http.Response) (result String, 
 // automationAccountName - the name of the automation account.
 // jobName - the job name.
 // clientRequestID - identifies this specific client request.
-func (client JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
+func (client JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -362,13 +361,12 @@ func (client JobClient) GetRunbookContentSender(req *http.Request) (*http.Respon
 
 // GetRunbookContentResponder handles the response to the GetRunbookContent request. The method always
 // closes the http.Response Body.
-func (client JobClient) GetRunbookContentResponder(resp *http.Response) (result String, err error) {
+func (client JobClient) GetRunbookContentResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
 }

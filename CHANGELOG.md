@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v18.1.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+| cognitive services training | v2.1              |
+|             consumption |      2018-06-30       |
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|               hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+|              postgresql |      2017-12-01       |
+|               resources |      2018-05-01       |
+|                  search |      2015-08-19       |
+
 ## `v18.0.0`
 
 ### New Services

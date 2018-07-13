@@ -1060,6 +1060,7 @@ type WorkloadProtectableItemResourceList = original.WorkloadProtectableItemResou
 type WorkloadProtectableItemResourceListIterator = original.WorkloadProtectableItemResourceListIterator
 type WorkloadProtectableItemResourceListPage = original.WorkloadProtectableItemResourceListPage
 type YearlyRetentionSchedule = original.YearlyRetentionSchedule
+type OperationClient = original.OperationClient
 type OperationResultsClient = original.OperationResultsClient
 type OperationsClient = original.OperationsClient
 type OperationStatusesClient = original.OperationStatusesClient
@@ -1085,7 +1086,6 @@ type RestoresClient = original.RestoresClient
 type SecurityPINsClient = original.SecurityPINsClient
 type StatusClient = original.StatusClient
 type UsageSummariesClient = original.UsageSummariesClient
-type ValidateClient = original.ValidateClient
 type WorkloadItemsClient = original.WorkloadItemsClient
 
 func NewBackupsClient(subscriptionID string) BackupsClient {
@@ -1349,6 +1349,12 @@ func PossibleWorkloadItemTypeBasicWorkloadItemValues() []WorkloadItemTypeBasicWo
 func PossibleWorkloadTypeValues() []WorkloadType {
 	return original.PossibleWorkloadTypeValues()
 }
+func NewOperationClient(subscriptionID string) OperationClient {
+	return original.NewOperationClient(subscriptionID)
+}
+func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) OperationClient {
+	return original.NewOperationClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClient(subscriptionID)
 }
@@ -1498,12 +1504,6 @@ func NewUsageSummariesClient(subscriptionID string) UsageSummariesClient {
 }
 func NewUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string) UsageSummariesClient {
 	return original.NewUsageSummariesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewValidateClient(subscriptionID string) ValidateClient {
-	return original.NewValidateClient(subscriptionID)
-}
-func NewValidateClientWithBaseURI(baseURI string, subscriptionID string) ValidateClient {
-	return original.NewValidateClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

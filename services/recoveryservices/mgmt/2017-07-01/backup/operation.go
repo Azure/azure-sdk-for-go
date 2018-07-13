@@ -24,50 +24,50 @@ import (
 	"net/http"
 )
 
-// ValidateClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
-type ValidateClient struct {
+// OperationClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
+type OperationClient struct {
 	BaseClient
 }
 
-// NewValidateClient creates an instance of the ValidateClient client.
-func NewValidateClient(subscriptionID string) ValidateClient {
-	return NewValidateClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOperationClient creates an instance of the OperationClient client.
+func NewOperationClient(subscriptionID string) OperationClient {
+	return NewOperationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewValidateClientWithBaseURI creates an instance of the ValidateClient client.
-func NewValidateClientWithBaseURI(baseURI string, subscriptionID string) ValidateClient {
-	return ValidateClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOperationClientWithBaseURI creates an instance of the OperationClient client.
+func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) OperationClient {
+	return OperationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Operation validate operation for specified backed up item. This is a synchronous operation.
+// Validate validate operation for specified backed up item. This is a synchronous operation.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // parameters - resource validate operation request
-func (client ValidateClient) Operation(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (result ValidateOperationsResponse, err error) {
-	req, err := client.OperationPreparer(ctx, vaultName, resourceGroupName, parameters)
+func (client OperationClient) Validate(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (result ValidateOperationsResponse, err error) {
+	req, err := client.ValidatePreparer(ctx, vaultName, resourceGroupName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ValidateClient", "Operation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "backup.OperationClient", "Validate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.OperationSender(req)
+	resp, err := client.ValidateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.ValidateClient", "Operation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.OperationClient", "Validate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.OperationResponder(resp)
+	result, err = client.ValidateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ValidateClient", "Operation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "backup.OperationClient", "Validate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// OperationPreparer prepares the Operation request.
-func (client ValidateClient) OperationPreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (*http.Request, error) {
+// ValidatePreparer prepares the Validate request.
+func (client OperationClient) ValidatePreparer(ctx context.Context, vaultName string, resourceGroupName string, parameters BasicValidateOperationRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -89,16 +89,16 @@ func (client ValidateClient) OperationPreparer(ctx context.Context, vaultName st
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// OperationSender sends the Operation request. The method will close the
+// ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ValidateClient) OperationSender(req *http.Request) (*http.Response, error) {
+func (client OperationClient) ValidateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// OperationResponder handles the response to the Operation request. The method always
+// ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client ValidateClient) OperationResponder(resp *http.Response) (result ValidateOperationsResponse, err error) {
+func (client OperationClient) ValidateResponder(resp *http.Response) (result ValidateOperationsResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -1473,25 +1473,6 @@ func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageForm
 	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
 }
 
-// TypeBasicDependencyReference enumerates the values for type basic dependency reference.
-type TypeBasicDependencyReference string
-
-const (
-	// TypeDependencyReference ...
-	TypeDependencyReference TypeBasicDependencyReference = "DependencyReference"
-	// TypeSelfDependencyTumblingWindowTriggerReference ...
-	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = "SelfDependencyTumblingWindowTriggerReference"
-	// TypeTriggerDependencyReference ...
-	TypeTriggerDependencyReference TypeBasicDependencyReference = "TriggerDependencyReference"
-	// TypeTumblingWindowTriggerDependencyReference ...
-	TypeTumblingWindowTriggerDependencyReference TypeBasicDependencyReference = "TumblingWindowTriggerDependencyReference"
-)
-
-// PossibleTypeBasicDependencyReferenceValues returns an array of possible values for the TypeBasicDependencyReference const type.
-func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
-	return []TypeBasicDependencyReference{TypeDependencyReference, TypeSelfDependencyTumblingWindowTriggerReference, TypeTriggerDependencyReference, TypeTumblingWindowTriggerDependencyReference}
-}
-
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
 type TypeBasicIntegrationRuntime string
 
@@ -27657,106 +27638,6 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// BasicDependencyReference referenced dependency.
-type BasicDependencyReference interface {
-	AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool)
-	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
-	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
-	AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool)
-	AsDependencyReference() (*DependencyReference, bool)
-}
-
-// DependencyReference referenced dependency.
-type DependencyReference struct {
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
-	Type TypeBasicDependencyReference `json:"type,omitempty"`
-}
-
-func unmarshalBasicDependencyReference(body []byte) (BasicDependencyReference, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["type"] {
-	case string(TypeSelfDependencyTumblingWindowTriggerReference):
-		var sdtwtr SelfDependencyTumblingWindowTriggerReference
-		err := json.Unmarshal(body, &sdtwtr)
-		return sdtwtr, err
-	case string(TypeTumblingWindowTriggerDependencyReference):
-		var twtdr TumblingWindowTriggerDependencyReference
-		err := json.Unmarshal(body, &twtdr)
-		return twtdr, err
-	case string(TypeTriggerDependencyReference):
-		var tdr TriggerDependencyReference
-		err := json.Unmarshal(body, &tdr)
-		return tdr, err
-	default:
-		var dr DependencyReference
-		err := json.Unmarshal(body, &dr)
-		return dr, err
-	}
-}
-func unmarshalBasicDependencyReferenceArray(body []byte) ([]BasicDependencyReference, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	drArray := make([]BasicDependencyReference, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		dr, err := unmarshalBasicDependencyReference(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		drArray[index] = dr
-	}
-	return drArray, nil
-}
-
-// MarshalJSON is the custom marshaler for DependencyReference.
-func (dr DependencyReference) MarshalJSON() ([]byte, error) {
-	dr.Type = TypeDependencyReference
-	objectMap := make(map[string]interface{})
-	if dr.Type != "" {
-		objectMap["type"] = dr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
-	return nil, false
-}
-
-// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsDependencyReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsDependencyReference() (*DependencyReference, bool) {
-	return &dr, true
-}
-
-// AsBasicDependencyReference is the BasicDependencyReference implementation for DependencyReference.
-func (dr DependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
-	return &dr, true
 }
 
 // DistcpSettings distcp settings.
@@ -77732,62 +77613,6 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &ss, true
 }
 
-// SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency.
-type SelfDependencyTumblingWindowTriggerReference struct {
-	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
-	Offset *string `json:"offset,omitempty"`
-	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
-	Size *string `json:"size,omitempty"`
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
-	Type TypeBasicDependencyReference `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) MarshalJSON() ([]byte, error) {
-	sdtwtr.Type = TypeSelfDependencyTumblingWindowTriggerReference
-	objectMap := make(map[string]interface{})
-	if sdtwtr.Offset != nil {
-		objectMap["offset"] = sdtwtr.Offset
-	}
-	if sdtwtr.Size != nil {
-		objectMap["size"] = sdtwtr.Size
-	}
-	if sdtwtr.Type != "" {
-		objectMap["type"] = sdtwtr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
-	return &sdtwtr, true
-}
-
-// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsDependencyReference() (*DependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
-func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
-	return &sdtwtr, true
-}
-
 // SelfHostedIntegrationRuntime self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
 	// LinkedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
@@ -87272,100 +87097,6 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &t, true
 }
 
-// BasicTriggerDependencyReference trigger referenced dependency.
-type BasicTriggerDependencyReference interface {
-	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
-	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
-}
-
-// TriggerDependencyReference trigger referenced dependency.
-type TriggerDependencyReference struct {
-	// ReferenceTrigger - Referenced trigger.
-	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
-	Type TypeBasicDependencyReference `json:"type,omitempty"`
-}
-
-func unmarshalBasicTriggerDependencyReference(body []byte) (BasicTriggerDependencyReference, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["type"] {
-	case string(TypeTumblingWindowTriggerDependencyReference):
-		var twtdr TumblingWindowTriggerDependencyReference
-		err := json.Unmarshal(body, &twtdr)
-		return twtdr, err
-	default:
-		var tdr TriggerDependencyReference
-		err := json.Unmarshal(body, &tdr)
-		return tdr, err
-	}
-}
-func unmarshalBasicTriggerDependencyReferenceArray(body []byte) ([]BasicTriggerDependencyReference, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	tdrArray := make([]BasicTriggerDependencyReference, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		tdr, err := unmarshalBasicTriggerDependencyReference(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		tdrArray[index] = tdr
-	}
-	return tdrArray, nil
-}
-
-// MarshalJSON is the custom marshaler for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) MarshalJSON() ([]byte, error) {
-	tdr.Type = TypeTriggerDependencyReference
-	objectMap := make(map[string]interface{})
-	if tdr.ReferenceTrigger != nil {
-		objectMap["referenceTrigger"] = tdr.ReferenceTrigger
-	}
-	if tdr.Type != "" {
-		objectMap["type"] = tdr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
-	return nil, false
-}
-
-// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
-	return &tdr, true
-}
-
-// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
-	return &tdr, true
-}
-
-// AsDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
-func (tdr TriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
-	return &tdr, true
-}
-
 // TriggerListResponse a list of trigger resources.
 type TriggerListResponse struct {
 	autorest.Response `json:"-"`
@@ -87486,14 +87217,6 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 		objectMap["parameters"] = tpr.Parameters
 	}
 	return json.Marshal(objectMap)
-}
-
-// TriggerReference trigger reference type.
-type TriggerReference struct {
-	// Type - Trigger reference type.
-	Type *string `json:"type,omitempty"`
-	// ReferenceName - Reference trigger name.
-	ReferenceName *string `json:"referenceName,omitempty"`
 }
 
 // TriggerResource trigger resource type.
@@ -87925,67 +87648,6 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency.
-type TumblingWindowTriggerDependencyReference struct {
-	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
-	Offset *string `json:"offset,omitempty"`
-	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
-	Size *string `json:"size,omitempty"`
-	// ReferenceTrigger - Referenced trigger.
-	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
-	Type TypeBasicDependencyReference `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) MarshalJSON() ([]byte, error) {
-	twtdr.Type = TypeTumblingWindowTriggerDependencyReference
-	objectMap := make(map[string]interface{})
-	if twtdr.Offset != nil {
-		objectMap["offset"] = twtdr.Offset
-	}
-	if twtdr.Size != nil {
-		objectMap["size"] = twtdr.Size
-	}
-	if twtdr.ReferenceTrigger != nil {
-		objectMap["referenceTrigger"] = twtdr.ReferenceTrigger
-	}
-	if twtdr.Type != "" {
-		objectMap["type"] = twtdr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
-	return nil, false
-}
-
-// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
-	return &twtdr, true
-}
-
-// AsTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
-	return &twtdr, true
-}
-
-// AsDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
-	return nil, false
-}
-
-// AsBasicDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
-func (twtdr TumblingWindowTriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
-	return &twtdr, true
-}
-
 // TumblingWindowTriggerTypeProperties tumbling Window Trigger properties.
 type TumblingWindowTriggerTypeProperties struct {
 	// Frequency - The frequency of the time windows. Possible values include: 'TumblingWindowFrequencyMinute', 'TumblingWindowFrequencyHour'
@@ -88002,94 +87664,6 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
-	// DependsOn - Triggers that this trigger depends on. Only tumbling window triggers are supported.
-	DependsOn *[]BasicDependencyReference `json:"dependsOn,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for TumblingWindowTriggerTypeProperties struct.
-func (twtP *TumblingWindowTriggerTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "frequency":
-			if v != nil {
-				var frequency TumblingWindowFrequency
-				err = json.Unmarshal(*v, &frequency)
-				if err != nil {
-					return err
-				}
-				twtP.Frequency = frequency
-			}
-		case "interval":
-			if v != nil {
-				var interval int32
-				err = json.Unmarshal(*v, &interval)
-				if err != nil {
-					return err
-				}
-				twtP.Interval = &interval
-			}
-		case "startTime":
-			if v != nil {
-				var startTime date.Time
-				err = json.Unmarshal(*v, &startTime)
-				if err != nil {
-					return err
-				}
-				twtP.StartTime = &startTime
-			}
-		case "endTime":
-			if v != nil {
-				var endTime date.Time
-				err = json.Unmarshal(*v, &endTime)
-				if err != nil {
-					return err
-				}
-				twtP.EndTime = &endTime
-			}
-		case "delay":
-			if v != nil {
-				var delay interface{}
-				err = json.Unmarshal(*v, &delay)
-				if err != nil {
-					return err
-				}
-				twtP.Delay = delay
-			}
-		case "maxConcurrency":
-			if v != nil {
-				var maxConcurrency int32
-				err = json.Unmarshal(*v, &maxConcurrency)
-				if err != nil {
-					return err
-				}
-				twtP.MaxConcurrency = &maxConcurrency
-			}
-		case "retryPolicy":
-			if v != nil {
-				var retryPolicy RetryPolicy
-				err = json.Unmarshal(*v, &retryPolicy)
-				if err != nil {
-					return err
-				}
-				twtP.RetryPolicy = &retryPolicy
-			}
-		case "dependsOn":
-			if v != nil {
-				dependsOn, err := unmarshalBasicDependencyReferenceArray(*v)
-				if err != nil {
-					return err
-				}
-				twtP.DependsOn = &dependsOn
-			}
-		}
-	}
-
-	return nil
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or

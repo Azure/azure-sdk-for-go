@@ -606,7 +606,7 @@ type EntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of entities.
 	Value *[]EntityInfo `json:"value,omitempty"`
-	// Count - Total count of recors that match the filter
+	// Count - Total count of records that match the filter
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`

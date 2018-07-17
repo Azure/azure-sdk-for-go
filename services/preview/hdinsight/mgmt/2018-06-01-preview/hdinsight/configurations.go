@@ -109,36 +109,36 @@ func (client ConfigurationsClient) GetResponder(resp *http.Response) (result Set
 	return
 }
 
-// UpdateHTTPSettings configures the HTTP settings on the specified cluster.
+// Update configures the configuration on the specified cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // configurationName - the name of the cluster configuration.
 // parameters - the cluster configurations.
-func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (result ConfigurationsUpdateHTTPSettingsFuture, err error) {
+func (client ConfigurationsClient) Update(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (result ConfigurationsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("hdinsight.ConfigurationsClient", "UpdateHTTPSettings", err.Error())
+		return result, validation.NewError("hdinsight.ConfigurationsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdateHTTPSettingsPreparer(ctx, resourceGroupName, clusterName, configurationName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, configurationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "UpdateHTTPSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateHTTPSettingsSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "UpdateHTTPSettings", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// UpdateHTTPSettingsPreparer prepares the UpdateHTTPSettings request.
-func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (*http.Request, error) {
+// UpdatePreparer prepares the Update request.
+func (client ConfigurationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"configurationName": autorest.Encode("path", configurationName),
@@ -161,9 +161,9 @@ func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateHTTPSettingsSender sends the UpdateHTTPSettings request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ConfigurationsClient) UpdateHTTPSettingsSender(req *http.Request) (future ConfigurationsUpdateHTTPSettingsFuture, err error) {
+func (client ConfigurationsClient) UpdateSender(req *http.Request) (future ConfigurationsUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -178,9 +178,9 @@ func (client ConfigurationsClient) UpdateHTTPSettingsSender(req *http.Request) (
 	return
 }
 
-// UpdateHTTPSettingsResponder handles the response to the UpdateHTTPSettings request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ConfigurationsClient) UpdateHTTPSettingsResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ConfigurationsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

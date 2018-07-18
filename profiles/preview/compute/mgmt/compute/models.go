@@ -562,6 +562,8 @@ const (
 )
 
 type AccessURI = original.AccessURI
+type AccessURIOutput = original.AccessURIOutput
+type AccessURIRaw = original.AccessURIRaw
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError

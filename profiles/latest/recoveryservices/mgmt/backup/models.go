@@ -52,22 +52,17 @@ const (
 	ContainerTypeAzureSQLContainer          ContainerType = original.ContainerTypeAzureSQLContainer
 	ContainerTypeCluster                    ContainerType = original.ContainerTypeCluster
 	ContainerTypeDPMContainer               ContainerType = original.ContainerTypeDPMContainer
-	ContainerTypeExchangeDAG                ContainerType = original.ContainerTypeExchangeDAG
 	ContainerTypeGenericContainer           ContainerType = original.ContainerTypeGenericContainer
-	ContainerTypeHyperVCluster              ContainerType = original.ContainerTypeHyperVCluster
 	ContainerTypeIaasVMContainer            ContainerType = original.ContainerTypeIaasVMContainer
 	ContainerTypeIaasVMServiceContainer     ContainerType = original.ContainerTypeIaasVMServiceContainer
 	ContainerTypeInvalid                    ContainerType = original.ContainerTypeInvalid
 	ContainerTypeMABContainer               ContainerType = original.ContainerTypeMABContainer
-	ContainerTypeSharepointFarm             ContainerType = original.ContainerTypeSharepointFarm
 	ContainerTypeSQLAGWorkLoadContainer     ContainerType = original.ContainerTypeSQLAGWorkLoadContainer
-	ContainerTypeSQLCluster                 ContainerType = original.ContainerTypeSQLCluster
 	ContainerTypeStorageContainer           ContainerType = original.ContainerTypeStorageContainer
 	ContainerTypeUnknown                    ContainerType = original.ContainerTypeUnknown
 	ContainerTypeVCenter                    ContainerType = original.ContainerTypeVCenter
 	ContainerTypeVMAppContainer             ContainerType = original.ContainerTypeVMAppContainer
 	ContainerTypeWindows                    ContainerType = original.ContainerTypeWindows
-	ContainerTypeWindowsClient              ContainerType = original.ContainerTypeWindowsClient
 )
 
 type ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainer
@@ -325,22 +320,17 @@ const (
 	MabServerTypeAzureSQLContainer          MabServerType = original.MabServerTypeAzureSQLContainer
 	MabServerTypeCluster                    MabServerType = original.MabServerTypeCluster
 	MabServerTypeDPMContainer               MabServerType = original.MabServerTypeDPMContainer
-	MabServerTypeExchangeDAG                MabServerType = original.MabServerTypeExchangeDAG
 	MabServerTypeGenericContainer           MabServerType = original.MabServerTypeGenericContainer
-	MabServerTypeHyperVCluster              MabServerType = original.MabServerTypeHyperVCluster
 	MabServerTypeIaasVMContainer            MabServerType = original.MabServerTypeIaasVMContainer
 	MabServerTypeIaasVMServiceContainer     MabServerType = original.MabServerTypeIaasVMServiceContainer
 	MabServerTypeInvalid                    MabServerType = original.MabServerTypeInvalid
 	MabServerTypeMABContainer               MabServerType = original.MabServerTypeMABContainer
-	MabServerTypeSharepointFarm             MabServerType = original.MabServerTypeSharepointFarm
 	MabServerTypeSQLAGWorkLoadContainer     MabServerType = original.MabServerTypeSQLAGWorkLoadContainer
-	MabServerTypeSQLCluster                 MabServerType = original.MabServerTypeSQLCluster
 	MabServerTypeStorageContainer           MabServerType = original.MabServerTypeStorageContainer
 	MabServerTypeUnknown                    MabServerType = original.MabServerTypeUnknown
 	MabServerTypeVCenter                    MabServerType = original.MabServerTypeVCenter
 	MabServerTypeVMAppContainer             MabServerType = original.MabServerTypeVMAppContainer
 	MabServerTypeWindows                    MabServerType = original.MabServerTypeWindows
-	MabServerTypeWindowsClient              MabServerType = original.MabServerTypeWindowsClient
 )
 
 type ManagementType = original.ManagementType
@@ -445,6 +435,14 @@ const (
 	ObjectTypeAzureWorkloadSQLRestoreRequest                ObjectTypeBasicRestoreRequest = original.ObjectTypeAzureWorkloadSQLRestoreRequest
 	ObjectTypeIaasVMRestoreRequest                          ObjectTypeBasicRestoreRequest = original.ObjectTypeIaasVMRestoreRequest
 	ObjectTypeRestoreRequest                                ObjectTypeBasicRestoreRequest = original.ObjectTypeRestoreRequest
+)
+
+type ObjectTypeBasicValidateOperationRequest = original.ObjectTypeBasicValidateOperationRequest
+
+const (
+	ObjectTypeValidateIaasVMRestoreOperationRequest ObjectTypeBasicValidateOperationRequest = original.ObjectTypeValidateIaasVMRestoreOperationRequest
+	ObjectTypeValidateOperationRequest              ObjectTypeBasicValidateOperationRequest = original.ObjectTypeValidateOperationRequest
+	ObjectTypeValidateRestoreOperationRequest       ObjectTypeBasicValidateOperationRequest = original.ObjectTypeValidateRestoreOperationRequest
 )
 
 type OperationStatusValues = original.OperationStatusValues
@@ -1039,6 +1037,13 @@ type SubProtectionPolicy = original.SubProtectionPolicy
 type TargetAFSRestoreInfo = original.TargetAFSRestoreInfo
 type TargetRestoreInfo = original.TargetRestoreInfo
 type TokenInformation = original.TokenInformation
+type ValidateIaasVMRestoreOperationRequest = original.ValidateIaasVMRestoreOperationRequest
+type BasicValidateOperationRequest = original.BasicValidateOperationRequest
+type ValidateOperationRequest = original.ValidateOperationRequest
+type ValidateOperationResponse = original.ValidateOperationResponse
+type ValidateOperationsResponse = original.ValidateOperationsResponse
+type BasicValidateRestoreOperationRequest = original.BasicValidateRestoreOperationRequest
+type ValidateRestoreOperationRequest = original.ValidateRestoreOperationRequest
 type WeeklyRetentionFormat = original.WeeklyRetentionFormat
 type WeeklyRetentionSchedule = original.WeeklyRetentionSchedule
 type WorkloadInquiryDetails = original.WorkloadInquiryDetails
@@ -1055,6 +1060,7 @@ type WorkloadProtectableItemResourceList = original.WorkloadProtectableItemResou
 type WorkloadProtectableItemResourceListIterator = original.WorkloadProtectableItemResourceListIterator
 type WorkloadProtectableItemResourceListPage = original.WorkloadProtectableItemResourceListPage
 type YearlyRetentionSchedule = original.YearlyRetentionSchedule
+type OperationClient = original.OperationClient
 type OperationResultsClient = original.OperationResultsClient
 type OperationsClient = original.OperationsClient
 type OperationStatusesClient = original.OperationStatusesClient
@@ -1241,6 +1247,9 @@ func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint
 func PossibleObjectTypeBasicRestoreRequestValues() []ObjectTypeBasicRestoreRequest {
 	return original.PossibleObjectTypeBasicRestoreRequestValues()
 }
+func PossibleObjectTypeBasicValidateOperationRequestValues() []ObjectTypeBasicValidateOperationRequest {
+	return original.PossibleObjectTypeBasicValidateOperationRequestValues()
+}
 func PossibleOperationStatusValuesValues() []OperationStatusValues {
 	return original.PossibleOperationStatusValuesValues()
 }
@@ -1339,6 +1348,12 @@ func PossibleWorkloadItemTypeBasicWorkloadItemValues() []WorkloadItemTypeBasicWo
 }
 func PossibleWorkloadTypeValues() []WorkloadType {
 	return original.PossibleWorkloadTypeValues()
+}
+func NewOperationClient(subscriptionID string) OperationClient {
+	return original.NewOperationClient(subscriptionID)
+}
+func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) OperationClient {
+	return original.NewOperationClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClient(subscriptionID)

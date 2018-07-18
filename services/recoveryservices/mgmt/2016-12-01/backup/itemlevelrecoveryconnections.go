@@ -41,8 +41,9 @@ func NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI string, subscripti
 }
 
 // Provision provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a
-// file explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the
-// status of provisioning, call GetProtectedItemOperationResult API.
+// file
+// explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status of
+// provisioning, call GetProtectedItemOperationResult API.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
@@ -121,7 +122,8 @@ func (client ItemLevelRecoveryConnectionsClient) ProvisionResponder(resp *http.R
 }
 
 // Revoke revokes an iSCSI connection which can be used to download a script. Executing this script opens a file
-// explorer displaying all recoverable files and folders. This is an asynchronous operation.
+// explorer
+// displaying all recoverable files and folders. This is an asynchronous operation.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

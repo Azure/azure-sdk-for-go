@@ -40,7 +40,8 @@ func NewWorkloadItemsClientWithBaseURI(baseURI string, subscriptionID string) Wo
 }
 
 // List provides a pageable list of workload item of a specific container according to the query filter and the
-// pagination parameters.
+// pagination
+// parameters.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

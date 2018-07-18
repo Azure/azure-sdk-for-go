@@ -40,8 +40,9 @@ func NewOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // Get fetches the status of an operation such as triggering a backup, restore. The status can be in progress,
-// completed or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some
-// operations create jobs. This method returns the list of jobs when the operation is complete.
+// completed
+// or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some operations
+// create jobs. This method returns the list of jobs when the operation is complete.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

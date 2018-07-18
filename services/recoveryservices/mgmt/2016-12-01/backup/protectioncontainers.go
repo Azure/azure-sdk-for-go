@@ -185,7 +185,8 @@ func (client ProtectionContainersClient) InquireResponder(resp *http.Response) (
 }
 
 // Refresh discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is
-// an asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
+// an
+// asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
@@ -333,9 +334,9 @@ func (client ProtectionContainersClient) RegisterResponder(resp *http.Response) 
 	return
 }
 
-// Unregister unregisters the given container from your Recovery Services Vault.
-// This is an asynchronous operation. To determine whether the backend service has finished processing the request,
-// call Get Container Operation Result API.
+// Unregister unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
+// determine
+// whether the backend service has finished processing the request, call Get Container Operation Result API.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

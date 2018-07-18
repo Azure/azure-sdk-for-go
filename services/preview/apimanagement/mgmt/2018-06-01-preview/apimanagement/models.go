@@ -911,6 +911,10 @@ type APIContractProperties struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 	// IsOnline - Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
+	// APIRevisionDescription - Description of the Api Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	// APIVersionDescription - Description of the Api Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
@@ -941,6 +945,10 @@ type APIContractUpdateProperties struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 	// IsOnline - Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
+	// APIRevisionDescription - Description of the Api Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	// APIVersionDescription - Description of the Api Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
@@ -1021,6 +1029,10 @@ type APICreateOrUpdateProperties struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 	// IsOnline - Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
+	// APIRevisionDescription - Description of the Api Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	// APIVersionDescription - Description of the Api Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
@@ -1051,6 +1063,10 @@ type APIEntityBaseContract struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 	// IsOnline - Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
+	// APIRevisionDescription - Description of the Api Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	// APIVersionDescription - Description of the Api Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
@@ -1450,6 +1466,10 @@ type APITagResourceContractProperties struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 	// IsOnline - Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty"`
+	// APIRevisionDescription - Description of the Api Revision.
+	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	// APIVersionDescription - Description of the Api Version.
+	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }

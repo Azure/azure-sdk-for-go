@@ -152,6 +152,25 @@ type ContainerRegistryImagePushedEventData struct {
 	Source *ContainerRegistryEventSource `json:"source,omitempty"`
 }
 
+// DeviceConnectionStateEventInfo information about the device connection state event.
+type DeviceConnectionStateEventInfo struct {
+	// SequenceNumber - Sequence number is string representation of a hexadecimal number. string compare can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to hex, then the number is a 256 bit number.
+	SequenceNumber *string `json:"sequenceNumber,omitempty"`
+}
+
+// DeviceConnectionStateEventProperties schema of the Data property of an EventGridEvent for a device connection
+// state event (DeviceConnected, DeviceDisconnected).
+type DeviceConnectionStateEventProperties struct {
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// ModuleID - The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	ModuleID *string `json:"moduleId,omitempty"`
+	// HubName - Name of the IoT Hub where the device was created or deleted.
+	HubName *string `json:"hubName,omitempty"`
+	// DeviceConnectionStateEventInfo - Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
+}
+
 // DeviceLifeCycleEventProperties schema of the Data property of an EventGridEvent for a device life cycle event
 // (DeviceCreated, DeviceDeleted).
 type DeviceLifeCycleEventProperties struct {
@@ -159,15 +178,11 @@ type DeviceLifeCycleEventProperties struct {
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`
-	// OpType - The event type specified for this operation by the IoT Hub.
-	OpType *string `json:"opType,omitempty"`
-	// OperationTimestamp - The ISO8601 timestamp of the operation.
-	OperationTimestamp *string `json:"operationTimestamp,omitempty"`
-	// Twin - Information about the device twin, which is the cloud represenation of application device metadata.
+	// Twin - Information about the device twin, which is the cloud representation of application device metadata.
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
 }
 
-// DeviceTwinInfo information about the device twin, which is the cloud represenation of application device
+// DeviceTwinInfo information about the device twin, which is the cloud representation of application device
 // metadata.
 type DeviceTwinInfo struct {
 	// AuthenticationType - Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
@@ -270,17 +285,25 @@ type EventHubCaptureFileCreatedEventData struct {
 	LastEnqueueTime *date.Time `json:"lastEnqueueTime,omitempty"`
 }
 
+// IotHubDeviceConnectedEventData event data for Microsoft.Devices.DeviceConnected event.
+type IotHubDeviceConnectedEventData struct {
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// ModuleID - The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	ModuleID *string `json:"moduleId,omitempty"`
+	// HubName - Name of the IoT Hub where the device was created or deleted.
+	HubName *string `json:"hubName,omitempty"`
+	// DeviceConnectionStateEventInfo - Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
+}
+
 // IotHubDeviceCreatedEventData event data for Microsoft.Devices.DeviceCreated event.
 type IotHubDeviceCreatedEventData struct {
 	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`
-	// OpType - The event type specified for this operation by the IoT Hub.
-	OpType *string `json:"opType,omitempty"`
-	// OperationTimestamp - The ISO8601 timestamp of the operation.
-	OperationTimestamp *string `json:"operationTimestamp,omitempty"`
-	// Twin - Information about the device twin, which is the cloud represenation of application device metadata.
+	// Twin - Information about the device twin, which is the cloud representation of application device metadata.
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
 }
 
@@ -290,12 +313,20 @@ type IotHubDeviceDeletedEventData struct {
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`
-	// OpType - The event type specified for this operation by the IoT Hub.
-	OpType *string `json:"opType,omitempty"`
-	// OperationTimestamp - The ISO8601 timestamp of the operation.
-	OperationTimestamp *string `json:"operationTimestamp,omitempty"`
-	// Twin - Information about the device twin, which is the cloud represenation of application device metadata.
+	// Twin - Information about the device twin, which is the cloud representation of application device metadata.
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
+}
+
+// IotHubDeviceDisconnectedEventData event data for Microsoft.Devices.DeviceDisconnected event.
+type IotHubDeviceDisconnectedEventData struct {
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// ModuleID - The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
+	ModuleID *string `json:"moduleId,omitempty"`
+	// HubName - Name of the IoT Hub where the device was created or deleted.
+	HubName *string `json:"hubName,omitempty"`
+	// DeviceConnectionStateEventInfo - Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
 }
 
 // MediaJobStateChangeEventData schema of the Data property of an EventGridEvent for a

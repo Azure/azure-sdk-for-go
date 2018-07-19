@@ -41,10 +41,10 @@ const (
 type JSONWebKeyCurveName = original.JSONWebKeyCurveName
 
 const (
-	P256      JSONWebKeyCurveName = original.P256
-	P384      JSONWebKeyCurveName = original.P384
-	P521      JSONWebKeyCurveName = original.P521
-	SECP256K1 JSONWebKeyCurveName = original.SECP256K1
+	P256  JSONWebKeyCurveName = original.P256
+	P256K JSONWebKeyCurveName = original.P256K
+	P384  JSONWebKeyCurveName = original.P384
+	P521  JSONWebKeyCurveName = original.P521
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm

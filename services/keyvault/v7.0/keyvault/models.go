@@ -44,17 +44,13 @@ func PossibleActionTypeValues() []ActionType {
 type DeletionRecoveryLevel string
 
 const (
-	// Purgeable Soft-delete is not enabled for this vault. A DELETE operation results in immediate and
-	// irreversible data loss.
+	// Purgeable ...
 	Purgeable DeletionRecoveryLevel = "Purgeable"
-	// Recoverable Soft-delete is enabled for this vault and purge has been disabled. A deleted entity will
-	// remain in this state until recovered, or the end of the retention interval.
+	// Recoverable ...
 	Recoverable DeletionRecoveryLevel = "Recoverable"
-	// RecoverableProtectedSubscription Soft-delete is enabled for this vault, and the subscription is
-	// protected against immediate deletion.
+	// RecoverableProtectedSubscription ...
 	RecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-	// RecoverablePurgeable Soft-delete is enabled for this vault; A priveleged user may trigger an immediate,
-	// irreversible deletion(purge) of a deleted entity.
+	// RecoverablePurgeable ...
 	RecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
@@ -69,7 +65,7 @@ type JSONWebKeyCurveName string
 const (
 	// P256 The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
 	P256 JSONWebKeyCurveName = "P-256"
-	// P256K ECDSA for SHA-256 digests and EC keys created with curve P-256K.
+	// P256K The SECG SECP256K1 elliptic curve.
 	P256K JSONWebKeyCurveName = "P-256K"
 	// P384 The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
 	P384 JSONWebKeyCurveName = "P-384"
@@ -126,48 +122,51 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 type JSONWebKeySignatureAlgorithm string
 
 const (
-	// ECDSA256 ...
-	ECDSA256 JSONWebKeySignatureAlgorithm = "ECDSA256"
-	// ES256 ...
+	// ES256 ECDSA using P-256 and SHA-256, as described in https://tools.ietf.org/html/rfc7518.
 	ES256 JSONWebKeySignatureAlgorithm = "ES256"
-	// ES384 ...
+	// ES256K ECDSA using P-256K and SHA-256, as described in https://tools.ietf.org/html/rfc7518
+	ES256K JSONWebKeySignatureAlgorithm = "ES256K"
+	// ES384 ECDSA using P-384 and SHA-384, as described in https://tools.ietf.org/html/rfc7518
 	ES384 JSONWebKeySignatureAlgorithm = "ES384"
-	// ES512 ...
+	// ES512 ECDSA using P-521 and SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	ES512 JSONWebKeySignatureAlgorithm = "ES512"
-	// PS256 ...
+	// PS256 RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in
+	// https://tools.ietf.org/html/rfc7518
 	PS256 JSONWebKeySignatureAlgorithm = "PS256"
-	// PS384 ...
+	// PS384 RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in
+	// https://tools.ietf.org/html/rfc7518
 	PS384 JSONWebKeySignatureAlgorithm = "PS384"
-	// PS512 ...
+	// PS512 RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in
+	// https://tools.ietf.org/html/rfc7518
 	PS512 JSONWebKeySignatureAlgorithm = "PS512"
-	// RS256 ...
+	// RS256 RSASSA-PKCS1-v1_5 using SHA-256, as described in https://tools.ietf.org/html/rfc7518
 	RS256 JSONWebKeySignatureAlgorithm = "RS256"
-	// RS384 ...
+	// RS384 RSASSA-PKCS1-v1_5 using SHA-384, as described in https://tools.ietf.org/html/rfc7518
 	RS384 JSONWebKeySignatureAlgorithm = "RS384"
-	// RS512 ...
+	// RS512 RSASSA-PKCS1-v1_5 using SHA-512, as described in https://tools.ietf.org/html/rfc7518
 	RS512 JSONWebKeySignatureAlgorithm = "RS512"
-	// RSNULL ...
+	// RSNULL Reserved
 	RSNULL JSONWebKeySignatureAlgorithm = "RSNULL"
 )
 
 // PossibleJSONWebKeySignatureAlgorithmValues returns an array of possible values for the JSONWebKeySignatureAlgorithm const type.
 func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
-	return []JSONWebKeySignatureAlgorithm{ECDSA256, ES256, ES384, ES512, PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
+	return []JSONWebKeySignatureAlgorithm{ES256, ES256K, ES384, ES512, PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
 }
 
 // JSONWebKeyType enumerates the values for json web key type.
 type JSONWebKeyType string
 
 const (
-	// EC ...
+	// EC Elliptic Curve.
 	EC JSONWebKeyType = "EC"
-	// ECHSM ...
+	// ECHSM Elliptic Curve with a private key which is not exportable from the HSM.
 	ECHSM JSONWebKeyType = "EC-HSM"
-	// Oct ...
+	// Oct Octet sequence (used to represent symmetric keys)
 	Oct JSONWebKeyType = "oct"
-	// RSA ...
+	// RSA RSA (https://tools.ietf.org/html/rfc3447)
 	RSA JSONWebKeyType = "RSA"
-	// RSAHSM ...
+	// RSAHSM RSA with a private key which is not exportable from the HSM.
 	RSAHSM JSONWebKeyType = "RSA-HSM"
 )
 
@@ -205,6 +204,21 @@ func PossibleKeyUsageTypeValues() []KeyUsageType {
 	return []KeyUsageType{CRLSign, DataEncipherment, DecipherOnly, DigitalSignature, EncipherOnly, KeyAgreement, KeyCertSign, KeyEncipherment, NonRepudiation}
 }
 
+// SasTokenType enumerates the values for sas token type.
+type SasTokenType string
+
+const (
+	// Account ...
+	Account SasTokenType = "account"
+	// Service ...
+	Service SasTokenType = "service"
+)
+
+// PossibleSasTokenTypeValues returns an array of possible values for the SasTokenType const type.
+func PossibleSasTokenTypeValues() []SasTokenType {
+	return []SasTokenType{Account, Service}
+}
+
 // Action the action that will be executed.
 type Action struct {
 	// ActionType - The type of the action. Possible values include: 'EmailContacts', 'AutoRenew'
@@ -237,6 +251,13 @@ type Attributes struct {
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
+// BackupCertificateResult the backup certificate result, containing the backup blob.
+type BackupCertificateResult struct {
+	autorest.Response `json:"-"`
+	// Value - The backup blob containing the backed up certificate. (a URL-encoded base64 string)
+	Value *string `json:"value,omitempty"`
+}
+
 // BackupKeyResult the backup key result, containing the backup blob.
 type BackupKeyResult struct {
 	autorest.Response `json:"-"`
@@ -248,6 +269,13 @@ type BackupKeyResult struct {
 type BackupSecretResult struct {
 	autorest.Response `json:"-"`
 	// Value - The backup blob containing the backed up secret. (a URL-encoded base64 string)
+	Value *string `json:"value,omitempty"`
+}
+
+// BackupStorageResult the backup storage result, containing the backup blob.
+type BackupStorageResult struct {
+	autorest.Response `json:"-"`
+	// Value - The backup blob containing the backed up storage account. (a URL-encoded base64 string)
 	Value *string `json:"value,omitempty"`
 }
 
@@ -722,6 +750,12 @@ type CertificatePolicy struct {
 	Attributes *CertificateAttributes `json:"attributes,omitempty"`
 }
 
+// CertificateRestoreParameters the certificate restore parameters.
+type CertificateRestoreParameters struct {
+	// CertificateBundleBackup - The backup blob associated with a certificate bundle. (a URL-encoded base64 string)
+	CertificateBundleBackup *string `json:"value,omitempty"`
+}
+
 // CertificateUpdateParameters the certificate update parameters.
 type CertificateUpdateParameters struct {
 	// CertificatePolicy - The management policy for the certificate.
@@ -1178,6 +1212,215 @@ func (page DeletedKeyListResultPage) Values() []DeletedKeyItem {
 	return *page.dklr.Value
 }
 
+// DeletedSasDefinitionBundle a deleted SAS definition bundle consisting of its previous id, attributes and its
+// tags, as well as information on when it will be purged.
+type DeletedSasDefinitionBundle struct {
+	autorest.Response `json:"-"`
+	// RecoveryID - The url of the recovery object, used to identify and recover the deleted SAS definition.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+	// ScheduledPurgeDate - The time when the SAS definition is scheduled to be purged, in UTC
+	ScheduledPurgeDate *date.UnixTime `json:"scheduledPurgeDate,omitempty"`
+	// DeletedDate - The time when the SAS definition was deleted, in UTC
+	DeletedDate *date.UnixTime `json:"deletedDate,omitempty"`
+	// ID - The SAS definition id.
+	ID *string `json:"id,omitempty"`
+	// SecretID - Storage account SAS definition secret id.
+	SecretID *string `json:"sid,omitempty"`
+	// TemplateURI - The SAS definition token template signed with an arbitrary key.  Tokens created according to the SAS definition will have the same properties as the template.
+	TemplateURI *string `json:"templateUri,omitempty"`
+	// SasType - The type of SAS token the SAS definition will create. Possible values include: 'Account', 'Service'
+	SasType SasTokenType `json:"sasType,omitempty"`
+	// ValidityPeriod - The validity period of SAS tokens created according to the SAS definition.
+	ValidityPeriod *string `json:"validityPeriod,omitempty"`
+	// Attributes - The SAS definition attributes.
+	Attributes *SasDefinitionAttributes `json:"attributes,omitempty"`
+	// Tags - Application specific metadata in the form of key-value pairs
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSasDefinitionBundle.
+func (dsdb DeletedSasDefinitionBundle) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsdb.RecoveryID != nil {
+		objectMap["recoveryId"] = dsdb.RecoveryID
+	}
+	if dsdb.ScheduledPurgeDate != nil {
+		objectMap["scheduledPurgeDate"] = dsdb.ScheduledPurgeDate
+	}
+	if dsdb.DeletedDate != nil {
+		objectMap["deletedDate"] = dsdb.DeletedDate
+	}
+	if dsdb.ID != nil {
+		objectMap["id"] = dsdb.ID
+	}
+	if dsdb.SecretID != nil {
+		objectMap["sid"] = dsdb.SecretID
+	}
+	if dsdb.TemplateURI != nil {
+		objectMap["templateUri"] = dsdb.TemplateURI
+	}
+	if dsdb.SasType != "" {
+		objectMap["sasType"] = dsdb.SasType
+	}
+	if dsdb.ValidityPeriod != nil {
+		objectMap["validityPeriod"] = dsdb.ValidityPeriod
+	}
+	if dsdb.Attributes != nil {
+		objectMap["attributes"] = dsdb.Attributes
+	}
+	if dsdb.Tags != nil {
+		objectMap["tags"] = dsdb.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeletedSasDefinitionItem the deleted SAS definition item containing metadata about the deleted SAS definition.
+type DeletedSasDefinitionItem struct {
+	// RecoveryID - The url of the recovery object, used to identify and recover the deleted SAS definition.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+	// ScheduledPurgeDate - The time when the SAS definition is scheduled to be purged, in UTC
+	ScheduledPurgeDate *date.UnixTime `json:"scheduledPurgeDate,omitempty"`
+	// DeletedDate - The time when the SAS definition was deleted, in UTC
+	DeletedDate *date.UnixTime `json:"deletedDate,omitempty"`
+	// ID - The storage SAS identifier.
+	ID *string `json:"id,omitempty"`
+	// SecretID - The storage account SAS definition secret id.
+	SecretID *string `json:"sid,omitempty"`
+	// Attributes - The SAS definition management attributes.
+	Attributes *SasDefinitionAttributes `json:"attributes,omitempty"`
+	// Tags - Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSasDefinitionItem.
+func (dsdi DeletedSasDefinitionItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsdi.RecoveryID != nil {
+		objectMap["recoveryId"] = dsdi.RecoveryID
+	}
+	if dsdi.ScheduledPurgeDate != nil {
+		objectMap["scheduledPurgeDate"] = dsdi.ScheduledPurgeDate
+	}
+	if dsdi.DeletedDate != nil {
+		objectMap["deletedDate"] = dsdi.DeletedDate
+	}
+	if dsdi.ID != nil {
+		objectMap["id"] = dsdi.ID
+	}
+	if dsdi.SecretID != nil {
+		objectMap["sid"] = dsdi.SecretID
+	}
+	if dsdi.Attributes != nil {
+		objectMap["attributes"] = dsdi.Attributes
+	}
+	if dsdi.Tags != nil {
+		objectMap["tags"] = dsdi.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeletedSasDefinitionListResult the deleted SAS definition list result
+type DeletedSasDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A response message containing a list of the deleted SAS definitions in the vault along with a link to the next page of deleted sas definitions
+	Value *[]DeletedSasDefinitionItem `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of deleted SAS definitions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeletedSasDefinitionListResultIterator provides access to a complete listing of DeletedSasDefinitionItem values.
+type DeletedSasDefinitionListResultIterator struct {
+	i    int
+	page DeletedSasDefinitionListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeletedSasDefinitionListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeletedSasDefinitionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeletedSasDefinitionListResultIterator) Response() DeletedSasDefinitionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeletedSasDefinitionListResultIterator) Value() DeletedSasDefinitionItem {
+	if !iter.page.NotDone() {
+		return DeletedSasDefinitionItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsdlr DeletedSasDefinitionListResult) IsEmpty() bool {
+	return dsdlr.Value == nil || len(*dsdlr.Value) == 0
+}
+
+// deletedSasDefinitionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsdlr DeletedSasDefinitionListResult) deletedSasDefinitionListResultPreparer() (*http.Request, error) {
+	if dsdlr.NextLink == nil || len(to.String(dsdlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsdlr.NextLink)))
+}
+
+// DeletedSasDefinitionListResultPage contains a page of DeletedSasDefinitionItem values.
+type DeletedSasDefinitionListResultPage struct {
+	fn    func(DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error)
+	dsdlr DeletedSasDefinitionListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeletedSasDefinitionListResultPage) Next() error {
+	next, err := page.fn(page.dsdlr)
+	if err != nil {
+		return err
+	}
+	page.dsdlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeletedSasDefinitionListResultPage) NotDone() bool {
+	return !page.dsdlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeletedSasDefinitionListResultPage) Response() DeletedSasDefinitionListResult {
+	return page.dsdlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeletedSasDefinitionListResultPage) Values() []DeletedSasDefinitionItem {
+	if page.dsdlr.IsEmpty() {
+		return nil
+	}
+	return *page.dsdlr.Value
+}
+
 // DeletedSecretBundle a Deleted Secret consisting of its previous id, attributes and its tags, as well as
 // information on when it will be purged.
 type DeletedSecretBundle struct {
@@ -1392,6 +1635,216 @@ func (page DeletedSecretListResultPage) Values() []DeletedSecretItem {
 	return *page.dslr.Value
 }
 
+// DeletedStorageAccountItem the deleted storage account item containing metadata about the deleted storage
+// account.
+type DeletedStorageAccountItem struct {
+	// RecoveryID - The url of the recovery object, used to identify and recover the deleted storage account.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+	// ScheduledPurgeDate - The time when the storage account is scheduled to be purged, in UTC
+	ScheduledPurgeDate *date.UnixTime `json:"scheduledPurgeDate,omitempty"`
+	// DeletedDate - The time when the storage account was deleted, in UTC
+	DeletedDate *date.UnixTime `json:"deletedDate,omitempty"`
+	// ID - Storage identifier.
+	ID *string `json:"id,omitempty"`
+	// ResourceID - Storage account resource Id.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Attributes - The storage account management attributes.
+	Attributes *StorageAccountAttributes `json:"attributes,omitempty"`
+	// Tags - Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedStorageAccountItem.
+func (dsai DeletedStorageAccountItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsai.RecoveryID != nil {
+		objectMap["recoveryId"] = dsai.RecoveryID
+	}
+	if dsai.ScheduledPurgeDate != nil {
+		objectMap["scheduledPurgeDate"] = dsai.ScheduledPurgeDate
+	}
+	if dsai.DeletedDate != nil {
+		objectMap["deletedDate"] = dsai.DeletedDate
+	}
+	if dsai.ID != nil {
+		objectMap["id"] = dsai.ID
+	}
+	if dsai.ResourceID != nil {
+		objectMap["resourceId"] = dsai.ResourceID
+	}
+	if dsai.Attributes != nil {
+		objectMap["attributes"] = dsai.Attributes
+	}
+	if dsai.Tags != nil {
+		objectMap["tags"] = dsai.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeletedStorageBundle a deleted storage account bundle consisting of its previous id, attributes and its tags, as
+// well as information on when it will be purged.
+type DeletedStorageBundle struct {
+	autorest.Response `json:"-"`
+	// RecoveryID - The url of the recovery object, used to identify and recover the deleted storage account.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+	// ScheduledPurgeDate - The time when the storage account is scheduled to be purged, in UTC
+	ScheduledPurgeDate *date.UnixTime `json:"scheduledPurgeDate,omitempty"`
+	// DeletedDate - The time when the storage account was deleted, in UTC
+	DeletedDate *date.UnixTime `json:"deletedDate,omitempty"`
+	// ID - The storage account id.
+	ID *string `json:"id,omitempty"`
+	// ResourceID - The storage account resource id.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// ActiveKeyName - The current active storage account key name.
+	ActiveKeyName *string `json:"activeKeyName,omitempty"`
+	// AutoRegenerateKey - whether keyvault should manage the storage account for the user.
+	AutoRegenerateKey *bool `json:"autoRegenerateKey,omitempty"`
+	// RegenerationPeriod - The key regeneration time duration specified in ISO-8601 format.
+	RegenerationPeriod *string `json:"regenerationPeriod,omitempty"`
+	// Attributes - The storage account attributes.
+	Attributes *StorageAccountAttributes `json:"attributes,omitempty"`
+	// Tags - Application specific metadata in the form of key-value pairs
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedStorageBundle.
+func (dsb DeletedStorageBundle) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsb.RecoveryID != nil {
+		objectMap["recoveryId"] = dsb.RecoveryID
+	}
+	if dsb.ScheduledPurgeDate != nil {
+		objectMap["scheduledPurgeDate"] = dsb.ScheduledPurgeDate
+	}
+	if dsb.DeletedDate != nil {
+		objectMap["deletedDate"] = dsb.DeletedDate
+	}
+	if dsb.ID != nil {
+		objectMap["id"] = dsb.ID
+	}
+	if dsb.ResourceID != nil {
+		objectMap["resourceId"] = dsb.ResourceID
+	}
+	if dsb.ActiveKeyName != nil {
+		objectMap["activeKeyName"] = dsb.ActiveKeyName
+	}
+	if dsb.AutoRegenerateKey != nil {
+		objectMap["autoRegenerateKey"] = dsb.AutoRegenerateKey
+	}
+	if dsb.RegenerationPeriod != nil {
+		objectMap["regenerationPeriod"] = dsb.RegenerationPeriod
+	}
+	if dsb.Attributes != nil {
+		objectMap["attributes"] = dsb.Attributes
+	}
+	if dsb.Tags != nil {
+		objectMap["tags"] = dsb.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeletedStorageListResult the deleted storage account list result
+type DeletedStorageListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A response message containing a list of the deleted storage accounts in the vault along with a link to the next page of deleted storage accounts
+	Value *[]DeletedStorageAccountItem `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of deleted storage accounts.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeletedStorageListResultIterator provides access to a complete listing of DeletedStorageAccountItem values.
+type DeletedStorageListResultIterator struct {
+	i    int
+	page DeletedStorageListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeletedStorageListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeletedStorageListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeletedStorageListResultIterator) Response() DeletedStorageListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeletedStorageListResultIterator) Value() DeletedStorageAccountItem {
+	if !iter.page.NotDone() {
+		return DeletedStorageAccountItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dslr DeletedStorageListResult) IsEmpty() bool {
+	return dslr.Value == nil || len(*dslr.Value) == 0
+}
+
+// deletedStorageListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dslr DeletedStorageListResult) deletedStorageListResultPreparer() (*http.Request, error) {
+	if dslr.NextLink == nil || len(to.String(dslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dslr.NextLink)))
+}
+
+// DeletedStorageListResultPage contains a page of DeletedStorageAccountItem values.
+type DeletedStorageListResultPage struct {
+	fn   func(DeletedStorageListResult) (DeletedStorageListResult, error)
+	dslr DeletedStorageListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeletedStorageListResultPage) Next() error {
+	next, err := page.fn(page.dslr)
+	if err != nil {
+		return err
+	}
+	page.dslr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeletedStorageListResultPage) NotDone() bool {
+	return !page.dslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeletedStorageListResultPage) Response() DeletedStorageListResult {
+	return page.dslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeletedStorageListResultPage) Values() []DeletedStorageAccountItem {
+	if page.dslr.IsEmpty() {
+		return nil
+	}
+	return *page.dslr.Value
+}
+
 // Error the key vault server error.
 type Error struct {
 	// Code - The error code.
@@ -1445,13 +1898,15 @@ type IssuerParameters struct {
 	Name *string `json:"name,omitempty"`
 	// CertificateType - Type of certificate to be requested from the issuer provider.
 	CertificateType *string `json:"cty,omitempty"`
+	// CertificateTransparency - Indicates if the certificates generated under this policy should be published to certificate transparency logs.
+	CertificateTransparency *bool `json:"cert_transparency,omitempty"`
 }
 
 // JSONWebKey as of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
 	// Kid - Key identifier.
 	Kid *string `json:"kid,omitempty"`
-	// Kty - JsonWebKey key type (kty). Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
+	// Kty - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
 	Kty    JSONWebKeyType `json:"kty,omitempty"`
 	KeyOps *[]string      `json:"key_ops,omitempty"`
 	// N - RSA modulus. (a URL-encoded base64 string)
@@ -1750,12 +2205,14 @@ type KeyOperationsParameters struct {
 type KeyProperties struct {
 	// Exportable - Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
-	// KeyType - The key type.
-	KeyType *string `json:"kty,omitempty"`
+	// KeyType - The type of key pair to be used for the certificate. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
+	KeyType JSONWebKeyType `json:"kty,omitempty"`
 	// KeySize - The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
 	// ReuseKey - Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`
+	// Curve - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'P256K'
+	Curve JSONWebKeyCurveName `json:"crv,omitempty"`
 }
 
 // KeyRestoreParameters the key restore parameters.
@@ -1766,7 +2223,7 @@ type KeyRestoreParameters struct {
 
 // KeySignParameters the key operations parameters.
 type KeySignParameters struct {
-	// Algorithm - The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+	// Algorithm - The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
 	Algorithm JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
 	// Value - a URL-encoded base64 string
 	Value *string `json:"value,omitempty"`
@@ -1798,7 +2255,7 @@ func (kup KeyUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // KeyVerifyParameters the key verify parameters.
 type KeyVerifyParameters struct {
-	// Algorithm - The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ECDSA256'
+	// Algorithm - The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL', 'ES256', 'ES384', 'ES512', 'ES256K'
 	Algorithm JSONWebKeySignatureAlgorithm `json:"alg,omitempty"`
 	// Digest - The digest used for signing. (a URL-encoded base64 string)
 	Digest *string `json:"digest,omitempty"`
@@ -1843,6 +2300,8 @@ type SasDefinitionAttributes struct {
 	Created *date.UnixTime `json:"created,omitempty"`
 	// Updated - Last updated time in UTC.
 	Updated *date.UnixTime `json:"updated,omitempty"`
+	// RecoveryLevel - Reflects the deletion recovery level currently in effect for SAS definitions in the current vault. If it contains 'Purgeable' the SAS definition can be permanently deleted by a privileged user; otherwise, only the system can purge the SAS definition, at the end of the retention interval. Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription'
+	RecoveryLevel DeletionRecoveryLevel `json:"recoveryLevel,omitempty"`
 }
 
 // SasDefinitionBundle a SAS definition bundle consists of key vault SAS definition details plus its attributes.
@@ -1852,8 +2311,12 @@ type SasDefinitionBundle struct {
 	ID *string `json:"id,omitempty"`
 	// SecretID - Storage account SAS definition secret id.
 	SecretID *string `json:"sid,omitempty"`
-	// Parameters - The SAS definition metadata in the form of key-value pairs.
-	Parameters map[string]*string `json:"parameters"`
+	// TemplateURI - The SAS definition token template signed with an arbitrary key.  Tokens created according to the SAS definition will have the same properties as the template.
+	TemplateURI *string `json:"templateUri,omitempty"`
+	// SasType - The type of SAS token the SAS definition will create. Possible values include: 'Account', 'Service'
+	SasType SasTokenType `json:"sasType,omitempty"`
+	// ValidityPeriod - The validity period of SAS tokens created according to the SAS definition.
+	ValidityPeriod *string `json:"validityPeriod,omitempty"`
 	// Attributes - The SAS definition attributes.
 	Attributes *SasDefinitionAttributes `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs
@@ -1869,8 +2332,14 @@ func (sdb SasDefinitionBundle) MarshalJSON() ([]byte, error) {
 	if sdb.SecretID != nil {
 		objectMap["sid"] = sdb.SecretID
 	}
-	if sdb.Parameters != nil {
-		objectMap["parameters"] = sdb.Parameters
+	if sdb.TemplateURI != nil {
+		objectMap["templateUri"] = sdb.TemplateURI
+	}
+	if sdb.SasType != "" {
+		objectMap["sasType"] = sdb.SasType
+	}
+	if sdb.ValidityPeriod != nil {
+		objectMap["validityPeriod"] = sdb.ValidityPeriod
 	}
 	if sdb.Attributes != nil {
 		objectMap["attributes"] = sdb.Attributes
@@ -1883,8 +2352,12 @@ func (sdb SasDefinitionBundle) MarshalJSON() ([]byte, error) {
 
 // SasDefinitionCreateParameters the SAS definition create parameters.
 type SasDefinitionCreateParameters struct {
-	// Parameters - Sas definition creation metadata in the form of key-value pairs.
-	Parameters map[string]*string `json:"parameters"`
+	// TemplateURI - The SAS definition token template signed with an arbitrary key.  Tokens created according to the SAS definition will have the same properties as the template.
+	TemplateURI *string `json:"templateUri,omitempty"`
+	// SasType - The type of SAS token the SAS definition will create. Possible values include: 'Account', 'Service'
+	SasType SasTokenType `json:"sasType,omitempty"`
+	// ValidityPeriod - The validity period of SAS tokens created according to the SAS definition.
+	ValidityPeriod *string `json:"validityPeriod,omitempty"`
 	// SasDefinitionAttributes - The attributes of the SAS definition.
 	SasDefinitionAttributes *SasDefinitionAttributes `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs.
@@ -1894,8 +2367,14 @@ type SasDefinitionCreateParameters struct {
 // MarshalJSON is the custom marshaler for SasDefinitionCreateParameters.
 func (sdcp SasDefinitionCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sdcp.Parameters != nil {
-		objectMap["parameters"] = sdcp.Parameters
+	if sdcp.TemplateURI != nil {
+		objectMap["templateUri"] = sdcp.TemplateURI
+	}
+	if sdcp.SasType != "" {
+		objectMap["sasType"] = sdcp.SasType
+	}
+	if sdcp.ValidityPeriod != nil {
+		objectMap["validityPeriod"] = sdcp.ValidityPeriod
 	}
 	if sdcp.SasDefinitionAttributes != nil {
 		objectMap["attributes"] = sdcp.SasDefinitionAttributes
@@ -2040,8 +2519,12 @@ func (page SasDefinitionListResultPage) Values() []SasDefinitionItem {
 
 // SasDefinitionUpdateParameters the SAS definition update parameters.
 type SasDefinitionUpdateParameters struct {
-	// Parameters - Sas definition update metadata in the form of key-value pairs.
-	Parameters map[string]*string `json:"parameters"`
+	// TemplateURI - The SAS definition token template signed with an arbitrary key.  Tokens created according to the SAS definition will have the same properties as the template.
+	TemplateURI *string `json:"templateUri,omitempty"`
+	// SasType - The type of SAS token the SAS definition will create. Possible values include: 'Account', 'Service'
+	SasType SasTokenType `json:"sasType,omitempty"`
+	// ValidityPeriod - The validity period of SAS tokens created according to the SAS definition.
+	ValidityPeriod *string `json:"validityPeriod,omitempty"`
 	// SasDefinitionAttributes - The attributes of the SAS definition.
 	SasDefinitionAttributes *SasDefinitionAttributes `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs.
@@ -2051,8 +2534,14 @@ type SasDefinitionUpdateParameters struct {
 // MarshalJSON is the custom marshaler for SasDefinitionUpdateParameters.
 func (sdup SasDefinitionUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sdup.Parameters != nil {
-		objectMap["parameters"] = sdup.Parameters
+	if sdup.TemplateURI != nil {
+		objectMap["templateUri"] = sdup.TemplateURI
+	}
+	if sdup.SasType != "" {
+		objectMap["sasType"] = sdup.SasType
+	}
+	if sdup.ValidityPeriod != nil {
+		objectMap["validityPeriod"] = sdup.ValidityPeriod
 	}
 	if sdup.SasDefinitionAttributes != nil {
 		objectMap["attributes"] = sdup.SasDefinitionAttributes
@@ -2337,6 +2826,8 @@ type StorageAccountAttributes struct {
 	Created *date.UnixTime `json:"created,omitempty"`
 	// Updated - Last updated time in UTC.
 	Updated *date.UnixTime `json:"updated,omitempty"`
+	// RecoveryLevel - Reflects the deletion recovery level currently in effect for storage accounts in the current vault. If it contains 'Purgeable' the storage account can be permanently deleted by a privileged user; otherwise, only the system can purge the storage account, at the end of the retention interval. Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription'
+	RecoveryLevel DeletionRecoveryLevel `json:"recoveryLevel,omitempty"`
 }
 
 // StorageAccountCreateParameters the storage account create parameters.
@@ -2596,6 +3087,12 @@ func (page StorageListResultPage) Values() []StorageAccountItem {
 		return nil
 	}
 	return *page.slr.Value
+}
+
+// StorageRestoreParameters the secret restore parameters.
+type StorageRestoreParameters struct {
+	// StorageBundleBackup - The backup blob associated with a storage account. (a URL-encoded base64 string)
+	StorageBundleBackup *string `json:"value,omitempty"`
 }
 
 // SubjectAlternativeNames the subject alternate names of a X509 object.

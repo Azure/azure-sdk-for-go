@@ -46,6 +46,23 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return []AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
 }
 
+// AuthorizationType enumerates the values for authorization type.
+type AuthorizationType string
+
+const (
+	// AuthorizationTypeKey ...
+	AuthorizationTypeKey AuthorizationType = "Key"
+	// AuthorizationTypeLinkedIntegrationRuntimeType ...
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
+	// AuthorizationTypeRBAC ...
+	AuthorizationTypeRBAC AuthorizationType = "RBAC"
+)
+
+// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeRBAC}
+}
+
 // AzureSearchIndexWriteBehaviorType enumerates the values for azure search index write behavior type.
 type AzureSearchIndexWriteBehaviorType string
 
@@ -476,6 +493,8 @@ func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRunti
 type IntegrationRuntimeState string
 
 const (
+	// AccessDenied ...
+	AccessDenied IntegrationRuntimeState = "AccessDenied"
 	// Initial ...
 	Initial IntegrationRuntimeState = "Initial"
 	// Limited ...
@@ -498,7 +517,7 @@ const (
 
 // PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
 func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
-	return []IntegrationRuntimeState{Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
+	return []IntegrationRuntimeState{AccessDenied, Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
 }
 
 // IntegrationRuntimeType enumerates the values for integration runtime type.
@@ -1107,6 +1126,10 @@ const (
 	TypeCustom TypeBasicActivity = "Custom"
 	// TypeDatabricksNotebook ...
 	TypeDatabricksNotebook TypeBasicActivity = "DatabricksNotebook"
+	// TypeDatabricksSparkJar ...
+	TypeDatabricksSparkJar TypeBasicActivity = "DatabricksSparkJar"
+	// TypeDatabricksSparkPython ...
+	TypeDatabricksSparkPython TypeBasicActivity = "DatabricksSparkPython"
 	// TypeDataLakeAnalyticsUSQL ...
 	TypeDataLakeAnalyticsUSQL TypeBasicActivity = "DataLakeAnalyticsU-SQL"
 	// TypeExecutePipeline ...
@@ -1147,7 +1170,7 @@ const (
 
 // PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
 func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return []TypeBasicActivity{TypeActivity, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
+	return []TypeBasicActivity{TypeActivity, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDatabricksSparkJar, TypeDatabricksSparkPython, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
 }
 
 // TypeBasicCopySink enumerates the values for type basic copy sink.
@@ -1482,6 +1505,25 @@ func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageForm
 	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
 }
 
+// TypeBasicDependencyReference enumerates the values for type basic dependency reference.
+type TypeBasicDependencyReference string
+
+const (
+	// TypeDependencyReference ...
+	TypeDependencyReference TypeBasicDependencyReference = "DependencyReference"
+	// TypeSelfDependencyTumblingWindowTriggerReference ...
+	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = "SelfDependencyTumblingWindowTriggerReference"
+	// TypeTriggerDependencyReference ...
+	TypeTriggerDependencyReference TypeBasicDependencyReference = "TriggerDependencyReference"
+	// TypeTumblingWindowTriggerDependencyReference ...
+	TypeTumblingWindowTriggerDependencyReference TypeBasicDependencyReference = "TumblingWindowTriggerDependencyReference"
+)
+
+// PossibleTypeBasicDependencyReferenceValues returns an array of possible values for the TypeBasicDependencyReference const type.
+func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
+	return []TypeBasicDependencyReference{TypeDependencyReference, TypeSelfDependencyTumblingWindowTriggerReference, TypeTriggerDependencyReference, TypeTumblingWindowTriggerDependencyReference}
+}
+
 // TypeBasicFactoryRepoConfiguration enumerates the values for type basic factory repo configuration.
 type TypeBasicFactoryRepoConfiguration string
 
@@ -1730,6 +1772,8 @@ func PossibleWebActivityMethodValues() []WebActivityMethod {
 
 // BasicActivity a pipeline activity.
 type BasicActivity interface {
+	AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool)
+	AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool)
 	AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)
 	AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool)
 	AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool)
@@ -1771,7 +1815,7 @@ type Activity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -1783,6 +1827,14 @@ func unmarshalBasicActivity(body []byte) (BasicActivity, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeDatabricksSparkPython):
+		var dspa DatabricksSparkPythonActivity
+		err := json.Unmarshal(body, &dspa)
+		return dspa, err
+	case string(TypeDatabricksSparkJar):
+		var dsja DatabricksSparkJarActivity
+		err := json.Unmarshal(body, &dsja)
+		return dsja, err
 	case string(TypeDatabricksNotebook):
 		var dna DatabricksNotebookActivity
 		err := json.Unmarshal(body, &dna)
@@ -1927,6 +1979,16 @@ func (a Activity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for Activity.
+func (a Activity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for Activity.
+func (a Activity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for Activity.
@@ -6954,6 +7016,8 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 	NewClusterNodeType interface{} `json:"newClusterNodeType,omitempty"`
 	// NewClusterSparkConf - a set of optional, user-specified Spark configuration key-value pairs.
 	NewClusterSparkConf map[string]interface{} `json:"newClusterSparkConf"`
+	// NewClusterCustomTags - Additional tags for cluster resources.
+	NewClusterCustomTags map[string]interface{} `json:"newClusterCustomTags"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
 }
@@ -6969,6 +7033,9 @@ func (adlstp AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, 
 	objectMap["newClusterNodeType"] = adlstp.NewClusterNodeType
 	if adlstp.NewClusterSparkConf != nil {
 		objectMap["newClusterSparkConf"] = adlstp.NewClusterSparkConf
+	}
+	if adlstp.NewClusterCustomTags != nil {
+		objectMap["newClusterCustomTags"] = adlstp.NewClusterCustomTags
 	}
 	objectMap["encryptedCredential"] = adlstp.EncryptedCredential
 	return json.Marshal(objectMap)
@@ -7044,6 +7111,15 @@ func (adlstp *AzureDatabricksLinkedServiceTypeProperties) UnmarshalJSON(body []b
 					return err
 				}
 				adlstp.NewClusterSparkConf = newClusterSparkConf
+			}
+		case "newClusterCustomTags":
+			if v != nil {
+				var newClusterCustomTags map[string]interface{}
+				err = json.Unmarshal(*v, &newClusterCustomTags)
+				if err != nil {
+					return err
+				}
+				adlstp.NewClusterCustomTags = newClusterCustomTags
 			}
 		case "encryptedCredential":
 			if v != nil {
@@ -9687,7 +9763,7 @@ type AzureMLBatchExecutionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -9723,6 +9799,16 @@ func (ambea AzureMLBatchExecutionActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
+func (ambea AzureMLBatchExecutionActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
+func (ambea AzureMLBatchExecutionActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
@@ -10588,7 +10674,7 @@ type AzureMLUpdateResourceActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -10624,6 +10710,16 @@ func (amura AzureMLUpdateResourceActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
+func (amura AzureMLUpdateResourceActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
+func (amura AzureMLUpdateResourceActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
@@ -21021,7 +21117,7 @@ type ControlActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -21105,6 +21201,16 @@ func (ca ControlActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for ControlActivity.
+func (ca ControlActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for ControlActivity.
+func (ca ControlActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for ControlActivity.
@@ -21269,7 +21375,7 @@ type CopyActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -21311,6 +21417,16 @@ func (ca CopyActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for CopyActivity.
+func (ca CopyActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for CopyActivity.
+func (ca CopyActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for CopyActivity.
@@ -24184,7 +24300,7 @@ type CustomActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -24220,6 +24336,16 @@ func (ca CustomActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for CustomActivity.
+func (ca CustomActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for CustomActivity.
+func (ca CustomActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for CustomActivity.
@@ -25244,7 +25370,7 @@ type DatabricksNotebookActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -25280,6 +25406,16 @@ func (dna DatabricksNotebookActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for DatabricksNotebookActivity.
+func (dna DatabricksNotebookActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for DatabricksNotebookActivity.
+func (dna DatabricksNotebookActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for DatabricksNotebookActivity.
@@ -25527,6 +25663,8 @@ type DatabricksNotebookActivityTypeProperties struct {
 	NotebookPath interface{} `json:"notebookPath,omitempty"`
 	// BaseParameters - Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the default value from the notebook will be used.
 	BaseParameters map[string]interface{} `json:"baseParameters"`
+	// Libraries - A list of libraries to be installed on the cluster that will execute the job.
+	Libraries *[]map[string]interface{} `json:"libraries,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabricksNotebookActivityTypeProperties.
@@ -25536,7 +25674,640 @@ func (dnatp DatabricksNotebookActivityTypeProperties) MarshalJSON() ([]byte, err
 	if dnatp.BaseParameters != nil {
 		objectMap["baseParameters"] = dnatp.BaseParameters
 	}
+	if dnatp.Libraries != nil {
+		objectMap["libraries"] = dnatp.Libraries
+	}
 	return json.Marshal(objectMap)
+}
+
+// DatabricksSparkJarActivity databricksSparkJar activity.
+type DatabricksSparkJarActivity struct {
+	// DatabricksSparkJarActivityTypeProperties - Databricks SparkJar activity properties.
+	*DatabricksSparkJarActivityTypeProperties `json:"typeProperties,omitempty"`
+	// LinkedServiceName - Linked service reference.
+	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
+	// Policy - Activity policy.
+	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Activity name.
+	Name *string `json:"name,omitempty"`
+	// Description - Activity description.
+	Description *string `json:"description,omitempty"`
+	// DependsOn - Activity depends on condition.
+	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	Type TypeBasicActivity `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) MarshalJSON() ([]byte, error) {
+	dsja.Type = TypeDatabricksSparkJar
+	objectMap := make(map[string]interface{})
+	if dsja.DatabricksSparkJarActivityTypeProperties != nil {
+		objectMap["typeProperties"] = dsja.DatabricksSparkJarActivityTypeProperties
+	}
+	if dsja.LinkedServiceName != nil {
+		objectMap["linkedServiceName"] = dsja.LinkedServiceName
+	}
+	if dsja.Policy != nil {
+		objectMap["policy"] = dsja.Policy
+	}
+	if dsja.Name != nil {
+		objectMap["name"] = dsja.Name
+	}
+	if dsja.Description != nil {
+		objectMap["description"] = dsja.Description
+	}
+	if dsja.DependsOn != nil {
+		objectMap["dependsOn"] = dsja.DependsOn
+	}
+	if dsja.UserProperties != nil {
+		objectMap["userProperties"] = dsja.UserProperties
+	}
+	if dsja.Type != "" {
+		objectMap["type"] = dsja.Type
+	}
+	for k, v := range dsja.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return &dsja, true
+}
+
+// AsDatabricksNotebookActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalyticsUSQLActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLUpdateResourceActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLBatchExecutionActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsGetMetadataActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsGetMetadataActivity() (*GetMetadataActivity, bool) {
+	return nil, false
+}
+
+// AsWebActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsWebActivity() (*WebActivity, bool) {
+	return nil, false
+}
+
+// AsLookupActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsLookupActivity() (*LookupActivity, bool) {
+	return nil, false
+}
+
+// AsSQLServerStoredProcedureActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool) {
+	return nil, false
+}
+
+// AsCustomActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsCustomActivity() (*CustomActivity, bool) {
+	return nil, false
+}
+
+// AsExecuteSSISPackageActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightSparkActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightStreamingActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightMapReduceActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightPigActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsHDInsightPigActivity() (*HDInsightPigActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightHiveActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool) {
+	return nil, false
+}
+
+// AsCopyActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsCopyActivity() (*CopyActivity, bool) {
+	return nil, false
+}
+
+// AsExecutionActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsBasicExecutionActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return &dsja, true
+}
+
+// AsFilterActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsFilterActivity() (*FilterActivity, bool) {
+	return nil, false
+}
+
+// AsUntilActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsUntilActivity() (*UntilActivity, bool) {
+	return nil, false
+}
+
+// AsWaitActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsWaitActivity() (*WaitActivity, bool) {
+	return nil, false
+}
+
+// AsForEachActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsForEachActivity() (*ForEachActivity, bool) {
+	return nil, false
+}
+
+// AsIfConditionActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsIfConditionActivity() (*IfConditionActivity, bool) {
+	return nil, false
+}
+
+// AsExecutePipelineActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsExecutePipelineActivity() (*ExecutePipelineActivity, bool) {
+	return nil, false
+}
+
+// AsControlActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsControlActivity() (*ControlActivity, bool) {
+	return nil, false
+}
+
+// AsBasicControlActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsBasicControlActivity() (BasicControlActivity, bool) {
+	return nil, false
+}
+
+// AsActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsActivity() (*Activity, bool) {
+	return nil, false
+}
+
+// AsBasicActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsBasicActivity() (BasicActivity, bool) {
+	return &dsja, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabricksSparkJarActivity struct.
+func (dsja *DatabricksSparkJarActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var databricksSparkJarActivityTypeProperties DatabricksSparkJarActivityTypeProperties
+				err = json.Unmarshal(*v, &databricksSparkJarActivityTypeProperties)
+				if err != nil {
+					return err
+				}
+				dsja.DatabricksSparkJarActivityTypeProperties = &databricksSparkJarActivityTypeProperties
+			}
+		case "linkedServiceName":
+			if v != nil {
+				var linkedServiceName LinkedServiceReference
+				err = json.Unmarshal(*v, &linkedServiceName)
+				if err != nil {
+					return err
+				}
+				dsja.LinkedServiceName = &linkedServiceName
+			}
+		case "policy":
+			if v != nil {
+				var policy ActivityPolicy
+				err = json.Unmarshal(*v, &policy)
+				if err != nil {
+					return err
+				}
+				dsja.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dsja.AdditionalProperties == nil {
+					dsja.AdditionalProperties = make(map[string]interface{})
+				}
+				dsja.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsja.Name = &name
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				dsja.Description = &description
+			}
+		case "dependsOn":
+			if v != nil {
+				var dependsOn []ActivityDependency
+				err = json.Unmarshal(*v, &dependsOn)
+				if err != nil {
+					return err
+				}
+				dsja.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				dsja.UserProperties = userProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicActivity
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsja.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatabricksSparkJarActivityTypeProperties databricks SparkJar activity properties.
+type DatabricksSparkJarActivityTypeProperties struct {
+	// MainClassName - The full name of the class containing the main method to be executed. This class must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
+	MainClassName interface{} `json:"mainClassName,omitempty"`
+	// Parameters - Parameters that will be passed to the main method.
+	Parameters *[]interface{} `json:"parameters,omitempty"`
+	// Libraries - A list of libraries to be installed on the cluster that will execute the job.
+	Libraries *[]map[string]interface{} `json:"libraries,omitempty"`
+}
+
+// DatabricksSparkPythonActivity databricksSparkPython activity.
+type DatabricksSparkPythonActivity struct {
+	// DatabricksSparkPythonActivityTypeProperties - Databricks SparkPython activity properties.
+	*DatabricksSparkPythonActivityTypeProperties `json:"typeProperties,omitempty"`
+	// LinkedServiceName - Linked service reference.
+	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
+	// Policy - Activity policy.
+	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Activity name.
+	Name *string `json:"name,omitempty"`
+	// Description - Activity description.
+	Description *string `json:"description,omitempty"`
+	// DependsOn - Activity depends on condition.
+	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	Type TypeBasicActivity `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) MarshalJSON() ([]byte, error) {
+	dspa.Type = TypeDatabricksSparkPython
+	objectMap := make(map[string]interface{})
+	if dspa.DatabricksSparkPythonActivityTypeProperties != nil {
+		objectMap["typeProperties"] = dspa.DatabricksSparkPythonActivityTypeProperties
+	}
+	if dspa.LinkedServiceName != nil {
+		objectMap["linkedServiceName"] = dspa.LinkedServiceName
+	}
+	if dspa.Policy != nil {
+		objectMap["policy"] = dspa.Policy
+	}
+	if dspa.Name != nil {
+		objectMap["name"] = dspa.Name
+	}
+	if dspa.Description != nil {
+		objectMap["description"] = dspa.Description
+	}
+	if dspa.DependsOn != nil {
+		objectMap["dependsOn"] = dspa.DependsOn
+	}
+	if dspa.UserProperties != nil {
+		objectMap["userProperties"] = dspa.UserProperties
+	}
+	if dspa.Type != "" {
+		objectMap["type"] = dspa.Type
+	}
+	for k, v := range dspa.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return &dspa, true
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksNotebookActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalyticsUSQLActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLUpdateResourceActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLBatchExecutionActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsGetMetadataActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsGetMetadataActivity() (*GetMetadataActivity, bool) {
+	return nil, false
+}
+
+// AsWebActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsWebActivity() (*WebActivity, bool) {
+	return nil, false
+}
+
+// AsLookupActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsLookupActivity() (*LookupActivity, bool) {
+	return nil, false
+}
+
+// AsSQLServerStoredProcedureActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool) {
+	return nil, false
+}
+
+// AsCustomActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsCustomActivity() (*CustomActivity, bool) {
+	return nil, false
+}
+
+// AsExecuteSSISPackageActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightSparkActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightStreamingActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightMapReduceActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightPigActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsHDInsightPigActivity() (*HDInsightPigActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightHiveActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool) {
+	return nil, false
+}
+
+// AsCopyActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsCopyActivity() (*CopyActivity, bool) {
+	return nil, false
+}
+
+// AsExecutionActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsBasicExecutionActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return &dspa, true
+}
+
+// AsFilterActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsFilterActivity() (*FilterActivity, bool) {
+	return nil, false
+}
+
+// AsUntilActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsUntilActivity() (*UntilActivity, bool) {
+	return nil, false
+}
+
+// AsWaitActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsWaitActivity() (*WaitActivity, bool) {
+	return nil, false
+}
+
+// AsForEachActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsForEachActivity() (*ForEachActivity, bool) {
+	return nil, false
+}
+
+// AsIfConditionActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsIfConditionActivity() (*IfConditionActivity, bool) {
+	return nil, false
+}
+
+// AsExecutePipelineActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsExecutePipelineActivity() (*ExecutePipelineActivity, bool) {
+	return nil, false
+}
+
+// AsControlActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsControlActivity() (*ControlActivity, bool) {
+	return nil, false
+}
+
+// AsBasicControlActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsBasicControlActivity() (BasicControlActivity, bool) {
+	return nil, false
+}
+
+// AsActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsActivity() (*Activity, bool) {
+	return nil, false
+}
+
+// AsBasicActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsBasicActivity() (BasicActivity, bool) {
+	return &dspa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabricksSparkPythonActivity struct.
+func (dspa *DatabricksSparkPythonActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var databricksSparkPythonActivityTypeProperties DatabricksSparkPythonActivityTypeProperties
+				err = json.Unmarshal(*v, &databricksSparkPythonActivityTypeProperties)
+				if err != nil {
+					return err
+				}
+				dspa.DatabricksSparkPythonActivityTypeProperties = &databricksSparkPythonActivityTypeProperties
+			}
+		case "linkedServiceName":
+			if v != nil {
+				var linkedServiceName LinkedServiceReference
+				err = json.Unmarshal(*v, &linkedServiceName)
+				if err != nil {
+					return err
+				}
+				dspa.LinkedServiceName = &linkedServiceName
+			}
+		case "policy":
+			if v != nil {
+				var policy ActivityPolicy
+				err = json.Unmarshal(*v, &policy)
+				if err != nil {
+					return err
+				}
+				dspa.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dspa.AdditionalProperties == nil {
+					dspa.AdditionalProperties = make(map[string]interface{})
+				}
+				dspa.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dspa.Name = &name
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				dspa.Description = &description
+			}
+		case "dependsOn":
+			if v != nil {
+				var dependsOn []ActivityDependency
+				err = json.Unmarshal(*v, &dependsOn)
+				if err != nil {
+					return err
+				}
+				dspa.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				dspa.UserProperties = userProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicActivity
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dspa.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatabricksSparkPythonActivityTypeProperties databricks SparkPython activity properties.
+type DatabricksSparkPythonActivityTypeProperties struct {
+	// PythonFile - The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType string).
+	PythonFile interface{} `json:"pythonFile,omitempty"`
+	// Parameters - Command line parameters that will be passed to the Python file.
+	Parameters *[]interface{} `json:"parameters,omitempty"`
+	// Libraries - A list of libraries to be installed on the cluster that will execute the job.
+	Libraries *[]map[string]interface{} `json:"libraries,omitempty"`
 }
 
 // DataLakeAnalyticsUSQLActivity data Lake Analytics U-SQL activity.
@@ -25557,7 +26328,7 @@ type DataLakeAnalyticsUSQLActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -25593,6 +26364,16 @@ func (dlaua DataLakeAnalyticsUSQLActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
+func (dlaua DataLakeAnalyticsUSQLActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
+func (dlaua DataLakeAnalyticsUSQLActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
@@ -27716,6 +28497,106 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// BasicDependencyReference referenced dependency.
+type BasicDependencyReference interface {
+	AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool)
+	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+	AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool)
+	AsDependencyReference() (*DependencyReference, bool)
+}
+
+// DependencyReference referenced dependency.
+type DependencyReference struct {
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+func unmarshalBasicDependencyReference(body []byte) (BasicDependencyReference, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeSelfDependencyTumblingWindowTriggerReference):
+		var sdtwtr SelfDependencyTumblingWindowTriggerReference
+		err := json.Unmarshal(body, &sdtwtr)
+		return sdtwtr, err
+	case string(TypeTumblingWindowTriggerDependencyReference):
+		var twtdr TumblingWindowTriggerDependencyReference
+		err := json.Unmarshal(body, &twtdr)
+		return twtdr, err
+	case string(TypeTriggerDependencyReference):
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
+	default:
+		var dr DependencyReference
+		err := json.Unmarshal(body, &dr)
+		return dr, err
+	}
+}
+func unmarshalBasicDependencyReferenceArray(body []byte) ([]BasicDependencyReference, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	drArray := make([]BasicDependencyReference, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		dr, err := unmarshalBasicDependencyReference(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		drArray[index] = dr
+	}
+	return drArray, nil
+}
+
+// MarshalJSON is the custom marshaler for DependencyReference.
+func (dr DependencyReference) MarshalJSON() ([]byte, error) {
+	dr.Type = TypeDependencyReference
+	objectMap := make(map[string]interface{})
+	if dr.Type != "" {
+		objectMap["type"] = dr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return &dr, true
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &dr, true
 }
 
 // DistcpSettings distcp settings.
@@ -32301,7 +33182,7 @@ type ExecutePipelineActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -32331,6 +33212,16 @@ func (epa ExecutePipelineActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for ExecutePipelineActivity.
+func (epa ExecutePipelineActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for ExecutePipelineActivity.
+func (epa ExecutePipelineActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for ExecutePipelineActivity.
@@ -32597,7 +33488,7 @@ type ExecuteSSISPackageActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -32633,6 +33524,16 @@ func (espa ExecuteSSISPackageActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
+func (espa ExecuteSSISPackageActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
+func (espa ExecuteSSISPackageActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
@@ -32936,6 +33837,8 @@ func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, er
 
 // BasicExecutionActivity base class for all execution activities.
 type BasicExecutionActivity interface {
+	AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool)
+	AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool)
 	AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)
 	AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool)
 	AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool)
@@ -32971,7 +33874,7 @@ type ExecutionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -32983,6 +33886,14 @@ func unmarshalBasicExecutionActivity(body []byte) (BasicExecutionActivity, error
 	}
 
 	switch m["type"] {
+	case string(TypeDatabricksSparkPython):
+		var dspa DatabricksSparkPythonActivity
+		err := json.Unmarshal(body, &dspa)
+		return dspa, err
+	case string(TypeDatabricksSparkJar):
+		var dsja DatabricksSparkJarActivity
+		err := json.Unmarshal(body, &dsja)
+		return dsja, err
 	case string(TypeDatabricksNotebook):
 		var dna DatabricksNotebookActivity
 		err := json.Unmarshal(body, &dna)
@@ -33101,6 +34012,16 @@ func (ea ExecutionActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for ExecutionActivity.
+func (ea ExecutionActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for ExecutionActivity.
+func (ea ExecutionActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for ExecutionActivity.
@@ -35343,7 +36264,7 @@ type FilterActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -35373,6 +36294,16 @@ func (fa FilterActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for FilterActivity.
+func (fa FilterActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for FilterActivity.
+func (fa FilterActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for FilterActivity.
@@ -35618,7 +36549,7 @@ type ForEachActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -35648,6 +36579,16 @@ func (fea ForEachActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for ForEachActivity.
+func (fea ForEachActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for ForEachActivity.
+func (fea ForEachActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for ForEachActivity.
@@ -36544,7 +37485,7 @@ type GetMetadataActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -36580,6 +37521,16 @@ func (gma GetMetadataActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for GetMetadataActivity.
+func (gma GetMetadataActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for GetMetadataActivity.
+func (gma GetMetadataActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for GetMetadataActivity.
@@ -41285,7 +42236,7 @@ type HDInsightHiveActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -41321,6 +42272,16 @@ func (hiha HDInsightHiveActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for HDInsightHiveActivity.
+func (hiha HDInsightHiveActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for HDInsightHiveActivity.
+func (hiha HDInsightHiveActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for HDInsightHiveActivity.
@@ -42189,7 +43150,7 @@ type HDInsightMapReduceActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -42225,6 +43186,16 @@ func (himra HDInsightMapReduceActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
+func (himra HDInsightMapReduceActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
+func (himra HDInsightMapReduceActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
@@ -43363,7 +44334,7 @@ type HDInsightPigActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -43399,6 +44370,16 @@ func (hipa HDInsightPigActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for HDInsightPigActivity.
+func (hipa HDInsightPigActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for HDInsightPigActivity.
+func (hipa HDInsightPigActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for HDInsightPigActivity.
@@ -43696,7 +44677,7 @@ type HDInsightSparkActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -43732,6 +44713,16 @@ func (hisa HDInsightSparkActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for HDInsightSparkActivity.
+func (hisa HDInsightSparkActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for HDInsightSparkActivity.
+func (hisa HDInsightSparkActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for HDInsightSparkActivity.
@@ -44035,7 +45026,7 @@ type HDInsightStreamingActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -44071,6 +45062,16 @@ func (hisa HDInsightStreamingActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for HDInsightStreamingActivity.
+func (hisa HDInsightStreamingActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for HDInsightStreamingActivity.
+func (hisa HDInsightStreamingActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for HDInsightStreamingActivity.
@@ -48270,7 +49271,7 @@ type IfConditionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -48300,6 +49301,16 @@ func (ica IfConditionActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for IfConditionActivity.
+func (ica IfConditionActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for IfConditionActivity.
+func (ica IfConditionActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for IfConditionActivity.
@@ -50420,7 +51431,7 @@ type IntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -51861,6 +52872,193 @@ func (jf JSONFormat) AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, b
 	return &jf, true
 }
 
+// LinkedIntegrationRuntime the linked integration runtime information.
+type LinkedIntegrationRuntime struct {
+	// Name - The name of the linked integration runtime.
+	Name *string `json:"name,omitempty"`
+	// SubscriptionID - The subscription ID for which the linked integration runtime belong to.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// DataFactoryName - The name of the data factory for which the linked integration runtime belong to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// DataFactoryLocation - The location of the data factory for which the linked integration runtime belong to.
+	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
+	// CreateTime - The creating time of the linked integration runtime.
+	CreateTime *date.Time `json:"createTime,omitempty"`
+}
+
+// LinkedIntegrationRuntimeKeyAuthorization the key authorization type integration runtime.
+type LinkedIntegrationRuntimeKeyAuthorization struct {
+	// Key - The key used for authorization.
+	Key *SecureString `json:"key,omitempty"`
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) MarshalJSON() ([]byte, error) {
+	lirka.AuthorizationType = AuthorizationTypeKey
+	objectMap := make(map[string]interface{})
+	if lirka.Key != nil {
+		objectMap["key"] = lirka.Key
+	}
+	if lirka.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirka.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return &lirka, true
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirka, true
+}
+
+// LinkedIntegrationRuntimeRbacAuthorization the role based access control (RBAC) authorization type integration
+// runtime.
+type LinkedIntegrationRuntimeRbacAuthorization struct {
+	// ResourceID - The resource identifier of the integration runtime to be shared.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) MarshalJSON() ([]byte, error) {
+	lirra.AuthorizationType = AuthorizationTypeRBAC
+	objectMap := make(map[string]interface{})
+	if lirra.ResourceID != nil {
+		objectMap["resourceId"] = lirra.ResourceID
+	}
+	if lirra.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirra.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return &lirra, true
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirra, true
+}
+
+// LinkedIntegrationRuntimeRequest data factory name for linked integration runtime request.
+type LinkedIntegrationRuntimeRequest struct {
+	// LinkedFactoryName - The data factory name for linked integration runtime.
+	LinkedFactoryName *string `json:"factoryName,omitempty"`
+}
+
+// BasicLinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type BasicLinkedIntegrationRuntimeType interface {
+	AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)
+	AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)
+	AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)
+}
+
+// LinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type LinkedIntegrationRuntimeType struct {
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+func unmarshalBasicLinkedIntegrationRuntimeType(body []byte) (BasicLinkedIntegrationRuntimeType, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["authorizationType"] {
+	case string(AuthorizationTypeRBAC):
+		var lirra LinkedIntegrationRuntimeRbacAuthorization
+		err := json.Unmarshal(body, &lirra)
+		return lirra, err
+	case string(AuthorizationTypeKey):
+		var lirka LinkedIntegrationRuntimeKeyAuthorization
+		err := json.Unmarshal(body, &lirka)
+		return lirka, err
+	default:
+		var lirt LinkedIntegrationRuntimeType
+		err := json.Unmarshal(body, &lirt)
+		return lirt, err
+	}
+}
+func unmarshalBasicLinkedIntegrationRuntimeTypeArray(body []byte) ([]BasicLinkedIntegrationRuntimeType, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	lirtArray := make([]BasicLinkedIntegrationRuntimeType, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		lirt, err := unmarshalBasicLinkedIntegrationRuntimeType(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		lirtArray[index] = lirt
+	}
+	return lirtArray, nil
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) MarshalJSON() ([]byte, error) {
+	lirt.AuthorizationType = AuthorizationTypeLinkedIntegrationRuntimeType
+	objectMap := make(map[string]interface{})
+	if lirt.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirt.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
+}
+
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be
 // used to connect with related store or compute resource.
 type BasicLinkedService interface {
@@ -52871,7 +54069,7 @@ type LookupActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -52907,6 +54105,16 @@ func (la LookupActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for LookupActivity.
+func (la LookupActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for LookupActivity.
+func (la LookupActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for LookupActivity.
@@ -54382,7 +55590,7 @@ func (ms MagentoSource) AsBasicCopySource() (BasicCopySource, bool) {
 // ManagedIntegrationRuntime managed integration runtime, including managed elastic and managed dedicated
 // integration runtimes.
 type ManagedIntegrationRuntime struct {
-	// State - Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
@@ -54545,7 +55753,7 @@ type ManagedIntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -78058,8 +79266,66 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &ss, true
 }
 
+// SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency.
+type SelfDependencyTumblingWindowTriggerReference struct {
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
+	Offset *string `json:"offset,omitempty"`
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
+	Size *string `json:"size,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) MarshalJSON() ([]byte, error) {
+	sdtwtr.Type = TypeSelfDependencyTumblingWindowTriggerReference
+	objectMap := make(map[string]interface{})
+	if sdtwtr.Offset != nil {
+		objectMap["offset"] = sdtwtr.Offset
+	}
+	if sdtwtr.Size != nil {
+		objectMap["size"] = sdtwtr.Size
+	}
+	if sdtwtr.Type != "" {
+		objectMap["type"] = sdtwtr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return &sdtwtr, true
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &sdtwtr, true
+}
+
 // SelfHostedIntegrationRuntime self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
+	// SelfHostedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
+	*SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -78072,6 +79338,9 @@ type SelfHostedIntegrationRuntime struct {
 func (shir SelfHostedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	shir.Type = TypeSelfHosted
 	objectMap := make(map[string]interface{})
+	if shir.SelfHostedIntegrationRuntimeTypeProperties != nil {
+		objectMap["typeProperties"] = shir.SelfHostedIntegrationRuntimeTypeProperties
+	}
 	if shir.Description != nil {
 		objectMap["description"] = shir.Description
 	}
@@ -78102,6 +79371,60 @@ func (shir SelfHostedIntegrationRuntime) AsIntegrationRuntime() (*IntegrationRun
 // AsBasicIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
 func (shir SelfHostedIntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool) {
 	return &shir, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntime struct.
+func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var selfHostedIntegrationRuntimeTypeProperties SelfHostedIntegrationRuntimeTypeProperties
+				err = json.Unmarshal(*v, &selfHostedIntegrationRuntimeTypeProperties)
+				if err != nil {
+					return err
+				}
+				shir.SelfHostedIntegrationRuntimeTypeProperties = &selfHostedIntegrationRuntimeTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if shir.AdditionalProperties == nil {
+					shir.AdditionalProperties = make(map[string]interface{})
+				}
+				shir.AdditionalProperties[k] = additionalProperties
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				shir.Description = &description
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicIntegrationRuntime
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				shir.Type = typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // SelfHostedIntegrationRuntimeNode properties of Self-hosted integration runtime node.
@@ -78213,7 +79536,7 @@ type SelfHostedIntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -78350,6 +79673,8 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
 	// VersionStatus - Status of the integration runtime version.
 	VersionStatus *string `json:"versionStatus,omitempty"`
+	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
+	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
 	// PushedVersion - The version that the integration runtime is going to update to.
 	PushedVersion *string `json:"pushedVersion,omitempty"`
 	// LatestVersion - The latest version on download center.
@@ -78395,6 +79720,9 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	if shirstp.VersionStatus != nil {
 		objectMap["versionStatus"] = shirstp.VersionStatus
 	}
+	if shirstp.Links != nil {
+		objectMap["links"] = shirstp.Links
+	}
 	if shirstp.PushedVersion != nil {
 		objectMap["pushedVersion"] = shirstp.PushedVersion
 	}
@@ -78402,6 +79730,34 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 		objectMap["latestVersion"] = shirstp.LatestVersion
 	}
 	return json.Marshal(objectMap)
+}
+
+// SelfHostedIntegrationRuntimeTypeProperties the self-hosted integration runtime properties.
+type SelfHostedIntegrationRuntimeTypeProperties struct {
+	LinkedInfo BasicLinkedIntegrationRuntimeType `json:"linkedInfo,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeTypeProperties struct.
+func (shirtp *SelfHostedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "linkedInfo":
+			if v != nil {
+				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeType(*v)
+				if err != nil {
+					return err
+				}
+				shirtp.LinkedInfo = linkedInfo
+			}
+		}
+	}
+
+	return nil
 }
 
 // ServiceNowLinkedService serviceNow server linked service.
@@ -83686,7 +85042,7 @@ type SQLServerStoredProcedureActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -83722,6 +85078,16 @@ func (ssspa SQLServerStoredProcedureActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
+func (ssspa SQLServerStoredProcedureActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
+func (ssspa SQLServerStoredProcedureActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
@@ -87502,6 +88868,100 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &t, true
 }
 
+// BasicTriggerDependencyReference trigger referenced dependency.
+type BasicTriggerDependencyReference interface {
+	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+}
+
+// TriggerDependencyReference trigger referenced dependency.
+type TriggerDependencyReference struct {
+	// ReferenceTrigger - Referenced trigger.
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+func unmarshalBasicTriggerDependencyReference(body []byte) (BasicTriggerDependencyReference, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeTumblingWindowTriggerDependencyReference):
+		var twtdr TumblingWindowTriggerDependencyReference
+		err := json.Unmarshal(body, &twtdr)
+		return twtdr, err
+	default:
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
+	}
+}
+func unmarshalBasicTriggerDependencyReferenceArray(body []byte) ([]BasicTriggerDependencyReference, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tdrArray := make([]BasicTriggerDependencyReference, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tdr, err := unmarshalBasicTriggerDependencyReference(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tdrArray[index] = tdr
+	}
+	return tdrArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) MarshalJSON() ([]byte, error) {
+	tdr.Type = TypeTriggerDependencyReference
+	objectMap := make(map[string]interface{})
+	if tdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = tdr.ReferenceTrigger
+	}
+	if tdr.Type != "" {
+		objectMap["type"] = tdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &tdr, true
+}
+
 // TriggerListResponse a list of trigger resources.
 type TriggerListResponse struct {
 	autorest.Response `json:"-"`
@@ -87622,6 +89082,14 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 		objectMap["parameters"] = tpr.Parameters
 	}
 	return json.Marshal(objectMap)
+}
+
+// TriggerReference trigger reference type.
+type TriggerReference struct {
+	// Type - Trigger reference type.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Reference trigger name.
+	ReferenceName *string `json:"referenceName,omitempty"`
 }
 
 // TriggerResource trigger resource type.
@@ -87960,6 +89428,67 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency.
+type TumblingWindowTriggerDependencyReference struct {
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
+	Offset *string `json:"offset,omitempty"`
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
+	Size *string `json:"size,omitempty"`
+	// ReferenceTrigger - Referenced trigger.
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) MarshalJSON() ([]byte, error) {
+	twtdr.Type = TypeTumblingWindowTriggerDependencyReference
+	objectMap := make(map[string]interface{})
+	if twtdr.Offset != nil {
+		objectMap["offset"] = twtdr.Offset
+	}
+	if twtdr.Size != nil {
+		objectMap["size"] = twtdr.Size
+	}
+	if twtdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = twtdr.ReferenceTrigger
+	}
+	if twtdr.Type != "" {
+		objectMap["type"] = twtdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return &twtdr, true
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return &twtdr, true
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &twtdr, true
+}
+
 // TumblingWindowTriggerTypeProperties tumbling Window Trigger properties.
 type TumblingWindowTriggerTypeProperties struct {
 	// Frequency - The frequency of the time windows. Possible values include: 'TumblingWindowFrequencyMinute', 'TumblingWindowFrequencyHour'
@@ -87976,6 +89505,94 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	// DependsOn - Triggers that this trigger depends on. Only tumbling window triggers are supported.
+	DependsOn *[]BasicDependencyReference `json:"dependsOn,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TumblingWindowTriggerTypeProperties struct.
+func (twtP *TumblingWindowTriggerTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "frequency":
+			if v != nil {
+				var frequency TumblingWindowFrequency
+				err = json.Unmarshal(*v, &frequency)
+				if err != nil {
+					return err
+				}
+				twtP.Frequency = frequency
+			}
+		case "interval":
+			if v != nil {
+				var interval int32
+				err = json.Unmarshal(*v, &interval)
+				if err != nil {
+					return err
+				}
+				twtP.Interval = &interval
+			}
+		case "startTime":
+			if v != nil {
+				var startTime date.Time
+				err = json.Unmarshal(*v, &startTime)
+				if err != nil {
+					return err
+				}
+				twtP.StartTime = &startTime
+			}
+		case "endTime":
+			if v != nil {
+				var endTime date.Time
+				err = json.Unmarshal(*v, &endTime)
+				if err != nil {
+					return err
+				}
+				twtP.EndTime = &endTime
+			}
+		case "delay":
+			if v != nil {
+				var delay interface{}
+				err = json.Unmarshal(*v, &delay)
+				if err != nil {
+					return err
+				}
+				twtP.Delay = delay
+			}
+		case "maxConcurrency":
+			if v != nil {
+				var maxConcurrency int32
+				err = json.Unmarshal(*v, &maxConcurrency)
+				if err != nil {
+					return err
+				}
+				twtP.MaxConcurrency = &maxConcurrency
+			}
+		case "retryPolicy":
+			if v != nil {
+				var retryPolicy RetryPolicy
+				err = json.Unmarshal(*v, &retryPolicy)
+				if err != nil {
+					return err
+				}
+				twtP.RetryPolicy = &retryPolicy
+			}
+		case "dependsOn":
+			if v != nil {
+				dependsOn, err := unmarshalBasicDependencyReferenceArray(*v)
+				if err != nil {
+					return err
+				}
+				twtP.DependsOn = &dependsOn
+			}
+		}
+	}
+
+	return nil
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or
@@ -87993,7 +89610,7 @@ type UntilActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -88023,6 +89640,16 @@ func (ua UntilActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for UntilActivity.
+func (ua UntilActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for UntilActivity.
+func (ua UntilActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for UntilActivity.
@@ -89429,7 +91056,7 @@ type WaitActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -89459,6 +91086,16 @@ func (wa WaitActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for WaitActivity.
+func (wa WaitActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for WaitActivity.
+func (wa WaitActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for WaitActivity.
@@ -89706,7 +91343,7 @@ type WebActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties map[string]*string `json:"userProperties"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -89742,6 +91379,16 @@ func (wa WebActivity) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for WebActivity.
+func (wa WebActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for WebActivity.
+func (wa WebActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
 }
 
 // AsDatabricksNotebookActivity is the BasicActivity implementation for WebActivity.

@@ -42,6 +42,14 @@ const (
 	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
+type AuthorizationType = original.AuthorizationType
+
+const (
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -245,6 +253,7 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
+	AccessDenied     IntegrationRuntimeState = original.AccessDenied
 	Initial          IntegrationRuntimeState = original.Initial
 	Limited          IntegrationRuntimeState = original.Limited
 	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
@@ -543,6 +552,8 @@ const (
 	TypeCopy                     TypeBasicActivity = original.TypeCopy
 	TypeCustom                   TypeBasicActivity = original.TypeCustom
 	TypeDatabricksNotebook       TypeBasicActivity = original.TypeDatabricksNotebook
+	TypeDatabricksSparkJar       TypeBasicActivity = original.TypeDatabricksSparkJar
+	TypeDatabricksSparkPython    TypeBasicActivity = original.TypeDatabricksSparkPython
 	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
 	TypeExecutePipeline          TypeBasicActivity = original.TypeExecutePipeline
 	TypeExecuteSSISPackage       TypeBasicActivity = original.TypeExecuteSSISPackage
@@ -724,6 +735,15 @@ const (
 	TypeOrcFormat            TypeBasicDatasetStorageFormat = original.TypeOrcFormat
 	TypeParquetFormat        TypeBasicDatasetStorageFormat = original.TypeParquetFormat
 	TypeTextFormat           TypeBasicDatasetStorageFormat = original.TypeTextFormat
+)
+
+type TypeBasicDependencyReference = original.TypeBasicDependencyReference
+
+const (
+	TypeDependencyReference                          TypeBasicDependencyReference = original.TypeDependencyReference
+	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = original.TypeSelfDependencyTumblingWindowTriggerReference
+	TypeTriggerDependencyReference                   TypeBasicDependencyReference = original.TypeTriggerDependencyReference
+	TypeTumblingWindowTriggerDependencyReference     TypeBasicDependencyReference = original.TypeTumblingWindowTriggerDependencyReference
 )
 
 type TypeBasicFactoryRepoConfiguration = original.TypeBasicFactoryRepoConfiguration
@@ -958,6 +978,10 @@ type CustomDataset = original.CustomDataset
 type CustomDataSourceLinkedService = original.CustomDataSourceLinkedService
 type DatabricksNotebookActivity = original.DatabricksNotebookActivity
 type DatabricksNotebookActivityTypeProperties = original.DatabricksNotebookActivityTypeProperties
+type DatabricksSparkJarActivity = original.DatabricksSparkJarActivity
+type DatabricksSparkJarActivityTypeProperties = original.DatabricksSparkJarActivityTypeProperties
+type DatabricksSparkPythonActivity = original.DatabricksSparkPythonActivity
+type DatabricksSparkPythonActivityTypeProperties = original.DatabricksSparkPythonActivityTypeProperties
 type DataLakeAnalyticsUSQLActivity = original.DataLakeAnalyticsUSQLActivity
 type DataLakeAnalyticsUSQLActivityTypeProperties = original.DataLakeAnalyticsUSQLActivityTypeProperties
 type BasicDataset = original.BasicDataset
@@ -977,6 +1001,8 @@ type DatasetStorageFormat = original.DatasetStorageFormat
 type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type BasicDependencyReference = original.BasicDependencyReference
+type DependencyReference = original.DependencyReference
 type DistcpSettings = original.DistcpSettings
 type DocumentDbCollectionDataset = original.DocumentDbCollectionDataset
 type DocumentDbCollectionDatasetTypeProperties = original.DocumentDbCollectionDatasetTypeProperties
@@ -1106,6 +1132,12 @@ type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
 type JSONFormat = original.JSONFormat
+type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
+type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
+type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
+type LinkedIntegrationRuntimeRequest = original.LinkedIntegrationRuntimeRequest
+type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
+type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse
@@ -1249,10 +1281,12 @@ type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties
 type BasicSecretBase = original.BasicSecretBase
 type SecretBase = original.SecretBase
 type SecureString = original.SecureString
+type SelfDependencyTumblingWindowTriggerReference = original.SelfDependencyTumblingWindowTriggerReference
 type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
 type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
 type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
 type SelfHostedIntegrationRuntimeStatusTypeProperties = original.SelfHostedIntegrationRuntimeStatusTypeProperties
+type SelfHostedIntegrationRuntimeTypeProperties = original.SelfHostedIntegrationRuntimeTypeProperties
 type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset
@@ -1295,16 +1329,20 @@ type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypePro
 type TextFormat = original.TextFormat
 type BasicTrigger = original.BasicTrigger
 type Trigger = original.Trigger
+type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
+type TriggerDependencyReference = original.TriggerDependencyReference
 type TriggerListResponse = original.TriggerListResponse
 type TriggerListResponseIterator = original.TriggerListResponseIterator
 type TriggerListResponsePage = original.TriggerListResponsePage
 type TriggerPipelineReference = original.TriggerPipelineReference
+type TriggerReference = original.TriggerReference
 type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
 type TriggerRunsQueryResponse = original.TriggerRunsQueryResponse
 type TriggersStartFuture = original.TriggersStartFuture
 type TriggersStopFuture = original.TriggersStopFuture
 type TumblingWindowTrigger = original.TumblingWindowTrigger
+type TumblingWindowTriggerDependencyReference = original.TumblingWindowTriggerDependencyReference
 type TumblingWindowTriggerTypeProperties = original.TumblingWindowTriggerTypeProperties
 type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
@@ -1386,6 +1424,9 @@ func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) L
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return original.PossibleAuthorizationTypeValues()
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
@@ -1581,6 +1622,9 @@ func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
 }
 func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
 	return original.PossibleTypeBasicDatasetStorageFormatValues()
+}
+func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
+	return original.PossibleTypeBasicDependencyReferenceValues()
 }
 func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
 	return original.PossibleTypeBasicFactoryRepoConfigurationValues()

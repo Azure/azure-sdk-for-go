@@ -67,7 +67,7 @@ func main() {
 	}
 
 	// Send message to the Queue named helloworld
-	err = q.Send(context.Background(), servicebus.NewMessageFromString("Hello World!"))
+	err = q.Send(servicebus.NewMessageFromString("Hello World!"))
 	if err != nil {
 		// handle message send error
 	}

@@ -61,7 +61,7 @@ func main() {
 
 	// Initialize and create a Service Bus Queue named helloworld if it doesn't exist
 	queueName := "helloworld"
-	q, err := ns.NewQueue(context.Background(), queueName)
+	q, err := ns.NewQueue(queueName)
 	if err != nil {
 		// handle queue creation error
 	}

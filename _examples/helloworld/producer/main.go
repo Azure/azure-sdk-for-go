@@ -42,7 +42,7 @@ func main() {
 func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	q, err := ns.NewQueue(ctx, queueName)
+	q, err := ns.NewQueue(queueName)
 	return q, err
 }
 

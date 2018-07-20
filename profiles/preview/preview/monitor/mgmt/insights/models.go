@@ -193,19 +193,6 @@ const (
 	ReceiverStatusNotSpecified ReceiverStatus = original.ReceiverStatusNotSpecified
 )
 
-type RecurrenceFrequency = original.RecurrenceFrequency
-
-const (
-	RecurrenceFrequencyDay    RecurrenceFrequency = original.RecurrenceFrequencyDay
-	RecurrenceFrequencyHour   RecurrenceFrequency = original.RecurrenceFrequencyHour
-	RecurrenceFrequencyMinute RecurrenceFrequency = original.RecurrenceFrequencyMinute
-	RecurrenceFrequencyMonth  RecurrenceFrequency = original.RecurrenceFrequencyMonth
-	RecurrenceFrequencyNone   RecurrenceFrequency = original.RecurrenceFrequencyNone
-	RecurrenceFrequencySecond RecurrenceFrequency = original.RecurrenceFrequencySecond
-	RecurrenceFrequencyWeek   RecurrenceFrequency = original.RecurrenceFrequencyWeek
-	RecurrenceFrequencyYear   RecurrenceFrequency = original.RecurrenceFrequencyYear
-)
-
 type ResultType = original.ResultType
 
 const (
@@ -553,9 +540,6 @@ func PossibleQueryTypeValues() []QueryType {
 }
 func PossibleReceiverStatusValues() []ReceiverStatus {
 	return original.PossibleReceiverStatusValues()
-}
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return original.PossibleRecurrenceFrequencyValues()
 }
 func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()

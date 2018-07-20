@@ -171,48 +171,21 @@ func PossibleReceiverStatusValues() []ReceiverStatus {
 	return []ReceiverStatus{Disabled, Enabled, NotSpecified}
 }
 
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// Day ...
-	Day RecurrenceFrequency = "Day"
-	// Hour ...
-	Hour RecurrenceFrequency = "Hour"
-	// Minute ...
-	Minute RecurrenceFrequency = "Minute"
-	// Month ...
-	Month RecurrenceFrequency = "Month"
-	// None ...
-	None RecurrenceFrequency = "None"
-	// Second ...
-	Second RecurrenceFrequency = "Second"
-	// Week ...
-	Week RecurrenceFrequency = "Week"
-	// Year ...
-	Year RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{Day, Hour, Minute, Month, None, Second, Week, Year}
-}
-
 // ScaleDirection enumerates the values for scale direction.
 type ScaleDirection string
 
 const (
-	// ScaleDirectionDecrease ...
-	ScaleDirectionDecrease ScaleDirection = "Decrease"
-	// ScaleDirectionIncrease ...
-	ScaleDirectionIncrease ScaleDirection = "Increase"
-	// ScaleDirectionNone ...
-	ScaleDirectionNone ScaleDirection = "None"
+	// Decrease ...
+	Decrease ScaleDirection = "Decrease"
+	// Increase ...
+	Increase ScaleDirection = "Increase"
+	// None ...
+	None ScaleDirection = "None"
 )
 
 // PossibleScaleDirectionValues returns an array of possible values for the ScaleDirection const type.
 func PossibleScaleDirectionValues() []ScaleDirection {
-	return []ScaleDirection{ScaleDirectionDecrease, ScaleDirectionIncrease, ScaleDirectionNone}
+	return []ScaleDirection{Decrease, Increase, None}
 }
 
 // ScaleType enumerates the values for scale type.
@@ -2030,8 +2003,8 @@ type ProxyOnlyResource struct {
 // Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate element
 // is used.
 type Recurrence struct {
-	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. Possible values include: 'None', 'Second', 'Minute', 'Hour', 'Day', 'Week', 'Month', 'Year'
-	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
+	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly.
+	Frequency *string `json:"frequency,omitempty"`
 	// Schedule - the scheduling constraints for when the profile begins.
 	Schedule *RecurrentSchedule `json:"schedule,omitempty"`
 }
@@ -2631,7 +2604,7 @@ func (rwa RuleWebhookAction) AsBasicRuleAction() (BasicRuleAction, bool) {
 
 // ScaleAction the parameters for the scaling action.
 type ScaleAction struct {
-	// Direction - the scale direction. Whether the scaling action increases or decreases the number of instances. Possible values include: 'ScaleDirectionNone', 'ScaleDirectionIncrease', 'ScaleDirectionDecrease'
+	// Direction - the scale direction. Whether the scaling action increases or decreases the number of instances. Possible values include: 'None', 'Increase', 'Decrease'
 	Direction ScaleDirection `json:"direction,omitempty"`
 	// Type - the type of action that should occur when the scale rule fires. Possible values include: 'ChangeCount', 'PercentChangeCount', 'ExactCount'
 	Type ScaleType `json:"type,omitempty"`

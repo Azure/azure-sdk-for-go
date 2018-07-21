@@ -47,7 +47,7 @@ func main() {
 	listenHandle, err := q.Receive(context.Background(),
 		func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
 			fmt.Println(string(msg.Data))
-			defer func(){
+			defer func() {
 				done <- nil
 			}()
 			return msg.Complete()
@@ -90,6 +90,6 @@ func startOpenTracing() (io.Closer, error) {
 func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	q, err := ns.NewQueue(ctx, queueName)
+	q, err := ns.NewQueue(queueName)
 	return q, err
 }

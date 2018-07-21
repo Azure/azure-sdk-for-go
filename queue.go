@@ -424,10 +424,7 @@ func QueueWithReceiveAndDelete() QueueOption {
 //}
 
 // NewQueue creates a new Queue Sender / Receiver
-func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOption) (*Queue, error) {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewQueue")
-	defer span.Finish()
-
+func (ns *Namespace) NewQueue(name string, opts ...QueueOption) (*Queue, error) {
 	queue := &Queue{
 		entity: &entity{
 			namespace: ns,
@@ -438,7 +435,6 @@ func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOpt
 
 	for _, opt := range opts {
 		if err := opt(queue); err != nil {
-			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}

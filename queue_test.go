@@ -152,7 +152,7 @@ func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
 				suite.T().Fatal(err)
 			}
 
-			q, err := ns.NewQueue(ctx, queueName)
+			q, err := ns.NewQueue(queueName)
 			if err != nil {
 				suite.T().Fatal(err)
 			}
@@ -428,7 +428,7 @@ func (suite *serviceBusSuite) TestQueueClient() {
 			cleanup := makeQueue(ctx, t, ns, queueName,
 				QueueEntityWithPartitioning(),
 				QueueEntityWithDuplicateDetection(&window))
-			q, err := ns.NewQueue(ctx, queueName)
+			q, err := ns.NewQueue(queueName)
 			suite.NoError(err)
 			defer func() {
 				q.Close(ctx)
@@ -631,7 +631,7 @@ func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			cleanup := makeQueue(ctx, t, ns, queueName)
-			q, err := ns.NewQueue(ctx, queueName, QueueWithReceiveAndDelete())
+			q, err := ns.NewQueue(queueName, QueueWithReceiveAndDelete())
 			suite.NoError(err)
 			defer func() {
 				cleanup()

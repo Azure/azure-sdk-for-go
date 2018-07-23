@@ -1,7 +1,7 @@
-// Package compute implements the Azure ARM Compute service API version 2018-04-01.
+// Package skus implements the Azure ARM Skus service API version 2017-09-01.
 //
 // Compute Client
-package compute
+package skus
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Compute
+	// DefaultBaseURI is the default URI used for the service Skus
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Compute.
+// BaseClient is the base client for Skus.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

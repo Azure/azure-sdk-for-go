@@ -266,8 +266,9 @@ import (
 Occasionally service-side changes require major changes to existing versions.
 These cases are noted in the changelog.
 
-All avilable services and versions are listed under the `services/` path in
-this repo and in [GoDoc][services_godoc]. Run `find ./services -type d -mindepth 3` to list all available service packages.
+All available services and versions are listed under the `services/` path in
+this repo and in [GoDoc][services_godoc].  Run `find ./services -type d
+-mindepth 3` to list all available service packages.
 
 [services_godoc]: https://godoc.org/github.com/Azure/azure-sdk-for-go/services
 

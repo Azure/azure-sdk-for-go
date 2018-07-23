@@ -476,6 +476,7 @@ type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type ProxyResource = original.ProxyResource
+type ReadCloser = original.ReadCloser
 type Resource = original.Resource
 type RunAsCredentialAssociationProperty = original.RunAsCredentialAssociationProperty
 type Runbook = original.Runbook

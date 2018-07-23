@@ -10,10 +10,11 @@
     "autorest/azure/auth",
     "autorest/date",
     "autorest/to",
-    "autorest/validation"
+    "autorest/validation",
+    "version"
   ]
-  revision = "1f7cd6cfe0adea687ad44a512dfe76140f804318"
-  version = "v10.12.0"
+  revision = "bca49d5b51a50dc5bb17bbf6204c711c6dbded06"
+  version = "v10.14.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -22,10 +23,10 @@
   version = "v3.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/dimchansky/utfbom"
   packages = ["."]
-  revision = "6c6132ff69f0f6c088739067407b5d32c52e1d0f"
+  revision = "5448fe645cb1964ba70ac8f9f2ffe975e61a536c"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -129,7 +130,7 @@
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
+  revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
@@ -146,8 +147,8 @@
 [[projects]]
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "69b3a8ad1f5f2c8bd855cb6506d18593064a346b"
-  version = "1.0.1"
+  revision = "cd690d0c9e2447b1ef2a129a6b7b49077da89b8e"
+  version = "1.1.0"
 
 [[projects]]
   name = "github.com/spf13/afero"
@@ -195,13 +196,13 @@
     "pkcs12",
     "pkcs12/internal/rc2"
   ]
-  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
+  revision = "c126467f60eb25f8f27e5a981f32a87e3965053f"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "7138fd3d9dc8335c567ca206f4333fb75eb05d56"
+  revision = "ac767d655b305d4e9612f5f6e33120b9176c4ad4"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -224,7 +225,7 @@
     "imports",
     "internal/fastwalk"
   ]
-  revision = "ffe88906718454e356e61776b54256e873fc133b"
+  revision = "ded554d0681e0cba3cf074977cdc12e2c0906fe6"
 
 [[projects]]
   branch = "v1"
@@ -241,6 +242,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f4bfed9d1dcc4af2e0ff5811bb14dfebe84f87e7aed10199b8ff8d867d947612"
+  inputs-digest = "d76b8f370cdfbf2fbf0d0999210fb1fed0794d980a88da3df57112d5f5a439dc"
   solver-name = "gps-cdcl"
   solver-version = 1

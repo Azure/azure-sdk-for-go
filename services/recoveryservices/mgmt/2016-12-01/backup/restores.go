@@ -40,7 +40,8 @@ func NewRestoresClientWithBaseURI(baseURI string, subscriptionID string) Restore
 }
 
 // Trigger restores the specified backed up data. This is an asynchronous operation. To know the status of this API
-// call, use GetProtectedItemOperationResult API.
+// call, use
+// GetProtectedItemOperationResult API.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

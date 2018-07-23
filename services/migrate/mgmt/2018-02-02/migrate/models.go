@@ -1280,6 +1280,15 @@ func (a *Assessment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AssessmentOptionsResultList list of assessment options.
+type AssessmentOptionsResultList struct {
+	autorest.Response `json:"-"`
+	// VMFamilies - Dictionary of VM families grouped by vm family name describing the targeted azure locations of VM family and the category of the family.
+	VMFamilies *[]VMFamily `json:"vmFamilies,omitempty"`
+	// ReservedInstanceVMFamilies - List of supported VM Families.
+	ReservedInstanceVMFamilies *[]string `json:"reservedInstanceVmFamilies,omitempty"`
+}
+
 // AssessmentProperties properties of an assessment.
 type AssessmentProperties struct {
 	// AzureLocation - Target Azure location for which the machines should be assessed. These enums are the same as used by Compute API. Possible values include: 'AzureLocationUnknown', 'AzureLocationEastAsia', 'AzureLocationSoutheastAsia', 'AzureLocationAustraliaEast', 'AzureLocationAustraliaSoutheast', 'AzureLocationBrazilSouth', 'AzureLocationCanadaCentral', 'AzureLocationCanadaEast', 'AzureLocationWestEurope', 'AzureLocationNorthEurope', 'AzureLocationCentralIndia', 'AzureLocationSouthIndia', 'AzureLocationWestIndia', 'AzureLocationJapanEast', 'AzureLocationJapanWest', 'AzureLocationKoreaCentral', 'AzureLocationKoreaSouth', 'AzureLocationUkWest', 'AzureLocationUkSouth', 'AzureLocationNorthCentralUs', 'AzureLocationEastUs', 'AzureLocationWestUs2', 'AzureLocationSouthCentralUs', 'AzureLocationCentralUs', 'AzureLocationEastUs2', 'AzureLocationWestUs', 'AzureLocationWestCentralUs', 'AzureLocationGermanyCentral', 'AzureLocationGermanyNortheast', 'AzureLocationChinaNorth', 'AzureLocationChinaEast'
@@ -1331,6 +1340,23 @@ type AssessmentResultList struct {
 	autorest.Response `json:"-"`
 	// Value - List of assessments.
 	Value *[]Assessment `json:"value,omitempty"`
+}
+
+// CloudError an error response from the Azure Migrate service.
+type CloudError struct {
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the Azure Migrate service.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
 // Disk a disk discovered on a machine.
@@ -1859,4 +1885,14 @@ type ProjectResultList struct {
 	autorest.Response `json:"-"`
 	// Value - List of projects.
 	Value *[]Project `json:"value,omitempty"`
+}
+
+// VMFamily VM family name, the list of targeted azure locations and the category of the family.
+type VMFamily struct {
+	// FamilyName - Name of the VM family.
+	FamilyName *string `json:"familyName,omitempty"`
+	// TargetLocations - List of Azure regions.
+	TargetLocations *[]string `json:"targetLocations,omitempty"`
+	// Category - Category of the VM family.
+	Category *[]string `json:"category,omitempty"`
 }

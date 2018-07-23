@@ -40,7 +40,8 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) R
 }
 
 // Get provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-// operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
+// operation.
+// To know the status of the operation, call the GetProtectedItemOperationResult API.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

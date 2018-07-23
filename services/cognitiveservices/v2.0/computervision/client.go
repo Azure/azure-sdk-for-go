@@ -36,19 +36,19 @@ import (
 // BaseClient is the base client for Computervision.
 type BaseClient struct {
 	autorest.Client
-	AzureRegion AzureRegions
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(azureRegion AzureRegions) BaseClient {
-	return NewWithoutDefaults(azureRegion)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:      autorest.NewClientWithUserAgent(UserAgent()),
-		AzureRegion: azureRegion,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }
 
@@ -103,7 +103,7 @@ func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, vi
 // AnalyzeImagePreparer prepares the AnalyzeImage request.
 func (client BaseClient) AnalyzeImagePreparer(ctx context.Context, imageURL ImageURL, visualFeatures []VisualFeatureTypes, details []Details, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -122,7 +122,7 @@ func (client BaseClient) AnalyzeImagePreparer(ctx context.Context, imageURL Imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/analyze"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -191,7 +191,7 @@ func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string,
 // AnalyzeImageByDomainPreparer prepares the AnalyzeImageByDomain request.
 func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model string, imageURL ImageURL, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -208,7 +208,7 @@ func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -271,7 +271,7 @@ func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model
 // AnalyzeImageByDomainInStreamPreparer prepares the AnalyzeImageByDomainInStream request.
 func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -288,7 +288,7 @@ func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -357,7 +357,7 @@ func (client BaseClient) AnalyzeImageInStream(ctx context.Context, imageParamete
 // AnalyzeImageInStreamPreparer prepares the AnalyzeImageInStream request.
 func (client BaseClient) AnalyzeImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, visualFeatures []VisualFeatureTypes, details string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -376,7 +376,7 @@ func (client BaseClient) AnalyzeImageInStreamPreparer(ctx context.Context, image
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/analyze"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -446,7 +446,7 @@ func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, m
 // DescribeImagePreparer prepares the DescribeImage request.
 func (client BaseClient) DescribeImagePreparer(ctx context.Context, imageURL ImageURL, maxCandidates string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -464,7 +464,7 @@ func (client BaseClient) DescribeImagePreparer(ctx context.Context, imageURL Ima
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/describe"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -528,7 +528,7 @@ func (client BaseClient) DescribeImageInStream(ctx context.Context, imageParamet
 // DescribeImageInStreamPreparer prepares the DescribeImageInStream request.
 func (client BaseClient) DescribeImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, maxCandidates string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -546,7 +546,7 @@ func (client BaseClient) DescribeImageInStreamPreparer(ctx context.Context, imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/describe"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -620,7 +620,7 @@ func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, hei
 // GenerateThumbnailPreparer prepares the GenerateThumbnail request.
 func (client BaseClient) GenerateThumbnailPreparer(ctx context.Context, width int32, height int32, imageURL ImageURL, smartCropping *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -636,7 +636,7 @@ func (client BaseClient) GenerateThumbnailPreparer(ctx context.Context, width in
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/generateThumbnail"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -707,7 +707,7 @@ func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width in
 // GenerateThumbnailInStreamPreparer prepares the GenerateThumbnailInStream request.
 func (client BaseClient) GenerateThumbnailInStreamPreparer(ctx context.Context, width int32, height int32, imageParameter io.ReadCloser, smartCropping *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -723,7 +723,7 @@ func (client BaseClient) GenerateThumbnailInStreamPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/generateThumbnail"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -778,7 +778,7 @@ func (client BaseClient) GetTextOperationResult(ctx context.Context, operationID
 // GetTextOperationResultPreparer prepares the GetTextOperationResult request.
 func (client BaseClient) GetTextOperationResultPreparer(ctx context.Context, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -787,7 +787,7 @@ func (client BaseClient) GetTextOperationResultPreparer(ctx context.Context, ope
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPathParameters("/textOperations/{operationId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -841,12 +841,12 @@ func (client BaseClient) ListModels(ctx context.Context) (result ListModelsResul
 // ListModelsPreparer prepares the ListModels request.
 func (client BaseClient) ListModelsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/models"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -913,7 +913,7 @@ func (client BaseClient) RecognizePrintedText(ctx context.Context, detectOrienta
 // RecognizePrintedTextPreparer prepares the RecognizePrintedText request.
 func (client BaseClient) RecognizePrintedTextPreparer(ctx context.Context, detectOrientation bool, imageURL ImageURL, language OcrLanguages) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -928,7 +928,7 @@ func (client BaseClient) RecognizePrintedTextPreparer(ctx context.Context, detec
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/ocr"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -991,7 +991,7 @@ func (client BaseClient) RecognizePrintedTextInStream(ctx context.Context, detec
 // RecognizePrintedTextInStreamPreparer prepares the RecognizePrintedTextInStream request.
 func (client BaseClient) RecognizePrintedTextInStreamPreparer(ctx context.Context, detectOrientation bool, imageParameter io.ReadCloser, language OcrLanguages) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1006,7 +1006,7 @@ func (client BaseClient) RecognizePrintedTextInStreamPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/ocr"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -1070,7 +1070,7 @@ func (client BaseClient) RecognizeText(ctx context.Context, imageURL ImageURL, m
 // RecognizeTextPreparer prepares the RecognizeText request.
 func (client BaseClient) RecognizeTextPreparer(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1080,7 +1080,7 @@ func (client BaseClient) RecognizeTextPreparer(ctx context.Context, imageURL Ima
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/recognizeText"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -1137,7 +1137,7 @@ func (client BaseClient) RecognizeTextInStream(ctx context.Context, imageParamet
 // RecognizeTextInStreamPreparer prepares the RecognizeTextInStream request.
 func (client BaseClient) RecognizeTextInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{
@@ -1147,7 +1147,7 @@ func (client BaseClient) RecognizeTextInStreamPreparer(ctx context.Context, imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/recognizeText"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -1214,7 +1214,7 @@ func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL, langua
 // TagImagePreparer prepares the TagImage request.
 func (client BaseClient) TagImagePreparer(ctx context.Context, imageURL ImageURL, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -1227,7 +1227,7 @@ func (client BaseClient) TagImagePreparer(ctx context.Context, imageURL ImageURL
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/tag"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -1289,7 +1289,7 @@ func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io
 // TagImageInStreamPreparer prepares the TagImageInStream request.
 func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -1302,7 +1302,7 @@ func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imagePara
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v2.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/tag"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))

@@ -1,5 +1,51 @@
 # CHANGELOG
 
+## `v19.0.0`
+
+### Removed Packages
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|        servermanagement | 2015-07-01-preview<br/>2016-07-01-preview |
+
+### Breaking Changes
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|               authoring |          v2.0         |
+|              automation | 2015-10-31<br/>2017-05-15-preview<br/>2018-01-preview |
+|                  backup | 2016-12-01<br/>2017-07-01 |
+|             botservices |       2017-12-01      |
+|                 compute | 2015-06-15<br/>2016-03-30<br/>2017-03-30<br/>2017-12-01<br/>2018-04-01<br/>2016-04-30-preview |
+|          computervision |          v2.0         |
+|       containerregistry |       2017-10-01      |
+|               eventgrid |       2018-01-01      |
+|               hdinsight | 2018-06-01-preview |
+|                insights | 2017-05-01-preview<br/>2018-03-01 |
+|                 migrate |       2018-02-02      |
+|                 runtime |          v2.0         |
+|                     sql |   2017-03-01-preview  |
+|                     web |       2018-02-01      |
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|        alertsmanagement |   2018-05-05-preview  |
+|                 compute |       2018-06-01      |
+|          costmanagement |       2018-05-31      |
+|       servicefabricmesh |   2018-07-01-preview  |
+|            compute/skus |       2017-09-01      |
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|           apimanagement | 2018-01-01<br/>2018-06-01-preview |
+|       containerregistry |       2018-02-01      |
+|        containerservice |       2018-03-31      |
+|              management |   2018-03-01-preview  |
+
 ## `v18.1.0`
 
 ### New Services

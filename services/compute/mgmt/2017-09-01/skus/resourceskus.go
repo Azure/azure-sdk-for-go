@@ -1,4 +1,4 @@
-package compute
+package skus
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -44,20 +44,20 @@ func (client ResourceSkusClient) List(ctx context.Context) (result ResourceSkusR
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.rsr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.rsr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -106,7 +106,7 @@ func (client ResourceSkusClient) ListResponder(resp *http.Response) (result Reso
 func (client ResourceSkusClient) listNextResults(lastResults ResourceSkusResult) (result ResourceSkusResult, err error) {
 	req, err := lastResults.resourceSkusResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -114,11 +114,11 @@ func (client ResourceSkusClient) listNextResults(lastResults ResourceSkusResult)
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "skus.ResourceSkusClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

@@ -345,33 +345,6 @@ func PossibleReceiverStatusValues() []ReceiverStatus {
 	return []ReceiverStatus{ReceiverStatusDisabled, ReceiverStatusEnabled, ReceiverStatusNotSpecified}
 }
 
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// RecurrenceFrequencyDay ...
-	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
-	// RecurrenceFrequencyHour ...
-	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
-	// RecurrenceFrequencyMinute ...
-	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
-	// RecurrenceFrequencyMonth ...
-	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
-	// RecurrenceFrequencyNone ...
-	RecurrenceFrequencyNone RecurrenceFrequency = "None"
-	// RecurrenceFrequencySecond ...
-	RecurrenceFrequencySecond RecurrenceFrequency = "Second"
-	// RecurrenceFrequencyWeek ...
-	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
-	// RecurrenceFrequencyYear ...
-	RecurrenceFrequencyYear RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNone, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
-}
-
 // ResultType enumerates the values for result type.
 type ResultType string
 
@@ -3687,8 +3660,8 @@ type ProxyOnlyResource struct {
 // Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate element
 // is used.
 type Recurrence struct {
-	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. Possible values include: 'RecurrenceFrequencyNone', 'RecurrenceFrequencySecond', 'RecurrenceFrequencyMinute', 'RecurrenceFrequencyHour', 'RecurrenceFrequencyDay', 'RecurrenceFrequencyWeek', 'RecurrenceFrequencyMonth', 'RecurrenceFrequencyYear'
-	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
+	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly.
+	Frequency *string `json:"frequency,omitempty"`
 	// Schedule - the scheduling constraints for when the profile begins.
 	Schedule *RecurrentSchedule `json:"schedule,omitempty"`
 }

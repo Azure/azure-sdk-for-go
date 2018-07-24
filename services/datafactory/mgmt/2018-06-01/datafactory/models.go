@@ -1786,6 +1786,8 @@ type BasicActivity interface {
 
 // Activity a pipeline activity.
 type Activity struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -1953,6 +1955,9 @@ func (a Activity) MarshalJSON() ([]byte, error) {
 	}
 	if a.Type != "" {
 		objectMap["type"] = a.Type
+	}
+	for k, v := range a.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -9729,6 +9734,8 @@ type AzureMLBatchExecutionActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -9768,6 +9775,9 @@ func (ambea AzureMLBatchExecutionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ambea.Type != "" {
 		objectMap["type"] = ambea.Type
+	}
+	for k, v := range ambea.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -9957,6 +9967,18 @@ func (ambea *AzureMLBatchExecutionActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ambea.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ambea.AdditionalProperties == nil {
+					ambea.AdditionalProperties = make(map[string]interface{})
+				}
+				ambea.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -10623,6 +10645,8 @@ type AzureMLUpdateResourceActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -10662,6 +10686,9 @@ func (amura AzureMLUpdateResourceActivity) MarshalJSON() ([]byte, error) {
 	}
 	if amura.Type != "" {
 		objectMap["type"] = amura.Type
+	}
+	for k, v := range amura.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -10851,6 +10878,18 @@ func (amura *AzureMLUpdateResourceActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				amura.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if amura.AdditionalProperties == nil {
+					amura.AdditionalProperties = make(map[string]interface{})
+				}
+				amura.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -21049,6 +21088,8 @@ type BasicControlActivity interface {
 
 // ControlActivity base class for all control activities like IfCondition, ForEach , Until.
 type ControlActivity struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -21136,6 +21177,9 @@ func (ca ControlActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
+	}
+	for k, v := range ca.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -21302,6 +21346,8 @@ type CopyActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -21347,6 +21393,9 @@ func (ca CopyActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
+	}
+	for k, v := range ca.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -21554,6 +21603,18 @@ func (ca *CopyActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ca.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ca.AdditionalProperties == nil {
+					ca.AdditionalProperties = make(map[string]interface{})
+				}
+				ca.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -24210,6 +24271,8 @@ type CustomActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -24249,6 +24312,9 @@ func (ca CustomActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
+	}
+	for k, v := range ca.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -24438,6 +24504,18 @@ func (ca *CustomActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ca.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ca.AdditionalProperties == nil {
+					ca.AdditionalProperties = make(map[string]interface{})
+				}
+				ca.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -25263,6 +25341,8 @@ type DatabricksNotebookActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -25302,6 +25382,9 @@ func (dna DatabricksNotebookActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dna.Type != "" {
 		objectMap["type"] = dna.Type
+	}
+	for k, v := range dna.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -25492,6 +25575,18 @@ func (dna *DatabricksNotebookActivity) UnmarshalJSON(body []byte) error {
 				}
 				dna.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dna.AdditionalProperties == nil {
+					dna.AdditionalProperties = make(map[string]interface{})
+				}
+				dna.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -25574,6 +25669,8 @@ type DatabricksSparkJarActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -25613,6 +25710,9 @@ func (dsja DatabricksSparkJarActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dsja.Type != "" {
 		objectMap["type"] = dsja.Type
+	}
+	for k, v := range dsja.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -25803,6 +25903,18 @@ func (dsja *DatabricksSparkJarActivity) UnmarshalJSON(body []byte) error {
 				}
 				dsja.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dsja.AdditionalProperties == nil {
+					dsja.AdditionalProperties = make(map[string]interface{})
+				}
+				dsja.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -25872,6 +25984,8 @@ type DatabricksSparkPythonActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -25911,6 +26025,9 @@ func (dspa DatabricksSparkPythonActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dspa.Type != "" {
 		objectMap["type"] = dspa.Type
+	}
+	for k, v := range dspa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -26101,6 +26218,18 @@ func (dspa *DatabricksSparkPythonActivity) UnmarshalJSON(body []byte) error {
 				}
 				dspa.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dspa.AdditionalProperties == nil {
+					dspa.AdditionalProperties = make(map[string]interface{})
+				}
+				dspa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -26170,6 +26299,8 @@ type DataLakeAnalyticsUSQLActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -26209,6 +26340,9 @@ func (dlaua DataLakeAnalyticsUSQLActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dlaua.Type != "" {
 		objectMap["type"] = dlaua.Type
+	}
+	for k, v := range dlaua.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -26398,6 +26532,18 @@ func (dlaua *DataLakeAnalyticsUSQLActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dlaua.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if dlaua.AdditionalProperties == nil {
+					dlaua.AdditionalProperties = make(map[string]interface{})
+				}
+				dlaua.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -32907,6 +33053,8 @@ func (es EloquaSource) AsBasicCopySource() (BasicCopySource, bool) {
 type ExecutePipelineActivity struct {
 	// ExecutePipelineActivityTypeProperties - Execute pipeline activity properties.
 	*ExecutePipelineActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -32940,6 +33088,9 @@ func (epa ExecutePipelineActivity) MarshalJSON() ([]byte, error) {
 	}
 	if epa.Type != "" {
 		objectMap["type"] = epa.Type
+	}
+	for k, v := range epa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -33112,6 +33263,18 @@ func (epa *ExecutePipelineActivity) UnmarshalJSON(body []byte) error {
 				}
 				epa.ExecutePipelineActivityTypeProperties = &executePipelineActivityTypeProperties
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if epa.AdditionalProperties == nil {
+					epa.AdditionalProperties = make(map[string]interface{})
+				}
+				epa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -33196,6 +33359,8 @@ type ExecuteSSISPackageActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -33235,6 +33400,9 @@ func (espa ExecuteSSISPackageActivity) MarshalJSON() ([]byte, error) {
 	}
 	if espa.Type != "" {
 		objectMap["type"] = espa.Type
+	}
+	for k, v := range espa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -33425,6 +33593,18 @@ func (espa *ExecuteSSISPackageActivity) UnmarshalJSON(body []byte) error {
 				}
 				espa.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if espa.AdditionalProperties == nil {
+					espa.AdditionalProperties = make(map[string]interface{})
+				}
+				espa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -33565,6 +33745,8 @@ type ExecutionActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -33706,6 +33888,9 @@ func (ea ExecutionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ea.Type != "" {
 		objectMap["type"] = ea.Type
+	}
+	for k, v := range ea.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -35950,6 +36135,8 @@ func (fss FileSystemSource) AsBasicCopySource() (BasicCopySource, bool) {
 type FilterActivity struct {
 	// FilterActivityTypeProperties - Filter activity properties.
 	*FilterActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -35983,6 +36170,9 @@ func (fa FilterActivity) MarshalJSON() ([]byte, error) {
 	}
 	if fa.Type != "" {
 		objectMap["type"] = fa.Type
+	}
+	for k, v := range fa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -36155,6 +36345,18 @@ func (fa *FilterActivity) UnmarshalJSON(body []byte) error {
 				}
 				fa.FilterActivityTypeProperties = &filterActivityTypeProperties
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if fa.AdditionalProperties == nil {
+					fa.AdditionalProperties = make(map[string]interface{})
+				}
+				fa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -36218,6 +36420,8 @@ type FilterActivityTypeProperties struct {
 type ForEachActivity struct {
 	// ForEachActivityTypeProperties - ForEach activity properties.
 	*ForEachActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -36251,6 +36455,9 @@ func (fea ForEachActivity) MarshalJSON() ([]byte, error) {
 	}
 	if fea.Type != "" {
 		objectMap["type"] = fea.Type
+	}
+	for k, v := range fea.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -36422,6 +36629,18 @@ func (fea *ForEachActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				fea.ForEachActivityTypeProperties = &forEachActivityTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if fea.AdditionalProperties == nil {
+					fea.AdditionalProperties = make(map[string]interface{})
+				}
+				fea.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -37137,6 +37356,8 @@ type GetMetadataActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -37176,6 +37397,9 @@ func (gma GetMetadataActivity) MarshalJSON() ([]byte, error) {
 	}
 	if gma.Type != "" {
 		objectMap["type"] = gma.Type
+	}
+	for k, v := range gma.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -37365,6 +37589,18 @@ func (gma *GetMetadataActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gma.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if gma.AdditionalProperties == nil {
+					gma.AdditionalProperties = make(map[string]interface{})
+				}
+				gma.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -41871,6 +42107,8 @@ type HDInsightHiveActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -41910,6 +42148,9 @@ func (hiha HDInsightHiveActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hiha.Type != "" {
 		objectMap["type"] = hiha.Type
+	}
+	for k, v := range hiha.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -42099,6 +42340,18 @@ func (hiha *HDInsightHiveActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hiha.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if hiha.AdditionalProperties == nil {
+					hiha.AdditionalProperties = make(map[string]interface{})
+				}
+				hiha.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -42768,6 +43021,8 @@ type HDInsightMapReduceActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -42807,6 +43062,9 @@ func (himra HDInsightMapReduceActivity) MarshalJSON() ([]byte, error) {
 	}
 	if himra.Type != "" {
 		objectMap["type"] = himra.Type
+	}
+	for k, v := range himra.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -42996,6 +43254,18 @@ func (himra *HDInsightMapReduceActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				himra.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if himra.AdditionalProperties == nil {
+					himra.AdditionalProperties = make(map[string]interface{})
+				}
+				himra.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -43935,6 +44205,8 @@ type HDInsightPigActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -43974,6 +44246,9 @@ func (hipa HDInsightPigActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hipa.Type != "" {
 		objectMap["type"] = hipa.Type
+	}
+	for k, v := range hipa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -44164,6 +44439,18 @@ func (hipa *HDInsightPigActivity) UnmarshalJSON(body []byte) error {
 				}
 				hipa.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if hipa.AdditionalProperties == nil {
+					hipa.AdditionalProperties = make(map[string]interface{})
+				}
+				hipa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -44261,6 +44548,8 @@ type HDInsightSparkActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -44300,6 +44589,9 @@ func (hisa HDInsightSparkActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hisa.Type != "" {
 		objectMap["type"] = hisa.Type
+	}
+	for k, v := range hisa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -44490,6 +44782,18 @@ func (hisa *HDInsightSparkActivity) UnmarshalJSON(body []byte) error {
 				}
 				hisa.Policy = &policy
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if hisa.AdditionalProperties == nil {
+					hisa.AdditionalProperties = make(map[string]interface{})
+				}
+				hisa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -44593,6 +44897,8 @@ type HDInsightStreamingActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -44632,6 +44938,9 @@ func (hisa HDInsightStreamingActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hisa.Type != "" {
 		objectMap["type"] = hisa.Type
+	}
+	for k, v := range hisa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -44821,6 +45130,18 @@ func (hisa *HDInsightStreamingActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hisa.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if hisa.AdditionalProperties == nil {
+					hisa.AdditionalProperties = make(map[string]interface{})
+				}
+				hisa.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -48821,6 +49142,8 @@ func (hs HubspotSource) AsBasicCopySource() (BasicCopySource, bool) {
 type IfConditionActivity struct {
 	// IfConditionActivityTypeProperties - IfCondition activity properties.
 	*IfConditionActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -48854,6 +49177,9 @@ func (ica IfConditionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ica.Type != "" {
 		objectMap["type"] = ica.Type
+	}
+	for k, v := range ica.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -49025,6 +49351,18 @@ func (ica *IfConditionActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ica.IfConditionActivityTypeProperties = &ifConditionActivityTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ica.AdditionalProperties == nil {
+					ica.AdditionalProperties = make(map[string]interface{})
+				}
+				ica.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -53602,6 +53940,8 @@ type LookupActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -53641,6 +53981,9 @@ func (la LookupActivity) MarshalJSON() ([]byte, error) {
 	}
 	if la.Type != "" {
 		objectMap["type"] = la.Type
+	}
+	for k, v := range la.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -53830,6 +54173,18 @@ func (la *LookupActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				la.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if la.AdditionalProperties == nil {
+					la.AdditionalProperties = make(map[string]interface{})
+				}
+				la.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -84502,6 +84857,8 @@ type SQLServerStoredProcedureActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -84541,6 +84898,9 @@ func (ssspa SQLServerStoredProcedureActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ssspa.Type != "" {
 		objectMap["type"] = ssspa.Type
+	}
+	for k, v := range ssspa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -84730,6 +85090,18 @@ func (ssspa *SQLServerStoredProcedureActivity) UnmarshalJSON(body []byte) error 
 					return err
 				}
 				ssspa.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ssspa.AdditionalProperties == nil {
+					ssspa.AdditionalProperties = make(map[string]interface{})
+				}
+				ssspa.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -88802,6 +89174,8 @@ type TumblingWindowTriggerTypeProperties struct {
 type UntilActivity struct {
 	// UntilActivityTypeProperties - Until activity properties.
 	*UntilActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -88835,6 +89209,9 @@ func (ua UntilActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ua.Type != "" {
 		objectMap["type"] = ua.Type
+	}
+	for k, v := range ua.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -89006,6 +89383,18 @@ func (ua *UntilActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ua.UntilActivityTypeProperties = &untilActivityTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ua.AdditionalProperties == nil {
+					ua.AdditionalProperties = make(map[string]interface{})
+				}
+				ua.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {
@@ -90239,6 +90628,8 @@ func (vtd VerticaTableDataset) AsBasicDataset() (BasicDataset, bool) {
 type WaitActivity struct {
 	// WaitActivityTypeProperties - Wait activity properties.
 	*WaitActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -90272,6 +90663,9 @@ func (wa WaitActivity) MarshalJSON() ([]byte, error) {
 	}
 	if wa.Type != "" {
 		objectMap["type"] = wa.Type
+	}
+	for k, v := range wa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -90444,6 +90838,18 @@ func (wa *WaitActivity) UnmarshalJSON(body []byte) error {
 				}
 				wa.WaitActivityTypeProperties = &waitActivityTypeProperties
 			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if wa.AdditionalProperties == nil {
+					wa.AdditionalProperties = make(map[string]interface{})
+				}
+				wa.AdditionalProperties[k] = additionalProperties
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -90509,6 +90915,8 @@ type WebActivity struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 	// Policy - Activity policy.
 	Policy *ActivityPolicy `json:"policy,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Name - Activity name.
 	Name *string `json:"name,omitempty"`
 	// Description - Activity description.
@@ -90548,6 +90956,9 @@ func (wa WebActivity) MarshalJSON() ([]byte, error) {
 	}
 	if wa.Type != "" {
 		objectMap["type"] = wa.Type
+	}
+	for k, v := range wa.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -90737,6 +91148,18 @@ func (wa *WebActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				wa.Policy = &policy
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if wa.AdditionalProperties == nil {
+					wa.AdditionalProperties = make(map[string]interface{})
+				}
+				wa.AdditionalProperties[k] = additionalProperties
 			}
 		case "name":
 			if v != nil {

@@ -32,8 +32,8 @@ type Client struct {
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(azureRegion AzureRegions) Client {
-	return Client{New(azureRegion)}
+func NewClient(endpoint string) Client {
+	return Client{New(endpoint)}
 }
 
 // DetectWithStream detect human faces in an image and returns face locations, and optionally with faceIds, landmarks,
@@ -72,7 +72,7 @@ func (client Client) DetectWithStream(ctx context.Context, imageParameter io.Rea
 // DetectWithStreamPreparer prepares the DetectWithStream request.
 func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -93,7 +93,7 @@ func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParamete
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/detect"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -162,7 +162,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 // DetectWithURLPreparer prepares the DetectWithURL request.
 func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	queryParameters := map[string]interface{}{}
@@ -183,7 +183,7 @@ func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageUR
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/detect"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -254,13 +254,13 @@ func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (
 // FindSimilarPreparer prepares the FindSimilar request.
 func (client Client) FindSimilarPreparer(ctx context.Context, body FindSimilarRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/findsimilars"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -321,13 +321,13 @@ func (client Client) Group(ctx context.Context, body GroupRequest) (result Group
 // GroupPreparer prepares the Group request.
 func (client Client) GroupPreparer(ctx context.Context, body GroupRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/group"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -396,13 +396,13 @@ func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result
 // IdentifyPreparer prepares the Identify request.
 func (client Client) IdentifyPreparer(ctx context.Context, body IdentifyRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/identify"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -463,13 +463,13 @@ func (client Client) VerifyFaceToFace(ctx context.Context, body VerifyFaceToFace
 // VerifyFaceToFacePreparer prepares the VerifyFaceToFace request.
 func (client Client) VerifyFaceToFacePreparer(ctx context.Context, body VerifyFaceToFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/verify"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -534,13 +534,13 @@ func (client Client) VerifyFaceToPerson(ctx context.Context, body VerifyFaceToPe
 // VerifyFaceToPersonPreparer prepares the VerifyFaceToPerson request.
 func (client Client) VerifyFaceToPersonPreparer(ctx context.Context, body VerifyFaceToPersonRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPath("/verify"),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

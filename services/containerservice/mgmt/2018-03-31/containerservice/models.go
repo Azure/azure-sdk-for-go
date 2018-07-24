@@ -1053,8 +1053,6 @@ type ManagedClusterAgentPoolProfile struct {
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
 	// Fqdn - FDQN for the agent pool.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// Ports - Ports number array used to expose on this agent pool. The default opened ports are different based on your choice of orchestrator.
-	Ports *[]int32 `json:"ports,omitempty"`
 	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
 	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.

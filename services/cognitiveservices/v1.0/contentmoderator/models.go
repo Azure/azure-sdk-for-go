@@ -21,43 +21,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// AzureRegionBaseURL enumerates the values for azure region base url.
-type AzureRegionBaseURL string
-
-const (
-	// Australiaeastapicognitivemicrosoftcom ...
-	Australiaeastapicognitivemicrosoftcom AzureRegionBaseURL = "australiaeast.api.cognitive.microsoft.com"
-	// Brazilsouthapicognitivemicrosoftcom ...
-	Brazilsouthapicognitivemicrosoftcom AzureRegionBaseURL = "brazilsouth.api.cognitive.microsoft.com"
-	// ContentmoderatortestazureApinet ...
-	ContentmoderatortestazureApinet AzureRegionBaseURL = "contentmoderatortest.azure-api.net"
-	// Eastasiaapicognitivemicrosoftcom ...
-	Eastasiaapicognitivemicrosoftcom AzureRegionBaseURL = "eastasia.api.cognitive.microsoft.com"
-	// Eastus2apicognitivemicrosoftcom ...
-	Eastus2apicognitivemicrosoftcom AzureRegionBaseURL = "eastus2.api.cognitive.microsoft.com"
-	// Eastusapicognitivemicrosoftcom ...
-	Eastusapicognitivemicrosoftcom AzureRegionBaseURL = "eastus.api.cognitive.microsoft.com"
-	// Northeuropeapicognitivemicrosoftcom ...
-	Northeuropeapicognitivemicrosoftcom AzureRegionBaseURL = "northeurope.api.cognitive.microsoft.com"
-	// Southcentralusapicognitivemicrosoftcom ...
-	Southcentralusapicognitivemicrosoftcom AzureRegionBaseURL = "southcentralus.api.cognitive.microsoft.com"
-	// Southeastasiaapicognitivemicrosoftcom ...
-	Southeastasiaapicognitivemicrosoftcom AzureRegionBaseURL = "southeastasia.api.cognitive.microsoft.com"
-	// Westcentralusapicognitivemicrosoftcom ...
-	Westcentralusapicognitivemicrosoftcom AzureRegionBaseURL = "westcentralus.api.cognitive.microsoft.com"
-	// Westeuropeapicognitivemicrosoftcom ...
-	Westeuropeapicognitivemicrosoftcom AzureRegionBaseURL = "westeurope.api.cognitive.microsoft.com"
-	// Westus2apicognitivemicrosoftcom ...
-	Westus2apicognitivemicrosoftcom AzureRegionBaseURL = "westus2.api.cognitive.microsoft.com"
-	// Westusapicognitivemicrosoftcom ...
-	Westusapicognitivemicrosoftcom AzureRegionBaseURL = "westus.api.cognitive.microsoft.com"
-)
-
-// PossibleAzureRegionBaseURLValues returns an array of possible values for the AzureRegionBaseURL const type.
-func PossibleAzureRegionBaseURLValues() []AzureRegionBaseURL {
-	return []AzureRegionBaseURL{Australiaeastapicognitivemicrosoftcom, Brazilsouthapicognitivemicrosoftcom, ContentmoderatortestazureApinet, Eastasiaapicognitivemicrosoftcom, Eastus2apicognitivemicrosoftcom, Eastusapicognitivemicrosoftcom, Northeuropeapicognitivemicrosoftcom, Southcentralusapicognitivemicrosoftcom, Southeastasiaapicognitivemicrosoftcom, Westcentralusapicognitivemicrosoftcom, Westeuropeapicognitivemicrosoftcom, Westus2apicognitivemicrosoftcom, Westusapicognitivemicrosoftcom}
-}
-
 // StatusEnum enumerates the values for status enum.
 type StatusEnum string
 

@@ -63,7 +63,9 @@ func applyRequestInfo(span opentracing.Span, req *http.Request) {
 }
 
 func applyResponseInfo(span opentracing.Span, res *http.Response) {
-	tag.HTTPStatusCode.Set(span, uint16(res.StatusCode))
+	if res != nil {
+		tag.HTTPStatusCode.Set(span, uint16(res.StatusCode))
+	}
 }
 
 func (s *entity) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {

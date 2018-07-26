@@ -33,8 +33,8 @@ type PersonGroupPersonClient struct {
 }
 
 // NewPersonGroupPersonClient creates an instance of the PersonGroupPersonClient client.
-func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
-	return PersonGroupPersonClient{New(azureRegion)}
+func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
+	return PersonGroupPersonClient{New(endpoint)}
 }
 
 // AddPersonFaceFromStream add a representative face to a person for identification. The input face is specified as an
@@ -82,7 +82,7 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStream(ctx context.Contex
 // AddPersonFaceFromStreamPreparer prepares the AddPersonFaceFromStream request.
 func (client PersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -101,7 +101,7 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -175,7 +175,7 @@ func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, 
 // AddPersonFaceFromURLPreparer prepares the AddPersonFaceFromURL request.
 func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -194,7 +194,7 @@ func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -262,7 +262,7 @@ func (client PersonGroupPersonClient) Create(ctx context.Context, personGroupID 
 // CreatePreparer prepares the Create request.
 func (client PersonGroupPersonClient) CreatePreparer(ctx context.Context, personGroupID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -272,7 +272,7 @@ func (client PersonGroupPersonClient) CreatePreparer(ctx context.Context, person
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -334,7 +334,7 @@ func (client PersonGroupPersonClient) Delete(ctx context.Context, personGroupID 
 // DeletePreparer prepares the Delete request.
 func (client PersonGroupPersonClient) DeletePreparer(ctx context.Context, personGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -344,7 +344,7 @@ func (client PersonGroupPersonClient) DeletePreparer(ctx context.Context, person
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -405,7 +405,7 @@ func (client PersonGroupPersonClient) DeleteFace(ctx context.Context, personGrou
 // DeleteFacePreparer prepares the DeleteFace request.
 func (client PersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -416,7 +416,7 @@ func (client PersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, pe
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -476,7 +476,7 @@ func (client PersonGroupPersonClient) Get(ctx context.Context, personGroupID str
 // GetPreparer prepares the Get request.
 func (client PersonGroupPersonClient) GetPreparer(ctx context.Context, personGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -486,7 +486,7 @@ func (client PersonGroupPersonClient) GetPreparer(ctx context.Context, personGro
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -549,7 +549,7 @@ func (client PersonGroupPersonClient) GetFace(ctx context.Context, personGroupID
 // GetFacePreparer prepares the GetFace request.
 func (client PersonGroupPersonClient) GetFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -560,7 +560,7 @@ func (client PersonGroupPersonClient) GetFacePreparer(ctx context.Context, perso
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -628,7 +628,7 @@ func (client PersonGroupPersonClient) List(ctx context.Context, personGroupID st
 // ListPreparer prepares the List request.
 func (client PersonGroupPersonClient) ListPreparer(ctx context.Context, personGroupID string, start string, top *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -645,7 +645,7 @@ func (client PersonGroupPersonClient) ListPreparer(ctx context.Context, personGr
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -708,7 +708,7 @@ func (client PersonGroupPersonClient) Update(ctx context.Context, personGroupID 
 // UpdatePreparer prepares the Update request.
 func (client PersonGroupPersonClient) UpdatePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -719,7 +719,7 @@ func (client PersonGroupPersonClient) UpdatePreparer(ctx context.Context, person
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -782,7 +782,7 @@ func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGrou
 // UpdateFacePreparer prepares the UpdateFace request.
 func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdatePersonFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
+		"Endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -794,7 +794,7 @@ func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, pe
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

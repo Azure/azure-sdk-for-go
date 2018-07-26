@@ -51,27 +51,6 @@ const (
 	AttributeTypeSmile       AttributeType = original.AttributeTypeSmile
 )
 
-type AzureRegions = original.AzureRegions
-
-const (
-	Australiaeast  AzureRegions = original.Australiaeast
-	Brazilsouth    AzureRegions = original.Brazilsouth
-	Canadacentral  AzureRegions = original.Canadacentral
-	Centralindia   AzureRegions = original.Centralindia
-	Eastasia       AzureRegions = original.Eastasia
-	Eastus         AzureRegions = original.Eastus
-	Eastus2        AzureRegions = original.Eastus2
-	Japaneast      AzureRegions = original.Japaneast
-	Northeurope    AzureRegions = original.Northeurope
-	Southcentralus AzureRegions = original.Southcentralus
-	Southeastasia  AzureRegions = original.Southeastasia
-	Uksouth        AzureRegions = original.Uksouth
-	Westcentralus  AzureRegions = original.Westcentralus
-	Westeurope     AzureRegions = original.Westeurope
-	Westus         AzureRegions = original.Westus
-	Westus2        AzureRegions = original.Westus2
-)
-
 type BlurLevel = original.BlurLevel
 
 const (
@@ -187,26 +166,23 @@ type VerifyResult = original.VerifyResult
 type PersonGroupClient = original.PersonGroupClient
 type PersonGroupPersonClient = original.PersonGroupPersonClient
 
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
-func NewClient(azureRegion AzureRegions) Client {
-	return original.NewClient(azureRegion)
+func NewClient(endpoint string) Client {
+	return original.NewClient(endpoint)
 }
-func NewListClient(azureRegion AzureRegions) ListClient {
-	return original.NewListClient(azureRegion)
+func NewListClient(endpoint string) ListClient {
+	return original.NewListClient(endpoint)
 }
 func PossibleAccessoryTypeValues() []AccessoryType {
 	return original.PossibleAccessoryTypeValues()
 }
 func PossibleAttributeTypeValues() []AttributeType {
 	return original.PossibleAttributeTypeValues()
-}
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
 }
 func PossibleBlurLevelValues() []BlurLevel {
 	return original.PossibleBlurLevelValues()
@@ -232,11 +208,11 @@ func PossibleNoiseLevelValues() []NoiseLevel {
 func PossibleTrainingStatusTypeValues() []TrainingStatusType {
 	return original.PossibleTrainingStatusTypeValues()
 }
-func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
-	return original.NewPersonGroupClient(azureRegion)
+func NewPersonGroupClient(endpoint string) PersonGroupClient {
+	return original.NewPersonGroupClient(endpoint)
 }
-func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
-	return original.NewPersonGroupPersonClient(azureRegion)
+func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
+	return original.NewPersonGroupPersonClient(endpoint)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

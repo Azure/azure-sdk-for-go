@@ -127,19 +127,34 @@ func PossibleFamilyValues() []Family {
 type KindEnum string
 
 const (
-	// KindAAD ...
-	KindAAD KindEnum = "AAD"
-	// KindATA ...
-	KindATA KindEnum = "ATA"
-	// KindCEF ...
-	KindCEF KindEnum = "CEF"
-	// KindExternalSecuritySolution ...
-	KindExternalSecuritySolution KindEnum = "ExternalSecuritySolution"
+	// KindDataExportSettings ...
+	KindDataExportSettings KindEnum = "DataExportSettings"
+	// KindSettings ...
+	KindSettings KindEnum = "Settings"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+	return []KindEnum{KindDataExportSettings, KindSettings}
+}
+
+// KindEnum1 enumerates the values for kind enum 1.
+type KindEnum1 string
+
+const (
+	// KindAAD ...
+	KindAAD KindEnum1 = "AAD"
+	// KindATA ...
+	KindATA KindEnum1 = "ATA"
+	// KindCEF ...
+	KindCEF KindEnum1 = "CEF"
+	// KindExternalSecuritySolution ...
+	KindExternalSecuritySolution KindEnum1 = "ExternalSecuritySolution"
+)
+
+// PossibleKindEnum1Values returns an array of possible values for the KindEnum1 const type.
+func PossibleKindEnum1Values() []KindEnum1 {
+	return []KindEnum1{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
 // PricingTier enumerates the values for pricing tier.
@@ -172,6 +187,19 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
+}
+
+// SettingsKind enumerates the values for settings kind.
+type SettingsKind string
+
+const (
+	// SettingsKindDataExportSettings ...
+	SettingsKindDataExportSettings SettingsKind = "DataExportSettings"
+)
+
+// PossibleSettingsKindValues returns an array of possible values for the SettingsKind const type.
+func PossibleSettingsKindValues() []SettingsKind {
+	return []SettingsKind{SettingsKindDataExportSettings}
 }
 
 // Status enumerates the values for status.
@@ -224,7 +252,7 @@ type AadExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AadExternalSecuritySolution.
@@ -735,7 +763,7 @@ type AtaExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AtaExternalSecuritySolution.
@@ -1021,7 +1049,7 @@ type CefExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CefExternalSecuritySolution.
@@ -1566,6 +1594,123 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// DataExportSettings represents a data export setting
+type DataExportSettings struct {
+	// DataExportSettingsProperties - Data export setting data
+	*DataExportSettingsProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindDataExportSettings'
+	Kind KindEnum `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataExportSettings.
+func (desVar DataExportSettings) MarshalJSON() ([]byte, error) {
+	desVar.Kind = KindDataExportSettings
+	objectMap := make(map[string]interface{})
+	if desVar.DataExportSettingsProperties != nil {
+		objectMap["properties"] = desVar.DataExportSettingsProperties
+	}
+	if desVar.ID != nil {
+		objectMap["id"] = desVar.ID
+	}
+	if desVar.Name != nil {
+		objectMap["name"] = desVar.Name
+	}
+	if desVar.Type != nil {
+		objectMap["type"] = desVar.Type
+	}
+	if desVar.Kind != "" {
+		objectMap["kind"] = desVar.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDataExportSettings is the BasicSettings implementation for DataExportSettings.
+func (desVar DataExportSettings) AsDataExportSettings() (*DataExportSettings, bool) {
+	return &desVar, true
+}
+
+// AsSettings is the BasicSettings implementation for DataExportSettings.
+func (desVar DataExportSettings) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for DataExportSettings.
+func (desVar DataExportSettings) AsBasicSettings() (BasicSettings, bool) {
+	return &desVar, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataExportSettings struct.
+func (desVar *DataExportSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataExportSettingsProperties DataExportSettingsProperties
+				err = json.Unmarshal(*v, &dataExportSettingsProperties)
+				if err != nil {
+					return err
+				}
+				desVar.DataExportSettingsProperties = &dataExportSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				desVar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				desVar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				desVar.Type = &typeVar
+			}
+		case "kind":
+			if v != nil {
+				var kind KindEnum
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				desVar.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataExportSettingsProperties the data export settings properties
+type DataExportSettingsProperties struct {
+	// Enabled - Is the data export setting is enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // DiscoveredSecuritySolution ...
 type DiscoveredSecuritySolution struct {
 	autorest.Response `json:"-"`
@@ -1797,7 +1942,7 @@ type ExternalSecuritySolution struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 func unmarshalBasicExternalSecuritySolution(body []byte) (BasicExternalSecuritySolution, error) {
@@ -1972,7 +2117,7 @@ func (iter ExternalSecuritySolutionListIterator) Response() ExternalSecuritySolu
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ExternalSecuritySolutionListIterator) Value() BasicExternalSecuritySolution {
+func (iter ExternalSecuritySolutionListIterator) Value() ExternalSecuritySolution {
 	if !iter.page.NotDone() {
 		return ExternalSecuritySolution{}
 	}
@@ -1996,7 +2141,7 @@ func (essl ExternalSecuritySolutionList) externalSecuritySolutionListPreparer() 
 		autorest.WithBaseURL(to.String(essl.NextLink)))
 }
 
-// ExternalSecuritySolutionListPage contains a page of BasicExternalSecuritySolution values.
+// ExternalSecuritySolutionListPage contains a page of ExternalSecuritySolution values.
 type ExternalSecuritySolutionListPage struct {
 	fn   func(ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)
 	essl ExternalSecuritySolutionList
@@ -2024,7 +2169,7 @@ func (page ExternalSecuritySolutionListPage) Response() ExternalSecuritySolution
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ExternalSecuritySolutionListPage) Values() []BasicExternalSecuritySolution {
+func (page ExternalSecuritySolutionListPage) Values() []ExternalSecuritySolution {
 	if page.essl.IsEmpty() {
 		return nil
 	}
@@ -2704,6 +2849,253 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// BasicSettings represents a security setting in Azure Security Center.
+type BasicSettings interface {
+	AsDataExportSettings() (*DataExportSettings, bool)
+	AsSettings() (*Settings, bool)
+}
+
+// Settings represents a security setting in Azure Security Center.
+type Settings struct {
+	autorest.Response `json:"-"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindDataExportSettings'
+	Kind KindEnum `json:"kind,omitempty"`
+}
+
+func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindDataExportSettings):
+		var desVar DataExportSettings
+		err := json.Unmarshal(body, &desVar)
+		return desVar, err
+	default:
+		var s Settings
+		err := json.Unmarshal(body, &s)
+		return s, err
+	}
+}
+func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sArray := make([]BasicSettings, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		s, err := unmarshalBasicSettings(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sArray[index] = s
+	}
+	return sArray, nil
+}
+
+// MarshalJSON is the custom marshaler for Settings.
+func (s Settings) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSettings
+	objectMap := make(map[string]interface{})
+	if s.ID != nil {
+		objectMap["id"] = s.ID
+	}
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.Type != nil {
+		objectMap["type"] = s.Type
+	}
+	if s.Kind != "" {
+		objectMap["kind"] = s.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDataExportSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsDataExportSettings() (*DataExportSettings, bool) {
+	return nil, false
+}
+
+// AsSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsSettings() (*Settings, bool) {
+	return &s, true
+}
+
+// AsBasicSettings is the BasicSettings implementation for Settings.
+func (s Settings) AsBasicSettings() (BasicSettings, bool) {
+	return &s, true
+}
+
+// SettingsKind1 the kind of the security settings
+type SettingsKind1 struct {
+	// Kind - the kind of the settings string. Possible values include: 'SettingsKindDataExportSettings'
+	Kind SettingsKind `json:"kind,omitempty"`
+}
+
+// SettingsList subscription settings list.
+type SettingsList struct {
+	autorest.Response `json:"-"`
+	// Value - The settings list.
+	Value *[]BasicSettings `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsList struct.
+func (sl *SettingsList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicSettingsArray(*v)
+				if err != nil {
+					return err
+				}
+				sl.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				sl.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
+}
+
+// SettingsListIterator provides access to a complete listing of Settings values.
+type SettingsListIterator struct {
+	i    int
+	page SettingsListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SettingsListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SettingsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SettingsListIterator) Response() SettingsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SettingsListIterator) Value() Settings {
+	if !iter.page.NotDone() {
+		return Settings{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sl SettingsList) IsEmpty() bool {
+	return sl.Value == nil || len(*sl.Value) == 0
+}
+
+// settingsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sl SettingsList) settingsListPreparer() (*http.Request, error) {
+	if sl.NextLink == nil || len(to.String(sl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sl.NextLink)))
+}
+
+// SettingsListPage contains a page of Settings values.
+type SettingsListPage struct {
+	fn func(SettingsList) (SettingsList, error)
+	sl SettingsList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SettingsListPage) Next() error {
+	next, err := page.fn(page.sl)
+	if err != nil {
+		return err
+	}
+	page.sl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SettingsListPage) NotDone() bool {
+	return !page.sl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SettingsListPage) Response() SettingsList {
+	return page.sl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SettingsListPage) Values() []Settings {
+	if page.sl.IsEmpty() {
+		return nil
+	}
+	return *page.sl.Value
+}
+
+// SettingsModel ...
+type SettingsModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSettings `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsModel struct.
+func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSettings(body)
+	if err != nil {
+		return err
+	}
+	sm.Value = s
+
+	return nil
 }
 
 // Task security task that we recommend to do in order to strengthen security

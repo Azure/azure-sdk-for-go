@@ -210,14 +210,15 @@ func (client SettingsClient) ListComplete(ctx context.Context) (result SettingsL
 // Update updating settings about different configurations in security center
 // Parameters:
 // settingName - name of setting
-func (client SettingsClient) Update(ctx context.Context, settingName string) (result SettingsModel, err error) {
+// settings - settings object
+func (client SettingsClient) Update(ctx context.Context, settingName string, settings BasicSettings) (result SettingsModel, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.SettingsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, settingName)
+	req, err := client.UpdatePreparer(ctx, settingName, settings)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SettingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -239,7 +240,7 @@ func (client SettingsClient) Update(ctx context.Context, settingName string) (re
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string) (*http.Request, error) {
+func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName string, settings BasicSettings) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"settingName":    autorest.Encode("path", settingName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -251,9 +252,11 @@ func (client SettingsClient) UpdatePreparer(ctx context.Context, settingName str
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings/{settingName}", pathParameters),
+		autorest.WithJSON(settings),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

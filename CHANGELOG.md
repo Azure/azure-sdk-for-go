@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v19.1.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|              iotcentral |       2018-09-01      |
+|                 network |       2018-06-01      |
+|                security |   2017-08-01-preview  |
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|               eventgrid |       2018-01-01      |
+
 ## `v19.0.0`
 
 ### Removed Packages

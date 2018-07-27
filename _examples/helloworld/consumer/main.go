@@ -22,13 +22,15 @@ func main() {
 	q, err := getQueue(ns, queueName)
 	if err != nil {
 		fmt.Printf("failed to build a new queue named %q\n", queueName)
+		fmt.Printf("error %s\n", err)
 		os.Exit(1)
 	}
 
 	exit := make(chan struct{})
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
+	fmt.Println("Setting up listener...")
 	listenHandle, err := q.Receive(ctx, func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
 		text := string(message.Data)
 		if text == "exit\n" {
@@ -60,7 +62,7 @@ func main() {
 }
 
 func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
 	qm := ns.NewQueueManager()

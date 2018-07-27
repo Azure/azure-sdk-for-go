@@ -1,16 +1,19 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"os"
-	"time"
+"context"
+"fmt"
+"io"
+"os"
 
-	"github.com/Azure/azure-service-bus-go"
-	"github.com/uber/jaeger-client-go"
-	"github.com/uber/jaeger-client-go/config"
-	jaegerlog "github.com/uber/jaeger-client-go/log"
+
+
+
+
+"github.com/Azure/azure-service-bus-go"
+"github.com/uber/jaeger-client-go"
+"github.com/uber/jaeger-client-go/config"
+jaegerlog "github.com/uber/jaeger-client-go/log"
 )
 
 func main() {
@@ -88,8 +91,6 @@ func startOpenTracing() (io.Closer, error) {
 }
 
 func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
 	q, err := ns.NewQueue(queueName)
 	return q, err
 }

@@ -202,6 +202,14 @@ type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
+type TopologyList = original.TopologyList
+type TopologyListIterator = original.TopologyListIterator
+type TopologyListPage = original.TopologyListPage
+type TopologyResource = original.TopologyResource
+type TopologyResourceProperties = original.TopologyResourceProperties
+type TopologySingleResource = original.TopologySingleResource
+type TopologySingleResourceChild = original.TopologySingleResourceChild
+type TopologySingleResourceParent = original.TopologySingleResourceParent
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -210,6 +218,7 @@ type WorkspaceSettingProperties = original.WorkspaceSettingProperties
 type OperationsClient = original.OperationsClient
 type PricingsClient = original.PricingsClient
 type TasksClient = original.TasksClient
+type TopologyClient = original.TopologyClient
 type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
@@ -316,6 +325,12 @@ func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
 }
 func NewTasksClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TasksClient {
 	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewTopologyClient(subscriptionID string, ascLocation string) TopologyClient {
+	return original.NewTopologyClient(subscriptionID, ascLocation)
+}
+func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TopologyClient {
+	return original.NewTopologyClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

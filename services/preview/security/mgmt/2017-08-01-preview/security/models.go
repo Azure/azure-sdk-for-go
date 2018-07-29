@@ -3135,7 +3135,7 @@ type TopologySingleResource struct {
 	RecommendationsExist *bool `json:"recommendationsExist,omitempty"`
 	// NetworkZones - Indicates the resource connectivity level to the Internet (InternetFacing, Internal ,etc.)
 	NetworkZones *string `json:"networkZones,omitempty"`
-	// TopologyScore - Security score of the resource based on its severity, siblings security status and location in topology (to be used for clustering similar objects together)
+	// TopologyScore - Score of the resource based on its security severity
 	TopologyScore *int32 `json:"topologyScore,omitempty"`
 	// Location - The location of this resource
 	Location *string `json:"location,omitempty"`

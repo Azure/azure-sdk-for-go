@@ -84,8 +84,8 @@ const (
 type KindEnum = original.KindEnum
 
 const (
-	KindDataExportSettings KindEnum = original.KindDataExportSettings
-	KindSettings           KindEnum = original.KindSettings
+	KindDataExportSetting KindEnum = original.KindDataExportSetting
+	KindSetting           KindEnum = original.KindSetting
 )
 
 type KindEnum1 = original.KindEnum1
@@ -115,7 +115,7 @@ const (
 type SettingsKind = original.SettingsKind
 
 const (
-	SettingsKindDataExportSettings SettingsKind = original.SettingsKindDataExportSettings
+	SettingsKindDataExportSetting SettingsKind = original.SettingsKindDataExportSetting
 )
 
 type Status = original.Status
@@ -170,8 +170,8 @@ type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
-type DataExportSettings = original.DataExportSettings
-type DataExportSettingsProperties = original.DataExportSettingsProperties
+type DataExportSetting = original.DataExportSetting
+type DataExportSettingProperties = original.DataExportSettingProperties
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -211,13 +211,13 @@ type PricingListIterator = original.PricingListIterator
 type PricingListPage = original.PricingListPage
 type PricingProperties = original.PricingProperties
 type Resource = original.Resource
-type BasicSettings = original.BasicSettings
-type Settings = original.Settings
-type SettingsKind1 = original.SettingsKind1
+type BasicSetting = original.BasicSetting
+type Setting = original.Setting
+type SettingKind = original.SettingKind
+type SettingModel = original.SettingModel
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
-type SettingsModel = original.SettingsModel
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator

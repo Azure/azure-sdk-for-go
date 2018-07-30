@@ -127,15 +127,15 @@ func PossibleFamilyValues() []Family {
 type KindEnum string
 
 const (
-	// KindDataExportSettings ...
-	KindDataExportSettings KindEnum = "DataExportSettings"
-	// KindSettings ...
-	KindSettings KindEnum = "Settings"
+	// KindDataExportSetting ...
+	KindDataExportSetting KindEnum = "DataExportSetting"
+	// KindSetting ...
+	KindSetting KindEnum = "Setting"
 )
 
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
-	return []KindEnum{KindDataExportSettings, KindSettings}
+	return []KindEnum{KindDataExportSetting, KindSetting}
 }
 
 // KindEnum1 enumerates the values for kind enum 1.
@@ -193,13 +193,13 @@ func PossibleProtocolValues() []Protocol {
 type SettingsKind string
 
 const (
-	// SettingsKindDataExportSettings ...
-	SettingsKindDataExportSettings SettingsKind = "DataExportSettings"
+	// SettingsKindDataExportSetting ...
+	SettingsKindDataExportSetting SettingsKind = "DataExportSetting"
 )
 
 // PossibleSettingsKindValues returns an array of possible values for the SettingsKind const type.
 func PossibleSettingsKindValues() []SettingsKind {
-	return []SettingsKind{SettingsKindDataExportSettings}
+	return []SettingsKind{SettingsKindDataExportSetting}
 }
 
 // Status enumerates the values for status.
@@ -1594,26 +1594,26 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
-// DataExportSettings represents a data export setting
-type DataExportSettings struct {
-	// DataExportSettingsProperties - Data export setting data
-	*DataExportSettingsProperties `json:"properties,omitempty"`
+// DataExportSetting represents a data export setting
+type DataExportSetting struct {
+	// DataExportSettingProperties - Data export setting data
+	*DataExportSettingProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindDataExportSettings'
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
 	Kind KindEnum `json:"kind,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for DataExportSettings.
-func (desVar DataExportSettings) MarshalJSON() ([]byte, error) {
-	desVar.Kind = KindDataExportSettings
+// MarshalJSON is the custom marshaler for DataExportSetting.
+func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
+	desVar.Kind = KindDataExportSetting
 	objectMap := make(map[string]interface{})
-	if desVar.DataExportSettingsProperties != nil {
-		objectMap["properties"] = desVar.DataExportSettingsProperties
+	if desVar.DataExportSettingProperties != nil {
+		objectMap["properties"] = desVar.DataExportSettingProperties
 	}
 	if desVar.ID != nil {
 		objectMap["id"] = desVar.ID
@@ -1630,23 +1630,23 @@ func (desVar DataExportSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsDataExportSettings is the BasicSettings implementation for DataExportSettings.
-func (desVar DataExportSettings) AsDataExportSettings() (*DataExportSettings, bool) {
+// AsDataExportSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsDataExportSetting() (*DataExportSetting, bool) {
 	return &desVar, true
 }
 
-// AsSettings is the BasicSettings implementation for DataExportSettings.
-func (desVar DataExportSettings) AsSettings() (*Settings, bool) {
+// AsSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsSetting() (*Setting, bool) {
 	return nil, false
 }
 
-// AsBasicSettings is the BasicSettings implementation for DataExportSettings.
-func (desVar DataExportSettings) AsBasicSettings() (BasicSettings, bool) {
+// AsBasicSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsBasicSetting() (BasicSetting, bool) {
 	return &desVar, true
 }
 
-// UnmarshalJSON is the custom unmarshaler for DataExportSettings struct.
-func (desVar *DataExportSettings) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for DataExportSetting struct.
+func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1656,12 +1656,12 @@ func (desVar *DataExportSettings) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var dataExportSettingsProperties DataExportSettingsProperties
-				err = json.Unmarshal(*v, &dataExportSettingsProperties)
+				var dataExportSettingProperties DataExportSettingProperties
+				err = json.Unmarshal(*v, &dataExportSettingProperties)
 				if err != nil {
 					return err
 				}
-				desVar.DataExportSettingsProperties = &dataExportSettingsProperties
+				desVar.DataExportSettingProperties = &dataExportSettingProperties
 			}
 		case "id":
 			if v != nil {
@@ -1705,8 +1705,8 @@ func (desVar *DataExportSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataExportSettingsProperties the data export settings properties
-type DataExportSettingsProperties struct {
+// DataExportSettingProperties the data export setting properties
+type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
@@ -2851,14 +2851,14 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// BasicSettings represents a security setting in Azure Security Center.
-type BasicSettings interface {
-	AsDataExportSettings() (*DataExportSettings, bool)
-	AsSettings() (*Settings, bool)
+// BasicSetting represents a security setting in Azure Security Center.
+type BasicSetting interface {
+	AsDataExportSetting() (*DataExportSetting, bool)
+	AsSetting() (*Setting, bool)
 }
 
-// Settings represents a security setting in Azure Security Center.
-type Settings struct {
+// Setting represents a security setting in Azure Security Center.
+type Setting struct {
 	autorest.Response `json:"-"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -2866,11 +2866,11 @@ type Settings struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindDataExportSettings'
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
 	Kind KindEnum `json:"kind,omitempty"`
 }
 
-func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
+func unmarshalBasicSetting(body []byte) (BasicSetting, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -2878,27 +2878,27 @@ func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindDataExportSettings):
-		var desVar DataExportSettings
+	case string(KindDataExportSetting):
+		var desVar DataExportSetting
 		err := json.Unmarshal(body, &desVar)
 		return desVar, err
 	default:
-		var s Settings
+		var s Setting
 		err := json.Unmarshal(body, &s)
 		return s, err
 	}
 }
-func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
+func unmarshalBasicSettingArray(body []byte) ([]BasicSetting, error) {
 	var rawMessages []*json.RawMessage
 	err := json.Unmarshal(body, &rawMessages)
 	if err != nil {
 		return nil, err
 	}
 
-	sArray := make([]BasicSettings, len(rawMessages))
+	sArray := make([]BasicSetting, len(rawMessages))
 
 	for index, rawMessage := range rawMessages {
-		s, err := unmarshalBasicSettings(*rawMessage)
+		s, err := unmarshalBasicSetting(*rawMessage)
 		if err != nil {
 			return nil, err
 		}
@@ -2907,9 +2907,9 @@ func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
 	return sArray, nil
 }
 
-// MarshalJSON is the custom marshaler for Settings.
-func (s Settings) MarshalJSON() ([]byte, error) {
-	s.Kind = KindSettings
+// MarshalJSON is the custom marshaler for Setting.
+func (s Setting) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSetting
 	objectMap := make(map[string]interface{})
 	if s.ID != nil {
 		objectMap["id"] = s.ID
@@ -2926,32 +2926,49 @@ func (s Settings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsDataExportSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsDataExportSettings() (*DataExportSettings, bool) {
+// AsDataExportSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsDataExportSetting() (*DataExportSetting, bool) {
 	return nil, false
 }
 
-// AsSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsSettings() (*Settings, bool) {
+// AsSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsSetting() (*Setting, bool) {
 	return &s, true
 }
 
-// AsBasicSettings is the BasicSettings implementation for Settings.
-func (s Settings) AsBasicSettings() (BasicSettings, bool) {
+// AsBasicSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsBasicSetting() (BasicSetting, bool) {
 	return &s, true
 }
 
-// SettingsKind1 the kind of the security settings
-type SettingsKind1 struct {
-	// Kind - the kind of the settings string. Possible values include: 'SettingsKindDataExportSettings'
+// SettingKind the kind of the security setting
+type SettingKind struct {
+	// Kind - the kind of the settings string. Possible values include: 'SettingsKindDataExportSetting'
 	Kind SettingsKind `json:"kind,omitempty"`
+}
+
+// SettingModel ...
+type SettingModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSetting `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingModel struct.
+func (sm *SettingModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSetting(body)
+	if err != nil {
+		return err
+	}
+	sm.Value = s
+
+	return nil
 }
 
 // SettingsList subscription settings list.
 type SettingsList struct {
 	autorest.Response `json:"-"`
 	// Value - The settings list.
-	Value *[]BasicSettings `json:"value,omitempty"`
+	Value *[]BasicSetting `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -2967,7 +2984,7 @@ func (sl *SettingsList) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "value":
 			if v != nil {
-				value, err := unmarshalBasicSettingsArray(*v)
+				value, err := unmarshalBasicSettingArray(*v)
 				if err != nil {
 					return err
 				}
@@ -2988,7 +3005,7 @@ func (sl *SettingsList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SettingsListIterator provides access to a complete listing of Settings values.
+// SettingsListIterator provides access to a complete listing of Setting values.
 type SettingsListIterator struct {
 	i    int
 	page SettingsListPage
@@ -3022,9 +3039,9 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() Settings {
+func (iter SettingsListIterator) Value() Setting {
 	if !iter.page.NotDone() {
-		return Settings{}
+		return Setting{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -3046,7 +3063,7 @@ func (sl SettingsList) settingsListPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of Settings values.
+// SettingsListPage contains a page of Setting values.
 type SettingsListPage struct {
 	fn func(SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -3074,28 +3091,11 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []Settings {
+func (page SettingsListPage) Values() []Setting {
 	if page.sl.IsEmpty() {
 		return nil
 	}
 	return *page.sl.Value
-}
-
-// SettingsModel ...
-type SettingsModel struct {
-	autorest.Response `json:"-"`
-	Value             BasicSettings `json:"value,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for SettingsModel struct.
-func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
-	s, err := unmarshalBasicSettings(body)
-	if err != nil {
-		return err
-	}
-	sm.Value = s
-
-	return nil
 }
 
 // Task security task that we recommend to do in order to strengthen security

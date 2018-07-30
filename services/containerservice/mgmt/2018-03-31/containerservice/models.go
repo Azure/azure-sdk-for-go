@@ -655,6 +655,20 @@ func (future *ContainerServicesDeleteFutureType) Result(client ContainerServices
 	return
 }
 
+// CredentialResult the credential result response.
+type CredentialResult struct {
+	// Name - The name of the credential.
+	Name *string `json:"name,omitempty"`
+	// Value - The value of the credential.
+	Value *string `json:"value,omitempty"`
+}
+
+// CredentialResults the list of credential result response.
+type CredentialResults struct {
+	autorest.Response `json:"-"`
+	Values            *[]CredentialResult `json:"values,omitempty"`
+}
+
 // CustomProfile properties to configure a custom container service cluster.
 type CustomProfile struct {
 	// Orchestrator - The name of the custom orchestrator to use.
@@ -1049,13 +1063,7 @@ type ManagedClusterAgentPoolProfile struct {
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
-	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the agent pool.
-	Fqdn *string `json:"fqdn,omitempty"`
-	// Ports - Ports number array used to expose on this agent pool. The default opened ports are different based on your choice of orchestrator.
-	Ports *[]int32 `json:"ports,omitempty"`
-	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
+	// StorageProfile - Storage profile specifies what kind of storage used. Defaults to ManagedDisks. Possible values include: 'StorageAccount', 'ManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
 	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`

@@ -655,6 +655,20 @@ func (future *ContainerServicesDeleteFutureType) Result(client ContainerServices
 	return
 }
 
+// CredentialResult the credential result response.
+type CredentialResult struct {
+	// Name - The name of the credential.
+	Name *string `json:"name,omitempty"`
+	// Value - The value of the credential.
+	Value *string `json:"value,omitempty"`
+}
+
+// CredentialResults the list of credential result response.
+type CredentialResults struct {
+	autorest.Response `json:"-"`
+	Values            *[]CredentialResult `json:"values,omitempty"`
+}
+
 // CustomProfile properties to configure a custom container service cluster.
 type CustomProfile struct {
 	// Orchestrator - The name of the custom orchestrator to use.

@@ -1193,8 +1193,8 @@ type ManagedClusterProperties struct {
 	AgentPoolProfiles *[]ManagedClusterAgentPoolProfile `json:"agentPoolProfiles,omitempty"`
 	// LinuxProfile - Profile for Linux VMs in the container service cluster.
 	LinuxProfile *LinuxProfile `json:"linuxProfile,omitempty"`
-	// ServicePrincipalProfile - Information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified.
-	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
+	// ServicePrincipalProfile - Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+	ServicePrincipalProfile *ManagedClusterServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
 	// AddonProfiles - Profile of managed cluster add-on.
 	AddonProfiles map[string]*ManagedClusterAddonProfile `json:"addonProfiles"`
 	// NodeResourceGroup - Name of the resource group containing agent pool nodes.
@@ -1299,6 +1299,15 @@ func (future *ManagedClustersDeleteFuture) Result(client ManagedClustersClient) 
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ManagedClusterServicePrincipalProfile information about a service principal identity for the cluster to use for
+// manipulating Azure APIs.
+type ManagedClusterServicePrincipalProfile struct {
+	// ClientID - The ID for the service principal.
+	ClientID *string `json:"clientId,omitempty"`
+	// Secret - The secret password associated with the service principal in plain text.
+	Secret *string `json:"secret,omitempty"`
 }
 
 // ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running

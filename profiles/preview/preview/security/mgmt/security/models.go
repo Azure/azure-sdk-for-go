@@ -112,10 +112,10 @@ const (
 	UDP Protocol = original.UDP
 )
 
-type SettingsKind = original.SettingsKind
+type SettingKind = original.SettingKind
 
 const (
-	SettingsKindDataExportSetting SettingsKind = original.SettingsKindDataExportSetting
+	SettingKindDataExportSetting SettingKind = original.SettingKindDataExportSetting
 )
 
 type Status = original.Status
@@ -213,7 +213,7 @@ type PricingProperties = original.PricingProperties
 type Resource = original.Resource
 type BasicSetting = original.BasicSetting
 type Setting = original.Setting
-type SettingKind = original.SettingKind
+type SettingKind1 = original.SettingKind1
 type SettingModel = original.SettingModel
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
@@ -319,8 +319,8 @@ func PossiblePricingTierValues() []PricingTier {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
-func PossibleSettingsKindValues() []SettingsKind {
-	return original.PossibleSettingsKindValues()
+func PossibleSettingKindValues() []SettingKind {
+	return original.PossibleSettingKindValues()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

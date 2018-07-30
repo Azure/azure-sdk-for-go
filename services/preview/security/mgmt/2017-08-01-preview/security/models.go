@@ -189,17 +189,17 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
 }
 
-// SettingsKind enumerates the values for settings kind.
-type SettingsKind string
+// SettingKind enumerates the values for setting kind.
+type SettingKind string
 
 const (
-	// SettingsKindDataExportSetting ...
-	SettingsKindDataExportSetting SettingsKind = "DataExportSetting"
+	// SettingKindDataExportSetting ...
+	SettingKindDataExportSetting SettingKind = "DataExportSetting"
 )
 
-// PossibleSettingsKindValues returns an array of possible values for the SettingsKind const type.
-func PossibleSettingsKindValues() []SettingsKind {
-	return []SettingsKind{SettingsKindDataExportSetting}
+// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
+func PossibleSettingKindValues() []SettingKind {
+	return []SettingKind{SettingKindDataExportSetting}
 }
 
 // Status enumerates the values for status.
@@ -2941,10 +2941,10 @@ func (s Setting) AsBasicSetting() (BasicSetting, bool) {
 	return &s, true
 }
 
-// SettingKind the kind of the security setting
-type SettingKind struct {
-	// Kind - the kind of the settings string. Possible values include: 'SettingsKindDataExportSetting'
-	Kind SettingsKind `json:"kind,omitempty"`
+// SettingKind1 the kind of the security setting
+type SettingKind1 struct {
+	// Kind - the kind of the settings string. Possible values include: 'SettingKindDataExportSetting'
+	Kind SettingKind `json:"kind,omitempty"`
 }
 
 // SettingModel ...

@@ -96,7 +96,7 @@ func (client LargeFaceListFaceClient) ListPreparer(ctx context.Context, largeFac
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

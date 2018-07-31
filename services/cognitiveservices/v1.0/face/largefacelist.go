@@ -100,7 +100,7 @@ func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context,
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -191,7 +191,7 @@ func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, la
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -410,7 +410,7 @@ func (client LargeFaceListClient) DeleteFacePreparer(ctx context.Context, largeF
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -550,7 +550,7 @@ func (client LargeFaceListClient) GetFacePreparer(ctx context.Context, largeFace
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -888,7 +888,7 @@ func (client LargeFaceListClient) UpdateFacePreparer(ctx context.Context, largeF
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedFaces/{persistedFaceId}", pathParameters),
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces/{persistedFaceId}", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

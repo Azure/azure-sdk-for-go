@@ -102,7 +102,7 @@ func (client LargePersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx c
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -195,7 +195,7 @@ func (client LargePersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx cont
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -418,7 +418,7 @@ func (client LargePersonGroupPersonClient) DeleteFacePreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -562,7 +562,7 @@ func (client LargePersonGroupPersonClient) GetFacePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -796,7 +796,7 @@ func (client LargePersonGroupPersonClient) UpdateFacePreparer(ctx context.Contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters),
+		autorest.WithPathParameters("/largepersongroups/{largePersonGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -321,6 +321,23 @@ type Display struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// ErrorDetails the details of the error.
+type ErrorDetails struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error.
+	Target *string `json:"target,omitempty"`
+}
+
+// ErrorResponse error response indicates that the service is not able to process the incoming request. The reason
+// is provided in the error message.
+type ErrorResponse struct {
+	// Error - The details of the error.
+	Error *ErrorDetails `json:"error,omitempty"`
+}
+
 // ExtendedProduct extended description about the product required for installing it into Azure Stack.
 type ExtendedProduct struct {
 	autorest.Response `json:"-"`

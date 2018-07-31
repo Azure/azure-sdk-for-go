@@ -17644,8 +17644,8 @@ func (client AppsClient) ListMetricDefinitionsSlotComplete(ctx context.Context, 
 // name - name of the app.
 // details - specify "true" to include metric details in the response. It is "false" by default.
 // filter - return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value
-// eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq
-// '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+// eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
+// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -17759,8 +17759,8 @@ func (client AppsClient) ListMetricsComplete(ctx context.Context, resourceGroupN
 // slot.
 // details - specify "true" to include metric details in the response. It is "false" by default.
 // filter - return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value
-// eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq
-// '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+// eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
+// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListMetricsSlot(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -18029,7 +18029,7 @@ func (client AppsClient) ListNetworkFeaturesSlotResponder(resp *http.Response) (
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
 // filter - return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-// $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq
+// $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
 // duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListPerfMonCounters(ctx context.Context, resourceGroupName string, name string, filter string) (result PerfMonCounterCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -18139,7 +18139,7 @@ func (client AppsClient) ListPerfMonCountersComplete(ctx context.Context, resour
 // name - name of web app.
 // slot - name of web app slot. If not specified then will default to production slot.
 // filter - return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
-// $filter=(startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq
+// $filter=(startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
 // duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListPerfMonCountersSlot(ctx context.Context, resourceGroupName string, name string, slot string, filter string) (result PerfMonCounterCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -21265,8 +21265,8 @@ func (client AppsClient) ListTriggeredWebJobsSlotComplete(ctx context.Context, r
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // filter - return only information specified in the filter (using OData syntax). For example:
-// $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
-// endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+// $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+// endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListUsages(ctx context.Context, resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -21376,8 +21376,8 @@ func (client AppsClient) ListUsagesComplete(ctx context.Context, resourceGroupNa
 // slot - name of the deployment slot. If a slot is not specified, the API will get quota information of the
 // production slot.
 // filter - return only information specified in the filter (using OData syntax). For example:
-// $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
-// endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+// $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+// endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client AppsClient) ListUsagesSlot(ctx context.Context, resourceGroupName string, name string, slot string, filter string) (result CsmUsageQuotaCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

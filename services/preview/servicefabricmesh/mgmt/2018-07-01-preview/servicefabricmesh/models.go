@@ -592,7 +592,7 @@ type DiagnosticsDescription struct {
 	// Enabled - Status of whether or not sinks are enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// DefaultSinkRefs - The sinks to be used if diagnostics is enabled. Sink choices can be overridden at the service and code package level.
-	DefaultSinkRefs *[]string `json:"defaultSinkRefs,omitempty"`
+	DefaultSinkRefs *string `json:"defaultSinkRefs,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DiagnosticsDescription struct.
@@ -623,7 +623,7 @@ func (dd *DiagnosticsDescription) UnmarshalJSON(body []byte) error {
 			}
 		case "defaultSinkRefs":
 			if v != nil {
-				var defaultSinkRefs []string
+				var defaultSinkRefs string
 				err = json.Unmarshal(*v, &defaultSinkRefs)
 				if err != nil {
 					return err

@@ -700,6 +700,92 @@ func (client LargeFaceListClient) ListResponder(resp *http.Response) (result Lis
 	return
 }
 
+// ListFaces list all faces in a large face list, and retrieve face information (including userData and
+// persistedFaceIds of registered faces of the face).
+// Parameters:
+// largeFaceListID - id referencing a particular large face list.
+// start - starting face id to return (used to list a range of faces).
+// top - number of faces to return starting with the face id indicated by the 'start' parameter.
+func (client LargeFaceListClient) ListFaces(ctx context.Context, largeFaceListID string, start string, top *int32) (result ListPersistedFace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: largeFaceListID,
+			Constraints: []validation.Constraint{{Target: "largeFaceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "largeFaceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("face.LargeFaceListClient", "ListFaces", err.Error())
+	}
+
+	req, err := client.ListFacesPreparer(ctx, largeFaceListID, start, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "ListFaces", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListFacesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "ListFaces", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListFacesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "ListFaces", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListFacesPreparer prepares the ListFaces request.
+func (client LargeFaceListClient) ListFacesPreparer(ctx context.Context, largeFaceListID string, start string, top *int32) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"largeFaceListId": autorest.Encode("path", largeFaceListID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(start) > 0 {
+		queryParameters["start"] = autorest.Encode("query", start)
+	}
+	if top != nil {
+		queryParameters["top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
+		autorest.WithPathParameters("/largefacelists/{largeFaceListId}/persistedfaces", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListFacesSender sends the ListFaces request. The method will close the
+// http.Response Body if it receives an error.
+func (client LargeFaceListClient) ListFacesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListFacesResponder handles the response to the ListFaces request. The method always
+// closes the http.Response Body.
+func (client LargeFaceListClient) ListFacesResponder(resp *http.Response) (result ListPersistedFace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Train queue a large face list training task, the training task may not be started immediately.
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.

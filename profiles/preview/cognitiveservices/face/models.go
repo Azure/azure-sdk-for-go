@@ -24,7 +24,6 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1
 type BaseClient = original.BaseClient
 type Client = original.Client
 type LargeFaceListClient = original.LargeFaceListClient
-type LargeFaceListFaceClient = original.LargeFaceListFaceClient
 type LargePersonGroupClient = original.LargePersonGroupClient
 type LargePersonGroupPersonClient = original.LargePersonGroupPersonClient
 type ListClient = original.ListClient
@@ -186,9 +185,6 @@ func NewClient(endpoint string) Client {
 }
 func NewLargeFaceListClient(endpoint string) LargeFaceListClient {
 	return original.NewLargeFaceListClient(endpoint)
-}
-func NewLargeFaceListFaceClient(endpoint string) LargeFaceListFaceClient {
-	return original.NewLargeFaceListFaceClient(endpoint)
 }
 func NewLargePersonGroupClient(endpoint string) LargePersonGroupClient {
 	return original.NewLargePersonGroupClient(endpoint)

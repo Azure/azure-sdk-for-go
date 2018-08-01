@@ -111,7 +111,7 @@ func (client PersonGroupClient) CreateResponder(resp *http.Response) (result aut
 	return
 }
 
-// Delete delete an existing person group. Persisted face images of all people in the person group will also be
+// Delete delete an existing person group. Persisted face features of all people in the person group will also be
 // deleted.
 // Parameters:
 // personGroupID - id referencing a particular person group.

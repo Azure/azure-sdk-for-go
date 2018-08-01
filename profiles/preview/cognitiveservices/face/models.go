@@ -23,6 +23,9 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1
 
 type BaseClient = original.BaseClient
 type Client = original.Client
+type LargeFaceListClient = original.LargeFaceListClient
+type LargePersonGroupClient = original.LargePersonGroupClient
+type LargePersonGroupPersonClient = original.LargePersonGroupPersonClient
 type ListClient = original.ListClient
 type AccessoryType = original.AccessoryType
 
@@ -142,10 +145,15 @@ type IdentifyRequest = original.IdentifyRequest
 type IdentifyResult = original.IdentifyResult
 type ImageURL = original.ImageURL
 type Landmarks = original.Landmarks
+type LargeFaceList = original.LargeFaceList
+type LargePersonGroup = original.LargePersonGroup
 type List = original.List
 type ListDetectedFace = original.ListDetectedFace
 type ListIdentifyResult = original.ListIdentifyResult
+type ListLargeFaceList = original.ListLargeFaceList
+type ListLargePersonGroup = original.ListLargePersonGroup
 type ListList = original.ListList
+type ListPersistedFace = original.ListPersistedFace
 type ListPerson = original.ListPerson
 type ListPersonGroup = original.ListPersonGroup
 type ListSimilarFace = original.ListSimilarFace
@@ -159,7 +167,7 @@ type PersonGroup = original.PersonGroup
 type Rectangle = original.Rectangle
 type SimilarFace = original.SimilarFace
 type TrainingStatus = original.TrainingStatus
-type UpdatePersonFaceRequest = original.UpdatePersonFaceRequest
+type UpdateFaceRequest = original.UpdateFaceRequest
 type VerifyFaceToFaceRequest = original.VerifyFaceToFaceRequest
 type VerifyFaceToPersonRequest = original.VerifyFaceToPersonRequest
 type VerifyResult = original.VerifyResult
@@ -174,6 +182,15 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 }
 func NewClient(endpoint string) Client {
 	return original.NewClient(endpoint)
+}
+func NewLargeFaceListClient(endpoint string) LargeFaceListClient {
+	return original.NewLargeFaceListClient(endpoint)
+}
+func NewLargePersonGroupClient(endpoint string) LargePersonGroupClient {
+	return original.NewLargePersonGroupClient(endpoint)
+}
+func NewLargePersonGroupPersonClient(endpoint string) LargePersonGroupPersonClient {
+	return original.NewLargePersonGroupPersonClient(endpoint)
 }
 func NewListClient(endpoint string) ListClient {
 	return original.NewListClient(endpoint)

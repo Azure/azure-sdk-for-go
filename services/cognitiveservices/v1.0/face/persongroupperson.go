@@ -37,6 +37,99 @@ func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
 	return PersonGroupPersonClient{New(endpoint)}
 }
 
+// AddFaceFromURL add a representative face to a person for identification. The input face is specified as an image
+// with a targetFace rectangle.
+// Parameters:
+// personGroupID - id referencing a particular person group.
+// personID - id referencing a particular person.
+// imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
+// userData - user-specified data about the face for any purpose. The maximum length is 1KB.
+// targetFace - a face rectangle to specify the target face to be added to a person in the format of
+// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
+// image, targetFace is required to specify which face to add. No targetFace means there is only one face
+// detected in the entire image.
+func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
+		{TargetValue: imageURL,
+			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("face.PersonGroupPersonClient", "AddFaceFromURL", err.Error())
+	}
+
+	req, err := client.AddFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddFaceFromURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddFaceFromURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddFaceFromURLPreparer prepares the AddFaceFromURL request.
+func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"personGroupId": autorest.Encode("path", personGroupID),
+		"personId":      autorest.Encode("path", personID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(userData) > 0 {
+		queryParameters["userData"] = autorest.Encode("query", userData)
+	}
+	if targetFace != nil && len(targetFace) > 0 {
+		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces", pathParameters),
+		autorest.WithJSON(imageURL),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddFaceFromURLSender sends the AddFaceFromURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client PersonGroupPersonClient) AddFaceFromURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddFaceFromURLResponder handles the response to the AddFaceFromURL request. The method always
+// closes the http.Response Body.
+func (client PersonGroupPersonClient) AddFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // AddPersonFaceFromStream add a representative face to a person for identification. The input face is specified as an
 // image with a targetFace rectangle.
 // Parameters:
@@ -118,99 +211,6 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamSender(req *http.Re
 // AddPersonFaceFromStreamResponder handles the response to the AddPersonFaceFromStream request. The method always
 // closes the http.Response Body.
 func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// AddPersonFaceFromURL add a representative face to a person for identification. The input face is specified as an
-// image with a targetFace rectangle.
-// Parameters:
-// personGroupID - id referencing a particular person group.
-// personID - id referencing a particular person.
-// imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
-// userData - user-specified data about the face for any purpose. The maximum length is 1KB.
-// targetFace - a face rectangle to specify the target face to be added to a person in the format of
-// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
-// image, targetFace is required to specify which face to add. No targetFace means there is only one face
-// detected in the entire image.
-func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: personGroupID,
-			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: userData,
-			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
-		{TargetValue: imageURL,
-			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("face.PersonGroupPersonClient", "AddPersonFaceFromURL", err.Error())
-	}
-
-	req, err := client.AddPersonFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.AddPersonFaceFromURLSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.AddPersonFaceFromURLResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AddPersonFaceFromURLPreparer prepares the AddPersonFaceFromURL request.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"personGroupId": autorest.Encode("path", personGroupID),
-		"personId":      autorest.Encode("path", personID),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(userData) > 0 {
-		queryParameters["userData"] = autorest.Encode("query", userData)
-	}
-	if targetFace != nil && len(targetFace) > 0 {
-		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces", pathParameters),
-		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// AddPersonFaceFromURLSender sends the AddPersonFaceFromURL request. The method will close the
-// http.Response Body if it receives an error.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddPersonFaceFromURLResponder handles the response to the AddPersonFaceFromURL request. The method always
-// closes the http.Response Body.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

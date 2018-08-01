@@ -100,7 +100,7 @@ func (client ListClient) AddFaceFromStreamPreparer(ctx context.Context, faceList
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/facelists/{faceListId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/facelists/{faceListId}/persistedfaces", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -191,7 +191,7 @@ func (client ListClient) AddFaceFromURLPreparer(ctx context.Context, faceListID 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/facelists/{faceListId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/facelists/{faceListId}/persistedfaces", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -410,7 +410,7 @@ func (client ListClient) DeleteFacePreparer(ctx context.Context, faceListID stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/facelists/{faceListId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/facelists/{faceListId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

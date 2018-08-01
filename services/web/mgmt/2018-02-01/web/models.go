@@ -4769,8 +4769,8 @@ type BackupItemProperties struct {
 	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
 	// BlobName - Name of the blob which contains data for this backup.
 	BlobName *string `json:"blobName,omitempty"`
-	// Name - Name of this backup.
-	Name *string `json:"name,omitempty"`
+	// BackupName - Name of this backup.
+	BackupName *string `json:"backupName,omitempty"`
 	// Status - Backup status. Possible values include: 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created', 'Skipped', 'PartiallySucceeded', 'DeleteInProgress', 'DeleteFailed', 'Deleted'
 	Status BackupItemStatus `json:"status,omitempty"`
 	// SizeInBytes - Size of the backup in bytes.
@@ -4891,6 +4891,8 @@ func (br *BackupRequest) UnmarshalJSON(body []byte) error {
 
 // BackupRequestProperties backupRequest resource specific properties
 type BackupRequestProperties struct {
+	// BackupName - Name of the backup.
+	BackupName *string `json:"backupName,omitempty"`
 	// Enabled - True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// StorageAccountURL - SAS URL to the container.

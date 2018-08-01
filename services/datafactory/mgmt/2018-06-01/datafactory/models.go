@@ -1799,7 +1799,7 @@ type Activity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -10418,7 +10418,7 @@ type AzureMLBatchExecutionActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -10684,12 +10684,12 @@ func (ambea *AzureMLBatchExecutionActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ambea.UserProperties = userProperties
+				ambea.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -11339,7 +11339,7 @@ type AzureMLUpdateResourceActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -11605,12 +11605,12 @@ func (amura *AzureMLUpdateResourceActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				amura.UserProperties = userProperties
+				amura.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -22359,7 +22359,7 @@ type ControlActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -22617,7 +22617,7 @@ type CopyActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -22907,12 +22907,12 @@ func (ca *CopyActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ca.UserProperties = userProperties
+				ca.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -25562,7 +25562,7 @@ type CustomActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -25828,12 +25828,12 @@ func (ca *CustomActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ca.UserProperties = userProperties
+				ca.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -26642,7 +26642,7 @@ type DatabricksNotebookActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -26908,12 +26908,12 @@ func (dna *DatabricksNotebookActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				dna.UserProperties = userProperties
+				dna.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -26970,7 +26970,7 @@ type DatabricksSparkJarActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -27236,12 +27236,12 @@ func (dsja *DatabricksSparkJarActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				dsja.UserProperties = userProperties
+				dsja.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -27285,7 +27285,7 @@ type DatabricksSparkPythonActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -27551,12 +27551,12 @@ func (dspa *DatabricksSparkPythonActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				dspa.UserProperties = userProperties
+				dspa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -27600,7 +27600,7 @@ type DataLakeAnalyticsUSQLActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -27866,12 +27866,12 @@ func (dlaua *DataLakeAnalyticsUSQLActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				dlaua.UserProperties = userProperties
+				dlaua.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -34394,7 +34394,7 @@ type ExecutePipelineActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -34636,12 +34636,12 @@ func (epa *ExecutePipelineActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				epa.UserProperties = userProperties
+				epa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -34700,7 +34700,7 @@ type ExecuteSSISPackageActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -34966,12 +34966,12 @@ func (espa *ExecuteSSISPackageActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				espa.UserProperties = userProperties
+				espa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -35086,7 +35086,7 @@ type ExecutionActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -35542,7 +35542,7 @@ func (f *Factory) UnmarshalJSON(body []byte) error {
 
 // FactoryGitHubConfiguration factory's GitHub repo information.
 type FactoryGitHubConfiguration struct {
-	// HostName - GitHub repo host name.
+	// HostName - GitHub Enterprise host name. For example: https://github.mydomain.com
 	HostName *string `json:"hostName,omitempty"`
 	// AccountName - Account name.
 	AccountName *string `json:"accountName,omitempty"`
@@ -37486,7 +37486,7 @@ type FilterActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -37728,12 +37728,12 @@ func (fa *FilterActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				fa.UserProperties = userProperties
+				fa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -37771,7 +37771,7 @@ type ForEachActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -38013,12 +38013,12 @@ func (fea *ForEachActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				fea.UserProperties = userProperties
+				fea.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -38717,7 +38717,7 @@ type GetMetadataActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -38983,12 +38983,12 @@ func (gma *GetMetadataActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				gma.UserProperties = userProperties
+				gma.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -43508,7 +43508,7 @@ type HDInsightHiveActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -43774,12 +43774,12 @@ func (hiha *HDInsightHiveActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				hiha.UserProperties = userProperties
+				hiha.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -44432,7 +44432,7 @@ type HDInsightMapReduceActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -44698,12 +44698,12 @@ func (himra *HDInsightMapReduceActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				himra.UserProperties = userProperties
+				himra.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -45626,7 +45626,7 @@ type HDInsightPigActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -45892,12 +45892,12 @@ func (hipa *HDInsightPigActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				hipa.UserProperties = userProperties
+				hipa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -45969,7 +45969,7 @@ type HDInsightSparkActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -46235,12 +46235,12 @@ func (hisa *HDInsightSparkActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				hisa.UserProperties = userProperties
+				hisa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -46318,7 +46318,7 @@ type HDInsightStreamingActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -46584,12 +46584,12 @@ func (hisa *HDInsightStreamingActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				hisa.UserProperties = userProperties
+				hisa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -50593,7 +50593,7 @@ type IfConditionActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -50835,12 +50835,12 @@ func (ica *IfConditionActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ica.UserProperties = userProperties
+				ica.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -55431,7 +55431,7 @@ type LookupActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -55697,12 +55697,12 @@ func (la *LookupActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				la.UserProperties = userProperties
+				la.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -86608,7 +86608,7 @@ type SQLServerStoredProcedureActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -86874,12 +86874,12 @@ func (ssspa *SQLServerStoredProcedureActivity) UnmarshalJSON(body []byte) error 
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ssspa.UserProperties = userProperties
+				ssspa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -90955,7 +90955,7 @@ type UntilActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -91197,12 +91197,12 @@ func (ua *UntilActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				ua.UserProperties = userProperties
+				ua.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -91282,6 +91282,14 @@ type UpdateIntegrationRuntimeRequest struct {
 	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
 	// UpdateDelayOffset - The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen on that time.
 	UpdateDelayOffset *string `json:"updateDelayOffset,omitempty"`
+}
+
+// UserProperty user property.
+type UserProperty struct {
+	// Name - User proprety name.
+	Name *string `json:"name,omitempty"`
+	// Value - User proprety value. Type: string (or Expression with resultType string).
+	Value interface{} `json:"value,omitempty"`
 }
 
 // VerticaLinkedService vertica linked service.
@@ -92411,7 +92419,7 @@ type WaitActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -92653,12 +92661,12 @@ func (wa *WaitActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				wa.UserProperties = userProperties
+				wa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {
@@ -92698,7 +92706,7 @@ type WebActivity struct {
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
-	UserProperties map[string]*string `json:"userProperties"`
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -92964,12 +92972,12 @@ func (wa *WebActivity) UnmarshalJSON(body []byte) error {
 			}
 		case "userProperties":
 			if v != nil {
-				var userProperties map[string]*string
+				var userProperties []UserProperty
 				err = json.Unmarshal(*v, &userProperties)
 				if err != nil {
 					return err
 				}
-				wa.UserProperties = userProperties
+				wa.UserProperties = &userProperties
 			}
 		case "type":
 			if v != nil {

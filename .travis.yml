@@ -9,8 +9,7 @@ go:
 
 env:
   global:
-    - DEP_VERSION="0.5.0"
-    - DEP_SHA=287b08291e14f1fae8ba44374b26a2b12eb941af3497ed0ca649253e21ba2f83
+    - DEP_RELEASE_TAG=v0.5.0 # so the script knows which version to use
     - IGNORE_BREAKING_CHANGES=true
 
 matrix:
@@ -18,7 +17,7 @@ matrix:
     - go: master
 
 before_install:
-  - curl -fL -o $GOPATH/bin/dep https://github.com/golang/dep/releases/download/v$DEP_VERSION/dep-linux-amd64  && echo "$DEP_SHA $GOPATH/bin/dep" | sha256sum -c - && chmod +x $GOPATH/bin/dep
+  - curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 install:
   - go get -u github.com/golang/lint/golint

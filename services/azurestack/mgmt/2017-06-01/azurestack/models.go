@@ -1169,7 +1169,7 @@ func (page RegistrationListPage) Values() []Registration {
 
 // RegistrationParameter registration resource
 type RegistrationParameter struct {
-	// RegistrationParameterProperties - Properties of the Auzre Stack registration resource
+	// RegistrationParameterProperties - Properties of the Azure Stack registration resource
 	*RegistrationParameterProperties `json:"properties,omitempty"`
 	// Location - Location of the resource. Possible values include: 'Global'
 	Location Location `json:"location,omitempty"`

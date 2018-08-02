@@ -34210,7 +34210,7 @@ func (f *Factory) UnmarshalJSON(body []byte) error {
 
 // FactoryGitHubConfiguration factory's GitHub repo information.
 type FactoryGitHubConfiguration struct {
-	// HostName - GitHub repo host name.
+	// HostName - GitHub Enterprise host name. For example: https://github.mydomain.com
 	HostName *string `json:"hostName,omitempty"`
 	// AccountName - Account name.
 	AccountName *string `json:"accountName,omitempty"`

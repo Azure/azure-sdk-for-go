@@ -210,7 +210,8 @@ func (client Client) DetectWithURLResponder(resp *http.Response) (result ListDet
 	return
 }
 
-// FindSimilar given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
+// FindSimilar given query face's faceId, find the similar-looking faces from a faceId array, a face list or a large
+// face list.
 // Parameters:
 // body - request body for Find Similar.
 func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (result ListSimilarFace, err error) {
@@ -220,6 +221,10 @@ func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (
 				{Target: "body.FaceListID", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.FaceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 						{Target: "body.FaceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+					}},
+				{Target: "body.LargeFaceListID", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.LargeFaceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+						{Target: "body.LargeFaceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
 					}},
 				{Target: "body.FaceIds", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.FaceIds", Name: validation.MaxItems, Rule: 1000, Chain: nil}}},
@@ -353,18 +358,23 @@ func (client Client) GroupResponder(resp *http.Response) (result GroupResult, er
 	return
 }
 
-// Identify identify unknown faces from a person group.
+// Identify 1-to-many identification to find the closest matches of the specific query person face from a person group
+// or large person group.
 // Parameters:
 // body - request body for identify operation.
 func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result ListIdentifyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-					{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
-				}},
-				{Target: "body.FaceIds", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "body.FaceIds", Name: validation.MaxItems, Rule: 10, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "body.FaceIds", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "body.FaceIds", Name: validation.MaxItems, Rule: 10, Chain: nil}}},
+				{Target: "body.PersonGroupID", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+						{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+					}},
+				{Target: "body.LargePersonGroupID", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.LargePersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+						{Target: "body.LargePersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+					}},
 				{Target: "body.MaxNumOfCandidatesReturned", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMaximum, Rule: int64(5), Chain: nil},
 						{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
@@ -430,7 +440,7 @@ func (client Client) IdentifyResponder(resp *http.Response) (result ListIdentify
 
 // VerifyFaceToFace verify whether two faces belong to a same person or whether one face belongs to a person.
 // Parameters:
-// body - request body for verify operation.
+// body - request body for face to face verification.
 func (client Client) VerifyFaceToFace(ctx context.Context, body VerifyFaceToFaceRequest) (result VerifyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
@@ -497,14 +507,18 @@ func (client Client) VerifyFaceToFaceResponder(resp *http.Response) (result Veri
 
 // VerifyFaceToPerson verify whether two faces belong to a same person. Compares a face Id with a Person Id
 // Parameters:
-// body - request body for verifying two faces in a person group
+// body - request body for face to person verification.
 func (client Client) VerifyFaceToPerson(ctx context.Context, body VerifyFaceToPersonRequest) (result VerifyResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.FaceID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.PersonGroupID", Name: validation.Null, Rule: true,
+				{Target: "body.PersonGroupID", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 						{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+					}},
+				{Target: "body.LargePersonGroupID", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.LargePersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+						{Target: "body.LargePersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
 					}},
 				{Target: "body.PersonID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("face.Client", "VerifyFaceToPerson", err.Error())

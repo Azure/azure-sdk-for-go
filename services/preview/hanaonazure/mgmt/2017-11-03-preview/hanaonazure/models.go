@@ -96,7 +96,7 @@ type Disk struct {
 
 // Display detailed HANA operation information
 type Display struct {
-	// Provider - The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with “Microsoft” for 1st party services.
+	// Provider - The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
 	Provider *string `json:"provider,omitempty"`
 	// Resource - The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.
 	Resource *string `json:"resource,omitempty"`
@@ -129,6 +129,8 @@ type HanaInstance struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
+	// PowerState - Resource power state
+	PowerState *string `json:"powerState,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -150,6 +152,9 @@ func (hi HanaInstance) MarshalJSON() ([]byte, error) {
 	}
 	if hi.Location != nil {
 		objectMap["location"] = hi.Location
+	}
+	if hi.PowerState != nil {
+		objectMap["powerState"] = hi.PowerState
 	}
 	if hi.Tags != nil {
 		objectMap["tags"] = hi.Tags
@@ -210,6 +215,15 @@ func (hi *HanaInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hi.Location = &location
+			}
+		case "powerState":
+			if v != nil {
+				var powerState string
+				err = json.Unmarshal(*v, &powerState)
+				if err != nil {
+					return err
+				}
+				hi.PowerState = &powerState
 			}
 		case "tags":
 			if v != nil {
@@ -399,6 +413,8 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
+	// PowerState - Resource power state
+	PowerState *string `json:"powerState,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -417,6 +433,9 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
+	}
+	if r.PowerState != nil {
+		objectMap["powerState"] = r.PowerState
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags

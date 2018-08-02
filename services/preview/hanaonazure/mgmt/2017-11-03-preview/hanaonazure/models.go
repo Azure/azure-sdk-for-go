@@ -129,8 +129,6 @@ type HanaInstance struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// PowerState - Resource power state
-	PowerState *string `json:"powerState,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -152,9 +150,6 @@ func (hi HanaInstance) MarshalJSON() ([]byte, error) {
 	}
 	if hi.Location != nil {
 		objectMap["location"] = hi.Location
-	}
-	if hi.PowerState != nil {
-		objectMap["powerState"] = hi.PowerState
 	}
 	if hi.Tags != nil {
 		objectMap["tags"] = hi.Tags
@@ -216,15 +211,6 @@ func (hi *HanaInstance) UnmarshalJSON(body []byte) error {
 				}
 				hi.Location = &location
 			}
-		case "powerState":
-			if v != nil {
-				var powerState string
-				err = json.Unmarshal(*v, &powerState)
-				if err != nil {
-					return err
-				}
-				hi.PowerState = &powerState
-			}
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -252,6 +238,8 @@ type HanaInstanceProperties struct {
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 	// HanaInstanceID - Specifies the HANA instance unique ID.
 	HanaInstanceID *string `json:"hanaInstanceId,omitempty"`
+	// PowerState - Resource power state
+	PowerState *string `json:"powerState,omitempty"`
 }
 
 // HanaInstancesListResult the response from the List HANA Instances operation.
@@ -413,8 +401,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// PowerState - Resource power state
-	PowerState *string `json:"powerState,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -433,9 +419,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
-	}
-	if r.PowerState != nil {
-		objectMap["powerState"] = r.PowerState
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags

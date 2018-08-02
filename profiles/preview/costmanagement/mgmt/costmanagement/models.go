@@ -19,7 +19,7 @@
 
 package costmanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-05-31/costmanagement"
+import original "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-09-01-preview/costmanagement"
 
 type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
 
@@ -28,6 +28,15 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ConnectorClient = original.ConnectorClient
+type ConnectorStatus = original.ConnectorStatus
+
+const (
+	Active    ConnectorStatus = original.Active
+	Error     ConnectorStatus = original.Error
+	Suspended ConnectorStatus = original.Suspended
+)
+
 type FormatType = original.FormatType
 
 const (
@@ -59,8 +68,8 @@ const (
 type StatusType = original.StatusType
 
 const (
-	Active   StatusType = original.Active
-	Inactive StatusType = original.Inactive
+	StatusTypeActive   StatusType = original.StatusTypeActive
+	StatusTypeInactive StatusType = original.StatusTypeInactive
 )
 
 type TimeframeType = original.TimeframeType
@@ -72,9 +81,15 @@ const (
 	YearToDate  TimeframeType = original.YearToDate
 )
 
+type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
+type ConnectorCollectionInfo = original.ConnectorCollectionInfo
+type ConnectorDefinition = original.ConnectorDefinition
+type ConnectorDefinitionListResult = original.ConnectorDefinitionListResult
+type ConnectorProperties = original.ConnectorProperties
 type Dimension = original.Dimension
 type DimensionProperties = original.DimensionProperties
 type DimensionsListResult = original.DimensionsListResult
+type ErrorBase = original.ErrorBase
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Query = original.Query
@@ -112,6 +127,15 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorClient(subscriptionID string) ConnectorClient {
+	return original.NewConnectorClient(subscriptionID)
+}
+func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) ConnectorClient {
+	return original.NewConnectorClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleConnectorStatusValues() []ConnectorStatus {
+	return original.PossibleConnectorStatusValues()
 }
 func PossibleFormatTypeValues() []FormatType {
 	return original.PossibleFormatTypeValues()

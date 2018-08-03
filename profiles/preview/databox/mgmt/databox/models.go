@@ -27,6 +27,30 @@ const (
 
 type BaseClient = original.BaseClient
 type JobsClient = original.JobsClient
+type AccessProtocol = original.AccessProtocol
+
+const (
+	NFS AccessProtocol = original.NFS
+	SMB AccessProtocol = original.SMB
+)
+
+type AccessTier = original.AccessTier
+
+const (
+	Cold    AccessTier = original.Cold
+	Cool    AccessTier = original.Cool
+	Hot     AccessTier = original.Hot
+	Invalid AccessTier = original.Invalid
+)
+
+type AccountType = original.AccountType
+
+const (
+	BlobStorage           AccountType = original.BlobStorage
+	GeneralPurposeStorage AccountType = original.GeneralPurposeStorage
+	UnknownType           AccountType = original.UnknownType
+)
+
 type AddressType = original.AddressType
 
 const (
@@ -38,9 +62,9 @@ const (
 type AddressValidationStatus = original.AddressValidationStatus
 
 const (
-	Ambiguous AddressValidationStatus = original.Ambiguous
-	Invalid   AddressValidationStatus = original.Invalid
-	Valid     AddressValidationStatus = original.Valid
+	AddressValidationStatusAmbiguous AddressValidationStatus = original.AddressValidationStatusAmbiguous
+	AddressValidationStatusInvalid   AddressValidationStatus = original.AddressValidationStatusInvalid
+	AddressValidationStatusValid     AddressValidationStatus = original.AddressValidationStatusValid
 )
 
 type CopyLogDetailsType = original.CopyLogDetailsType
@@ -48,6 +72,7 @@ type CopyLogDetailsType = original.CopyLogDetailsType
 const (
 	CopyLogDetailsTypeCopyLogDetails CopyLogDetailsType = original.CopyLogDetailsTypeCopyLogDetails
 	CopyLogDetailsTypeDisk           CopyLogDetailsType = original.CopyLogDetailsTypeDisk
+	CopyLogDetailsTypeHeavy          CopyLogDetailsType = original.CopyLogDetailsTypeHeavy
 	CopyLogDetailsTypePod            CopyLogDetailsType = original.CopyLogDetailsTypePod
 )
 
@@ -74,9 +99,9 @@ const (
 type DeviceType = original.DeviceType
 
 const (
-	Cabinet DeviceType = original.Cabinet
-	Disk    DeviceType = original.Disk
-	Pod     DeviceType = original.Pod
+	Disk  DeviceType = original.Disk
+	Heavy DeviceType = original.Heavy
+	Pod   DeviceType = original.Pod
 )
 
 type IssueType = original.IssueType
@@ -92,6 +117,7 @@ type JobDetailsType = original.JobDetailsType
 
 const (
 	JobDetailsTypeDisk       JobDetailsType = original.JobDetailsTypeDisk
+	JobDetailsTypeHeavy      JobDetailsType = original.JobDetailsTypeHeavy
 	JobDetailsTypeJobDetails JobDetailsType = original.JobDetailsTypeJobDetails
 	JobDetailsTypePod        JobDetailsType = original.JobDetailsTypePod
 )
@@ -99,8 +125,8 @@ const (
 type JobSecretsType = original.JobSecretsType
 
 const (
-	JobSecretsTypeCabinet    JobSecretsType = original.JobSecretsTypeCabinet
 	JobSecretsTypeDisk       JobSecretsType = original.JobSecretsTypeDisk
+	JobSecretsTypeHeavy      JobSecretsType = original.JobSecretsTypeHeavy
 	JobSecretsTypeJobSecrets JobSecretsType = original.JobSecretsTypeJobSecrets
 	JobSecretsTypePod        JobSecretsType = original.JobSecretsTypePod
 )
@@ -116,6 +142,24 @@ const (
 	PickedUp       NotificationStageName = original.PickedUp
 )
 
+type PerformanceTier = original.PerformanceTier
+
+const (
+	Premium  PerformanceTier = original.Premium
+	Standard PerformanceTier = original.Standard
+)
+
+type ShareDestinationFormatType = original.ShareDestinationFormatType
+
+const (
+	ShareDestinationFormatTypeAzureFile   ShareDestinationFormatType = original.ShareDestinationFormatTypeAzureFile
+	ShareDestinationFormatTypeBlockBlob   ShareDestinationFormatType = original.ShareDestinationFormatTypeBlockBlob
+	ShareDestinationFormatTypeHCS         ShareDestinationFormatType = original.ShareDestinationFormatTypeHCS
+	ShareDestinationFormatTypeHDC         ShareDestinationFormatType = original.ShareDestinationFormatTypeHDC
+	ShareDestinationFormatTypePageBlob    ShareDestinationFormatType = original.ShareDestinationFormatTypePageBlob
+	ShareDestinationFormatTypeUnknownType ShareDestinationFormatType = original.ShareDestinationFormatTypeUnknownType
+)
+
 type StageName = original.StageName
 
 const (
@@ -124,6 +168,7 @@ const (
 	StageNameCancelled                     StageName = original.StageNameCancelled
 	StageNameCompleted                     StageName = original.StageNameCompleted
 	StageNameCompletedWithErrors           StageName = original.StageNameCompletedWithErrors
+	StageNameCurrent                       StageName = original.StageNameCurrent
 	StageNameDataCopy                      StageName = original.StageNameDataCopy
 	StageNameDelivered                     StageName = original.StageNameDelivered
 	StageNameDeviceOrdered                 StageName = original.StageNameDeviceOrdered
@@ -150,6 +195,7 @@ type AccountCopyLogDetails = original.AccountCopyLogDetails
 type AccountCredentialDetails = original.AccountCredentialDetails
 type AddressValidationOutput = original.AddressValidationOutput
 type AddressValidationProperties = original.AddressValidationProperties
+type ApplianceNetworkConfiguration = original.ApplianceNetworkConfiguration
 type ArmBaseObject = original.ArmBaseObject
 type AvailableSkuRequest = original.AvailableSkuRequest
 type AvailableSkusResult = original.AvailableSkusResult
@@ -171,6 +217,8 @@ type DiskJobSecrets = original.DiskJobSecrets
 type DiskSecret = original.DiskSecret
 type Error = original.Error
 type GetCopyLogsURIOutput = original.GetCopyLogsURIOutput
+type HeavyAccountCopyLogDetails = original.HeavyAccountCopyLogDetails
+type HeavyJobDetails = original.HeavyJobDetails
 type BasicJobDetails = original.BasicJobDetails
 type JobDetails = original.JobDetails
 type JobErrorDetails = original.JobErrorDetails
@@ -181,6 +229,7 @@ type JobResourceListIterator = original.JobResourceListIterator
 type JobResourceListPage = original.JobResourceListPage
 type JobResourceUpdateParameter = original.JobResourceUpdateParameter
 type JobsCreateFuture = original.JobsCreateFuture
+type JobsDeleteFuture = original.JobsDeleteFuture
 type BasicJobSecrets = original.BasicJobSecrets
 type JobSecrets = original.JobSecrets
 type JobStages = original.JobStages
@@ -226,6 +275,15 @@ func NewJobsClient(subscriptionID string) JobsClient {
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAccessProtocolValues() []AccessProtocol {
+	return original.PossibleAccessProtocolValues()
+}
+func PossibleAccessTierValues() []AccessTier {
+	return original.PossibleAccessTierValues()
+}
+func PossibleAccountTypeValues() []AccountType {
+	return original.PossibleAccountTypeValues()
+}
 func PossibleAddressTypeValues() []AddressType {
 	return original.PossibleAddressTypeValues()
 }
@@ -255,6 +313,12 @@ func PossibleJobSecretsTypeValues() []JobSecretsType {
 }
 func PossibleNotificationStageNameValues() []NotificationStageName {
 	return original.PossibleNotificationStageNameValues()
+}
+func PossiblePerformanceTierValues() []PerformanceTier {
+	return original.PossiblePerformanceTierValues()
+}
+func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
+	return original.PossibleShareDestinationFormatTypeValues()
 }
 func PossibleStageNameValues() []StageName {
 	return original.PossibleStageNameValues()

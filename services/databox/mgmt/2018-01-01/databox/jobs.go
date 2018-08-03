@@ -305,7 +305,7 @@ func (client JobsClient) CreateResponder(resp *http.Response) (result JobResourc
 // resourceGroupName - the Resource Group Name
 // jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
 // 24 characters in length and use any alphanumeric and underscore only
-func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, jobName string) (result autorest.Response, err error) {
+func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, jobName string) (result JobsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
 			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -320,16 +320,10 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.JobsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -358,9 +352,19 @@ func (client JobsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client JobsClient) DeleteSender(req *http.Request) (future JobsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -369,7 +373,7 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

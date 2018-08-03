@@ -1146,6 +1146,203 @@ type EmailChannelProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
+// EnterpriseChannel enterprise Channel resource definition
+type EnterpriseChannel struct {
+	autorest.Response `json:"-"`
+	// Properties - The set of properties specific to an Enterprise Channel resource
+	Properties *EnterpriseChannelProperties `json:"properties,omitempty"`
+	// ID - Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Specifies the name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Type - Specifies the type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Tags - Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags"`
+	// Sku - Gets or sets the SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - Required. Gets or sets the Kind of the resource. Possible values include: 'KindSdk', 'KindDesigner', 'KindBot', 'KindFunction'
+	Kind Kind `json:"kind,omitempty"`
+	// Etag - Entity Tag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnterpriseChannel.
+func (ec EnterpriseChannel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ec.Properties != nil {
+		objectMap["properties"] = ec.Properties
+	}
+	if ec.ID != nil {
+		objectMap["id"] = ec.ID
+	}
+	if ec.Name != nil {
+		objectMap["name"] = ec.Name
+	}
+	if ec.Location != nil {
+		objectMap["location"] = ec.Location
+	}
+	if ec.Type != nil {
+		objectMap["type"] = ec.Type
+	}
+	if ec.Tags != nil {
+		objectMap["tags"] = ec.Tags
+	}
+	if ec.Sku != nil {
+		objectMap["sku"] = ec.Sku
+	}
+	if ec.Kind != "" {
+		objectMap["kind"] = ec.Kind
+	}
+	if ec.Etag != nil {
+		objectMap["etag"] = ec.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// EnterpriseChannelCheckNameAvailabilityRequestBody the request body for a request to Bot Service Management to
+// check availability of an Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityRequestBody struct {
+	// Name - the name of the Enterprise Channel for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+}
+
+// EnterpriseChannelCheckNameAvailabilityResponseBody the response body returned for a request to Bot Service
+// Management to check availability of an Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityResponseBody struct {
+	autorest.Response `json:"-"`
+	// Valid - indicates if the Enterprise Channel name is valid.
+	Valid *bool `json:"valid,omitempty"`
+	// Message - additional message from the bot management api showing why a bot name is not available
+	Message *string `json:"message,omitempty"`
+}
+
+// EnterpriseChannelNode the properties specific to an Enterprise Channel Node.
+type EnterpriseChannelNode struct {
+	// ID - Id of Enterprise Channel Node
+	ID *string `json:"id,omitempty"`
+	// State - The current state of the Enterprise Channel Node
+	State *string `json:"state,omitempty"`
+	// Name - The name of the Enterprise Channel Node
+	Name *string `json:"name,omitempty"`
+	// AzureSku - The sku of the Enterprise Channel Node
+	AzureSku *string `json:"azureSku,omitempty"`
+	// AzureLocation - The location of the Enterprise Channel Node
+	AzureLocation *string `json:"azureLocation,omitempty"`
+}
+
+// EnterpriseChannelProperties the parameters to provide for the Enterprise Channel.
+type EnterpriseChannelProperties struct {
+	// State - The current state of the Enterprise Channel
+	State *string `json:"state,omitempty"`
+	// Nodes - The nodes associated with the Enterprise Channel
+	Nodes *[]EnterpriseChannelNode `json:"nodes,omitempty"`
+}
+
+// EnterpriseChannelResponseList the list of  bot service operation response.
+type EnterpriseChannelResponseList struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of bot service resources.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The list of Enterprise Channels and their properties.
+	Value *[]EnterpriseChannel `json:"value,omitempty"`
+}
+
+// EnterpriseChannelResponseListIterator provides access to a complete listing of EnterpriseChannel values.
+type EnterpriseChannelResponseListIterator struct {
+	i    int
+	page EnterpriseChannelResponseListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EnterpriseChannelResponseListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EnterpriseChannelResponseListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EnterpriseChannelResponseListIterator) Response() EnterpriseChannelResponseList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EnterpriseChannelResponseListIterator) Value() EnterpriseChannel {
+	if !iter.page.NotDone() {
+		return EnterpriseChannel{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ecrl EnterpriseChannelResponseList) IsEmpty() bool {
+	return ecrl.Value == nil || len(*ecrl.Value) == 0
+}
+
+// enterpriseChannelResponseListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ecrl EnterpriseChannelResponseList) enterpriseChannelResponseListPreparer() (*http.Request, error) {
+	if ecrl.NextLink == nil || len(to.String(ecrl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ecrl.NextLink)))
+}
+
+// EnterpriseChannelResponseListPage contains a page of EnterpriseChannel values.
+type EnterpriseChannelResponseListPage struct {
+	fn   func(EnterpriseChannelResponseList) (EnterpriseChannelResponseList, error)
+	ecrl EnterpriseChannelResponseList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EnterpriseChannelResponseListPage) Next() error {
+	next, err := page.fn(page.ecrl)
+	if err != nil {
+		return err
+	}
+	page.ecrl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EnterpriseChannelResponseListPage) NotDone() bool {
+	return !page.ecrl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EnterpriseChannelResponseListPage) Response() EnterpriseChannelResponseList {
+	return page.ecrl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EnterpriseChannelResponseListPage) Values() []EnterpriseChannel {
+	if page.ecrl.IsEmpty() {
+		return nil
+	}
+	return *page.ecrl.Value
+}
+
 // Error bot Service error object.
 type Error struct {
 	// Error - The error body.

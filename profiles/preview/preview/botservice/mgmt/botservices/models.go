@@ -30,6 +30,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type EnterpriseChannelsClient = original.EnterpriseChannelsClient
 type ChannelName = original.ChannelName
 
 const (
@@ -109,6 +110,14 @@ type DirectLineChannelProperties = original.DirectLineChannelProperties
 type DirectLineSite = original.DirectLineSite
 type EmailChannel = original.EmailChannel
 type EmailChannelProperties = original.EmailChannelProperties
+type EnterpriseChannel = original.EnterpriseChannel
+type EnterpriseChannelCheckNameAvailabilityRequestBody = original.EnterpriseChannelCheckNameAvailabilityRequestBody
+type EnterpriseChannelCheckNameAvailabilityResponseBody = original.EnterpriseChannelCheckNameAvailabilityResponseBody
+type EnterpriseChannelNode = original.EnterpriseChannelNode
+type EnterpriseChannelProperties = original.EnterpriseChannelProperties
+type EnterpriseChannelResponseList = original.EnterpriseChannelResponseList
+type EnterpriseChannelResponseListIterator = original.EnterpriseChannelResponseListIterator
+type EnterpriseChannelResponseListPage = original.EnterpriseChannelResponseListPage
 type Error = original.Error
 type ErrorBody = original.ErrorBody
 type FacebookChannel = original.FacebookChannel
@@ -165,6 +174,12 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewEnterpriseChannelsClient(subscriptionID string) EnterpriseChannelsClient {
+	return original.NewEnterpriseChannelsClient(subscriptionID)
+}
+func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID string) EnterpriseChannelsClient {
+	return original.NewEnterpriseChannelsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleChannelNameValues() []ChannelName {
 	return original.PossibleChannelNameValues()

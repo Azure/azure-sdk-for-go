@@ -319,7 +319,7 @@ func (client EnterpriseChannelsClient) GetCheckNameAvailabilityPreparer(ctx cont
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.BotService/checkECNameAvailability"),
+		autorest.WithPath("/providers/Microsoft.BotService/checkEnterpriseChannelNameAvailability"),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

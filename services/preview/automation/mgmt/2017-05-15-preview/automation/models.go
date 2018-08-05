@@ -591,6 +591,21 @@ func PossibleStreamTypeValues() []StreamType {
 	return []StreamType{StreamTypeError, StreamTypeOutput}
 }
 
+// TokenType enumerates the values for token type.
+type TokenType string
+
+const (
+	// Oauth ...
+	Oauth TokenType = "Oauth"
+	// PersonalAccessToken ...
+	PersonalAccessToken TokenType = "PersonalAccessToken"
+)
+
+// PossibleTokenTypeValues returns an array of possible values for the TokenType const type.
+func PossibleTokenTypeValues() []TokenType {
+	return []TokenType{Oauth, PersonalAccessToken}
+}
+
 // WindowsUpdateClasses enumerates the values for windows update classes.
 type WindowsUpdateClasses string
 
@@ -7172,7 +7187,7 @@ type SourceControlCreateOrUpdateProperties struct {
 	// SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive. Possible values include: 'VsoGit', 'VsoTfvc', 'GitHub'
 	SourceType SourceType `json:"sourceType,omitempty"`
 	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
-	SecurityToken *string `json:"securityToken,omitempty"`
+	SecurityToken *SourceControlSecurityTokenProperties `json:"securityToken,omitempty"`
 	// Description - Gets or sets the user description of the source control.
 	Description *string `json:"description,omitempty"`
 }
@@ -7299,6 +7314,16 @@ type SourceControlProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// SourceControlSecurityTokenProperties ...
+type SourceControlSecurityTokenProperties struct {
+	// AccessToken - Gets or sets the access token.
+	AccessToken *string `json:"accessToken,omitempty"`
+	// RefreshToken - Gets or sets the refresh token.
+	RefreshToken *string `json:"refreshToken,omitempty"`
+	// TokenType - The token type. Must be either PersonalAccessToken or Oauth. Possible values include: 'PersonalAccessToken', 'Oauth'
+	TokenType TokenType `json:"tokenType,omitempty"`
 }
 
 // SourceControlSyncJob definition of the source control sync job.
@@ -7439,8 +7464,8 @@ func (scsjbi *SourceControlSyncJobByID) UnmarshalJSON(body []byte) error {
 
 // SourceControlSyncJobByIDProperties definition of source control sync job properties.
 type SourceControlSyncJobByIDProperties struct {
-	// SyncJobID - Gets the source control sync job id.
-	SyncJobID *string `json:"syncJobId,omitempty"`
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
 	// CreationTime - Gets the creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
@@ -7496,7 +7521,7 @@ func (scsjcp *SourceControlSyncJobCreateParameters) UnmarshalJSON(body []byte) e
 
 // SourceControlSyncJobCreateProperties definition of create source control sync job properties.
 type SourceControlSyncJobCreateProperties struct {
-	// CommitID - Sets the commit id of the source control sync job.
+	// CommitID - Sets the commit id of the source control sync job. If not syncing to a commitId, enter an empty string.
 	CommitID *string `json:"commitId,omitempty"`
 }
 
@@ -7604,8 +7629,8 @@ func (page SourceControlSyncJobListResultPage) Values() []SourceControlSyncJob {
 
 // SourceControlSyncJobProperties definition of source control sync job properties.
 type SourceControlSyncJobProperties struct {
-	// SyncJobID - Gets the source control sync job id.
-	SyncJobID *string `json:"syncJobId,omitempty"`
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
 	// CreationTime - Gets the creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
@@ -7737,8 +7762,32 @@ type SourceControlSyncJobStreamByIDProperties struct {
 	StreamType StreamType `json:"streamType,omitempty"`
 	// StreamText - Gets the text of the sync job stream.
 	StreamText *string `json:"streamText,omitempty"`
-	// Value - Gets the value of the sync job stream.
-	Value *string `json:"value,omitempty"`
+	// Value - Gets or sets the values of the job stream.
+	Value map[string]interface{} `json:"value"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlSyncJobStreamByIDProperties.
+func (scsjsbip SourceControlSyncJobStreamByIDProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scsjsbip.SyncJobStreamID != nil {
+		objectMap["syncJobStreamId"] = scsjsbip.SyncJobStreamID
+	}
+	if scsjsbip.Summary != nil {
+		objectMap["summary"] = scsjsbip.Summary
+	}
+	if scsjsbip.Time != nil {
+		objectMap["time"] = scsjsbip.Time
+	}
+	if scsjsbip.StreamType != "" {
+		objectMap["streamType"] = scsjsbip.StreamType
+	}
+	if scsjsbip.StreamText != nil {
+		objectMap["streamText"] = scsjsbip.StreamText
+	}
+	if scsjsbip.Value != nil {
+		objectMap["value"] = scsjsbip.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // SourceControlSyncJobStreamProperties definition of source control sync job stream properties.
@@ -7907,7 +7956,7 @@ type SourceControlUpdateProperties struct {
 	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
 	PublishRunbook *bool `json:"publishRunbook,omitempty"`
 	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
-	SecurityToken *string `json:"securityToken,omitempty"`
+	SecurityToken *SourceControlSecurityTokenProperties `json:"securityToken,omitempty"`
 	// Description - Gets or sets the user description of the source control.
 	Description *string `json:"description,omitempty"`
 }

@@ -1538,6 +1538,8 @@ type Usage struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - The details about the localizable name of the used resource.
 	Name *LocalizedName `json:"name,omitempty"`
+	// NewProp - The details about the localizable name of the used resource.
+	NewProp *LocalizedName `json:"newProp,omitempty"`
 }
 
 // UsagesListResult the response for the operation to get regional usages for a subscription.

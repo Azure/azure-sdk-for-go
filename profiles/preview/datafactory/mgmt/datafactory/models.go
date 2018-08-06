@@ -19,7 +19,7 @@
 
 package datafactory
 
-import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2017-09-01-preview/datafactory"
+import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory"
 
 type ActivityRunsClient = original.ActivityRunsClient
 
@@ -45,9 +45,9 @@ const (
 type AuthorizationType = original.AuthorizationType
 
 const (
-	AuthorizationTypeKey                                AuthorizationType = original.AuthorizationTypeKey
-	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeProperties
-	AuthorizationTypeRBAC                               AuthorizationType = original.AuthorizationTypeRBAC
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
@@ -55,6 +55,13 @@ type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorT
 const (
 	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
 	Upload AzureSearchIndexWriteBehaviorType = original.Upload
+)
+
+type BlobEventTypes = original.BlobEventTypes
+
+const (
+	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
+	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
 )
 
 type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
@@ -246,6 +253,7 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
+	AccessDenied     IntegrationRuntimeState = original.AccessDenied
 	Initial          IntegrationRuntimeState = original.Initial
 	Limited          IntegrationRuntimeState = original.Limited
 	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
@@ -321,38 +329,6 @@ const (
 	PhoenixAuthenticationTypeWindowsAzureHDInsightService PhoenixAuthenticationType = original.PhoenixAuthenticationTypeWindowsAzureHDInsightService
 )
 
-type PipelineRunQueryFilterOperand = original.PipelineRunQueryFilterOperand
-
-const (
-	PipelineName PipelineRunQueryFilterOperand = original.PipelineName
-	RunEnd       PipelineRunQueryFilterOperand = original.RunEnd
-	RunStart     PipelineRunQueryFilterOperand = original.RunStart
-	Status       PipelineRunQueryFilterOperand = original.Status
-)
-
-type PipelineRunQueryFilterOperator = original.PipelineRunQueryFilterOperator
-
-const (
-	Equals    PipelineRunQueryFilterOperator = original.Equals
-	In        PipelineRunQueryFilterOperator = original.In
-	NotEquals PipelineRunQueryFilterOperator = original.NotEquals
-	NotIn     PipelineRunQueryFilterOperator = original.NotIn
-)
-
-type PipelineRunQueryOrder = original.PipelineRunQueryOrder
-
-const (
-	ASC  PipelineRunQueryOrder = original.ASC
-	DESC PipelineRunQueryOrder = original.DESC
-)
-
-type PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByField
-
-const (
-	PipelineRunQueryOrderByFieldRunEnd   PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByFieldRunEnd
-	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByFieldRunStart
-)
-
 type PolybaseSettingsRejectType = original.PolybaseSettingsRejectType
 
 const (
@@ -377,6 +353,51 @@ const (
 	NotSpecified RecurrenceFrequency = original.NotSpecified
 	Week         RecurrenceFrequency = original.Week
 	Year         RecurrenceFrequency = original.Year
+)
+
+type RunQueryFilterOperand = original.RunQueryFilterOperand
+
+const (
+	ActivityName        RunQueryFilterOperand = original.ActivityName
+	ActivityRunEnd      RunQueryFilterOperand = original.ActivityRunEnd
+	ActivityRunStart    RunQueryFilterOperand = original.ActivityRunStart
+	ActivityType        RunQueryFilterOperand = original.ActivityType
+	PipelineName        RunQueryFilterOperand = original.PipelineName
+	RunEnd              RunQueryFilterOperand = original.RunEnd
+	RunStart            RunQueryFilterOperand = original.RunStart
+	Status              RunQueryFilterOperand = original.Status
+	TriggerName         RunQueryFilterOperand = original.TriggerName
+	TriggerRunTimestamp RunQueryFilterOperand = original.TriggerRunTimestamp
+)
+
+type RunQueryFilterOperator = original.RunQueryFilterOperator
+
+const (
+	Equals    RunQueryFilterOperator = original.Equals
+	In        RunQueryFilterOperator = original.In
+	NotEquals RunQueryFilterOperator = original.NotEquals
+	NotIn     RunQueryFilterOperator = original.NotIn
+)
+
+type RunQueryOrder = original.RunQueryOrder
+
+const (
+	ASC  RunQueryOrder = original.ASC
+	DESC RunQueryOrder = original.DESC
+)
+
+type RunQueryOrderByField = original.RunQueryOrderByField
+
+const (
+	RunQueryOrderByFieldActivityName        RunQueryOrderByField = original.RunQueryOrderByFieldActivityName
+	RunQueryOrderByFieldActivityRunEnd      RunQueryOrderByField = original.RunQueryOrderByFieldActivityRunEnd
+	RunQueryOrderByFieldActivityRunStart    RunQueryOrderByField = original.RunQueryOrderByFieldActivityRunStart
+	RunQueryOrderByFieldPipelineName        RunQueryOrderByField = original.RunQueryOrderByFieldPipelineName
+	RunQueryOrderByFieldRunEnd              RunQueryOrderByField = original.RunQueryOrderByFieldRunEnd
+	RunQueryOrderByFieldRunStart            RunQueryOrderByField = original.RunQueryOrderByFieldRunStart
+	RunQueryOrderByFieldStatus              RunQueryOrderByField = original.RunQueryOrderByFieldStatus
+	RunQueryOrderByFieldTriggerName         RunQueryOrderByField = original.RunQueryOrderByFieldTriggerName
+	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
@@ -531,6 +552,8 @@ const (
 	TypeCopy                     TypeBasicActivity = original.TypeCopy
 	TypeCustom                   TypeBasicActivity = original.TypeCustom
 	TypeDatabricksNotebook       TypeBasicActivity = original.TypeDatabricksNotebook
+	TypeDatabricksSparkJar       TypeBasicActivity = original.TypeDatabricksSparkJar
+	TypeDatabricksSparkPython    TypeBasicActivity = original.TypeDatabricksSparkPython
 	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
 	TypeExecutePipeline          TypeBasicActivity = original.TypeExecutePipeline
 	TypeExecuteSSISPackage       TypeBasicActivity = original.TypeExecuteSSISPackage
@@ -714,6 +737,14 @@ const (
 	TypeTextFormat           TypeBasicDatasetStorageFormat = original.TypeTextFormat
 )
 
+type TypeBasicFactoryRepoConfiguration = original.TypeBasicFactoryRepoConfiguration
+
+const (
+	TypeFactoryGithubConfiguration TypeBasicFactoryRepoConfiguration = original.TypeFactoryGithubConfiguration
+	TypeFactoryRepoConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryRepoConfiguration
+	TypeFactoryVSTSConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryVSTSConfiguration
+)
+
 type TypeBasicIntegrationRuntime = original.TypeBasicIntegrationRuntime
 
 const (
@@ -809,6 +840,7 @@ const (
 type TypeBasicTrigger = original.TypeBasicTrigger
 
 const (
+	TypeBlobEventsTrigger       TypeBasicTrigger = original.TypeBlobEventsTrigger
 	TypeBlobTrigger             TypeBasicTrigger = original.TypeBlobTrigger
 	TypeMultiplePipelineTrigger TypeBasicTrigger = original.TypeMultiplePipelineTrigger
 	TypeScheduleTrigger         TypeBasicTrigger = original.TypeScheduleTrigger
@@ -830,9 +862,7 @@ type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
 type ActivityPolicy = original.ActivityPolicy
 type ActivityRun = original.ActivityRun
-type ActivityRunsListResponse = original.ActivityRunsListResponse
-type ActivityRunsListResponseIterator = original.ActivityRunsListResponseIterator
-type ActivityRunsListResponsePage = original.ActivityRunsListResponsePage
+type ActivityRunsQueryResponse = original.ActivityRunsQueryResponse
 type AmazonMWSLinkedService = original.AmazonMWSLinkedService
 type AmazonMWSLinkedServiceTypeProperties = original.AmazonMWSLinkedServiceTypeProperties
 type AmazonMWSObjectDataset = original.AmazonMWSObjectDataset
@@ -898,6 +928,8 @@ type AzureTableDataset = original.AzureTableDataset
 type AzureTableDatasetTypeProperties = original.AzureTableDatasetTypeProperties
 type AzureTableSink = original.AzureTableSink
 type AzureTableSource = original.AzureTableSource
+type BlobEventsTrigger = original.BlobEventsTrigger
+type BlobEventsTriggerTypeProperties = original.BlobEventsTriggerTypeProperties
 type BlobSink = original.BlobSink
 type BlobSource = original.BlobSource
 type BlobTrigger = original.BlobTrigger
@@ -907,6 +939,8 @@ type CassandraLinkedServiceTypeProperties = original.CassandraLinkedServiceTypeP
 type CassandraSource = original.CassandraSource
 type CassandraTableDataset = original.CassandraTableDataset
 type CassandraTableDatasetTypeProperties = original.CassandraTableDatasetTypeProperties
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
@@ -935,6 +969,10 @@ type CustomDataset = original.CustomDataset
 type CustomDataSourceLinkedService = original.CustomDataSourceLinkedService
 type DatabricksNotebookActivity = original.DatabricksNotebookActivity
 type DatabricksNotebookActivityTypeProperties = original.DatabricksNotebookActivityTypeProperties
+type DatabricksSparkJarActivity = original.DatabricksSparkJarActivity
+type DatabricksSparkJarActivityTypeProperties = original.DatabricksSparkJarActivityTypeProperties
+type DatabricksSparkPythonActivity = original.DatabricksSparkPythonActivity
+type DatabricksSparkPythonActivityTypeProperties = original.DatabricksSparkPythonActivityTypeProperties
 type DataLakeAnalyticsUSQLActivity = original.DataLakeAnalyticsUSQLActivity
 type DataLakeAnalyticsUSQLActivityTypeProperties = original.DataLakeAnalyticsUSQLActivityTypeProperties
 type BasicDataset = original.BasicDataset
@@ -973,7 +1011,6 @@ type EloquaLinkedService = original.EloquaLinkedService
 type EloquaLinkedServiceTypeProperties = original.EloquaLinkedServiceTypeProperties
 type EloquaObjectDataset = original.EloquaObjectDataset
 type EloquaSource = original.EloquaSource
-type ErrorResponse = original.ErrorResponse
 type ExecutePipelineActivity = original.ExecutePipelineActivity
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
@@ -982,11 +1019,14 @@ type BasicExecutionActivity = original.BasicExecutionActivity
 type ExecutionActivity = original.ExecutionActivity
 type Expression = original.Expression
 type Factory = original.Factory
+type FactoryGitHubConfiguration = original.FactoryGitHubConfiguration
 type FactoryIdentity = original.FactoryIdentity
 type FactoryListResponse = original.FactoryListResponse
 type FactoryListResponseIterator = original.FactoryListResponseIterator
 type FactoryListResponsePage = original.FactoryListResponsePage
 type FactoryProperties = original.FactoryProperties
+type BasicFactoryRepoConfiguration = original.BasicFactoryRepoConfiguration
+type FactoryRepoConfiguration = original.FactoryRepoConfiguration
 type FactoryRepoUpdate = original.FactoryRepoUpdate
 type FactoryUpdateParameters = original.FactoryUpdateParameters
 type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
@@ -1066,7 +1106,6 @@ type IntegrationRuntimeNodeIPAddress = original.IntegrationRuntimeNodeIPAddress
 type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonitoringData
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
-type IntegrationRuntimeRemoveNodeRequest = original.IntegrationRuntimeRemoveNodeRequest
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource
 type IntegrationRuntimeSsisCatalogInfo = original.IntegrationRuntimeSsisCatalogInfo
 type IntegrationRuntimeSsisProperties = original.IntegrationRuntimeSsisProperties
@@ -1083,11 +1122,11 @@ type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
 type JSONFormat = original.JSONFormat
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
-type LinkedIntegrationRuntimeKey = original.LinkedIntegrationRuntimeKey
-type BasicLinkedIntegrationRuntimeProperties = original.BasicLinkedIntegrationRuntimeProperties
-type LinkedIntegrationRuntimeProperties = original.LinkedIntegrationRuntimeProperties
-type LinkedIntegrationRuntimeRbac = original.LinkedIntegrationRuntimeRbac
-type LinkedIntegrationRuntimeTypeProperties = original.LinkedIntegrationRuntimeTypeProperties
+type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
+type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
+type LinkedIntegrationRuntimeRequest = original.LinkedIntegrationRuntimeRequest
+type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
+type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse
@@ -1139,8 +1178,11 @@ type OdbcSink = original.OdbcSink
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResponse = original.OperationListResponse
+type OperationListResponseIterator = original.OperationListResponseIterator
+type OperationListResponsePage = original.OperationListResponsePage
 type OperationLogSpecification = original.OperationLogSpecification
 type OperationMetricAvailability = original.OperationMetricAvailability
+type OperationMetricDimension = original.OperationMetricDimension
 type OperationMetricSpecification = original.OperationMetricSpecification
 type OperationProperties = original.OperationProperties
 type OperationServiceSpecification = original.OperationServiceSpecification
@@ -1168,11 +1210,8 @@ type PipelineListResponsePage = original.PipelineListResponsePage
 type PipelineReference = original.PipelineReference
 type PipelineResource = original.PipelineResource
 type PipelineRun = original.PipelineRun
-type PipelineRunFilterParameters = original.PipelineRunFilterParameters
 type PipelineRunInvokedBy = original.PipelineRunInvokedBy
-type PipelineRunQueryFilter = original.PipelineRunQueryFilter
-type PipelineRunQueryOrderBy = original.PipelineRunQueryOrderBy
-type PipelineRunQueryResponse = original.PipelineRunQueryResponse
+type PipelineRunsQueryResponse = original.PipelineRunsQueryResponse
 type PolybaseSettings = original.PolybaseSettings
 type PostgreSQLLinkedService = original.PostgreSQLLinkedService
 type PostgreSQLLinkedServiceTypeProperties = original.PostgreSQLLinkedServiceTypeProperties
@@ -1197,6 +1236,9 @@ type ResponsysLinkedServiceTypeProperties = original.ResponsysLinkedServiceTypeP
 type ResponsysObjectDataset = original.ResponsysObjectDataset
 type ResponsysSource = original.ResponsysSource
 type RetryPolicy = original.RetryPolicy
+type RunFilterParameters = original.RunFilterParameters
+type RunQueryFilter = original.RunQueryFilter
+type RunQueryOrderBy = original.RunQueryOrderBy
 type SalesforceLinkedService = original.SalesforceLinkedService
 type SalesforceLinkedServiceTypeProperties = original.SalesforceLinkedServiceTypeProperties
 type SalesforceMarketingCloudLinkedService = original.SalesforceMarketingCloudLinkedService
@@ -1232,6 +1274,7 @@ type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
 type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
 type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
 type SelfHostedIntegrationRuntimeStatusTypeProperties = original.SelfHostedIntegrationRuntimeStatusTypeProperties
+type SelfHostedIntegrationRuntimeTypeProperties = original.SelfHostedIntegrationRuntimeTypeProperties
 type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset
@@ -1280,9 +1323,7 @@ type TriggerListResponsePage = original.TriggerListResponsePage
 type TriggerPipelineReference = original.TriggerPipelineReference
 type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
-type TriggerRunListResponse = original.TriggerRunListResponse
-type TriggerRunListResponseIterator = original.TriggerRunListResponseIterator
-type TriggerRunListResponsePage = original.TriggerRunListResponsePage
+type TriggerRunsQueryResponse = original.TriggerRunsQueryResponse
 type TriggersStartFuture = original.TriggersStartFuture
 type TriggersStopFuture = original.TriggersStopFuture
 type TumblingWindowTrigger = original.TumblingWindowTrigger
@@ -1291,6 +1332,7 @@ type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
+type UserProperty = original.UserProperty
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties
 type VerticaSource = original.VerticaSource
@@ -1320,6 +1362,7 @@ type ZohoSource = original.ZohoSource
 type OperationsClient = original.OperationsClient
 type PipelineRunsClient = original.PipelineRunsClient
 type PipelinesClient = original.PipelinesClient
+type TriggerRunsClient = original.TriggerRunsClient
 type TriggersClient = original.TriggersClient
 
 func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
@@ -1372,6 +1415,9 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
+}
+func PossibleBlobEventTypesValues() []BlobEventTypes {
+	return original.PossibleBlobEventTypesValues()
 }
 func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
 	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
@@ -1466,18 +1512,6 @@ func PossibleParameterTypeValues() []ParameterType {
 func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
 	return original.PossiblePhoenixAuthenticationTypeValues()
 }
-func PossiblePipelineRunQueryFilterOperandValues() []PipelineRunQueryFilterOperand {
-	return original.PossiblePipelineRunQueryFilterOperandValues()
-}
-func PossiblePipelineRunQueryFilterOperatorValues() []PipelineRunQueryFilterOperator {
-	return original.PossiblePipelineRunQueryFilterOperatorValues()
-}
-func PossiblePipelineRunQueryOrderValues() []PipelineRunQueryOrder {
-	return original.PossiblePipelineRunQueryOrderValues()
-}
-func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField {
-	return original.PossiblePipelineRunQueryOrderByFieldValues()
-}
 func PossiblePolybaseSettingsRejectTypeValues() []PolybaseSettingsRejectType {
 	return original.PossiblePolybaseSettingsRejectTypeValues()
 }
@@ -1486,6 +1520,18 @@ func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
 }
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
+}
+func PossibleRunQueryFilterOperandValues() []RunQueryFilterOperand {
+	return original.PossibleRunQueryFilterOperandValues()
+}
+func PossibleRunQueryFilterOperatorValues() []RunQueryFilterOperator {
+	return original.PossibleRunQueryFilterOperatorValues()
+}
+func PossibleRunQueryOrderValues() []RunQueryOrder {
+	return original.PossibleRunQueryOrderValues()
+}
+func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
+	return original.PossibleRunQueryOrderByFieldValues()
 }
 func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
 	return original.PossibleSalesforceSinkWriteBehaviorValues()
@@ -1562,6 +1608,9 @@ func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
 func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
 	return original.PossibleTypeBasicDatasetStorageFormatValues()
 }
+func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
+	return original.PossibleTypeBasicFactoryRepoConfigurationValues()
+}
 func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
 	return original.PossibleTypeBasicIntegrationRuntimeValues()
 }
@@ -1594,6 +1643,12 @@ func NewPipelinesClient(subscriptionID string) PipelinesClient {
 }
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTriggerRunsClient(subscriptionID string) TriggerRunsClient {
+	return original.NewTriggerRunsClient(subscriptionID)
+}
+func NewTriggerRunsClientWithBaseURI(baseURI string, subscriptionID string) TriggerRunsClient {
+	return original.NewTriggerRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)

@@ -32,8 +32,13 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates an instance of the AppsClient client.
-func NewAppsClient(azureRegion AzureRegions) AppsClient {
-	return AppsClient{New(azureRegion)}
+func NewAppsClient() AppsClient {
+	return NewAppsClientWithBaseURI(DefaultBaseURI)
+}
+
+// NewAppsClientWithBaseURI creates an instance of the AppsClient client.
+func NewAppsClientWithBaseURI(baseURI string) AppsClient {
+	return AppsClient{NewWithBaseURI(baseURI)}
 }
 
 // Add creates a new LUIS app.
@@ -72,14 +77,10 @@ func (client AppsClient) Add(ctx context.Context, applicationCreateObject Applic
 
 // AddPreparer prepares the Add request.
 func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObject ApplicationCreateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/"),
 		autorest.WithJSON(applicationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -132,14 +133,10 @@ func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDo
 
 // AddCustomPrebuiltDomainPreparer prepares the AddCustomPrebuiltDomain request.
 func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/customprebuiltdomains"),
 		autorest.WithJSON(prebuiltDomainCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -192,17 +189,13 @@ func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result Op
 
 // DeletePreparer prepares the Delete request.
 func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -254,17 +247,13 @@ func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID)
 
 // DownloadQueryLogsPreparer prepares the DownloadQueryLogs request.
 func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -315,17 +304,13 @@ func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result Appli
 
 // GetPreparer prepares the Get request.
 func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -377,17 +362,13 @@ func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID
 
 // GetPublishSettingsPreparer prepares the GetPublishSettings request.
 func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -439,17 +420,13 @@ func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (resu
 
 // GetSettingsPreparer prepares the GetSettings request.
 func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -503,10 +480,6 @@ func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName st
 
 // ImportPreparer prepares the Import request.
 func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, appName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	queryParameters := map[string]interface{}{}
 	if len(appName) > 0 {
 		queryParameters["appName"] = autorest.Encode("query", appName)
@@ -515,7 +488,7 @@ func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/import"),
 		autorest.WithJSON(luisApp),
 		autorest.WithQueryParameters(queryParameters))
@@ -553,7 +526,7 @@ func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (re
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
+				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.AppsClient", "List", err.Error())
@@ -582,10 +555,6 @@ func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (re
 
 // ListPreparer prepares the List request.
 func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	queryParameters := map[string]interface{}{}
 	if skip != nil {
 		queryParameters["skip"] = autorest.Encode("query", *skip)
@@ -600,7 +569,7 @@ func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *in
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -651,13 +620,9 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context)
 
 // ListAvailableCustomPrebuiltDomainsPreparer prepares the ListAvailableCustomPrebuiltDomains request.
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/customprebuiltdomains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -709,17 +674,13 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx contex
 
 // ListAvailableCustomPrebuiltDomainsForCulturePreparer prepares the ListAvailableCustomPrebuiltDomainsForCulture request.
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ctx context.Context, culture string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"culture": autorest.Encode("path", culture),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -769,13 +730,9 @@ func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result Perso
 
 // ListCortanaEndpointsPreparer prepares the ListCortanaEndpoints request.
 func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/assistants"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -825,13 +782,9 @@ func (client AppsClient) ListDomains(ctx context.Context) (result ListString, er
 
 // ListDomainsPreparer prepares the ListDomains request.
 func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/domains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -883,17 +836,13 @@ func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (re
 
 // ListEndpointsPreparer prepares the ListEndpoints request.
 func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -943,13 +892,9 @@ func (client AppsClient) ListSupportedCultures(ctx context.Context) (result List
 
 // ListSupportedCulturesPreparer prepares the ListSupportedCultures request.
 func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/cultures"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -999,13 +944,9 @@ func (client AppsClient) ListUsageScenarios(ctx context.Context) (result ListStr
 
 // ListUsageScenariosPreparer prepares the ListUsageScenarios request.
 func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/apps/usagescenarios"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1059,10 +1000,6 @@ func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicati
 
 // PublishPreparer prepares the Publish request.
 func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
@@ -1070,7 +1007,7 @@ func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/publish", pathParameters),
 		autorest.WithJSON(applicationPublishObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1124,10 +1061,6 @@ func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicatio
 
 // UpdatePreparer prepares the Update request.
 func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
@@ -1135,7 +1068,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(applicationUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1189,10 +1122,6 @@ func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.U
 
 // UpdatePublishSettingsPreparer prepares the UpdatePublishSettings request.
 func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
@@ -1200,7 +1129,7 @@ func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appI
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
 		autorest.WithJSON(publishSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1254,10 +1183,6 @@ func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, ap
 
 // UpdateSettingsPreparer prepares the UpdateSettings request.
 func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
 	pathParameters := map[string]interface{}{
 		"appId": autorest.Encode("path", appID),
 	}
@@ -1265,7 +1190,7 @@ func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
 		autorest.WithJSON(applicationSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

@@ -22,27 +22,15 @@ package authoring
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/authoring"
 
 type AppsClient = original.AppsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
 type BaseClient = original.BaseClient
 type ExamplesClient = original.ExamplesClient
 type FeaturesClient = original.FeaturesClient
 type ModelClient = original.ModelClient
-type AzureRegions = original.AzureRegions
-
-const (
-	Australiaeast  AzureRegions = original.Australiaeast
-	Brazilsouth    AzureRegions = original.Brazilsouth
-	Eastasia       AzureRegions = original.Eastasia
-	Eastus         AzureRegions = original.Eastus
-	Eastus2        AzureRegions = original.Eastus2
-	Northeurope    AzureRegions = original.Northeurope
-	Southcentralus AzureRegions = original.Southcentralus
-	Southeastasia  AzureRegions = original.Southeastasia
-	Westcentralus  AzureRegions = original.Westcentralus
-	Westeurope     AzureRegions = original.Westeurope
-	Westus         AzureRegions = original.Westus
-	Westus2        AzureRegions = original.Westus2
-)
-
 type OperationStatusType = original.OperationStatusType
 
 const (
@@ -371,26 +359,35 @@ type PermissionsClient = original.PermissionsClient
 type TrainClient = original.TrainClient
 type VersionsClient = original.VersionsClient
 
-func NewAppsClient(azureRegion AzureRegions) AppsClient {
-	return original.NewAppsClient(azureRegion)
+func NewAppsClient() AppsClient {
+	return original.NewAppsClient()
 }
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
+func NewAppsClientWithBaseURI(baseURI string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI)
 }
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
+func New() BaseClient {
+	return original.New()
 }
-func NewExamplesClient(azureRegion AzureRegions) ExamplesClient {
-	return original.NewExamplesClient(azureRegion)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
-func NewFeaturesClient(azureRegion AzureRegions) FeaturesClient {
-	return original.NewFeaturesClient(azureRegion)
+func NewExamplesClient() ExamplesClient {
+	return original.NewExamplesClient()
 }
-func NewModelClient(azureRegion AzureRegions) ModelClient {
-	return original.NewModelClient(azureRegion)
+func NewExamplesClientWithBaseURI(baseURI string) ExamplesClient {
+	return original.NewExamplesClientWithBaseURI(baseURI)
 }
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
+func NewFeaturesClient() FeaturesClient {
+	return original.NewFeaturesClient()
+}
+func NewFeaturesClientWithBaseURI(baseURI string) FeaturesClient {
+	return original.NewFeaturesClientWithBaseURI(baseURI)
+}
+func NewModelClient() ModelClient {
+	return original.NewModelClient()
+}
+func NewModelClientWithBaseURI(baseURI string) ModelClient {
+	return original.NewModelClientWithBaseURI(baseURI)
 }
 func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return original.PossibleOperationStatusTypeValues()
@@ -437,14 +434,23 @@ func PossibleStatus1Values() []Status1 {
 func PossibleTrainingStatusValues() []TrainingStatus {
 	return original.PossibleTrainingStatusValues()
 }
-func NewPatternClient(azureRegion AzureRegions) PatternClient {
-	return original.NewPatternClient(azureRegion)
+func NewPatternClient() PatternClient {
+	return original.NewPatternClient()
 }
-func NewPermissionsClient(azureRegion AzureRegions) PermissionsClient {
-	return original.NewPermissionsClient(azureRegion)
+func NewPatternClientWithBaseURI(baseURI string) PatternClient {
+	return original.NewPatternClientWithBaseURI(baseURI)
 }
-func NewTrainClient(azureRegion AzureRegions) TrainClient {
-	return original.NewTrainClient(azureRegion)
+func NewPermissionsClient() PermissionsClient {
+	return original.NewPermissionsClient()
+}
+func NewPermissionsClientWithBaseURI(baseURI string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI)
+}
+func NewTrainClient() TrainClient {
+	return original.NewTrainClient()
+}
+func NewTrainClientWithBaseURI(baseURI string) TrainClient {
+	return original.NewTrainClientWithBaseURI(baseURI)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -452,6 +458,9 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-func NewVersionsClient(azureRegion AzureRegions) VersionsClient {
-	return original.NewVersionsClient(azureRegion)
+func NewVersionsClient() VersionsClient {
+	return original.NewVersionsClient()
+}
+func NewVersionsClientWithBaseURI(baseURI string) VersionsClient {
+	return original.NewVersionsClientWithBaseURI(baseURI)
 }

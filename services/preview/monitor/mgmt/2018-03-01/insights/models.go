@@ -345,33 +345,6 @@ func PossibleReceiverStatusValues() []ReceiverStatus {
 	return []ReceiverStatus{ReceiverStatusDisabled, ReceiverStatusEnabled, ReceiverStatusNotSpecified}
 }
 
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// RecurrenceFrequencyDay ...
-	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
-	// RecurrenceFrequencyHour ...
-	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
-	// RecurrenceFrequencyMinute ...
-	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
-	// RecurrenceFrequencyMonth ...
-	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
-	// RecurrenceFrequencyNone ...
-	RecurrenceFrequencyNone RecurrenceFrequency = "None"
-	// RecurrenceFrequencySecond ...
-	RecurrenceFrequencySecond RecurrenceFrequency = "Second"
-	// RecurrenceFrequencyWeek ...
-	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
-	// RecurrenceFrequencyYear ...
-	RecurrenceFrequencyYear RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNone, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
-}
-
 // ResultType enumerates the values for result type.
 type ResultType string
 
@@ -509,13 +482,13 @@ func PossibleUnitValues() []Unit {
 	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
 }
 
-// BasicAction ...
+// BasicAction action descriptor.
 type BasicAction interface {
 	AsAlertingAction() (*AlertingAction, bool)
 	AsAction() (*Action, bool)
 }
 
-// Action ...
+// Action action descriptor.
 type Action struct {
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
@@ -1806,6 +1779,8 @@ type CalculateBaselineResponse struct {
 type DiagnosticSettings struct {
 	// StorageAccountID - The resource ID of the storage account to which you would like to send Diagnostic Logs.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	// ServiceBusRuleID - The service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
+	ServiceBusRuleID *string `json:"serviceBusRuleId,omitempty"`
 	// EventHubAuthorizationRuleID - The resource Id for the event hub authorization rule.
 	EventHubAuthorizationRuleID *string `json:"eventHubAuthorizationRuleId,omitempty"`
 	// EventHubName - The name of the event hub. If none is specified, the default event hub will be selected.
@@ -1826,7 +1801,8 @@ type DiagnosticSettingsCategory struct {
 
 // DiagnosticSettingsCategoryResource the diagnostic settings category resource.
 type DiagnosticSettingsCategoryResource struct {
-	autorest.Response           `json:"-"`
+	autorest.Response `json:"-"`
+	// DiagnosticSettingsCategory - The properties of a Diagnostic Settings Category.
 	*DiagnosticSettingsCategory `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1914,7 +1890,8 @@ type DiagnosticSettingsCategoryResourceCollection struct {
 
 // DiagnosticSettingsResource the diagnostic setting resource.
 type DiagnosticSettingsResource struct {
-	autorest.Response   `json:"-"`
+	autorest.Response `json:"-"`
+	// DiagnosticSettings - Properties of a Diagnostic Settings Resource.
 	*DiagnosticSettings `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -2044,6 +2021,7 @@ type EventCategoryCollection struct {
 
 // EventData the Azure event log entries are of type EventData
 type EventData struct {
+	// Authorization - The sender authorization information.
 	Authorization *SenderAuthorization `json:"authorization,omitempty"`
 	// Claims - key value pairs to identify ARM permissions.
 	Claims map[string]*string `json:"claims"`
@@ -2443,11 +2421,12 @@ type LogicAppReceiver struct {
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 }
 
-// LogMetricTrigger ...
+// LogMetricTrigger a log metrics trigger descriptor.
 type LogMetricTrigger struct {
 	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
 	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
-	Threshold         *float64            `json:"threshold,omitempty"`
+	// Threshold - The threshold of the metric trigger.
+	Threshold *float64 `json:"threshold,omitempty"`
 	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
 	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
 	// MetricColumn - Evaluation of metric on a particular column
@@ -3044,7 +3023,8 @@ type Metric struct {
 // MetricAlertAction an alert action.
 type MetricAlertAction struct {
 	// ActionGroupID - the id of the action group to use.
-	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	ActionGroupID *string `json:"actionGroupId,omitempty"`
+	// WebhookProperties - The properties of a webhook object.
 	WebhookProperties map[string]*string `json:"webhookProperties"`
 }
 
@@ -3500,6 +3480,7 @@ type MetricAlertStatusCollection struct {
 
 // MetricAlertStatusProperties an alert status properties.
 type MetricAlertStatusProperties struct {
+	// Dimensions - An object describing the type of the dimensions.
 	Dimensions map[string]*string `json:"dimensions"`
 	// Status - status value
 	Status *string `json:"status,omitempty"`
@@ -3531,7 +3512,7 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
-// MetricCriteria ...
+// MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
 	// Name - Name of the criteria.
 	Name *string `json:"name,omitempty"`
@@ -3580,7 +3561,7 @@ type MetricDefinitionCollection struct {
 	Value *[]MetricDefinition `json:"value,omitempty"`
 }
 
-// MetricDimension ...
+// MetricDimension specifies a metric dimension.
 type MetricDimension struct {
 	// Name - Name of the dimension.
 	Name *string `json:"name,omitempty"`
@@ -3679,8 +3660,8 @@ type ProxyOnlyResource struct {
 // Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate element
 // is used.
 type Recurrence struct {
-	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. Possible values include: 'RecurrenceFrequencyNone', 'RecurrenceFrequencySecond', 'RecurrenceFrequencyMinute', 'RecurrenceFrequencyHour', 'RecurrenceFrequencyDay', 'RecurrenceFrequencyWeek', 'RecurrenceFrequencyMonth', 'RecurrenceFrequencyYear'
-	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
+	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly.
+	Frequency *string `json:"frequency,omitempty"`
 	// Schedule - the scheduling constraints for when the profile begins.
 	Schedule *RecurrentSchedule `json:"schedule,omitempty"`
 }

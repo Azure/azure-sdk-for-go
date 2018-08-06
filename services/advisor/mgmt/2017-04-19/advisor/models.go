@@ -371,6 +371,8 @@ type RecommendationProperties struct {
 	ShortDescription *ShortDescription `json:"shortDescription,omitempty"`
 	// SuppressionIds - The list of snoozed and dismissed rules for the recommendation.
 	SuppressionIds *[]uuid.UUID `json:"suppressionIds,omitempty"`
+	// ExtendedProperties - Extended properties
+	ExtendedProperties map[string]*string `json:"extendedProperties"`
 }
 
 // MarshalJSON is the custom marshaler for RecommendationProperties.
@@ -405,6 +407,9 @@ func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 	}
 	if rp.SuppressionIds != nil {
 		objectMap["suppressionIds"] = rp.SuppressionIds
+	}
+	if rp.ExtendedProperties != nil {
+		objectMap["extendedProperties"] = rp.ExtendedProperties
 	}
 	return json.Marshal(objectMap)
 }

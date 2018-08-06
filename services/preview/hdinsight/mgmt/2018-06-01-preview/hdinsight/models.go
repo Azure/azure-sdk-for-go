@@ -1540,6 +1540,8 @@ type Usage struct {
 	Name *LocalizedName `json:"name,omitempty"`
 	// NewProp - The details about the localizable name of the used resource.
 	NewProp *LocalizedName `json:"newProp,omitempty"`
+	// VMSizeFilter - The details about the localizable name of the used resource.
+	VMSizeFilter *LocalizedName `json:"vmSize_filter,omitempty"`
 }
 
 // UsagesListResult the response for the operation to get regional usages for a subscription.

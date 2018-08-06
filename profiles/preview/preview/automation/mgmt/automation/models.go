@@ -315,6 +315,13 @@ const (
 	StreamTypeOutput StreamType = original.StreamTypeOutput
 )
 
+type TokenType = original.TokenType
+
+const (
+	Oauth               TokenType = original.Oauth
+	PersonalAccessToken TokenType = original.PersonalAccessToken
+)
+
 type WindowsUpdateClasses = original.WindowsUpdateClasses
 
 const (
@@ -525,6 +532,7 @@ type SourceControlListResult = original.SourceControlListResult
 type SourceControlListResultIterator = original.SourceControlListResultIterator
 type SourceControlListResultPage = original.SourceControlListResultPage
 type SourceControlProperties = original.SourceControlProperties
+type SourceControlSecurityTokenProperties = original.SourceControlSecurityTokenProperties
 type SourceControlSyncJob = original.SourceControlSyncJob
 type SourceControlSyncJobByID = original.SourceControlSyncJobByID
 type SourceControlSyncJobByIDProperties = original.SourceControlSyncJobByIDProperties
@@ -790,6 +798,9 @@ func PossibleStartTypeValues() []StartType {
 }
 func PossibleStreamTypeValues() []StreamType {
 	return original.PossibleStreamTypeValues()
+}
+func PossibleTokenTypeValues() []TokenType {
+	return original.PossibleTokenTypeValues()
 }
 func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
 	return original.PossibleWindowsUpdateClassesValues()

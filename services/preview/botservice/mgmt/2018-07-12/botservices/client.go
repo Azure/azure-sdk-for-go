@@ -1,7 +1,7 @@
-// Package authoring implements the Azure ARM Authoring service API version 2.0.
+// Package botservice implements the Azure ARM Botservice service API version 2018-07-12.
 //
-//
-package authoring
+// Azure Bot Service is a platform for creating smart conversational agents.
+package botservice
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,21 +24,28 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BaseClient is the base client for Authoring.
+const (
+	// DefaultBaseURI is the default URI used for the service Botservice
+	DefaultBaseURI = "https://management.azure.com"
+)
+
+// BaseClient is the base client for Botservice.
 type BaseClient struct {
 	autorest.Client
-	Endpoint string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string) BaseClient {
-	return NewWithoutDefaults(endpoint)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(endpoint string) BaseClient {
+// NewWithBaseURI creates an instance of the BaseClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		Endpoint: endpoint,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

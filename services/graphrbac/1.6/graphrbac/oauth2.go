@@ -39,7 +39,7 @@ func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
 	return OAuth2Client{NewWithBaseURI(baseURI, tenantID)}
 }
 
-// Get sends the get request.
+// Get queries OAuth2 permissions for the relevant SP ObjectId of an app.
 func (client OAuth2Client) Get(ctx context.Context, filter string) (result OAuth2, err error) {
 	req, err := client.GetPreparer(ctx, filter)
 	if err != nil {
@@ -104,7 +104,7 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result OAuth2, err
 	return
 }
 
-// Post sends the post request.
+// Post grants OAuth2 permissions for the relevant resource Ids of an app.
 func (client OAuth2Client) Post(ctx context.Context, body *OAuth2) (result OAuth2, err error) {
 	req, err := client.PostPreparer(ctx, body)
 	if err != nil {

@@ -70,6 +70,21 @@ const (
 	Website        AzureResourceType = original.Website
 )
 
+type AzureStorageState = original.AzureStorageState
+
+const (
+	InvalidCredentials AzureStorageState = original.InvalidCredentials
+	InvalidShare       AzureStorageState = original.InvalidShare
+	Ok                 AzureStorageState = original.Ok
+)
+
+type AzureStorageType = original.AzureStorageType
+
+const (
+	AzureBlob  AzureStorageType = original.AzureBlob
+	AzureFiles AzureStorageType = original.AzureFiles
+)
+
 type BackupItemStatus = original.BackupItemStatus
 
 const (
@@ -708,6 +723,8 @@ type AutoHealRules = original.AutoHealRules
 type AutoHealTriggers = original.AutoHealTriggers
 type AzureBlobStorageApplicationLogsConfig = original.AzureBlobStorageApplicationLogsConfig
 type AzureBlobStorageHTTPLogsConfig = original.AzureBlobStorageHTTPLogsConfig
+type AzureStorageInfoValue = original.AzureStorageInfoValue
+type AzureStoragePropertyDictionaryResource = original.AzureStoragePropertyDictionaryResource
 type AzureTableStorageApplicationLogsConfig = original.AzureTableStorageApplicationLogsConfig
 type BackupItem = original.BackupItem
 type BackupItemCollection = original.BackupItemCollection
@@ -1208,6 +1225,12 @@ func PossibleAutoHealActionTypeValues() []AutoHealActionType {
 }
 func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return original.PossibleAzureResourceTypeValues()
+}
+func PossibleAzureStorageStateValues() []AzureStorageState {
+	return original.PossibleAzureStorageStateValues()
+}
+func PossibleAzureStorageTypeValues() []AzureStorageType {
+	return original.PossibleAzureStorageTypeValues()
 }
 func PossibleBackupItemStatusValues() []BackupItemStatus {
 	return original.PossibleBackupItemStatusValues()

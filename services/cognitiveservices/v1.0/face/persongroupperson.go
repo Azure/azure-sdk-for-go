@@ -37,8 +37,8 @@ func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
 	return PersonGroupPersonClient{New(endpoint)}
 }
 
-// AddPersonFaceFromStream add a representative face to a person for identification. The input face is specified as an
-// image with a targetFace rectangle.
+// AddFaceFromStream add a representative face to a person for identification. The input face is specified as an image
+// with a targetFace rectangle.
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // personID - id referencing a particular person.
@@ -48,39 +48,39 @@ func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client PersonGroupPersonClient) AddPersonFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
+func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: userData,
 			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("face.PersonGroupPersonClient", "AddPersonFaceFromStream", err.Error())
+		return result, validation.NewError("face.PersonGroupPersonClient", "AddFaceFromStream", err.Error())
 	}
 
-	req, err := client.AddPersonFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace)
+	req, err := client.AddFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromStream", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.AddPersonFaceFromStreamSender(req)
+	resp, err := client.AddFaceFromStreamSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromStream", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.AddPersonFaceFromStreamResponder(resp)
+	result, err = client.AddFaceFromStreamResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromStream", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// AddPersonFaceFromStreamPreparer prepares the AddPersonFaceFromStream request.
-func (client PersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
+// AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
+func (client PersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -102,22 +102,22 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx contex
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// AddPersonFaceFromStreamSender sends the AddPersonFaceFromStream request. The method will close the
+// AddFaceFromStreamSender sends the AddFaceFromStream request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonGroupPersonClient) AddPersonFaceFromStreamSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) AddFaceFromStreamSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// AddPersonFaceFromStreamResponder handles the response to the AddPersonFaceFromStream request. The method always
+// AddFaceFromStreamResponder handles the response to the AddFaceFromStream request. The method always
 // closes the http.Response Body.
-func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
+func (client PersonGroupPersonClient) AddFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,8 +128,8 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *htt
 	return
 }
 
-// AddPersonFaceFromURL add a representative face to a person for identification. The input face is specified as an
-// image with a targetFace rectangle.
+// AddFaceFromURL add a representative face to a person for identification. The input face is specified as an image
+// with a targetFace rectangle.
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // personID - id referencing a particular person.
@@ -139,7 +139,7 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *htt
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
+func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -148,32 +148,32 @@ func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, 
 			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("face.PersonGroupPersonClient", "AddPersonFaceFromURL", err.Error())
+		return result, validation.NewError("face.PersonGroupPersonClient", "AddFaceFromURL", err.Error())
 	}
 
-	req, err := client.AddPersonFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
+	req, err := client.AddFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.AddPersonFaceFromURLSender(req)
+	resp, err := client.AddFaceFromURLSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.AddPersonFaceFromURLResponder(resp)
+	result, err = client.AddFaceFromURLResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// AddPersonFaceFromURLPreparer prepares the AddPersonFaceFromURL request.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
+// AddFaceFromURLPreparer prepares the AddFaceFromURL request.
+func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -195,22 +195,22 @@ func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.C
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// AddPersonFaceFromURLSender sends the AddPersonFaceFromURL request. The method will close the
+// AddFaceFromURLSender sends the AddFaceFromURL request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) AddFaceFromURLSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// AddPersonFaceFromURLResponder handles the response to the AddPersonFaceFromURL request. The method always
+// AddFaceFromURLResponder handles the response to the AddFaceFromURL request. The method always
 // closes the http.Response Body.
-func (client PersonGroupPersonClient) AddPersonFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
+func (client PersonGroupPersonClient) AddFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -298,7 +298,8 @@ func (client PersonGroupPersonClient) CreateResponder(resp *http.Response) (resu
 	return
 }
 
-// Delete delete an existing person from a person group. Persisted face images of the person will also be deleted.
+// Delete delete an existing person from a person group. All stored person data, and face features in the person entry
+// will be deleted.
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // personID - id referencing a particular person.
@@ -368,7 +369,7 @@ func (client PersonGroupPersonClient) DeleteResponder(resp *http.Response) (resu
 	return
 }
 
-// DeleteFace delete a face from a person. Relative image for the persisted face will also be deleted.
+// DeleteFace delete a face from a person. Relative feature for the persisted face will also be deleted.
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // personID - id referencing a particular person.
@@ -417,7 +418,7 @@ func (client PersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, pe
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -561,7 +562,7 @@ func (client PersonGroupPersonClient) GetFacePreparer(ctx context.Context, perso
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters))
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -750,7 +751,7 @@ func (client PersonGroupPersonClient) UpdateResponder(resp *http.Response) (resu
 // personID - id referencing a particular person.
 // persistedFaceID - id referencing a particular persistedFaceId of an existing face.
 // body - request body for updating persisted face.
-func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdatePersonFaceRequest) (result autorest.Response, err error) {
+func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdateFaceRequest) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -780,7 +781,7 @@ func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGrou
 }
 
 // UpdateFacePreparer prepares the UpdateFace request.
-func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdatePersonFaceRequest) (*http.Request, error) {
+func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdateFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -795,7 +796,7 @@ func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, pe
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", pathParameters),
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

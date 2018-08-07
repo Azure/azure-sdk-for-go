@@ -115,6 +115,26 @@ const (
 	Warning       EventLevel = original.Warning
 )
 
+type MetricCriteriaAggregationType = original.MetricCriteriaAggregationType
+
+const (
+	MetricCriteriaAggregationTypeAverage MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeAverage
+	MetricCriteriaAggregationTypeMaximum MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeMaximum
+	MetricCriteriaAggregationTypeMinimum MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeMinimum
+	MetricCriteriaAggregationTypeTotal   MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeTotal
+)
+
+type MetricCriteriaOperator = original.MetricCriteriaOperator
+
+const (
+	MetricCriteriaOperatorEquals             MetricCriteriaOperator = original.MetricCriteriaOperatorEquals
+	MetricCriteriaOperatorGreaterThan        MetricCriteriaOperator = original.MetricCriteriaOperatorGreaterThan
+	MetricCriteriaOperatorGreaterThanOrEqual MetricCriteriaOperator = original.MetricCriteriaOperatorGreaterThanOrEqual
+	MetricCriteriaOperatorLessThan           MetricCriteriaOperator = original.MetricCriteriaOperatorLessThan
+	MetricCriteriaOperatorLessThanOrEqual    MetricCriteriaOperator = original.MetricCriteriaOperatorLessThanOrEqual
+	MetricCriteriaOperatorNotEquals          MetricCriteriaOperator = original.MetricCriteriaOperatorNotEquals
+)
+
 type MetricStatisticType = original.MetricStatisticType
 
 const (
@@ -523,6 +543,12 @@ func PossibleEnabledValues() []Enabled {
 }
 func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
+}
+func PossibleMetricCriteriaAggregationTypeValues() []MetricCriteriaAggregationType {
+	return original.PossibleMetricCriteriaAggregationTypeValues()
+}
+func PossibleMetricCriteriaOperatorValues() []MetricCriteriaOperator {
+	return original.PossibleMetricCriteriaOperatorValues()
 }
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()

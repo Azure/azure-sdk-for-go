@@ -181,8 +181,8 @@ func (client ServicePrincipalsClient) DeleteResponder(resp *http.Response) (resu
 // Get gets service principal information from the directory.
 // Parameters:
 // objectID - the object ID of the service principal to get.
-func (client ServicePrincipalsClient) Get(ctx context.Context, objectID string) (result ServicePrincipal, err error) {
-	req, err := client.GetPreparer(ctx, objectID)
+func (client ServicePrincipalsClient) Get(ctx context.Context, objectID string, filter string) (result ServicePrincipal, err error) {
+	req, err := client.GetPreparer(ctx, objectID, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", nil, "Failure preparing request")
 		return
@@ -204,7 +204,7 @@ func (client ServicePrincipalsClient) Get(ctx context.Context, objectID string) 
 }
 
 // GetPreparer prepares the Get request.
-func (client ServicePrincipalsClient) GetPreparer(ctx context.Context, objectID string) (*http.Request, error) {
+func (client ServicePrincipalsClient) GetPreparer(ctx context.Context, objectID string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"objectId": autorest.Encode("path", objectID),
 		"tenantID": autorest.Encode("path", client.TenantID),
@@ -213,6 +213,9 @@ func (client ServicePrincipalsClient) GetPreparer(ctx context.Context, objectID 
 	const APIVersion = "1.6"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(

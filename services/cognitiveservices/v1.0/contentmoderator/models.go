@@ -18,6 +18,7 @@ package contentmoderator
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -380,10 +381,27 @@ type ImageList struct {
 
 // ImageListMetadata image List Metadata.
 type ImageListMetadata struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]*string `json:""`
 	// KeyOne - Optional Key value pair to describe your list.
 	KeyOne *string `json:"Key One,omitempty"`
 	// KeyTwo - Optional Key value pair to describe your list.
 	KeyTwo *string `json:"Key Two,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageListMetadata.
+func (ilM ImageListMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ilM.KeyOne != nil {
+		objectMap["Key One"] = ilM.KeyOne
+	}
+	if ilM.KeyTwo != nil {
+		objectMap["Key Two"] = ilM.KeyTwo
+	}
+	for k, v := range ilM.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
 }
 
 // IPA IP Address details.
@@ -658,10 +676,27 @@ type TermList struct {
 
 // TermListMetadata term list metadata.
 type TermListMetadata struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]*string `json:""`
 	// KeyOne - Optional Key value pair to describe your list.
 	KeyOne *string `json:"Key One,omitempty"`
 	// KeyTwo - Optional Key value pair to describe your list.
 	KeyTwo *string `json:"Key Two,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TermListMetadata.
+func (tlM TermListMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tlM.KeyOne != nil {
+		objectMap["Key One"] = tlM.KeyOne
+	}
+	if tlM.KeyTwo != nil {
+		objectMap["Key Two"] = tlM.KeyTwo
+	}
+	for k, v := range tlM.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
 }
 
 // Terms terms properties.

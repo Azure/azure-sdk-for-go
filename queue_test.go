@@ -129,7 +129,7 @@ const (
 )
 
 var (
-	timeout = 60 * time.Second
+	defaultTimeout = 60 * time.Second
 )
 
 func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
@@ -142,7 +142,7 @@ func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
 
 	for name, testFunc := range tests {
 		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 
 			// setup queue for population
@@ -232,7 +232,7 @@ func (suite *serviceBusSuite) TestQueueManagementWrites() {
 	qm := ns.NewQueueManager()
 	for name, testFunc := range tests {
 		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			name := suite.RandomName("gosb", 6)
 			testFunc(ctx, t, qm, name)
@@ -258,7 +258,7 @@ func (suite *serviceBusSuite) TestQueueManagementReads() {
 	ns := suite.getNewSasInstance()
 	qm := ns.NewQueueManager()
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
 	names := []string{suite.randEntityName(), suite.randEntityName()}
@@ -270,7 +270,7 @@ func (suite *serviceBusSuite) TestQueueManagementReads() {
 
 	for name, testFunc := range tests {
 		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			testFunc(ctx, t, qm, names)
 		})
@@ -323,7 +323,7 @@ func (suite *serviceBusSuite) TestQueueManagement() {
 	qm := ns.NewQueueManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			name := suite.randEntityName()
 			testFunc(ctx, t, qm, name)
@@ -418,12 +418,21 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		"SendAndReceiveScheduled": testQueueSendAndReceiveScheduled,
 	}
 
+	timeouts := map[string]time.Duration{
+		"SendAndReceiveScheduled": 5 * time.Minute,
+	}
+
 	ns := suite.getNewSasInstance()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
+			timeout, ok := timeouts[name]
+			if !ok {
+				timeout = defaultTimeout
+			}
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
+
 			window := time.Duration(30 * time.Second)
 			cleanup := makeQueue(ctx, t, ns, queueName,
 				QueueEntityWithPartitioning(),
@@ -554,8 +563,20 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 }
 
 func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *Queue) {
+	if testing.Short() {
+		t.Skip()
+		return
+	}
+
+	// The delay to schedule a message for.
+	const waitTime = time.Duration(3 * time.Minute)
+	// Service Bus guarentees roughly a one minute window. So that our tests aren't flakey, we'll give them
+	// a buffer on either side.
+	const buffer = time.Duration(40 * time.Second)
+	const min, max = waitTime - buffer, waitTime + buffer
+
 	msg := NewMessageFromString("to the future!!")
-	futureTime := time.Now().UTC().Add(15 * time.Second)
+	futureTime := time.Now().Add(waitTime)
 	msg.SystemProperties = &SystemProperties{
 		ScheduledEnqueueTime: &futureTime,
 	}
@@ -564,8 +585,12 @@ func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *
 		wg.Add(1)
 		listener, err := queue.Receive(ctx, func(ctx context.Context, received *Message) DispositionAction {
 			defer wg.Done()
-			arrivalTime := time.Now().UTC()
-			assert.True(t, arrivalTime.After(futureTime))
+
+			arrivalTime := time.Now()
+
+			delay := arrivalTime.Sub(futureTime)
+			assert.True(t, delay >= min, "message delivered too soon, expected %v actual %v", waitTime, delay)
+			assert.True(t, delay <= max, "message delivered too late, expected %v actual %v", waitTime, delay)
 			return received.Complete()
 		})
 		if assert.NoError(t, err) {
@@ -628,7 +653,7 @@ func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			cleanup := makeQueue(ctx, t, ns, queueName)
 			q, err := ns.NewQueue(queueName, QueueWithReceiveAndDelete())
@@ -768,7 +793,7 @@ func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 		}
 	}
 	return func() {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 		defer cancel()
 
 		_ = qm.Delete(ctx, entity.Name)
@@ -814,7 +839,7 @@ func fmtDuration(d time.Duration) string {
 }
 
 func (suite *serviceBusSuite) cleanupQueue(name string) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
 	ns := suite.getNewSasInstance()

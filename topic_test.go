@@ -115,7 +115,7 @@ func (suite *serviceBusSuite) TestTopicManagementWrites() {
 	tm := ns.NewTopicManager()
 	for name, testFunc := range tests {
 		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			name := suite.RandomName("gosb", 6)
 			testFunc(ctx, t, tm, name)
@@ -143,7 +143,7 @@ func (suite *serviceBusSuite) TestTopicManagementReads() {
 	ns := suite.getNewSasInstance()
 	tm := ns.NewTopicManager()
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
 	names := []string{suite.randEntityName(), suite.randEntityName()}
@@ -155,7 +155,7 @@ func (suite *serviceBusSuite) TestTopicManagementReads() {
 
 	for name, testFunc := range tests {
 		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			testFunc(ctx, t, tm, names)
 		})
@@ -206,7 +206,7 @@ func (suite *serviceBusSuite) TestTopicManagement() {
 		setupTestTeardown := func(t *testing.T) {
 			entityName := suite.randEntityName()
 			defer suite.cleanupTopic(entityName)
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			testFunc(ctx, t, tm, entityName)
 
@@ -294,7 +294,7 @@ func (suite *serviceBusSuite) TestTopic() {
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			name := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			_ = makeTopic(ctx, t, ns, name)
 			topic, err := ns.NewTopic(ctx, name)
@@ -329,7 +329,7 @@ func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 		}
 	}
 	return func() {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 		defer cancel()
 
 		_ = tm.Delete(ctx, entity.Name)
@@ -337,7 +337,7 @@ func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 }
 
 func (suite *serviceBusSuite) cleanupTopic(name string) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
 	ns := suite.getNewSasInstance()

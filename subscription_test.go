@@ -100,7 +100,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 	}
 
 	ns := suite.getNewSasInstance()
-	outerCtx, outerCancel := context.WithTimeout(context.Background(), timeout)
+	outerCtx, outerCancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer outerCancel()
 	topicName := suite.RandomName("gosb", 6)
 	cleanupTopic := makeTopic(outerCtx, suite.T(), ns, topicName)
@@ -109,7 +109,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 		sm := topic.NewSubscriptionManager()
 		for name, testFunc := range tests {
 			suite.T().Run(name, func(t *testing.T) {
-				ctx, cancel := context.WithTimeout(context.Background(), timeout)
+				ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 				defer cancel()
 				name := suite.RandomName("gosb", 6)
 				testFunc(ctx, t, sm, name)
@@ -131,7 +131,7 @@ func testPutSubscription(ctx context.Context, t *testing.T, sm *SubscriptionMana
 }
 
 func (suite *serviceBusSuite) cleanupSubscription(topic *Topic, subscriptionName string) {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 	sm := topic.NewSubscriptionManager()
 	err := sm.Delete(ctx, subscriptionName)
@@ -157,7 +157,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 		subName := suite.randEntityName()
 
 		setupTestTeardown := func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			cleanupTopic := makeTopic(ctx, t, ns, topicName)
 			topic, err := ns.NewTopic(ctx, topicName)
@@ -165,7 +165,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 				sm := topic.NewSubscriptionManager()
 				if suite.NoError(err) {
 					defer func(sName string) {
-						ctx, cancel := context.WithTimeout(context.Background(), timeout)
+						ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 						defer cancel()
 						if !suite.NoError(sm.Delete(ctx, sName)) {
 							suite.Fail(err.Error())
@@ -246,7 +246,7 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			topicName := suite.randEntityName()
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 
 			topicCleanup := makeTopic(ctx, t, ns, topicName)
@@ -313,7 +313,7 @@ func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name stri
 		}
 	}
 	return func() {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 		defer cancel()
 
 		_ = sm.Delete(ctx, entity.Name)

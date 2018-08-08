@@ -4,7 +4,7 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null 
 			cat $(CURDIR)/.version 2> /dev/null || echo v0)
 BIN      = $(GOPATH)/bin
 BASE     = $(GOPATH)/src/$(PACKAGE)
-PKGS     = $(or $(PKG),$(shell cd $(BASE) && env GOPATH=$(GOPATH) $(GO) list ./... | grep -vE "^$(PACKAGE)/vendor|_examples|templates/"))
+PKGS     = $(or $(PKG),$(shell cd $(BASE) && env GOPATH=$(GOPATH) $(GO) list ./... | grep -vE "^$(PACKAGE)/vendor|templates/"))
 TESTPKGS = $(shell env GOPATH=$(GOPATH) $(GO) list -f '{{ if or .TestGoFiles .XTestGoFiles }}{{ .ImportPath }}{{ end }}' $(PKGS))
 GO_FILES = find . -iname '*.go' -type f | grep -v /vendor/
 
@@ -20,7 +20,7 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 TIMEOUT = 300
 
 .PHONY: all
-all: fmt vendor lint vet megacheck examples ; $(info $(M) building library…) @ ## Build program
+all: fmt vendor lint vet megacheck ; $(info $(M) building library…) @ ## Build program
 	$Q cd $(BASE) && $(GO) build -tags release
 
 # Tools
@@ -90,9 +90,3 @@ help:
 .PHONY: version
 version:
 	@echo $(VERSION)
-
-.PHONY: examples
-examples: ; $(info $(M) building examples…)	@ ## Building examples
-	@for d in `find _examples -type d -d 1`; do \
-	  $(MAKE) -C $$d; \
-	done

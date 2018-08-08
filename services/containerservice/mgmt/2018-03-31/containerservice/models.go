@@ -666,7 +666,7 @@ type CredentialResult struct {
 // CredentialResults the list of credential result response.
 type CredentialResults struct {
 	autorest.Response `json:"-"`
-	Values            *[]CredentialResult `json:"values,omitempty"`
+	Kubeconfigs       *[]CredentialResult `json:"kubeconfigs,omitempty"`
 }
 
 // CustomProfile properties to configure a custom container service cluster.

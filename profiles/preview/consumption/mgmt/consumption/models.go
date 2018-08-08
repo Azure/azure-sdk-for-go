@@ -29,7 +29,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type CostTagsClient = original.CostTagsClient
 type ForecastsClient = original.ForecastsClient
 type MarketplacesClient = original.MarketplacesClient
 type BillingFrequency = original.BillingFrequency
@@ -102,9 +101,6 @@ type BudgetsListResult = original.BudgetsListResult
 type BudgetsListResultIterator = original.BudgetsListResultIterator
 type BudgetsListResultPage = original.BudgetsListResultPage
 type BudgetTimePeriod = original.BudgetTimePeriod
-type CostTag = original.CostTag
-type CostTagProperties = original.CostTagProperties
-type CostTagsModel = original.CostTagsModel
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -179,12 +175,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewCostTagsClient(subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClient(subscriptionID)
-}
-func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewForecastsClient(subscriptionID string) ForecastsClient {
 	return original.NewForecastsClient(subscriptionID)

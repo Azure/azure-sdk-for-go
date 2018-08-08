@@ -115,15 +115,6 @@ const (
 	Warning       EventLevel = original.Warning
 )
 
-type MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTime
-
-const (
-	MetricAlertRuleAggregationTimeAverage MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeAverage
-	MetricAlertRuleAggregationTimeMaximum MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeMaximum
-	MetricAlertRuleAggregationTimeMinimum MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeMinimum
-	MetricAlertRuleAggregationTimeTotal   MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeTotal
-)
-
 type MetricAlertRuleCondition = original.MetricAlertRuleCondition
 
 const (
@@ -133,6 +124,15 @@ const (
 	MetricAlertRuleConditionLessThan           MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThan
 	MetricAlertRuleConditionLessThanOrEqual    MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThanOrEqual
 	MetricAlertRuleConditionNotEquals          MetricAlertRuleCondition = original.MetricAlertRuleConditionNotEquals
+)
+
+type MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregation
+
+const (
+	MetricAlertRuleTimeAggregationAverage MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationAverage
+	MetricAlertRuleTimeAggregationMaximum MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationMaximum
+	MetricAlertRuleTimeAggregationMinimum MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationMinimum
+	MetricAlertRuleTimeAggregationTotal   MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationTotal
 )
 
 type MetricStatisticType = original.MetricStatisticType
@@ -544,11 +544,11 @@ func PossibleEnabledValues() []Enabled {
 func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
 }
-func PossibleMetricAlertRuleAggregationTimeValues() []MetricAlertRuleAggregationTime {
-	return original.PossibleMetricAlertRuleAggregationTimeValues()
-}
 func PossibleMetricAlertRuleConditionValues() []MetricAlertRuleCondition {
 	return original.PossibleMetricAlertRuleConditionValues()
+}
+func PossibleMetricAlertRuleTimeAggregationValues() []MetricAlertRuleTimeAggregation {
+	return original.PossibleMetricAlertRuleTimeAggregationValues()
 }
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()

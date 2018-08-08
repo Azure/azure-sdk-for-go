@@ -222,6 +222,16 @@ func (m *Message) DeadLetterWithInfo(err error, condition MessageErrorCondition,
 	}
 }
 
+// DeliverAfter will ensure Azure Service Bus delivers the message after the time specified
+// (usually within 1 minute after the specified time)
+func (m *Message) DeliverAfter(t time.Time) {
+	if m.SystemProperties == nil {
+		m.SystemProperties = new(SystemProperties)
+	}
+	utcTime := t.UTC()
+	m.SystemProperties.ScheduledEnqueueTime = &utcTime
+}
+
 // Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
 func (m *Message) Set(key, value string) {
 	if m.UserProperties == nil {

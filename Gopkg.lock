@@ -2,6 +2,7 @@
 
 
 [[projects]]
+  digest = "1:b12a6ebf761476b20cf4369e1d114c50d4d78657347bb21cdfbf1a8996e725bf"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -13,23 +14,27 @@
     "log",
     "rpc",
     "sas",
-    "uuid"
+    "uuid",
   ]
-  revision = "e05d7e9b03e1fd3a074d0f0b819bad445e3a0a69"
-  version = "v0.6.0"
+  pruneopts = "UT"
+  revision = "1fa44b828b6a39462b3d0e6248c69103b02272b2"
+  version = "v0.7.0"
 
 [[projects]]
+  digest = "1:e0cd7a155f27aa2eb4dfaeb68087b5e8b7cd87aa6bbd4096d7954ef5ab19d10c"
   name = "github.com/Azure/azure-sdk-for-go"
   packages = [
     "services/resources/mgmt/2017-05-10/resources",
     "services/servicebus/mgmt/2015-08-01/servicebus",
     "services/servicebus/mgmt/2017-04-01/servicebus",
-    "version"
+    "version",
   ]
-  revision = "520918e6c8e8e1064154f51d13e02fad92b287b8"
-  version = "v19.0.0"
+  pruneopts = "UT"
+  revision = "4e8cbbfb1aeab140cd0fa97fd16b64ee18c3ca6a"
+  version = "v19.1.0"
 
 [[projects]]
+  digest = "1:e37f563b93009102b29dc79fda0d58f87c99caa90555c3d0cac9c234bab46714"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -39,68 +44,86 @@
     "autorest/to",
     "autorest/validation",
     "logger",
-    "version"
+    "version",
   ]
-  revision = "dd94e014aaf16d1df746762e392aa201c1b4c461"
-  version = "v10.15.0"
+  pruneopts = "UT"
+  revision = "22deab8fa353631a78351bd7808fcb5002024b67"
+  version = "v10.15.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:4c4c33075b704791d6a7f09dfb55c66769e8a1dc6adf87026292d274fe8ad113"
   name = "github.com/codahale/hdrhistogram"
   packages = ["."]
+  pruneopts = "UT"
   revision = "3a0bb77429bd3a61596f5e8a3172445844342120"
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
+  pruneopts = "UT"
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:5ab79470a1d0fb19b041a624415612f8236b3c06070161a910562f2b2d064355"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
+  pruneopts = "UT"
+  revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
 
 [[projects]]
+  digest = "1:450b7623b185031f3a456801155c8320209f75d0d4c4e633c6b1e59d44d6e392"
   name = "github.com/opentracing/opentracing-go"
   packages = [
     ".",
     "ext",
-    "log"
+    "log",
   ]
+  pruneopts = "UT"
   revision = "1949ddbfd147afd4d964a9f00b24eb291e0e7c38"
   version = "v1.0.2"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:5110e3d4f130772fd39e6ce8208ad1955b242ccfcc8ad9d158857250579c82f4"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
     "require",
-    "suite"
+    "suite",
   ]
+  pruneopts = "UT"
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
 
 [[projects]]
+  digest = "1:104a2d7446f4628e4663d7c029b18da1aad4313735de775f37b6e7720b1d0aa7"
   name = "github.com/uber/jaeger-client-go"
   packages = [
     ".",
@@ -118,35 +141,67 @@
     "thrift-gen/jaeger",
     "thrift-gen/sampling",
     "thrift-gen/zipkincore",
-    "utils"
+    "utils",
   ]
+  pruneopts = "UT"
   revision = "b043381d944715b469fd6b37addfd30145ca1758"
   version = "v2.14.0"
 
 [[projects]]
+  digest = "1:0f09db8429e19d57c8346ad76fbbc679341fa86073d3b8fb5ac919f0357d8f4c"
   name = "github.com/uber/jaeger-lib"
   packages = ["metrics"]
+  pruneopts = "UT"
   revision = "ed3a127ec5fef7ae9ea95b01b542c47fbd999ce5"
   version = "v1.5.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "32a936f46389aa10549d60bd7833e54b01685d09"
+  pruneopts = "UT"
+  revision = "f9ce57c11b242f0f1599cf25c89d8cb02c45295a"
 
 [[projects]]
+  digest = "1:efd7f4a2c3339485190142d3b83052207aaadf6e4e724fdbac79a5de0a8120c5"
   name = "pack.ag/amqp"
   packages = [
     ".",
-    "internal/testconn"
+    "internal/testconn",
   ]
-  revision = "751cf0d4eb77d69534dabeff0f3afb2a0eb8588c"
-  version = "v0.6.2"
+  pruneopts = "UT"
+  revision = "f04efab52fd05cbd1b25280ae54423fc7b12e267"
+  version = "v0.7.3"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9bd82604436925e47b4178354b697e240235a817c762500b2264d093001f0ce8"
+  input-imports = [
+    "github.com/Azure/azure-amqp-common-go",
+    "github.com/Azure/azure-amqp-common-go/auth",
+    "github.com/Azure/azure-amqp-common-go/cbs",
+    "github.com/Azure/azure-amqp-common-go/conn",
+    "github.com/Azure/azure-amqp-common-go/log",
+    "github.com/Azure/azure-amqp-common-go/sas",
+    "github.com/Azure/azure-amqp-common-go/uuid",
+    "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources",
+    "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus",
+    "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus",
+    "github.com/Azure/go-autorest/autorest",
+    "github.com/Azure/go-autorest/autorest/adal",
+    "github.com/Azure/go-autorest/autorest/azure",
+    "github.com/Azure/go-autorest/autorest/date",
+    "github.com/Azure/go-autorest/autorest/to",
+    "github.com/mitchellh/mapstructure",
+    "github.com/opentracing/opentracing-go",
+    "github.com/opentracing/opentracing-go/ext",
+    "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/suite",
+    "github.com/uber/jaeger-client-go",
+    "github.com/uber/jaeger-client-go/config",
+    "github.com/uber/jaeger-client-go/log",
+    "pack.ag/amqp",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

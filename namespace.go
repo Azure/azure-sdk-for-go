@@ -135,11 +135,3 @@ func (ns *Namespace) getHTTPSHostURI() string {
 func (ns *Namespace) getEntityAudience(entityPath string) string {
 	return ns.getAMQPHostURI() + entityPath
 }
-
-// max provides an integer function for math.Max
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}

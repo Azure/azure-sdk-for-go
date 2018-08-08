@@ -222,9 +222,9 @@ func (m *Message) DeadLetterWithInfo(err error, condition MessageErrorCondition,
 	}
 }
 
-// DeliverAfter will ensure Azure Service Bus delivers the message after the time specified
+// ScheduleAt will ensure Azure Service Bus delivers the message after the time specified
 // (usually within 1 minute after the specified time)
-func (m *Message) DeliverAfter(t time.Time) {
+func (m *Message) ScheduleAt(t time.Time) {
 	if m.SystemProperties == nil {
 		m.SystemProperties = new(SystemProperties)
 	}

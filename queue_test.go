@@ -576,7 +576,7 @@ func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *
 
 	msg := NewMessageFromString("to the future!!")
 	futureTime := time.Now().Add(waitTime)
-	msg.DeliverAfter(futureTime)
+	msg.ScheduleAt(futureTime)
 	if assert.NoError(t, queue.Send(ctx, msg)) {
 		var wg sync.WaitGroup
 		wg.Add(1)

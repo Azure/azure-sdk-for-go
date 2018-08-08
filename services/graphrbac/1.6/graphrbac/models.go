@@ -1212,27 +1212,6 @@ type KeyCredentialsUpdateParameters struct {
 	Value *[]KeyCredential `json:"value,omitempty"`
 }
 
-// OAuth2 ...
-type OAuth2 struct {
-	autorest.Response `json:"-"`
-	// OdataType - Microsoft.DirectoryServices.OAuth2PermissionGrant
-	OdataType *string `json:"odata.type,omitempty"`
-	// ClientID - The objectId of the Service Principal associated with the app
-	ClientID *string `json:"clientId,omitempty"`
-	// ConsentType - Typically set to AllPrincipals
-	ConsentType *string `json:"consentType,omitempty"`
-	// PrincipalID - Set to null if AllPrincipals is set
-	PrincipalID interface{} `json:"principalId,omitempty"`
-	// ResourceID - Service Principal Id of the resource you want to grant
-	ResourceID *string `json:"resourceId,omitempty"`
-	// Scope - Typically set to user_impersonation
-	Scope *string `json:"scope,omitempty"`
-	// StartTime - Start time for TTL
-	StartTime *string `json:"startTime,omitempty"`
-	// ExpiryTime - Expiry time for TTL
-	ExpiryTime *string `json:"expiryTime,omitempty"`
-}
-
 // OdataError active Directory OData error information.
 type OdataError struct {
 	// Code - Error code.
@@ -1357,6 +1336,27 @@ func (pp PasswordProfile) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// Permissions ...
+type Permissions struct {
+	autorest.Response `json:"-"`
+	// OdataType - Microsoft.DirectoryServices.OAuth2PermissionGrant
+	OdataType *string `json:"odata.type,omitempty"`
+	// ClientID - The objectId of the Service Principal associated with the app
+	ClientID *string `json:"clientId,omitempty"`
+	// ConsentType - Typically set to AllPrincipals
+	ConsentType *string `json:"consentType,omitempty"`
+	// PrincipalID - Set to null if AllPrincipals is set
+	PrincipalID interface{} `json:"principalId,omitempty"`
+	// ResourceID - Service Principal Id of the resource you want to grant
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Scope - Typically set to user_impersonation
+	Scope *string `json:"scope,omitempty"`
+	// StartTime - Start time for TTL
+	StartTime *string `json:"startTime,omitempty"`
+	// ExpiryTime - Expiry time for TTL
+	ExpiryTime *string `json:"expiryTime,omitempty"`
 }
 
 // RequiredResourceAccess specifies the set of OAuth 2.0 permission scopes and app roles under the specified

@@ -40,7 +40,9 @@ func NewOAuth2ClientWithBaseURI(baseURI string, tenantID string) OAuth2Client {
 }
 
 // Get queries OAuth2 permissions for the relevant SP ObjectId of an app.
-func (client OAuth2Client) Get(ctx context.Context, filter string) (result OAuth2, err error) {
+// Parameters:
+// filter - this is the Service Principal ObjectId associated with the app
+func (client OAuth2Client) Get(ctx context.Context, filter string) (result Permissions, err error) {
 	req, err := client.GetPreparer(ctx, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Get", nil, "Failure preparing request")
@@ -93,7 +95,7 @@ func (client OAuth2Client) GetSender(req *http.Request) (*http.Response, error) 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client OAuth2Client) GetResponder(resp *http.Response) (result OAuth2, err error) {
+func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -105,7 +107,7 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result OAuth2, err
 }
 
 // Post grants OAuth2 permissions for the relevant resource Ids of an app.
-func (client OAuth2Client) Post(ctx context.Context, body *OAuth2) (result OAuth2, err error) {
+func (client OAuth2Client) Post(ctx context.Context, body *Permissions) (result Permissions, err error) {
 	req, err := client.PostPreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Post", nil, "Failure preparing request")
@@ -128,7 +130,7 @@ func (client OAuth2Client) Post(ctx context.Context, body *OAuth2) (result OAuth
 }
 
 // PostPreparer prepares the Post request.
-func (client OAuth2Client) PostPreparer(ctx context.Context, body *OAuth2) (*http.Request, error) {
+func (client OAuth2Client) PostPreparer(ctx context.Context, body *Permissions) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
@@ -160,7 +162,7 @@ func (client OAuth2Client) PostSender(req *http.Request) (*http.Response, error)
 
 // PostResponder handles the response to the Post request. The method always
 // closes the http.Response Body.
-func (client OAuth2Client) PostResponder(resp *http.Response) (result OAuth2, err error) {
+func (client OAuth2Client) PostResponder(resp *http.Response) (result Permissions, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

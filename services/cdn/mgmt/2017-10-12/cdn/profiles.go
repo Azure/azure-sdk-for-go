@@ -357,7 +357,7 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 	return
 }
 
-// List lists all of the CDN profiles within an Azure subscription.
+// List dummy Description.   Lists all of the CDN profiles within an Azure subscription.
 func (client ProfilesClient) List(ctx context.Context) (result ProfileListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)

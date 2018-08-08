@@ -179,46 +179,46 @@ func PossibleEventLevelValues() []EventLevel {
 	return []EventLevel{Critical, Error, Informational, Verbose, Warning}
 }
 
-// MetricCriteriaAggregationType enumerates the values for metric criteria aggregation type.
-type MetricCriteriaAggregationType string
+// MetricAlertRuleAggregationTime enumerates the values for metric alert rule aggregation time.
+type MetricAlertRuleAggregationTime string
 
 const (
-	// MetricCriteriaAggregationTypeAverage ...
-	MetricCriteriaAggregationTypeAverage MetricCriteriaAggregationType = "Average"
-	// MetricCriteriaAggregationTypeMaximum ...
-	MetricCriteriaAggregationTypeMaximum MetricCriteriaAggregationType = "Maximum"
-	// MetricCriteriaAggregationTypeMinimum ...
-	MetricCriteriaAggregationTypeMinimum MetricCriteriaAggregationType = "Minimum"
-	// MetricCriteriaAggregationTypeTotal ...
-	MetricCriteriaAggregationTypeTotal MetricCriteriaAggregationType = "Total"
+	// MetricAlertRuleAggregationTimeAverage ...
+	MetricAlertRuleAggregationTimeAverage MetricAlertRuleAggregationTime = "Average"
+	// MetricAlertRuleAggregationTimeMaximum ...
+	MetricAlertRuleAggregationTimeMaximum MetricAlertRuleAggregationTime = "Maximum"
+	// MetricAlertRuleAggregationTimeMinimum ...
+	MetricAlertRuleAggregationTimeMinimum MetricAlertRuleAggregationTime = "Minimum"
+	// MetricAlertRuleAggregationTimeTotal ...
+	MetricAlertRuleAggregationTimeTotal MetricAlertRuleAggregationTime = "Total"
 )
 
-// PossibleMetricCriteriaAggregationTypeValues returns an array of possible values for the MetricCriteriaAggregationType const type.
-func PossibleMetricCriteriaAggregationTypeValues() []MetricCriteriaAggregationType {
-	return []MetricCriteriaAggregationType{MetricCriteriaAggregationTypeAverage, MetricCriteriaAggregationTypeMaximum, MetricCriteriaAggregationTypeMinimum, MetricCriteriaAggregationTypeTotal}
+// PossibleMetricAlertRuleAggregationTimeValues returns an array of possible values for the MetricAlertRuleAggregationTime const type.
+func PossibleMetricAlertRuleAggregationTimeValues() []MetricAlertRuleAggregationTime {
+	return []MetricAlertRuleAggregationTime{MetricAlertRuleAggregationTimeAverage, MetricAlertRuleAggregationTimeMaximum, MetricAlertRuleAggregationTimeMinimum, MetricAlertRuleAggregationTimeTotal}
 }
 
-// MetricCriteriaOperator enumerates the values for metric criteria operator.
-type MetricCriteriaOperator string
+// MetricAlertRuleCondition enumerates the values for metric alert rule condition.
+type MetricAlertRuleCondition string
 
 const (
-	// MetricCriteriaOperatorEquals ...
-	MetricCriteriaOperatorEquals MetricCriteriaOperator = "Equals"
-	// MetricCriteriaOperatorGreaterThan ...
-	MetricCriteriaOperatorGreaterThan MetricCriteriaOperator = "GreaterThan"
-	// MetricCriteriaOperatorGreaterThanOrEqual ...
-	MetricCriteriaOperatorGreaterThanOrEqual MetricCriteriaOperator = "GreaterThanOrEqual"
-	// MetricCriteriaOperatorLessThan ...
-	MetricCriteriaOperatorLessThan MetricCriteriaOperator = "LessThan"
-	// MetricCriteriaOperatorLessThanOrEqual ...
-	MetricCriteriaOperatorLessThanOrEqual MetricCriteriaOperator = "LessThanOrEqual"
-	// MetricCriteriaOperatorNotEquals ...
-	MetricCriteriaOperatorNotEquals MetricCriteriaOperator = "NotEquals"
+	// MetricAlertRuleConditionEquals ...
+	MetricAlertRuleConditionEquals MetricAlertRuleCondition = "Equals"
+	// MetricAlertRuleConditionGreaterThan ...
+	MetricAlertRuleConditionGreaterThan MetricAlertRuleCondition = "GreaterThan"
+	// MetricAlertRuleConditionGreaterThanOrEqual ...
+	MetricAlertRuleConditionGreaterThanOrEqual MetricAlertRuleCondition = "GreaterThanOrEqual"
+	// MetricAlertRuleConditionLessThan ...
+	MetricAlertRuleConditionLessThan MetricAlertRuleCondition = "LessThan"
+	// MetricAlertRuleConditionLessThanOrEqual ...
+	MetricAlertRuleConditionLessThanOrEqual MetricAlertRuleCondition = "LessThanOrEqual"
+	// MetricAlertRuleConditionNotEquals ...
+	MetricAlertRuleConditionNotEquals MetricAlertRuleCondition = "NotEquals"
 )
 
-// PossibleMetricCriteriaOperatorValues returns an array of possible values for the MetricCriteriaOperator const type.
-func PossibleMetricCriteriaOperatorValues() []MetricCriteriaOperator {
-	return []MetricCriteriaOperator{MetricCriteriaOperatorEquals, MetricCriteriaOperatorGreaterThan, MetricCriteriaOperatorGreaterThanOrEqual, MetricCriteriaOperatorLessThan, MetricCriteriaOperatorLessThanOrEqual, MetricCriteriaOperatorNotEquals}
+// PossibleMetricAlertRuleConditionValues returns an array of possible values for the MetricAlertRuleCondition const type.
+func PossibleMetricAlertRuleConditionValues() []MetricAlertRuleCondition {
+	return []MetricAlertRuleCondition{MetricAlertRuleConditionEquals, MetricAlertRuleConditionGreaterThan, MetricAlertRuleConditionGreaterThanOrEqual, MetricAlertRuleConditionLessThan, MetricAlertRuleConditionLessThanOrEqual, MetricAlertRuleConditionNotEquals}
 }
 
 // MetricStatisticType enumerates the values for metric statistic type.
@@ -3589,10 +3589,10 @@ type MetricCriteria struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// MetricNamespace - Namespace of the metric.
 	MetricNamespace *string `json:"metricNamespace,omitempty"`
-	// Operator - the criteria operator. Possible values include: 'MetricCriteriaOperatorEquals', 'MetricCriteriaOperatorNotEquals', 'MetricCriteriaOperatorGreaterThan', 'MetricCriteriaOperatorGreaterThanOrEqual', 'MetricCriteriaOperatorLessThan', 'MetricCriteriaOperatorLessThanOrEqual'
-	Operator MetricCriteriaOperator `json:"operator,omitempty"`
-	// TimeAggregation - the criteria time aggregation types. Possible values include: 'MetricCriteriaAggregationTypeAverage', 'MetricCriteriaAggregationTypeMinimum', 'MetricCriteriaAggregationTypeMaximum', 'MetricCriteriaAggregationTypeTotal'
-	TimeAggregation MetricCriteriaAggregationType `json:"timeAggregation,omitempty"`
+	// Operator - the criteria operator. Possible values include: 'MetricAlertRuleConditionEquals', 'MetricAlertRuleConditionNotEquals', 'MetricAlertRuleConditionGreaterThan', 'MetricAlertRuleConditionGreaterThanOrEqual', 'MetricAlertRuleConditionLessThan', 'MetricAlertRuleConditionLessThanOrEqual'
+	Operator MetricAlertRuleCondition `json:"operator,omitempty"`
+	// TimeAggregation - the criteria time aggregation types. Possible values include: 'MetricAlertRuleAggregationTimeAverage', 'MetricAlertRuleAggregationTimeMinimum', 'MetricAlertRuleAggregationTimeMaximum', 'MetricAlertRuleAggregationTimeTotal'
+	TimeAggregation MetricAlertRuleAggregationTime `json:"timeAggregation,omitempty"`
 	// Threshold - the criteria threshold value that activates the alert.
 	Threshold *float64 `json:"threshold,omitempty"`
 	// Dimensions - List of dimension conditions.

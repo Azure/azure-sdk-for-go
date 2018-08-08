@@ -115,24 +115,24 @@ const (
 	Warning       EventLevel = original.Warning
 )
 
-type MetricCriteriaAggregationType = original.MetricCriteriaAggregationType
+type MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTime
 
 const (
-	MetricCriteriaAggregationTypeAverage MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeAverage
-	MetricCriteriaAggregationTypeMaximum MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeMaximum
-	MetricCriteriaAggregationTypeMinimum MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeMinimum
-	MetricCriteriaAggregationTypeTotal   MetricCriteriaAggregationType = original.MetricCriteriaAggregationTypeTotal
+	MetricAlertRuleAggregationTimeAverage MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeAverage
+	MetricAlertRuleAggregationTimeMaximum MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeMaximum
+	MetricAlertRuleAggregationTimeMinimum MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeMinimum
+	MetricAlertRuleAggregationTimeTotal   MetricAlertRuleAggregationTime = original.MetricAlertRuleAggregationTimeTotal
 )
 
-type MetricCriteriaOperator = original.MetricCriteriaOperator
+type MetricAlertRuleCondition = original.MetricAlertRuleCondition
 
 const (
-	MetricCriteriaOperatorEquals             MetricCriteriaOperator = original.MetricCriteriaOperatorEquals
-	MetricCriteriaOperatorGreaterThan        MetricCriteriaOperator = original.MetricCriteriaOperatorGreaterThan
-	MetricCriteriaOperatorGreaterThanOrEqual MetricCriteriaOperator = original.MetricCriteriaOperatorGreaterThanOrEqual
-	MetricCriteriaOperatorLessThan           MetricCriteriaOperator = original.MetricCriteriaOperatorLessThan
-	MetricCriteriaOperatorLessThanOrEqual    MetricCriteriaOperator = original.MetricCriteriaOperatorLessThanOrEqual
-	MetricCriteriaOperatorNotEquals          MetricCriteriaOperator = original.MetricCriteriaOperatorNotEquals
+	MetricAlertRuleConditionEquals             MetricAlertRuleCondition = original.MetricAlertRuleConditionEquals
+	MetricAlertRuleConditionGreaterThan        MetricAlertRuleCondition = original.MetricAlertRuleConditionGreaterThan
+	MetricAlertRuleConditionGreaterThanOrEqual MetricAlertRuleCondition = original.MetricAlertRuleConditionGreaterThanOrEqual
+	MetricAlertRuleConditionLessThan           MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThan
+	MetricAlertRuleConditionLessThanOrEqual    MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThanOrEqual
+	MetricAlertRuleConditionNotEquals          MetricAlertRuleCondition = original.MetricAlertRuleConditionNotEquals
 )
 
 type MetricStatisticType = original.MetricStatisticType
@@ -544,11 +544,11 @@ func PossibleEnabledValues() []Enabled {
 func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
 }
-func PossibleMetricCriteriaAggregationTypeValues() []MetricCriteriaAggregationType {
-	return original.PossibleMetricCriteriaAggregationTypeValues()
+func PossibleMetricAlertRuleAggregationTimeValues() []MetricAlertRuleAggregationTime {
+	return original.PossibleMetricAlertRuleAggregationTimeValues()
 }
-func PossibleMetricCriteriaOperatorValues() []MetricCriteriaOperator {
-	return original.PossibleMetricCriteriaOperatorValues()
+func PossibleMetricAlertRuleConditionValues() []MetricAlertRuleCondition {
+	return original.PossibleMetricAlertRuleConditionValues()
 }
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()

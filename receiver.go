@@ -93,7 +93,16 @@ func (r *receiver) Close(ctx context.Context) error {
 
 // Recover will attempt to close the current session and link, then rebuild them
 func (r *receiver) Recover(ctx context.Context) error {
-	_ = r.Close(ctx) // we expect the receiver is in an error state
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.Recover")
+	defer span.Finish()
+
+	// we expect the sender, session or client is in an error state, ignore errors
+	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	closeCtx = opentracing.ContextWithSpan(closeCtx, span)
+	defer cancel()
+	_ = r.receiver.Close(closeCtx)
+	_ = r.session.Close(closeCtx)
+	_ = r.connection.Close()
 	return r.newSessionAndLink(ctx)
 }
 
@@ -208,38 +217,41 @@ func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 
 	for {
 		msg, err := r.listenForMessage(ctx)
-		if ctx.Err() != nil && ctx.Err() == context.DeadlineExceeded {
-			return
+		if err == nil {
+			msgChan <- msg
+			continue
 		}
 
-		if err != nil {
-			_, retryErr := common.Retry(5, 10*time.Second, func() (interface{}, error) {
+		select {
+		case <-ctx.Done():
+			log.For(ctx).Debug("context done")
+			return
+		default:
+			_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
 				sp, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.listenForMessages.tryRecover")
 				defer sp.Finish()
 
+				log.For(ctx).Debug("recovering connection")
 				err := r.Recover(ctx)
-				if ctx.Err() != nil && ctx.Err() == context.DeadlineExceeded {
-					return nil, ctx.Err()
+				if err == nil {
+					log.For(ctx).Debug("recovered connection")
+					return nil, nil
 				}
 
-				if err != nil {
-					log.For(ctx).Error(err)
+				select {
+				case <-ctx.Done():
+					return nil, ctx.Err()
+				default:
 					return nil, common.Retryable(err.Error())
 				}
-				return nil, nil
 			})
 
 			if retryErr != nil {
+				log.For(ctx).Debug("retried, but error was unrecoverable")
 				r.lastError = retryErr
 				r.Close(ctx)
 				return
 			}
-			continue
-		}
-		select {
-		case msgChan <- msg:
-		case <-ctx.Done():
-			return
 		}
 	}
 }

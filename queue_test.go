@@ -569,28 +569,20 @@ func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *
 	}
 
 	// The delay to schedule a message for.
-	const waitTime = time.Duration(3 * time.Minute)
-	// Service Bus guarentees roughly a one minute window. So that our tests aren't flakey, we'll give them
+	const waitTime = time.Duration(1 * time.Minute)
+	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll give them
 	// a buffer on either side.
-	const buffer = time.Duration(40 * time.Second)
-	const min, max = waitTime - buffer, waitTime + buffer
+	const buffer = time.Duration(20 * time.Second)
 
 	msg := NewMessageFromString("to the future!!")
 	futureTime := time.Now().Add(waitTime)
-	msg.SystemProperties = &SystemProperties{
-		ScheduledEnqueueTime: &futureTime,
-	}
+	msg.ScheduleAt(futureTime)
 	if assert.NoError(t, queue.Send(ctx, msg)) {
 		var wg sync.WaitGroup
 		wg.Add(1)
 		listener, err := queue.Receive(ctx, func(ctx context.Context, received *Message) DispositionAction {
 			defer wg.Done()
-
-			arrivalTime := time.Now()
-
-			delay := arrivalTime.Sub(futureTime)
-			assert.True(t, delay >= min, "message delivered too soon, expected %v actual %v", waitTime, delay)
-			assert.True(t, delay <= max, "message delivered too late, expected %v actual %v", waitTime, delay)
+			assert.WithinDuration(t, time.Now(), futureTime, buffer)
 			return received.Complete()
 		})
 		if assert.NoError(t, err) {

@@ -17,7 +17,7 @@ DEP   	= dep
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
-TIMEOUT = 300
+TIMEOUT = 500
 
 .PHONY: all
 all: fmt vendor lint vet megacheck ; $(info $(M) building library…) @ ## Build program

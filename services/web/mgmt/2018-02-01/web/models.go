@@ -6404,6 +6404,8 @@ type CsmPublishingProfileOptions struct {
 	// WebDeploy -- default
 	// Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
 	Format PublishingProfileFormat `json:"format,omitempty"`
+	// IncludeDisasterRecoveryEndpoints - Include the DisasterRecover endpoint if true
+	IncludeDisasterRecoveryEndpoints *bool `json:"includeDisasterRecoveryEndpoints,omitempty"`
 }
 
 // CsmSlotEntity deployment slot parameters.

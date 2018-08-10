@@ -69,17 +69,17 @@ type JSONWebKeyCurveName string
 const (
 	// P256 The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
 	P256 JSONWebKeyCurveName = "P-256"
+	// P256K ECDSA for SHA-256 digests and EC keys created with curve P-256K.
+	P256K JSONWebKeyCurveName = "P-256K"
 	// P384 The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
 	P384 JSONWebKeyCurveName = "P-384"
 	// P521 The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
 	P521 JSONWebKeyCurveName = "P-521"
-	// SECP256K1 The SECG SECP256K1 elliptic curve.
-	SECP256K1 JSONWebKeyCurveName = "SECP256K1"
 )
 
 // PossibleJSONWebKeyCurveNameValues returns an array of possible values for the JSONWebKeyCurveName const type.
 func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
-	return []JSONWebKeyCurveName{P256, P384, P521, SECP256K1}
+	return []JSONWebKeyCurveName{P256, P256K, P384, P521}
 }
 
 // JSONWebKeyEncryptionAlgorithm enumerates the values for json web key encryption algorithm.
@@ -1474,7 +1474,7 @@ type JSONWebKey struct {
 	K *string `json:"k,omitempty"`
 	// T - HSM Token, used with 'Bring Your Own Key'. (a URL-encoded base64 string)
 	T *string `json:"key_hsm,omitempty"`
-	// Crv - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'SECP256K1'
+	// Crv - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'P256K'
 	Crv JSONWebKeyCurveName `json:"crv,omitempty"`
 	// X - X component of an EC public key. (a URL-encoded base64 string)
 	X *string `json:"x,omitempty"`
@@ -1539,7 +1539,7 @@ type KeyCreateParameters struct {
 	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
 	// Tags - Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags"`
-	// Curve - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'SECP256K1'
+	// Curve - Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible values include: 'P256', 'P384', 'P521', 'P256K'
 	Curve JSONWebKeyCurveName `json:"crv,omitempty"`
 }
 

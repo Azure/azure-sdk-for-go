@@ -98,6 +98,38 @@ func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return []AzureResourceType{TrafficManager, Website}
 }
 
+// AzureStorageState enumerates the values for azure storage state.
+type AzureStorageState string
+
+const (
+	// InvalidCredentials ...
+	InvalidCredentials AzureStorageState = "InvalidCredentials"
+	// InvalidShare ...
+	InvalidShare AzureStorageState = "InvalidShare"
+	// Ok ...
+	Ok AzureStorageState = "Ok"
+)
+
+// PossibleAzureStorageStateValues returns an array of possible values for the AzureStorageState const type.
+func PossibleAzureStorageStateValues() []AzureStorageState {
+	return []AzureStorageState{InvalidCredentials, InvalidShare, Ok}
+}
+
+// AzureStorageType enumerates the values for azure storage type.
+type AzureStorageType string
+
+const (
+	// AzureBlob ...
+	AzureBlob AzureStorageType = "AzureBlob"
+	// AzureFiles ...
+	AzureFiles AzureStorageType = "AzureFiles"
+)
+
+// PossibleAzureStorageTypeValues returns an array of possible values for the AzureStorageType const type.
+func PossibleAzureStorageTypeValues() []AzureStorageType {
+	return []AzureStorageType{AzureBlob, AzureFiles}
+}
+
 // BackupItemStatus enumerates the values for backup item status.
 type BackupItemStatus string
 
@@ -4555,6 +4587,58 @@ type AzureBlobStorageHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// AzureStorageInfoValue azure Files or Blob Storage access information value for dictionary storage.
+type AzureStorageInfoValue struct {
+	// Type - Type of storage. Possible values include: 'AzureFiles', 'AzureBlob'
+	Type AzureStorageType `json:"type,omitempty"`
+	// AccountName - Name of the storage account.
+	AccountName *string `json:"accountName,omitempty"`
+	// ShareName - Name of the file share (container name, for Blob storage).
+	ShareName *string `json:"shareName,omitempty"`
+	// AccessKey - Access key for the storage account.
+	AccessKey *string `json:"accessKey,omitempty"`
+	// MountPath - Path to mount the storage within the site's runtime environment.
+	MountPath *string `json:"mountPath,omitempty"`
+	// State - State of the storage account. Possible values include: 'Ok', 'InvalidCredentials', 'InvalidShare'
+	State AzureStorageState `json:"state,omitempty"`
+}
+
+// AzureStoragePropertyDictionaryResource azureStorageInfo dictionary resource.
+type AzureStoragePropertyDictionaryResource struct {
+	autorest.Response `json:"-"`
+	// Properties - Azure storage accounts.
+	Properties map[string]*AzureStorageInfoValue `json:"properties"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureStoragePropertyDictionaryResource.
+func (aspdr AzureStoragePropertyDictionaryResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aspdr.Properties != nil {
+		objectMap["properties"] = aspdr.Properties
+	}
+	if aspdr.ID != nil {
+		objectMap["id"] = aspdr.ID
+	}
+	if aspdr.Name != nil {
+		objectMap["name"] = aspdr.Name
+	}
+	if aspdr.Kind != nil {
+		objectMap["kind"] = aspdr.Kind
+	}
+	if aspdr.Type != nil {
+		objectMap["type"] = aspdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // AzureTableStorageApplicationLogsConfig application logs to Azure table storage configuration.
 type AzureTableStorageApplicationLogsConfig struct {
 	// Level - Log level. Possible values include: 'Off', 'Verbose', 'Information', 'Warning', 'Error'
@@ -6320,6 +6404,8 @@ type CsmPublishingProfileOptions struct {
 	// WebDeploy -- default
 	// Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'
 	Format PublishingProfileFormat `json:"format,omitempty"`
+	// IncludeDisasterRecoveryEndpoints - Include the DisasterRecover endpoint if true
+	IncludeDisasterRecoveryEndpoints *bool `json:"includeDisasterRecoveryEndpoints,omitempty"`
 }
 
 // CsmSlotEntity deployment slot parameters.
@@ -15399,6 +15485,8 @@ type SiteConfig struct {
 	PublishingUsername *string `json:"publishingUsername,omitempty"`
 	// AppSettings - Application settings.
 	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
+	// AzureStorageAccounts - User-provided Azure storage accounts.
+	AzureStorageAccounts map[string]*AzureStorageInfoValue `json:"azureStorageAccounts"`
 	// ConnectionStrings - Connection strings.
 	ConnectionStrings *[]ConnStringInfo `json:"connectionStrings,omitempty"`
 	// MachineKey - Site MachineKey.
@@ -15466,6 +15554,165 @@ type SiteConfig struct {
 	// ReservedInstanceCount - Number of reserved instances.
 	// This setting only applies to the Consumption Plan
 	ReservedInstanceCount *int32 `json:"reservedInstanceCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteConfig.
+func (sc SiteConfig) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.NumberOfWorkers != nil {
+		objectMap["numberOfWorkers"] = sc.NumberOfWorkers
+	}
+	if sc.DefaultDocuments != nil {
+		objectMap["defaultDocuments"] = sc.DefaultDocuments
+	}
+	if sc.NetFrameworkVersion != nil {
+		objectMap["netFrameworkVersion"] = sc.NetFrameworkVersion
+	}
+	if sc.PhpVersion != nil {
+		objectMap["phpVersion"] = sc.PhpVersion
+	}
+	if sc.PythonVersion != nil {
+		objectMap["pythonVersion"] = sc.PythonVersion
+	}
+	if sc.NodeVersion != nil {
+		objectMap["nodeVersion"] = sc.NodeVersion
+	}
+	if sc.LinuxFxVersion != nil {
+		objectMap["linuxFxVersion"] = sc.LinuxFxVersion
+	}
+	if sc.WindowsFxVersion != nil {
+		objectMap["windowsFxVersion"] = sc.WindowsFxVersion
+	}
+	if sc.RequestTracingEnabled != nil {
+		objectMap["requestTracingEnabled"] = sc.RequestTracingEnabled
+	}
+	if sc.RequestTracingExpirationTime != nil {
+		objectMap["requestTracingExpirationTime"] = sc.RequestTracingExpirationTime
+	}
+	if sc.RemoteDebuggingEnabled != nil {
+		objectMap["remoteDebuggingEnabled"] = sc.RemoteDebuggingEnabled
+	}
+	if sc.RemoteDebuggingVersion != nil {
+		objectMap["remoteDebuggingVersion"] = sc.RemoteDebuggingVersion
+	}
+	if sc.HTTPLoggingEnabled != nil {
+		objectMap["httpLoggingEnabled"] = sc.HTTPLoggingEnabled
+	}
+	if sc.LogsDirectorySizeLimit != nil {
+		objectMap["logsDirectorySizeLimit"] = sc.LogsDirectorySizeLimit
+	}
+	if sc.DetailedErrorLoggingEnabled != nil {
+		objectMap["detailedErrorLoggingEnabled"] = sc.DetailedErrorLoggingEnabled
+	}
+	if sc.PublishingUsername != nil {
+		objectMap["publishingUsername"] = sc.PublishingUsername
+	}
+	if sc.AppSettings != nil {
+		objectMap["appSettings"] = sc.AppSettings
+	}
+	if sc.AzureStorageAccounts != nil {
+		objectMap["azureStorageAccounts"] = sc.AzureStorageAccounts
+	}
+	if sc.ConnectionStrings != nil {
+		objectMap["connectionStrings"] = sc.ConnectionStrings
+	}
+	if sc.MachineKey != nil {
+		objectMap["machineKey"] = sc.MachineKey
+	}
+	if sc.HandlerMappings != nil {
+		objectMap["handlerMappings"] = sc.HandlerMappings
+	}
+	if sc.DocumentRoot != nil {
+		objectMap["documentRoot"] = sc.DocumentRoot
+	}
+	if sc.ScmType != "" {
+		objectMap["scmType"] = sc.ScmType
+	}
+	if sc.Use32BitWorkerProcess != nil {
+		objectMap["use32BitWorkerProcess"] = sc.Use32BitWorkerProcess
+	}
+	if sc.WebSocketsEnabled != nil {
+		objectMap["webSocketsEnabled"] = sc.WebSocketsEnabled
+	}
+	if sc.AlwaysOn != nil {
+		objectMap["alwaysOn"] = sc.AlwaysOn
+	}
+	if sc.JavaVersion != nil {
+		objectMap["javaVersion"] = sc.JavaVersion
+	}
+	if sc.JavaContainer != nil {
+		objectMap["javaContainer"] = sc.JavaContainer
+	}
+	if sc.JavaContainerVersion != nil {
+		objectMap["javaContainerVersion"] = sc.JavaContainerVersion
+	}
+	if sc.AppCommandLine != nil {
+		objectMap["appCommandLine"] = sc.AppCommandLine
+	}
+	if sc.ManagedPipelineMode != "" {
+		objectMap["managedPipelineMode"] = sc.ManagedPipelineMode
+	}
+	if sc.VirtualApplications != nil {
+		objectMap["virtualApplications"] = sc.VirtualApplications
+	}
+	if sc.LoadBalancing != "" {
+		objectMap["loadBalancing"] = sc.LoadBalancing
+	}
+	if sc.Experiments != nil {
+		objectMap["experiments"] = sc.Experiments
+	}
+	if sc.Limits != nil {
+		objectMap["limits"] = sc.Limits
+	}
+	if sc.AutoHealEnabled != nil {
+		objectMap["autoHealEnabled"] = sc.AutoHealEnabled
+	}
+	if sc.AutoHealRules != nil {
+		objectMap["autoHealRules"] = sc.AutoHealRules
+	}
+	if sc.TracingOptions != nil {
+		objectMap["tracingOptions"] = sc.TracingOptions
+	}
+	if sc.VnetName != nil {
+		objectMap["vnetName"] = sc.VnetName
+	}
+	if sc.Cors != nil {
+		objectMap["cors"] = sc.Cors
+	}
+	if sc.Push != nil {
+		objectMap["push"] = sc.Push
+	}
+	if sc.APIDefinition != nil {
+		objectMap["apiDefinition"] = sc.APIDefinition
+	}
+	if sc.AutoSwapSlotName != nil {
+		objectMap["autoSwapSlotName"] = sc.AutoSwapSlotName
+	}
+	if sc.LocalMySQLEnabled != nil {
+		objectMap["localMySqlEnabled"] = sc.LocalMySQLEnabled
+	}
+	if sc.ManagedServiceIdentityID != nil {
+		objectMap["managedServiceIdentityId"] = sc.ManagedServiceIdentityID
+	}
+	if sc.XManagedServiceIdentityID != nil {
+		objectMap["xManagedServiceIdentityId"] = sc.XManagedServiceIdentityID
+	}
+	if sc.IPSecurityRestrictions != nil {
+		objectMap["ipSecurityRestrictions"] = sc.IPSecurityRestrictions
+	}
+	if sc.HTTP20Enabled != nil {
+		objectMap["http20Enabled"] = sc.HTTP20Enabled
+	}
+	if sc.MinTLSVersion != "" {
+		objectMap["minTlsVersion"] = sc.MinTLSVersion
+	}
+	if sc.FtpsState != "" {
+		objectMap["ftpsState"] = sc.FtpsState
+	}
+	if sc.ReservedInstanceCount != nil {
+		objectMap["reservedInstanceCount"] = sc.ReservedInstanceCount
+	}
+	return json.Marshal(objectMap)
 }
 
 // SiteConfigResource web app configuration ARM resource.
@@ -16970,14 +17217,17 @@ type SkuInfos struct {
 	Skus *[]GlobalCsmSkuDescription `json:"skus,omitempty"`
 }
 
-// SlotConfigNames names for connection strings and application settings to be marked as sticky to the deployment
-// slot and not moved during a swap operation.
+// SlotConfigNames names for connection strings, application settings, and external Azure storage account
+// configuration
+// identifiers to be marked as sticky to the deployment slot and not moved during a swap operation.
 // This is valid for all deployment slots in an app.
 type SlotConfigNames struct {
 	// ConnectionStringNames - List of connection string names.
 	ConnectionStringNames *[]string `json:"connectionStringNames,omitempty"`
 	// AppSettingNames - List of application settings names.
 	AppSettingNames *[]string `json:"appSettingNames,omitempty"`
+	// AzureStorageConfigNames - List of external Azure storage account identifiers.
+	AzureStorageConfigNames *[]string `json:"azureStorageConfigNames,omitempty"`
 }
 
 // SlotConfigNamesResource slot Config names azure resource.

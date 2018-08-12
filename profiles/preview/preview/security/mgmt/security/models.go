@@ -22,6 +22,7 @@ package security
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
 
 type AlertsClient = original.AlertsClient
+type AllowedConnectionsClient = original.AllowedConnectionsClient
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 
 const (
@@ -130,6 +131,11 @@ type AlertList = original.AlertList
 type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
+type AllowedConnectionsList = original.AllowedConnectionsList
+type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
+type AllowedConnectionsListPage = original.AllowedConnectionsListPage
+type AllowedConnectionsResource = original.AllowedConnectionsResource
+type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -151,6 +157,8 @@ type ComplianceListIterator = original.ComplianceListIterator
 type ComplianceListPage = original.ComplianceListPage
 type ComplianceProperties = original.ComplianceProperties
 type ComplianceSegment = original.ComplianceSegment
+type ConnectableResource = original.ConnectableResource
+type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
 type Contact = original.Contact
 type ContactList = original.ContactList
@@ -217,6 +225,12 @@ func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 }
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
+}
+func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)

@@ -19,8 +19,10 @@
 
 package media
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-06-01-preview/media"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-07-01/media"
 
+type AccountFiltersClient = original.AccountFiltersClient
+type AssetFiltersClient = original.AssetFiltersClient
 type AssetsClient = original.AssetsClient
 
 const (
@@ -123,6 +125,9 @@ const (
 	H264MultipleBitrate1080p EncoderNamedPreset = original.H264MultipleBitrate1080p
 	H264MultipleBitrate720p  EncoderNamedPreset = original.H264MultipleBitrate720p
 	H264MultipleBitrateSD    EncoderNamedPreset = original.H264MultipleBitrateSD
+	H264SingleBitrate1080p   EncoderNamedPreset = original.H264SingleBitrate1080p
+	H264SingleBitrate720p    EncoderNamedPreset = original.H264SingleBitrate720p
+	H264SingleBitrateSD      EncoderNamedPreset = original.H264SingleBitrateSD
 )
 
 type EncryptionScheme = original.EncryptionScheme
@@ -139,6 +144,24 @@ type EntropyMode = original.EntropyMode
 const (
 	Cabac EntropyMode = original.Cabac
 	Cavlc EntropyMode = original.Cavlc
+)
+
+type FilterTrackPropertyCompareOperation = original.FilterTrackPropertyCompareOperation
+
+const (
+	Equal    FilterTrackPropertyCompareOperation = original.Equal
+	NotEqual FilterTrackPropertyCompareOperation = original.NotEqual
+)
+
+type FilterTrackPropertyType = original.FilterTrackPropertyType
+
+const (
+	FilterTrackPropertyTypeBitrate  FilterTrackPropertyType = original.FilterTrackPropertyTypeBitrate
+	FilterTrackPropertyTypeFourCC   FilterTrackPropertyType = original.FilterTrackPropertyTypeFourCC
+	FilterTrackPropertyTypeLanguage FilterTrackPropertyType = original.FilterTrackPropertyTypeLanguage
+	FilterTrackPropertyTypeName     FilterTrackPropertyType = original.FilterTrackPropertyTypeName
+	FilterTrackPropertyTypeType     FilterTrackPropertyType = original.FilterTrackPropertyTypeType
+	FilterTrackPropertyTypeUnknown  FilterTrackPropertyType = original.FilterTrackPropertyTypeUnknown
 )
 
 type H264Complexity = original.H264Complexity
@@ -233,6 +256,22 @@ const (
 	LiveOutputResourceStateCreating LiveOutputResourceState = original.LiveOutputResourceStateCreating
 	LiveOutputResourceStateDeleting LiveOutputResourceState = original.LiveOutputResourceStateDeleting
 	LiveOutputResourceStateRunning  LiveOutputResourceState = original.LiveOutputResourceStateRunning
+)
+
+type MetricAggregationType = original.MetricAggregationType
+
+const (
+	Average MetricAggregationType = original.Average
+	Count   MetricAggregationType = original.Count
+	Total   MetricAggregationType = original.Total
+)
+
+type MetricUnit = original.MetricUnit
+
+const (
+	MetricUnitBytes        MetricUnit = original.MetricUnitBytes
+	MetricUnitCount        MetricUnit = original.MetricUnitCount
+	MetricUnitMilliseconds MetricUnit = original.MetricUnitMilliseconds
 )
 
 type OdataType = original.OdataType
@@ -435,6 +474,8 @@ const (
 )
 
 type AacAudio = original.AacAudio
+type AccountFilter = original.AccountFilter
+type AccountFilterCollection = original.AccountFilterCollection
 type AkamaiAccessControl = original.AkamaiAccessControl
 type AkamaiSignatureHeaderAuthenticationKey = original.AkamaiSignatureHeaderAuthenticationKey
 type APIError = original.APIError
@@ -443,8 +484,13 @@ type AssetCollection = original.AssetCollection
 type AssetCollectionIterator = original.AssetCollectionIterator
 type AssetCollectionPage = original.AssetCollectionPage
 type AssetContainerSas = original.AssetContainerSas
+type AssetFileEncryptionMetadata = original.AssetFileEncryptionMetadata
+type AssetFilter = original.AssetFilter
+type AssetFilterCollection = original.AssetFilterCollection
+type AssetFilterCollectionIterator = original.AssetFilterCollectionIterator
+type AssetFilterCollectionPage = original.AssetFilterCollectionPage
 type AssetProperties = original.AssetProperties
-type AssetStorageEncryptionKey = original.AssetStorageEncryptionKey
+type AssetStreamingLocator = original.AssetStreamingLocator
 type BasicAudio = original.BasicAudio
 type Audio = original.Audio
 type BasicAudioAnalyzerPreset = original.BasicAudioAnalyzerPreset
@@ -497,7 +543,11 @@ type Deinterlace = original.Deinterlace
 type EnabledProtocols = original.EnabledProtocols
 type EntityNameAvailabilityCheckOutput = original.EntityNameAvailabilityCheckOutput
 type EnvelopeEncryption = original.EnvelopeEncryption
+type FilterProperties = original.FilterProperties
 type Filters = original.Filters
+type FilterTrackPropertyCondition = original.FilterTrackPropertyCondition
+type FilterTrackSelection = original.FilterTrackSelection
+type FirstQuality = original.FirstQuality
 type BasicFormat = original.BasicFormat
 type Format = original.Format
 type H264Layer = original.H264Layer
@@ -534,6 +584,7 @@ type Layer = original.Layer
 type ListContainerSasInput = original.ListContainerSasInput
 type ListContentKeysResponse = original.ListContentKeysResponse
 type ListPathsResponse = original.ListPathsResponse
+type ListStreamingLocatorsResponse = original.ListStreamingLocatorsResponse
 type LiveEvent = original.LiveEvent
 type LiveEventActionInput = original.LiveEventActionInput
 type LiveEventEncoding = original.LiveEventEncoding
@@ -559,6 +610,9 @@ type LiveOutputProperties = original.LiveOutputProperties
 type LiveOutputsCreateFuture = original.LiveOutputsCreateFuture
 type LiveOutputsDeleteFuture = original.LiveOutputsDeleteFuture
 type Location = original.Location
+type Metric = original.Metric
+type MetricDimension = original.MetricDimension
+type MetricProperties = original.MetricProperties
 type Mp4Format = original.Mp4Format
 type BasicMultiBitrateFormat = original.BasicMultiBitrateFormat
 type MultiBitrateFormat = original.MultiBitrateFormat
@@ -575,6 +629,7 @@ type Overlay = original.Overlay
 type PngFormat = original.PngFormat
 type PngImage = original.PngImage
 type PngLayer = original.PngLayer
+type PresentationTimeRange = original.PresentationTimeRange
 type BasicPreset = original.BasicPreset
 type Preset = original.Preset
 type Provider = original.Provider
@@ -586,8 +641,10 @@ type ServiceCollection = original.ServiceCollection
 type ServiceCollectionIterator = original.ServiceCollectionIterator
 type ServiceCollectionPage = original.ServiceCollectionPage
 type ServiceProperties = original.ServiceProperties
+type ServiceSpecification = original.ServiceSpecification
 type StandardEncoderPreset = original.StandardEncoderPreset
 type StorageAccount = original.StorageAccount
+type StorageEncryptedAssetDecryptionData = original.StorageEncryptedAssetDecryptionData
 type StreamingEndpoint = original.StreamingEndpoint
 type StreamingEndpointAccessControl = original.StreamingEndpointAccessControl
 type StreamingEndpointListResult = original.StreamingEndpointListResult
@@ -645,6 +702,18 @@ type StreamingLocatorsClient = original.StreamingLocatorsClient
 type StreamingPoliciesClient = original.StreamingPoliciesClient
 type TransformsClient = original.TransformsClient
 
+func NewAccountFiltersClient(subscriptionID string) AccountFiltersClient {
+	return original.NewAccountFiltersClient(subscriptionID)
+}
+func NewAccountFiltersClientWithBaseURI(baseURI string, subscriptionID string) AccountFiltersClient {
+	return original.NewAccountFiltersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAssetFiltersClient(subscriptionID string) AssetFiltersClient {
+	return original.NewAssetFiltersClient(subscriptionID)
+}
+func NewAssetFiltersClientWithBaseURI(baseURI string, subscriptionID string) AssetFiltersClient {
+	return original.NewAssetFiltersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAssetsClient(subscriptionID string) AssetsClient {
 	return original.NewAssetsClient(subscriptionID)
 }
@@ -732,6 +801,12 @@ func PossibleEncryptionSchemeValues() []EncryptionScheme {
 func PossibleEntropyModeValues() []EntropyMode {
 	return original.PossibleEntropyModeValues()
 }
+func PossibleFilterTrackPropertyCompareOperationValues() []FilterTrackPropertyCompareOperation {
+	return original.PossibleFilterTrackPropertyCompareOperationValues()
+}
+func PossibleFilterTrackPropertyTypeValues() []FilterTrackPropertyType {
+	return original.PossibleFilterTrackPropertyTypeValues()
+}
 func PossibleH264ComplexityValues() []H264Complexity {
 	return original.PossibleH264ComplexityValues()
 }
@@ -761,6 +836,12 @@ func PossibleLiveEventResourceStateValues() []LiveEventResourceState {
 }
 func PossibleLiveOutputResourceStateValues() []LiveOutputResourceState {
 	return original.PossibleLiveOutputResourceStateValues()
+}
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
+}
+func PossibleMetricUnitValues() []MetricUnit {
+	return original.PossibleMetricUnitValues()
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()

@@ -2893,7 +2893,7 @@ type AmazonMWSObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -4385,7 +4385,7 @@ type AmazonS3Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -6087,7 +6087,7 @@ type AzureBlobDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -8414,7 +8414,7 @@ type AzureDataLakeStoreDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -12503,7 +12503,7 @@ type AzureMySQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -13730,7 +13730,7 @@ type AzurePostgreSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -14169,7 +14169,7 @@ type AzureSearchIndexDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -16409,7 +16409,7 @@ type AzureSQLDWTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -16843,7 +16843,7 @@ type AzureSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -17825,7 +17825,7 @@ type AzureTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -20801,7 +20801,7 @@ type CassandraTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -21878,7 +21878,7 @@ type ConcurObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -25374,7 +25374,7 @@ type CouchbaseTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -26051,7 +26051,7 @@ type CustomDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -28148,7 +28148,7 @@ type Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -28919,7 +28919,7 @@ func (ddc DatasetDeflateCompression) AsBasicDatasetCompression() (BasicDatasetCo
 	return &ddc, true
 }
 
-// DatasetFolder the folder that this Dataset is in.
+// DatasetFolder the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 type DatasetFolder struct {
 	// Name - The name of the folder that this Dataset is in.
 	Name *string `json:"name,omitempty"`
@@ -29970,7 +29970,7 @@ type DocumentDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -31606,7 +31606,7 @@ type DrillTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -31932,7 +31932,7 @@ type DynamicsEntityDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -33981,7 +33981,7 @@ type EloquaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -36795,7 +36795,7 @@ type FileShareDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -39886,7 +39886,7 @@ type GoogleBigQueryObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -41295,7 +41295,7 @@ type GreenplumTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -42255,7 +42255,7 @@ type HBaseObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -47611,7 +47611,7 @@ type HiveObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -48227,7 +48227,7 @@ type HTTPDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -50232,7 +50232,7 @@ type HubspotObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -51810,7 +51810,7 @@ type ImpalaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -53799,7 +53799,7 @@ type JiraObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -56628,7 +56628,7 @@ type MagentoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -58334,7 +58334,7 @@ type MariaDBTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -59250,7 +59250,7 @@ type MarketoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -59866,7 +59866,7 @@ type MongoDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -62674,7 +62674,7 @@ type NetezzaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -63570,7 +63570,7 @@ type ODataResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -65875,7 +65875,7 @@ type OracleTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -67031,7 +67031,7 @@ type PaypalObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -68292,7 +68292,7 @@ type PhoenixObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -70565,7 +70565,7 @@ type PrestoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -71780,7 +71780,7 @@ type QuickBooksObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -72782,7 +72782,7 @@ type RelationalTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -73846,7 +73846,7 @@ type ResponsysObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -75650,7 +75650,7 @@ type SalesforceMarketingCloudObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -76266,7 +76266,7 @@ type SalesforceObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -78259,7 +78259,7 @@ type SapCloudForCustomerResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -79660,7 +79660,7 @@ type SapEccResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -82346,7 +82346,7 @@ type ServiceNowObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -84175,7 +84175,7 @@ type ShopifyObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -85458,7 +85458,7 @@ type SparkObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -87376,7 +87376,7 @@ type SQLServerTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -88836,7 +88836,7 @@ type SquareObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -92566,7 +92566,7 @@ type VerticaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -94638,7 +94638,7 @@ type WebTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -95664,7 +95664,7 @@ type XeroObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
@@ -96859,7 +96859,7 @@ type ZohoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Folder - The folder that this Dataset is in.
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
 	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`

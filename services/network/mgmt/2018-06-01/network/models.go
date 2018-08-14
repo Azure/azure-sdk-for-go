@@ -6516,6 +6516,11 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ErrorResponse the error object.
+type ErrorResponse struct {
+	Error *ErrorDetails `json:"error,omitempty"`
+}
+
 // EvaluatedNetworkSecurityGroup results of network security group evaluation.
 type EvaluatedNetworkSecurityGroup struct {
 	// NetworkSecurityGroupID - Network security group ID.

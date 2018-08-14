@@ -918,6 +918,7 @@ type EndpointServicesListResultIterator = original.EndpointServicesListResultIte
 type EndpointServicesListResultPage = original.EndpointServicesListResultPage
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
+type ErrorResponse = original.ErrorResponse
 type EvaluatedNetworkSecurityGroup = original.EvaluatedNetworkSecurityGroup
 type ExpressRouteCircuit = original.ExpressRouteCircuit
 type ExpressRouteCircuitArpTable = original.ExpressRouteCircuitArpTable

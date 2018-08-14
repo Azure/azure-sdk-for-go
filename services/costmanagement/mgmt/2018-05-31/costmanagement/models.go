@@ -23,19 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
-// FormatType enumerates the values for format type.
-type FormatType string
-
-const (
-	// Csv ...
-	Csv FormatType = "Csv"
-)
-
-// PossibleFormatTypeValues returns an array of possible values for the FormatType const type.
-func PossibleFormatTypeValues() []FormatType {
-	return []FormatType{Csv}
-}
-
 // GranularityType enumerates the values for granularity type.
 type GranularityType string
 
@@ -47,25 +34,6 @@ const (
 // PossibleGranularityTypeValues returns an array of possible values for the GranularityType const type.
 func PossibleGranularityTypeValues() []GranularityType {
 	return []GranularityType{Daily}
-}
-
-// RecurrenceType enumerates the values for recurrence type.
-type RecurrenceType string
-
-const (
-	// RecurrenceTypeAnnually ...
-	RecurrenceTypeAnnually RecurrenceType = "Annually"
-	// RecurrenceTypeDaily ...
-	RecurrenceTypeDaily RecurrenceType = "Daily"
-	// RecurrenceTypeMonthly ...
-	RecurrenceTypeMonthly RecurrenceType = "Monthly"
-	// RecurrenceTypeWeekly ...
-	RecurrenceTypeWeekly RecurrenceType = "Weekly"
-)
-
-// PossibleRecurrenceTypeValues returns an array of possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return []RecurrenceType{RecurrenceTypeAnnually, RecurrenceTypeDaily, RecurrenceTypeMonthly, RecurrenceTypeWeekly}
 }
 
 // ReportConfigColumnType enumerates the values for report config column type.
@@ -81,21 +49,6 @@ const (
 // PossibleReportConfigColumnTypeValues returns an array of possible values for the ReportConfigColumnType const type.
 func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
 	return []ReportConfigColumnType{ReportConfigColumnTypeDimension, ReportConfigColumnTypeTag}
-}
-
-// StatusType enumerates the values for status type.
-type StatusType string
-
-const (
-	// Active ...
-	Active StatusType = "Active"
-	// Inactive ...
-	Inactive StatusType = "Inactive"
-)
-
-// PossibleStatusTypeValues returns an array of possible values for the StatusType const type.
-func PossibleStatusTypeValues() []StatusType {
-	return []StatusType{Active, Inactive}
 }
 
 // TimeframeType enumerates the values for timeframe type.
@@ -358,101 +311,6 @@ type QueryResult struct {
 	Value *[]Query `json:"value,omitempty"`
 }
 
-// ReportConfig a report config resource.
-type ReportConfig struct {
-	autorest.Response       `json:"-"`
-	*ReportConfigProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for ReportConfig.
-func (rc ReportConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rc.ReportConfigProperties != nil {
-		objectMap["properties"] = rc.ReportConfigProperties
-	}
-	if rc.ID != nil {
-		objectMap["id"] = rc.ID
-	}
-	if rc.Name != nil {
-		objectMap["name"] = rc.Name
-	}
-	if rc.Type != nil {
-		objectMap["type"] = rc.Type
-	}
-	if rc.Tags != nil {
-		objectMap["tags"] = rc.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ReportConfig struct.
-func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var reportConfigProperties ReportConfigProperties
-				err = json.Unmarshal(*v, &reportConfigProperties)
-				if err != nil {
-					return err
-				}
-				rc.ReportConfigProperties = &reportConfigProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				rc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				rc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				rc.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rc.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
 // ReportConfigAggregation the aggregation expression to be used in the report.
 type ReportConfigAggregation struct {
 	// Name - The name of the column to aggregate.
@@ -524,22 +382,6 @@ type ReportConfigDefinition struct {
 	Dataset *ReportConfigDataset `json:"dataset,omitempty"`
 }
 
-// ReportConfigDeliveryDestination the destination information for the delivery of the report.
-type ReportConfigDeliveryDestination struct {
-	// ResourceID - The resource id of the storage account where reports will be delivered.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// Container - The name of the container where reports will be uploaded.
-	Container *string `json:"container,omitempty"`
-	// RootFolderPath - The name of the directory where reports will be uploaded.
-	RootFolderPath *string `json:"rootFolderPath,omitempty"`
-}
-
-// ReportConfigDeliveryInfo the delivery information associated with a report config.
-type ReportConfigDeliveryInfo struct {
-	// Destination - Has destination for the report being delivered.
-	Destination *ReportConfigDeliveryDestination `json:"destination,omitempty"`
-}
-
 // ReportConfigFilter the filter expression to be used in the report.
 type ReportConfigFilter struct {
 	// And - The logical "AND" expression. Must have atleast 2 items.
@@ -560,44 +402,6 @@ type ReportConfigGrouping struct {
 	ColumnType ReportConfigColumnType `json:"columnType,omitempty"`
 	// Name - The name of the column to group.
 	Name *string `json:"name,omitempty"`
-}
-
-// ReportConfigListResult result of listing report configs. It contains a list of available report configurations
-// in the scope provided.
-type ReportConfigListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of report configs.
-	Value *[]ReportConfig `json:"value,omitempty"`
-}
-
-// ReportConfigProperties the properties of the report config.
-type ReportConfigProperties struct {
-	// Schedule - Has schedule information for the report config.
-	Schedule *ReportConfigSchedule `json:"schedule,omitempty"`
-	// Format - The format of the report being delivered. Possible values include: 'Csv'
-	Format FormatType `json:"format,omitempty"`
-	// DeliveryInfo - Has delivery information for the report config.
-	DeliveryInfo *ReportConfigDeliveryInfo `json:"deliveryInfo,omitempty"`
-	// Definition - Has definition for the report config.
-	Definition *ReportConfigDefinition `json:"definition,omitempty"`
-}
-
-// ReportConfigRecurrencePeriod the start and end date for recurrence schedule.
-type ReportConfigRecurrencePeriod struct {
-	// From - The start date of recurrence.
-	From *date.Time `json:"from,omitempty"`
-	// To - The end date of recurrence. If not provided, we default this to 10 years from the start date.
-	To *date.Time `json:"to,omitempty"`
-}
-
-// ReportConfigSchedule the schedule associated with a report config.
-type ReportConfigSchedule struct {
-	// Status - The status of the schedule. Whether active or not. If inactive, the report's scheduled execution is paused. Possible values include: 'Active', 'Inactive'
-	Status StatusType `json:"status,omitempty"`
-	// Recurrence - The schedule recurrence. Possible values include: 'RecurrenceTypeDaily', 'RecurrenceTypeWeekly', 'RecurrenceTypeMonthly', 'RecurrenceTypeAnnually'
-	Recurrence RecurrenceType `json:"recurrence,omitempty"`
-	// RecurrencePeriod - Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date.
-	RecurrencePeriod *ReportConfigRecurrencePeriod `json:"recurrencePeriod,omitempty"`
 }
 
 // ReportConfigTimePeriod the start and end date for pulling data for the report.

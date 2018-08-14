@@ -57,8 +57,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 // QueryBillingAccount lists the usage data for billing account.
 // Parameters:
 // billingAccountID - billingAccount ID
-// parameters - parameters supplied to the CreateOrUpdate Report Config operation.
-func (client BaseClient) QueryBillingAccount(ctx context.Context, billingAccountID string, parameters ReportConfigDefinition) (result QueryResult, err error) {
+// parameters - parameters supplied to the CreateOrUpdate Report operation.
+func (client BaseClient) QueryBillingAccount(ctx context.Context, billingAccountID string, parameters ReportDefinition) (result QueryResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil},
@@ -114,7 +114,7 @@ func (client BaseClient) QueryBillingAccount(ctx context.Context, billingAccount
 }
 
 // QueryBillingAccountPreparer prepares the QueryBillingAccount request.
-func (client BaseClient) QueryBillingAccountPreparer(ctx context.Context, billingAccountID string, parameters ReportConfigDefinition) (*http.Request, error) {
+func (client BaseClient) QueryBillingAccountPreparer(ctx context.Context, billingAccountID string, parameters ReportDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
@@ -157,8 +157,8 @@ func (client BaseClient) QueryBillingAccountResponder(resp *http.Response) (resu
 // QueryResourceGroup lists the usage data for subscriptionId and resource group.
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
-// parameters - parameters supplied to the CreateOrUpdate Report Config operation.
-func (client BaseClient) QueryResourceGroup(ctx context.Context, resourceGroupName string, parameters ReportConfigDefinition) (result QueryResult, err error) {
+// parameters - parameters supplied to the CreateOrUpdate Report operation.
+func (client BaseClient) QueryResourceGroup(ctx context.Context, resourceGroupName string, parameters ReportDefinition) (result QueryResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil},
@@ -214,7 +214,7 @@ func (client BaseClient) QueryResourceGroup(ctx context.Context, resourceGroupNa
 }
 
 // QueryResourceGroupPreparer prepares the QueryResourceGroup request.
-func (client BaseClient) QueryResourceGroupPreparer(ctx context.Context, resourceGroupName string, parameters ReportConfigDefinition) (*http.Request, error) {
+func (client BaseClient) QueryResourceGroupPreparer(ctx context.Context, resourceGroupName string, parameters ReportDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -257,8 +257,8 @@ func (client BaseClient) QueryResourceGroupResponder(resp *http.Response) (resul
 
 // QuerySubscription lists the usage data for subscriptionId.
 // Parameters:
-// parameters - parameters supplied to the CreateOrUpdate Report Config operation.
-func (client BaseClient) QuerySubscription(ctx context.Context, parameters ReportConfigDefinition) (result QueryResult, err error) {
+// parameters - parameters supplied to the CreateOrUpdate Report operation.
+func (client BaseClient) QuerySubscription(ctx context.Context, parameters ReportDefinition) (result QueryResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil},
@@ -314,7 +314,7 @@ func (client BaseClient) QuerySubscription(ctx context.Context, parameters Repor
 }
 
 // QuerySubscriptionPreparer prepares the QuerySubscription request.
-func (client BaseClient) QuerySubscriptionPreparer(ctx context.Context, parameters ReportConfigDefinition) (*http.Request, error) {
+func (client BaseClient) QuerySubscriptionPreparer(ctx context.Context, parameters ReportDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}

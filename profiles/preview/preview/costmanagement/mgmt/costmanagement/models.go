@@ -37,6 +37,23 @@ const (
 	Suspended ConnectorStatus = original.Suspended
 )
 
+type ExecutionStatus = original.ExecutionStatus
+
+const (
+	Completed  ExecutionStatus = original.Completed
+	Failed     ExecutionStatus = original.Failed
+	InProgress ExecutionStatus = original.InProgress
+	Queud      ExecutionStatus = original.Queud
+	Timeout    ExecutionStatus = original.Timeout
+)
+
+type ExecutionType = original.ExecutionType
+
+const (
+	OnDemand  ExecutionType = original.OnDemand
+	Scheduled ExecutionType = original.Scheduled
+)
+
 type FormatType = original.FormatType
 
 const (
@@ -58,11 +75,11 @@ const (
 	RecurrenceTypeWeekly   RecurrenceType = original.RecurrenceTypeWeekly
 )
 
-type ReportConfigColumnType = original.ReportConfigColumnType
+type ReportColumnType = original.ReportColumnType
 
 const (
-	ReportConfigColumnTypeDimension ReportConfigColumnType = original.ReportConfigColumnTypeDimension
-	ReportConfigColumnTypeTag       ReportConfigColumnType = original.ReportConfigColumnTypeTag
+	ReportColumnTypeDimension ReportColumnType = original.ReportColumnTypeDimension
+	ReportColumnTypeTag       ReportColumnType = original.ReportColumnTypeTag
 )
 
 type StatusType = original.StatusType
@@ -78,9 +95,9 @@ const (
 	Custom      TimeframeType = original.Custom
 	MonthToDate TimeframeType = original.MonthToDate
 	WeekToDate  TimeframeType = original.WeekToDate
-	YearToDate  TimeframeType = original.YearToDate
 )
 
+type CommonReportProperties = original.CommonReportProperties
 type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
 type ConnectorCollectionInfo = original.ConnectorCollectionInfo
 type ConnectorDefinition = original.ConnectorDefinition
@@ -96,23 +113,26 @@ type Query = original.Query
 type QueryColumn = original.QueryColumn
 type QueryProperties = original.QueryProperties
 type QueryResult = original.QueryResult
-type ReportConfig = original.ReportConfig
-type ReportConfigAggregation = original.ReportConfigAggregation
-type ReportConfigComparisonExpression = original.ReportConfigComparisonExpression
-type ReportConfigDataset = original.ReportConfigDataset
-type ReportConfigDatasetConfiguration = original.ReportConfigDatasetConfiguration
-type ReportConfigDefinition = original.ReportConfigDefinition
-type ReportConfigDeliveryDestination = original.ReportConfigDeliveryDestination
-type ReportConfigDeliveryInfo = original.ReportConfigDeliveryInfo
-type ReportConfigFilter = original.ReportConfigFilter
-type ReportConfigGrouping = original.ReportConfigGrouping
-type ReportConfigListResult = original.ReportConfigListResult
-type ReportConfigProperties = original.ReportConfigProperties
-type ReportConfigRecurrencePeriod = original.ReportConfigRecurrencePeriod
-type ReportConfigSchedule = original.ReportConfigSchedule
-type ReportConfigTimePeriod = original.ReportConfigTimePeriod
+type Report = original.Report
+type ReportAggregation = original.ReportAggregation
+type ReportComparisonExpression = original.ReportComparisonExpression
+type ReportDataset = original.ReportDataset
+type ReportDatasetConfiguration = original.ReportDatasetConfiguration
+type ReportDefinition = original.ReportDefinition
+type ReportDeliveryDestination = original.ReportDeliveryDestination
+type ReportDeliveryInfo = original.ReportDeliveryInfo
+type ReportExecution = original.ReportExecution
+type ReportExecutionListResult = original.ReportExecutionListResult
+type ReportExecutionProperties = original.ReportExecutionProperties
+type ReportFilter = original.ReportFilter
+type ReportGrouping = original.ReportGrouping
+type ReportListResult = original.ReportListResult
+type ReportProperties = original.ReportProperties
+type ReportRecurrencePeriod = original.ReportRecurrencePeriod
+type ReportSchedule = original.ReportSchedule
+type ReportTimePeriod = original.ReportTimePeriod
 type Resource = original.Resource
-type ReportConfigClient = original.ReportConfigClient
+type ReportClient = original.ReportClient
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 
@@ -137,6 +157,12 @@ func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) Connec
 func PossibleConnectorStatusValues() []ConnectorStatus {
 	return original.PossibleConnectorStatusValues()
 }
+func PossibleExecutionStatusValues() []ExecutionStatus {
+	return original.PossibleExecutionStatusValues()
+}
+func PossibleExecutionTypeValues() []ExecutionType {
+	return original.PossibleExecutionTypeValues()
+}
 func PossibleFormatTypeValues() []FormatType {
 	return original.PossibleFormatTypeValues()
 }
@@ -146,8 +172,8 @@ func PossibleGranularityTypeValues() []GranularityType {
 func PossibleRecurrenceTypeValues() []RecurrenceType {
 	return original.PossibleRecurrenceTypeValues()
 }
-func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
-	return original.PossibleReportConfigColumnTypeValues()
+func PossibleReportColumnTypeValues() []ReportColumnType {
+	return original.PossibleReportColumnTypeValues()
 }
 func PossibleStatusTypeValues() []StatusType {
 	return original.PossibleStatusTypeValues()
@@ -155,11 +181,11 @@ func PossibleStatusTypeValues() []StatusType {
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()
 }
-func NewReportConfigClient(subscriptionID string) ReportConfigClient {
-	return original.NewReportConfigClient(subscriptionID)
+func NewReportClient(subscriptionID string) ReportClient {
+	return original.NewReportClient(subscriptionID)
 }
-func NewReportConfigClientWithBaseURI(baseURI string, subscriptionID string) ReportConfigClient {
-	return original.NewReportConfigClientWithBaseURI(baseURI, subscriptionID)
+func NewReportClientWithBaseURI(baseURI string, subscriptionID string) ReportClient {
+	return original.NewReportClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
 	return original.NewResourceGroupDimensionsClient(subscriptionID)

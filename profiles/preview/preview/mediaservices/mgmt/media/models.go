@@ -476,6 +476,8 @@ const (
 type AacAudio = original.AacAudio
 type AccountFilter = original.AccountFilter
 type AccountFilterCollection = original.AccountFilterCollection
+type AccountFilterCollectionIterator = original.AccountFilterCollectionIterator
+type AccountFilterCollectionPage = original.AccountFilterCollectionPage
 type AkamaiAccessControl = original.AkamaiAccessControl
 type AkamaiSignatureHeaderAuthenticationKey = original.AkamaiSignatureHeaderAuthenticationKey
 type APIError = original.APIError

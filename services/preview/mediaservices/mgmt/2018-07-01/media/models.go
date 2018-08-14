@@ -1200,6 +1200,99 @@ type AccountFilterCollection struct {
 	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
 }
 
+// AccountFilterCollectionIterator provides access to a complete listing of AccountFilter values.
+type AccountFilterCollectionIterator struct {
+	i    int
+	page AccountFilterCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AccountFilterCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AccountFilterCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AccountFilterCollectionIterator) Response() AccountFilterCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AccountFilterCollectionIterator) Value() AccountFilter {
+	if !iter.page.NotDone() {
+		return AccountFilter{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (afc AccountFilterCollection) IsEmpty() bool {
+	return afc.Value == nil || len(*afc.Value) == 0
+}
+
+// accountFilterCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (afc AccountFilterCollection) accountFilterCollectionPreparer() (*http.Request, error) {
+	if afc.OdataNextLink == nil || len(to.String(afc.OdataNextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(afc.OdataNextLink)))
+}
+
+// AccountFilterCollectionPage contains a page of AccountFilter values.
+type AccountFilterCollectionPage struct {
+	fn  func(AccountFilterCollection) (AccountFilterCollection, error)
+	afc AccountFilterCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AccountFilterCollectionPage) Next() error {
+	next, err := page.fn(page.afc)
+	if err != nil {
+		return err
+	}
+	page.afc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AccountFilterCollectionPage) NotDone() bool {
+	return !page.afc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AccountFilterCollectionPage) Response() AccountFilterCollection {
+	return page.afc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AccountFilterCollectionPage) Values() []AccountFilter {
+	if page.afc.IsEmpty() {
+		return nil
+	}
+	return *page.afc.Value
+}
+
 // AkamaiAccessControl akamai access control
 type AkamaiAccessControl struct {
 	// AkamaiSignatureHeaderAuthenticationKeyList - authentication key list

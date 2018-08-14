@@ -270,7 +270,8 @@ func (client AccountFiltersClient) GetResponder(resp *http.Response) (result Acc
 // Parameters:
 // resourceGroupName - the name of the resource group within the Azure subscription.
 // accountName - the Media Services account name.
-func (client AccountFiltersClient) List(ctx context.Context, resourceGroupName string, accountName string) (result AccountFilterCollection, err error) {
+func (client AccountFiltersClient) List(ctx context.Context, resourceGroupName string, accountName string) (result AccountFilterCollectionPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "List", nil, "Failure preparing request")
@@ -279,12 +280,12 @@ func (client AccountFiltersClient) List(ctx context.Context, resourceGroupName s
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.afc.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.afc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "List", resp, "Failure responding to request")
 	}
@@ -330,6 +331,33 @@ func (client AccountFiltersClient) ListResponder(resp *http.Response) (result Ac
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client AccountFiltersClient) listNextResults(lastResults AccountFilterCollection) (result AccountFilterCollection, err error) {
+	req, err := lastResults.accountFilterCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "media.AccountFiltersClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "media.AccountFiltersClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AccountFiltersClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result AccountFilterCollectionIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, accountName)
 	return
 }
 

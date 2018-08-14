@@ -286,6 +286,93 @@ type AadSolutionProperties struct {
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
 }
 
+// AdvancedThreatProtectionProperties the Advanced Threat Protection settings.
+type AdvancedThreatProtectionProperties struct {
+	// Enabled - Indicates whether Advanced Threat Protection is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// AdvancedThreatProtectionSetting the Advanced Threat Protection resource.
+type AdvancedThreatProtectionSetting struct {
+	autorest.Response                   `json:"-"`
+	*AdvancedThreatProtectionProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdvancedThreatProtectionSetting.
+func (atps AdvancedThreatProtectionSetting) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if atps.AdvancedThreatProtectionProperties != nil {
+		objectMap["properties"] = atps.AdvancedThreatProtectionProperties
+	}
+	if atps.ID != nil {
+		objectMap["id"] = atps.ID
+	}
+	if atps.Name != nil {
+		objectMap["name"] = atps.Name
+	}
+	if atps.Type != nil {
+		objectMap["type"] = atps.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AdvancedThreatProtectionSetting struct.
+func (atps *AdvancedThreatProtectionSetting) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var advancedThreatProtectionProperties AdvancedThreatProtectionProperties
+				err = json.Unmarshal(*v, &advancedThreatProtectionProperties)
+				if err != nil {
+					return err
+				}
+				atps.AdvancedThreatProtectionProperties = &advancedThreatProtectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				atps.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				atps.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				atps.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // Alert security alert
 type Alert struct {
 	autorest.Response `json:"-"`

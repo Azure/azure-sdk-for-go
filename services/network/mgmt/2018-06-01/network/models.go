@@ -5805,9 +5805,8 @@ func (future *ConnectionMonitorsQueryFuture) Result(client ConnectionMonitorsCli
 // ConnectionMonitorsQueryResultItem results of query particular connection monitor.
 type ConnectionMonitorsQueryResultItem struct {
 	// ResourceID - Connection monitor resource ID.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// Report - List of connection monitors query results.
-	Report *[]ConnectionMonitorQueryResult `json:"report,omitempty"`
+	ResourceID *string                       `json:"resourceId,omitempty"`
+	Report     *ConnectionMonitorQueryResult `json:"report,omitempty"`
 }
 
 // ConnectionMonitorsStartFuture an abstraction for monitoring and retrieving the results of a long-running

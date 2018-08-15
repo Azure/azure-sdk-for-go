@@ -17487,6 +17487,29 @@ func (future *VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGat
 	return
 }
 
+// VirtualNetworkGatewaysResetvpnclientsharedkeyFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type VirtualNetworkGatewaysResetvpnclientsharedkeyFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualNetworkGatewaysResetvpnclientsharedkeyFuture) Result(client VirtualNetworkGatewaysClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetvpnclientsharedkeyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysResetvpnclientsharedkeyFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture struct {

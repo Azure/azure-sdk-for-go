@@ -5881,6 +5881,16 @@ type ConnectionStateSnapshot struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// EvaluationState - Connectivity analysis evaluation state. Possible values include: 'NotStarted', 'InProgress', 'Completed'
 	EvaluationState EvaluationState `json:"evaluationState,omitempty"`
+	// AvgLatencyInMs - Average latency in ms.
+	AvgLatencyInMs *int32 `json:"avgLatencyInMs,omitempty"`
+	// MinLatencyInMs - Minimum latency in ms.
+	MinLatencyInMs *int32 `json:"minLatencyInMs,omitempty"`
+	// MaxLatencyInMs - Maximum latency in ms.
+	MaxLatencyInMs *int32 `json:"maxLatencyInMs,omitempty"`
+	// ProbesSent - The number of sent probes.
+	ProbesSent *int32 `json:"probesSent,omitempty"`
+	// ProbesFailed - The number of failed probes.
+	ProbesFailed *int32 `json:"probesFailed,omitempty"`
 	// Hops - List of hops between the source and the destination.
 	Hops *[]ConnectivityHop `json:"hops,omitempty"`
 }

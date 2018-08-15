@@ -288,8 +288,8 @@ type AadSolutionProperties struct {
 
 // AdvancedThreatProtectionProperties the Advanced Threat Protection settings.
 type AdvancedThreatProtectionProperties struct {
-	// Enabled - Indicates whether Advanced Threat Protection is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	// IsEnabled - Indicates whether Advanced Threat Protection is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
 // AdvancedThreatProtectionSetting the Advanced Threat Protection resource.

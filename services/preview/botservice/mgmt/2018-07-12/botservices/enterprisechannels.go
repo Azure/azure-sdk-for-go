@@ -45,7 +45,7 @@ func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide for the new Enterprise Channel.
-func (client EnterpriseChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannel, err error) {
+func (client EnterpriseChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannelsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -67,16 +67,10 @@ func (client EnterpriseChannelsClient) Create(ctx context.Context, resourceGroup
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Create", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -107,9 +101,19 @@ func (client EnterpriseChannelsClient) CreatePreparer(ctx context.Context, resou
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client EnterpriseChannelsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client EnterpriseChannelsClient) CreateSender(req *http.Request) (future EnterpriseChannelsCreateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -129,7 +133,7 @@ func (client EnterpriseChannelsClient) CreateResponder(resp *http.Response) (res
 // Parameters:
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
-func (client EnterpriseChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
+func (client EnterpriseChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result EnterpriseChannelsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -148,16 +152,10 @@ func (client EnterpriseChannelsClient) Delete(ctx context.Context, resourceGroup
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -186,9 +184,19 @@ func (client EnterpriseChannelsClient) DeletePreparer(ctx context.Context, resou
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client EnterpriseChannelsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client EnterpriseChannelsClient) DeleteSender(req *http.Request) (future EnterpriseChannelsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -451,7 +459,7 @@ func (client EnterpriseChannelsClient) ListByResourceGroupComplete(ctx context.C
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide to update the Enterprise Channel.
-func (client EnterpriseChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannel, err error) {
+func (client EnterpriseChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannelsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -470,16 +478,10 @@ func (client EnterpriseChannelsClient) Update(ctx context.Context, resourceGroup
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Update", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -510,9 +512,19 @@ func (client EnterpriseChannelsClient) UpdatePreparer(ctx context.Context, resou
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client EnterpriseChannelsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client EnterpriseChannelsClient) UpdateSender(req *http.Request) (future EnterpriseChannelsUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always

@@ -1,4 +1,4 @@
-package iotcentral
+package botservice
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the use this API to manage IoT Central Applications in your Azure subscription.
+// OperationsClient is the azure Bot Service is a platform for creating smart conversational agents.
 type OperationsClient struct {
 	BaseClient
 }
@@ -39,25 +39,25 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available IoT Central application REST API operations.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
+// List lists all the available BotService operations.
+func (client OperationsClient) List(ctx context.Context) (result OperationEntityListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "botservice.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.olr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "List", resp, "Failure sending request")
+		result.oelr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "botservice.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.olr, err = client.ListResponder(resp)
+	result.oelr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "botservice.OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -65,7 +65,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2017-07-01-privatepreview"
+	const APIVersion = "2018-07-12"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -73,7 +73,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.IoTCentral/operations"),
+		autorest.WithPath("/providers/Microsoft.BotService/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,7 +87,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationEntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -99,10 +99,10 @@ func (client OperationsClient) ListResponder(resp *http.Response) (result Operat
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client OperationsClient) listNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
-	req, err := lastResults.operationListResultPreparer()
+func (client OperationsClient) listNextResults(lastResults OperationEntityListResult) (result OperationEntityListResult, err error) {
+	req, err := lastResults.operationEntityListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "botservice.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -110,17 +110,17 @@ func (client OperationsClient) listNextResults(lastResults OperationListResult) 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "botservice.OperationsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotcentral.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "botservice.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
+func (client OperationsClient) ListComplete(ctx context.Context) (result OperationEntityListResultIterator, err error) {
 	result.page, err = client.List(ctx)
 	return
 }

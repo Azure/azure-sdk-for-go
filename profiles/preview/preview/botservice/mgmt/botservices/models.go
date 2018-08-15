@@ -85,6 +85,21 @@ const (
 	Standard SkuTier = original.Standard
 )
 
+type State = original.State
+
+const (
+	CreateFailed State = original.CreateFailed
+	Creating     State = original.Creating
+	DeleteFailed State = original.DeleteFailed
+	Deleting     State = original.Deleting
+	Started      State = original.Started
+	StartFailed  State = original.StartFailed
+	Starting     State = original.Starting
+	StopFailed   State = original.StopFailed
+	Stopped      State = original.Stopped
+	Stopping     State = original.Stopping
+)
+
 type Bot = original.Bot
 type BotChannel = original.BotChannel
 type BotProperties = original.BotProperties
@@ -198,6 +213,9 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

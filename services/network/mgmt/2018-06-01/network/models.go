@@ -15613,6 +15613,8 @@ func (page SubnetListResultPage) Values() []Subnet {
 type SubnetPropertiesFormat struct {
 	// AddressPrefix - The address prefix for the subnet.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
+	// AddressPrefixes - List of  address prefixes for the subnet.
+	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
 	// NetworkSecurityGroup - The reference of the NetworkSecurityGroup resource.
 	NetworkSecurityGroup *SecurityGroup `json:"networkSecurityGroup,omitempty"`
 	// RouteTable - The reference of the RouteTable resource.

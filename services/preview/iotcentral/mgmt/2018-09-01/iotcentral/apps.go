@@ -25,21 +25,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppsClient is the use this API to manage IoT Central Applications in your Azure subscription.
 type AppsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NewAppsClient creates an instance of the AppsClient client.
 func NewAppsClient(subscriptionID string) AppsClient {
 	return NewAppsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NewAppsClientWithBaseURI creates an instance of the AppsClient client.
 func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
 	return AppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CheckNameAvailability check if an IoT Central application name is available.
 // Parameters:
 // operationInputs - set the name parameter in the OperationInputs structure to the name of the IoT Central
@@ -72,6 +76,7 @@ func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInp
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
 func (client AppsClient) CheckNameAvailabilityPreparer(ctx context.Context, operationInputs OperationInputs) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -93,6 +98,7 @@ func (client AppsClient) CheckNameAvailabilityPreparer(ctx context.Context, oper
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
@@ -100,6 +106,7 @@ func (client AppsClient) CheckNameAvailabilitySender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
 func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (result AppNameAvailabilityInfo, err error) {
@@ -113,6 +120,7 @@ func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CreateOrUpdate create or update the metadata of an IoT Central application. The usual pattern to modify a property
 // is to retrieve the IoT Central application metadata and security metadata, and then combine them with the modified
 // values in a new body to update the IoT Central application.
@@ -148,6 +156,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, app App) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -171,6 +180,7 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCreateOrUpdateFuture, err error) {
@@ -188,6 +198,7 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result App, err error) {
@@ -201,6 +212,7 @@ func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result Ap
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Delete delete an IoT Central application.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.
@@ -221,6 +233,7 @@ func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, r
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // DeletePreparer prepares the Delete request.
 func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -242,6 +255,7 @@ func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSender(req *http.Request) (future AppsDeleteFuture, err error) {
@@ -259,6 +273,7 @@ func (client AppsClient) DeleteSender(req *http.Request) (future AppsDeleteFutur
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client AppsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -271,6 +286,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Get get the metadata of an IoT Central application.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.
@@ -297,6 +313,7 @@ func (client AppsClient) Get(ctx context.Context, resourceGroupName string, reso
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // GetPreparer prepares the Get request.
 func (client AppsClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -318,6 +335,7 @@ func (client AppsClient) GetPreparer(ctx context.Context, resourceGroupName stri
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -325,6 +343,7 @@ func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetResponder(resp *http.Response) (result App, err error) {
@@ -338,6 +357,7 @@ func (client AppsClient) GetResponder(resp *http.Response) (result App, err erro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListByResourceGroup get all the IoT Central Applications in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.
@@ -364,6 +384,7 @@ func (client AppsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
 func (client AppsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -384,6 +405,7 @@ func (client AppsClient) ListByResourceGroupPreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
@@ -391,6 +413,7 @@ func (client AppsClient) ListByResourceGroupSender(req *http.Request) (*http.Res
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client AppsClient) ListByResourceGroupResponder(resp *http.Response) (result AppListResult, err error) {
@@ -425,12 +448,14 @@ func (client AppsClient) listByResourceGroupNextResults(lastResults AppListResul
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AppsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result AppListResultIterator, err error) {
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListBySubscription get all IoT Central Applications in a subscription.
 func (client AppsClient) ListBySubscription(ctx context.Context) (result AppListResultPage, err error) {
 	result.fn = client.listBySubscriptionNextResults
@@ -455,6 +480,7 @@ func (client AppsClient) ListBySubscription(ctx context.Context) (result AppList
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListBySubscriptionPreparer prepares the ListBySubscription request.
 func (client AppsClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -474,6 +500,7 @@ func (client AppsClient) ListBySubscriptionPreparer(ctx context.Context) (*http.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
@@ -481,6 +508,7 @@ func (client AppsClient) ListBySubscriptionSender(req *http.Request) (*http.Resp
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
 func (client AppsClient) ListBySubscriptionResponder(resp *http.Response) (result AppListResult, err error) {
@@ -515,12 +543,14 @@ func (client AppsClient) listBySubscriptionNextResults(lastResults AppListResult
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AppsClient) ListBySubscriptionComplete(ctx context.Context) (result AppListResultIterator, err error) {
 	result.page, err = client.ListBySubscription(ctx)
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Update update the metadata of an IoT Central application.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT Central application.
@@ -542,6 +572,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, r
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // UpdatePreparer prepares the Update request.
 func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, appPatch AppPatch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -565,6 +596,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFuture, err error) {
@@ -582,6 +614,7 @@ func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFutur
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client AppsClient) UpdateResponder(resp *http.Response) (result App, err error) {

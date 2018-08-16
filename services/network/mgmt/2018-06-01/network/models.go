@@ -5452,27 +5452,6 @@ type BgpSettings struct {
 	PeerWeight *int32 `json:"peerWeight,omitempty"`
 }
 
-// ConfigurationDiagnosticParameters parameters to get network configuration diagnostic.
-type ConfigurationDiagnosticParameters struct {
-	// TargetResourceID - The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// Queries - List of traffic queries.
-	Queries *[]TrafficQuery `json:"queries,omitempty"`
-}
-
-// ConfigurationDiagnosticResponse results of network configuration diagnostic on the target resource.
-type ConfigurationDiagnosticResponse struct {
-	autorest.Response `json:"-"`
-	// Results - List of network configuration diagnostic results.
-	Results *[]ConfigurationDiagnosticResult `json:"results,omitempty"`
-}
-
-// ConfigurationDiagnosticResult network configuration diagnostic result corresponded to provided traffic query.
-type ConfigurationDiagnosticResult struct {
-	TrafficQuery               *TrafficQuery        `json:"trafficQuery,omitempty"`
-	NetworkSecurityGroupResult *SecurityGroupResult `json:"networkSecurityGroupResult,omitempty"`
-}
-
 // ConnectionMonitor parameters that define the operation to create a connection monitor.
 type ConnectionMonitor struct {
 	// Location - Connection monitor location.
@@ -5802,13 +5781,6 @@ func (future *ConnectionMonitorsQueryFuture) Result(client ConnectionMonitorsCli
 	return
 }
 
-// ConnectionMonitorsQueryResultItem results of query particular connection monitor.
-type ConnectionMonitorsQueryResultItem struct {
-	// ResourceID - Connection monitor resource ID.
-	ResourceID *string                       `json:"resourceId,omitempty"`
-	Report     *ConnectionMonitorQueryResult `json:"report,omitempty"`
-}
-
 // ConnectionMonitorsStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ConnectionMonitorsStartFuture struct {
@@ -5881,16 +5853,6 @@ type ConnectionStateSnapshot struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// EvaluationState - Connectivity analysis evaluation state. Possible values include: 'NotStarted', 'InProgress', 'Completed'
 	EvaluationState EvaluationState `json:"evaluationState,omitempty"`
-	// AvgLatencyInMs - Average latency in ms.
-	AvgLatencyInMs *int32 `json:"avgLatencyInMs,omitempty"`
-	// MinLatencyInMs - Minimum latency in ms.
-	MinLatencyInMs *int32 `json:"minLatencyInMs,omitempty"`
-	// MaxLatencyInMs - Maximum latency in ms.
-	MaxLatencyInMs *int32 `json:"maxLatencyInMs,omitempty"`
-	// ProbesSent - The number of sent probes.
-	ProbesSent *int32 `json:"probesSent,omitempty"`
-	// ProbesFailed - The number of failed probes.
-	ProbesFailed *int32 `json:"probesFailed,omitempty"`
 	// Hops - List of hops between the source and the destination.
 	Hops *[]ConnectivityHop `json:"hops,omitempty"`
 }
@@ -6523,20 +6485,6 @@ type ErrorDetails struct {
 	Code    *string `json:"code,omitempty"`
 	Target  *string `json:"target,omitempty"`
 	Message *string `json:"message,omitempty"`
-}
-
-// ErrorResponse the error object.
-type ErrorResponse struct {
-	Error *ErrorDetails `json:"error,omitempty"`
-}
-
-// EvaluatedNetworkSecurityGroup results of network security group evaluation.
-type EvaluatedNetworkSecurityGroup struct {
-	// NetworkSecurityGroupID - Network security group ID.
-	NetworkSecurityGroupID *string      `json:"networkSecurityGroupId,omitempty"`
-	MatchedRule            *MatchedRule `json:"matchedRule,omitempty"`
-	// RulesEvaluationResult - List of network security rules evaluation results.
-	RulesEvaluationResult *[]SecurityRulesEvaluationResult `json:"rulesEvaluationResult,omitempty"`
 }
 
 // ExpressRouteCircuit expressRouteCircuit resource
@@ -11999,14 +11947,6 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
-// MatchedRule matched rule.
-type MatchedRule struct {
-	// RuleName - Name of the matched network security rule.
-	RuleName *string `json:"ruleName,omitempty"`
-	// Action - The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
-	Action *string `json:"action,omitempty"`
-}
-
 // MetricSpecification description of metrics specification.
 type MetricSpecification struct {
 	// Name - The name of the metric.
@@ -13334,115 +13274,6 @@ type PublicIPAddressPropertiesFormat struct {
 type PublicIPAddressSku struct {
 	// Name - Name of a public IP address SKU. Possible values include: 'PublicIPAddressSkuNameBasic', 'PublicIPAddressSkuNameStandard'
 	Name PublicIPAddressSkuName `json:"name,omitempty"`
-}
-
-// QueryConnectionMonitorsParameters parameters to query connection monitors.
-type QueryConnectionMonitorsParameters struct {
-	// ConnectionMonitorIds - List of connection monitors ID.
-	ConnectionMonitorIds *[]string `json:"connectionMonitorIds,omitempty"`
-}
-
-// QueryConnectionMonitorsResponse results of query connection monitors.
-type QueryConnectionMonitorsResponse struct {
-	autorest.Response `json:"-"`
-	// Value - The list query connection monitor results.
-	Value *[]ConnectionMonitorsQueryResultItem `json:"value,omitempty"`
-	// NextLink - URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// QueryConnectionMonitorsResponseIterator provides access to a complete listing of
-// ConnectionMonitorsQueryResultItem values.
-type QueryConnectionMonitorsResponseIterator struct {
-	i    int
-	page QueryConnectionMonitorsResponsePage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *QueryConnectionMonitorsResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter QueryConnectionMonitorsResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter QueryConnectionMonitorsResponseIterator) Response() QueryConnectionMonitorsResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter QueryConnectionMonitorsResponseIterator) Value() ConnectionMonitorsQueryResultItem {
-	if !iter.page.NotDone() {
-		return ConnectionMonitorsQueryResultItem{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (qcmr QueryConnectionMonitorsResponse) IsEmpty() bool {
-	return qcmr.Value == nil || len(*qcmr.Value) == 0
-}
-
-// queryConnectionMonitorsResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (qcmr QueryConnectionMonitorsResponse) queryConnectionMonitorsResponsePreparer() (*http.Request, error) {
-	if qcmr.NextLink == nil || len(to.String(qcmr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(qcmr.NextLink)))
-}
-
-// QueryConnectionMonitorsResponsePage contains a page of ConnectionMonitorsQueryResultItem values.
-type QueryConnectionMonitorsResponsePage struct {
-	fn   func(QueryConnectionMonitorsResponse) (QueryConnectionMonitorsResponse, error)
-	qcmr QueryConnectionMonitorsResponse
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *QueryConnectionMonitorsResponsePage) Next() error {
-	next, err := page.fn(page.qcmr)
-	if err != nil {
-		return err
-	}
-	page.qcmr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page QueryConnectionMonitorsResponsePage) NotDone() bool {
-	return !page.qcmr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page QueryConnectionMonitorsResponsePage) Response() QueryConnectionMonitorsResponse {
-	return page.qcmr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page QueryConnectionMonitorsResponsePage) Values() []ConnectionMonitorsQueryResultItem {
-	if page.qcmr.IsEmpty() {
-		return nil
-	}
-	return *page.qcmr.Value
 }
 
 // QueryTroubleshootingParameters parameters that define the resource to query the troubleshooting result.
@@ -15002,14 +14833,6 @@ type SecurityGroupPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// SecurityGroupResult network configuration diagnostic result corresponded provided traffic query.
-type SecurityGroupResult struct {
-	// SecurityRuleAccessResult - The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'. Possible values include: 'SecurityRuleAccessAllow', 'SecurityRuleAccessDeny'
-	SecurityRuleAccessResult SecurityRuleAccess `json:"securityRuleAccessResult,omitempty"`
-	// EvaluatedNetworkSecurityGroups - List of results network security groups diagnostic.
-	EvaluatedNetworkSecurityGroups *[]EvaluatedNetworkSecurityGroup `json:"evaluatedNetworkSecurityGroups,omitempty"`
-}
-
 // SecurityGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SecurityGroupsCreateOrUpdateFuture struct {
@@ -15385,22 +15208,6 @@ func (future *SecurityRulesDeleteFuture) Result(client SecurityRulesClient) (ar 
 	return
 }
 
-// SecurityRulesEvaluationResult network security rules evaluation result.
-type SecurityRulesEvaluationResult struct {
-	// Name - Name of the network security rule.
-	Name *string `json:"name,omitempty"`
-	// ProtocolMatched - Value indicating whether protocol is matched.
-	ProtocolMatched *bool `json:"protocolMatched,omitempty"`
-	// SourceMatched - Value indicating whether source is matched.
-	SourceMatched *bool `json:"sourceMatched,omitempty"`
-	// SourcePortMatched - Value indicating whether source port is matched.
-	SourcePortMatched *bool `json:"sourcePortMatched,omitempty"`
-	// DestinationMatched - Value indicating whether destination is matched.
-	DestinationMatched *bool `json:"destinationMatched,omitempty"`
-	// DestinationPortMatched - Value indicating whether destination port is matched.
-	DestinationPortMatched *bool `json:"destinationPortMatched,omitempty"`
-}
-
 // ServiceEndpointPropertiesFormat the service endpoint properties.
 type ServiceEndpointPropertiesFormat struct {
 	// Service - The type of the endpoint service.
@@ -15758,20 +15565,6 @@ type TrafficAnalyticsConfigurationProperties struct {
 // TrafficAnalyticsProperties parameters that define the configuration of traffic analytics.
 type TrafficAnalyticsProperties struct {
 	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties `json:"networkWatcherFlowAnalyticsConfiguration,omitempty"`
-}
-
-// TrafficQuery parameters to compare with network configuration.
-type TrafficQuery struct {
-	// Direction - The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
-	Direction Direction `json:"direction,omitempty"`
-	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
-	Protocol *string `json:"protocol,omitempty"`
-	// Source - Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
-	Source *string `json:"source,omitempty"`
-	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
-	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
-	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
 // TroubleshootingDetails information gained from troubleshooting of specified resource.
@@ -19700,35 +19493,6 @@ func (future *WatchersGetFlowLogStatusFuture) Result(client WatchersClient) (fli
 	return
 }
 
-// WatchersGetNetworkConfigurationDiagnosticFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type WatchersGetNetworkConfigurationDiagnosticFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WatchersGetNetworkConfigurationDiagnosticFuture) Result(client WatchersClient) (cdr ConfigurationDiagnosticResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersGetNetworkConfigurationDiagnosticFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.WatchersGetNetworkConfigurationDiagnosticFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if cdr.Response.Response, err = future.GetResult(sender); err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
-		cdr, err = client.GetNetworkConfigurationDiagnosticResponder(cdr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.WatchersGetNetworkConfigurationDiagnosticFuture", "Result", cdr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // WatchersGetNextHopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WatchersGetNextHopFuture struct {
 	azure.Future
@@ -19868,64 +19632,6 @@ func (future *WatchersListAvailableProvidersFuture) Result(client WatchersClient
 		apl, err = client.ListAvailableProvidersResponder(apl.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.WatchersListAvailableProvidersFuture", "Result", apl.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// WatchersQueryConnectionMonitorsAllFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type WatchersQueryConnectionMonitorsAllFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WatchersQueryConnectionMonitorsAllFuture) Result(client WatchersClient) (qcmrp QueryConnectionMonitorsResponsePage, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsAllFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.WatchersQueryConnectionMonitorsAllFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if qcmrp.qcmr.Response.Response, err = future.GetResult(sender); err == nil && qcmrp.qcmr.Response.Response.StatusCode != http.StatusNoContent {
-		qcmrp, err = client.QueryConnectionMonitorsResponder(qcmrp.qcmr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsAllFuture", "Result", qcmrp.qcmr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// WatchersQueryConnectionMonitorsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type WatchersQueryConnectionMonitorsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WatchersQueryConnectionMonitorsFuture) Result(client WatchersClient) (qcmrp QueryConnectionMonitorsResponsePage, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.WatchersQueryConnectionMonitorsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if qcmrp.qcmr.Response.Response, err = future.GetResult(sender); err == nil && qcmrp.qcmr.Response.Response.StatusCode != http.StatusNoContent {
-		qcmrp, err = client.QueryConnectionMonitorsResponder(qcmrp.qcmr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsFuture", "Result", qcmrp.qcmr.Response.Response, "Failure responding to request")
 		}
 	}
 	return

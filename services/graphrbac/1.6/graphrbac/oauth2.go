@@ -107,6 +107,8 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions
 }
 
 // Post grants OAuth2 permissions for the relevant resource Ids of an app.
+// Parameters:
+// body - the relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
 func (client OAuth2Client) Post(ctx context.Context, body *Permissions) (result Permissions, err error) {
 	req, err := client.PostPreparer(ctx, body)
 	if err != nil {

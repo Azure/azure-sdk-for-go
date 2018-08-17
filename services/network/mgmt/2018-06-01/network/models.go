@@ -5802,13 +5802,6 @@ func (future *ConnectionMonitorsQueryFuture) Result(client ConnectionMonitorsCli
 	return
 }
 
-// ConnectionMonitorsQueryResultItem results of query particular connection monitor.
-type ConnectionMonitorsQueryResultItem struct {
-	// ResourceID - Connection monitor resource ID.
-	ResourceID *string                       `json:"resourceId,omitempty"`
-	Report     *ConnectionMonitorQueryResult `json:"report,omitempty"`
-}
-
 // ConnectionMonitorsStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ConnectionMonitorsStartFuture struct {
@@ -13336,115 +13329,6 @@ type PublicIPAddressSku struct {
 	Name PublicIPAddressSkuName `json:"name,omitempty"`
 }
 
-// QueryConnectionMonitorsParameters parameters to query connection monitors.
-type QueryConnectionMonitorsParameters struct {
-	// ConnectionMonitorIds - List of connection monitors ID.
-	ConnectionMonitorIds *[]string `json:"connectionMonitorIds,omitempty"`
-}
-
-// QueryConnectionMonitorsResponse results of query connection monitors.
-type QueryConnectionMonitorsResponse struct {
-	autorest.Response `json:"-"`
-	// Value - The list query connection monitor results.
-	Value *[]ConnectionMonitorsQueryResultItem `json:"value,omitempty"`
-	// NextLink - URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// QueryConnectionMonitorsResponseIterator provides access to a complete listing of
-// ConnectionMonitorsQueryResultItem values.
-type QueryConnectionMonitorsResponseIterator struct {
-	i    int
-	page QueryConnectionMonitorsResponsePage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *QueryConnectionMonitorsResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter QueryConnectionMonitorsResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter QueryConnectionMonitorsResponseIterator) Response() QueryConnectionMonitorsResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter QueryConnectionMonitorsResponseIterator) Value() ConnectionMonitorsQueryResultItem {
-	if !iter.page.NotDone() {
-		return ConnectionMonitorsQueryResultItem{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (qcmr QueryConnectionMonitorsResponse) IsEmpty() bool {
-	return qcmr.Value == nil || len(*qcmr.Value) == 0
-}
-
-// queryConnectionMonitorsResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (qcmr QueryConnectionMonitorsResponse) queryConnectionMonitorsResponsePreparer() (*http.Request, error) {
-	if qcmr.NextLink == nil || len(to.String(qcmr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(qcmr.NextLink)))
-}
-
-// QueryConnectionMonitorsResponsePage contains a page of ConnectionMonitorsQueryResultItem values.
-type QueryConnectionMonitorsResponsePage struct {
-	fn   func(QueryConnectionMonitorsResponse) (QueryConnectionMonitorsResponse, error)
-	qcmr QueryConnectionMonitorsResponse
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *QueryConnectionMonitorsResponsePage) Next() error {
-	next, err := page.fn(page.qcmr)
-	if err != nil {
-		return err
-	}
-	page.qcmr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page QueryConnectionMonitorsResponsePage) NotDone() bool {
-	return !page.qcmr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page QueryConnectionMonitorsResponsePage) Response() QueryConnectionMonitorsResponse {
-	return page.qcmr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page QueryConnectionMonitorsResponsePage) Values() []ConnectionMonitorsQueryResultItem {
-	if page.qcmr.IsEmpty() {
-		return nil
-	}
-	return *page.qcmr.Value
-}
-
 // QueryTroubleshootingParameters parameters that define the resource to query the troubleshooting result.
 type QueryTroubleshootingParameters struct {
 	// TargetResourceID - The target resource ID to query the troubleshooting result.
@@ -15613,8 +15497,6 @@ func (page SubnetListResultPage) Values() []Subnet {
 type SubnetPropertiesFormat struct {
 	// AddressPrefix - The address prefix for the subnet.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
-	// AddressPrefixes - List of  address prefixes for the subnet.
-	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
 	// NetworkSecurityGroup - The reference of the NetworkSecurityGroup resource.
 	NetworkSecurityGroup *SecurityGroup `json:"networkSecurityGroup,omitempty"`
 	// RouteTable - The reference of the RouteTable resource.
@@ -19870,64 +19752,6 @@ func (future *WatchersListAvailableProvidersFuture) Result(client WatchersClient
 		apl, err = client.ListAvailableProvidersResponder(apl.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.WatchersListAvailableProvidersFuture", "Result", apl.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// WatchersQueryConnectionMonitorsAllFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type WatchersQueryConnectionMonitorsAllFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WatchersQueryConnectionMonitorsAllFuture) Result(client WatchersClient) (qcmrp QueryConnectionMonitorsResponsePage, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsAllFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.WatchersQueryConnectionMonitorsAllFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if qcmrp.qcmr.Response.Response, err = future.GetResult(sender); err == nil && qcmrp.qcmr.Response.Response.StatusCode != http.StatusNoContent {
-		qcmrp, err = client.QueryConnectionMonitorsResponder(qcmrp.qcmr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsAllFuture", "Result", qcmrp.qcmr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// WatchersQueryConnectionMonitorsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type WatchersQueryConnectionMonitorsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WatchersQueryConnectionMonitorsFuture) Result(client WatchersClient) (qcmrp QueryConnectionMonitorsResponsePage, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.WatchersQueryConnectionMonitorsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if qcmrp.qcmr.Response.Response, err = future.GetResult(sender); err == nil && qcmrp.qcmr.Response.Response.StatusCode != http.StatusNoContent {
-		qcmrp, err = client.QueryConnectionMonitorsResponder(qcmrp.qcmr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.WatchersQueryConnectionMonitorsFuture", "Result", qcmrp.qcmr.Response.Response, "Failure responding to request")
 		}
 	}
 	return

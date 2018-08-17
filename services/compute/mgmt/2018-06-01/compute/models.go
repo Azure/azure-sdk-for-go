@@ -5984,6 +5984,8 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 	DNSSettings *VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings `json:"dnsSettings,omitempty"`
 	// IPTags - The list of IP tags associated with the public IP address.
 	IPTags *[]VirtualMachineScaleSetIPTag `json:"ipTags,omitempty"`
+	// PublicIPPrefix - The PublicIPPrefix from which to allocate publicIP addresses.
+	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
 }
 
 // VirtualMachineScaleSetRollingUpgradesCancelFuture an abstraction for monitoring and retrieving the results of a

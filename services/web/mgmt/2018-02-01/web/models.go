@@ -4045,8 +4045,10 @@ type AppServicePlanPatchResourceProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	// IsXenon - Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -4086,8 +4088,10 @@ type AppServicePlanProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	// IsXenon - Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -16710,8 +16714,10 @@ type SitePatchResourceProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - Hyper-V sandbox.
+	// IsXenon - Obsolete: Hyper-V sandbox.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - Hyper-V sandbox.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
@@ -16890,8 +16896,10 @@ type SiteProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - Hyper-V sandbox.
+	// IsXenon - Obsolete: Hyper-V sandbox.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - Hyper-V sandbox.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.

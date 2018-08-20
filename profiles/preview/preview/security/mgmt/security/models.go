@@ -43,6 +43,13 @@ const (
 	NotLicensed AadConnectivityState = original.NotLicensed
 )
 
+type Accees = original.Accees
+
+const (
+	Allow Accees = original.Allow
+	Deny  Accees = original.Deny
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -90,6 +97,13 @@ const (
 	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
+type NorthSouthProtocol = original.NorthSouthProtocol
+
+const (
+	TCP NorthSouthProtocol = original.TCP
+	UDP NorthSouthProtocol = original.UDP
+)
+
 type PricingTier = original.PricingTier
 
 const (
@@ -100,9 +114,9 @@ const (
 type Protocol = original.Protocol
 
 const (
-	All Protocol = original.All
-	TCP Protocol = original.TCP
-	UDP Protocol = original.UDP
+	ProtocolAll Protocol = original.ProtocolAll
+	ProtocolTCP Protocol = original.ProtocolTCP
+	ProtocolUDP Protocol = original.ProtocolUDP
 )
 
 type Status = original.Status
@@ -185,6 +199,20 @@ type JitNetworkAccessRequestPort = original.JitNetworkAccessRequestPort
 type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVirtualMachine
 type Kind = original.Kind
 type Location = original.Location
+type NorthSouthHardenings = original.NorthSouthHardenings
+type NorthSouthHardeningsAlert = original.NorthSouthHardeningsAlert
+type NorthSouthHardeningsAlertList = original.NorthSouthHardeningsAlertList
+type NorthSouthHardeningsAlertProperties = original.NorthSouthHardeningsAlertProperties
+type NorthSouthHardeningsList = original.NorthSouthHardeningsList
+type NorthSouthHardeningsListIterator = original.NorthSouthHardeningsListIterator
+type NorthSouthHardeningsListPage = original.NorthSouthHardeningsListPage
+type NorthSouthHardeningsPolicy = original.NorthSouthHardeningsPolicy
+type NorthSouthHardeningsPolicyList = original.NorthSouthHardeningsPolicyList
+type NorthSouthHardeningsPolicyProperties = original.NorthSouthHardeningsPolicyProperties
+type NorthSouthHardeningsPolicyRule = original.NorthSouthHardeningsPolicyRule
+type NorthSouthHardeningsPolicySummary = original.NorthSouthHardeningsPolicySummary
+type NorthSouthHardeningsProperties = original.NorthSouthHardeningsProperties
+type NorthSouthHardeningsTrafficItem = original.NorthSouthHardeningsTrafficItem
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -196,6 +224,7 @@ type PricingListIterator = original.PricingListIterator
 type PricingListPage = original.PricingListPage
 type PricingProperties = original.PricingProperties
 type Resource = original.Resource
+type SubResource = original.SubResource
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
@@ -207,6 +236,9 @@ type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
 type WorkspaceSettingListPage = original.WorkspaceSettingListPage
 type WorkspaceSettingProperties = original.WorkspaceSettingProperties
+type NorthSouthHardeningsClient = original.NorthSouthHardeningsClient
+type NorthSouthHardeningsAlertsClient = original.NorthSouthHardeningsAlertsClient
+type NorthSouthHardeningsPoliciesClient = original.NorthSouthHardeningsPoliciesClient
 type OperationsClient = original.OperationsClient
 type PricingsClient = original.PricingsClient
 type TasksClient = original.TasksClient
@@ -269,6 +301,9 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLoc
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
 }
+func PossibleAcceesValues() []Accees {
+	return original.PossibleAcceesValues()
+}
 func PossibleAlertNotificationsValues() []AlertNotifications {
 	return original.PossibleAlertNotificationsValues()
 }
@@ -287,6 +322,9 @@ func PossibleFamilyValues() []Family {
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
 }
+func PossibleNorthSouthProtocolValues() []NorthSouthProtocol {
+	return original.PossibleNorthSouthProtocolValues()
+}
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
 }
@@ -298,6 +336,24 @@ func PossibleStatusValues() []Status {
 }
 func PossibleStatusReasonValues() []StatusReason {
 	return original.PossibleStatusReasonValues()
+}
+func NewNorthSouthHardeningsClient(subscriptionID string, ascLocation string) NorthSouthHardeningsClient {
+	return original.NewNorthSouthHardeningsClient(subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NorthSouthHardeningsClient {
+	return original.NewNorthSouthHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsAlertsClient(subscriptionID string, ascLocation string) NorthSouthHardeningsAlertsClient {
+	return original.NewNorthSouthHardeningsAlertsClient(subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NorthSouthHardeningsAlertsClient {
+	return original.NewNorthSouthHardeningsAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsPoliciesClient(subscriptionID string, ascLocation string) NorthSouthHardeningsPoliciesClient {
+	return original.NewNorthSouthHardeningsPoliciesClient(subscriptionID, ascLocation)
+}
+func NewNorthSouthHardeningsPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NorthSouthHardeningsPoliciesClient {
+	return original.NewNorthSouthHardeningsPoliciesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, ascLocation)

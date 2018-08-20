@@ -42,6 +42,21 @@ func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return []AadConnectivityState{Connected, Discovered, NotLicensed}
 }
 
+// Accees enumerates the values for accees.
+type Accees string
+
+const (
+	// Allow ...
+	Allow Accees = "Allow"
+	// Deny ...
+	Deny Accees = "Deny"
+)
+
+// PossibleAcceesValues returns an array of possible values for the Accees const type.
+func PossibleAcceesValues() []Accees {
+	return []Accees{Allow, Deny}
+}
+
 // AlertNotifications enumerates the values for alert notifications.
 type AlertNotifications string
 
@@ -142,6 +157,21 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// NorthSouthProtocol enumerates the values for north south protocol.
+type NorthSouthProtocol string
+
+const (
+	// TCP ...
+	TCP NorthSouthProtocol = "TCP"
+	// UDP ...
+	UDP NorthSouthProtocol = "UDP"
+)
+
+// PossibleNorthSouthProtocolValues returns an array of possible values for the NorthSouthProtocol const type.
+func PossibleNorthSouthProtocolValues() []NorthSouthProtocol {
+	return []NorthSouthProtocol{TCP, UDP}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -161,17 +191,17 @@ func PossiblePricingTierValues() []PricingTier {
 type Protocol string
 
 const (
-	// All ...
-	All Protocol = "*"
-	// TCP ...
-	TCP Protocol = "TCP"
-	// UDP ...
-	UDP Protocol = "UDP"
+	// ProtocolAll ...
+	ProtocolAll Protocol = "*"
+	// ProtocolTCP ...
+	ProtocolTCP Protocol = "TCP"
+	// ProtocolUDP ...
+	ProtocolUDP Protocol = "UDP"
 )
 
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
-	return []Protocol{All, TCP, UDP}
+	return []Protocol{ProtocolAll, ProtocolTCP, ProtocolUDP}
 }
 
 // Status enumerates the values for status.
@@ -2328,7 +2358,7 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 // JitNetworkAccessPortRule ...
 type JitNetworkAccessPortRule struct {
 	Number *int32 `json:"number,omitempty"`
-	// Protocol - Possible values include: 'TCP', 'UDP', 'All'
+	// Protocol - Possible values include: 'ProtocolTCP', 'ProtocolUDP', 'ProtocolAll'
 	Protocol Protocol `json:"protocol,omitempty"`
 	// AllowedSourceAddressPrefix - Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
 	AllowedSourceAddressPrefix *string `json:"allowedSourceAddressPrefix,omitempty"`
@@ -2381,6 +2411,392 @@ type Kind struct {
 type Location struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
+}
+
+// NorthSouthHardenings north-south hardening resource
+type NorthSouthHardenings struct {
+	autorest.Response `json:"-"`
+	// NorthSouthHardeningsProperties - Properties of the north-south hardening resource
+	*NorthSouthHardeningsProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NorthSouthHardenings.
+func (nsh NorthSouthHardenings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsh.NorthSouthHardeningsProperties != nil {
+		objectMap["properties"] = nsh.NorthSouthHardeningsProperties
+	}
+	if nsh.ID != nil {
+		objectMap["id"] = nsh.ID
+	}
+	if nsh.Name != nil {
+		objectMap["name"] = nsh.Name
+	}
+	if nsh.Type != nil {
+		objectMap["type"] = nsh.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NorthSouthHardenings struct.
+func (nsh *NorthSouthHardenings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var northSouthHardeningsProperties NorthSouthHardeningsProperties
+				err = json.Unmarshal(*v, &northSouthHardeningsProperties)
+				if err != nil {
+					return err
+				}
+				nsh.NorthSouthHardeningsProperties = &northSouthHardeningsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nsh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nsh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nsh.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NorthSouthHardeningsAlert a north-south hardening alert
+type NorthSouthHardeningsAlert struct {
+	autorest.Response `json:"-"`
+	// NorthSouthHardeningsAlertProperties - Properties of the north-south hardening alert
+	*NorthSouthHardeningsAlertProperties `json:"properties,omitempty"`
+	// ID - Sub resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the nested resource
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NorthSouthHardeningsAlert.
+func (nsha NorthSouthHardeningsAlert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsha.NorthSouthHardeningsAlertProperties != nil {
+		objectMap["properties"] = nsha.NorthSouthHardeningsAlertProperties
+	}
+	if nsha.ID != nil {
+		objectMap["id"] = nsha.ID
+	}
+	if nsha.Name != nil {
+		objectMap["name"] = nsha.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NorthSouthHardeningsAlert struct.
+func (nsha *NorthSouthHardeningsAlert) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var northSouthHardeningsAlertProperties NorthSouthHardeningsAlertProperties
+				err = json.Unmarshal(*v, &northSouthHardeningsAlertProperties)
+				if err != nil {
+					return err
+				}
+				nsha.NorthSouthHardeningsAlertProperties = &northSouthHardeningsAlertProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nsha.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nsha.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// NorthSouthHardeningsAlertList response for ListNorthSouthHardeningsAlert API service call. Retrieves all
+// north-south hardening alerts that belongs to a north-south hardening resource
+type NorthSouthHardeningsAlertList struct {
+	autorest.Response `json:"-"`
+	// Value - The north-south hardening alerts of a north-south hardening resource
+	Value *[]NorthSouthHardeningsAlert `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NorthSouthHardeningsAlertProperties a north-south hardening alert
+type NorthSouthHardeningsAlertProperties struct {
+	Date            *date.Time `json:"date,omitempty"`
+	DestinationPort *int32     `json:"destinationPort,omitempty"`
+	// Protocol - Possible values include: 'TCP', 'UDP'
+	Protocol NorthSouthProtocol                 `json:"protocol,omitempty"`
+	Traffic  *[]NorthSouthHardeningsTrafficItem `json:"traffic,omitempty"`
+}
+
+// NorthSouthHardeningsList response for ListNorthSouthHardenings API service call
+type NorthSouthHardeningsList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of north-south hardening resources
+	Value *[]NorthSouthHardenings `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NorthSouthHardeningsListIterator provides access to a complete listing of NorthSouthHardenings values.
+type NorthSouthHardeningsListIterator struct {
+	i    int
+	page NorthSouthHardeningsListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *NorthSouthHardeningsListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter NorthSouthHardeningsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter NorthSouthHardeningsListIterator) Response() NorthSouthHardeningsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter NorthSouthHardeningsListIterator) Value() NorthSouthHardenings {
+	if !iter.page.NotDone() {
+		return NorthSouthHardenings{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (nshl NorthSouthHardeningsList) IsEmpty() bool {
+	return nshl.Value == nil || len(*nshl.Value) == 0
+}
+
+// northSouthHardeningsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (nshl NorthSouthHardeningsList) northSouthHardeningsListPreparer() (*http.Request, error) {
+	if nshl.NextLink == nil || len(to.String(nshl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(nshl.NextLink)))
+}
+
+// NorthSouthHardeningsListPage contains a page of NorthSouthHardenings values.
+type NorthSouthHardeningsListPage struct {
+	fn   func(NorthSouthHardeningsList) (NorthSouthHardeningsList, error)
+	nshl NorthSouthHardeningsList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *NorthSouthHardeningsListPage) Next() error {
+	next, err := page.fn(page.nshl)
+	if err != nil {
+		return err
+	}
+	page.nshl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page NorthSouthHardeningsListPage) NotDone() bool {
+	return !page.nshl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page NorthSouthHardeningsListPage) Response() NorthSouthHardeningsList {
+	return page.nshl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page NorthSouthHardeningsListPage) Values() []NorthSouthHardenings {
+	if page.nshl.IsEmpty() {
+		return nil
+	}
+	return *page.nshl.Value
+}
+
+// NorthSouthHardeningsPolicy a north-south hardening policy
+type NorthSouthHardeningsPolicy struct {
+	autorest.Response `json:"-"`
+	// NorthSouthHardeningsPolicyProperties - Properties of the north-south hardening policy
+	*NorthSouthHardeningsPolicyProperties `json:"properties,omitempty"`
+	// ID - Sub resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the nested resource
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NorthSouthHardeningsPolicy.
+func (nshp NorthSouthHardeningsPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nshp.NorthSouthHardeningsPolicyProperties != nil {
+		objectMap["properties"] = nshp.NorthSouthHardeningsPolicyProperties
+	}
+	if nshp.ID != nil {
+		objectMap["id"] = nshp.ID
+	}
+	if nshp.Name != nil {
+		objectMap["name"] = nshp.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NorthSouthHardeningsPolicy struct.
+func (nshp *NorthSouthHardeningsPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var northSouthHardeningsPolicyProperties NorthSouthHardeningsPolicyProperties
+				err = json.Unmarshal(*v, &northSouthHardeningsPolicyProperties)
+				if err != nil {
+					return err
+				}
+				nshp.NorthSouthHardeningsPolicyProperties = &northSouthHardeningsPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nshp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nshp.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// NorthSouthHardeningsPolicyList response for ListNorthSouthHardeningsPolicy API service call. Retrieves all
+// north-south hardening policies that belongs to a north-south hardening resource
+type NorthSouthHardeningsPolicyList struct {
+	autorest.Response `json:"-"`
+	// Value - The north-south hardening policies of a north-south hardening resource
+	Value *[]NorthSouthHardeningsPolicy `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NorthSouthHardeningsPolicyProperties a north-south hardening policy
+type NorthSouthHardeningsPolicyProperties struct {
+	Active    *bool                             `json:"active,omitempty"`
+	CreatedOn *date.Time                        `json:"createdOn,omitempty"`
+	Rules     *[]NorthSouthHardeningsPolicyRule `json:"rules,omitempty"`
+}
+
+// NorthSouthHardeningsPolicyRule a north-south hardening policy rule
+type NorthSouthHardeningsPolicyRule struct {
+	Name *string `json:"name,omitempty"`
+	// Access - Possible values include: 'Allow', 'Deny'
+	Access          Accees                             `json:"access,omitempty"`
+	DestinationPort *int32                             `json:"destinationPort,omitempty"`
+	Protocols       *[]NorthSouthHardeningsTrafficItem `json:"protocols,omitempty"`
+	SourceAddresses *[]string                          `json:"sourceAddresses,omitempty"`
+}
+
+// NorthSouthHardeningsPolicySummary north-south hardening policy summary
+type NorthSouthHardeningsPolicySummary struct {
+	ID         *string  `json:"id,omitempty"`
+	Active     *bool    `json:"active,omitempty"`
+	RulesCount *float64 `json:"rulesCount,omitempty"`
+}
+
+// NorthSouthHardeningsProperties north-south hardening resource
+type NorthSouthHardeningsProperties struct {
+	ProtectedResourceID *string                              `json:"protectedResourceId,omitempty"`
+	Policies            *[]NorthSouthHardeningsPolicySummary `json:"policies,omitempty"`
+	AlertsCountHistory  *[]float64                           `json:"alertsCountHistory,omitempty"`
+}
+
+// NorthSouthHardeningsTrafficItem north-south hardening traffic attempt
+type NorthSouthHardeningsTrafficItem struct {
+	SourceAddress *string  `json:"sourceAddress,omitempty"`
+	Attempts      *float64 `json:"attempts,omitempty"`
 }
 
 // Operation possible operation in the REST API of Microsoft.Security
@@ -2704,6 +3120,14 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// SubResource a nested resource
+type SubResource struct {
+	// ID - Sub resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the nested resource
+	Name *string `json:"name,omitempty"`
 }
 
 // Task security task that we recommend to do in order to strengthen security

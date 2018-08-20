@@ -1037,29 +1037,29 @@ func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (
 	return
 }
 
-// Resetvpnclientsharedkey resets the VPN client shared key of the virtual network gateway in the specified resource
+// ResetVpnClientSharedKey resets the VPN client shared key of the virtual network gateway in the specified resource
 // group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // virtualNetworkGatewayName - the name of the virtual network gateway.
-func (client VirtualNetworkGatewaysClient) Resetvpnclientsharedkey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGatewaysResetvpnclientsharedkeyFuture, err error) {
-	req, err := client.ResetvpnclientsharedkeyPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
+func (client VirtualNetworkGatewaysClient) ResetVpnClientSharedKey(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGatewaysResetVpnClientSharedKeyFuture, err error) {
+	req, err := client.ResetVpnClientSharedKeyPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Resetvpnclientsharedkey", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "ResetVpnClientSharedKey", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.ResetvpnclientsharedkeySender(req)
+	result, err = client.ResetVpnClientSharedKeySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Resetvpnclientsharedkey", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "ResetVpnClientSharedKey", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// ResetvpnclientsharedkeyPreparer prepares the Resetvpnclientsharedkey request.
-func (client VirtualNetworkGatewaysClient) ResetvpnclientsharedkeyPreparer(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (*http.Request, error) {
+// ResetVpnClientSharedKeyPreparer prepares the ResetVpnClientSharedKey request.
+func (client VirtualNetworkGatewaysClient) ResetVpnClientSharedKeyPreparer(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
@@ -1079,9 +1079,9 @@ func (client VirtualNetworkGatewaysClient) ResetvpnclientsharedkeyPreparer(ctx c
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ResetvpnclientsharedkeySender sends the Resetvpnclientsharedkey request. The method will close the
+// ResetVpnClientSharedKeySender sends the ResetVpnClientSharedKey request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualNetworkGatewaysClient) ResetvpnclientsharedkeySender(req *http.Request) (future VirtualNetworkGatewaysResetvpnclientsharedkeyFuture, err error) {
+func (client VirtualNetworkGatewaysClient) ResetVpnClientSharedKeySender(req *http.Request) (future VirtualNetworkGatewaysResetVpnClientSharedKeyFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -1096,9 +1096,9 @@ func (client VirtualNetworkGatewaysClient) ResetvpnclientsharedkeySender(req *ht
 	return
 }
 
-// ResetvpnclientsharedkeyResponder handles the response to the Resetvpnclientsharedkey request. The method always
+// ResetVpnClientSharedKeyResponder handles the response to the ResetVpnClientSharedKey request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewaysClient) ResetvpnclientsharedkeyResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualNetworkGatewaysClient) ResetVpnClientSharedKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

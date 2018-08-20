@@ -4975,6 +4975,8 @@ func (br *BackupRequest) UnmarshalJSON(body []byte) error {
 
 // BackupRequestProperties backupRequest resource specific properties
 type BackupRequestProperties struct {
+	// BackupName - Name of the backup.
+	BackupName *string `json:"backupName,omitempty"`
 	// Enabled - True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// StorageAccountURL - SAS URL to the container.

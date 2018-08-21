@@ -1,7 +1,7 @@
-// Package authoring implements the Azure ARM Authoring service API version 2.0.
+// Package batch implements the Azure ARM Batch service API version 2018-08-01.7.0.
 //
-//
-package authoring
+// A client for issuing REST requests to the Azure Batch service.
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,21 +24,26 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BaseClient is the base client for Authoring.
+const (
+	// DefaultBaseURI is the default URI used for the service Batch
+	DefaultBaseURI = "https://batch.core.windows.net"
+)
+
+// BaseClient is the base client for Batch.
 type BaseClient struct {
 	autorest.Client
-	Endpoint string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string) BaseClient {
-	return NewWithoutDefaults(endpoint)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(endpoint string) BaseClient {
+// NewWithBaseURI creates an instance of the BaseClient client.
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:   autorest.NewClientWithUserAgent(UserAgent()),
-		Endpoint: endpoint,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }

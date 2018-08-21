@@ -27,24 +27,6 @@ type ListManagementImageClient = original.ListManagementImageClient
 type ListManagementImageListsClient = original.ListManagementImageListsClient
 type ListManagementTermClient = original.ListManagementTermClient
 type ListManagementTermListsClient = original.ListManagementTermListsClient
-type AzureRegionBaseURL = original.AzureRegionBaseURL
-
-const (
-	Australiaeastapicognitivemicrosoftcom  AzureRegionBaseURL = original.Australiaeastapicognitivemicrosoftcom
-	Brazilsouthapicognitivemicrosoftcom    AzureRegionBaseURL = original.Brazilsouthapicognitivemicrosoftcom
-	ContentmoderatortestazureApinet        AzureRegionBaseURL = original.ContentmoderatortestazureApinet
-	Eastasiaapicognitivemicrosoftcom       AzureRegionBaseURL = original.Eastasiaapicognitivemicrosoftcom
-	Eastus2apicognitivemicrosoftcom        AzureRegionBaseURL = original.Eastus2apicognitivemicrosoftcom
-	Eastusapicognitivemicrosoftcom         AzureRegionBaseURL = original.Eastusapicognitivemicrosoftcom
-	Northeuropeapicognitivemicrosoftcom    AzureRegionBaseURL = original.Northeuropeapicognitivemicrosoftcom
-	Southcentralusapicognitivemicrosoftcom AzureRegionBaseURL = original.Southcentralusapicognitivemicrosoftcom
-	Southeastasiaapicognitivemicrosoftcom  AzureRegionBaseURL = original.Southeastasiaapicognitivemicrosoftcom
-	Westcentralusapicognitivemicrosoftcom  AzureRegionBaseURL = original.Westcentralusapicognitivemicrosoftcom
-	Westeuropeapicognitivemicrosoftcom     AzureRegionBaseURL = original.Westeuropeapicognitivemicrosoftcom
-	Westus2apicognitivemicrosoftcom        AzureRegionBaseURL = original.Westus2apicognitivemicrosoftcom
-	Westusapicognitivemicrosoftcom         AzureRegionBaseURL = original.Westusapicognitivemicrosoftcom
-)
-
 type StatusEnum = original.StatusEnum
 
 const (
@@ -129,29 +111,26 @@ type VideoFrameBodyItemReviewerResultTagsItem = original.VideoFrameBodyItemRevie
 type ReviewsClient = original.ReviewsClient
 type TextModerationClient = original.TextModerationClient
 
-func New(baseURL AzureRegionBaseURL) BaseClient {
-	return original.New(baseURL)
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
-func NewWithoutDefaults(baseURL AzureRegionBaseURL) BaseClient {
-	return original.NewWithoutDefaults(baseURL)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
-func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient {
-	return original.NewImageModerationClient(baseURL)
+func NewImageModerationClient(endpoint string) ImageModerationClient {
+	return original.NewImageModerationClient(endpoint)
 }
-func NewListManagementImageClient(baseURL AzureRegionBaseURL) ListManagementImageClient {
-	return original.NewListManagementImageClient(baseURL)
+func NewListManagementImageClient(endpoint string) ListManagementImageClient {
+	return original.NewListManagementImageClient(endpoint)
 }
-func NewListManagementImageListsClient(baseURL AzureRegionBaseURL) ListManagementImageListsClient {
-	return original.NewListManagementImageListsClient(baseURL)
+func NewListManagementImageListsClient(endpoint string) ListManagementImageListsClient {
+	return original.NewListManagementImageListsClient(endpoint)
 }
-func NewListManagementTermClient(baseURL AzureRegionBaseURL) ListManagementTermClient {
-	return original.NewListManagementTermClient(baseURL)
+func NewListManagementTermClient(endpoint string) ListManagementTermClient {
+	return original.NewListManagementTermClient(endpoint)
 }
-func NewListManagementTermListsClient(baseURL AzureRegionBaseURL) ListManagementTermListsClient {
-	return original.NewListManagementTermListsClient(baseURL)
-}
-func PossibleAzureRegionBaseURLValues() []AzureRegionBaseURL {
-	return original.PossibleAzureRegionBaseURLValues()
+func NewListManagementTermListsClient(endpoint string) ListManagementTermListsClient {
+	return original.NewListManagementTermListsClient(endpoint)
 }
 func PossibleStatusEnumValues() []StatusEnum {
 	return original.PossibleStatusEnumValues()
@@ -159,11 +138,11 @@ func PossibleStatusEnumValues() []StatusEnum {
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
-func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
-	return original.NewReviewsClient(baseURL)
+func NewReviewsClient(endpoint string) ReviewsClient {
+	return original.NewReviewsClient(endpoint)
 }
-func NewTextModerationClient(baseURL AzureRegionBaseURL) TextModerationClient {
-	return original.NewTextModerationClient(baseURL)
+func NewTextModerationClient(endpoint string) TextModerationClient {
+	return original.NewTextModerationClient(endpoint)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

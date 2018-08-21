@@ -275,8 +275,9 @@ const (
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
 const (
-	Fail    IntegrationRuntimeUpdateResult = original.Fail
-	Succeed IntegrationRuntimeUpdateResult = original.Succeed
+	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
+	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
+	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
 )
 
 type JSONFormatFilePattern = original.JSONFormatFilePattern

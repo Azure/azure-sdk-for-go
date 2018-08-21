@@ -2589,11 +2589,14 @@ type NorthSouthHardeningsAlertList struct {
 
 // NorthSouthHardeningsAlertProperties a north-south hardening alert
 type NorthSouthHardeningsAlertProperties struct {
-	Date            *date.Time `json:"date,omitempty"`
-	DestinationPort *int32     `json:"destinationPort,omitempty"`
-	// Protocol - Possible values include: 'TCP', 'UDP'
-	Protocol NorthSouthProtocol                 `json:"protocol,omitempty"`
-	Traffic  *[]NorthSouthHardeningsTrafficItem `json:"traffic,omitempty"`
+	// Date - The date of the alert
+	Date *date.Time `json:"date,omitempty"`
+	// DestinationPort - The alert destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocol - The alert protocol. Possible values include: 'TCP', 'UDP'
+	Protocol NorthSouthProtocol `json:"protocol,omitempty"`
+	// Traffic - The list of traffics that generated the alert
+	Traffic *[]NorthSouthHardeningsTrafficItem `json:"traffic,omitempty"`
 }
 
 // NorthSouthHardeningsList response for ListNorthSouthHardenings API service call
@@ -2792,39 +2795,54 @@ type NorthSouthHardeningsPolicyList struct {
 
 // NorthSouthHardeningsPolicyProperties a north-south hardening policy
 type NorthSouthHardeningsPolicyProperties struct {
-	Active    *bool                             `json:"active,omitempty"`
-	CreatedOn *date.Time                        `json:"createdOn,omitempty"`
-	Rules     *[]NorthSouthHardeningsPolicyRule `json:"rules,omitempty"`
+	// Active - A policy activation state
+	Active *bool `json:"active,omitempty"`
+	// CreatedOn - The date in which the policy created
+	CreatedOn *date.Time `json:"createdOn,omitempty"`
+	// Rules - A list of policy rules
+	Rules *[]NorthSouthHardeningsPolicyRule `json:"rules,omitempty"`
 }
 
 // NorthSouthHardeningsPolicyRule a north-south hardening policy rule
 type NorthSouthHardeningsPolicyRule struct {
+	// Name - A policy rule name
 	Name *string `json:"name,omitempty"`
-	// Access - Possible values include: 'Allow', 'Deny'
-	Access          Accees                             `json:"access,omitempty"`
-	DestinationPort *int32                             `json:"destinationPort,omitempty"`
-	Protocols       *[]NorthSouthHardeningsTrafficItem `json:"protocols,omitempty"`
-	SourceAddresses *[]string                          `json:"sourceAddresses,omitempty"`
+	// Access - A policy rule access. Possible values include: 'Allow', 'Deny'
+	Access Accees `json:"access,omitempty"`
+	// DestinationPort - A policy rule detination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	// Protocols - A policy rule protocol
+	Protocols *[]NorthSouthHardeningsTrafficItem `json:"protocols,omitempty"`
+	// SourceAddresses - A policy rule source address
+	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
 }
 
 // NorthSouthHardeningsPolicySummary north-south hardening policy summary
 type NorthSouthHardeningsPolicySummary struct {
-	ID         *string  `json:"id,omitempty"`
-	Active     *bool    `json:"active,omitempty"`
+	// ID - The north-south policy id
+	ID *string `json:"id,omitempty"`
+	// Active - The activation satte of the north-south policy
+	Active *bool `json:"active,omitempty"`
+	// RulesCount - The amount of policy rules
 	RulesCount *float64 `json:"rulesCount,omitempty"`
 }
 
 // NorthSouthHardeningsProperties north-south hardening resource
 type NorthSouthHardeningsProperties struct {
-	ProtectedResourceID *string                              `json:"protectedResourceId,omitempty"`
-	Policies            *[]NorthSouthHardeningsPolicySummary `json:"policies,omitempty"`
-	AlertsCountHistory  *[]float64                           `json:"alertsCountHistory,omitempty"`
+	// ProtectedResourceID - The north south protected resource id
+	ProtectedResourceID *string `json:"protectedResourceId,omitempty"`
+	// Policies - A list of policies summaries for the north south resource
+	Policies *[]NorthSouthHardeningsPolicySummary `json:"policies,omitempty"`
+	// AlertsCountHistory - A list of alerts count for the north south resource
+	AlertsCountHistory *[]float64 `json:"alertsCountHistory,omitempty"`
 }
 
 // NorthSouthHardeningsTrafficItem north-south hardening traffic attempt
 type NorthSouthHardeningsTrafficItem struct {
-	SourceAddress *string  `json:"sourceAddress,omitempty"`
-	Attempts      *float64 `json:"attempts,omitempty"`
+	// SourceAddress - The traffic source address
+	SourceAddress *string `json:"sourceAddress,omitempty"`
+	// Attempts - The traffic attempts count
+	Attempts *float64 `json:"attempts,omitempty"`
 }
 
 // Operation possible operation in the REST API of Microsoft.Security

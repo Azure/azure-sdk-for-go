@@ -224,7 +224,6 @@ type PricingListIterator = original.PricingListIterator
 type PricingListPage = original.PricingListPage
 type PricingProperties = original.PricingProperties
 type Resource = original.Resource
-type SubResource = original.SubResource
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator

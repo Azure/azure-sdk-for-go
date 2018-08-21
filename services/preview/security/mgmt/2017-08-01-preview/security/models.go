@@ -2500,10 +2500,10 @@ type NorthSouthHardeningsAlert struct {
 	autorest.Response `json:"-"`
 	// NorthSouthHardeningsAlertProperties - Properties of the north-south hardening alert
 	*NorthSouthHardeningsAlertProperties `json:"properties,omitempty"`
+	// Name - The name of the north-south hardening alert
+	Name *string `json:"name,omitempty"`
 	// ID - Sub resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the nested resource
-	Name *string `json:"name,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NorthSouthHardeningsAlert.
@@ -2512,11 +2512,11 @@ func (nsha NorthSouthHardeningsAlert) MarshalJSON() ([]byte, error) {
 	if nsha.NorthSouthHardeningsAlertProperties != nil {
 		objectMap["properties"] = nsha.NorthSouthHardeningsAlertProperties
 	}
-	if nsha.ID != nil {
-		objectMap["id"] = nsha.ID
-	}
 	if nsha.Name != nil {
 		objectMap["name"] = nsha.Name
+	}
+	if nsha.ID != nil {
+		objectMap["id"] = nsha.ID
 	}
 	return json.Marshal(objectMap)
 }
@@ -2539,15 +2539,6 @@ func (nsha *NorthSouthHardeningsAlert) UnmarshalJSON(body []byte) error {
 				}
 				nsha.NorthSouthHardeningsAlertProperties = &northSouthHardeningsAlertProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				nsha.ID = &ID
-			}
 		case "name":
 			if v != nil {
 				var name string
@@ -2556,6 +2547,15 @@ func (nsha *NorthSouthHardeningsAlert) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				nsha.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nsha.ID = &ID
 			}
 		}
 	}
@@ -2689,10 +2689,10 @@ type NorthSouthHardeningsPolicy struct {
 	autorest.Response `json:"-"`
 	// NorthSouthHardeningsPolicyProperties - Properties of the north-south hardening policy
 	*NorthSouthHardeningsPolicyProperties `json:"properties,omitempty"`
+	// Name - The name of the north-south hardening policy
+	Name *string `json:"name,omitempty"`
 	// ID - Sub resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the nested resource
-	Name *string `json:"name,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NorthSouthHardeningsPolicy.
@@ -2701,11 +2701,11 @@ func (nshp NorthSouthHardeningsPolicy) MarshalJSON() ([]byte, error) {
 	if nshp.NorthSouthHardeningsPolicyProperties != nil {
 		objectMap["properties"] = nshp.NorthSouthHardeningsPolicyProperties
 	}
-	if nshp.ID != nil {
-		objectMap["id"] = nshp.ID
-	}
 	if nshp.Name != nil {
 		objectMap["name"] = nshp.Name
+	}
+	if nshp.ID != nil {
+		objectMap["id"] = nshp.ID
 	}
 	return json.Marshal(objectMap)
 }
@@ -2728,15 +2728,6 @@ func (nshp *NorthSouthHardeningsPolicy) UnmarshalJSON(body []byte) error {
 				}
 				nshp.NorthSouthHardeningsPolicyProperties = &northSouthHardeningsPolicyProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				nshp.ID = &ID
-			}
 		case "name":
 			if v != nil {
 				var name string
@@ -2745,6 +2736,15 @@ func (nshp *NorthSouthHardeningsPolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				nshp.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nshp.ID = &ID
 			}
 		}
 	}
@@ -3126,8 +3126,6 @@ type Resource struct {
 type SubResource struct {
 	// ID - Sub resource ID
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the nested resource
-	Name *string `json:"name,omitempty"`
 }
 
 // Task security task that we recommend to do in order to strengthen security

@@ -372,7 +372,7 @@ func (client ReportClient) ExecutePreparer(ctx context.Context, reportName strin
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/reports/{reportName}/run", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
@@ -438,7 +438,7 @@ func (client ReportClient) ExecuteByResourceGroupNamePreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CostManagement/reports/{reportName}/run", pathParameters),
 		autorest.WithQueryParameters(queryParameters))

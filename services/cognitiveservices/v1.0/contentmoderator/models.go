@@ -74,7 +74,7 @@ type Body struct {
 	// Description - Description of the list.
 	Description *string `json:"Description,omitempty"`
 	// Metadata - Metadata of the list.
-	Metadata map[string]interface{} `json:"Metadata"`
+	Metadata map[string]*string `json:"Metadata"`
 }
 
 // MarshalJSON is the custom marshaler for Body.
@@ -383,7 +383,7 @@ type ImageList struct {
 	// Description - Description for image list.
 	Description *string `json:"Description,omitempty"`
 	// Metadata - Image List Metadata.
-	Metadata map[string]interface{} `json:"Metadata"`
+	Metadata map[string]*string `json:"Metadata"`
 }
 
 // MarshalJSON is the custom marshaler for ImageList.
@@ -559,7 +559,7 @@ type RefreshIndex struct {
 	// IsUpdateSuccess - Update success status.
 	IsUpdateSuccess *bool `json:"IsUpdateSuccess,omitempty"`
 	// AdvancedInfo - Advanced info list.
-	AdvancedInfo *[]map[string]interface{} `json:"AdvancedInfo,omitempty"`
+	AdvancedInfo *[]map[string]*string `json:"AdvancedInfo,omitempty"`
 	// Status - Refresh index status.
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - Tracking Id.
@@ -663,7 +663,7 @@ type TermList struct {
 	// Description - Description for term list.
 	Description *string `json:"Description,omitempty"`
 	// Metadata - Term list metadata.
-	Metadata map[string]interface{} `json:"Metadata"`
+	Metadata map[string]*string `json:"Metadata"`
 }
 
 // MarshalJSON is the custom marshaler for TermList.

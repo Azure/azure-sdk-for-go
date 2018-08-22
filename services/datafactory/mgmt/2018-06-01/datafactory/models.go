@@ -25544,11 +25544,11 @@ func (ctd CouchbaseTableDataset) AsBasicDataset() (BasicDataset, bool) {
 type CreateLinkedIntegrationRuntimeRequest struct {
 	// Name - The name of the linked integration runtime.
 	Name *string `json:"name,omitempty"`
-	// SubscriptionID - The subscription ID for which the linked integration runtime belong to.
+	// SubscriptionID - The ID of the subscription that the linked integration runtime belongs to.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// DataFactoryName - The name of the data factory for which the linked integration runtime belong to.
+	// DataFactoryName - The name of the data factory that the linked integration runtime belongs to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// DataFactoryLocation - The location of the data factory for which the linked integration runtime belong to.
+	// DataFactoryLocation - The location of the data factory that the linked integration runtime belongs to.
 	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
 }
 

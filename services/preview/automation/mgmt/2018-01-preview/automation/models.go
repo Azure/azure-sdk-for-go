@@ -576,21 +576,6 @@ func PossibleSourceTypeValues() []SourceType {
 	return []SourceType{GitHub, VsoGit, VsoTfvc}
 }
 
-// StartType enumerates the values for start type.
-type StartType string
-
-const (
-	// AutoSync ...
-	AutoSync StartType = "AutoSync"
-	// ManualSync ...
-	ManualSync StartType = "ManualSync"
-)
-
-// PossibleStartTypeValues returns an array of possible values for the StartType const type.
-func PossibleStartTypeValues() []StartType {
-	return []StartType{AutoSync, ManualSync}
-}
-
 // StreamType enumerates the values for stream type.
 type StreamType string
 
@@ -604,6 +589,21 @@ const (
 // PossibleStreamTypeValues returns an array of possible values for the StreamType const type.
 func PossibleStreamTypeValues() []StreamType {
 	return []StreamType{StreamTypeError, StreamTypeOutput}
+}
+
+// SyncType enumerates the values for sync type.
+type SyncType string
+
+const (
+	// FullSync ...
+	FullSync SyncType = "FullSync"
+	// PartialSync ...
+	PartialSync SyncType = "PartialSync"
+)
+
+// PossibleSyncTypeValues returns an array of possible values for the SyncType const type.
+func PossibleSyncTypeValues() []SyncType {
+	return []SyncType{FullSync, PartialSync}
 }
 
 // TokenType enumerates the values for token type.
@@ -7952,8 +7952,8 @@ type SourceControlSyncJobByIDProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// StartType - The type of start for the sync job. Possible values include: 'AutoSync', 'ManualSync'
-	StartType StartType `json:"startType,omitempty"`
+	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	SyncType SyncType `json:"syncType,omitempty"`
 	// Exception - The exceptions that occured while running the sync job.
 	Exception *string `json:"exception,omitempty"`
 }
@@ -8117,8 +8117,8 @@ type SourceControlSyncJobProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// StartType - The type of start for the sync job. Possible values include: 'AutoSync', 'ManualSync'
-	StartType StartType `json:"startType,omitempty"`
+	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	SyncType SyncType `json:"syncType,omitempty"`
 }
 
 // SourceControlSyncJobStream definition of the source control sync job stream.
@@ -8230,8 +8230,8 @@ func (scsjsbi *SourceControlSyncJobStreamByID) UnmarshalJSON(body []byte) error 
 
 // SourceControlSyncJobStreamByIDProperties definition of source control sync job stream by id properties.
 type SourceControlSyncJobStreamByIDProperties struct {
-	// SyncJobStreamID - The sync job stream id.
-	SyncJobStreamID *string `json:"syncJobStreamId,omitempty"`
+	// SourceControlSyncJobStreamID - The sync job stream id.
+	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
 	// Summary - The summary of the sync job stream.
 	Summary *string `json:"summary,omitempty"`
 	// Time - The time of the sync job stream.
@@ -8247,8 +8247,8 @@ type SourceControlSyncJobStreamByIDProperties struct {
 // MarshalJSON is the custom marshaler for SourceControlSyncJobStreamByIDProperties.
 func (scsjsbip SourceControlSyncJobStreamByIDProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scsjsbip.SyncJobStreamID != nil {
-		objectMap["syncJobStreamId"] = scsjsbip.SyncJobStreamID
+	if scsjsbip.SourceControlSyncJobStreamID != nil {
+		objectMap["sourceControlSyncJobStreamId"] = scsjsbip.SourceControlSyncJobStreamID
 	}
 	if scsjsbip.Summary != nil {
 		objectMap["summary"] = scsjsbip.Summary
@@ -8270,8 +8270,8 @@ func (scsjsbip SourceControlSyncJobStreamByIDProperties) MarshalJSON() ([]byte, 
 
 // SourceControlSyncJobStreamProperties definition of source control sync job stream properties.
 type SourceControlSyncJobStreamProperties struct {
-	// SyncJobStreamID - The sync job stream id.
-	SyncJobStreamID *string `json:"syncJobStreamId,omitempty"`
+	// SourceControlSyncJobStreamID - The sync job stream id.
+	SourceControlSyncJobStreamID *string `json:"sourceControlSyncJobStreamId,omitempty"`
 	// Summary - The summary of the sync job stream.
 	Summary *string `json:"summary,omitempty"`
 	// Time - The time of the sync job stream.

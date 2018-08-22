@@ -908,6 +908,8 @@ type PatchProperties struct {
 	AppliedScopes    *[]string        `json:"appliedScopes,omitempty"`
 	// InstanceFlexibility - Possible values include: 'On', 'Off', 'NotSupported'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
+	// Name - Name of the Reservation
+	Name *string `json:"name,omitempty"`
 }
 
 // Properties ...

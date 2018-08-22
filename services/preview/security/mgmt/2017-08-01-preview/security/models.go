@@ -2812,7 +2812,7 @@ type NorthSouthHardeningsPolicyRule struct {
 	// DestinationPort - A policy rule detination port
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// Protocols - A policy rule protocol
-	Protocols *[]NorthSouthHardeningsTrafficItem `json:"protocols,omitempty"`
+	Protocols *[]NorthSouthProtocol `json:"protocols,omitempty"`
 	// SourceAddresses - A policy rule source address
 	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
 }

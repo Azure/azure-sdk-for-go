@@ -121,6 +121,88 @@ func (client NorthSouthHardeningsPoliciesClient) ActivateResponder(resp *http.Re
 	return
 }
 
+// CreateOrUpdate put a north-south hardening policy
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// northSouthResourceName - name of a north-south resource.
+// northSouthPolicyName - name of a north-south policy.
+func (client NorthSouthHardeningsPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, northSouthResourceName string, northSouthPolicyName string, body NorthSouthHardeningsPolicy) (result NorthSouthHardeningsPolicy, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.NorthSouthHardeningsPoliciesClient", "CreateOrUpdate", err.Error())
+	}
+
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, northSouthResourceName, northSouthPolicyName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client NorthSouthHardeningsPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, northSouthResourceName string, northSouthPolicyName string, body NorthSouthHardeningsPolicy) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"northSouthPolicyName":   autorest.Encode("path", northSouthPolicyName),
+		"northSouthResourceName": autorest.Encode("path", northSouthResourceName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/northSouthHardenings/{northSouthResourceName}/policies/{northSouthPolicyName}", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client NorthSouthHardeningsPoliciesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client NorthSouthHardeningsPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result NorthSouthHardeningsPolicy, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Delete delete a north-south hardening policy
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
@@ -348,88 +430,6 @@ func (client NorthSouthHardeningsPoliciesClient) ListSender(req *http.Request) (
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client NorthSouthHardeningsPoliciesClient) ListResponder(resp *http.Response) (result NorthSouthHardeningsPolicyList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Put put a north-south hardening policy
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// northSouthResourceName - name of a north-south resource.
-// northSouthPolicyName - name of a north-south policy.
-func (client NorthSouthHardeningsPoliciesClient) Put(ctx context.Context, resourceGroupName string, northSouthResourceName string, northSouthPolicyName string, body NorthSouthHardeningsPolicy) (result NorthSouthHardeningsPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.NorthSouthHardeningsPoliciesClient", "Put", err.Error())
-	}
-
-	req, err := client.PutPreparer(ctx, resourceGroupName, northSouthResourceName, northSouthPolicyName, body)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "Put", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.PutSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "Put", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.PutResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsPoliciesClient", "Put", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// PutPreparer prepares the Put request.
-func (client NorthSouthHardeningsPoliciesClient) PutPreparer(ctx context.Context, resourceGroupName string, northSouthResourceName string, northSouthPolicyName string, body NorthSouthHardeningsPolicy) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"northSouthPolicyName":   autorest.Encode("path", northSouthPolicyName),
-		"northSouthResourceName": autorest.Encode("path", northSouthResourceName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/northSouthHardenings/{northSouthResourceName}/policies/{northSouthPolicyName}", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// PutSender sends the Put request. The method will close the
-// http.Response Body if it receives an error.
-func (client NorthSouthHardeningsPoliciesClient) PutSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// PutResponder handles the response to the Put request. The method always
-// closes the http.Response Body.
-func (client NorthSouthHardeningsPoliciesClient) PutResponder(resp *http.Response) (result NorthSouthHardeningsPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

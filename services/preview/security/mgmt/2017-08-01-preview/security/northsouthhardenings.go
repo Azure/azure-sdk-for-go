@@ -118,23 +118,16 @@ func (client NorthSouthHardeningsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List gets a list of north-south hardening resources for the resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-func (client NorthSouthHardeningsClient) List(ctx context.Context, resourceGroupName string) (result NorthSouthHardeningsListPage, err error) {
+// List gets a list of north-south hardening resources for the subscription.
+func (client NorthSouthHardeningsClient) List(ctx context.Context) (result NorthSouthHardeningsListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("security.NorthSouthHardeningsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "List", nil, "Failure preparing request")
 		return
@@ -156,10 +149,9 @@ func (client NorthSouthHardeningsClient) List(ctx context.Context, resourceGroup
 }
 
 // ListPreparer prepares the List request.
-func (client NorthSouthHardeningsClient) ListPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client NorthSouthHardeningsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-06-01-preview"
@@ -170,7 +162,7 @@ func (client NorthSouthHardeningsClient) ListPreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/northSouthHardenings", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/northSouthHardenings", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -217,45 +209,53 @@ func (client NorthSouthHardeningsClient) listNextResults(lastResults NorthSouthH
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NorthSouthHardeningsClient) ListComplete(ctx context.Context, resourceGroupName string) (result NorthSouthHardeningsListIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName)
+func (client NorthSouthHardeningsClient) ListComplete(ctx context.Context) (result NorthSouthHardeningsListIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }
 
-// ListAll gets a list of north-south hardening resources for the subscription.
-func (client NorthSouthHardeningsClient) ListAll(ctx context.Context) (result NorthSouthHardeningsListPage, err error) {
+// ListByResourceGroup gets a list of north-south hardening resources for the resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+func (client NorthSouthHardeningsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result NorthSouthHardeningsListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.NorthSouthHardeningsClient", "ListAll", err.Error())
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.NorthSouthHardeningsClient", "ListByResourceGroup", err.Error())
 	}
 
-	result.fn = client.listAllNextResults
-	req, err := client.ListAllPreparer(ctx)
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListAll", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListAllSender(req)
+	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.nshl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListAll", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.nshl, err = client.ListAllResponder(resp)
+	result.nshl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListAllPreparer prepares the ListAll request.
-func (client NorthSouthHardeningsClient) ListAllPreparer(ctx context.Context) (*http.Request, error) {
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client NorthSouthHardeningsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-06-01-preview"
@@ -266,21 +266,21 @@ func (client NorthSouthHardeningsClient) ListAllPreparer(ctx context.Context) (*
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/northSouthHardenings", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/northSouthHardenings", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListAllSender sends the ListAll request. The method will close the
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client NorthSouthHardeningsClient) ListAllSender(req *http.Request) (*http.Response, error) {
+func (client NorthSouthHardeningsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListAllResponder handles the response to the ListAll request. The method always
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client NorthSouthHardeningsClient) ListAllResponder(resp *http.Response) (result NorthSouthHardeningsList, err error) {
+func (client NorthSouthHardeningsClient) ListByResourceGroupResponder(resp *http.Response) (result NorthSouthHardeningsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -291,29 +291,29 @@ func (client NorthSouthHardeningsClient) ListAllResponder(resp *http.Response) (
 	return
 }
 
-// listAllNextResults retrieves the next set of results, if any.
-func (client NorthSouthHardeningsClient) listAllNextResults(lastResults NorthSouthHardeningsList) (result NorthSouthHardeningsList, err error) {
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client NorthSouthHardeningsClient) listByResourceGroupNextResults(lastResults NorthSouthHardeningsList) (result NorthSouthHardeningsList, err error) {
 	req, err := lastResults.northSouthHardeningsListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listAllNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListAllSender(req)
+	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listAllNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListAllResponder(resp)
+	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listAllNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "security.NorthSouthHardeningsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NorthSouthHardeningsClient) ListAllComplete(ctx context.Context) (result NorthSouthHardeningsListIterator, err error) {
-	result.page, err = client.ListAll(ctx)
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client NorthSouthHardeningsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result NorthSouthHardeningsListIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }

@@ -1,4 +1,4 @@
-package costmanagement
+package policy
 
 import "github.com/Azure/azure-sdk-for-go/version"
 
@@ -21,7 +21,7 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + version.Number + " costmanagement/2018-09-01-preview"
+	return "Azure-SDK-For-Go/" + version.Number + " policy/2018-05-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

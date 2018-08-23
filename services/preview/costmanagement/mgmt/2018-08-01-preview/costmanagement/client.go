@@ -1,4 +1,4 @@
-// Package costmanagement implements the Azure ARM Costmanagement service API version 2018-09-01-preview.
+// Package costmanagement implements the Azure ARM Costmanagement service API version 2018-08-01-preview.
 //
 //
 package costmanagement
@@ -119,7 +119,7 @@ func (client BaseClient) QueryBillingAccountPreparer(ctx context.Context, billin
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -220,7 +220,7 @@ func (client BaseClient) QueryResourceGroupPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -319,7 +319,7 @@ func (client BaseClient) QuerySubscriptionPreparer(ctx context.Context, paramete
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

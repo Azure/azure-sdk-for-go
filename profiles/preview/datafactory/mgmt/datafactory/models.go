@@ -275,8 +275,9 @@ const (
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
 const (
-	Fail    IntegrationRuntimeUpdateResult = original.Fail
-	Succeed IntegrationRuntimeUpdateResult = original.Succeed
+	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
+	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
+	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
 )
 
 type JSONFormatFilePattern = original.JSONFormatFilePattern
@@ -768,6 +769,7 @@ const (
 	TypeAmazonRedshift           TypeBasicLinkedService = original.TypeAmazonRedshift
 	TypeAmazonS3                 TypeBasicLinkedService = original.TypeAmazonS3
 	TypeAzureBatch               TypeBasicLinkedService = original.TypeAzureBatch
+	TypeAzureBlobStorage         TypeBasicLinkedService = original.TypeAzureBlobStorage
 	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
@@ -779,6 +781,7 @@ const (
 	TypeAzureSQLDatabase         TypeBasicLinkedService = original.TypeAzureSQLDatabase
 	TypeAzureSQLDW               TypeBasicLinkedService = original.TypeAzureSQLDW
 	TypeAzureStorage             TypeBasicLinkedService = original.TypeAzureStorage
+	TypeAzureTableStorage        TypeBasicLinkedService = original.TypeAzureTableStorage
 	TypeCassandra                TypeBasicLinkedService = original.TypeCassandra
 	TypeConcur                   TypeBasicLinkedService = original.TypeConcur
 	TypeCosmosDb                 TypeBasicLinkedService = original.TypeCosmosDb
@@ -879,6 +882,8 @@ type AzureBatchLinkedService = original.AzureBatchLinkedService
 type AzureBatchLinkedServiceTypeProperties = original.AzureBatchLinkedServiceTypeProperties
 type AzureBlobDataset = original.AzureBlobDataset
 type AzureBlobDatasetTypeProperties = original.AzureBlobDatasetTypeProperties
+type AzureBlobStorageLinkedService = original.AzureBlobStorageLinkedService
+type AzureBlobStorageLinkedServiceTypeProperties = original.AzureBlobStorageLinkedServiceTypeProperties
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
 type AzureDataLakeAnalyticsLinkedService = original.AzureDataLakeAnalyticsLinkedService
@@ -928,6 +933,7 @@ type AzureTableDataset = original.AzureTableDataset
 type AzureTableDatasetTypeProperties = original.AzureTableDatasetTypeProperties
 type AzureTableSink = original.AzureTableSink
 type AzureTableSource = original.AzureTableSource
+type AzureTableStorageLinkedService = original.AzureTableStorageLinkedService
 type BlobEventsTrigger = original.BlobEventsTrigger
 type BlobEventsTriggerTypeProperties = original.BlobEventsTriggerTypeProperties
 type BlobSink = original.BlobSink
@@ -961,6 +967,7 @@ type CouchbaseLinkedService = original.CouchbaseLinkedService
 type CouchbaseLinkedServiceTypeProperties = original.CouchbaseLinkedServiceTypeProperties
 type CouchbaseSource = original.CouchbaseSource
 type CouchbaseTableDataset = original.CouchbaseTableDataset
+type CreateLinkedIntegrationRuntimeRequest = original.CreateLinkedIntegrationRuntimeRequest
 type CreateRunResponse = original.CreateRunResponse
 type CustomActivity = original.CustomActivity
 type CustomActivityReferenceObject = original.CustomActivityReferenceObject

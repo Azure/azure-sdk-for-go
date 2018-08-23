@@ -1698,7 +1698,11 @@ func (page CloudPoolListResultPage) Values() []CloudPool {
 
 // CloudServiceConfiguration ...
 type CloudServiceConfiguration struct {
-	// OsFamily - Possible values are: 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1. 3 - OS Family 3, equivalent to Windows Server 2012. 4 - OS Family 4, equivalent to Windows Server 2012 R2. 5 - OS Family 5, equivalent to Windows Server 2016. For more information, see Azure Guest OS Releases (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
+	// OsFamily - Possible values are:
+	// 2 - OS Family 2, equivalent to Windows Server 2008 R2 SP1.
+	// 3 - OS Family 3, equivalent to Windows Server 2012.
+	// 4 - OS Family 4, equivalent to Windows Server 2012 R2.
+	// 5 - OS Family 5, equivalent to Windows Server 2016. For more information, see Azure Guest OS Releases (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
 	OsFamily *string `json:"osFamily,omitempty"`
 	// TargetOSVersion - The default value is * which specifies the latest operating system version for the specified OS family.
 	TargetOSVersion *string `json:"targetOSVersion,omitempty"`
@@ -3543,7 +3547,7 @@ type UsageStatistics struct {
 type UserAccount struct {
 	Name     *string `json:"name,omitempty"`
 	Password *string `json:"password,omitempty"`
-	// ElevationLevel - nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator permissions. The default value is nonAdmin. Possible values include: 'NonAdmin', 'Admin'
+	// ElevationLevel - The default value is nonAdmin. Possible values include: 'NonAdmin', 'Admin'
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 	// LinuxUserConfiguration - This property is ignored if specified on a Windows pool. If not specified, the user is created with the default options.
 	LinuxUserConfiguration *LinuxUserConfiguration `json:"linuxUserConfiguration,omitempty"`

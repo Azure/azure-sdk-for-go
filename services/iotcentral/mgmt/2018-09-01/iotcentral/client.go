@@ -1,4 +1,4 @@
-// Package iotcentral implements the Azure ARM Iotcentral service API version 2017-07-01-privatepreview.
+// Package iotcentral implements the Azure ARM Iotcentral service API version 2018-09-01.
 //
 // Use this API to manage IoT Central Applications in your Azure subscription.
 package iotcentral

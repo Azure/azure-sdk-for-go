@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppNameUnavailabilityReason enumerates the values for app name unavailability reason.
 type AppNameUnavailabilityReason string
 
@@ -35,11 +36,13 @@ const (
 	Invalid AppNameUnavailabilityReason = "Invalid"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // PossibleAppNameUnavailabilityReasonValues returns an array of possible values for the AppNameUnavailabilityReason const type.
 func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
 	return []AppNameUnavailabilityReason{AlreadyExists, Invalid}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppSku enumerates the values for app sku.
 type AppSku string
 
@@ -50,11 +53,13 @@ const (
 	S1 AppSku = "S1"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // PossibleAppSkuValues returns an array of possible values for the AppSku const type.
 func PossibleAppSkuValues() []AppSku {
 	return []AppSku{F1, S1}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // App the IoT Central application.
 type App struct {
 	autorest.Response `json:"-"`
@@ -74,6 +79,7 @@ type App struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // MarshalJSON is the custom marshaler for App.
 func (a App) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -101,6 +107,7 @@ func (a App) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // UnmarshalJSON is the custom unmarshaler for App struct.
 func (a *App) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -179,6 +186,7 @@ func (a *App) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppListResult a list of IoT Central Applications with a next link.
 type AppListResult struct {
 	autorest.Response `json:"-"`
@@ -188,12 +196,14 @@ type AppListResult struct {
 	Value *[]App `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppListResultIterator provides access to a complete listing of App values.
 type AppListResultIterator struct {
 	i    int
 	page AppListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *AppListResultIterator) Next() error {
@@ -210,16 +220,19 @@ func (iter *AppListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter AppListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Response returns the raw server response from the last page request.
 func (iter AppListResultIterator) Response() AppListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter AppListResultIterator) Value() App {
@@ -229,6 +242,7 @@ func (iter AppListResultIterator) Value() App {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AppListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -246,12 +260,14 @@ func (alr AppListResult) appListResultPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(alr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppListResultPage contains a page of App values.
 type AppListResultPage struct {
 	fn  func(AppListResult) (AppListResult, error)
 	alr AppListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *AppListResultPage) Next() error {
@@ -263,16 +279,19 @@ func (page *AppListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page AppListResultPage) NotDone() bool {
 	return !page.alr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Response returns the raw server response from the last page request.
 func (page AppListResultPage) Response() AppListResult {
 	return page.alr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page AppListResultPage) Values() []App {
 	if page.alr.IsEmpty() {
@@ -281,6 +300,7 @@ func (page AppListResultPage) Values() []App {
 	return *page.alr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppNameAvailabilityInfo the properties indicating whether a given IoT Central application name is available.
 type AppNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
@@ -292,6 +312,7 @@ type AppNameAvailabilityInfo struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppPatch the description of the IoT Central application.
 type AppPatch struct {
 	// Tags - Instance tags
@@ -300,6 +321,7 @@ type AppPatch struct {
 	*AppProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // MarshalJSON is the custom marshaler for AppPatch.
 func (ap AppPatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -312,6 +334,7 @@ func (ap AppPatch) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // UnmarshalJSON is the custom unmarshaler for AppPatch struct.
 func (ap *AppPatch) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -345,6 +368,7 @@ func (ap *AppPatch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppProperties the properties of an IoT Central application.
 type AppProperties struct {
 	// ApplicationID - The ID of the application.
@@ -357,11 +381,13 @@ type AppProperties struct {
 	Template *string `json:"template,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsCreateOrUpdateFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (a App, err error) {
@@ -385,11 +411,13 @@ func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (a App, err er
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsDeleteFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *AppsDeleteFuture) Result(client AppsClient) (ar autorest.Response, err error) {
@@ -407,17 +435,20 @@ func (future *AppsDeleteFuture) Result(client AppsClient) (ar autorest.Response,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppSkuInfo information about the SKU of the IoT Central application.
 type AppSkuInfo struct {
 	// Name - The name of the SKU. Possible values include: 'F1', 'S1'
 	Name AppSku `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // AppsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsUpdateFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
@@ -441,6 +472,7 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // ErrorDetails error details.
 type ErrorDetails struct {
 	// Code - The error code.
@@ -451,6 +483,7 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Operation ioT Central REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
@@ -459,6 +492,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - Service provider: Microsoft IoT Central
@@ -471,12 +505,14 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // OperationInputs input values.
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the
 // next set of results.
 type OperationListResult struct {
@@ -487,12 +523,14 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // OperationListResultIterator provides access to a complete listing of Operation values.
 type OperationListResultIterator struct {
 	i    int
 	page OperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListResultIterator) Next() error {
@@ -509,16 +547,19 @@ func (iter *OperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListResultIterator) Response() OperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListResultIterator) Value() Operation {
@@ -528,6 +569,7 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -545,12 +587,14 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 		autorest.WithBaseURL(to.String(olr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
 	fn  func(OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListResultPage) Next() error {
@@ -562,16 +606,19 @@ func (page *OperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListResultPage) NotDone() bool {
 	return !page.olr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListResultPage) Response() OperationListResult {
 	return page.olr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListResultPage) Values() []Operation {
 	if page.olr.IsEmpty() {
@@ -580,6 +627,7 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // Resource the common properties of an ARM resource.
 type Resource struct {
 	// ID - The ARM resource identifier.
@@ -594,6 +642,7 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral instead.
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

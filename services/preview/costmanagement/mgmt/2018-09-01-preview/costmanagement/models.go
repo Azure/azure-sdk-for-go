@@ -40,6 +40,42 @@ func PossibleConnectorStatusValues() []ConnectorStatus {
 	return []ConnectorStatus{Active, Error, Suspended}
 }
 
+// ExecutionStatus enumerates the values for execution status.
+type ExecutionStatus string
+
+const (
+	// Completed ...
+	Completed ExecutionStatus = "Completed"
+	// Failed ...
+	Failed ExecutionStatus = "Failed"
+	// InProgress ...
+	InProgress ExecutionStatus = "InProgress"
+	// Queud ...
+	Queud ExecutionStatus = "Queud"
+	// Timeout ...
+	Timeout ExecutionStatus = "Timeout"
+)
+
+// PossibleExecutionStatusValues returns an array of possible values for the ExecutionStatus const type.
+func PossibleExecutionStatusValues() []ExecutionStatus {
+	return []ExecutionStatus{Completed, Failed, InProgress, Queud, Timeout}
+}
+
+// ExecutionType enumerates the values for execution type.
+type ExecutionType string
+
+const (
+	// OnDemand ...
+	OnDemand ExecutionType = "OnDemand"
+	// Scheduled ...
+	Scheduled ExecutionType = "Scheduled"
+)
+
+// PossibleExecutionTypeValues returns an array of possible values for the ExecutionType const type.
+func PossibleExecutionTypeValues() []ExecutionType {
+	return []ExecutionType{OnDemand, Scheduled}
+}
+
 // FormatType enumerates the values for format type.
 type FormatType string
 
@@ -85,19 +121,19 @@ func PossibleRecurrenceTypeValues() []RecurrenceType {
 	return []RecurrenceType{RecurrenceTypeAnnually, RecurrenceTypeDaily, RecurrenceTypeMonthly, RecurrenceTypeWeekly}
 }
 
-// ReportConfigColumnType enumerates the values for report config column type.
-type ReportConfigColumnType string
+// ReportColumnType enumerates the values for report column type.
+type ReportColumnType string
 
 const (
-	// ReportConfigColumnTypeDimension ...
-	ReportConfigColumnTypeDimension ReportConfigColumnType = "Dimension"
-	// ReportConfigColumnTypeTag ...
-	ReportConfigColumnTypeTag ReportConfigColumnType = "Tag"
+	// ReportColumnTypeDimension ...
+	ReportColumnTypeDimension ReportColumnType = "Dimension"
+	// ReportColumnTypeTag ...
+	ReportColumnTypeTag ReportColumnType = "Tag"
 )
 
-// PossibleReportConfigColumnTypeValues returns an array of possible values for the ReportConfigColumnType const type.
-func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
-	return []ReportConfigColumnType{ReportConfigColumnTypeDimension, ReportConfigColumnTypeTag}
+// PossibleReportColumnTypeValues returns an array of possible values for the ReportColumnType const type.
+func PossibleReportColumnTypeValues() []ReportColumnType {
+	return []ReportColumnType{ReportColumnTypeDimension, ReportColumnTypeTag}
 }
 
 // StatusType enumerates the values for status type.
@@ -125,13 +161,21 @@ const (
 	MonthToDate TimeframeType = "MonthToDate"
 	// WeekToDate ...
 	WeekToDate TimeframeType = "WeekToDate"
-	// YearToDate ...
-	YearToDate TimeframeType = "YearToDate"
 )
 
 // PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
 func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, WeekToDate, YearToDate}
+	return []TimeframeType{Custom, MonthToDate, WeekToDate}
+}
+
+// CommonReportProperties the common properties of the report.
+type CommonReportProperties struct {
+	// Format - The format of the report being delivered. Possible values include: 'Csv'
+	Format FormatType `json:"format,omitempty"`
+	// DeliveryInfo - Has delivery information for the report.
+	DeliveryInfo *ReportDeliveryInfo `json:"deliveryInfo,omitempty"`
+	// Definition - Has definition for the report.
+	Definition *ReportDefinition `json:"definition,omitempty"`
 }
 
 // ConnectorCollectionErrorInfo details of any error encountered on last collection attempt
@@ -565,10 +609,10 @@ type QueryResult struct {
 	Value *[]Query `json:"value,omitempty"`
 }
 
-// ReportConfig a report config resource.
-type ReportConfig struct {
-	autorest.Response       `json:"-"`
-	*ReportConfigProperties `json:"properties,omitempty"`
+// Report a report resource.
+type Report struct {
+	autorest.Response `json:"-"`
+	*ReportProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -579,29 +623,29 @@ type ReportConfig struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ReportConfig.
-func (rc ReportConfig) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Report.
+func (r Report) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rc.ReportConfigProperties != nil {
-		objectMap["properties"] = rc.ReportConfigProperties
+	if r.ReportProperties != nil {
+		objectMap["properties"] = r.ReportProperties
 	}
-	if rc.ID != nil {
-		objectMap["id"] = rc.ID
+	if r.ID != nil {
+		objectMap["id"] = r.ID
 	}
-	if rc.Name != nil {
-		objectMap["name"] = rc.Name
+	if r.Name != nil {
+		objectMap["name"] = r.Name
 	}
-	if rc.Type != nil {
-		objectMap["type"] = rc.Type
+	if r.Type != nil {
+		objectMap["type"] = r.Type
 	}
-	if rc.Tags != nil {
-		objectMap["tags"] = rc.Tags
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ReportConfig struct.
-func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for Report struct.
+func (r *Report) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -611,12 +655,12 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var reportConfigProperties ReportConfigProperties
-				err = json.Unmarshal(*v, &reportConfigProperties)
+				var reportProperties ReportProperties
+				err = json.Unmarshal(*v, &reportProperties)
 				if err != nil {
 					return err
 				}
-				rc.ReportConfigProperties = &reportConfigProperties
+				r.ReportProperties = &reportProperties
 			}
 		case "id":
 			if v != nil {
@@ -625,7 +669,7 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				rc.ID = &ID
+				r.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -634,7 +678,7 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				rc.Name = &name
+				r.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -643,7 +687,7 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				rc.Type = &typeVar
+				r.Type = &typeVar
 			}
 		case "tags":
 			if v != nil {
@@ -652,7 +696,7 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				rc.Tags = tags
+				r.Tags = tags
 			}
 		}
 	}
@@ -660,16 +704,16 @@ func (rc *ReportConfig) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ReportConfigAggregation the aggregation expression to be used in the report.
-type ReportConfigAggregation struct {
+// ReportAggregation the aggregation expression to be used in the report.
+type ReportAggregation struct {
 	// Name - The name of the column to aggregate.
 	Name *string `json:"name,omitempty"`
 	// Function - The name of the aggregation function to use.
 	Function *string `json:"function,omitempty"`
 }
 
-// ReportConfigComparisonExpression the comparison expression to be used in the report.
-type ReportConfigComparisonExpression struct {
+// ReportComparisonExpression the comparison expression to be used in the report.
+type ReportComparisonExpression struct {
 	// Name - The name of the column to use in comaprison.
 	Name *string `json:"name,omitempty"`
 	// Operator - The operator to use for comparison.
@@ -678,61 +722,61 @@ type ReportConfigComparisonExpression struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
-// ReportConfigDataset the definition of data present in the report.
-type ReportConfigDataset struct {
+// ReportDataset the definition of data present in the report.
+type ReportDataset struct {
 	// Granularity - The granularity of rows in the report. Possible values include: 'Daily'
 	Granularity GranularityType `json:"granularity,omitempty"`
 	// Configuration - Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping are provided.
-	Configuration *ReportConfigDatasetConfiguration `json:"configuration,omitempty"`
+	Configuration *ReportDatasetConfiguration `json:"configuration,omitempty"`
 	// Aggregation - Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the aggregated column. Report can have upto 2 aggregation clauses.
-	Aggregation map[string]*ReportConfigAggregation `json:"aggregation"`
+	Aggregation map[string]*ReportAggregation `json:"aggregation"`
 	// Grouping - Array of group by expression to use in the report. Report can have upto 2 group by clauses.
-	Grouping *[]ReportConfigGrouping `json:"grouping,omitempty"`
+	Grouping *[]ReportGrouping `json:"grouping,omitempty"`
 	// Filter - Has filter expression to use in the report.
-	Filter *ReportConfigFilter `json:"filter,omitempty"`
+	Filter *ReportFilter `json:"filter,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ReportConfigDataset.
-func (rcd ReportConfigDataset) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ReportDataset.
+func (rd ReportDataset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rcd.Granularity != "" {
-		objectMap["granularity"] = rcd.Granularity
+	if rd.Granularity != "" {
+		objectMap["granularity"] = rd.Granularity
 	}
-	if rcd.Configuration != nil {
-		objectMap["configuration"] = rcd.Configuration
+	if rd.Configuration != nil {
+		objectMap["configuration"] = rd.Configuration
 	}
-	if rcd.Aggregation != nil {
-		objectMap["aggregation"] = rcd.Aggregation
+	if rd.Aggregation != nil {
+		objectMap["aggregation"] = rd.Aggregation
 	}
-	if rcd.Grouping != nil {
-		objectMap["grouping"] = rcd.Grouping
+	if rd.Grouping != nil {
+		objectMap["grouping"] = rd.Grouping
 	}
-	if rcd.Filter != nil {
-		objectMap["filter"] = rcd.Filter
+	if rd.Filter != nil {
+		objectMap["filter"] = rd.Filter
 	}
 	return json.Marshal(objectMap)
 }
 
-// ReportConfigDatasetConfiguration the configuration of dataset in the report.
-type ReportConfigDatasetConfiguration struct {
+// ReportDatasetConfiguration the configuration of dataset in the report.
+type ReportDatasetConfiguration struct {
 	// Columns - Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report includes all columns.
 	Columns *[]string `json:"columns,omitempty"`
 }
 
-// ReportConfigDefinition the definition of a report config.
-type ReportConfigDefinition struct {
+// ReportDefinition the definition of a report.
+type ReportDefinition struct {
 	// Type - The type of the report.
 	Type *string `json:"type,omitempty"`
-	// Timeframe - The time frame for pulling data for the report. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'YearToDate', 'Custom'
+	// Timeframe - The time frame for pulling data for the report. If custom, then a specific time period must be provided. Possible values include: 'WeekToDate', 'MonthToDate', 'Custom'
 	Timeframe TimeframeType `json:"timeframe,omitempty"`
 	// TimePeriod - Has time period for pulling data for the report.
-	TimePeriod *ReportConfigTimePeriod `json:"timePeriod,omitempty"`
-	// Dataset - Has definition for data in this report config.
-	Dataset *ReportConfigDataset `json:"dataset,omitempty"`
+	TimePeriod *ReportTimePeriod `json:"timePeriod,omitempty"`
+	// Dataset - Has definition for data in this report.
+	Dataset *ReportDataset `json:"dataset,omitempty"`
 }
 
-// ReportConfigDeliveryDestination the destination information for the delivery of the report.
-type ReportConfigDeliveryDestination struct {
+// ReportDeliveryDestination the destination information for the delivery of the report.
+type ReportDeliveryDestination struct {
 	// ResourceID - The resource id of the storage account where reports will be delivered.
 	ResourceID *string `json:"resourceId,omitempty"`
 	// Container - The name of the container where reports will be uploaded.
@@ -741,74 +785,193 @@ type ReportConfigDeliveryDestination struct {
 	RootFolderPath *string `json:"rootFolderPath,omitempty"`
 }
 
-// ReportConfigDeliveryInfo the delivery information associated with a report config.
-type ReportConfigDeliveryInfo struct {
+// ReportDeliveryInfo the delivery information associated with a report.
+type ReportDeliveryInfo struct {
 	// Destination - Has destination for the report being delivered.
-	Destination *ReportConfigDeliveryDestination `json:"destination,omitempty"`
+	Destination *ReportDeliveryDestination `json:"destination,omitempty"`
 }
 
-// ReportConfigFilter the filter expression to be used in the report.
-type ReportConfigFilter struct {
+// ReportExecution a report exeuction.
+type ReportExecution struct {
+	*ReportExecutionProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ReportExecution.
+func (re ReportExecution) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if re.ReportExecutionProperties != nil {
+		objectMap["properties"] = re.ReportExecutionProperties
+	}
+	if re.ID != nil {
+		objectMap["id"] = re.ID
+	}
+	if re.Name != nil {
+		objectMap["name"] = re.Name
+	}
+	if re.Type != nil {
+		objectMap["type"] = re.Type
+	}
+	if re.Tags != nil {
+		objectMap["tags"] = re.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReportExecution struct.
+func (re *ReportExecution) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var reportExecutionProperties ReportExecutionProperties
+				err = json.Unmarshal(*v, &reportExecutionProperties)
+				if err != nil {
+					return err
+				}
+				re.ReportExecutionProperties = &reportExecutionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				re.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				re.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				re.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				re.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReportExecutionListResult result of listing reports execution history of a report by name
+type ReportExecutionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of report executions.
+	Value *[]ReportExecution `json:"value,omitempty"`
+}
+
+// ReportExecutionProperties the properties of the report execution.
+type ReportExecutionProperties struct {
+	// ExecutionType - The type of the report execution. Possible values include: 'OnDemand', 'Scheduled'
+	ExecutionType ExecutionType `json:"executionType,omitempty"`
+	// Status - The status of the report execution. Possible values include: 'Queud', 'InProgress', 'Completed', 'Failed', 'Timeout'
+	Status ExecutionStatus `json:"status,omitempty"`
+	// SubmittedBy - The identifier for the entity that executed the report. For OnDemand executions, it is the email id. For Scheduled executions, it is the constant value - System.
+	SubmittedBy *string `json:"submittedBy,omitempty"`
+	// SubmittedTime - The time when report was queued to be executed.
+	SubmittedTime *date.Time `json:"submittedTime,omitempty"`
+	// ProcessingStartTime - The time when report was picked up to be executed.
+	ProcessingStartTime *date.Time `json:"processingStartTime,omitempty"`
+	// ProcessingEndTime - The time when report execution finished.
+	ProcessingEndTime *date.Time `json:"processingEndTime,omitempty"`
+	// FileName - The name of the file report got written to.
+	FileName       *string                 `json:"fileName,omitempty"`
+	ReportSettings *CommonReportProperties `json:"reportSettings,omitempty"`
+}
+
+// ReportFilter the filter expression to be used in the report.
+type ReportFilter struct {
 	// And - The logical "AND" expression. Must have atleast 2 items.
-	And *[]ReportConfigFilter `json:"and,omitempty"`
+	And *[]ReportFilter `json:"and,omitempty"`
 	// Or - The logical "OR" expression. Must have atleast 2 items.
-	Or *[]ReportConfigFilter `json:"or,omitempty"`
+	Or *[]ReportFilter `json:"or,omitempty"`
 	// Not - The logical "NOT" expression.
-	Not *ReportConfigFilter `json:"not,omitempty"`
+	Not *ReportFilter `json:"not,omitempty"`
 	// Dimension - Has comparison expression for a dimension
-	Dimension *ReportConfigComparisonExpression `json:"dimension,omitempty"`
+	Dimension *ReportComparisonExpression `json:"dimension,omitempty"`
 	// Tag - Has comparison expression for a tag
-	Tag *ReportConfigComparisonExpression `json:"tag,omitempty"`
+	Tag *ReportComparisonExpression `json:"tag,omitempty"`
 }
 
-// ReportConfigGrouping the group by expression to be used in the report.
-type ReportConfigGrouping struct {
-	// ColumnType - Has type of the column to group. Possible values include: 'ReportConfigColumnTypeTag', 'ReportConfigColumnTypeDimension'
-	ColumnType ReportConfigColumnType `json:"columnType,omitempty"`
+// ReportGrouping the group by expression to be used in the report.
+type ReportGrouping struct {
+	// ColumnType - Has type of the column to group. Possible values include: 'ReportColumnTypeTag', 'ReportColumnTypeDimension'
+	ColumnType ReportColumnType `json:"columnType,omitempty"`
 	// Name - The name of the column to group.
 	Name *string `json:"name,omitempty"`
 }
 
-// ReportConfigListResult result of listing report configs. It contains a list of available report configurations
-// in the scope provided.
-type ReportConfigListResult struct {
+// ReportListResult result of listing reports. It contains a list of available reports in the scope provided.
+type ReportListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of report configs.
-	Value *[]ReportConfig `json:"value,omitempty"`
+	// Value - The list of reports.
+	Value *[]Report `json:"value,omitempty"`
 }
 
-// ReportConfigProperties the properties of the report config.
-type ReportConfigProperties struct {
-	// Schedule - Has schedule information for the report config.
-	Schedule *ReportConfigSchedule `json:"schedule,omitempty"`
+// ReportProperties the properties of the report.
+type ReportProperties struct {
+	// Schedule - Has schedule information for the report.
+	Schedule *ReportSchedule `json:"schedule,omitempty"`
 	// Format - The format of the report being delivered. Possible values include: 'Csv'
 	Format FormatType `json:"format,omitempty"`
-	// DeliveryInfo - Has delivery information for the report config.
-	DeliveryInfo *ReportConfigDeliveryInfo `json:"deliveryInfo,omitempty"`
-	// Definition - Has definition for the report config.
-	Definition *ReportConfigDefinition `json:"definition,omitempty"`
+	// DeliveryInfo - Has delivery information for the report.
+	DeliveryInfo *ReportDeliveryInfo `json:"deliveryInfo,omitempty"`
+	// Definition - Has definition for the report.
+	Definition *ReportDefinition `json:"definition,omitempty"`
 }
 
-// ReportConfigRecurrencePeriod the start and end date for recurrence schedule.
-type ReportConfigRecurrencePeriod struct {
+// ReportRecurrencePeriod the start and end date for recurrence schedule.
+type ReportRecurrencePeriod struct {
 	// From - The start date of recurrence.
 	From *date.Time `json:"from,omitempty"`
-	// To - The end date of recurrence. If not provided, we default this to 10 years from the start date.
+	// To - The end date of recurrence.
 	To *date.Time `json:"to,omitempty"`
 }
 
-// ReportConfigSchedule the schedule associated with a report config.
-type ReportConfigSchedule struct {
+// ReportSchedule the schedule associated with a report.
+type ReportSchedule struct {
 	// Status - The status of the schedule. Whether active or not. If inactive, the report's scheduled execution is paused. Possible values include: 'StatusTypeActive', 'StatusTypeInactive'
 	Status StatusType `json:"status,omitempty"`
 	// Recurrence - The schedule recurrence. Possible values include: 'RecurrenceTypeDaily', 'RecurrenceTypeWeekly', 'RecurrenceTypeMonthly', 'RecurrenceTypeAnnually'
 	Recurrence RecurrenceType `json:"recurrence,omitempty"`
 	// RecurrencePeriod - Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than start date.
-	RecurrencePeriod *ReportConfigRecurrencePeriod `json:"recurrencePeriod,omitempty"`
+	RecurrencePeriod *ReportRecurrencePeriod `json:"recurrencePeriod,omitempty"`
 }
 
-// ReportConfigTimePeriod the start and end date for pulling data for the report.
-type ReportConfigTimePeriod struct {
+// ReportTimePeriod the start and end date for pulling data for the report.
+type ReportTimePeriod struct {
 	// From - The start date to pull data from.
 	From *date.Time `json:"from,omitempty"`
 	// To - The end date to pull data to.

@@ -788,6 +788,7 @@ type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDe
 type DeletedAppRestoreRequest = original.DeletedAppRestoreRequest
 type DeletedAppRestoreRequestProperties = original.DeletedAppRestoreRequestProperties
 type DeletedSite = original.DeletedSite
+type DeletedSiteProperties = original.DeletedSiteProperties
 type DeletedWebAppCollection = original.DeletedWebAppCollection
 type DeletedWebAppCollectionIterator = original.DeletedWebAppCollectionIterator
 type DeletedWebAppCollectionPage = original.DeletedWebAppCollectionPage

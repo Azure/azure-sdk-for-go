@@ -4045,8 +4045,10 @@ type AppServicePlanPatchResourceProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	// IsXenon - Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -4086,8 +4088,10 @@ type AppServicePlanProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	// IsXenon - Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -6834,6 +6838,101 @@ type DeletedAppRestoreRequestProperties struct {
 
 // DeletedSite a deleted app.
 type DeletedSite struct {
+	// DeletedSiteProperties - DeletedSite resource specific properties
+	*DeletedSiteProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSite.
+func (ds DeletedSite) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ds.DeletedSiteProperties != nil {
+		objectMap["properties"] = ds.DeletedSiteProperties
+	}
+	if ds.ID != nil {
+		objectMap["id"] = ds.ID
+	}
+	if ds.Name != nil {
+		objectMap["name"] = ds.Name
+	}
+	if ds.Kind != nil {
+		objectMap["kind"] = ds.Kind
+	}
+	if ds.Type != nil {
+		objectMap["type"] = ds.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeletedSite struct.
+func (ds *DeletedSite) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deletedSiteProperties DeletedSiteProperties
+				err = json.Unmarshal(*v, &deletedSiteProperties)
+				if err != nil {
+					return err
+				}
+				ds.DeletedSiteProperties = &deletedSiteProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ds.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ds.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ds.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ds.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeletedSiteProperties deletedSite resource specific properties
+type DeletedSiteProperties struct {
 	// DeletedSiteID - Numeric id for the deleted site
 	DeletedSiteID *int32 `json:"deletedSiteId,omitempty"`
 	// DeletedTimestamp - Time in UTC when the app was deleted.
@@ -6846,6 +6945,8 @@ type DeletedSite struct {
 	DeletedSiteName *string `json:"deletedSiteName,omitempty"`
 	// Slot - Slot of the deleted site
 	Slot *string `json:"slot,omitempty"`
+	// Kind - Kind of site that was deleted
+	Kind *string `json:"kind,omitempty"`
 }
 
 // DeletedWebAppCollection collection of deleted apps.
@@ -16918,8 +17019,10 @@ type SitePatchResourceProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - Hyper-V sandbox.
+	// IsXenon - Obsolete: Hyper-V sandbox.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - Hyper-V sandbox.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
@@ -17098,8 +17201,10 @@ type SiteProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
-	// IsXenon - Hyper-V sandbox.
+	// IsXenon - Obsolete: Hyper-V sandbox.
 	IsXenon *bool `json:"isXenon,omitempty"`
+	// HyperV - Hyper-V sandbox.
+	HyperV *bool `json:"hyperV,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.

@@ -306,6 +306,87 @@ func (client TasksClient) GetResponder(resp *http.Response) (result Task, err er
 	return
 }
 
+// GetDetails returns a task with extended information that includes all secrets.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the container registry belongs.
+// registryName - the name of the container registry.
+// taskName - the name of the container registry task.
+func (client TasksClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskName string) (result Task, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: registryName,
+			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskName,
+			Constraints: []validation.Constraint{{Target: "taskName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerregistry.TasksClient", "GetDetails", err.Error())
+	}
+
+	req, err := client.GetDetailsPreparer(ctx, resourceGroupName, registryName, taskName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "GetDetails", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDetailsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "GetDetails", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDetailsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "GetDetails", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetDetailsPreparer prepares the GetDetails request.
+func (client TasksClient) GetDetailsPreparer(ctx context.Context, resourceGroupName string, registryName string, taskName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registryName":      autorest.Encode("path", registryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"taskName":          autorest.Encode("path", taskName),
+	}
+
+	const APIVersion = "2018-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}/listDetails", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDetailsSender sends the GetDetails request. The method will close the
+// http.Response Body if it receives an error.
+func (client TasksClient) GetDetailsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDetailsResponder handles the response to the GetDetails request. The method always
+// closes the http.Response Body.
+func (client TasksClient) GetDetailsResponder(resp *http.Response) (result Task, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List lists all the tasks for a specified container registry.
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
@@ -406,87 +487,6 @@ func (client TasksClient) listNextResults(lastResults TaskListResult) (result Ta
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client TasksClient) ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result TaskListResultIterator, err error) {
 	result.page, err = client.List(ctx, resourceGroupName, registryName)
-	return
-}
-
-// ListDetails returns a task with extended information that includes all secrets.
-// Parameters:
-// resourceGroupName - the name of the resource group to which the container registry belongs.
-// registryName - the name of the container registry.
-// taskName - the name of the container registry task.
-func (client TasksClient) ListDetails(ctx context.Context, resourceGroupName string, registryName string, taskName string) (result Task, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: registryName,
-			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
-		{TargetValue: taskName,
-			Constraints: []validation.Constraint{{Target: "taskName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "taskName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "taskName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("containerregistry.TasksClient", "ListDetails", err.Error())
-	}
-
-	req, err := client.ListDetailsPreparer(ctx, resourceGroupName, registryName, taskName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "ListDetails", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListDetailsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "ListDetails", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListDetailsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.TasksClient", "ListDetails", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListDetailsPreparer prepares the ListDetails request.
-func (client TasksClient) ListDetailsPreparer(ctx context.Context, resourceGroupName string, registryName string, taskName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"registryName":      autorest.Encode("path", registryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"taskName":          autorest.Encode("path", taskName),
-	}
-
-	const APIVersion = "2018-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}/listDetails", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListDetailsSender sends the ListDetails request. The method will close the
-// http.Response Body if it receives an error.
-func (client TasksClient) ListDetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListDetailsResponder handles the response to the ListDetails request. The method always
-// closes the http.Response Body.
-func (client TasksClient) ListDetailsResponder(resp *http.Response) (result Task, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 

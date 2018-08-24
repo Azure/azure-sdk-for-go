@@ -197,6 +197,83 @@ func (client RunsClient) GetResponder(resp *http.Response) (result Run, err erro
 	return
 }
 
+// GetLogSasURL gets a link to download the run logs.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the container registry belongs.
+// registryName - the name of the container registry.
+// runID - the run ID.
+func (client RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string) (result RunGetLogResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: registryName,
+			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerregistry.RunsClient", "GetLogSasURL", err.Error())
+	}
+
+	req, err := client.GetLogSasURLPreparer(ctx, resourceGroupName, registryName, runID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "GetLogSasURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetLogSasURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "GetLogSasURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetLogSasURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "GetLogSasURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetLogSasURLPreparer prepares the GetLogSasURL request.
+func (client RunsClient) GetLogSasURLPreparer(ctx context.Context, resourceGroupName string, registryName string, runID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registryName":      autorest.Encode("path", registryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"runId":             autorest.Encode("path", runID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/listLogSasUrl", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetLogSasURLSender sends the GetLogSasURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client RunsClient) GetLogSasURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetLogSasURLResponder handles the response to the GetLogSasURL request. The method always
+// closes the http.Response Body.
+func (client RunsClient) GetLogSasURLResponder(resp *http.Response) (result RunGetLogResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List gets all the runs for a registry.
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
@@ -204,8 +281,7 @@ func (client RunsClient) GetResponder(resp *http.Response) (result Run, err erro
 // filter - the runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
 // string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
 // top - $top is supported for get list of runs, which limits the maximum number of runs to return.
-// skipToken - $skipToken is supported on get list of runs, which provides the next page in the list of runs.
-func (client RunsClient) List(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32, skipToken string) (result RunListResultPage, err error) {
+func (client RunsClient) List(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32) (result RunListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -215,7 +291,7 @@ func (client RunsClient) List(ctx context.Context, resourceGroupName string, reg
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, registryName, filter, top, skipToken)
+	req, err := client.ListPreparer(ctx, resourceGroupName, registryName, filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "List", nil, "Failure preparing request")
 		return
@@ -237,7 +313,7 @@ func (client RunsClient) List(ctx context.Context, resourceGroupName string, reg
 }
 
 // ListPreparer prepares the List request.
-func (client RunsClient) ListPreparer(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32, skipToken string) (*http.Request, error) {
+func (client RunsClient) ListPreparer(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registryName":      autorest.Encode("path", registryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -253,9 +329,6 @@ func (client RunsClient) ListPreparer(ctx context.Context, resourceGroupName str
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if len(skipToken) > 0 {
-		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -308,85 +381,8 @@ func (client RunsClient) listNextResults(lastResults RunListResult) (result RunL
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RunsClient) ListComplete(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32, skipToken string) (result RunListResultIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, registryName, filter, top, skipToken)
-	return
-}
-
-// ListLogSasURL gets a link to download the run logs.
-// Parameters:
-// resourceGroupName - the name of the resource group to which the container registry belongs.
-// registryName - the name of the container registry.
-// runID - the run ID.
-func (client RunsClient) ListLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string) (result RunGetLogResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: registryName,
-			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("containerregistry.RunsClient", "ListLogSasURL", err.Error())
-	}
-
-	req, err := client.ListLogSasURLPreparer(ctx, resourceGroupName, registryName, runID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "ListLogSasURL", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListLogSasURLSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "ListLogSasURL", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListLogSasURLResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RunsClient", "ListLogSasURL", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListLogSasURLPreparer prepares the ListLogSasURL request.
-func (client RunsClient) ListLogSasURLPreparer(ctx context.Context, resourceGroupName string, registryName string, runID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"registryName":      autorest.Encode("path", registryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"runId":             autorest.Encode("path", runID),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/listLogSasUrl", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListLogSasURLSender sends the ListLogSasURL request. The method will close the
-// http.Response Body if it receives an error.
-func (client RunsClient) ListLogSasURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListLogSasURLResponder handles the response to the ListLogSasURL request. The method always
-// closes the http.Response Body.
-func (client RunsClient) ListLogSasURLResponder(resp *http.Response) (result RunGetLogResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+func (client RunsClient) ListComplete(ctx context.Context, resourceGroupName string, registryName string, filter string, top *int32) (result RunListResultIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, registryName, filter, top)
 	return
 }
 

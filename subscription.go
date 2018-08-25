@@ -116,8 +116,8 @@ func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 }
 
 // NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
-func (ns *Namespace) NewSubscriptionManager(ctx context.Context, topicName string) (*SubscriptionManager, error) {
-	t, err := ns.NewTopic(ctx, topicName)
+func (ns *Namespace) NewSubscriptionManager(topicName string) (*SubscriptionManager, error) {
+	t, err := ns.NewTopic(topicName)
 	if err != nil {
 		return nil, err
 	}
@@ -280,10 +280,7 @@ func SubscriptionWithReceiveAndDelete() SubscriptionOption {
 }
 
 // NewSubscription creates a new Topic Subscription client
-func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...SubscriptionOption) (*Subscription, error) {
-	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewSubscription")
-	defer span.Finish()
-
+func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subscription, error) {
 	sub := &Subscription{
 		entity: &entity{
 			namespace: t.namespace,
@@ -292,9 +289,8 @@ func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...Subscr
 		Topic: t,
 	}
 
-	for _, opt := range opts {
-		if err := opt(sub); err != nil {
-			log.For(ctx).Error(err)
+	for i := range opts {
+		if err := opts[i](sub); err != nil {
 			return nil, err
 		}
 	}

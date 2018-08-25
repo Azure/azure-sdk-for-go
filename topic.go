@@ -267,10 +267,7 @@ func topicEntryToEntity(entry *topicEntry) *TopicEntity {
 }
 
 // NewTopic creates a new Topic Sender
-func (ns *Namespace) NewTopic(ctx context.Context, name string, opts ...TopicOption) (*Topic, error) {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewTopic")
-	defer span.Finish()
-
+func (ns *Namespace) NewTopic(name string, opts ...TopicOption) (*Topic, error) {
 	topic := &Topic{
 		entity: &entity{
 			namespace: ns,
@@ -278,9 +275,8 @@ func (ns *Namespace) NewTopic(ctx context.Context, name string, opts ...TopicOpt
 		},
 	}
 
-	for _, opt := range opts {
-		if err := opt(topic); err != nil {
-			log.For(ctx).Error(err)
+	for i := range opts {
+		if err := opts[i](topic); err != nil {
 			return nil, err
 		}
 	}

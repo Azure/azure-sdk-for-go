@@ -297,7 +297,7 @@ func (suite *serviceBusSuite) TestTopic() {
 			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			_ = makeTopic(ctx, t, ns, name)
-			topic, err := ns.NewTopic(ctx, name)
+			topic, err := ns.NewTopic(name)
 			if suite.NoError(err) {
 				defer func() {
 					topic.Close(ctx)

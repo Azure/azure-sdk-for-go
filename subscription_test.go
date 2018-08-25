@@ -104,7 +104,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 	defer outerCancel()
 	topicName := suite.RandomName("gosb", 6)
 	cleanupTopic := makeTopic(outerCtx, suite.T(), ns, topicName)
-	topic, err := ns.NewTopic(outerCtx, topicName)
+	topic, err := ns.NewTopic(topicName)
 	if suite.NoError(err) {
 		sm := topic.NewSubscriptionManager()
 		for name, testFunc := range tests {
@@ -160,7 +160,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 			cleanupTopic := makeTopic(ctx, t, ns, topicName)
-			topic, err := ns.NewTopic(ctx, topicName)
+			topic, err := ns.NewTopic(topicName)
 			if suite.NoError(err) {
 				sm := topic.NewSubscriptionManager()
 				if suite.NoError(err) {
@@ -250,11 +250,11 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 			defer cancel()
 
 			topicCleanup := makeTopic(ctx, t, ns, topicName)
-			topic, err := ns.NewTopic(ctx, topicName)
+			topic, err := ns.NewTopic(topicName)
 			if suite.NoError(err) {
 				subName := suite.randEntityName()
 				subCleanup := makeSubscription(ctx, t, topic, subName)
-				subscription, err := topic.NewSubscription(ctx, subName)
+				subscription, err := topic.NewSubscription(subName)
 
 				if suite.NoError(err) {
 					defer subCleanup()

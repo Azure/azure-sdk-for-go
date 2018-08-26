@@ -183,6 +183,14 @@ const (
 	H264VideoProfileMain     H264VideoProfile = original.H264VideoProfileMain
 )
 
+type InsightsType = original.InsightsType
+
+const (
+	AllInsights       InsightsType = original.AllInsights
+	AudioInsightsOnly InsightsType = original.AudioInsightsOnly
+	VideoInsightsOnly InsightsType = original.VideoInsightsOnly
+)
+
 type JobErrorCategory = original.JobErrorCategory
 
 const (
@@ -814,6 +822,9 @@ func PossibleH264ComplexityValues() []H264Complexity {
 }
 func PossibleH264VideoProfileValues() []H264VideoProfile {
 	return original.PossibleH264VideoProfileValues()
+}
+func PossibleInsightsTypeValues() []InsightsType {
+	return original.PossibleInsightsTypeValues()
 }
 func PossibleJobErrorCategoryValues() []JobErrorCategory {
 	return original.PossibleJobErrorCategoryValues()

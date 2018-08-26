@@ -362,6 +362,24 @@ func PossibleH264VideoProfileValues() []H264VideoProfile {
 	return []H264VideoProfile{H264VideoProfileAuto, H264VideoProfileBaseline, H264VideoProfileHigh, H264VideoProfileHigh422, H264VideoProfileHigh444, H264VideoProfileMain}
 }
 
+// InsightsType enumerates the values for insights type.
+type InsightsType string
+
+const (
+	// AllInsights Generate both audio and video insights. Fails if either audio or video Insights fail.
+	AllInsights InsightsType = "AllInsights"
+	// AudioInsightsOnly Generate audio only insights. Ignore video even if present. Fails if no audio is
+	// present.
+	AudioInsightsOnly InsightsType = "AudioInsightsOnly"
+	// VideoInsightsOnly Generate video only insights. Ignore audio if present. Fails if no video is present.
+	VideoInsightsOnly InsightsType = "VideoInsightsOnly"
+)
+
+// PossibleInsightsTypeValues returns an array of possible values for the InsightsType const type.
+func PossibleInsightsTypeValues() []InsightsType {
+	return []InsightsType{AllInsights, AudioInsightsOnly, VideoInsightsOnly}
+}
+
 // JobErrorCategory enumerates the values for job error category.
 type JobErrorCategory string
 
@@ -1898,7 +1916,7 @@ type BasicAudioAnalyzerPreset interface {
 // AudioAnalyzerPreset the Audio Analyzer preset applies a pre-defined set of AI-based analysis operations,
 // including speech transcription. Currently, the preset supports processing of content with a single audio track.
 type AudioAnalyzerPreset struct {
-	// AudioLanguage - The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'.
+	// AudioLanguage - The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified, automatic language detection would be employed. This feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to English.
 	AudioLanguage *string `json:"audioLanguage,omitempty"`
 	// OdataType - Possible values include: 'OdataTypePreset', 'OdataTypeMicrosoftMediaAudioAnalyzerPreset', 'OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset', 'OdataTypeMicrosoftMediaStandardEncoderPreset', 'OdataTypeMicrosoftMediaVideoAnalyzerPreset'
 	OdataType OdataTypeBasicPreset `json:"@odata.type,omitempty"`
@@ -8890,8 +8908,8 @@ type StreamingLocatorContentKey struct {
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Type - Encryption type of Content Key. Possible values include: 'StreamingLocatorContentKeyTypeCommonEncryptionCenc', 'StreamingLocatorContentKeyTypeCommonEncryptionCbcs', 'StreamingLocatorContentKeyTypeEnvelopeEncryption'
 	Type StreamingLocatorContentKeyType `json:"type,omitempty"`
-	// Label - Label of Content Key
-	Label *string `json:"label,omitempty"`
+	// LabelReferenceInStreamingPolicy - Label of Content Key as specified in the Streaming Policy
+	LabelReferenceInStreamingPolicy *string `json:"labelReferenceInStreamingPolicy,omitempty"`
 	// Value - Value of  of Content Key
 	Value *string `json:"value,omitempty"`
 	// PolicyName - ContentKeyPolicy used by Content Key
@@ -8912,7 +8930,7 @@ type StreamingLocatorProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// StreamingLocatorID - StreamingLocatorId of Streaming Locator
 	StreamingLocatorID *uuid.UUID `json:"streamingLocatorId,omitempty"`
-	// StreamingPolicyName - Streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_SecureStreaming' and 'Predefined_SecureStreamingWithFairPlay'
+	// StreamingPolicyName - Streaming policy name used by this streaming locator. Either specify the name of streaming policy you created or use one of the predefined streaming polices. The predefined streaming policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and 'Predefined_MultiDrmStreaming'
 	StreamingPolicyName *string `json:"streamingPolicyName,omitempty"`
 	// DefaultContentKeyPolicyName - Default ContentKeyPolicy used by this Streaming Locator
 	DefaultContentKeyPolicyName *string `json:"defaultContentKeyPolicyName,omitempty"`
@@ -9630,7 +9648,7 @@ func (page TransformCollectionPage) Values() []Transform {
 // TransformOutput describes the properties of a TransformOutput, which are the rules to be applied while
 // generating the desired output.
 type TransformOutput struct {
-	// OnError - A Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The default is stop. Possible values include: 'StopProcessingJob', 'ContinueJob'
+	// OnError - A Transform can define more than one outputs. This property defines what the service should do when one output fails - either continue to produce other outputs, or, stop the other outputs. The overall Job state will not reflect failures of outputs that are specified with 'ContinueJob'. The default is 'StopProcessingJob'. Possible values include: 'StopProcessingJob', 'ContinueJob'
 	OnError OnErrorType `json:"onError,omitempty"`
 	// RelativePriority - Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses for processing TransformOutputs. The default priority is Normal. Possible values include: 'Low', 'Normal', 'High'
 	RelativePriority Priority `json:"relativePriority,omitempty"`
@@ -9931,9 +9949,9 @@ func (vVar Video) AsBasicCodec() (BasicCodec, bool) {
 // VideoAnalyzerPreset a video analyzer preset that extracts insights (rich metadata) from both audio and video,
 // and outputs a JSON format file.
 type VideoAnalyzerPreset struct {
-	// AudioInsightsOnly - Whether to only extract audio insights when processing a video file.
-	AudioInsightsOnly *bool `json:"audioInsightsOnly,omitempty"`
-	// AudioLanguage - The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'.
+	// InsightsToExtract - The type of insights to be extracted. If not set then based on the content the type will selected.  If the content is audi only then only audio insights are extraced and if it is video only. Possible values include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'
+	InsightsToExtract InsightsType `json:"insightsToExtract,omitempty"`
+	// AudioLanguage - The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified, automatic language detection would be employed. This feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to English.
 	AudioLanguage *string `json:"audioLanguage,omitempty"`
 	// OdataType - Possible values include: 'OdataTypePreset', 'OdataTypeMicrosoftMediaAudioAnalyzerPreset', 'OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset', 'OdataTypeMicrosoftMediaStandardEncoderPreset', 'OdataTypeMicrosoftMediaVideoAnalyzerPreset'
 	OdataType OdataTypeBasicPreset `json:"@odata.type,omitempty"`
@@ -9943,8 +9961,8 @@ type VideoAnalyzerPreset struct {
 func (vap VideoAnalyzerPreset) MarshalJSON() ([]byte, error) {
 	vap.OdataType = OdataTypeMicrosoftMediaVideoAnalyzerPreset
 	objectMap := make(map[string]interface{})
-	if vap.AudioInsightsOnly != nil {
-		objectMap["audioInsightsOnly"] = vap.AudioInsightsOnly
+	if vap.InsightsToExtract != "" {
+		objectMap["insightsToExtract"] = vap.InsightsToExtract
 	}
 	if vap.AudioLanguage != nil {
 		objectMap["audioLanguage"] = vap.AudioLanguage

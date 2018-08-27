@@ -19,7 +19,7 @@
 
 package authorization
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-01-01-preview/authorization"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
 
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 

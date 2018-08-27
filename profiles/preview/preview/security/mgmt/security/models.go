@@ -97,6 +97,13 @@ const (
 	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
+type NorthSouthPolicyState = original.NorthSouthPolicyState
+
+const (
+	Active   NorthSouthPolicyState = original.Active
+	InActive NorthSouthPolicyState = original.InActive
+)
+
 type NorthSouthProtocol = original.NorthSouthProtocol
 
 const (
@@ -320,6 +327,9 @@ func PossibleFamilyValues() []Family {
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
+}
+func PossibleNorthSouthPolicyStateValues() []NorthSouthPolicyState {
+	return original.PossibleNorthSouthPolicyStateValues()
 }
 func PossibleNorthSouthProtocolValues() []NorthSouthProtocol {
 	return original.PossibleNorthSouthProtocolValues()

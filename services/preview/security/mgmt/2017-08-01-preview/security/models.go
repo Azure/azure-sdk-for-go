@@ -157,6 +157,21 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// NorthSouthPolicyState enumerates the values for north south policy state.
+type NorthSouthPolicyState string
+
+const (
+	// Active ...
+	Active NorthSouthPolicyState = "Active"
+	// InActive ...
+	InActive NorthSouthPolicyState = "InActive"
+)
+
+// PossibleNorthSouthPolicyStateValues returns an array of possible values for the NorthSouthPolicyState const type.
+func PossibleNorthSouthPolicyStateValues() []NorthSouthPolicyState {
+	return []NorthSouthPolicyState{Active, InActive}
+}
+
 // NorthSouthProtocol enumerates the values for north south protocol.
 type NorthSouthProtocol string
 
@@ -2795,8 +2810,8 @@ type NorthSouthHardeningsPolicyList struct {
 
 // NorthSouthHardeningsPolicyProperties a north-south hardening policy
 type NorthSouthHardeningsPolicyProperties struct {
-	// Active - A policy activation state
-	Active *bool `json:"active,omitempty"`
+	// State - A policy activation state. Possible values include: 'Active', 'InActive'
+	State NorthSouthPolicyState `json:"state,omitempty"`
 	// CreatedOn - The date in which the policy created
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
 	// Rules - A list of policy rules
@@ -2821,8 +2836,8 @@ type NorthSouthHardeningsPolicyRule struct {
 type NorthSouthHardeningsPolicySummary struct {
 	// ID - The north-south policy id
 	ID *string `json:"id,omitempty"`
-	// Active - The activation satte of the north-south policy
-	Active *bool `json:"active,omitempty"`
+	// State - The activation state of the north-south policy. Possible values include: 'Active', 'InActive'
+	State NorthSouthPolicyState `json:"state,omitempty"`
 	// RulesCount - The amount of policy rules
 	RulesCount *float64 `json:"rulesCount,omitempty"`
 }

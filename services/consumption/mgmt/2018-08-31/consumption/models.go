@@ -758,10 +758,10 @@ func (csbea *ChargeSummaryByEnrollmentAccount) UnmarshalJSON(body []byte) error 
 type ChargeSummaryProperties struct {
 	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// StartDate - Start date.
-	StartDate *string `json:"startDate,omitempty"`
-	// EndDate - End date.
-	EndDate *string `json:"endDate,omitempty"`
+	// UsageStart - Usage start date.
+	UsageStart *string `json:"usageStart,omitempty"`
+	// UsageEnd -  Usage end date.
+	UsageEnd *string `json:"usageEnd,omitempty"`
 	// AzureCharges - Azure Charges.
 	AzureCharges *decimal.Decimal `json:"azureCharges,omitempty"`
 	// ChargesBilledSeparately - Charges Billed separately.
@@ -776,10 +776,10 @@ type ChargeSummaryProperties struct {
 type ChargeSummaryPropertiesByDepartment struct {
 	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// StartDate - Start date.
-	StartDate *string `json:"startDate,omitempty"`
-	// EndDate - End date.
-	EndDate *string `json:"endDate,omitempty"`
+	// UsageStart - Usage start date.
+	UsageStart *string `json:"usageStart,omitempty"`
+	// UsageEnd -  Usage end date.
+	UsageEnd *string `json:"usageEnd,omitempty"`
 	// AzureCharges - Azure Charges.
 	AzureCharges *decimal.Decimal `json:"azureCharges,omitempty"`
 	// ChargesBilledSeparately - Charges Billed separately.
@@ -794,10 +794,10 @@ type ChargeSummaryPropertiesByDepartment struct {
 type ChargeSummaryPropertiesByEnrollmentAccount struct {
 	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// StartDate - Start date.
-	StartDate *string `json:"startDate,omitempty"`
-	// EndDate - End date.
-	EndDate *string `json:"endDate,omitempty"`
+	// UsageStart - Usage start date.
+	UsageStart *string `json:"usageStart,omitempty"`
+	// UsageEnd -  Usage end date.
+	UsageEnd *string `json:"usageEnd,omitempty"`
 	// AzureCharges - Azure Charges.
 	AzureCharges *decimal.Decimal `json:"azureCharges,omitempty"`
 	// ChargesBilledSeparately - Charges Billed separately.

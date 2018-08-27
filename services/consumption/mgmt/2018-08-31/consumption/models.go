@@ -1245,9 +1245,8 @@ type MarketplaceProperties struct {
 	PublisherName *string `json:"publisherName,omitempty"`
 	// PlanName - The name of plan.
 	PlanName *string `json:"planName,omitempty"`
-	// AdditionalInfo - Additional info of this usage item.
-	AdditionalInfo    *string `json:"additionalInfo,omitempty"`
-	IsRecurringCharge *bool   `json:"isRecurringCharge,omitempty"`
+	// IsRecurringCharge - Flag indicating whether this is a recurring charge or not.
+	IsRecurringCharge *bool `json:"isRecurringCharge,omitempty"`
 }
 
 // MarketplacesListResult result of listing marketplaces. It contains a list of available marketplaces in reverse

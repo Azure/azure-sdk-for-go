@@ -2117,7 +2117,7 @@ func (iter ExternalSecuritySolutionListIterator) Response() ExternalSecuritySolu
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ExternalSecuritySolutionListIterator) Value() ExternalSecuritySolution {
+func (iter ExternalSecuritySolutionListIterator) Value() BasicExternalSecuritySolution {
 	if !iter.page.NotDone() {
 		return ExternalSecuritySolution{}
 	}
@@ -2141,7 +2141,7 @@ func (essl ExternalSecuritySolutionList) externalSecuritySolutionListPreparer() 
 		autorest.WithBaseURL(to.String(essl.NextLink)))
 }
 
-// ExternalSecuritySolutionListPage contains a page of ExternalSecuritySolution values.
+// ExternalSecuritySolutionListPage contains a page of BasicExternalSecuritySolution values.
 type ExternalSecuritySolutionListPage struct {
 	fn   func(ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)
 	essl ExternalSecuritySolutionList
@@ -2169,7 +2169,7 @@ func (page ExternalSecuritySolutionListPage) Response() ExternalSecuritySolution
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ExternalSecuritySolutionListPage) Values() []ExternalSecuritySolution {
+func (page ExternalSecuritySolutionListPage) Values() []BasicExternalSecuritySolution {
 	if page.essl.IsEmpty() {
 		return nil
 	}
@@ -3039,7 +3039,7 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() Setting {
+func (iter SettingsListIterator) Value() BasicSetting {
 	if !iter.page.NotDone() {
 		return Setting{}
 	}
@@ -3063,7 +3063,7 @@ func (sl SettingsList) settingsListPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of Setting values.
+// SettingsListPage contains a page of BasicSetting values.
 type SettingsListPage struct {
 	fn func(SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -3091,7 +3091,7 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []Setting {
+func (page SettingsListPage) Values() []BasicSetting {
 	if page.sl.IsEmpty() {
 		return nil
 	}

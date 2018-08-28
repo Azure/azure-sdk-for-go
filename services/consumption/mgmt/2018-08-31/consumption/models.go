@@ -990,6 +990,8 @@ type ForecastsListResult struct {
 
 // ManagementGroupAggregatedCostProperties the properties of the Management Group Aggregated Cost.
 type ManagementGroupAggregatedCostProperties struct {
+	// BillingPeriodID - The id of the billing period resource that the aggregated cost belongs to.
+	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
 	// UsageStart - The start of the date time range covered by aggregated cost.
 	UsageStart *date.Time `json:"usageStart,omitempty"`
 	// UsageEnd - The end of the date time range covered by the aggregated cost.

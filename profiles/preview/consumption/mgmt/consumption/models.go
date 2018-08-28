@@ -19,18 +19,21 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-06-30/consumption"
+import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption"
 
 type AggregatedCostClient = original.AggregatedCostClient
 type BalancesClient = original.BalancesClient
 type BudgetsClient = original.BudgetsClient
+type ChargesByDepartmentClient = original.ChargesByDepartmentClient
+type ChargesByEnrollmentAccountClient = original.ChargesByEnrollmentAccountClient
+type ChargesForDepartmentClient = original.ChargesForDepartmentClient
+type ChargesForEnrollmentAccountClient = original.ChargesForEnrollmentAccountClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type CostTagsClient = original.CostTagsClient
 type ForecastsClient = original.ForecastsClient
 type MarketplacesClient = original.MarketplacesClient
 type BillingFrequency = original.BillingFrequency
@@ -103,9 +106,13 @@ type BudgetsListResult = original.BudgetsListResult
 type BudgetsListResultIterator = original.BudgetsListResultIterator
 type BudgetsListResultPage = original.BudgetsListResultPage
 type BudgetTimePeriod = original.BudgetTimePeriod
-type CostTag = original.CostTag
-type CostTagProperties = original.CostTagProperties
-type CostTagsModel = original.CostTagsModel
+type ChargesListResultByDepartment = original.ChargesListResultByDepartment
+type ChargesListResultByEnrollmentAccount = original.ChargesListResultByEnrollmentAccount
+type ChargeSummaryByDepartment = original.ChargeSummaryByDepartment
+type ChargeSummaryByEnrollmentAccount = original.ChargeSummaryByEnrollmentAccount
+type ChargeSummaryProperties = original.ChargeSummaryProperties
+type ChargeSummaryPropertiesByDepartment = original.ChargeSummaryPropertiesByDepartment
+type ChargeSummaryPropertiesByEnrollmentAccount = original.ChargeSummaryPropertiesByEnrollmentAccount
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -183,17 +190,35 @@ func NewBudgetsClient(subscriptionID string) BudgetsClient {
 func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
 	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewChargesByDepartmentClient(subscriptionID string) ChargesByDepartmentClient {
+	return original.NewChargesByDepartmentClient(subscriptionID)
+}
+func NewChargesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) ChargesByDepartmentClient {
+	return original.NewChargesByDepartmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChargesByEnrollmentAccountClient(subscriptionID string) ChargesByEnrollmentAccountClient {
+	return original.NewChargesByEnrollmentAccountClient(subscriptionID)
+}
+func NewChargesByEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) ChargesByEnrollmentAccountClient {
+	return original.NewChargesByEnrollmentAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChargesForDepartmentClient(subscriptionID string) ChargesForDepartmentClient {
+	return original.NewChargesForDepartmentClient(subscriptionID)
+}
+func NewChargesForDepartmentClientWithBaseURI(baseURI string, subscriptionID string) ChargesForDepartmentClient {
+	return original.NewChargesForDepartmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChargesForEnrollmentAccountClient(subscriptionID string) ChargesForEnrollmentAccountClient {
+	return original.NewChargesForEnrollmentAccountClient(subscriptionID)
+}
+func NewChargesForEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) ChargesForEnrollmentAccountClient {
+	return original.NewChargesForEnrollmentAccountClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewCostTagsClient(subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClient(subscriptionID)
-}
-func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewForecastsClient(subscriptionID string) ForecastsClient {
 	return original.NewForecastsClient(subscriptionID)

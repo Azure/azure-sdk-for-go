@@ -1,7 +1,7 @@
-// Package containerinstance implements the Azure ARM Containerinstance service API version 2018-06-01.
+// Package containerregistry implements the Azure ARM Containerregistry service API version .
 //
 //
-package containerinstance
+package containerregistry
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Containerinstance
+	// DefaultBaseURI is the default URI used for the service Containerregistry
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Containerinstance.
+// BaseClient is the base client for Containerregistry.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

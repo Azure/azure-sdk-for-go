@@ -1,7 +1,7 @@
-// Package containerinstance implements the Azure ARM Containerinstance service API version 2018-06-01.
+// Package policy implements the Azure ARM Policy service API version 2018-05-01.
 //
-//
-package containerinstance
+// To manage and control access to your resources, you can define customized policies and assign them at a scope.
+package policy
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Containerinstance
+	// DefaultBaseURI is the default URI used for the service Policy
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Containerinstance.
+// BaseClient is the base client for Policy.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

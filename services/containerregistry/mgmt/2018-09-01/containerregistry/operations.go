@@ -1,4 +1,4 @@
-package containerinstance
+package containerregistry
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the client for the Operations methods of the Containerinstance service.
+// OperationsClient is the client for the Operations methods of the Containerregistry service.
 type OperationsClient struct {
 	BaseClient
 }
@@ -39,24 +39,25 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List list the operations for Azure Container Instance service.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
+// List lists all of the available Azure Container Registry REST API operations.
+func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerinstance.OperationsClient", "List", resp, "Failure sending request")
+		result.olr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.olr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -64,7 +65,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-06-01"
+	const APIVersion = "2017-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -72,7 +73,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.ContainerInstance/operations"),
+		autorest.WithPath("/providers/Microsoft.ContainerRegistry/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -94,5 +95,32 @@ func (client OperationsClient) ListResponder(resp *http.Response) (result Operat
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client OperationsClient) listNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
+	req, err := lastResults.operationListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }

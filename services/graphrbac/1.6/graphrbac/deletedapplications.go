@@ -64,10 +64,14 @@ func (client DeletedApplicationsClient) Get(ctx context.Context) (result Applica
 
 // GetPreparer prepares the Get request.
 func (client DeletedApplicationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/{tenantID}/deletedApplications"))
+		autorest.WithPathParameters("/{tenantID}/deletedApplications", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -92,8 +96,10 @@ func (client DeletedApplicationsClient) GetResponder(resp *http.Response) (resul
 }
 
 // Restore restores the deleted application in the directory.
-func (client DeletedApplicationsClient) Restore(ctx context.Context) (result Application, err error) {
-	req, err := client.RestorePreparer(ctx)
+// Parameters:
+// objectID - application object ID.
+func (client DeletedApplicationsClient) Restore(ctx context.Context, objectID string) (result Application, err error) {
+	req, err := client.RestorePreparer(ctx, objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "Restore", nil, "Failure preparing request")
 		return
@@ -115,11 +121,16 @@ func (client DeletedApplicationsClient) Restore(ctx context.Context) (result App
 }
 
 // RestorePreparer prepares the Restore request.
-func (client DeletedApplicationsClient) RestorePreparer(ctx context.Context) (*http.Request, error) {
+func (client DeletedApplicationsClient) RestorePreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/{tenantID}/deletedApplications/{objectId}/restore"))
+		autorest.WithPathParameters("/{tenantID}/deletedApplications/{objectId}/restore", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

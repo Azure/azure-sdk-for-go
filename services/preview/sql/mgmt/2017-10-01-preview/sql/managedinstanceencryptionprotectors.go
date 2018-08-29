@@ -188,36 +188,36 @@ func (client ManagedInstanceEncryptionProtectorsClient) GetResponder(resp *http.
 	return
 }
 
-// ListByServer gets a list of managed instance encryption protectors
+// ListByInstance gets a list of managed instance encryption protectors
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // managedInstanceName - the name of the managed instance.
-func (client ManagedInstanceEncryptionProtectorsClient) ListByServer(ctx context.Context, resourceGroupName string, managedInstanceName string) (result ManagedInstanceEncryptionProtectorListResultPage, err error) {
-	result.fn = client.listByServerNextResults
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, managedInstanceName)
+func (client ManagedInstanceEncryptionProtectorsClient) ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result ManagedInstanceEncryptionProtectorListResultPage, err error) {
+	result.fn = client.listByInstanceNextResults
+	req, err := client.ListByInstancePreparer(ctx, resourceGroupName, managedInstanceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByInstance", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListByInstanceSender(req)
 	if err != nil {
 		result.mieplr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByInstance", resp, "Failure sending request")
 		return
 	}
 
-	result.mieplr, err = client.ListByServerResponder(resp)
+	result.mieplr, err = client.ListByInstanceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "ListByInstance", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client ManagedInstanceEncryptionProtectorsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, managedInstanceName string) (*http.Request, error) {
+// ListByInstancePreparer prepares the ListByInstance request.
+func (client ManagedInstanceEncryptionProtectorsClient) ListByInstancePreparer(ctx context.Context, resourceGroupName string, managedInstanceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managedInstanceName": autorest.Encode("path", managedInstanceName),
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
@@ -237,16 +237,16 @@ func (client ManagedInstanceEncryptionProtectorsClient) ListByServerPreparer(ctx
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
+// ListByInstanceSender sends the ListByInstance request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedInstanceEncryptionProtectorsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client ManagedInstanceEncryptionProtectorsClient) ListByInstanceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByServerResponder handles the response to the ListByServer request. The method always
+// ListByInstanceResponder handles the response to the ListByInstance request. The method always
 // closes the http.Response Body.
-func (client ManagedInstanceEncryptionProtectorsClient) ListByServerResponder(resp *http.Response) (result ManagedInstanceEncryptionProtectorListResult, err error) {
+func (client ManagedInstanceEncryptionProtectorsClient) ListByInstanceResponder(resp *http.Response) (result ManagedInstanceEncryptionProtectorListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -257,29 +257,29 @@ func (client ManagedInstanceEncryptionProtectorsClient) ListByServerResponder(re
 	return
 }
 
-// listByServerNextResults retrieves the next set of results, if any.
-func (client ManagedInstanceEncryptionProtectorsClient) listByServerNextResults(lastResults ManagedInstanceEncryptionProtectorListResult) (result ManagedInstanceEncryptionProtectorListResult, err error) {
+// listByInstanceNextResults retrieves the next set of results, if any.
+func (client ManagedInstanceEncryptionProtectorsClient) listByInstanceNextResults(lastResults ManagedInstanceEncryptionProtectorListResult) (result ManagedInstanceEncryptionProtectorListResult, err error) {
 	req, err := lastResults.managedInstanceEncryptionProtectorListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByServerNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByInstanceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListByInstanceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByServerNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByInstanceNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByServerResponder(resp)
+	result, err = client.ListByInstanceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceEncryptionProtectorsClient", "listByInstanceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByServerComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagedInstanceEncryptionProtectorsClient) ListByServerComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result ManagedInstanceEncryptionProtectorListResultIterator, err error) {
-	result.page, err = client.ListByServer(ctx, resourceGroupName, managedInstanceName)
+// ListByInstanceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ManagedInstanceEncryptionProtectorsClient) ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result ManagedInstanceEncryptionProtectorListResultIterator, err error) {
+	result.page, err = client.ListByInstance(ctx, resourceGroupName, managedInstanceName)
 	return
 }

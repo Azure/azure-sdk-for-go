@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,6 +47,18 @@ func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) Ga
 // galleryImageName - the name of the gallery image.
 // galleryImage - parameters supplied to the create or update gallery image operation.
 func (client GalleryImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (result GalleryImagesCreateOrUpdateFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: galleryImage,
+			Constraints: []validation.Constraint{{Target: "galleryImage.GalleryImageProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "galleryImage.GalleryImageProperties.Identifier", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "galleryImage.GalleryImageProperties.Identifier.Publisher", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "galleryImage.GalleryImageProperties.Identifier.Offer", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "galleryImage.GalleryImageProperties.Identifier.Sku", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				}}}}}); err != nil {
+		return result, validation.NewError("compute.GalleryImagesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleryImagesClient", "CreateOrUpdate", nil, "Failure preparing request")

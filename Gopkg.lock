@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:e222cbd536d9e0850e7297290c431aea75ba087c70d6f98525e95b9f2d02a627"
+  digest = "1:94ef971d1e136d4aad4bc82b1e297e99f2b667e95ac2b31d2eb61287090f6d6a"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -12,11 +12,12 @@
     "autorest/date",
     "autorest/to",
     "autorest/validation",
+    "logger",
     "version",
   ]
   pruneopts = ""
-  revision = "bca49d5b51a50dc5bb17bbf6204c711c6dbded06"
-  version = "v10.14.0"
+  revision = "39013ecb48eaf6ced3f4e3e1d95515140ce6b3cf"
+  version = "v10.15.2"
 
 [[projects]]
   digest = "1:6098222470fe0172157ce9bbef5d2200df4edde17ee649c5d6e48330e4afa4c6"
@@ -36,14 +37,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e736daced8bc48a910e0634540bc5cd63f1eea1b20fed65f8d82c8ad65eb10b2"
+  digest = "1:5035a1cb74263ee5598097e5423c706804305b23e55d66312d02c2d85f091639"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
     "recorder",
   ]
   pruneopts = ""
-  revision = "8b144be0744f013a1b44386058f1fcb3ba98177d"
+  revision = "aafff18a5cc28fa0b2f26baf6a14472cda9b54c6"
 
 [[projects]]
   digest = "1:eb53021a8aa3f599d29c7102e65026242bdedce998a54837dc67f14b6a97c5fd"
@@ -65,11 +66,10 @@
     "internal/scram",
   ]
   pruneopts = ""
-  revision = "113d3961e7311526535a1ef7042196563d442761"
+  revision = "6f9f54af1356a8f1a83e6daf0b351ba6ed6e42c6"
 
 [[projects]]
-  branch = "master"
-  digest = "1:9b7c5846d70f425d7fe279595e32a20994c6075e87be03b5c367ed07280877c5"
+  digest = "1:d14365c51dd1d34d5c79833ec91413bfbb166be978724f15701e17080dc06dec"
   name = "github.com/hashicorp/hcl"
   packages = [
     ".",
@@ -84,7 +84,8 @@
     "json/token",
   ]
   pruneopts = ""
-  revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
+  revision = "8cb6e5b959231cc1119e43259c4a608f9c51a241"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -151,20 +152,20 @@
   revision = "48a63b6052f1f9373db9388a658da30c6ab53db1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:99651e95333755cbe5c9768c1b80031300acca64a80870b40309202b32585a5a"
+  digest = "1:096a8a9182648da3d00ff243b88407838902b6703fc12657f76890e08d1899bf"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
   pruneopts = ""
-  revision = "3864e76763d94a6df2f9960b16a20a33da9f9a66"
+  revision = "ae18d6b8b3205b561c79e8e5f69bff09736185f4"
+  version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:f43ed2c836208c14f45158fd01577c985688a4d11cf9fd475a939819fef3b321"
+  digest = "1:5219b4506253ccc598f9340677162a42d6a78f340a4cc6df2d62db4d0593c4e9"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   pruneopts = ""
-  revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
+  revision = "fa473d140ef3c6adf42d6b391fe76707f1f243c8"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:894aef961c056b6d85d12bac890bf60c44e99b46292888bfa66caf529f804457"
@@ -219,46 +220,46 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:104517520aab91164020ab6524a5d6b7cafc641b2e42ac6236f6ac1deac4f66a"
+  digest = "1:49d1a9ccb9502d5ce81e7ae622211c496612970bbbfd1c9e4065e6ec13c3d030"
   name = "github.com/spf13/jwalterweatherman"
   packages = ["."]
   pruneopts = ""
-  revision = "7c0cea34c8ece3fbeb2b27ab9b59511d360fb394"
+  revision = "14d3d4c518341bea657dd8a226f5121c0ff8c9f2"
 
 [[projects]]
-  digest = "1:8e243c568f36b09031ec18dff5f7d2769dcf5ca4d624ea511c8e3197dc3d352d"
+  digest = "1:0a52bcb568386d98f4894575d53ce3e456f56471de6897bb8b9de13c33d9340e"
   name = "github.com/spf13/pflag"
   packages = ["."]
   pruneopts = ""
-  revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
-  version = "v1.0.1"
-
-[[projects]]
-  digest = "1:3dab237cd3263a290d771d133fed777bb56c22e380b00ebe92e6531d5c8d3d0c"
-  name = "github.com/spf13/viper"
-  packages = ["."]
-  pruneopts = ""
-  revision = "b5e8006cbee93ec955a89ab31e0e3ce3204f3736"
+  revision = "9a97c102cda95a86cec2345a6f09f55a939babf5"
   version = "v1.0.2"
 
 [[projects]]
+  digest = "1:a3018c5a423d6cfacf5c6e736ad07637494728fb446390e3f34cacae9e80a529"
+  name = "github.com/spf13/viper"
+  packages = ["."]
+  pruneopts = ""
+  revision = "907c19d40d9a6c9bb55f040ff4ae45271a4754b9"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "master"
-  digest = "1:cae234a803b78380e4d769db6036b9fcc8c08ed4ff862571ffc1a958edc1f629"
+  digest = "1:793a79198b755828dec284c6f1325e24e09186f1b7ba818b65c7c35104ed86eb"
   name = "golang.org/x/crypto"
   packages = [
     "pkcs12",
     "pkcs12/internal/rc2",
   ]
   pruneopts = ""
-  revision = "c126467f60eb25f8f27e5a981f32a87e3965053f"
+  revision = "614d502a4dac94afa3a6ce146bd1736da82514c6"
 
 [[projects]]
   branch = "master"
-  digest = "1:677e38cad6833ad266ec843739d167755eda1e6f2d8af1c63102b0426ad820db"
+  digest = "1:79b4fb7cfed68c4d0727858bd32dbe3be4b97ea58e2d767f92287f67810cbc98"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "ac767d655b305d4e9612f5f6e33120b9176c4ad4"
+  revision = "d99a578cf41bfccdeaf48b0845c823a4b8b0ad5e"
 
 [[projects]]
   digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"
@@ -277,7 +278,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0a7c4519ae77a3efda26ca65984efe97392362bc3c6591f23775178f785d1d59"
+  digest = "1:a547b0e4c2e95939609350bf8d7634006749cb1af408efce9dc5bf3f05b96194"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -285,7 +286,7 @@
     "internal/fastwalk",
   ]
   pruneopts = ""
-  revision = "ded554d0681e0cba3cf074977cdc12e2c0906fe6"
+  revision = "6cd1fcedba52a3e8045a1c96970cec308e4a632c"
 
 [[projects]]
   branch = "v1"

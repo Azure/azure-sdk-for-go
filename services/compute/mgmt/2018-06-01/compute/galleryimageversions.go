@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,6 +50,13 @@ func NewGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID str
 // Format: <MajorVersion>.<MinorVersion>.<Patch>
 // galleryImageVersion - parameters supplied to the create or update gallery image version operation.
 func (client GalleryImageVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion) (result GalleryImageVersionsCreateOrUpdateFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: galleryImageVersion,
+			Constraints: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("compute.GalleryImageVersionsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, galleryImageVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleryImageVersionsClient", "CreateOrUpdate", nil, "Failure preparing request")

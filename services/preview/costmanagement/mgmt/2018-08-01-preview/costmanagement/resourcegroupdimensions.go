@@ -25,23 +25,24 @@ import (
 	"net/http"
 )
 
-// SubscriptionDimensionsClient is the client for the SubscriptionDimensions methods of the Costmanagement service.
-type SubscriptionDimensionsClient struct {
+// ResourceGroupDimensionsClient is the client for the ResourceGroupDimensions methods of the Costmanagement service.
+type ResourceGroupDimensionsClient struct {
 	BaseClient
 }
 
-// NewSubscriptionDimensionsClient creates an instance of the SubscriptionDimensionsClient client.
-func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
-	return NewSubscriptionDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewResourceGroupDimensionsClient creates an instance of the ResourceGroupDimensionsClient client.
+func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
+	return NewResourceGroupDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSubscriptionDimensionsClientWithBaseURI creates an instance of the SubscriptionDimensionsClient client.
-func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
-	return SubscriptionDimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewResourceGroupDimensionsClientWithBaseURI creates an instance of the ResourceGroupDimensionsClient client.
+func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
+	return ResourceGroupDimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the dimensions by subscription Id.
+// List lists the dimensions by resource group Id.
 // Parameters:
+// resourceGroupName - azure Resource Group Name.
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,
 // properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // expand - may be used to expand the properties/data within a dimension dategory. By default, data is not
@@ -50,44 +51,45 @@ func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID s
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N dimension data.
-func (client SubscriptionDimensionsClient) List(ctx context.Context, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
+func (client ResourceGroupDimensionsClient) List(ctx context.Context, resourceGroupName string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("costmanagement.SubscriptionDimensionsClient", "List", err.Error())
+		return result, validation.NewError("costmanagement.ResourceGroupDimensionsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, filter, expand, skiptoken, top)
+	req, err := client.ListPreparer(ctx, resourceGroupName, filter, expand, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.ResourceGroupDimensionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.ResourceGroupDimensionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.ResourceGroupDimensionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client SubscriptionDimensionsClient) ListPreparer(ctx context.Context, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
+func (client ResourceGroupDimensionsClient) ListPreparer(ctx context.Context, resourceGroupName string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -107,21 +109,21 @@ func (client SubscriptionDimensionsClient) ListPreparer(ctx context.Context, fil
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/dimensions", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CostManagement/dimensions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SubscriptionDimensionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ResourceGroupDimensionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SubscriptionDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
+func (client ResourceGroupDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

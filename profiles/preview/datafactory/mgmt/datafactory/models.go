@@ -275,8 +275,9 @@ const (
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
 const (
-	Fail    IntegrationRuntimeUpdateResult = original.Fail
-	Succeed IntegrationRuntimeUpdateResult = original.Succeed
+	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
+	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
+	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
 )
 
 type JSONFormatFilePattern = original.JSONFormatFilePattern
@@ -975,6 +976,7 @@ type CouchbaseLinkedService = original.CouchbaseLinkedService
 type CouchbaseLinkedServiceTypeProperties = original.CouchbaseLinkedServiceTypeProperties
 type CouchbaseSource = original.CouchbaseSource
 type CouchbaseTableDataset = original.CouchbaseTableDataset
+type CreateLinkedIntegrationRuntimeRequest = original.CreateLinkedIntegrationRuntimeRequest
 type CreateRunResponse = original.CreateRunResponse
 type CustomActivity = original.CustomActivity
 type CustomActivityReferenceObject = original.CustomActivityReferenceObject
@@ -995,6 +997,7 @@ type DatasetBZip2Compression = original.DatasetBZip2Compression
 type BasicDatasetCompression = original.BasicDatasetCompression
 type DatasetCompression = original.DatasetCompression
 type DatasetDeflateCompression = original.DatasetDeflateCompression
+type DatasetFolder = original.DatasetFolder
 type DatasetGZipCompression = original.DatasetGZipCompression
 type DatasetListResponse = original.DatasetListResponse
 type DatasetListResponseIterator = original.DatasetListResponseIterator
@@ -1220,6 +1223,7 @@ type PhoenixLinkedServiceTypeProperties = original.PhoenixLinkedServiceTypePrope
 type PhoenixObjectDataset = original.PhoenixObjectDataset
 type PhoenixSource = original.PhoenixSource
 type Pipeline = original.Pipeline
+type PipelineFolder = original.PipelineFolder
 type PipelineListResponse = original.PipelineListResponse
 type PipelineListResponseIterator = original.PipelineListResponseIterator
 type PipelineListResponsePage = original.PipelineListResponsePage

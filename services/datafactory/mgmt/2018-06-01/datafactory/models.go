@@ -539,15 +539,17 @@ func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
 type IntegrationRuntimeUpdateResult string
 
 const (
-	// Fail ...
-	Fail IntegrationRuntimeUpdateResult = "Fail"
-	// Succeed ...
-	Succeed IntegrationRuntimeUpdateResult = "Succeed"
+	// IntegrationRuntimeUpdateResultFail ...
+	IntegrationRuntimeUpdateResultFail IntegrationRuntimeUpdateResult = "Fail"
+	// IntegrationRuntimeUpdateResultNone ...
+	IntegrationRuntimeUpdateResultNone IntegrationRuntimeUpdateResult = "None"
+	// IntegrationRuntimeUpdateResultSucceed ...
+	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = "Succeed"
 )
 
 // PossibleIntegrationRuntimeUpdateResultValues returns an array of possible values for the IntegrationRuntimeUpdateResult const type.
 func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
-	return []IntegrationRuntimeUpdateResult{Fail, Succeed}
+	return []IntegrationRuntimeUpdateResult{IntegrationRuntimeUpdateResultFail, IntegrationRuntimeUpdateResultNone, IntegrationRuntimeUpdateResultSucceed}
 }
 
 // JSONFormatFilePattern enumerates the values for json format file pattern.
@@ -25682,6 +25684,18 @@ func (ctd CouchbaseTableDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for CouchbaseTableDataset.
 func (ctd CouchbaseTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &ctd, true
+}
+
+// CreateLinkedIntegrationRuntimeRequest the linked integration runtime information.
+type CreateLinkedIntegrationRuntimeRequest struct {
+	// Name - The name of the linked integration runtime.
+	Name *string `json:"name,omitempty"`
+	// SubscriptionID - The ID of the subscription that the linked integration runtime belongs to.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// DataFactoryName - The name of the data factory that the linked integration runtime belongs to.
+	DataFactoryName *string `json:"dataFactoryName,omitempty"`
+	// DataFactoryLocation - The location of the data factory that the linked integration runtime belongs to.
+	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
 }
 
 // CreateRunResponse response body with a run identifier.
@@ -81402,7 +81416,7 @@ type SelfHostedIntegrationRuntimeNode struct {
 	LastStartTime *date.Time `json:"lastStartTime,omitempty"`
 	// LastStopTime - The integration runtime node last stop time.
 	LastStopTime *date.Time `json:"lastStopTime,omitempty"`
-	// LastUpdateResult - The result of the last integration runtime node update. Possible values include: 'Succeed', 'Fail'
+	// LastUpdateResult - The result of the last integration runtime node update. Possible values include: 'IntegrationRuntimeUpdateResultNone', 'IntegrationRuntimeUpdateResultSucceed', 'IntegrationRuntimeUpdateResultFail'
 	LastUpdateResult IntegrationRuntimeUpdateResult `json:"lastUpdateResult,omitempty"`
 	// LastStartUpdateTime - The last time for the integration runtime node update start.
 	LastStartUpdateTime *date.Time `json:"lastStartUpdateTime,omitempty"`
@@ -81627,6 +81641,8 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	PushedVersion *string `json:"pushedVersion,omitempty"`
 	// LatestVersion - The latest version on download center.
 	LatestVersion *string `json:"latestVersion,omitempty"`
+	// AutoUpdateETA - The estimated time when the self-hosted integration runtime will be updated.
+	AutoUpdateETA *date.Time `json:"autoUpdateETA,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
@@ -81676,6 +81692,9 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	}
 	if shirstp.LatestVersion != nil {
 		objectMap["latestVersion"] = shirstp.LatestVersion
+	}
+	if shirstp.AutoUpdateETA != nil {
+		objectMap["autoUpdateETA"] = shirstp.AutoUpdateETA
 	}
 	return json.Marshal(objectMap)
 }

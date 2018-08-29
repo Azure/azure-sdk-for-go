@@ -275,8 +275,9 @@ const (
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
 const (
-	Fail    IntegrationRuntimeUpdateResult = original.Fail
-	Succeed IntegrationRuntimeUpdateResult = original.Succeed
+	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
+	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
+	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
 )
 
 type JSONFormatFilePattern = original.JSONFormatFilePattern
@@ -966,6 +967,7 @@ type CouchbaseLinkedService = original.CouchbaseLinkedService
 type CouchbaseLinkedServiceTypeProperties = original.CouchbaseLinkedServiceTypeProperties
 type CouchbaseSource = original.CouchbaseSource
 type CouchbaseTableDataset = original.CouchbaseTableDataset
+type CreateLinkedIntegrationRuntimeRequest = original.CreateLinkedIntegrationRuntimeRequest
 type CreateRunResponse = original.CreateRunResponse
 type CustomActivity = original.CustomActivity
 type CustomActivityReferenceObject = original.CustomActivityReferenceObject

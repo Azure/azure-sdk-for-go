@@ -25,24 +25,23 @@ import (
 	"net/http"
 )
 
-// BillingAccountDimensionsClient is the client for the BillingAccountDimensions methods of the Costmanagement service.
-type BillingAccountDimensionsClient struct {
+// SubscriptionDimensionsClient is the client for the SubscriptionDimensions methods of the Costmanagement service.
+type SubscriptionDimensionsClient struct {
 	BaseClient
 }
 
-// NewBillingAccountDimensionsClient creates an instance of the BillingAccountDimensionsClient client.
-func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
-	return NewBillingAccountDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSubscriptionDimensionsClient creates an instance of the SubscriptionDimensionsClient client.
+func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
+	return NewSubscriptionDimensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBillingAccountDimensionsClientWithBaseURI creates an instance of the BillingAccountDimensionsClient client.
-func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountDimensionsClient {
-	return BillingAccountDimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSubscriptionDimensionsClientWithBaseURI creates an instance of the SubscriptionDimensionsClient client.
+func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
+	return SubscriptionDimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the dimensions by billingAccount Id.
+// List lists the dimensions by subscription Id.
 // Parameters:
-// billingAccountID - billingAccount ID
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,
 // properties/usageEnd. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // expand - may be used to expand the properties/data within a dimension dategory. By default, data is not
@@ -51,44 +50,44 @@ func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N dimension data.
-func (client BillingAccountDimensionsClient) List(ctx context.Context, billingAccountID string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
+func (client SubscriptionDimensionsClient) List(ctx context.Context, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("costmanagement.BillingAccountDimensionsClient", "List", err.Error())
+		return result, validation.NewError("costmanagement.SubscriptionDimensionsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, billingAccountID, filter, expand, skiptoken, top)
+	req, err := client.ListPreparer(ctx, filter, expand, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.BillingAccountDimensionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.BillingAccountDimensionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.BillingAccountDimensionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.SubscriptionDimensionsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client BillingAccountDimensionsClient) ListPreparer(ctx context.Context, billingAccountID string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
+func (client SubscriptionDimensionsClient) ListPreparer(ctx context.Context, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -108,21 +107,21 @@ func (client BillingAccountDimensionsClient) ListPreparer(ctx context.Context, b
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/dimensions", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/dimensions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client BillingAccountDimensionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SubscriptionDimensionsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client BillingAccountDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
+func (client SubscriptionDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

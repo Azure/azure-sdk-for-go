@@ -1,7 +1,7 @@
-// Package compute implements the Azure ARM Compute service API version .
+// Package logic implements the Azure ARM Logic service API version 2018-07-01-preview.
 //
-// Compute Client
-package compute
+// REST API for Azure Logic Apps.
+package logic
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Compute
+	// DefaultBaseURI is the default URI used for the service Logic
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Compute.
+// BaseClient is the base client for Logic.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

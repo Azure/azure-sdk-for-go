@@ -1,7 +1,7 @@
-// Package compute implements the Azure ARM Compute service API version .
+// Package containerregistry implements the Azure ARM Containerregistry service API version .
 //
-// Compute Client
-package compute
+//
+package containerregistry
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Compute
+	// DefaultBaseURI is the default URI used for the service Containerregistry
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Compute.
+// BaseClient is the base client for Containerregistry.
 type BaseClient struct {
 	autorest.Client
 	BaseURI        string

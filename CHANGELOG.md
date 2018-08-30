@@ -1,5 +1,72 @@
 # CHANGELOG
 
+## `v20.0.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|                   batch |     2018-08-01.7.0    |
+|             botservices |       2018-07-12      |
+|       containerregistry |       2018-09-01      |
+|          costmanagement |   2018-08-01-preview  |
+|              iotcentral |       2018-09-01      |
+|                   logic |   2018-07-01-preview  |
+|                  policy |       2018-05-01      |
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|                 advisor |       2017-04-19      |
+|                     cdn |       2017-10-12      |
+|             consumption |       2018-06-30      |
+|       containerregistry | 2017-10-01<br/>2018-02-01 |
+|                 devices |       2018-04-01      |
+|               graphrbac |          1.6          |
+|             hanaonazure |   2017-11-03-preview  |
+|                 migrate |       2018-02-02      |
+|                   mysql |       2017-12-01      |
+|                 network |       2018-06-01      |
+|        powerbidedicated |       2017-10-01      |
+|            reservations |       2018-06-01      |
+|                 signalr |   2018-03-01-preview  |
+|            siterecovery |       2018-01-10      |
+|                     sql |   2017-03-01-preview  |
+|                 storage | 2018-02-01<br/>2018-03-01-preview |
+
+### Removed Packages
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|              iotcentral | 2017-07-01-privatepreview |
+|                 network |       2018-05-01      |
+
+### Breaking Changes
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|              automation | 2015-10-31<br/>2017-05-15-preview<br/>2018-01-preview |
+|              azurestack |       2017-06-01      |
+|                 compute | 2017-12-01<br/>2018-04-01<br/>2018-06-01 |
+|          computervision |          v2.0         |
+|       containerinstance |       2018-06-01      |
+|        containerservice |       2018-03-31      |
+|        contentmoderator |          v1.0         |
+|             datafactory |       2018-06-01      |
+|                     dns | 2015-05-04-preview<br/>2016-04-01<br/>2017-09-01<br/>2017-10-01<br/>2018-03-01-preview |
+|                    face |          v1.0         |
+|               hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+|                insights | 2017-05-01-preview<br/>2018-03-01 |
+|          luis/authoring |          v2.0         |
+|            luis/runtime |          v2.0         |
+|                 network |       2018-04-01      |
+|                security |   2017-08-01-preview  |
+|                     sql |   2017-10-01-preview  |
+|           textanalytics |          v2.0         |
+|            visualsearch |          v1.0         |
+|                     web |       2018-02-01      |
+
 ## `v19.1.0`
 
 ### New Services

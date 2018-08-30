@@ -21,6 +21,7 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-06-30/consumption"
 
+type AggregatedCostClient = original.AggregatedCostClient
 type BalancesClient = original.BalancesClient
 type BudgetsClient = original.BudgetsClient
 
@@ -113,6 +114,8 @@ type Forecast = original.Forecast
 type ForecastProperties = original.ForecastProperties
 type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
 type ForecastsListResult = original.ForecastsListResult
+type ManagementGroupAggregatedCostProperties = original.ManagementGroupAggregatedCostProperties
+type ManagementGroupAggregatedCostResult = original.ManagementGroupAggregatedCostResult
 type Marketplace = original.Marketplace
 type MarketplaceProperties = original.MarketplaceProperties
 type MarketplacesListResult = original.MarketplacesListResult
@@ -162,6 +165,12 @@ type ReservationsSummariesClient = original.ReservationsSummariesClient
 type TagsClient = original.TagsClient
 type UsageDetailsClient = original.UsageDetailsClient
 
+func NewAggregatedCostClient(subscriptionID string) AggregatedCostClient {
+	return original.NewAggregatedCostClient(subscriptionID)
+}
+func NewAggregatedCostClientWithBaseURI(baseURI string, subscriptionID string) AggregatedCostClient {
+	return original.NewAggregatedCostClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBalancesClient(subscriptionID string) BalancesClient {
 	return original.NewBalancesClient(subscriptionID)
 }

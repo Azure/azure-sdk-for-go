@@ -57,9 +57,9 @@ type EntityModel struct {
 	// Type - Type of the entity, as defined in LUIS.
 	Type *string `json:"type,omitempty"`
 	// StartIndex - The position of the first character of the matched entity within the utterance.
-	StartIndex *float64 `json:"startIndex,omitempty"`
+	StartIndex *int32 `json:"startIndex,omitempty"`
 	// EndIndex - The position of the last character of the matched entity within the utterance.
-	EndIndex *float64 `json:"endIndex,omitempty"`
+	EndIndex *int32 `json:"endIndex,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EntityModel.
@@ -94,9 +94,9 @@ type EntityWithResolution struct {
 	// Type - Type of the entity, as defined in LUIS.
 	Type *string `json:"type,omitempty"`
 	// StartIndex - The position of the first character of the matched entity within the utterance.
-	StartIndex *float64 `json:"startIndex,omitempty"`
+	StartIndex *int32 `json:"startIndex,omitempty"`
 	// EndIndex - The position of the last character of the matched entity within the utterance.
-	EndIndex *float64 `json:"endIndex,omitempty"`
+	EndIndex *int32 `json:"endIndex,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EntityWithResolution.
@@ -132,9 +132,9 @@ type EntityWithScore struct {
 	// Type - Type of the entity, as defined in LUIS.
 	Type *string `json:"type,omitempty"`
 	// StartIndex - The position of the first character of the matched entity within the utterance.
-	StartIndex *float64 `json:"startIndex,omitempty"`
+	StartIndex *int32 `json:"startIndex,omitempty"`
 	// EndIndex - The position of the last character of the matched entity within the utterance.
-	EndIndex *float64 `json:"endIndex,omitempty"`
+	EndIndex *int32 `json:"endIndex,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EntityWithScore.

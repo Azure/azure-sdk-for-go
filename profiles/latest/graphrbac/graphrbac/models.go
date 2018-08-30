@@ -28,6 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type DeletedApplicationsClient = original.DeletedApplicationsClient
 type DomainsClient = original.DomainsClient
 type GroupsClient = original.GroupsClient
 type ObjectType = original.ObjectType
@@ -118,6 +119,12 @@ func New(tenantID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClient(tenantID)
+}
+func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID)
 }
 func NewDomainsClient(tenantID string) DomainsClient {
 	return original.NewDomainsClient(tenantID)

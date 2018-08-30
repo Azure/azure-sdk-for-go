@@ -70,11 +70,6 @@ type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
 type IPFilterRuleProperties = original.IPFilterRuleProperties
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
-type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
@@ -84,7 +79,6 @@ type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResul
 type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPage
 type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -118,12 +112,6 @@ func NewNamespacesClient(subscriptionID string) NamespacesClient {
 }
 func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

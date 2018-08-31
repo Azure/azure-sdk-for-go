@@ -341,12 +341,12 @@ func PossibleTrustPolicyTypeValues() []TrustPolicyType {
 type Type string
 
 const (
-	// TypeBuildTaskRequest ...
-	TypeBuildTaskRequest Type = "BuildTaskRequest"
 	// TypeDockerBuildRequest ...
 	TypeDockerBuildRequest Type = "DockerBuildRequest"
-	// TypeQuickTaskRunRequest ...
-	TypeQuickTaskRunRequest Type = "QuickTaskRunRequest"
+	// TypeEncodedTaskRunRequest ...
+	TypeEncodedTaskRunRequest Type = "EncodedTaskRunRequest"
+	// TypeFileTaskRunRequest ...
+	TypeFileTaskRunRequest Type = "FileTaskRunRequest"
 	// TypeRunRequest ...
 	TypeRunRequest Type = "RunRequest"
 	// TypeTaskRunRequest ...
@@ -355,45 +355,45 @@ const (
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeBuildTaskRequest, TypeDockerBuildRequest, TypeQuickTaskRunRequest, TypeRunRequest, TypeTaskRunRequest}
+	return []Type{TypeDockerBuildRequest, TypeEncodedTaskRunRequest, TypeFileTaskRunRequest, TypeRunRequest, TypeTaskRunRequest}
 }
 
 // TypeBasicTaskStepProperties enumerates the values for type basic task step properties.
 type TypeBasicTaskStepProperties string
 
 const (
-	// TypeBuildTask ...
-	TypeBuildTask TypeBasicTaskStepProperties = "BuildTask"
 	// TypeDocker ...
 	TypeDocker TypeBasicTaskStepProperties = "Docker"
-	// TypeRunTask ...
-	TypeRunTask TypeBasicTaskStepProperties = "RunTask"
+	// TypeEncodedTask ...
+	TypeEncodedTask TypeBasicTaskStepProperties = "EncodedTask"
+	// TypeFileTask ...
+	TypeFileTask TypeBasicTaskStepProperties = "FileTask"
 	// TypeTaskStepProperties ...
 	TypeTaskStepProperties TypeBasicTaskStepProperties = "TaskStepProperties"
 )
 
 // PossibleTypeBasicTaskStepPropertiesValues returns an array of possible values for the TypeBasicTaskStepProperties const type.
 func PossibleTypeBasicTaskStepPropertiesValues() []TypeBasicTaskStepProperties {
-	return []TypeBasicTaskStepProperties{TypeBuildTask, TypeDocker, TypeRunTask, TypeTaskStepProperties}
+	return []TypeBasicTaskStepProperties{TypeDocker, TypeEncodedTask, TypeFileTask, TypeTaskStepProperties}
 }
 
 // TypeBasicTaskStepUpdateParameters enumerates the values for type basic task step update parameters.
 type TypeBasicTaskStepUpdateParameters string
 
 const (
-	// TypeBasicTaskStepUpdateParametersTypeBuildTask ...
-	TypeBasicTaskStepUpdateParametersTypeBuildTask TypeBasicTaskStepUpdateParameters = "BuildTask"
 	// TypeBasicTaskStepUpdateParametersTypeDocker ...
 	TypeBasicTaskStepUpdateParametersTypeDocker TypeBasicTaskStepUpdateParameters = "Docker"
-	// TypeBasicTaskStepUpdateParametersTypeRunTask ...
-	TypeBasicTaskStepUpdateParametersTypeRunTask TypeBasicTaskStepUpdateParameters = "RunTask"
+	// TypeBasicTaskStepUpdateParametersTypeEncodedTask ...
+	TypeBasicTaskStepUpdateParametersTypeEncodedTask TypeBasicTaskStepUpdateParameters = "EncodedTask"
+	// TypeBasicTaskStepUpdateParametersTypeFileTask ...
+	TypeBasicTaskStepUpdateParametersTypeFileTask TypeBasicTaskStepUpdateParameters = "FileTask"
 	// TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters ...
 	TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters TypeBasicTaskStepUpdateParameters = "TaskStepUpdateParameters"
 )
 
 // PossibleTypeBasicTaskStepUpdateParametersValues returns an array of possible values for the TypeBasicTaskStepUpdateParameters const type.
 func PossibleTypeBasicTaskStepUpdateParametersValues() []TypeBasicTaskStepUpdateParameters {
-	return []TypeBasicTaskStepUpdateParameters{TypeBasicTaskStepUpdateParametersTypeBuildTask, TypeBasicTaskStepUpdateParametersTypeDocker, TypeBasicTaskStepUpdateParametersTypeRunTask, TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters}
+	return []TypeBasicTaskStepUpdateParameters{TypeBasicTaskStepUpdateParametersTypeDocker, TypeBasicTaskStepUpdateParametersTypeEncodedTask, TypeBasicTaskStepUpdateParametersTypeFileTask, TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters}
 }
 
 // Variant enumerates the values for variant.
@@ -530,222 +530,6 @@ type BaseImageTriggerUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// BuildTaskRequest the request parameters for a quick task build.
-type BuildTaskRequest struct {
-	// DefinitionFilePath - The template/definition file path relative to the source.
-	DefinitionFilePath *string `json:"definitionFilePath,omitempty"`
-	// ValuesFilePath - The values/parameters file path relative to the source.
-	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
-	// If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
-	SourceLocation *string `json:"sourceLocation,omitempty"`
-	// Timeout - Build timeout in seconds.
-	Timeout *int32 `json:"timeout,omitempty"`
-	// Platform - The platform properties against which the build will happen.
-	Platform *PlatformProperties `json:"platform,omitempty"`
-	// AgentConfiguration - The machine configuration of the build agent.
-	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
-	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeBuildTaskRequest', 'TypeTaskRunRequest', 'TypeQuickTaskRunRequest'
-	Type Type `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BuildTaskRequest.
-func (btr BuildTaskRequest) MarshalJSON() ([]byte, error) {
-	btr.Type = TypeBuildTaskRequest
-	objectMap := make(map[string]interface{})
-	if btr.DefinitionFilePath != nil {
-		objectMap["definitionFilePath"] = btr.DefinitionFilePath
-	}
-	if btr.ValuesFilePath != nil {
-		objectMap["valuesFilePath"] = btr.ValuesFilePath
-	}
-	if btr.Values != nil {
-		objectMap["values"] = btr.Values
-	}
-	if btr.SourceLocation != nil {
-		objectMap["sourceLocation"] = btr.SourceLocation
-	}
-	if btr.Timeout != nil {
-		objectMap["timeout"] = btr.Timeout
-	}
-	if btr.Platform != nil {
-		objectMap["platform"] = btr.Platform
-	}
-	if btr.AgentConfiguration != nil {
-		objectMap["agentConfiguration"] = btr.AgentConfiguration
-	}
-	if btr.IsArchiveEnabled != nil {
-		objectMap["isArchiveEnabled"] = btr.IsArchiveEnabled
-	}
-	if btr.Type != "" {
-		objectMap["type"] = btr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
-	return nil, false
-}
-
-// AsBuildTaskRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsBuildTaskRequest() (*BuildTaskRequest, bool) {
-	return &btr, true
-}
-
-// AsTaskRunRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
-	return nil, false
-}
-
-// AsQuickTaskRunRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool) {
-	return nil, false
-}
-
-// AsRunRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsRunRequest() (*RunRequest, bool) {
-	return nil, false
-}
-
-// AsBasicRunRequest is the BasicRunRequest implementation for BuildTaskRequest.
-func (btr BuildTaskRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
-	return &btr, true
-}
-
-// BuildTaskStep the properties of a build task step.
-type BuildTaskStep struct {
-	// DefinitionFilePath - The build task template/definition file path relative to the source context.
-	DefinitionFilePath *string `json:"definitionFilePath,omitempty"`
-	// ValuesFilePath - The task values/parameters file path relative to the source context.
-	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
-	ContextPath *string `json:"contextPath,omitempty"`
-	// BaseImageDependencies - List of base image dependencies for a step.
-	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
-	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeBuildTask', 'TypeRunTask'
-	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BuildTaskStep.
-func (bts BuildTaskStep) MarshalJSON() ([]byte, error) {
-	bts.Type = TypeBuildTask
-	objectMap := make(map[string]interface{})
-	if bts.DefinitionFilePath != nil {
-		objectMap["definitionFilePath"] = bts.DefinitionFilePath
-	}
-	if bts.ValuesFilePath != nil {
-		objectMap["valuesFilePath"] = bts.ValuesFilePath
-	}
-	if bts.Values != nil {
-		objectMap["values"] = bts.Values
-	}
-	if bts.ContextPath != nil {
-		objectMap["contextPath"] = bts.ContextPath
-	}
-	if bts.BaseImageDependencies != nil {
-		objectMap["baseImageDependencies"] = bts.BaseImageDependencies
-	}
-	if bts.Type != "" {
-		objectMap["type"] = bts.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildStep is the BasicTaskStepProperties implementation for BuildTaskStep.
-func (bts BuildTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
-	return nil, false
-}
-
-// AsBuildTaskStep is the BasicTaskStepProperties implementation for BuildTaskStep.
-func (bts BuildTaskStep) AsBuildTaskStep() (*BuildTaskStep, bool) {
-	return &bts, true
-}
-
-// AsRunTaskStep is the BasicTaskStepProperties implementation for BuildTaskStep.
-func (bts BuildTaskStep) AsRunTaskStep() (*RunTaskStep, bool) {
-	return nil, false
-}
-
-// AsTaskStepProperties is the BasicTaskStepProperties implementation for BuildTaskStep.
-func (bts BuildTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
-	return nil, false
-}
-
-// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for BuildTaskStep.
-func (bts BuildTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
-	return &bts, true
-}
-
-// BuildTaskStepUpdateParameters the properties of updating a build task step.
-type BuildTaskStepUpdateParameters struct {
-	// DefinitionFilePath - The build task template/definition file path relative to the source context.
-	DefinitionFilePath *string `json:"definitionFilePath,omitempty"`
-	// ValuesFilePath - The task values/parameters file path relative to the source context.
-	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
-	ContextPath *string `json:"contextPath,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeBuildTask', 'TypeBasicTaskStepUpdateParametersTypeRunTask'
-	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
-	btsup.Type = TypeBasicTaskStepUpdateParametersTypeBuildTask
-	objectMap := make(map[string]interface{})
-	if btsup.DefinitionFilePath != nil {
-		objectMap["definitionFilePath"] = btsup.DefinitionFilePath
-	}
-	if btsup.ValuesFilePath != nil {
-		objectMap["valuesFilePath"] = btsup.ValuesFilePath
-	}
-	if btsup.Values != nil {
-		objectMap["values"] = btsup.Values
-	}
-	if btsup.ContextPath != nil {
-		objectMap["contextPath"] = btsup.ContextPath
-	}
-	if btsup.Type != "" {
-		objectMap["type"] = btsup.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsBuildTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) AsBuildTaskStepUpdateParameters() (*BuildTaskStepUpdateParameters, bool) {
-	return &btsup, true
-}
-
-// AsRunTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) AsRunTaskStepUpdateParameters() (*RunTaskStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for BuildTaskStepUpdateParameters.
-func (btsup BuildTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
-	return &btsup, true
-}
-
 // CallbackConfig the configuration of service URI and custom headers for the webhook.
 type CallbackConfig struct {
 	autorest.Response `json:"-"`
@@ -790,7 +574,7 @@ type DockerBuildRequest struct {
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
-	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeBuildTaskRequest', 'TypeTaskRunRequest', 'TypeQuickTaskRunRequest'
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -839,8 +623,8 @@ func (dbr DockerBuildRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool)
 	return &dbr, true
 }
 
-// AsBuildTaskRequest is the BasicRunRequest implementation for DockerBuildRequest.
-func (dbr DockerBuildRequest) AsBuildTaskRequest() (*BuildTaskRequest, bool) {
+// AsFileTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -849,8 +633,8 @@ func (dbr DockerBuildRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
 	return nil, false
 }
 
-// AsQuickTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
-func (dbr DockerBuildRequest) AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool) {
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for DockerBuildRequest.
+func (dbr DockerBuildRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -881,7 +665,7 @@ type DockerBuildStep struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
-	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeBuildTask', 'TypeRunTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
@@ -921,13 +705,13 @@ func (dbs DockerBuildStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
 	return &dbs, true
 }
 
-// AsBuildTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
-func (dbs DockerBuildStep) AsBuildTaskStep() (*BuildTaskStep, bool) {
+// AsFileTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsFileTaskStep() (*FileTaskStep, bool) {
 	return nil, false
 }
 
-// AsRunTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
-func (dbs DockerBuildStep) AsRunTaskStep() (*RunTaskStep, bool) {
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for DockerBuildStep.
+func (dbs DockerBuildStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
 	return nil, false
 }
 
@@ -956,7 +740,7 @@ type DockerBuildStepUpdateParameters struct {
 	// ContextPath - The URL(absolute or relative) of the source context for the build task.
 	// If it is relative, the context will be relative to the source repository URL of the build task.
 	ContextPath *string `json:"contextPath,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeBuildTask', 'TypeBasicTaskStepUpdateParametersTypeRunTask'
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
 
@@ -993,13 +777,13 @@ func (dbsup DockerBuildStepUpdateParameters) AsDockerBuildStepUpdateParameters()
 	return &dbsup, true
 }
 
-// AsBuildTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
-func (dbsup DockerBuildStepUpdateParameters) AsBuildTaskStepUpdateParameters() (*BuildTaskStepUpdateParameters, bool) {
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsRunTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
-func (dbsup DockerBuildStepUpdateParameters) AsRunTaskStepUpdateParameters() (*RunTaskStepUpdateParameters, bool) {
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
+func (dbsup DockerBuildStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
 	return nil, false
 }
 
@@ -1011,6 +795,204 @@ func (dbsup DockerBuildStepUpdateParameters) AsTaskStepUpdateParameters() (*Task
 // AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for DockerBuildStepUpdateParameters.
 func (dbsup DockerBuildStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
 	return &dbsup, true
+}
+
+// EncodedTaskRunRequest the parameters for a quick task run request.
+type EncodedTaskRunRequest struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// Timeout - Build timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Platform - The platform properties against which the build will happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the build agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
+	etrr.Type = TypeEncodedTaskRunRequest
+	objectMap := make(map[string]interface{})
+	if etrr.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = etrr.EncodedTaskContent
+	}
+	if etrr.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = etrr.EncodedValuesContent
+	}
+	if etrr.Values != nil {
+		objectMap["values"] = etrr.Values
+	}
+	if etrr.Timeout != nil {
+		objectMap["timeout"] = etrr.Timeout
+	}
+	if etrr.Platform != nil {
+		objectMap["platform"] = etrr.Platform
+	}
+	if etrr.AgentConfiguration != nil {
+		objectMap["agentConfiguration"] = etrr.AgentConfiguration
+	}
+	if etrr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = etrr.IsArchiveEnabled
+	}
+	if etrr.Type != "" {
+		objectMap["type"] = etrr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return &etrr, true
+}
+
+// AsRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for EncodedTaskRunRequest.
+func (etrr EncodedTaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &etrr, true
+}
+
+// EncodedTaskStep the properties of a encoded task step.
+type EncodedTaskStep struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// BaseImageDependencies - List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskStep.
+func (ets EncodedTaskStep) MarshalJSON() ([]byte, error) {
+	ets.Type = TypeEncodedTask
+	objectMap := make(map[string]interface{})
+	if ets.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = ets.EncodedTaskContent
+	}
+	if ets.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = ets.EncodedValuesContent
+	}
+	if ets.Values != nil {
+		objectMap["values"] = ets.Values
+	}
+	if ets.BaseImageDependencies != nil {
+		objectMap["baseImageDependencies"] = ets.BaseImageDependencies
+	}
+	if ets.Type != "" {
+		objectMap["type"] = ets.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return nil, false
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsFileTaskStep() (*FileTaskStep, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return &ets, true
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for EncodedTaskStep.
+func (ets EncodedTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &ets, true
+}
+
+// EncodedTaskStepUpdateParameters the properties for updating encoded task step.
+type EncodedTaskStepUpdateParameters struct {
+	// EncodedTaskContent - Base64 encoded value of the template/definition file content.
+	EncodedTaskContent *string `json:"encodedTaskContent,omitempty"`
+	// EncodedValuesContent - Base64 encoded value of the parameters/values file content.
+	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	etsup.Type = TypeBasicTaskStepUpdateParametersTypeEncodedTask
+	objectMap := make(map[string]interface{})
+	if etsup.EncodedTaskContent != nil {
+		objectMap["encodedTaskContent"] = etsup.EncodedTaskContent
+	}
+	if etsup.EncodedValuesContent != nil {
+		objectMap["encodedValuesContent"] = etsup.EncodedValuesContent
+	}
+	if etsup.Values != nil {
+		objectMap["values"] = etsup.Values
+	}
+	if etsup.Type != "" {
+		objectMap["type"] = etsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return &etsup, true
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for EncodedTaskStepUpdateParameters.
+func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &etsup, true
 }
 
 // Event the event for a webhook.
@@ -1218,6 +1200,222 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 		objectMap["version"] = erm.Version
 	}
 	return json.Marshal(objectMap)
+}
+
+// FileTaskRunRequest the request parameters for a scheduling run against a task file.
+type FileTaskRunRequest struct {
+	// TaskFilePath - The template/definition file path relative to the source.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The values/parameters file path relative to the source.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
+	// If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
+	// Timeout - Build timeout in seconds.
+	Timeout *int32 `json:"timeout,omitempty"`
+	// Platform - The platform properties against which the build will happen.
+	Platform *PlatformProperties `json:"platform,omitempty"`
+	// AgentConfiguration - The machine configuration of the build agent.
+	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
+	ftrr.Type = TypeFileTaskRunRequest
+	objectMap := make(map[string]interface{})
+	if ftrr.TaskFilePath != nil {
+		objectMap["taskFilePath"] = ftrr.TaskFilePath
+	}
+	if ftrr.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = ftrr.ValuesFilePath
+	}
+	if ftrr.Values != nil {
+		objectMap["values"] = ftrr.Values
+	}
+	if ftrr.SourceLocation != nil {
+		objectMap["sourceLocation"] = ftrr.SourceLocation
+	}
+	if ftrr.Timeout != nil {
+		objectMap["timeout"] = ftrr.Timeout
+	}
+	if ftrr.Platform != nil {
+		objectMap["platform"] = ftrr.Platform
+	}
+	if ftrr.AgentConfiguration != nil {
+		objectMap["agentConfiguration"] = ftrr.AgentConfiguration
+	}
+	if ftrr.IsArchiveEnabled != nil {
+		objectMap["isArchiveEnabled"] = ftrr.IsArchiveEnabled
+	}
+	if ftrr.Type != "" {
+		objectMap["type"] = ftrr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
+	return nil, false
+}
+
+// AsFileTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
+	return &ftrr, true
+}
+
+// AsTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
+	return nil, false
+}
+
+// AsRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsRunRequest() (*RunRequest, bool) {
+	return nil, false
+}
+
+// AsBasicRunRequest is the BasicRunRequest implementation for FileTaskRunRequest.
+func (ftrr FileTaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
+	return &ftrr, true
+}
+
+// FileTaskStep the properties of a task step.
+type FileTaskStep struct {
+	// TaskFilePath - The task template/definition file path relative to the source context.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The task values/parameters file path relative to the source context.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the build task.
+	// If it is relative, the context will be relative to the source repository URL of the build task.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// BaseImageDependencies - List of base image dependencies for a step.
+	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
+	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskStep.
+func (fts FileTaskStep) MarshalJSON() ([]byte, error) {
+	fts.Type = TypeFileTask
+	objectMap := make(map[string]interface{})
+	if fts.TaskFilePath != nil {
+		objectMap["taskFilePath"] = fts.TaskFilePath
+	}
+	if fts.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = fts.ValuesFilePath
+	}
+	if fts.Values != nil {
+		objectMap["values"] = fts.Values
+	}
+	if fts.ContextPath != nil {
+		objectMap["contextPath"] = fts.ContextPath
+	}
+	if fts.BaseImageDependencies != nil {
+		objectMap["baseImageDependencies"] = fts.BaseImageDependencies
+	}
+	if fts.Type != "" {
+		objectMap["type"] = fts.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
+	return nil, false
+}
+
+// AsFileTaskStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsFileTaskStep() (*FileTaskStep, bool) {
+	return &fts, true
+}
+
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
+	return nil, false
+}
+
+// AsTaskStepProperties is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for FileTaskStep.
+func (fts FileTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
+	return &fts, true
+}
+
+// FileTaskStepUpdateParameters the properties of updating a task step.
+type FileTaskStepUpdateParameters struct {
+	// TaskFilePath - The task template/definition file path relative to the source context.
+	TaskFilePath *string `json:"taskFilePath,omitempty"`
+	// ValuesFilePath - The values/parameters file path relative to the source context.
+	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+	// Values - The collection of overridable values that can be passed when running a task.
+	Values *[]SetValue `json:"values,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the build task.
+	// If it is relative, the context will be relative to the source repository URL of the build task.
+	ContextPath *string `json:"contextPath,omitempty"`
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
+	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
+	ftsup.Type = TypeBasicTaskStepUpdateParametersTypeFileTask
+	objectMap := make(map[string]interface{})
+	if ftsup.TaskFilePath != nil {
+		objectMap["taskFilePath"] = ftsup.TaskFilePath
+	}
+	if ftsup.ValuesFilePath != nil {
+		objectMap["valuesFilePath"] = ftsup.ValuesFilePath
+	}
+	if ftsup.Values != nil {
+		objectMap["values"] = ftsup.Values
+	}
+	if ftsup.ContextPath != nil {
+		objectMap["contextPath"] = ftsup.ContextPath
+	}
+	if ftsup.Type != "" {
+		objectMap["type"] = ftsup.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
+	return &ftsup, true
+}
+
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
+	return nil, false
+}
+
+// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for FileTaskStepUpdateParameters.
+func (ftsup FileTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
+	return &ftsup, true
 }
 
 // ImageDescriptor properties for a registry image.
@@ -1525,87 +1723,6 @@ type ProxyResource struct {
 type QuarantinePolicy struct {
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	Status PolicyStatus `json:"status,omitempty"`
-}
-
-// QuickTaskRunRequest the parameters for a quick task run request.
-type QuickTaskRunRequest struct {
-	// TaskDefinitionContent - Base64 encoded value of the template/definition file content.
-	TaskDefinitionContent *string `json:"taskDefinitionContent,omitempty"`
-	// ValuesContent - Base64 encoded value of the parameters/values file content.
-	ValuesContent *string `json:"valuesContent,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// Timeout - Build timeout in seconds.
-	Timeout *int32 `json:"timeout,omitempty"`
-	// Platform - The platform properties against which the build will happen.
-	Platform *PlatformProperties `json:"platform,omitempty"`
-	// AgentConfiguration - The machine configuration of the build agent.
-	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
-	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeBuildTaskRequest', 'TypeTaskRunRequest', 'TypeQuickTaskRunRequest'
-	Type Type `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) MarshalJSON() ([]byte, error) {
-	qtrr.Type = TypeQuickTaskRunRequest
-	objectMap := make(map[string]interface{})
-	if qtrr.TaskDefinitionContent != nil {
-		objectMap["taskDefinitionContent"] = qtrr.TaskDefinitionContent
-	}
-	if qtrr.ValuesContent != nil {
-		objectMap["valuesContent"] = qtrr.ValuesContent
-	}
-	if qtrr.Values != nil {
-		objectMap["values"] = qtrr.Values
-	}
-	if qtrr.Timeout != nil {
-		objectMap["timeout"] = qtrr.Timeout
-	}
-	if qtrr.Platform != nil {
-		objectMap["platform"] = qtrr.Platform
-	}
-	if qtrr.AgentConfiguration != nil {
-		objectMap["agentConfiguration"] = qtrr.AgentConfiguration
-	}
-	if qtrr.IsArchiveEnabled != nil {
-		objectMap["isArchiveEnabled"] = qtrr.IsArchiveEnabled
-	}
-	if qtrr.Type != "" {
-		objectMap["type"] = qtrr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
-	return nil, false
-}
-
-// AsBuildTaskRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsBuildTaskRequest() (*BuildTaskRequest, bool) {
-	return nil, false
-}
-
-// AsTaskRunRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
-	return nil, false
-}
-
-// AsQuickTaskRunRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool) {
-	return &qtrr, true
-}
-
-// AsRunRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsRunRequest() (*RunRequest, bool) {
-	return nil, false
-}
-
-// AsBasicRunRequest is the BasicRunRequest implementation for QuickTaskRunRequest.
-func (qtrr QuickTaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
-	return &qtrr, true
 }
 
 // RegenerateCredentialParameters the parameters used to regenerate the login credential.
@@ -2765,9 +2882,9 @@ type RunProperties struct {
 // BasicRunRequest the request parameters for scheduling a run.
 type BasicRunRequest interface {
 	AsDockerBuildRequest() (*DockerBuildRequest, bool)
-	AsBuildTaskRequest() (*BuildTaskRequest, bool)
+	AsFileTaskRunRequest() (*FileTaskRunRequest, bool)
 	AsTaskRunRequest() (*TaskRunRequest, bool)
-	AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool)
+	AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool)
 	AsRunRequest() (*RunRequest, bool)
 }
 
@@ -2775,7 +2892,7 @@ type BasicRunRequest interface {
 type RunRequest struct {
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
-	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeBuildTaskRequest', 'TypeTaskRunRequest', 'TypeQuickTaskRunRequest'
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -2791,18 +2908,18 @@ func unmarshalBasicRunRequest(body []byte) (BasicRunRequest, error) {
 		var dbr DockerBuildRequest
 		err := json.Unmarshal(body, &dbr)
 		return dbr, err
-	case string(TypeBuildTaskRequest):
-		var btr BuildTaskRequest
-		err := json.Unmarshal(body, &btr)
-		return btr, err
+	case string(TypeFileTaskRunRequest):
+		var ftrr FileTaskRunRequest
+		err := json.Unmarshal(body, &ftrr)
+		return ftrr, err
 	case string(TypeTaskRunRequest):
 		var trr TaskRunRequest
 		err := json.Unmarshal(body, &trr)
 		return trr, err
-	case string(TypeQuickTaskRunRequest):
-		var qtrr QuickTaskRunRequest
-		err := json.Unmarshal(body, &qtrr)
-		return qtrr, err
+	case string(TypeEncodedTaskRunRequest):
+		var etrr EncodedTaskRunRequest
+		err := json.Unmarshal(body, &etrr)
+		return etrr, err
 	default:
 		var rr RunRequest
 		err := json.Unmarshal(body, &rr)
@@ -2846,8 +2963,8 @@ func (rr RunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
 	return nil, false
 }
 
-// AsBuildTaskRequest is the BasicRunRequest implementation for RunRequest.
-func (rr RunRequest) AsBuildTaskRequest() (*BuildTaskRequest, bool) {
+// AsFileTaskRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -2856,8 +2973,8 @@ func (rr RunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
 	return nil, false
 }
 
-// AsQuickTaskRunRequest is the BasicRunRequest implementation for RunRequest.
-func (rr RunRequest) AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool) {
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for RunRequest.
+func (rr RunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -2919,123 +3036,6 @@ func (future *RunsUpdateFuture) Result(client RunsClient) (r Run, err error) {
 		}
 	}
 	return
-}
-
-// RunTaskStep the properties of a generic task run step.
-type RunTaskStep struct {
-	// TaskDefinitionContent - Base64 encoded value of the template/definition file content.
-	TaskDefinitionContent *string `json:"taskDefinitionContent,omitempty"`
-	// ValuesContent - Base64 encoded value of the parameters/values file content.
-	ValuesContent *string `json:"valuesContent,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// BaseImageDependencies - List of base image dependencies for a step.
-	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
-	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeBuildTask', 'TypeRunTask'
-	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RunTaskStep.
-func (rts RunTaskStep) MarshalJSON() ([]byte, error) {
-	rts.Type = TypeRunTask
-	objectMap := make(map[string]interface{})
-	if rts.TaskDefinitionContent != nil {
-		objectMap["taskDefinitionContent"] = rts.TaskDefinitionContent
-	}
-	if rts.ValuesContent != nil {
-		objectMap["valuesContent"] = rts.ValuesContent
-	}
-	if rts.Values != nil {
-		objectMap["values"] = rts.Values
-	}
-	if rts.BaseImageDependencies != nil {
-		objectMap["baseImageDependencies"] = rts.BaseImageDependencies
-	}
-	if rts.Type != "" {
-		objectMap["type"] = rts.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildStep is the BasicTaskStepProperties implementation for RunTaskStep.
-func (rts RunTaskStep) AsDockerBuildStep() (*DockerBuildStep, bool) {
-	return nil, false
-}
-
-// AsBuildTaskStep is the BasicTaskStepProperties implementation for RunTaskStep.
-func (rts RunTaskStep) AsBuildTaskStep() (*BuildTaskStep, bool) {
-	return nil, false
-}
-
-// AsRunTaskStep is the BasicTaskStepProperties implementation for RunTaskStep.
-func (rts RunTaskStep) AsRunTaskStep() (*RunTaskStep, bool) {
-	return &rts, true
-}
-
-// AsTaskStepProperties is the BasicTaskStepProperties implementation for RunTaskStep.
-func (rts RunTaskStep) AsTaskStepProperties() (*TaskStepProperties, bool) {
-	return nil, false
-}
-
-// AsBasicTaskStepProperties is the BasicTaskStepProperties implementation for RunTaskStep.
-func (rts RunTaskStep) AsBasicTaskStepProperties() (BasicTaskStepProperties, bool) {
-	return &rts, true
-}
-
-// RunTaskStepUpdateParameters the properties for updating generic task run step.
-type RunTaskStepUpdateParameters struct {
-	// TaskDefinitionContent - Base64 encoded value of the template/definition file content.
-	TaskDefinitionContent *string `json:"taskDefinitionContent,omitempty"`
-	// ValuesContent - Base64 encoded value of the parameters/values file content.
-	ValuesContent *string `json:"valuesContent,omitempty"`
-	// Values - The collection of overridable values that can be passed when running a task.
-	Values *[]SetValue `json:"values,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeBuildTask', 'TypeBasicTaskStepUpdateParametersTypeRunTask'
-	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
-	rtsup.Type = TypeBasicTaskStepUpdateParametersTypeRunTask
-	objectMap := make(map[string]interface{})
-	if rtsup.TaskDefinitionContent != nil {
-		objectMap["taskDefinitionContent"] = rtsup.TaskDefinitionContent
-	}
-	if rtsup.ValuesContent != nil {
-		objectMap["valuesContent"] = rtsup.ValuesContent
-	}
-	if rtsup.Values != nil {
-		objectMap["values"] = rtsup.Values
-	}
-	if rtsup.Type != "" {
-		objectMap["type"] = rtsup.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDockerBuildStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsBuildTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) AsBuildTaskStepUpdateParameters() (*BuildTaskStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsRunTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) AsRunTaskStepUpdateParameters() (*RunTaskStepUpdateParameters, bool) {
-	return &rtsup, true
-}
-
-// AsTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool) {
-	return nil, false
-}
-
-// AsBasicTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for RunTaskStepUpdateParameters.
-func (rtsup RunTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (BasicTaskStepUpdateParameters, bool) {
-	return &rtsup, true
 }
 
 // RunUpdateParameters the set of run properties that can be updated.
@@ -3594,7 +3594,7 @@ type TaskRunRequest struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
-	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeBuildTaskRequest', 'TypeTaskRunRequest', 'TypeQuickTaskRunRequest'
+	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -3622,8 +3622,8 @@ func (trr TaskRunRequest) AsDockerBuildRequest() (*DockerBuildRequest, bool) {
 	return nil, false
 }
 
-// AsBuildTaskRequest is the BasicRunRequest implementation for TaskRunRequest.
-func (trr TaskRunRequest) AsBuildTaskRequest() (*BuildTaskRequest, bool) {
+// AsFileTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsFileTaskRunRequest() (*FileTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -3632,8 +3632,8 @@ func (trr TaskRunRequest) AsTaskRunRequest() (*TaskRunRequest, bool) {
 	return &trr, true
 }
 
-// AsQuickTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
-func (trr TaskRunRequest) AsQuickTaskRunRequest() (*QuickTaskRunRequest, bool) {
+// AsEncodedTaskRunRequest is the BasicRunRequest implementation for TaskRunRequest.
+func (trr TaskRunRequest) AsEncodedTaskRunRequest() (*EncodedTaskRunRequest, bool) {
 	return nil, false
 }
 
@@ -3700,8 +3700,8 @@ func (future *TasksDeleteFuture) Result(client TasksClient) (ar autorest.Respons
 // BasicTaskStepProperties base properties for any task step.
 type BasicTaskStepProperties interface {
 	AsDockerBuildStep() (*DockerBuildStep, bool)
-	AsBuildTaskStep() (*BuildTaskStep, bool)
-	AsRunTaskStep() (*RunTaskStep, bool)
+	AsFileTaskStep() (*FileTaskStep, bool)
+	AsEncodedTaskStep() (*EncodedTaskStep, bool)
 	AsTaskStepProperties() (*TaskStepProperties, bool)
 }
 
@@ -3709,7 +3709,7 @@ type BasicTaskStepProperties interface {
 type TaskStepProperties struct {
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
-	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeBuildTask', 'TypeRunTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
@@ -3725,14 +3725,14 @@ func unmarshalBasicTaskStepProperties(body []byte) (BasicTaskStepProperties, err
 		var dbs DockerBuildStep
 		err := json.Unmarshal(body, &dbs)
 		return dbs, err
-	case string(TypeBuildTask):
-		var bts BuildTaskStep
-		err := json.Unmarshal(body, &bts)
-		return bts, err
-	case string(TypeRunTask):
-		var rts RunTaskStep
-		err := json.Unmarshal(body, &rts)
-		return rts, err
+	case string(TypeFileTask):
+		var fts FileTaskStep
+		err := json.Unmarshal(body, &fts)
+		return fts, err
+	case string(TypeEncodedTask):
+		var ets EncodedTaskStep
+		err := json.Unmarshal(body, &ets)
+		return ets, err
 	default:
 		var tsp TaskStepProperties
 		err := json.Unmarshal(body, &tsp)
@@ -3776,13 +3776,13 @@ func (tsp TaskStepProperties) AsDockerBuildStep() (*DockerBuildStep, bool) {
 	return nil, false
 }
 
-// AsBuildTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
-func (tsp TaskStepProperties) AsBuildTaskStep() (*BuildTaskStep, bool) {
+// AsFileTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsFileTaskStep() (*FileTaskStep, bool) {
 	return nil, false
 }
 
-// AsRunTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
-func (tsp TaskStepProperties) AsRunTaskStep() (*RunTaskStep, bool) {
+// AsEncodedTaskStep is the BasicTaskStepProperties implementation for TaskStepProperties.
+func (tsp TaskStepProperties) AsEncodedTaskStep() (*EncodedTaskStep, bool) {
 	return nil, false
 }
 
@@ -3799,14 +3799,14 @@ func (tsp TaskStepProperties) AsBasicTaskStepProperties() (BasicTaskStepProperti
 // BasicTaskStepUpdateParameters base properties for updating any task step.
 type BasicTaskStepUpdateParameters interface {
 	AsDockerBuildStepUpdateParameters() (*DockerBuildStepUpdateParameters, bool)
-	AsBuildTaskStepUpdateParameters() (*BuildTaskStepUpdateParameters, bool)
-	AsRunTaskStepUpdateParameters() (*RunTaskStepUpdateParameters, bool)
+	AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool)
+	AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool)
 	AsTaskStepUpdateParameters() (*TaskStepUpdateParameters, bool)
 }
 
 // TaskStepUpdateParameters base properties for updating any task step.
 type TaskStepUpdateParameters struct {
-	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeBuildTask', 'TypeBasicTaskStepUpdateParametersTypeRunTask'
+	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
 
@@ -3822,14 +3822,14 @@ func unmarshalBasicTaskStepUpdateParameters(body []byte) (BasicTaskStepUpdatePar
 		var dbsup DockerBuildStepUpdateParameters
 		err := json.Unmarshal(body, &dbsup)
 		return dbsup, err
-	case string(TypeBasicTaskStepUpdateParametersTypeBuildTask):
-		var btsup BuildTaskStepUpdateParameters
-		err := json.Unmarshal(body, &btsup)
-		return btsup, err
-	case string(TypeBasicTaskStepUpdateParametersTypeRunTask):
-		var rtsup RunTaskStepUpdateParameters
-		err := json.Unmarshal(body, &rtsup)
-		return rtsup, err
+	case string(TypeBasicTaskStepUpdateParametersTypeFileTask):
+		var ftsup FileTaskStepUpdateParameters
+		err := json.Unmarshal(body, &ftsup)
+		return ftsup, err
+	case string(TypeBasicTaskStepUpdateParametersTypeEncodedTask):
+		var etsup EncodedTaskStepUpdateParameters
+		err := json.Unmarshal(body, &etsup)
+		return etsup, err
 	default:
 		var tsup TaskStepUpdateParameters
 		err := json.Unmarshal(body, &tsup)
@@ -3870,13 +3870,13 @@ func (tsup TaskStepUpdateParameters) AsDockerBuildStepUpdateParameters() (*Docke
 	return nil, false
 }
 
-// AsBuildTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
-func (tsup TaskStepUpdateParameters) AsBuildTaskStepUpdateParameters() (*BuildTaskStepUpdateParameters, bool) {
+// AsFileTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsFileTaskStepUpdateParameters() (*FileTaskStepUpdateParameters, bool) {
 	return nil, false
 }
 
-// AsRunTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
-func (tsup TaskStepUpdateParameters) AsRunTaskStepUpdateParameters() (*RunTaskStepUpdateParameters, bool) {
+// AsEncodedTaskStepUpdateParameters is the BasicTaskStepUpdateParameters implementation for TaskStepUpdateParameters.
+func (tsup TaskStepUpdateParameters) AsEncodedTaskStepUpdateParameters() (*EncodedTaskStepUpdateParameters, bool) {
 	return nil, false
 }
 

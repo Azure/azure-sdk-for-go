@@ -24,6 +24,37 @@ import (
 	"net/http"
 )
 
+// PrincipalType enumerates the values for principal type.
+type PrincipalType string
+
+const (
+	// Application ...
+	Application PrincipalType = "Application"
+	// DirectoryObjectOrGroup ...
+	DirectoryObjectOrGroup PrincipalType = "DirectoryObjectOrGroup"
+	// DirectoryRoleTemplate ...
+	DirectoryRoleTemplate PrincipalType = "DirectoryRoleTemplate"
+	// Everyone ...
+	Everyone PrincipalType = "Everyone"
+	// ForeignGroup ...
+	ForeignGroup PrincipalType = "ForeignGroup"
+	// Group ...
+	Group PrincipalType = "Group"
+	// MSI ...
+	MSI PrincipalType = "MSI"
+	// ServicePrincipal ...
+	ServicePrincipal PrincipalType = "ServicePrincipal"
+	// Unknown ...
+	Unknown PrincipalType = "Unknown"
+	// User ...
+	User PrincipalType = "User"
+)
+
+// PossiblePrincipalTypeValues returns an array of possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{Application, DirectoryObjectOrGroup, DirectoryRoleTemplate, Everyone, ForeignGroup, Group, MSI, ServicePrincipal, Unknown, User}
+}
+
 // ClassicAdministrator classic Administrators
 type ClassicAdministrator struct {
 	// ID - The ID of the administrator.
@@ -712,8 +743,8 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// PrincipalType - The principal type of the assigned principal ID, e.g. user, service principal.
-	PrincipalType *string `json:"principalType,omitempty"`
+	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
+	PrincipalType PrincipalType `json:"principalType,omitempty"`
 	// CanDelegate - The delgation flag used for creating a role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }

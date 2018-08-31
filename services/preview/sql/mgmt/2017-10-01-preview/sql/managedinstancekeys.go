@@ -261,37 +261,37 @@ func (client ManagedInstanceKeysClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
-// ListByServer gets a list of managed instance keys.
+// ListByInstance gets a list of managed instance keys.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // managedInstanceName - the name of the managed instance.
 // filter - an OData filter expression that filters elements in the collection.
-func (client ManagedInstanceKeysClient) ListByServer(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result ManagedInstanceKeyListResultPage, err error) {
-	result.fn = client.listByServerNextResults
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, managedInstanceName, filter)
+func (client ManagedInstanceKeysClient) ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result ManagedInstanceKeyListResultPage, err error) {
+	result.fn = client.listByInstanceNextResults
+	req, err := client.ListByInstancePreparer(ctx, resourceGroupName, managedInstanceName, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByInstance", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListByInstanceSender(req)
 	if err != nil {
 		result.miklr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByInstance", resp, "Failure sending request")
 		return
 	}
 
-	result.miklr, err = client.ListByServerResponder(resp)
+	result.miklr, err = client.ListByInstanceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "ListByInstance", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client ManagedInstanceKeysClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (*http.Request, error) {
+// ListByInstancePreparer prepares the ListByInstance request.
+func (client ManagedInstanceKeysClient) ListByInstancePreparer(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managedInstanceName": autorest.Encode("path", managedInstanceName),
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
@@ -314,16 +314,16 @@ func (client ManagedInstanceKeysClient) ListByServerPreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
+// ListByInstanceSender sends the ListByInstance request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedInstanceKeysClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client ManagedInstanceKeysClient) ListByInstanceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByServerResponder handles the response to the ListByServer request. The method always
+// ListByInstanceResponder handles the response to the ListByInstance request. The method always
 // closes the http.Response Body.
-func (client ManagedInstanceKeysClient) ListByServerResponder(resp *http.Response) (result ManagedInstanceKeyListResult, err error) {
+func (client ManagedInstanceKeysClient) ListByInstanceResponder(resp *http.Response) (result ManagedInstanceKeyListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -334,29 +334,29 @@ func (client ManagedInstanceKeysClient) ListByServerResponder(resp *http.Respons
 	return
 }
 
-// listByServerNextResults retrieves the next set of results, if any.
-func (client ManagedInstanceKeysClient) listByServerNextResults(lastResults ManagedInstanceKeyListResult) (result ManagedInstanceKeyListResult, err error) {
+// listByInstanceNextResults retrieves the next set of results, if any.
+func (client ManagedInstanceKeysClient) listByInstanceNextResults(lastResults ManagedInstanceKeyListResult) (result ManagedInstanceKeyListResult, err error) {
 	req, err := lastResults.managedInstanceKeyListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByServerNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByInstanceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.ListByInstanceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByServerNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByInstanceNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByServerResponder(resp)
+	result, err = client.ListByInstanceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceKeysClient", "listByInstanceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByServerComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagedInstanceKeysClient) ListByServerComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result ManagedInstanceKeyListResultIterator, err error) {
-	result.page, err = client.ListByServer(ctx, resourceGroupName, managedInstanceName, filter)
+// ListByInstanceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ManagedInstanceKeysClient) ListByInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, filter string) (result ManagedInstanceKeyListResultIterator, err error) {
+	result.page, err = client.ListByInstance(ctx, resourceGroupName, managedInstanceName, filter)
 	return
 }

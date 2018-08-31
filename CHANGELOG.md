@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v20.1.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|                 network |       2018-07-01      |
+
 ## `v20.0.0`
 
 ### New Services

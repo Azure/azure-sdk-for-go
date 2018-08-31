@@ -102,7 +102,8 @@ func (client SignedInUserClient) GetResponder(resp *http.Response) (result User,
 }
 
 // ListOwnedObjects get the list of directory objects that are owned by the user.
-func (client SignedInUserClient) ListOwnedObjects(ctx context.Context) (result DirectoryObjectListResult, err error) {
+func (client SignedInUserClient) ListOwnedObjects(ctx context.Context) (result DirectoryObjectListResultPage, err error) {
+	result.fn = client.listOwnedObjectsNextResults
 	req, err := client.ListOwnedObjectsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "ListOwnedObjects", nil, "Failure preparing request")
@@ -111,12 +112,12 @@ func (client SignedInUserClient) ListOwnedObjects(ctx context.Context) (result D
 
 	resp, err := client.ListOwnedObjectsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dolr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "ListOwnedObjects", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListOwnedObjectsResponder(resp)
+	result.dolr, err = client.ListOwnedObjectsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "ListOwnedObjects", resp, "Failure responding to request")
 	}
@@ -160,5 +161,32 @@ func (client SignedInUserClient) ListOwnedObjectsResponder(resp *http.Response) 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listOwnedObjectsNextResults retrieves the next set of results, if any.
+func (client SignedInUserClient) listOwnedObjectsNextResults(lastResults DirectoryObjectListResult) (result DirectoryObjectListResult, err error) {
+	req, err := lastResults.directoryObjectListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "listOwnedObjectsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListOwnedObjectsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "listOwnedObjectsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListOwnedObjectsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.SignedInUserClient", "listOwnedObjectsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListOwnedObjectsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client SignedInUserClient) ListOwnedObjectsComplete(ctx context.Context) (result DirectoryObjectListResultIterator, err error) {
+	result.page, err = client.ListOwnedObjects(ctx)
 	return
 }

@@ -21,6 +21,8 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // ObjectType enumerates the values for object type.
@@ -795,6 +797,8 @@ type DirectoryObjectListResult struct {
 	autorest.Response `json:"-"`
 	// Value - A collection of DirectoryObject.
 	Value *[]BasicDirectoryObject `json:"value,omitempty"`
+	// OdataNextLink - The URL to get the next set of results.
+	OdataNextLink *string `json:"odata.nextLink,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DirectoryObjectListResult struct.
@@ -814,10 +818,112 @@ func (dolr *DirectoryObjectListResult) UnmarshalJSON(body []byte) error {
 				}
 				dolr.Value = &value
 			}
+		case "odata.nextLink":
+			if v != nil {
+				var odataNextLink string
+				err = json.Unmarshal(*v, &odataNextLink)
+				if err != nil {
+					return err
+				}
+				dolr.OdataNextLink = &odataNextLink
+			}
 		}
 	}
 
 	return nil
+}
+
+// DirectoryObjectListResultIterator provides access to a complete listing of DirectoryObject values.
+type DirectoryObjectListResultIterator struct {
+	i    int
+	page DirectoryObjectListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DirectoryObjectListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DirectoryObjectListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DirectoryObjectListResultIterator) Response() DirectoryObjectListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DirectoryObjectListResultIterator) Value() BasicDirectoryObject {
+	if !iter.page.NotDone() {
+		return DirectoryObject{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dolr DirectoryObjectListResult) IsEmpty() bool {
+	return dolr.Value == nil || len(*dolr.Value) == 0
+}
+
+// directoryObjectListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dolr DirectoryObjectListResult) directoryObjectListResultPreparer() (*http.Request, error) {
+	if dolr.OdataNextLink == nil || len(to.String(dolr.OdataNextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dolr.OdataNextLink)))
+}
+
+// DirectoryObjectListResultPage contains a page of BasicDirectoryObject values.
+type DirectoryObjectListResultPage struct {
+	fn   func(DirectoryObjectListResult) (DirectoryObjectListResult, error)
+	dolr DirectoryObjectListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DirectoryObjectListResultPage) Next() error {
+	next, err := page.fn(page.dolr)
+	if err != nil {
+		return err
+	}
+	page.dolr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DirectoryObjectListResultPage) NotDone() bool {
+	return !page.dolr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DirectoryObjectListResultPage) Response() DirectoryObjectListResult {
+	return page.dolr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
+	if page.dolr.IsEmpty() {
+		return nil
+	}
+	return *page.dolr.Value
 }
 
 // Domain active Directory Domain information.

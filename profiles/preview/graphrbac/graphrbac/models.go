@@ -49,6 +49,7 @@ const (
 )
 
 type AADObject = original.AADObject
+type AddOwnerParameters = original.AddOwnerParameters
 type ADGroup = original.ADGroup
 type Application = original.Application
 type ApplicationAddOwnerParameters = original.ApplicationAddOwnerParameters
@@ -57,6 +58,7 @@ type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
+type AppRole = original.AppRole
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
 type BasicDirectoryObject = original.BasicDirectoryObject
@@ -106,6 +108,7 @@ type UserUpdateParameters = original.UserUpdateParameters
 type OAuth2Client = original.OAuth2Client
 type ObjectsClient = original.ObjectsClient
 type ServicePrincipalsClient = original.ServicePrincipalsClient
+type SignedInUserClient = original.SignedInUserClient
 type UsersClient = original.UsersClient
 
 func NewApplicationsClient(tenantID string) ApplicationsClient {
@@ -161,6 +164,12 @@ func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 }
 func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
+}
+func NewSignedInUserClient(tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClient(tenantID)
+}
+func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClientWithBaseURI(baseURI, tenantID)
 }
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)

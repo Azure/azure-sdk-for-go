@@ -115,6 +115,80 @@ func (client GroupsClient) AddMemberResponder(resp *http.Response) (result autor
 	return
 }
 
+// AddOwner add an owner to a group.
+// Parameters:
+// objectID - the object ID of the application to which to add the owner.
+// parameters - the URL of the owner object, such as
+// https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+func (client GroupsClient) AddOwner(ctx context.Context, objectID string, parameters AddOwnerParameters) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("graphrbac.GroupsClient", "AddOwner", err.Error())
+	}
+
+	req, err := client.AddOwnerPreparer(ctx, objectID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddOwnerSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddOwnerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddOwnerPreparer prepares the AddOwner request.
+func (client GroupsClient) AddOwnerPreparer(ctx context.Context, objectID string, parameters AddOwnerParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/$links/owners", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddOwnerSender sends the AddOwner request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupsClient) AddOwnerSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddOwnerResponder handles the response to the AddOwner request. The method always
+// closes the http.Response Body.
+func (client GroupsClient) AddOwnerResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Create create a group in the directory.
 // Parameters:
 // parameters - the parameters for the group to create.
@@ -743,6 +817,71 @@ func (client GroupsClient) ListNextSender(req *http.Request) (*http.Response, er
 // ListNextResponder handles the response to the ListNext request. The method always
 // closes the http.Response Body.
 func (client GroupsClient) ListNextResponder(resp *http.Response) (result GroupListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListOwners the owners are a set of non-admin users who are allowed to modify this object.
+// Parameters:
+// objectID - the object ID of the group for which to get owners.
+func (client GroupsClient) ListOwners(ctx context.Context, objectID string) (result DirectoryObjectListResult, err error) {
+	req, err := client.ListOwnersPreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListOwnersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListOwnersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListOwnersPreparer prepares the ListOwners request.
+func (client GroupsClient) ListOwnersPreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/owners", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListOwnersSender sends the ListOwners request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupsClient) ListOwnersSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListOwnersResponder handles the response to the ListOwners request. The method always
+// closes the http.Response Body.
+func (client GroupsClient) ListOwnersResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

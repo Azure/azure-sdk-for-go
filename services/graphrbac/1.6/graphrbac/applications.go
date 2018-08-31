@@ -47,12 +47,6 @@ func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) Applicati
 // parameters - the URL of the owner object, such as
 // https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
 func (client ApplicationsClient) AddOwner(ctx context.Context, applicationObjectID string, parameters ApplicationAddOwnerParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("graphrbac.ApplicationsClient", "AddOwner", err.Error())
-	}
-
 	req, err := client.AddOwnerPreparer(ctx, applicationObjectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "AddOwner", nil, "Failure preparing request")

@@ -165,11 +165,35 @@ func (ao AADObject) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AddOwnerParameters request parameters for adding a owner to an application.
+type AddOwnerParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// URL - A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
+	URL *string `json:"url,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddOwnerParameters.
+func (aop AddOwnerParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aop.URL != nil {
+		objectMap["url"] = aop.URL
+	}
+	for k, v := range aop.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
 // ADGroup active Directory group information.
 type ADGroup struct {
 	autorest.Response `json:"-"`
 	// DisplayName - The display name of the group.
 	DisplayName *string `json:"displayName,omitempty"`
+	// MailEnabled - Whether the group is mail-enabled. Must be false. This is because only pure security groups can be created using the Graph API.
+	MailEnabled *bool `json:"mailEnabled,omitempty"`
+	// MailNickname - The mail alias for the group.
+	MailNickname *string `json:"mailNickname,omitempty"`
 	// SecurityEnabled - Whether the group is security-enable.
 	SecurityEnabled *bool `json:"securityEnabled,omitempty"`
 	// Mail - The primary email address of the group.
@@ -190,6 +214,12 @@ func (ag ADGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ag.DisplayName != nil {
 		objectMap["displayName"] = ag.DisplayName
+	}
+	if ag.MailEnabled != nil {
+		objectMap["mailEnabled"] = ag.MailEnabled
+	}
+	if ag.MailNickname != nil {
+		objectMap["mailNickname"] = ag.MailNickname
 	}
 	if ag.SecurityEnabled != nil {
 		objectMap["securityEnabled"] = ag.SecurityEnabled
@@ -247,6 +277,8 @@ type Application struct {
 	autorest.Response `json:"-"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AppPermissions - The application permissions.
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
 	// AvailableToOtherTenants - Whether the application is be available to other tenants.
@@ -277,6 +309,9 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AppID != nil {
 		objectMap["appId"] = a.AppID
+	}
+	if a.AppRoles != nil {
+		objectMap["appRoles"] = a.AppRoles
 	}
 	if a.AppPermissions != nil {
 		objectMap["appPermissions"] = a.AppPermissions
@@ -344,7 +379,7 @@ func (a Application) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
 	return &a, true
 }
 
-// ApplicationAddOwnerParameters request parameters for adding a owner to an application.
+// ApplicationAddOwnerParameters ...
 type ApplicationAddOwnerParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -572,6 +607,22 @@ func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AppRole ...
+type AppRole struct {
+	// ID - Unique role identifier inside the appRoles collection.
+	ID *string `json:"id,omitempty"`
+	// AllowedMemberTypes - Specifies whether this app role definition can be assigned to users and groups by setting to 'User', or to other applications (that are accessing this application in daemon service scenarios) by setting to 'Application', or to both.
+	AllowedMemberTypes *[]string `json:"allowedMemberTypes,omitempty"`
+	// Description - Permission help text that appears in the admin app assignment and consent experiences.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - Display name for the permission that appears in the admin consent and app assignment experiences.
+	DisplayName *string `json:"displayName,omitempty"`
+	// IsEnabled - When creating or updating a role definition, this must be set to true (which is the default). To delete a role, this must first be set to false. At that point, in a subsequent call, this role may be removed.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Value - Specifies the value of the roles claim that the application should expect in the authentication and access tokens.
+	Value *string `json:"value,omitempty"`
 }
 
 // CheckGroupMembershipParameters request parameters for IsMemberOf API call.
@@ -1420,6 +1471,8 @@ type ServicePrincipal struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// ServicePrincipalNames - A collection of service principal names.
 	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -1441,6 +1494,9 @@ func (sp ServicePrincipal) MarshalJSON() ([]byte, error) {
 	}
 	if sp.AppID != nil {
 		objectMap["appId"] = sp.AppID
+	}
+	if sp.AppRoles != nil {
+		objectMap["appRoles"] = sp.AppRoles
 	}
 	if sp.ServicePrincipalNames != nil {
 		objectMap["servicePrincipalNames"] = sp.ServicePrincipalNames

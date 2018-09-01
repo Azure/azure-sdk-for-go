@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
 
@@ -37,68 +38,6 @@ func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
 // NewDeletedApplicationsClientWithBaseURI creates an instance of the DeletedApplicationsClient client.
 func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
 	return DeletedApplicationsClient{NewWithBaseURI(baseURI, tenantID)}
-}
-
-// Get gets a list of deleted applications in the directory.
-func (client DeletedApplicationsClient) Get(ctx context.Context) (result ApplicationListResult, err error) {
-	req, err := client.GetPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "Get", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "Get", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client DeletedApplicationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/deletedApplications", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client DeletedApplicationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client DeletedApplicationsClient) GetResponder(resp *http.Response) (result ApplicationListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }
 
 // HardDelete hard-delete an application.
@@ -162,6 +101,150 @@ func (client DeletedApplicationsClient) HardDeleteResponder(resp *http.Response)
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// List gets a list of deleted applications in the directory.
+// Parameters:
+// filter - the filter to apply to the operation.
+func (client DeletedApplicationsClient) List(ctx context.Context, filter string) (result ApplicationListResultPage, err error) {
+	result.fn = func(lastResult ApplicationListResult) (ApplicationListResult, error) {
+		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
+			return ApplicationListResult{}, nil
+		}
+		return client.ListNext(ctx, *lastResult.OdataNextLink)
+	}
+	req, err := client.ListPreparer(ctx, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "List", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.alr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "List", resp, "Failure sending request")
+		return
+	}
+
+	result.alr, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client DeletedApplicationsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/deletedApplications", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client DeletedApplicationsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client DeletedApplicationsClient) ListResponder(resp *http.Response) (result ApplicationListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DeletedApplicationsClient) ListComplete(ctx context.Context, filter string) (result ApplicationListResultIterator, err error) {
+	result.page, err = client.List(ctx, filter)
+	return
+}
+
+// ListNext gets a list of deleted applications in the directory.
+// Parameters:
+// nextLink - next link for the list operation.
+func (client DeletedApplicationsClient) ListNext(ctx context.Context, nextLink string) (result ApplicationListResult, err error) {
+	req, err := client.ListNextPreparer(ctx, nextLink)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "ListNext", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListNextSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "ListNext", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListNextResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.DeletedApplicationsClient", "ListNext", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListNextPreparer prepares the ListNext request.
+func (client DeletedApplicationsClient) ListNextPreparer(ctx context.Context, nextLink string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"nextLink": nextLink,
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListNextSender sends the ListNext request. The method will close the
+// http.Response Body if it receives an error.
+func (client DeletedApplicationsClient) ListNextSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListNextResponder handles the response to the ListNext request. The method always
+// closes the http.Response Body.
+func (client DeletedApplicationsClient) ListNextResponder(resp *http.Response) (result ApplicationListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

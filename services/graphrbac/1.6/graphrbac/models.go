@@ -21,8 +21,6 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
-	"net/http"
 )
 
 // ObjectType enumerates the values for object type.
@@ -405,6 +403,8 @@ func (aaop ApplicationAddOwnerParameters) MarshalJSON() ([]byte, error) {
 type ApplicationCreateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -428,6 +428,9 @@ type ApplicationCreateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationCreateParameters.
 func (acp ApplicationCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if acp.AppRoles != nil {
+		objectMap["appRoles"] = acp.AppRoles
+	}
 	if acp.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = acp.AvailableToOtherTenants
 	}
@@ -555,6 +558,8 @@ func (page ApplicationListResultPage) Values() []Application {
 type ApplicationUpdateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -578,6 +583,9 @@ type ApplicationUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationUpdateParameters.
 func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if aup.AppRoles != nil {
+		objectMap["appRoles"] = aup.AppRoles
+	}
 	if aup.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = aup.AvailableToOtherTenants
 	}
@@ -877,18 +885,6 @@ func (iter DirectoryObjectListResultIterator) Value() BasicDirectoryObject {
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DirectoryObjectListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
-}
-
-// directoryObjectListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dolr DirectoryObjectListResult) directoryObjectListResultPreparer() (*http.Request, error) {
-	if dolr.OdataNextLink == nil || len(to.String(dolr.OdataNextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dolr.OdataNextLink)))
 }
 
 // DirectoryObjectListResultPage contains a page of BasicDirectoryObject values.

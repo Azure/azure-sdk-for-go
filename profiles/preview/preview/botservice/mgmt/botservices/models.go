@@ -62,6 +62,36 @@ const (
 	ChannelNameWebChatChannel1    ChannelNameBasicChannel = original.ChannelNameWebChatChannel1
 )
 
+type EnterpriseChannelNodeState = original.EnterpriseChannelNodeState
+
+const (
+	CreateFailed EnterpriseChannelNodeState = original.CreateFailed
+	Creating     EnterpriseChannelNodeState = original.Creating
+	DeleteFailed EnterpriseChannelNodeState = original.DeleteFailed
+	Deleting     EnterpriseChannelNodeState = original.Deleting
+	Started      EnterpriseChannelNodeState = original.Started
+	StartFailed  EnterpriseChannelNodeState = original.StartFailed
+	Starting     EnterpriseChannelNodeState = original.Starting
+	StopFailed   EnterpriseChannelNodeState = original.StopFailed
+	Stopped      EnterpriseChannelNodeState = original.Stopped
+	Stopping     EnterpriseChannelNodeState = original.Stopping
+)
+
+type EnterpriseChannelState = original.EnterpriseChannelState
+
+const (
+	EnterpriseChannelStateCreateFailed EnterpriseChannelState = original.EnterpriseChannelStateCreateFailed
+	EnterpriseChannelStateCreating     EnterpriseChannelState = original.EnterpriseChannelStateCreating
+	EnterpriseChannelStateDeleteFailed EnterpriseChannelState = original.EnterpriseChannelStateDeleteFailed
+	EnterpriseChannelStateDeleting     EnterpriseChannelState = original.EnterpriseChannelStateDeleting
+	EnterpriseChannelStateStarted      EnterpriseChannelState = original.EnterpriseChannelStateStarted
+	EnterpriseChannelStateStartFailed  EnterpriseChannelState = original.EnterpriseChannelStateStartFailed
+	EnterpriseChannelStateStarting     EnterpriseChannelState = original.EnterpriseChannelStateStarting
+	EnterpriseChannelStateStopFailed   EnterpriseChannelState = original.EnterpriseChannelStateStopFailed
+	EnterpriseChannelStateStopped      EnterpriseChannelState = original.EnterpriseChannelStateStopped
+	EnterpriseChannelStateStopping     EnterpriseChannelState = original.EnterpriseChannelStateStopping
+)
+
 type Kind = original.Kind
 
 const (
@@ -83,21 +113,6 @@ type SkuTier = original.SkuTier
 const (
 	Free     SkuTier = original.Free
 	Standard SkuTier = original.Standard
-)
-
-type State = original.State
-
-const (
-	CreateFailed State = original.CreateFailed
-	Creating     State = original.Creating
-	DeleteFailed State = original.DeleteFailed
-	Deleting     State = original.Deleting
-	Started      State = original.Started
-	StartFailed  State = original.StartFailed
-	Starting     State = original.Starting
-	StopFailed   State = original.StopFailed
-	Stopped      State = original.Stopped
-	Stopping     State = original.Stopping
 )
 
 type Bot = original.Bot
@@ -126,8 +141,8 @@ type DirectLineSite = original.DirectLineSite
 type EmailChannel = original.EmailChannel
 type EmailChannelProperties = original.EmailChannelProperties
 type EnterpriseChannel = original.EnterpriseChannel
-type EnterpriseChannelCheckNameAvailabilityRequestBody = original.EnterpriseChannelCheckNameAvailabilityRequestBody
-type EnterpriseChannelCheckNameAvailabilityResponseBody = original.EnterpriseChannelCheckNameAvailabilityResponseBody
+type EnterpriseChannelCheckNameAvailabilityRequest = original.EnterpriseChannelCheckNameAvailabilityRequest
+type EnterpriseChannelCheckNameAvailabilityResponse = original.EnterpriseChannelCheckNameAvailabilityResponse
 type EnterpriseChannelNode = original.EnterpriseChannelNode
 type EnterpriseChannelProperties = original.EnterpriseChannelProperties
 type EnterpriseChannelResponseList = original.EnterpriseChannelResponseList
@@ -205,6 +220,12 @@ func PossibleChannelNameValues() []ChannelName {
 func PossibleChannelNameBasicChannelValues() []ChannelNameBasicChannel {
 	return original.PossibleChannelNameBasicChannelValues()
 }
+func PossibleEnterpriseChannelNodeStateValues() []EnterpriseChannelNodeState {
+	return original.PossibleEnterpriseChannelNodeStateValues()
+}
+func PossibleEnterpriseChannelStateValues() []EnterpriseChannelState {
+	return original.PossibleEnterpriseChannelStateValues()
+}
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
@@ -213,9 +234,6 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

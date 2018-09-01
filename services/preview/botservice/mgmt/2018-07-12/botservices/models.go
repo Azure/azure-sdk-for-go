@@ -89,6 +89,68 @@ func PossibleChannelNameBasicChannelValues() []ChannelNameBasicChannel {
 	return []ChannelNameBasicChannel{ChannelNameChannel, ChannelNameDirectLineChannel1, ChannelNameEmailChannel1, ChannelNameFacebookChannel1, ChannelNameKikChannel1, ChannelNameMsTeamsChannel1, ChannelNameSkypeChannel1, ChannelNameSlackChannel1, ChannelNameSmsChannel1, ChannelNameTelegramChannel1, ChannelNameWebChatChannel1}
 }
 
+// EnterpriseChannelNodeState enumerates the values for enterprise channel node state.
+type EnterpriseChannelNodeState string
+
+const (
+	// CreateFailed ...
+	CreateFailed EnterpriseChannelNodeState = "CreateFailed"
+	// Creating ...
+	Creating EnterpriseChannelNodeState = "Creating"
+	// DeleteFailed ...
+	DeleteFailed EnterpriseChannelNodeState = "DeleteFailed"
+	// Deleting ...
+	Deleting EnterpriseChannelNodeState = "Deleting"
+	// Started ...
+	Started EnterpriseChannelNodeState = "Started"
+	// StartFailed ...
+	StartFailed EnterpriseChannelNodeState = "StartFailed"
+	// Starting ...
+	Starting EnterpriseChannelNodeState = "Starting"
+	// StopFailed ...
+	StopFailed EnterpriseChannelNodeState = "StopFailed"
+	// Stopped ...
+	Stopped EnterpriseChannelNodeState = "Stopped"
+	// Stopping ...
+	Stopping EnterpriseChannelNodeState = "Stopping"
+)
+
+// PossibleEnterpriseChannelNodeStateValues returns an array of possible values for the EnterpriseChannelNodeState const type.
+func PossibleEnterpriseChannelNodeStateValues() []EnterpriseChannelNodeState {
+	return []EnterpriseChannelNodeState{CreateFailed, Creating, DeleteFailed, Deleting, Started, StartFailed, Starting, StopFailed, Stopped, Stopping}
+}
+
+// EnterpriseChannelState enumerates the values for enterprise channel state.
+type EnterpriseChannelState string
+
+const (
+	// EnterpriseChannelStateCreateFailed ...
+	EnterpriseChannelStateCreateFailed EnterpriseChannelState = "CreateFailed"
+	// EnterpriseChannelStateCreating ...
+	EnterpriseChannelStateCreating EnterpriseChannelState = "Creating"
+	// EnterpriseChannelStateDeleteFailed ...
+	EnterpriseChannelStateDeleteFailed EnterpriseChannelState = "DeleteFailed"
+	// EnterpriseChannelStateDeleting ...
+	EnterpriseChannelStateDeleting EnterpriseChannelState = "Deleting"
+	// EnterpriseChannelStateStarted ...
+	EnterpriseChannelStateStarted EnterpriseChannelState = "Started"
+	// EnterpriseChannelStateStartFailed ...
+	EnterpriseChannelStateStartFailed EnterpriseChannelState = "StartFailed"
+	// EnterpriseChannelStateStarting ...
+	EnterpriseChannelStateStarting EnterpriseChannelState = "Starting"
+	// EnterpriseChannelStateStopFailed ...
+	EnterpriseChannelStateStopFailed EnterpriseChannelState = "StopFailed"
+	// EnterpriseChannelStateStopped ...
+	EnterpriseChannelStateStopped EnterpriseChannelState = "Stopped"
+	// EnterpriseChannelStateStopping ...
+	EnterpriseChannelStateStopping EnterpriseChannelState = "Stopping"
+)
+
+// PossibleEnterpriseChannelStateValues returns an array of possible values for the EnterpriseChannelState const type.
+func PossibleEnterpriseChannelStateValues() []EnterpriseChannelState {
+	return []EnterpriseChannelState{EnterpriseChannelStateCreateFailed, EnterpriseChannelStateCreating, EnterpriseChannelStateDeleteFailed, EnterpriseChannelStateDeleting, EnterpriseChannelStateStarted, EnterpriseChannelStateStartFailed, EnterpriseChannelStateStarting, EnterpriseChannelStateStopFailed, EnterpriseChannelStateStopped, EnterpriseChannelStateStopping}
+}
+
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -136,37 +198,6 @@ const (
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{Free, Standard}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// CreateFailed ...
-	CreateFailed State = "CreateFailed"
-	// Creating ...
-	Creating State = "Creating"
-	// DeleteFailed ...
-	DeleteFailed State = "DeleteFailed"
-	// Deleting ...
-	Deleting State = "Deleting"
-	// Started ...
-	Started State = "Started"
-	// StartFailed ...
-	StartFailed State = "StartFailed"
-	// Starting ...
-	Starting State = "Starting"
-	// StopFailed ...
-	StopFailed State = "StopFailed"
-	// Stopped ...
-	Stopped State = "Stopped"
-	// Stopping ...
-	Stopping State = "Stopping"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{CreateFailed, Creating, DeleteFailed, Deleting, Started, StartFailed, Starting, StopFailed, Stopped, Stopping}
 }
 
 // Bot bot resource definition
@@ -1181,7 +1212,7 @@ type EmailChannelProperties struct {
 // EnterpriseChannel enterprise Channel resource definition
 type EnterpriseChannel struct {
 	autorest.Response `json:"-"`
-	// Properties - The set of properties specific to an Enterprise Channel resource
+	// Properties - The set of properties specific to an Enterprise Channel resource.
 	Properties *EnterpriseChannelProperties `json:"properties,omitempty"`
 	// ID - Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
@@ -1234,20 +1265,20 @@ func (ec EnterpriseChannel) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EnterpriseChannelCheckNameAvailabilityRequestBody the request body for a request to Bot Service Management to
-// check availability of an Enterprise Channel name.
-type EnterpriseChannelCheckNameAvailabilityRequestBody struct {
-	// Name - the name of the Enterprise Channel for which availability needs to be checked.
+// EnterpriseChannelCheckNameAvailabilityRequest a request to Bot Service Management to check availability of an
+// Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityRequest struct {
+	// Name - The name of the Enterprise Channel for which availability needs to be checked.
 	Name *string `json:"name,omitempty"`
 }
 
-// EnterpriseChannelCheckNameAvailabilityResponseBody the response body returned for a request to Bot Service
-// Management to check availability of an Enterprise Channel name.
-type EnterpriseChannelCheckNameAvailabilityResponseBody struct {
+// EnterpriseChannelCheckNameAvailabilityResponse a request to Bot Service Management to check availability of an
+// Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
-	// Valid - indicates if the Enterprise Channel name is valid.
+	// Valid - Indicates if the Enterprise Channel name is valid.
 	Valid *bool `json:"valid,omitempty"`
-	// Message - additional message from the bot management api showing why a bot name is not available
+	// Message - Additional information about why a bot name is not available.
 	Message *string `json:"message,omitempty"`
 }
 
@@ -1256,20 +1287,20 @@ type EnterpriseChannelNode struct {
 	// ID - Id of Enterprise Channel Node. This is generated by the Bot Framework.
 	ID *string `json:"id,omitempty"`
 	// State - The current state of the Enterprise Channel Node. Possible values include: 'Creating', 'CreateFailed', 'Started', 'Starting', 'StartFailed', 'Stopped', 'Stopping', 'StopFailed', 'Deleting', 'DeleteFailed'
-	State State `json:"state,omitempty"`
-	// Name - The name of the Enterprise Channel Node
+	State EnterpriseChannelNodeState `json:"state,omitempty"`
+	// Name - The name of the Enterprise Channel Node.
 	Name *string `json:"name,omitempty"`
-	// AzureSku - The sku of the Enterprise Channel Node
+	// AzureSku - The sku of the Enterprise Channel Node.
 	AzureSku *string `json:"azureSku,omitempty"`
-	// AzureLocation - The location of the Enterprise Channel Node
+	// AzureLocation - The location of the Enterprise Channel Node.
 	AzureLocation *string `json:"azureLocation,omitempty"`
 }
 
 // EnterpriseChannelProperties the parameters to provide for the Enterprise Channel.
 type EnterpriseChannelProperties struct {
-	// State - The current state of the Enterprise Channel. Possible values include: 'Creating', 'CreateFailed', 'Started', 'Starting', 'StartFailed', 'Stopped', 'Stopping', 'StopFailed', 'Deleting', 'DeleteFailed'
-	State State `json:"state,omitempty"`
-	// Nodes - The nodes associated with the Enterprise Channel
+	// State - The current state of the Enterprise Channel. Possible values include: 'EnterpriseChannelStateCreating', 'EnterpriseChannelStateCreateFailed', 'EnterpriseChannelStateStarted', 'EnterpriseChannelStateStarting', 'EnterpriseChannelStateStartFailed', 'EnterpriseChannelStateStopped', 'EnterpriseChannelStateStopping', 'EnterpriseChannelStateStopFailed', 'EnterpriseChannelStateDeleting', 'EnterpriseChannelStateDeleteFailed'
+	State EnterpriseChannelState `json:"state,omitempty"`
+	// Nodes - The nodes associated with the Enterprise Channel.
 	Nodes *[]EnterpriseChannelNode `json:"nodes,omitempty"`
 }
 

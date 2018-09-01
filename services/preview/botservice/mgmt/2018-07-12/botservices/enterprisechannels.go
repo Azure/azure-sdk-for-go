@@ -40,6 +40,68 @@ func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID strin
 	return EnterpriseChannelsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CheckNameAvailability check whether an Enterprise Channel name is available.
+// Parameters:
+// parameters - the parameters to provide for the Enterprise Channel check name availability request.
+func (client EnterpriseChannelsClient) CheckNameAvailability(ctx context.Context, parameters EnterpriseChannelCheckNameAvailabilityRequest) (result EnterpriseChannelCheckNameAvailabilityResponse, err error) {
+	req, err := client.CheckNameAvailabilityPreparer(ctx, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "CheckNameAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client EnterpriseChannelsClient) CheckNameAvailabilityPreparer(ctx context.Context, parameters EnterpriseChannelCheckNameAvailabilityRequest) (*http.Request, error) {
+	const APIVersion = "2018-07-12"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.BotService/checkEnterpriseChannelNameAvailability"),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client EnterpriseChannelsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
+// closes the http.Response Body.
+func (client EnterpriseChannelsClient) CheckNameAvailabilityResponder(resp *http.Response) (result EnterpriseChannelCheckNameAvailabilityResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Create creates an Enterprise Channel.
 // Parameters:
 // resourceGroupName - the name of the Bot resource group in the user subscription.
@@ -290,70 +352,7 @@ func (client EnterpriseChannelsClient) GetResponder(resp *http.Response) (result
 	return
 }
 
-// GetCheckNameAvailability check whether an Enterprise Channel name is available.
-// Parameters:
-// parameters - the request body parameters to provide for the Enterprise Channel check name availability
-// request
-func (client EnterpriseChannelsClient) GetCheckNameAvailability(ctx context.Context, parameters EnterpriseChannelCheckNameAvailabilityRequestBody) (result EnterpriseChannelCheckNameAvailabilityResponseBody, err error) {
-	req, err := client.GetCheckNameAvailabilityPreparer(ctx, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "GetCheckNameAvailability", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetCheckNameAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "GetCheckNameAvailability", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetCheckNameAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "GetCheckNameAvailability", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetCheckNameAvailabilityPreparer prepares the GetCheckNameAvailability request.
-func (client EnterpriseChannelsClient) GetCheckNameAvailabilityPreparer(ctx context.Context, parameters EnterpriseChannelCheckNameAvailabilityRequestBody) (*http.Request, error) {
-	const APIVersion = "2018-07-12"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.BotService/checkEnterpriseChannelNameAvailability"),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetCheckNameAvailabilitySender sends the GetCheckNameAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client EnterpriseChannelsClient) GetCheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetCheckNameAvailabilityResponder handles the response to the GetCheckNameAvailability request. The method always
-// closes the http.Response Body.
-func (client EnterpriseChannelsClient) GetCheckNameAvailabilityResponder(resp *http.Response) (result EnterpriseChannelCheckNameAvailabilityResponseBody, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListByResourceGroup returns all the resources of a particular type belonging to a resource group
+// ListByResourceGroup returns all the resources of a particular type belonging to a resource group.
 // Parameters:
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 func (client EnterpriseChannelsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result EnterpriseChannelResponseListPage, err error) {

@@ -97,6 +97,7 @@ type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameter
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
+type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
 type SignInName = original.SignInName
 type User = original.User
 type UserBase = original.UserBase

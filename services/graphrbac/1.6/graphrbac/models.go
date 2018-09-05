@@ -1652,30 +1652,72 @@ func (sp ServicePrincipal) AsBasicDirectoryObject() (BasicDirectoryObject, bool)
 type ServicePrincipalCreateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// AppID - application Id
-	AppID *string `json:"appId,omitempty"`
 	// AccountEnabled - Whether the account is enabled
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
+	// AppID - application Id
+	AppID *string `json:"appId,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
+	// DisplayName - The display name for the service principal.
+	DisplayName *string `json:"displayName,omitempty"`
+	ErrorURL    *string `json:"errorUrl,omitempty"`
+	// Homepage - The URL to the homepage of the associated application.
+	Homepage *string `json:"homepage,omitempty"`
 	// KeyCredentials - A collection of KeyCredential objects.
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PublisherName - The display name of the tenant in which the associated application is specified.
+	PublisherName *string `json:"publisherName,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the service principal.
+	ReplyUrls       *[]string `json:"replyUrls,omitempty"`
+	SamlMetadataURL *string   `json:"samlMetadataUrl,omitempty"`
+	// ServicePrincipalNames - A collection of service principal names.
+	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
+	Tags                  *[]string `json:"tags,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServicePrincipalCreateParameters.
 func (spcp ServicePrincipalCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if spcp.AccountEnabled != nil {
+		objectMap["accountEnabled"] = spcp.AccountEnabled
+	}
 	if spcp.AppID != nil {
 		objectMap["appId"] = spcp.AppID
 	}
-	if spcp.AccountEnabled != nil {
-		objectMap["accountEnabled"] = spcp.AccountEnabled
+	if spcp.AppRoleAssignmentRequired != nil {
+		objectMap["appRoleAssignmentRequired"] = spcp.AppRoleAssignmentRequired
+	}
+	if spcp.DisplayName != nil {
+		objectMap["displayName"] = spcp.DisplayName
+	}
+	if spcp.ErrorURL != nil {
+		objectMap["errorUrl"] = spcp.ErrorURL
+	}
+	if spcp.Homepage != nil {
+		objectMap["homepage"] = spcp.Homepage
 	}
 	if spcp.KeyCredentials != nil {
 		objectMap["keyCredentials"] = spcp.KeyCredentials
 	}
 	if spcp.PasswordCredentials != nil {
 		objectMap["passwordCredentials"] = spcp.PasswordCredentials
+	}
+	if spcp.PublisherName != nil {
+		objectMap["publisherName"] = spcp.PublisherName
+	}
+	if spcp.ReplyUrls != nil {
+		objectMap["replyUrls"] = spcp.ReplyUrls
+	}
+	if spcp.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = spcp.SamlMetadataURL
+	}
+	if spcp.ServicePrincipalNames != nil {
+		objectMap["servicePrincipalNames"] = spcp.ServicePrincipalNames
+	}
+	if spcp.Tags != nil {
+		objectMap["tags"] = spcp.Tags
 	}
 	for k, v := range spcp.AdditionalProperties {
 		objectMap[k] = v
@@ -1771,6 +1813,83 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 		return nil
 	}
 	return *page.splr.Value
+}
+
+// ServicePrincipalUpdateParameters request parameters for creating a new service principal.
+type ServicePrincipalUpdateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// AccountEnabled - Whether the account is enabled
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
+	// AppID - application Id
+	AppID *string `json:"appId,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
+	// DisplayName - The display name for the service principal.
+	DisplayName *string `json:"displayName,omitempty"`
+	ErrorURL    *string `json:"errorUrl,omitempty"`
+	// Homepage - The URL to the homepage of the associated application.
+	Homepage *string `json:"homepage,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PublisherName - The display name of the tenant in which the associated application is specified.
+	PublisherName *string `json:"publisherName,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the service principal.
+	ReplyUrls       *[]string `json:"replyUrls,omitempty"`
+	SamlMetadataURL *string   `json:"samlMetadataUrl,omitempty"`
+	// ServicePrincipalNames - A collection of service principal names.
+	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
+	Tags                  *[]string `json:"tags,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrincipalUpdateParameters.
+func (spup ServicePrincipalUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spup.AccountEnabled != nil {
+		objectMap["accountEnabled"] = spup.AccountEnabled
+	}
+	if spup.AppID != nil {
+		objectMap["appId"] = spup.AppID
+	}
+	if spup.AppRoleAssignmentRequired != nil {
+		objectMap["appRoleAssignmentRequired"] = spup.AppRoleAssignmentRequired
+	}
+	if spup.DisplayName != nil {
+		objectMap["displayName"] = spup.DisplayName
+	}
+	if spup.ErrorURL != nil {
+		objectMap["errorUrl"] = spup.ErrorURL
+	}
+	if spup.Homepage != nil {
+		objectMap["homepage"] = spup.Homepage
+	}
+	if spup.KeyCredentials != nil {
+		objectMap["keyCredentials"] = spup.KeyCredentials
+	}
+	if spup.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = spup.PasswordCredentials
+	}
+	if spup.PublisherName != nil {
+		objectMap["publisherName"] = spup.PublisherName
+	}
+	if spup.ReplyUrls != nil {
+		objectMap["replyUrls"] = spup.ReplyUrls
+	}
+	if spup.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = spup.SamlMetadataURL
+	}
+	if spup.ServicePrincipalNames != nil {
+		objectMap["servicePrincipalNames"] = spup.ServicePrincipalNames
+	}
+	if spup.Tags != nil {
+		objectMap["tags"] = spup.Tags
+	}
+	for k, v := range spup.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
 }
 
 // SignInName contains information about a sign-in name of a local account user in an Azure Active Directory B2C

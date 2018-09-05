@@ -550,24 +550,17 @@ type BudgetTimePeriod struct {
 	EndDate *date.Time `json:"endDate,omitempty"`
 }
 
-// ChargesListResultByDepartment result of listing charge summary by deparment.
-type ChargesListResultByDepartment struct {
+// ChargesListResult result of listing charge summary.
+type ChargesListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of charge summary by department.
-	Value *[]ChargeSummaryByDepartment `json:"value,omitempty"`
+	// Value - The list of charge summary
+	Value *[]ChargeSummary `json:"value,omitempty"`
 }
 
-// ChargesListResultByEnrollmentAccount result of listing charge summary by enrollment account.
-type ChargesListResultByEnrollmentAccount struct {
-	autorest.Response `json:"-"`
-	// Value - The list of charge summary by enrollment account.
-	Value *[]ChargeSummaryByEnrollmentAccount `json:"value,omitempty"`
-}
-
-// ChargeSummaryByDepartment a charge summary resource by department.
-type ChargeSummaryByDepartment struct {
-	autorest.Response                    `json:"-"`
-	*ChargeSummaryPropertiesByDepartment `json:"properties,omitempty"`
+// ChargeSummary a charge summary resource.
+type ChargeSummary struct {
+	autorest.Response        `json:"-"`
+	*ChargeSummaryProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -578,29 +571,29 @@ type ChargeSummaryByDepartment struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ChargeSummaryByDepartment.
-func (csbd ChargeSummaryByDepartment) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ChargeSummary.
+func (cs ChargeSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if csbd.ChargeSummaryPropertiesByDepartment != nil {
-		objectMap["properties"] = csbd.ChargeSummaryPropertiesByDepartment
+	if cs.ChargeSummaryProperties != nil {
+		objectMap["properties"] = cs.ChargeSummaryProperties
 	}
-	if csbd.ID != nil {
-		objectMap["id"] = csbd.ID
+	if cs.ID != nil {
+		objectMap["id"] = cs.ID
 	}
-	if csbd.Name != nil {
-		objectMap["name"] = csbd.Name
+	if cs.Name != nil {
+		objectMap["name"] = cs.Name
 	}
-	if csbd.Type != nil {
-		objectMap["type"] = csbd.Type
+	if cs.Type != nil {
+		objectMap["type"] = cs.Type
 	}
-	if csbd.Tags != nil {
-		objectMap["tags"] = csbd.Tags
+	if cs.Tags != nil {
+		objectMap["tags"] = cs.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ChargeSummaryByDepartment struct.
-func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ChargeSummary struct.
+func (cs *ChargeSummary) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -610,12 +603,12 @@ func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var chargeSummaryPropertiesByDepartment ChargeSummaryPropertiesByDepartment
-				err = json.Unmarshal(*v, &chargeSummaryPropertiesByDepartment)
+				var chargeSummaryProperties ChargeSummaryProperties
+				err = json.Unmarshal(*v, &chargeSummaryProperties)
 				if err != nil {
 					return err
 				}
-				csbd.ChargeSummaryPropertiesByDepartment = &chargeSummaryPropertiesByDepartment
+				cs.ChargeSummaryProperties = &chargeSummaryProperties
 			}
 		case "id":
 			if v != nil {
@@ -624,7 +617,7 @@ func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				csbd.ID = &ID
+				cs.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -633,7 +626,7 @@ func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				csbd.Name = &name
+				cs.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -642,7 +635,7 @@ func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				csbd.Type = &typeVar
+				cs.Type = &typeVar
 			}
 		case "tags":
 			if v != nil {
@@ -651,102 +644,7 @@ func (csbd *ChargeSummaryByDepartment) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				csbd.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
-// ChargeSummaryByEnrollmentAccount a charge summary resource by enrollment account.
-type ChargeSummaryByEnrollmentAccount struct {
-	autorest.Response                           `json:"-"`
-	*ChargeSummaryPropertiesByEnrollmentAccount `json:"properties,omitempty"`
-	// ID - Resource Id.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for ChargeSummaryByEnrollmentAccount.
-func (csbea ChargeSummaryByEnrollmentAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if csbea.ChargeSummaryPropertiesByEnrollmentAccount != nil {
-		objectMap["properties"] = csbea.ChargeSummaryPropertiesByEnrollmentAccount
-	}
-	if csbea.ID != nil {
-		objectMap["id"] = csbea.ID
-	}
-	if csbea.Name != nil {
-		objectMap["name"] = csbea.Name
-	}
-	if csbea.Type != nil {
-		objectMap["type"] = csbea.Type
-	}
-	if csbea.Tags != nil {
-		objectMap["tags"] = csbea.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ChargeSummaryByEnrollmentAccount struct.
-func (csbea *ChargeSummaryByEnrollmentAccount) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var chargeSummaryPropertiesByEnrollmentAccount ChargeSummaryPropertiesByEnrollmentAccount
-				err = json.Unmarshal(*v, &chargeSummaryPropertiesByEnrollmentAccount)
-				if err != nil {
-					return err
-				}
-				csbea.ChargeSummaryPropertiesByEnrollmentAccount = &chargeSummaryPropertiesByEnrollmentAccount
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				csbea.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				csbea.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				csbea.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				csbea.Tags = tags
+				cs.Tags = tags
 			}
 		}
 	}
@@ -756,42 +654,6 @@ func (csbea *ChargeSummaryByEnrollmentAccount) UnmarshalJSON(body []byte) error 
 
 // ChargeSummaryProperties the properties of the charge summary.
 type ChargeSummaryProperties struct {
-	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
-	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// UsageStart - Usage start date.
-	UsageStart *string `json:"usageStart,omitempty"`
-	// UsageEnd -  Usage end date.
-	UsageEnd *string `json:"usageEnd,omitempty"`
-	// AzureCharges - Azure Charges.
-	AzureCharges *decimal.Decimal `json:"azureCharges,omitempty"`
-	// ChargesBilledSeparately - Charges Billed separately.
-	ChargesBilledSeparately *decimal.Decimal `json:"chargesBilledSeparately,omitempty"`
-	// MarketplaceCharges - Marketplace Charges.
-	MarketplaceCharges *decimal.Decimal `json:"marketplaceCharges,omitempty"`
-	// Currency - Currency Code
-	Currency *string `json:"currency,omitempty"`
-}
-
-// ChargeSummaryPropertiesByDepartment the properties of the charge summary by department.
-type ChargeSummaryPropertiesByDepartment struct {
-	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
-	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-	// UsageStart - Usage start date.
-	UsageStart *string `json:"usageStart,omitempty"`
-	// UsageEnd -  Usage end date.
-	UsageEnd *string `json:"usageEnd,omitempty"`
-	// AzureCharges - Azure Charges.
-	AzureCharges *decimal.Decimal `json:"azureCharges,omitempty"`
-	// ChargesBilledSeparately - Charges Billed separately.
-	ChargesBilledSeparately *decimal.Decimal `json:"chargesBilledSeparately,omitempty"`
-	// MarketplaceCharges - Marketplace Charges.
-	MarketplaceCharges *decimal.Decimal `json:"marketplaceCharges,omitempty"`
-	// Currency - Currency Code
-	Currency *string `json:"currency,omitempty"`
-}
-
-// ChargeSummaryPropertiesByEnrollmentAccount the properties of the charge summary by enrollment account.
-type ChargeSummaryPropertiesByEnrollmentAccount struct {
 	// BillingPeriodID - The id of the billing period resource that the charge belongs to.
 	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
 	// UsageStart - Usage start date.

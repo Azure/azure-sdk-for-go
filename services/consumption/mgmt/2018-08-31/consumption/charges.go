@@ -47,7 +47,7 @@ func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesC
 // filter - may be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time).
 // The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
 // 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client ChargesClient) ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string) (result ChargesListResultByDepartment, err error) {
+func (client ChargesClient) ListByDepartment(ctx context.Context, billingAccountID string, departmentID string, filter string) (result ChargesListResult, err error) {
 	req, err := client.ListByDepartmentPreparer(ctx, billingAccountID, departmentID, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListByDepartment", nil, "Failure preparing request")
@@ -101,7 +101,7 @@ func (client ChargesClient) ListByDepartmentSender(req *http.Request) (*http.Res
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
 // closes the http.Response Body.
-func (client ChargesClient) ListByDepartmentResponder(resp *http.Response) (result ChargesListResultByDepartment, err error) {
+func (client ChargesClient) ListByDepartmentResponder(resp *http.Response) (result ChargesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -119,7 +119,7 @@ func (client ChargesClient) ListByDepartmentResponder(resp *http.Response) (resu
 // filter - may be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time).
 // The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
 // 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client ChargesClient) ListByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string) (result ChargesListResultByEnrollmentAccount, err error) {
+func (client ChargesClient) ListByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, filter string) (result ChargesListResult, err error) {
 	req, err := client.ListByEnrollmentAccountPreparer(ctx, billingAccountID, enrollmentAccountID, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListByEnrollmentAccount", nil, "Failure preparing request")
@@ -173,7 +173,7 @@ func (client ChargesClient) ListByEnrollmentAccountSender(req *http.Request) (*h
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client ChargesClient) ListByEnrollmentAccountResponder(resp *http.Response) (result ChargesListResultByEnrollmentAccount, err error) {
+func (client ChargesClient) ListByEnrollmentAccountResponder(resp *http.Response) (result ChargesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -192,7 +192,7 @@ func (client ChargesClient) ListByEnrollmentAccountResponder(resp *http.Response
 // filter - may be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time).
 // The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
 // 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client ChargesClient) ListForBillingPeriodByDepartment(ctx context.Context, billingAccountID string, departmentID string, billingPeriodName string, filter string) (result ChargeSummaryByDepartment, err error) {
+func (client ChargesClient) ListForBillingPeriodByDepartment(ctx context.Context, billingAccountID string, departmentID string, billingPeriodName string, filter string) (result ChargeSummary, err error) {
 	req, err := client.ListForBillingPeriodByDepartmentPreparer(ctx, billingAccountID, departmentID, billingPeriodName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListForBillingPeriodByDepartment", nil, "Failure preparing request")
@@ -247,7 +247,7 @@ func (client ChargesClient) ListForBillingPeriodByDepartmentSender(req *http.Req
 
 // ListForBillingPeriodByDepartmentResponder handles the response to the ListForBillingPeriodByDepartment request. The method always
 // closes the http.Response Body.
-func (client ChargesClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result ChargeSummaryByDepartment, err error) {
+func (client ChargesClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result ChargeSummary, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -266,7 +266,7 @@ func (client ChargesClient) ListForBillingPeriodByDepartmentResponder(resp *http
 // filter - may be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time).
 // The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
 // 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client ChargesClient) ListForBillingPeriodByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, billingPeriodName string, filter string) (result ChargeSummaryByEnrollmentAccount, err error) {
+func (client ChargesClient) ListForBillingPeriodByEnrollmentAccount(ctx context.Context, billingAccountID string, enrollmentAccountID string, billingPeriodName string, filter string) (result ChargeSummary, err error) {
 	req, err := client.ListForBillingPeriodByEnrollmentAccountPreparer(ctx, billingAccountID, enrollmentAccountID, billingPeriodName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ChargesClient", "ListForBillingPeriodByEnrollmentAccount", nil, "Failure preparing request")
@@ -321,7 +321,7 @@ func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountSender(req *h
 
 // ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result ChargeSummaryByEnrollmentAccount, err error) {
+func (client ChargesClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result ChargeSummary, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

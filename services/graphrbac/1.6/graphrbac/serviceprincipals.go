@@ -611,9 +611,10 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 
 // Update updates a service principal in the directory.
 // Parameters:
+// objectID - the object ID of the service principal to delete.
 // parameters - parameters to update a service principal.
-func (client ServicePrincipalsClient) Update(ctx context.Context, parameters ServicePrincipalUpdateParameters) (result ServicePrincipal, err error) {
-	req, err := client.UpdatePreparer(ctx, parameters)
+func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (result ServicePrincipal, err error) {
+	req, err := client.UpdatePreparer(ctx, objectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", nil, "Failure preparing request")
 		return
@@ -635,8 +636,9 @@ func (client ServicePrincipalsClient) Update(ctx context.Context, parameters Ser
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, parameters ServicePrincipalUpdateParameters) (*http.Request, error) {
+func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
 
@@ -649,7 +651,7 @@ func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, parame
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/servicePrincipals", pathParameters),
+		autorest.WithPathParameters("/{tenantID}/servicePrincipals/{objectId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

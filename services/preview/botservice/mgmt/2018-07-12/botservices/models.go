@@ -1118,7 +1118,7 @@ type DirectLineSite struct {
 	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
 	// IsSecureSiteEnabled - Whether this site is enabled for authentication with Bot Framework.
 	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
-	// TrustedOrigins - List of Trusted Origin url's for this site.This field is applicable only if isSecureSiteEnabled is True.
+	// TrustedOrigins - List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
 	TrustedOrigins *[]string `json:"trustedOrigins,omitempty"`
 }
 

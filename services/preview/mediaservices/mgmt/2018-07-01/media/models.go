@@ -1323,7 +1323,7 @@ type AkamaiSignatureHeaderAuthenticationKey struct {
 	Identifier *string `json:"identifier,omitempty"`
 	// Base64Key - authentication key
 	Base64Key *string `json:"base64Key,omitempty"`
-	// Expiration - The exact time the authentication key.
+	// Expiration - The expiration time of the authentication key.
 	Expiration *date.Time `json:"expiration,omitempty"`
 }
 
@@ -6437,9 +6437,9 @@ type LiveEventActionInput struct {
 
 // LiveEventEncoding the Live Event encoding.
 type LiveEventEncoding struct {
-	// EncodingType - The encoding type for Live Event. Possible values include: 'LiveEventEncodingTypeNone', 'LiveEventEncodingTypeBasic'
+	// EncodingType - The encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'LiveEventEncodingTypeNone', 'LiveEventEncodingTypeBasic'
 	EncodingType LiveEventEncodingType `json:"encodingType,omitempty"`
-	// PresetName - The encoding preset name.
+	// PresetName - The encoding preset name.  This value is specified at creation time and cannot be updated.
 	PresetName *string `json:"presetName,omitempty"`
 }
 
@@ -6453,14 +6453,22 @@ type LiveEventEndpoint struct {
 
 // LiveEventInput the Live Event input.
 type LiveEventInput struct {
-	// StreamingProtocol - The streaming protocol for the Live Event. Possible values include: 'FragmentedMP4', 'RTMP'
+	// StreamingProtocol - The streaming protocol for the Live Event.  This is specified at creation time and cannot be updated. Possible values include: 'FragmentedMP4', 'RTMP'
 	StreamingProtocol LiveEventInputProtocol `json:"streamingProtocol,omitempty"`
+	// AccessControl - The access control for LiveEvent Input.
+	AccessControl *LiveEventInputAccessControl `json:"accessControl,omitempty"`
 	// KeyFrameIntervalDuration - ISO 8601 timespan duration of the key frame interval duration.
 	KeyFrameIntervalDuration *string `json:"keyFrameIntervalDuration,omitempty"`
-	// AccessToken - The access token.
+	// AccessToken - A unique identifier for a stream.  This can be specified at creation time but cannot be updated.  If omitted, the service will generate a unique value.
 	AccessToken *string `json:"accessToken,omitempty"`
 	// Endpoints - The input endpoints for the Live Event.
 	Endpoints *[]LiveEventEndpoint `json:"endpoints,omitempty"`
+}
+
+// LiveEventInputAccessControl the IP access control for Live Event Input.
+type LiveEventInputAccessControl struct {
+	// IP - The IP access control properties.
+	IP *IPAccessControl `json:"ip,omitempty"`
 }
 
 // LiveEventListResult the LiveEvent list result.
@@ -6573,11 +6581,11 @@ type LiveEventPreview struct {
 	Endpoints *[]LiveEventEndpoint `json:"endpoints,omitempty"`
 	// AccessControl - The access control for LiveEvent preview.
 	AccessControl *LiveEventPreviewAccessControl `json:"accessControl,omitempty"`
-	// PreviewLocator - The preview locator Guid.
+	// PreviewLocator - The identifier of the preview locator in Guid format.  Specifying this at creation time allows the caller to know the preview locator url before the event is created.  If omitted, the service will generate a random identifier.  This value cannot be updated once the live event is created.
 	PreviewLocator *string `json:"previewLocator,omitempty"`
-	// StreamingPolicyName - The name of streaming policy used for LiveEvent preview
+	// StreamingPolicyName - The name of streaming policy used for the LiveEvent preview.  This value is specified at creation time and cannot be updated.
 	StreamingPolicyName *string `json:"streamingPolicyName,omitempty"`
-	// AlternativeMediaID - The alternative Media-Id associated with the preview
+	// AlternativeMediaID - An Alternative Media Identifier associated with the StreamingLocator created for the preview.  This value is specified at creation time and cannot be updated.  The identifier can be used in the CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the StreamingPolicyName field.
 	AlternativeMediaID *string `json:"alternativeMediaId,omitempty"`
 }
 
@@ -6603,9 +6611,9 @@ type LiveEventProperties struct {
 	ResourceState LiveEventResourceState `json:"resourceState,omitempty"`
 	// CrossSiteAccessPolicies - The Live Event access policies.
 	CrossSiteAccessPolicies *CrossSiteAccessPolicies `json:"crossSiteAccessPolicies,omitempty"`
-	// VanityURL - The Live Event vanity URL flag.
+	// VanityURL - Specifies whether to use a vanity url with the Live Event.  This value is specified at creation time and cannot be updated.
 	VanityURL *bool `json:"vanityUrl,omitempty"`
-	// StreamOptions - The stream options.
+	// StreamOptions - The options to use for the LiveEvent.  This value is specified at creation time and cannot be updated.
 	StreamOptions *[]StreamOptionsFlag `json:"streamOptions,omitempty"`
 	// Created - The exact time the Live Event was created.
 	Created *date.Time `json:"created,omitempty"`
@@ -6951,7 +6959,7 @@ type LiveOutputProperties struct {
 	AssetName *string `json:"assetName,omitempty"`
 	// ArchiveWindowLength - ISO 8601 timespan duration of the archive window length. This is duration that customer want to retain the recorded content.
 	ArchiveWindowLength *string `json:"archiveWindowLength,omitempty"`
-	// ManifestName - The manifest file name.
+	// ManifestName - The manifest file name.  If not provided, the service will generate one automatically.
 	ManifestName *string `json:"manifestName,omitempty"`
 	// Hls - The HLS configuration.
 	Hls *Hls `json:"hls,omitempty"`
@@ -8531,9 +8539,9 @@ func (page StreamingEndpointListResultPage) Values() []StreamingEndpoint {
 type StreamingEndpointProperties struct {
 	// Description - The StreamingEndpoint description.
 	Description *string `json:"description,omitempty"`
-	// ScaleUnits - The number of scale units.
+	// ScaleUnits - The number of scale units.  Use the Scale operation to adjust this value.
 	ScaleUnits *int32 `json:"scaleUnits,omitempty"`
-	// AvailabilitySetName - AvailabilitySet name
+	// AvailabilitySetName - The name of the AvailabilitySet used with this StreamingEndpoint for high availability streaming.  This value can only be set at creation time.
 	AvailabilitySetName *string `json:"availabilitySetName,omitempty"`
 	// AccessControl - The access control definition of the StreamingEndpoint.
 	AccessControl *StreamingEndpointAccessControl `json:"accessControl,omitempty"`

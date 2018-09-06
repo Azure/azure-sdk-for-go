@@ -600,6 +600,7 @@ type LiveEventActionInput = original.LiveEventActionInput
 type LiveEventEncoding = original.LiveEventEncoding
 type LiveEventEndpoint = original.LiveEventEndpoint
 type LiveEventInput = original.LiveEventInput
+type LiveEventInputAccessControl = original.LiveEventInputAccessControl
 type LiveEventListResult = original.LiveEventListResult
 type LiveEventListResultIterator = original.LiveEventListResultIterator
 type LiveEventListResultPage = original.LiveEventListResultPage

@@ -750,7 +750,7 @@ const (
 type TypeBasicFactoryRepoConfiguration = original.TypeBasicFactoryRepoConfiguration
 
 const (
-	TypeFactoryGithubConfiguration TypeBasicFactoryRepoConfiguration = original.TypeFactoryGithubConfiguration
+	TypeFactoryGitHubConfiguration TypeBasicFactoryRepoConfiguration = original.TypeFactoryGitHubConfiguration
 	TypeFactoryRepoConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryRepoConfiguration
 	TypeFactoryVSTSConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryVSTSConfiguration
 )

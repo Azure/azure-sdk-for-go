@@ -1530,8 +1530,8 @@ func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference
 type TypeBasicFactoryRepoConfiguration string
 
 const (
-	// TypeFactoryGithubConfiguration ...
-	TypeFactoryGithubConfiguration TypeBasicFactoryRepoConfiguration = "FactoryGithubConfiguration"
+	// TypeFactoryGitHubConfiguration ...
+	TypeFactoryGitHubConfiguration TypeBasicFactoryRepoConfiguration = "FactoryGitHubConfiguration"
 	// TypeFactoryRepoConfiguration ...
 	TypeFactoryRepoConfiguration TypeBasicFactoryRepoConfiguration = "FactoryRepoConfiguration"
 	// TypeFactoryVSTSConfiguration ...
@@ -1540,7 +1540,7 @@ const (
 
 // PossibleTypeBasicFactoryRepoConfigurationValues returns an array of possible values for the TypeBasicFactoryRepoConfiguration const type.
 func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
-	return []TypeBasicFactoryRepoConfiguration{TypeFactoryGithubConfiguration, TypeFactoryRepoConfiguration, TypeFactoryVSTSConfiguration}
+	return []TypeBasicFactoryRepoConfiguration{TypeFactoryGitHubConfiguration, TypeFactoryRepoConfiguration, TypeFactoryVSTSConfiguration}
 }
 
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
@@ -35887,13 +35887,13 @@ type FactoryGitHubConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FactoryGitHubConfiguration.
 func (fghc FactoryGitHubConfiguration) MarshalJSON() ([]byte, error) {
-	fghc.Type = TypeFactoryGithubConfiguration
+	fghc.Type = TypeFactoryGitHubConfiguration
 	objectMap := make(map[string]interface{})
 	if fghc.HostName != nil {
 		objectMap["hostName"] = fghc.HostName
@@ -36132,7 +36132,7 @@ type FactoryRepoConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 
@@ -36148,7 +36148,7 @@ func unmarshalBasicFactoryRepoConfiguration(body []byte) (BasicFactoryRepoConfig
 		var fvc FactoryVSTSConfiguration
 		err := json.Unmarshal(body, &fvc)
 		return fvc, err
-	case string(TypeFactoryGithubConfiguration):
+	case string(TypeFactoryGitHubConfiguration):
 		var fghc FactoryGitHubConfiguration
 		err := json.Unmarshal(body, &fghc)
 		return fghc, err
@@ -36298,7 +36298,7 @@ type FactoryVSTSConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 

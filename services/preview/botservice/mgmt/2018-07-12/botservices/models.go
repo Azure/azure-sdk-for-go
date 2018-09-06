@@ -1110,12 +1110,16 @@ type DirectLineSite struct {
 	Key *string `json:"key,omitempty"`
 	// Key2 - Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key2 *string `json:"key2,omitempty"`
-	// IsEnabled - Whether this site is enabled for DirectLine channel
+	// IsEnabled - Whether this site is enabled for DirectLine channel.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// IsV1Enabled - Whether this site is enabled for Bot Framework V1 protocol
+	// IsV1Enabled - Whether this site is enabled for Bot Framework V1 protocol.
 	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
-	// IsV3Enabled - Whether this site is enabled for Bot Framework V1 protocol
+	// IsV3Enabled - Whether this site is enabled for Bot Framework V1 protocol.
 	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+	// IsSecureSiteEnabled - Whether this site is enabled for authentication with Bot Framework.
+	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+	// TrustedOrigins - List of Trusted Origin url's for this site.Empty if isSecureSiteEnabled is False.
+	TrustedOrigins *[]string `json:"trustedOrigins,omitempty"`
 }
 
 // EmailChannel email channel definition

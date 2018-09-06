@@ -26,6 +26,21 @@ import (
 	"net/http"
 )
 
+// ContainerGroupIPAddressType enumerates the values for container group ip address type.
+type ContainerGroupIPAddressType string
+
+const (
+	// Private ...
+	Private ContainerGroupIPAddressType = "Private"
+	// Public ...
+	Public ContainerGroupIPAddressType = "Public"
+)
+
+// PossibleContainerGroupIPAddressTypeValues returns an array of possible values for the ContainerGroupIPAddressType const type.
+func PossibleContainerGroupIPAddressTypeValues() []ContainerGroupIPAddressType {
+	return []ContainerGroupIPAddressType{Private, Public}
+}
+
 // ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
 type ContainerGroupNetworkProtocol string
 
@@ -674,8 +689,8 @@ type ImageRegistryCredential struct {
 type IPAddress struct {
 	// Ports - The list of ports exposed on the container group.
 	Ports *[]Port `json:"ports,omitempty"`
-	// Type - Specifies if the IP is exposed to the public internet.
-	Type *string `json:"type,omitempty"`
+	// Type - Specifies if the IP is exposed to the public internet. Possible values include: 'Public', 'Private'
+	Type ContainerGroupIPAddressType `json:"type,omitempty"`
 	// IP - The IP exposed to the public internet.
 	IP *string `json:"ip,omitempty"`
 	// DNSNameLabel - The Dns name label for the IP.

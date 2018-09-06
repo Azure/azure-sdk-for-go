@@ -29,6 +29,13 @@ type BaseClient = original.BaseClient
 type ContainerClient = original.ContainerClient
 type ContainerGroupsClient = original.ContainerGroupsClient
 type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+type ContainerGroupIPAddressType = original.ContainerGroupIPAddressType
+
+const (
+	Private ContainerGroupIPAddressType = original.Private
+	Public  ContainerGroupIPAddressType = original.Public
+)
+
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
@@ -146,6 +153,9 @@ func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClie
 }
 func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleContainerGroupIPAddressTypeValues() []ContainerGroupIPAddressType {
+	return original.PossibleContainerGroupIPAddressTypeValues()
 }
 func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
 	return original.PossibleContainerGroupNetworkProtocolValues()

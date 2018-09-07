@@ -24,9 +24,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the the Microsoft Azure management API provides create, read, update, and delete functionality
-// for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and configurations
-// with new business model.
+// OperationsClient is the mariaDB Client
 type OperationsClient struct {
 	BaseClient
 }

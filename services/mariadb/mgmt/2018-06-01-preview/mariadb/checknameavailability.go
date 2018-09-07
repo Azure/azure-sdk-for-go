@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// CheckNameAvailabilityClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and
-// configurations with new business model.
+// CheckNameAvailabilityClient is the mariaDB Client
 type CheckNameAvailabilityClient struct {
 	BaseClient
 }

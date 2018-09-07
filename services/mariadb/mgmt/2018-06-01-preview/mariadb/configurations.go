@@ -24,9 +24,7 @@ import (
 	"net/http"
 )
 
-// ConfigurationsClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and
-// configurations with new business model.
+// ConfigurationsClient is the mariaDB Client
 type ConfigurationsClient struct {
 	BaseClient
 }

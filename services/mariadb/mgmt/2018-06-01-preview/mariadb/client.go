@@ -1,8 +1,6 @@
 // Package mariadb implements the Azure ARM Mariadb service API version 2018-06-01-preview.
 //
-// The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MariaDB
-// resources including servers, databases, firewall rules, VNET rules, log files and configurations with new business
-// model.
+// MariaDB Client
 package mariadb
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

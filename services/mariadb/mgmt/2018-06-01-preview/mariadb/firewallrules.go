@@ -25,9 +25,7 @@ import (
 	"net/http"
 )
 
-// FirewallRulesClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and
-// configurations with new business model.
+// FirewallRulesClient is the mariaDB Client
 type FirewallRulesClient struct {
 	BaseClient
 }

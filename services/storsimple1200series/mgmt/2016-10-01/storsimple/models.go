@@ -1564,9 +1564,9 @@ type BackupElementProperties struct {
 
 // BackupFilter backup OData filter class
 type BackupFilter struct {
-	// InitiatedBy - InitiatedBy. Possible values include: 'Manual', 'Scheduled'
+	// InitiatedBy - Gets or sets InitiatedBy. Possible values include: 'Manual', 'Scheduled'
 	InitiatedBy InitiatedBy `json:"initiatedBy,omitempty"`
-	// CreatedTime - CreatedTime
+	// CreatedTime - Gets or sets CreatedTime
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
 }
 
@@ -3872,6 +3872,21 @@ type ManagerList struct {
 	Value *[]Manager `json:"value,omitempty"`
 }
 
+// ManagerPatch the StorSimple Manager patch.
+type ManagerPatch struct {
+	// Tags - The tags attached to the StorSimple Manager.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ManagerPatch.
+func (mp ManagerPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.Tags != nil {
+		objectMap["tags"] = mp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagerProperties the properties of the Manager
 type ManagerProperties struct {
 	// CisIntrinsicSettings - Specifies if the Manager is Garda or Helsinki
@@ -4026,7 +4041,7 @@ type NetworkAdapter struct {
 // NetworkSettings the NetworkSettings of a device
 type NetworkSettings struct {
 	autorest.Response `json:"-"`
-	// NetworkSettingsProperties - Properties.
+	// NetworkSettingsProperties - Properties of the given NetworkSettings.
 	*NetworkSettingsProperties `json:"properties,omitempty"`
 	// ID - The identifier.
 	ID *string `json:"id,omitempty"`
@@ -4108,9 +4123,9 @@ func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
 // NetworkSettingsProperties the properties of NetworkSettings
 type NetworkSettingsProperties struct {
 	// PrimaryDNSServer - The Primary DNS server for the device
-	PrimaryDNSServer *string `json:"primaryDNSServer,omitempty"`
+	PrimaryDNSServer *string `json:"primaryDnsServer,omitempty"`
 	// SecondaryDNSServer - The secondary DNS server for the device
-	SecondaryDNSServer *string `json:"secondaryDNSServer,omitempty"`
+	SecondaryDNSServer *string `json:"secondaryDnsServer,omitempty"`
 	// NodeNetworks - The NetworkAdapters under each node of the device.
 	NodeNetworks *[]NodeNetwork `json:"nodeNetworks,omitempty"`
 }
@@ -4918,62 +4933,17 @@ type UpdatesProperties struct {
 
 // UploadCertificateRequest upload Certificate Request to IDM
 type UploadCertificateRequest struct {
-	// RawCertificateData - Gets or sets the base64 encoded certificate raw data string
-	*RawCertificateData `json:"properties,omitempty"`
+	// RawCertificateDetails - Gets or sets the base64 encoded certificate raw data string
+	RawCertificateDetails *RawCertificateData `json:"rawCertificateDetails,omitempty"`
 	// ContractVersion - Gets ContractVersion. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
 	ContractVersion ContractVersions `json:"contractVersion,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UploadCertificateRequest.
-func (ucr UploadCertificateRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ucr.RawCertificateData != nil {
-		objectMap["properties"] = ucr.RawCertificateData
-	}
-	if ucr.ContractVersion != "" {
-		objectMap["contractVersion"] = ucr.ContractVersion
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for UploadCertificateRequest struct.
-func (ucr *UploadCertificateRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var rawCertificateData RawCertificateData
-				err = json.Unmarshal(*v, &rawCertificateData)
-				if err != nil {
-					return err
-				}
-				ucr.RawCertificateData = &rawCertificateData
-			}
-		case "contractVersion":
-			if v != nil {
-				var contractVersion ContractVersions
-				err = json.Unmarshal(*v, &contractVersion)
-				if err != nil {
-					return err
-				}
-				ucr.ContractVersion = contractVersion
-			}
-		}
-	}
-
-	return nil
 }
 
 // UploadCertificateResponse upload Certificate Response from IDM
 type UploadCertificateResponse struct {
 	autorest.Response `json:"-"`
-	// ResourceCertificateAndAADDetails - Gets or sets Properties
-	*ResourceCertificateAndAADDetails `json:"properties,omitempty"`
+	// ResourceAADDetails - Gets or sets Properties
+	ResourceAADDetails *ResourceCertificateAndAADDetails `json:"resourceAADDetails,omitempty"`
 	// ContractVersion - Constructor. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
 	ContractVersion ContractVersions `json:"contractVersion,omitempty"`
 	// ID - The identifier.
@@ -4982,85 +4952,4 @@ type UploadCertificateResponse struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UploadCertificateResponse.
-func (ucr UploadCertificateResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ucr.ResourceCertificateAndAADDetails != nil {
-		objectMap["properties"] = ucr.ResourceCertificateAndAADDetails
-	}
-	if ucr.ContractVersion != "" {
-		objectMap["contractVersion"] = ucr.ContractVersion
-	}
-	if ucr.ID != nil {
-		objectMap["id"] = ucr.ID
-	}
-	if ucr.Name != nil {
-		objectMap["name"] = ucr.Name
-	}
-	if ucr.Type != nil {
-		objectMap["type"] = ucr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for UploadCertificateResponse struct.
-func (ucr *UploadCertificateResponse) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var resourceCertificateAndAADDetails ResourceCertificateAndAADDetails
-				err = json.Unmarshal(*v, &resourceCertificateAndAADDetails)
-				if err != nil {
-					return err
-				}
-				ucr.ResourceCertificateAndAADDetails = &resourceCertificateAndAADDetails
-			}
-		case "contractVersion":
-			if v != nil {
-				var contractVersion ContractVersions
-				err = json.Unmarshal(*v, &contractVersion)
-				if err != nil {
-					return err
-				}
-				ucr.ContractVersion = contractVersion
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ucr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ucr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ucr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
 }

@@ -461,6 +461,7 @@ type ManagerExtendedInfo = original.ManagerExtendedInfo
 type ManagerExtendedInfoProperties = original.ManagerExtendedInfoProperties
 type ManagerIntrinsicSettings = original.ManagerIntrinsicSettings
 type ManagerList = original.ManagerList
+type ManagerPatch = original.ManagerPatch
 type ManagerProperties = original.ManagerProperties
 type ManagerSku = original.ManagerSku
 type Message = original.Message

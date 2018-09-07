@@ -1147,6 +1147,83 @@ func (client ManagersClient) RegenerateRegistrationCertificateResponder(resp *ht
 	return
 }
 
+// Update updates the StorSimple Manager.
+// Parameters:
+// parameters - the manager update parameters.
+// resourceGroupName - the resource group name
+// managerName - the manager name
+func (client ManagersClient) Update(ctx context.Context, parameters ManagerPatch, resourceGroupName string, managerName string) (result Manager, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: managerName,
+			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "managerName", Name: validation.MinLength, Rule: 2, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storsimple.ManagersClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, parameters, resourceGroupName, managerName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storsimple.ManagersClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ManagersClient) UpdatePreparer(ctx context.Context, parameters ManagerPatch, resourceGroupName string, managerName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"managerName":       autorest.Encode("path", managerName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorSimple/managers/{managerName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagersClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ManagersClient) UpdateResponder(resp *http.Response) (result Manager, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // UpdateExtendedInfo updates the extended info of the manager.
 // Parameters:
 // managerExtendedInfo - the manager extended information.
@@ -1236,8 +1313,8 @@ func (client ManagersClient) UpdateExtendedInfoResponder(resp *http.Response) (r
 func (client ManagersClient) UploadRegistrationCertificate(ctx context.Context, certificateName string, uploadCertificateRequestrequest UploadCertificateRequest, resourceGroupName string, managerName string) (result UploadCertificateResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: uploadCertificateRequestrequest,
-			Constraints: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateData", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateData.Certificate", Name: validation.Null, Rule: true, Chain: nil}}}}},
+			Constraints: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateDetails", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateDetails.Certificate", Name: validation.Null, Rule: true, Chain: nil}}}}},
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "managerName", Name: validation.MinLength, Rule: 2, Chain: nil}}}}); err != nil {

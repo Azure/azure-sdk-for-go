@@ -115,6 +115,26 @@ const (
 	Warning       EventLevel = original.Warning
 )
 
+type MetricAlertRuleCondition = original.MetricAlertRuleCondition
+
+const (
+	MetricAlertRuleConditionEquals             MetricAlertRuleCondition = original.MetricAlertRuleConditionEquals
+	MetricAlertRuleConditionGreaterThan        MetricAlertRuleCondition = original.MetricAlertRuleConditionGreaterThan
+	MetricAlertRuleConditionGreaterThanOrEqual MetricAlertRuleCondition = original.MetricAlertRuleConditionGreaterThanOrEqual
+	MetricAlertRuleConditionLessThan           MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThan
+	MetricAlertRuleConditionLessThanOrEqual    MetricAlertRuleCondition = original.MetricAlertRuleConditionLessThanOrEqual
+	MetricAlertRuleConditionNotEquals          MetricAlertRuleCondition = original.MetricAlertRuleConditionNotEquals
+)
+
+type MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregation
+
+const (
+	MetricAlertRuleTimeAggregationAverage MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationAverage
+	MetricAlertRuleTimeAggregationMaximum MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationMaximum
+	MetricAlertRuleTimeAggregationMinimum MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationMinimum
+	MetricAlertRuleTimeAggregationTotal   MetricAlertRuleTimeAggregation = original.MetricAlertRuleTimeAggregationTotal
+)
+
 type MetricStatisticType = original.MetricStatisticType
 
 const (
@@ -523,6 +543,12 @@ func PossibleEnabledValues() []Enabled {
 }
 func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
+}
+func PossibleMetricAlertRuleConditionValues() []MetricAlertRuleCondition {
+	return original.PossibleMetricAlertRuleConditionValues()
+}
+func PossibleMetricAlertRuleTimeAggregationValues() []MetricAlertRuleTimeAggregation {
+	return original.PossibleMetricAlertRuleTimeAggregationValues()
 }
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()

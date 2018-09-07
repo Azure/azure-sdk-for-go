@@ -35,8 +35,7 @@ type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerability
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 type ElasticPoolsClient = original.ElasticPoolsClient
 type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
-type ManagedInstanceEncryptionProtectorsClient = original.ManagedInstanceEncryptionProtectorsClient
-type ManagedInstanceKeysClient = original.ManagedInstanceKeysClient
+type InterfaceEndpointProfilesClient = original.InterfaceEndpointProfilesClient
 type ManagedInstanceTdeCertificatesClient = original.ManagedInstanceTdeCertificatesClient
 type CapabilityGroup = original.CapabilityGroup
 
@@ -136,6 +135,17 @@ const (
 	Secondary InstanceFailoverGroupReplicationRole = original.Secondary
 )
 
+type InterfaceEndpointProfileStateType = original.InterfaceEndpointProfileStateType
+
+const (
+	Deleting     InterfaceEndpointProfileStateType = original.Deleting
+	Failed       InterfaceEndpointProfileStateType = original.Failed
+	Initializing InterfaceEndpointProfileStateType = original.Initializing
+	InProgress   InterfaceEndpointProfileStateType = original.InProgress
+	Ready        InterfaceEndpointProfileStateType = original.Ready
+	Unknown      InterfaceEndpointProfileStateType = original.Unknown
+)
+
 type LogSizeUnit = original.LogSizeUnit
 
 const (
@@ -149,12 +159,12 @@ const (
 type ManagementOperationState = original.ManagementOperationState
 
 const (
-	CancelInProgress ManagementOperationState = original.CancelInProgress
-	Cancelled        ManagementOperationState = original.Cancelled
-	Failed           ManagementOperationState = original.Failed
-	InProgress       ManagementOperationState = original.InProgress
-	Pending          ManagementOperationState = original.Pending
-	Succeeded        ManagementOperationState = original.Succeeded
+	ManagementOperationStateCancelInProgress ManagementOperationState = original.ManagementOperationStateCancelInProgress
+	ManagementOperationStateCancelled        ManagementOperationState = original.ManagementOperationStateCancelled
+	ManagementOperationStateFailed           ManagementOperationState = original.ManagementOperationStateFailed
+	ManagementOperationStateInProgress       ManagementOperationState = original.ManagementOperationStateInProgress
+	ManagementOperationStatePending          ManagementOperationState = original.ManagementOperationStatePending
+	ManagementOperationStateSucceeded        ManagementOperationState = original.ManagementOperationStateSucceeded
 )
 
 type MaxSizeUnit = original.MaxSizeUnit
@@ -193,13 +203,6 @@ const (
 	AdventureWorksLT       SampleName = original.AdventureWorksLT
 	WideWorldImportersFull SampleName = original.WideWorldImportersFull
 	WideWorldImportersStd  SampleName = original.WideWorldImportersStd
-)
-
-type ServerKeyType = original.ServerKeyType
-
-const (
-	AzureKeyVault  ServerKeyType = original.AzureKeyVault
-	ServiceManaged ServerKeyType = original.ServiceManaged
 )
 
 type VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanState
@@ -277,24 +280,18 @@ type InstanceFailoverGroupsCreateOrUpdateFuture = original.InstanceFailoverGroup
 type InstanceFailoverGroupsDeleteFuture = original.InstanceFailoverGroupsDeleteFuture
 type InstanceFailoverGroupsFailoverFuture = original.InstanceFailoverGroupsFailoverFuture
 type InstanceFailoverGroupsForceFailoverAllowDataLossFuture = original.InstanceFailoverGroupsForceFailoverAllowDataLossFuture
+type InterfaceEndpointProfile = original.InterfaceEndpointProfile
+type InterfaceEndpointProfileProperties = original.InterfaceEndpointProfileProperties
+type InterfaceEndpointProfilesCreateOrUpdateFuture = original.InterfaceEndpointProfilesCreateOrUpdateFuture
+type InterfaceEndpointProfilesDeleteFuture = original.InterfaceEndpointProfilesDeleteFuture
+type InterfaceEndpointProfilesListResult = original.InterfaceEndpointProfilesListResult
+type InterfaceEndpointProfilesListResultIterator = original.InterfaceEndpointProfilesListResultIterator
+type InterfaceEndpointProfilesListResultPage = original.InterfaceEndpointProfilesListResultPage
 type LicenseTypeCapability = original.LicenseTypeCapability
 type LocationCapabilities = original.LocationCapabilities
 type LogSizeCapability = original.LogSizeCapability
 type ManagedInstanceEditionCapability = original.ManagedInstanceEditionCapability
-type ManagedInstanceEncryptionProtector = original.ManagedInstanceEncryptionProtector
-type ManagedInstanceEncryptionProtectorListResult = original.ManagedInstanceEncryptionProtectorListResult
-type ManagedInstanceEncryptionProtectorListResultIterator = original.ManagedInstanceEncryptionProtectorListResultIterator
-type ManagedInstanceEncryptionProtectorListResultPage = original.ManagedInstanceEncryptionProtectorListResultPage
-type ManagedInstanceEncryptionProtectorProperties = original.ManagedInstanceEncryptionProtectorProperties
-type ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture = original.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture
 type ManagedInstanceFamilyCapability = original.ManagedInstanceFamilyCapability
-type ManagedInstanceKey = original.ManagedInstanceKey
-type ManagedInstanceKeyListResult = original.ManagedInstanceKeyListResult
-type ManagedInstanceKeyListResultIterator = original.ManagedInstanceKeyListResultIterator
-type ManagedInstanceKeyListResultPage = original.ManagedInstanceKeyListResultPage
-type ManagedInstanceKeyProperties = original.ManagedInstanceKeyProperties
-type ManagedInstanceKeysCreateOrUpdateFuture = original.ManagedInstanceKeysCreateOrUpdateFuture
-type ManagedInstanceKeysDeleteFuture = original.ManagedInstanceKeysDeleteFuture
 type ManagedInstancePairInfo = original.ManagedInstancePairInfo
 type ManagedInstanceTdeCertificatesCreateFuture = original.ManagedInstanceTdeCertificatesCreateFuture
 type ManagedInstanceVcoresCapability = original.ManagedInstanceVcoresCapability
@@ -376,17 +373,11 @@ func NewInstanceFailoverGroupsClient(subscriptionID string) InstanceFailoverGrou
 func NewInstanceFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) InstanceFailoverGroupsClient {
 	return original.NewInstanceFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
-	return original.NewManagedInstanceEncryptionProtectorsClient(subscriptionID)
+func NewInterfaceEndpointProfilesClient(subscriptionID string) InterfaceEndpointProfilesClient {
+	return original.NewInterfaceEndpointProfilesClient(subscriptionID)
 }
-func NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
-	return original.NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagedInstanceKeysClient(subscriptionID string) ManagedInstanceKeysClient {
-	return original.NewManagedInstanceKeysClient(subscriptionID)
-}
-func NewManagedInstanceKeysClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceKeysClient {
-	return original.NewManagedInstanceKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewInterfaceEndpointProfilesClientWithBaseURI(baseURI string, subscriptionID string) InterfaceEndpointProfilesClient {
+	return original.NewInterfaceEndpointProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedInstanceTdeCertificatesClient(subscriptionID string) ManagedInstanceTdeCertificatesClient {
 	return original.NewManagedInstanceTdeCertificatesClient(subscriptionID)
@@ -424,6 +415,9 @@ func PossibleElasticPoolStateValues() []ElasticPoolState {
 func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
 	return original.PossibleInstanceFailoverGroupReplicationRoleValues()
 }
+func PossibleInterfaceEndpointProfileStateTypeValues() []InterfaceEndpointProfileStateType {
+	return original.PossibleInterfaceEndpointProfileStateTypeValues()
+}
 func PossibleLogSizeUnitValues() []LogSizeUnit {
 	return original.PossibleLogSizeUnitValues()
 }
@@ -444,9 +438,6 @@ func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailover
 }
 func PossibleSampleNameValues() []SampleName {
 	return original.PossibleSampleNameValues()
-}
-func PossibleServerKeyTypeValues() []ServerKeyType {
-	return original.PossibleServerKeyTypeValues()
 }
 func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
 	return original.PossibleVulnerabilityAssessmentScanStateValues()

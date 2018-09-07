@@ -39360,6 +39360,23 @@ type GetMetadataActivityTypeProperties struct {
 	FieldList *[]interface{} `json:"fieldList,omitempty"`
 }
 
+// GitHubAccessTokenRequest get GitHub access token request definition.
+type GitHubAccessTokenRequest struct {
+	// GitHubAccessCode - GitHub access code.
+	GitHubAccessCode *string `json:"gitHubAccessCode,omitempty"`
+	// GitHubClientID - GitHub application client ID.
+	GitHubClientID *string `json:"gitHubClientId,omitempty"`
+	// GitHubAccessTokenBaseURL - GitHub access token base URL.
+	GitHubAccessTokenBaseURL *string `json:"gitHubAccessTokenBaseUrl,omitempty"`
+}
+
+// GitHubAccessTokenResponse get GitHub access token response definition.
+type GitHubAccessTokenResponse struct {
+	autorest.Response `json:"-"`
+	// GitHubAccessToken - GitHub access token.
+	GitHubAccessToken *string `json:"gitHubAccessToken,omitempty"`
+}
+
 // GoogleBigQueryLinkedService google BigQuery service linked service.
 type GoogleBigQueryLinkedService struct {
 	// GoogleBigQueryLinkedServiceTypeProperties - Google BigQuery service linked service properties.

@@ -1116,6 +1116,8 @@ type TypeBasicActivity string
 const (
 	// TypeActivity ...
 	TypeActivity TypeBasicActivity = "Activity"
+	// TypeAppendVaraible ...
+	TypeAppendVaraible TypeBasicActivity = "AppendVaraible"
 	// TypeAzureMLBatchExecution ...
 	TypeAzureMLBatchExecution TypeBasicActivity = "AzureMLBatchExecution"
 	// TypeAzureMLUpdateResource ...
@@ -1160,6 +1162,8 @@ const (
 	TypeIfCondition TypeBasicActivity = "IfCondition"
 	// TypeLookup ...
 	TypeLookup TypeBasicActivity = "Lookup"
+	// TypeSetVaraible ...
+	TypeSetVaraible TypeBasicActivity = "SetVaraible"
 	// TypeSQLServerStoredProcedure ...
 	TypeSQLServerStoredProcedure TypeBasicActivity = "SqlServerStoredProcedure"
 	// TypeUntil ...
@@ -1172,7 +1176,7 @@ const (
 
 // PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
 func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return []TypeBasicActivity{TypeActivity, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDatabricksSparkJar, TypeDatabricksSparkPython, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
+	return []TypeBasicActivity{TypeActivity, TypeAppendVaraible, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDatabricksSparkJar, TypeDatabricksSparkPython, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSetVaraible, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
 }
 
 // TypeBasicCopySink enumerates the values for type basic copy sink.
@@ -1757,6 +1761,23 @@ func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
 	return []TypeBasicTrigger{TypeBlobEventsTrigger, TypeBlobTrigger, TypeMultiplePipelineTrigger, TypeScheduleTrigger, TypeTrigger, TypeTumblingWindowTrigger}
 }
 
+// VariableType enumerates the values for variable type.
+type VariableType string
+
+const (
+	// VariableTypeArray ...
+	VariableTypeArray VariableType = "Array"
+	// VariableTypeBool ...
+	VariableTypeBool VariableType = "Bool"
+	// VariableTypeString ...
+	VariableTypeString VariableType = "String"
+)
+
+// PossibleVariableTypeValues returns an array of possible values for the VariableType const type.
+func PossibleVariableTypeValues() []VariableType {
+	return []VariableType{VariableTypeArray, VariableTypeBool, VariableTypeString}
+}
+
 // WebActivityMethod enumerates the values for web activity method.
 type WebActivityMethod string
 
@@ -1798,6 +1819,8 @@ type BasicActivity interface {
 	AsCopyActivity() (*CopyActivity, bool)
 	AsExecutionActivity() (*ExecutionActivity, bool)
 	AsBasicExecutionActivity() (BasicExecutionActivity, bool)
+	AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool)
+	AsSetVaraibleActivity() (*SetVaraibleActivity, bool)
 	AsFilterActivity() (*FilterActivity, bool)
 	AsUntilActivity() (*UntilActivity, bool)
 	AsWaitActivity() (*WaitActivity, bool)
@@ -1821,7 +1844,7 @@ type Activity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -1909,6 +1932,14 @@ func unmarshalBasicActivity(body []byte) (BasicActivity, error) {
 		var ea ExecutionActivity
 		err := json.Unmarshal(body, &ea)
 		return ea, err
+	case string(TypeAppendVaraible):
+		var ava AppendVaraibleActivity
+		err := json.Unmarshal(body, &ava)
+		return ava, err
+	case string(TypeSetVaraible):
+		var sva SetVaraibleActivity
+		err := json.Unmarshal(body, &sva)
+		return sva, err
 	case string(TypeFilter):
 		var fa FilterActivity
 		err := json.Unmarshal(body, &fa)
@@ -2087,6 +2118,16 @@ func (a Activity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return nil, false
 }
 
+// AsAppendVaraibleActivity is the BasicActivity implementation for Activity.
+func (a Activity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for Activity.
+func (a Activity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
+}
+
 // AsFilterActivity is the BasicActivity implementation for Activity.
 func (a Activity) AsFilterActivity() (*FilterActivity, bool) {
 	return nil, false
@@ -2172,6 +2213,8 @@ type ActivityPolicy struct {
 	Retry interface{} `json:"retry,omitempty"`
 	// RetryIntervalInSeconds - Interval between each retry attempt (in seconds). The default is 30 sec.
 	RetryIntervalInSeconds *int32 `json:"retryIntervalInSeconds,omitempty"`
+	// SecureInput - When set to true, input from activity is considered as secure and will not be logged to monitoring.
+	SecureInput *bool `json:"secureInput,omitempty"`
 	// SecureOutput - When set to true, Output from activity is considered as secure and will not be logged to monitoring.
 	SecureOutput *bool `json:"secureOutput,omitempty"`
 }
@@ -2183,6 +2226,9 @@ func (ap ActivityPolicy) MarshalJSON() ([]byte, error) {
 	objectMap["retry"] = ap.Retry
 	if ap.RetryIntervalInSeconds != nil {
 		objectMap["retryIntervalInSeconds"] = ap.RetryIntervalInSeconds
+	}
+	if ap.SecureInput != nil {
+		objectMap["secureInput"] = ap.SecureInput
 	}
 	if ap.SecureOutput != nil {
 		objectMap["secureOutput"] = ap.SecureOutput
@@ -5447,6 +5493,301 @@ func (aslstp *AmazonS3LinkedServiceTypeProperties) UnmarshalJSON(body []byte) er
 	}
 
 	return nil
+}
+
+// AppendVaraibleActivity append value to a array Variable.
+type AppendVaraibleActivity struct {
+	// AppendVariableActivityTypeProperties - Append Variable activity properties.
+	*AppendVariableActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Activity name.
+	Name *string `json:"name,omitempty"`
+	// Description - Activity description.
+	Description *string `json:"description,omitempty"`
+	// DependsOn - Activity depends on condition.
+	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	Type TypeBasicActivity `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) MarshalJSON() ([]byte, error) {
+	ava.Type = TypeAppendVaraible
+	objectMap := make(map[string]interface{})
+	if ava.AppendVariableActivityTypeProperties != nil {
+		objectMap["typeProperties"] = ava.AppendVariableActivityTypeProperties
+	}
+	if ava.Name != nil {
+		objectMap["name"] = ava.Name
+	}
+	if ava.Description != nil {
+		objectMap["description"] = ava.Description
+	}
+	if ava.DependsOn != nil {
+		objectMap["dependsOn"] = ava.DependsOn
+	}
+	if ava.UserProperties != nil {
+		objectMap["userProperties"] = ava.UserProperties
+	}
+	if ava.Type != "" {
+		objectMap["type"] = ava.Type
+	}
+	for k, v := range ava.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksNotebookActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalyticsUSQLActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLUpdateResourceActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLBatchExecutionActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsGetMetadataActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsGetMetadataActivity() (*GetMetadataActivity, bool) {
+	return nil, false
+}
+
+// AsWebActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsWebActivity() (*WebActivity, bool) {
+	return nil, false
+}
+
+// AsLookupActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsLookupActivity() (*LookupActivity, bool) {
+	return nil, false
+}
+
+// AsSQLServerStoredProcedureActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool) {
+	return nil, false
+}
+
+// AsCustomActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsCustomActivity() (*CustomActivity, bool) {
+	return nil, false
+}
+
+// AsExecuteSSISPackageActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightSparkActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightStreamingActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightMapReduceActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightPigActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsHDInsightPigActivity() (*HDInsightPigActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightHiveActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool) {
+	return nil, false
+}
+
+// AsCopyActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsCopyActivity() (*CopyActivity, bool) {
+	return nil, false
+}
+
+// AsExecutionActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsBasicExecutionActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return &ava, true
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsFilterActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsFilterActivity() (*FilterActivity, bool) {
+	return nil, false
+}
+
+// AsUntilActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsUntilActivity() (*UntilActivity, bool) {
+	return nil, false
+}
+
+// AsWaitActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsWaitActivity() (*WaitActivity, bool) {
+	return nil, false
+}
+
+// AsForEachActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsForEachActivity() (*ForEachActivity, bool) {
+	return nil, false
+}
+
+// AsIfConditionActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsIfConditionActivity() (*IfConditionActivity, bool) {
+	return nil, false
+}
+
+// AsExecutePipelineActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsExecutePipelineActivity() (*ExecutePipelineActivity, bool) {
+	return nil, false
+}
+
+// AsControlActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsControlActivity() (*ControlActivity, bool) {
+	return nil, false
+}
+
+// AsBasicControlActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsBasicControlActivity() (BasicControlActivity, bool) {
+	return &ava, true
+}
+
+// AsActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsActivity() (*Activity, bool) {
+	return nil, false
+}
+
+// AsBasicActivity is the BasicActivity implementation for AppendVaraibleActivity.
+func (ava AppendVaraibleActivity) AsBasicActivity() (BasicActivity, bool) {
+	return &ava, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AppendVaraibleActivity struct.
+func (ava *AppendVaraibleActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var appendVariableActivityTypeProperties AppendVariableActivityTypeProperties
+				err = json.Unmarshal(*v, &appendVariableActivityTypeProperties)
+				if err != nil {
+					return err
+				}
+				ava.AppendVariableActivityTypeProperties = &appendVariableActivityTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ava.AdditionalProperties == nil {
+					ava.AdditionalProperties = make(map[string]interface{})
+				}
+				ava.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ava.Name = &name
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				ava.Description = &description
+			}
+		case "dependsOn":
+			if v != nil {
+				var dependsOn []ActivityDependency
+				err = json.Unmarshal(*v, &dependsOn)
+				if err != nil {
+					return err
+				}
+				ava.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties []UserProperty
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ava.UserProperties = &userProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicActivity
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ava.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AppendVariableActivityTypeProperties appendVariable activity properties.
+type AppendVariableActivityTypeProperties struct {
+	// Name - Name of the variable to which value needs to be appended.
+	Name *string `json:"name,omitempty"`
+	// Value - Value to be appended. Could be a static value or Expression
+	Value interface{} `json:"value,omitempty"`
 }
 
 // AvroFormat the data stored in Avro format.
@@ -10487,7 +10828,7 @@ type AzureMLBatchExecutionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -10623,6 +10964,16 @@ func (ambea AzureMLBatchExecutionActivity) AsExecutionActivity() (*ExecutionActi
 // AsBasicExecutionActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
 func (ambea AzureMLBatchExecutionActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &ambea, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
+func (ambea AzureMLBatchExecutionActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
+func (ambea AzureMLBatchExecutionActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
@@ -11408,7 +11759,7 @@ type AzureMLUpdateResourceActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -11544,6 +11895,16 @@ func (amura AzureMLUpdateResourceActivity) AsExecutionActivity() (*ExecutionActi
 // AsBasicExecutionActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
 func (amura AzureMLUpdateResourceActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &amura, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
+func (amura AzureMLUpdateResourceActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
+func (amura AzureMLUpdateResourceActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
@@ -22501,6 +22862,8 @@ func (cs ConcurSource) AsBasicCopySource() (BasicCopySource, bool) {
 
 // BasicControlActivity base class for all control activities like IfCondition, ForEach , Until.
 type BasicControlActivity interface {
+	AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool)
+	AsSetVaraibleActivity() (*SetVaraibleActivity, bool)
 	AsFilterActivity() (*FilterActivity, bool)
 	AsUntilActivity() (*UntilActivity, bool)
 	AsWaitActivity() (*WaitActivity, bool)
@@ -22522,7 +22885,7 @@ type ControlActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -22534,6 +22897,14 @@ func unmarshalBasicControlActivity(body []byte) (BasicControlActivity, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeAppendVaraible):
+		var ava AppendVaraibleActivity
+		err := json.Unmarshal(body, &ava)
+		return ava, err
+	case string(TypeSetVaraible):
+		var sva SetVaraibleActivity
+		err := json.Unmarshal(body, &sva)
+		return sva, err
 	case string(TypeFilter):
 		var fa FilterActivity
 		err := json.Unmarshal(body, &fa)
@@ -22708,6 +23079,16 @@ func (ca ControlActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bo
 	return nil, false
 }
 
+// AsAppendVaraibleActivity is the BasicActivity implementation for ControlActivity.
+func (ca ControlActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for ControlActivity.
+func (ca ControlActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
+}
+
 // AsFilterActivity is the BasicActivity implementation for ControlActivity.
 func (ca ControlActivity) AsFilterActivity() (*FilterActivity, bool) {
 	return nil, false
@@ -22780,7 +23161,7 @@ type CopyActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -22922,6 +23303,16 @@ func (ca CopyActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 // AsBasicExecutionActivity is the BasicActivity implementation for CopyActivity.
 func (ca CopyActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &ca, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for CopyActivity.
+func (ca CopyActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for CopyActivity.
+func (ca CopyActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for CopyActivity.
@@ -25742,7 +26133,7 @@ type CustomActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -25878,6 +26269,16 @@ func (ca CustomActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 // AsBasicExecutionActivity is the BasicActivity implementation for CustomActivity.
 func (ca CustomActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &ca, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for CustomActivity.
+func (ca CustomActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for CustomActivity.
+func (ca CustomActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for CustomActivity.
@@ -26827,7 +27228,7 @@ type DatabricksNotebookActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -26963,6 +27364,16 @@ func (dna DatabricksNotebookActivity) AsExecutionActivity() (*ExecutionActivity,
 // AsBasicExecutionActivity is the BasicActivity implementation for DatabricksNotebookActivity.
 func (dna DatabricksNotebookActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &dna, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for DatabricksNotebookActivity.
+func (dna DatabricksNotebookActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for DatabricksNotebookActivity.
+func (dna DatabricksNotebookActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for DatabricksNotebookActivity.
@@ -27155,7 +27566,7 @@ type DatabricksSparkJarActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -27291,6 +27702,16 @@ func (dsja DatabricksSparkJarActivity) AsExecutionActivity() (*ExecutionActivity
 // AsBasicExecutionActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
 func (dsja DatabricksSparkJarActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &dsja, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
+func (dsja DatabricksSparkJarActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for DatabricksSparkJarActivity.
@@ -27470,7 +27891,7 @@ type DatabricksSparkPythonActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -27606,6 +28027,16 @@ func (dspa DatabricksSparkPythonActivity) AsExecutionActivity() (*ExecutionActiv
 // AsBasicExecutionActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
 func (dspa DatabricksSparkPythonActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &dspa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
+func (dspa DatabricksSparkPythonActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for DatabricksSparkPythonActivity.
@@ -27785,7 +28216,7 @@ type DataLakeAnalyticsUSQLActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -27921,6 +28352,16 @@ func (dlaua DataLakeAnalyticsUSQLActivity) AsExecutionActivity() (*ExecutionActi
 // AsBasicExecutionActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
 func (dlaua DataLakeAnalyticsUSQLActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &dlaua, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
+func (dlaua DataLakeAnalyticsUSQLActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
+func (dlaua DataLakeAnalyticsUSQLActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
@@ -34728,7 +35169,7 @@ type ExecutePipelineActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -34857,6 +35298,16 @@ func (epa ExecutePipelineActivity) AsExecutionActivity() (*ExecutionActivity, bo
 
 // AsBasicExecutionActivity is the BasicActivity implementation for ExecutePipelineActivity.
 func (epa ExecutePipelineActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for ExecutePipelineActivity.
+func (epa ExecutePipelineActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for ExecutePipelineActivity.
+func (epa ExecutePipelineActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -35034,7 +35485,7 @@ type ExecuteSSISPackageActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -35170,6 +35621,16 @@ func (espa ExecuteSSISPackageActivity) AsExecutionActivity() (*ExecutionActivity
 // AsBasicExecutionActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
 func (espa ExecuteSSISPackageActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &espa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
+func (espa ExecuteSSISPackageActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
+func (espa ExecuteSSISPackageActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
@@ -35420,7 +35881,7 @@ type ExecutionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -35658,6 +36119,16 @@ func (ea ExecutionActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 // AsBasicExecutionActivity is the BasicActivity implementation for ExecutionActivity.
 func (ea ExecutionActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &ea, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for ExecutionActivity.
+func (ea ExecutionActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for ExecutionActivity.
+func (ea ExecutionActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for ExecutionActivity.
@@ -37834,7 +38305,7 @@ type FilterActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -37963,6 +38434,16 @@ func (fa FilterActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 
 // AsBasicExecutionActivity is the BasicActivity implementation for FilterActivity.
 func (fa FilterActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for FilterActivity.
+func (fa FilterActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for FilterActivity.
+func (fa FilterActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -38097,7 +38578,7 @@ func (fa *FilterActivity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FilterActivityTypeProperties fitler activity properties.
+// FilterActivityTypeProperties filter activity properties.
 type FilterActivityTypeProperties struct {
 	// Items - Input array on which filter should be applied.
 	Items *Expression `json:"items,omitempty"`
@@ -38119,7 +38600,7 @@ type ForEachActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -38248,6 +38729,16 @@ func (fea ForEachActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 
 // AsBasicExecutionActivity is the BasicActivity implementation for ForEachActivity.
 func (fea ForEachActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for ForEachActivity.
+func (fea ForEachActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for ForEachActivity.
+func (fea ForEachActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -39065,7 +39556,7 @@ type GetMetadataActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -39201,6 +39692,16 @@ func (gma GetMetadataActivity) AsExecutionActivity() (*ExecutionActivity, bool) 
 // AsBasicExecutionActivity is the BasicActivity implementation for GetMetadataActivity.
 func (gma GetMetadataActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &gma, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for GetMetadataActivity.
+func (gma GetMetadataActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for GetMetadataActivity.
+func (gma GetMetadataActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for GetMetadataActivity.
@@ -43871,7 +44372,7 @@ type HDInsightHiveActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -44007,6 +44508,16 @@ func (hiha HDInsightHiveActivity) AsExecutionActivity() (*ExecutionActivity, boo
 // AsBasicExecutionActivity is the BasicActivity implementation for HDInsightHiveActivity.
 func (hiha HDInsightHiveActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &hiha, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for HDInsightHiveActivity.
+func (hiha HDInsightHiveActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for HDInsightHiveActivity.
+func (hiha HDInsightHiveActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for HDInsightHiveActivity.
@@ -44795,7 +45306,7 @@ type HDInsightMapReduceActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -44931,6 +45442,16 @@ func (himra HDInsightMapReduceActivity) AsExecutionActivity() (*ExecutionActivit
 // AsBasicExecutionActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
 func (himra HDInsightMapReduceActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &himra, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
+func (himra HDInsightMapReduceActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
+func (himra HDInsightMapReduceActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
@@ -45989,7 +46510,7 @@ type HDInsightPigActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -46125,6 +46646,16 @@ func (hipa HDInsightPigActivity) AsExecutionActivity() (*ExecutionActivity, bool
 // AsBasicExecutionActivity is the BasicActivity implementation for HDInsightPigActivity.
 func (hipa HDInsightPigActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &hipa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for HDInsightPigActivity.
+func (hipa HDInsightPigActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for HDInsightPigActivity.
+func (hipa HDInsightPigActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for HDInsightPigActivity.
@@ -46332,7 +46863,7 @@ type HDInsightSparkActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -46468,6 +46999,16 @@ func (hisa HDInsightSparkActivity) AsExecutionActivity() (*ExecutionActivity, bo
 // AsBasicExecutionActivity is the BasicActivity implementation for HDInsightSparkActivity.
 func (hisa HDInsightSparkActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &hisa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for HDInsightSparkActivity.
+func (hisa HDInsightSparkActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for HDInsightSparkActivity.
+func (hisa HDInsightSparkActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for HDInsightSparkActivity.
@@ -46681,7 +47222,7 @@ type HDInsightStreamingActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -46817,6 +47358,16 @@ func (hisa HDInsightStreamingActivity) AsExecutionActivity() (*ExecutionActivity
 // AsBasicExecutionActivity is the BasicActivity implementation for HDInsightStreamingActivity.
 func (hisa HDInsightStreamingActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &hisa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for HDInsightStreamingActivity.
+func (hisa HDInsightStreamingActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for HDInsightStreamingActivity.
+func (hisa HDInsightStreamingActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for HDInsightStreamingActivity.
@@ -50980,7 +51531,7 @@ type IfConditionActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -51109,6 +51660,16 @@ func (ica IfConditionActivity) AsExecutionActivity() (*ExecutionActivity, bool) 
 
 // AsBasicExecutionActivity is the BasicActivity implementation for IfConditionActivity.
 func (ica IfConditionActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for IfConditionActivity.
+func (ica IfConditionActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for IfConditionActivity.
+func (ica IfConditionActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -55828,7 +56389,7 @@ type LookupActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -55964,6 +56525,16 @@ func (la LookupActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 // AsBasicExecutionActivity is the BasicActivity implementation for LookupActivity.
 func (la LookupActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &la, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for LookupActivity.
+func (la LookupActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for LookupActivity.
+func (la LookupActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for LookupActivity.
@@ -69033,6 +69604,8 @@ type Pipeline struct {
 	Activities *[]BasicActivity `json:"activities,omitempty"`
 	// Parameters - List of parameters for pipeline.
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
+	// Variables - List of variables for pipeline.
+	Variables map[string]*VariableSpecification `json:"variables"`
 	// Concurrency - The max number of concurrent runs for the pipeline.
 	Concurrency *int32 `json:"concurrency,omitempty"`
 	// Annotations - List of tags that can be used for describing the Pipeline.
@@ -69052,6 +69625,9 @@ func (p Pipeline) MarshalJSON() ([]byte, error) {
 	}
 	if p.Parameters != nil {
 		objectMap["parameters"] = p.Parameters
+	}
+	if p.Variables != nil {
+		objectMap["variables"] = p.Variables
 	}
 	if p.Concurrency != nil {
 		objectMap["concurrency"] = p.Concurrency
@@ -69099,6 +69675,15 @@ func (p *Pipeline) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				p.Parameters = parameters
+			}
+		case "variables":
+			if v != nil {
+				var variables map[string]*VariableSpecification
+				err = json.Unmarshal(*v, &variables)
+				if err != nil {
+					return err
+				}
+				p.Variables = variables
 			}
 		case "concurrency":
 			if v != nil {
@@ -83140,6 +83725,301 @@ func (sns ServiceNowSource) AsBasicCopySource() (BasicCopySource, bool) {
 	return &sns, true
 }
 
+// SetVaraibleActivity set value for a Variable.
+type SetVaraibleActivity struct {
+	// SetVariableActivityTypeProperties - Set Variable activity properties.
+	*SetVariableActivityTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Name - Activity name.
+	Name *string `json:"name,omitempty"`
+	// Description - Activity description.
+	Description *string `json:"description,omitempty"`
+	// DependsOn - Activity depends on condition.
+	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	Type TypeBasicActivity `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SetVaraibleActivity.
+func (sva SetVaraibleActivity) MarshalJSON() ([]byte, error) {
+	sva.Type = TypeSetVaraible
+	objectMap := make(map[string]interface{})
+	if sva.SetVariableActivityTypeProperties != nil {
+		objectMap["typeProperties"] = sva.SetVariableActivityTypeProperties
+	}
+	if sva.Name != nil {
+		objectMap["name"] = sva.Name
+	}
+	if sva.Description != nil {
+		objectMap["description"] = sva.Description
+	}
+	if sva.DependsOn != nil {
+		objectMap["dependsOn"] = sva.DependsOn
+	}
+	if sva.UserProperties != nil {
+		objectMap["userProperties"] = sva.UserProperties
+	}
+	if sva.Type != "" {
+		objectMap["type"] = sva.Type
+	}
+	for k, v := range sva.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDatabricksSparkPythonActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsDatabricksSparkPythonActivity() (*DatabricksSparkPythonActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksSparkJarActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsDatabricksSparkJarActivity() (*DatabricksSparkJarActivity, bool) {
+	return nil, false
+}
+
+// AsDatabricksNotebookActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalyticsUSQLActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsDataLakeAnalyticsUSQLActivity() (*DataLakeAnalyticsUSQLActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLUpdateResourceActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsAzureMLUpdateResourceActivity() (*AzureMLUpdateResourceActivity, bool) {
+	return nil, false
+}
+
+// AsAzureMLBatchExecutionActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsAzureMLBatchExecutionActivity() (*AzureMLBatchExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsGetMetadataActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsGetMetadataActivity() (*GetMetadataActivity, bool) {
+	return nil, false
+}
+
+// AsWebActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsWebActivity() (*WebActivity, bool) {
+	return nil, false
+}
+
+// AsLookupActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsLookupActivity() (*LookupActivity, bool) {
+	return nil, false
+}
+
+// AsSQLServerStoredProcedureActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsSQLServerStoredProcedureActivity() (*SQLServerStoredProcedureActivity, bool) {
+	return nil, false
+}
+
+// AsCustomActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsCustomActivity() (*CustomActivity, bool) {
+	return nil, false
+}
+
+// AsExecuteSSISPackageActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsExecuteSSISPackageActivity() (*ExecuteSSISPackageActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightSparkActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsHDInsightSparkActivity() (*HDInsightSparkActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightStreamingActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsHDInsightStreamingActivity() (*HDInsightStreamingActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightMapReduceActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsHDInsightMapReduceActivity() (*HDInsightMapReduceActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightPigActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsHDInsightPigActivity() (*HDInsightPigActivity, bool) {
+	return nil, false
+}
+
+// AsHDInsightHiveActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsHDInsightHiveActivity() (*HDInsightHiveActivity, bool) {
+	return nil, false
+}
+
+// AsCopyActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsCopyActivity() (*CopyActivity, bool) {
+	return nil, false
+}
+
+// AsExecutionActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsBasicExecutionActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return &sva, true
+}
+
+// AsFilterActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsFilterActivity() (*FilterActivity, bool) {
+	return nil, false
+}
+
+// AsUntilActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsUntilActivity() (*UntilActivity, bool) {
+	return nil, false
+}
+
+// AsWaitActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsWaitActivity() (*WaitActivity, bool) {
+	return nil, false
+}
+
+// AsForEachActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsForEachActivity() (*ForEachActivity, bool) {
+	return nil, false
+}
+
+// AsIfConditionActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsIfConditionActivity() (*IfConditionActivity, bool) {
+	return nil, false
+}
+
+// AsExecutePipelineActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsExecutePipelineActivity() (*ExecutePipelineActivity, bool) {
+	return nil, false
+}
+
+// AsControlActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsControlActivity() (*ControlActivity, bool) {
+	return nil, false
+}
+
+// AsBasicControlActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsBasicControlActivity() (BasicControlActivity, bool) {
+	return &sva, true
+}
+
+// AsActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsActivity() (*Activity, bool) {
+	return nil, false
+}
+
+// AsBasicActivity is the BasicActivity implementation for SetVaraibleActivity.
+func (sva SetVaraibleActivity) AsBasicActivity() (BasicActivity, bool) {
+	return &sva, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SetVaraibleActivity struct.
+func (sva *SetVaraibleActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var setVariableActivityTypeProperties SetVariableActivityTypeProperties
+				err = json.Unmarshal(*v, &setVariableActivityTypeProperties)
+				if err != nil {
+					return err
+				}
+				sva.SetVariableActivityTypeProperties = &setVariableActivityTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if sva.AdditionalProperties == nil {
+					sva.AdditionalProperties = make(map[string]interface{})
+				}
+				sva.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sva.Name = &name
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				sva.Description = &description
+			}
+		case "dependsOn":
+			if v != nil {
+				var dependsOn []ActivityDependency
+				err = json.Unmarshal(*v, &dependsOn)
+				if err != nil {
+					return err
+				}
+				sva.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties []UserProperty
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				sva.UserProperties = &userProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicActivity
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sva.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SetVariableActivityTypeProperties setVariable activity properties.
+type SetVariableActivityTypeProperties struct {
+	// Name - Name of the variable whose value needs to be set.
+	Name *string `json:"name,omitempty"`
+	// Value - Value to be set. Could be a static value or Expression
+	Value interface{} `json:"value,omitempty"`
+}
+
 // SftpServerLinkedService a linked service for an SSH File Transfer Protocol (SFTP) server.
 type SftpServerLinkedService struct {
 	// SftpServerLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -87249,7 +88129,7 @@ type SQLServerStoredProcedureActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -87385,6 +88265,16 @@ func (ssspa SQLServerStoredProcedureActivity) AsExecutionActivity() (*ExecutionA
 // AsBasicExecutionActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
 func (ssspa SQLServerStoredProcedureActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &ssspa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
+func (ssspa SQLServerStoredProcedureActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
+func (ssspa SQLServerStoredProcedureActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
@@ -91866,7 +92756,7 @@ type UntilActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -91995,6 +92885,16 @@ func (ua UntilActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 
 // AsBasicExecutionActivity is the BasicActivity implementation for UntilActivity.
 func (ua UntilActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for UntilActivity.
+func (ua UntilActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for UntilActivity.
+func (ua UntilActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -92200,6 +93100,14 @@ type UserProperty struct {
 	Name *string `json:"name,omitempty"`
 	// Value - User proprety value. Type: string (or Expression with resultType string).
 	Value interface{} `json:"value,omitempty"`
+}
+
+// VariableSpecification definition of a single variable for an pipeline.
+type VariableSpecification struct {
+	// Type - Variable type. Possible values include: 'VariableTypeString', 'VariableTypeBool', 'VariableTypeArray'
+	Type VariableType `json:"type,omitempty"`
+	// DefaultValue - Default value of variable.
+	DefaultValue interface{} `json:"defaultValue,omitempty"`
 }
 
 // VerticaLinkedService vertica linked service.
@@ -93335,7 +94243,7 @@ type WaitActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -93464,6 +94372,16 @@ func (wa WaitActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 
 // AsBasicExecutionActivity is the BasicActivity implementation for WaitActivity.
 func (wa WaitActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
+	return nil, false
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for WaitActivity.
+func (wa WaitActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for WaitActivity.
+func (wa WaitActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
 	return nil, false
 }
 
@@ -93622,7 +94540,7 @@ type WebActivity struct {
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
 	// UserProperties - Activity user properties.
 	UserProperties *[]UserProperty `json:"userProperties,omitempty"`
-	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
+	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksSparkPython', 'TypeDatabricksSparkJar', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeAppendVaraible', 'TypeSetVaraible', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
 
@@ -93758,6 +94676,16 @@ func (wa WebActivity) AsExecutionActivity() (*ExecutionActivity, bool) {
 // AsBasicExecutionActivity is the BasicActivity implementation for WebActivity.
 func (wa WebActivity) AsBasicExecutionActivity() (BasicExecutionActivity, bool) {
 	return &wa, true
+}
+
+// AsAppendVaraibleActivity is the BasicActivity implementation for WebActivity.
+func (wa WebActivity) AsAppendVaraibleActivity() (*AppendVaraibleActivity, bool) {
+	return nil, false
+}
+
+// AsSetVaraibleActivity is the BasicActivity implementation for WebActivity.
+func (wa WebActivity) AsSetVaraibleActivity() (*SetVaraibleActivity, bool) {
+	return nil, false
 }
 
 // AsFilterActivity is the BasicActivity implementation for WebActivity.

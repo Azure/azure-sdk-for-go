@@ -31,8 +31,8 @@ type AgreementType string
 const (
 	// AS2 ...
 	AS2 AgreementType = "AS2"
-	// EDIFACT ...
-	EDIFACT AgreementType = "EDIFACT"
+	// Edifact ...
+	Edifact AgreementType = "Edifact"
 	// NotSpecified ...
 	NotSpecified AgreementType = "NotSpecified"
 	// X12 ...
@@ -41,7 +41,7 @@ const (
 
 // PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
 func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AS2, EDIFACT, NotSpecified, X12}
+	return []AgreementType{AS2, Edifact, NotSpecified, X12}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -1688,7 +1688,7 @@ func (iaa *IntegrationAccountAgreement) UnmarshalJSON(body []byte) error {
 
 // IntegrationAccountAgreementFilter the integration account agreement filter for odata query.
 type IntegrationAccountAgreementFilter struct {
-	// AgreementType - The agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'
+	// AgreementType - The agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 }
 
@@ -1803,7 +1803,7 @@ type IntegrationAccountAgreementProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
-	// AgreementType - The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'EDIFACT'
+	// AgreementType - The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 	// HostPartner - The integration account partner that is set as host partner for this agreement.
 	HostPartner *string `json:"hostPartner,omitempty"`

@@ -39,7 +39,7 @@ type AgreementType = original.AgreementType
 
 const (
 	AS2          AgreementType = original.AS2
-	EDIFACT      AgreementType = original.EDIFACT
+	Edifact      AgreementType = original.Edifact
 	NotSpecified AgreementType = original.NotSpecified
 	X12          AgreementType = original.X12
 )

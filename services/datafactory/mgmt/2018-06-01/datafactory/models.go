@@ -7694,9 +7694,9 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 	NewClusterNumOfWorker interface{} `json:"newClusterNumOfWorker,omitempty"`
 	// NewClusterNodeType - The node types of new cluster. Type: string (or Expression with resultType string).
 	NewClusterNodeType interface{} `json:"newClusterNodeType,omitempty"`
-	// NewClusterSparkConf - a set of optional, user-specified Spark configuration key-value pairs.
+	// NewClusterSparkConf - A set of optional, user-specified Spark configuration key-value pairs.
 	NewClusterSparkConf map[string]interface{} `json:"newClusterSparkConf"`
-	// NewClusterSparkEnvVars - a set of optional, user-specified Spark environment variables key-value pairs.
+	// NewClusterSparkEnvVars - A set of optional, user-specified Spark environment variables key-value pairs.
 	NewClusterSparkEnvVars map[string]interface{} `json:"newClusterSparkEnvVars"`
 	// NewClusterCustomTags - Additional tags for cluster resources.
 	NewClusterCustomTags map[string]interface{} `json:"newClusterCustomTags"`

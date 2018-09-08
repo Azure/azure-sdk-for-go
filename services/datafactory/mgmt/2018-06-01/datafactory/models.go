@@ -7694,8 +7694,10 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 	NewClusterNumOfWorker interface{} `json:"newClusterNumOfWorker,omitempty"`
 	// NewClusterNodeType - The node types of new cluster. Type: string (or Expression with resultType string).
 	NewClusterNodeType interface{} `json:"newClusterNodeType,omitempty"`
-	// NewClusterSparkConf - a set of optional, user-specified Spark configuration key-value pairs.
+	// NewClusterSparkConf - A set of optional, user-specified Spark configuration key-value pairs.
 	NewClusterSparkConf map[string]interface{} `json:"newClusterSparkConf"`
+	// NewClusterSparkEnvVars - A set of optional, user-specified Spark environment variables key-value pairs.
+	NewClusterSparkEnvVars map[string]interface{} `json:"newClusterSparkEnvVars"`
 	// NewClusterCustomTags - Additional tags for cluster resources.
 	NewClusterCustomTags map[string]interface{} `json:"newClusterCustomTags"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
@@ -7713,6 +7715,9 @@ func (adlstp AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, 
 	objectMap["newClusterNodeType"] = adlstp.NewClusterNodeType
 	if adlstp.NewClusterSparkConf != nil {
 		objectMap["newClusterSparkConf"] = adlstp.NewClusterSparkConf
+	}
+	if adlstp.NewClusterSparkEnvVars != nil {
+		objectMap["newClusterSparkEnvVars"] = adlstp.NewClusterSparkEnvVars
 	}
 	if adlstp.NewClusterCustomTags != nil {
 		objectMap["newClusterCustomTags"] = adlstp.NewClusterCustomTags
@@ -7791,6 +7796,15 @@ func (adlstp *AzureDatabricksLinkedServiceTypeProperties) UnmarshalJSON(body []b
 					return err
 				}
 				adlstp.NewClusterSparkConf = newClusterSparkConf
+			}
+		case "newClusterSparkEnvVars":
+			if v != nil {
+				var newClusterSparkEnvVars map[string]interface{}
+				err = json.Unmarshal(*v, &newClusterSparkEnvVars)
+				if err != nil {
+					return err
+				}
+				adlstp.NewClusterSparkEnvVars = newClusterSparkEnvVars
 			}
 		case "newClusterCustomTags":
 			if v != nil {

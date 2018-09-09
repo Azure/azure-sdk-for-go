@@ -298,6 +298,7 @@ type ListRegexEntityExtractor = original.ListRegexEntityExtractor
 type ListString = original.ListString
 type ListUUID = original.ListUUID
 type ListVersionInfo = original.ListVersionInfo
+type ListVersionSettingObject = original.ListVersionSettingObject
 type LuisApp = original.LuisApp
 type ModelCreateObject = original.ModelCreateObject
 type ModelInfo = original.ModelInfo
@@ -347,10 +348,13 @@ type UserAccessList = original.UserAccessList
 type UserCollaborator = original.UserCollaborator
 type UUID = original.UUID
 type VersionInfo = original.VersionInfo
+type VersionSettingObject = original.VersionSettingObject
+type VersionSettingUpdateObject = original.VersionSettingUpdateObject
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
 type PatternClient = original.PatternClient
 type PermissionsClient = original.PermissionsClient
+type SettingsClient = original.SettingsClient
 type TrainClient = original.TrainClient
 type VersionsClient = original.VersionsClient
 
@@ -422,6 +426,9 @@ func NewPatternClient(endpoint string) PatternClient {
 }
 func NewPermissionsClient(endpoint string) PermissionsClient {
 	return original.NewPermissionsClient(endpoint)
+}
+func NewSettingsClient(endpoint string) SettingsClient {
+	return original.NewSettingsClient(endpoint)
 }
 func NewTrainClient(endpoint string) TrainClient {
 	return original.NewTrainClient(endpoint)

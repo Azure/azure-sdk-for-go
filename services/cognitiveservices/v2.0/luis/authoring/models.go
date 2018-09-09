@@ -1155,6 +1155,12 @@ type ListVersionInfo struct {
 	Value             *[]VersionInfo `json:"value,omitempty"`
 }
 
+// ListVersionSettingObject ...
+type ListVersionSettingObject struct {
+	autorest.Response `json:"-"`
+	Value             *[]VersionSettingObject `json:"value,omitempty"`
+}
+
 // LuisApp exported Model - An exported LUIS Application.
 type LuisApp struct {
 	autorest.Response `json:"-"`
@@ -1778,6 +1784,22 @@ func (vi VersionInfo) MarshalJSON() ([]byte, error) {
 		objectMap["trainingStatus"] = vi.TrainingStatus
 	}
 	return json.Marshal(objectMap)
+}
+
+// VersionSettingObject object model of an application version setting.
+type VersionSettingObject struct {
+	// Name - The application version setting name.
+	Name *string `json:"name,omitempty"`
+	// Value - The application version setting value.
+	Value *string `json:"value,omitempty"`
+}
+
+// VersionSettingUpdateObject object model of an application version updated setting.
+type VersionSettingUpdateObject struct {
+	// Name - The application version setting name.
+	Name *string `json:"name,omitempty"`
+	// Value - The application version updated setting value.
+	Value *string `json:"value,omitempty"`
 }
 
 // WordListBaseUpdateObject object model for updating one of the closed list's sublists.

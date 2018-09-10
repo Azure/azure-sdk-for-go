@@ -4942,8 +4942,8 @@ type UploadCertificateRequest struct {
 // UploadCertificateResponse upload Certificate Response from IDM
 type UploadCertificateResponse struct {
 	autorest.Response `json:"-"`
-	// ResourceAADDetails - Gets or sets Properties
-	ResourceAADDetails *ResourceCertificateAndAADDetails `json:"resourceAADDetails,omitempty"`
+	// ResourceAadDetails - Gets or sets Properties
+	ResourceAadDetails *ResourceCertificateAndAADDetails `json:"resourceAadDetails,omitempty"`
 	// ContractVersion - Constructor. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
 	ContractVersion ContractVersions `json:"contractVersion,omitempty"`
 	// ID - The identifier.

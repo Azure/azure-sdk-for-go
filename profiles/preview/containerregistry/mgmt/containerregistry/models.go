@@ -175,28 +175,28 @@ const (
 type Type = original.Type
 
 const (
-	TypeBuildTaskRequest    Type = original.TypeBuildTaskRequest
-	TypeDockerBuildRequest  Type = original.TypeDockerBuildRequest
-	TypeQuickTaskRunRequest Type = original.TypeQuickTaskRunRequest
-	TypeRunRequest          Type = original.TypeRunRequest
-	TypeTaskRunRequest      Type = original.TypeTaskRunRequest
+	TypeDockerBuildRequest    Type = original.TypeDockerBuildRequest
+	TypeEncodedTaskRunRequest Type = original.TypeEncodedTaskRunRequest
+	TypeFileTaskRunRequest    Type = original.TypeFileTaskRunRequest
+	TypeRunRequest            Type = original.TypeRunRequest
+	TypeTaskRunRequest        Type = original.TypeTaskRunRequest
 )
 
 type TypeBasicTaskStepProperties = original.TypeBasicTaskStepProperties
 
 const (
-	TypeBuildTask          TypeBasicTaskStepProperties = original.TypeBuildTask
 	TypeDocker             TypeBasicTaskStepProperties = original.TypeDocker
-	TypeRunTask            TypeBasicTaskStepProperties = original.TypeRunTask
+	TypeEncodedTask        TypeBasicTaskStepProperties = original.TypeEncodedTask
+	TypeFileTask           TypeBasicTaskStepProperties = original.TypeFileTask
 	TypeTaskStepProperties TypeBasicTaskStepProperties = original.TypeTaskStepProperties
 )
 
 type TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParameters
 
 const (
-	TypeBasicTaskStepUpdateParametersTypeBuildTask                TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeBuildTask
 	TypeBasicTaskStepUpdateParametersTypeDocker                   TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeDocker
-	TypeBasicTaskStepUpdateParametersTypeRunTask                  TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeRunTask
+	TypeBasicTaskStepUpdateParametersTypeEncodedTask              TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeEncodedTask
+	TypeBasicTaskStepUpdateParametersTypeFileTask                 TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeFileTask
 	TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters
 )
 
@@ -231,13 +231,13 @@ type AuthInfoUpdateParameters = original.AuthInfoUpdateParameters
 type BaseImageDependency = original.BaseImageDependency
 type BaseImageTrigger = original.BaseImageTrigger
 type BaseImageTriggerUpdateParameters = original.BaseImageTriggerUpdateParameters
-type BuildTaskRequest = original.BuildTaskRequest
-type BuildTaskStep = original.BuildTaskStep
-type BuildTaskStepUpdateParameters = original.BuildTaskStepUpdateParameters
 type CallbackConfig = original.CallbackConfig
 type DockerBuildRequest = original.DockerBuildRequest
 type DockerBuildStep = original.DockerBuildStep
 type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
+type EncodedTaskRunRequest = original.EncodedTaskRunRequest
+type EncodedTaskStep = original.EncodedTaskStep
+type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo
@@ -246,6 +246,9 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
+type FileTaskRunRequest = original.FileTaskRunRequest
+type FileTaskStep = original.FileTaskStep
+type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
 type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
@@ -262,7 +265,6 @@ type PlatformProperties = original.PlatformProperties
 type PlatformUpdateParameters = original.PlatformUpdateParameters
 type ProxyResource = original.ProxyResource
 type QuarantinePolicy = original.QuarantinePolicy
-type QuickTaskRunRequest = original.QuickTaskRunRequest
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
@@ -306,8 +308,6 @@ type BasicRunRequest = original.BasicRunRequest
 type RunRequest = original.RunRequest
 type RunsCancelFuture = original.RunsCancelFuture
 type RunsUpdateFuture = original.RunsUpdateFuture
-type RunTaskStep = original.RunTaskStep
-type RunTaskStepUpdateParameters = original.RunTaskStepUpdateParameters
 type RunUpdateParameters = original.RunUpdateParameters
 type SetValue = original.SetValue
 type Sku = original.Sku

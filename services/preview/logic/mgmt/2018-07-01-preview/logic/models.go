@@ -25,40 +25,23 @@ import (
 	"net/http"
 )
 
-// AccessKeyType enumerates the values for access key type.
-type AccessKeyType string
-
-const (
-	// NotSpecified ...
-	NotSpecified AccessKeyType = "NotSpecified"
-	// Primary ...
-	Primary AccessKeyType = "Primary"
-	// Secondary ...
-	Secondary AccessKeyType = "Secondary"
-)
-
-// PossibleAccessKeyTypeValues returns an array of possible values for the AccessKeyType const type.
-func PossibleAccessKeyTypeValues() []AccessKeyType {
-	return []AccessKeyType{NotSpecified, Primary, Secondary}
-}
-
 // AgreementType enumerates the values for agreement type.
 type AgreementType string
 
 const (
-	// AgreementTypeAS2 ...
-	AgreementTypeAS2 AgreementType = "AS2"
-	// AgreementTypeEdifact ...
-	AgreementTypeEdifact AgreementType = "Edifact"
-	// AgreementTypeNotSpecified ...
-	AgreementTypeNotSpecified AgreementType = "NotSpecified"
-	// AgreementTypeX12 ...
-	AgreementTypeX12 AgreementType = "X12"
+	// AS2 ...
+	AS2 AgreementType = "AS2"
+	// Edifact ...
+	Edifact AgreementType = "Edifact"
+	// NotSpecified ...
+	NotSpecified AgreementType = "NotSpecified"
+	// X12 ...
+	X12 AgreementType = "X12"
 )
 
 // PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
 func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AgreementTypeAS2, AgreementTypeEdifact, AgreementTypeNotSpecified, AgreementTypeX12}
+	return []AgreementType{AS2, Edifact, NotSpecified, X12}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -774,12 +757,6 @@ const (
 // PossibleX12TimeFormatValues returns an array of possible values for the X12TimeFormat const type.
 func PossibleX12TimeFormatValues() []X12TimeFormat {
 	return []X12TimeFormat{X12TimeFormatHHMM, X12TimeFormatHHMMSS, X12TimeFormatHHMMSSd, X12TimeFormatHHMMSSdd, X12TimeFormatNotSpecified}
-}
-
-// AccessKeyRegenerateActionDefinition ...
-type AccessKeyRegenerateActionDefinition struct {
-	// KeyType - Possible values include: 'NotSpecified', 'Primary', 'Secondary'
-	KeyType AccessKeyType `json:"keyType,omitempty"`
 }
 
 // AgreementContent the integration account agreement content.
@@ -1711,7 +1688,7 @@ func (iaa *IntegrationAccountAgreement) UnmarshalJSON(body []byte) error {
 
 // IntegrationAccountAgreementFilter the integration account agreement filter for odata query.
 type IntegrationAccountAgreementFilter struct {
-	// AgreementType - The agreement type of integration account agreement. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
+	// AgreementType - The agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 }
 
@@ -1826,7 +1803,7 @@ type IntegrationAccountAgreementProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
-	// AgreementType - The agreement type. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
+	// AgreementType - The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 	// HostPartner - The integration account partner that is set as host partner for this agreement.
 	HostPartner *string `json:"hostPartner,omitempty"`

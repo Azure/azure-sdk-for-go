@@ -1313,8 +1313,8 @@ func (client ManagersClient) UpdateExtendedInfoResponder(resp *http.Response) (r
 func (client ManagersClient) UploadRegistrationCertificate(ctx context.Context, certificateName string, uploadCertificateRequestrequest UploadCertificateRequest, resourceGroupName string, managerName string) (result UploadCertificateResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: uploadCertificateRequestrequest,
-			Constraints: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateDetails", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateDetails.Certificate", Name: validation.Null, Rule: true, Chain: nil}}}}},
+			Constraints: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateData", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "uploadCertificateRequestrequest.RawCertificateData.Certificate", Name: validation.Null, Rule: true, Chain: nil}}}}},
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "managerName", Name: validation.MinLength, Rule: 2, Chain: nil}}}}); err != nil {

@@ -19,7 +19,7 @@
 
 package network
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-06-01/network"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-07-01/network"
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
@@ -581,6 +581,14 @@ const (
 	ProtocolTCP   Protocol = original.ProtocolTCP
 )
 
+type Protocol1 = original.Protocol1
+
+const (
+	Protocol1All Protocol1 = original.Protocol1All
+	Protocol1TCP Protocol1 = original.Protocol1TCP
+	Protocol1UDP Protocol1 = original.Protocol1UDP
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -595,6 +603,12 @@ type PublicIPAddressSkuName = original.PublicIPAddressSkuName
 const (
 	PublicIPAddressSkuNameBasic    PublicIPAddressSkuName = original.PublicIPAddressSkuNameBasic
 	PublicIPAddressSkuNameStandard PublicIPAddressSkuName = original.PublicIPAddressSkuNameStandard
+)
+
+type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
+
+const (
+	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = original.PublicIPPrefixSkuNameStandard
 )
 
 type RouteNextHopType = original.RouteNextHopType
@@ -1088,8 +1102,8 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationPropertiesFormat = original.OperationPropertiesFormat
 type OperationPropertiesFormatServiceSpecification = original.OperationPropertiesFormatServiceSpecification
-type OutboundNatRule = original.OutboundNatRule
-type OutboundNatRulePropertiesFormat = original.OutboundNatRulePropertiesFormat
+type OutboundRule = original.OutboundRule
+type OutboundRulePropertiesFormat = original.OutboundRulePropertiesFormat
 type PacketCapture = original.PacketCapture
 type PacketCaptureFilter = original.PacketCaptureFilter
 type PacketCaptureListResult = original.PacketCaptureListResult
@@ -1118,7 +1132,17 @@ type PublicIPAddressListResultIterator = original.PublicIPAddressListResultItera
 type PublicIPAddressListResultPage = original.PublicIPAddressListResultPage
 type PublicIPAddressPropertiesFormat = original.PublicIPAddressPropertiesFormat
 type PublicIPAddressSku = original.PublicIPAddressSku
+type PublicIPPrefix = original.PublicIPPrefix
+type PublicIPPrefixesCreateOrUpdateFuture = original.PublicIPPrefixesCreateOrUpdateFuture
+type PublicIPPrefixesDeleteFuture = original.PublicIPPrefixesDeleteFuture
+type PublicIPPrefixesUpdateTagsFuture = original.PublicIPPrefixesUpdateTagsFuture
+type PublicIPPrefixListResult = original.PublicIPPrefixListResult
+type PublicIPPrefixListResultIterator = original.PublicIPPrefixListResultIterator
+type PublicIPPrefixListResultPage = original.PublicIPPrefixListResultPage
+type PublicIPPrefixPropertiesFormat = original.PublicIPPrefixPropertiesFormat
+type PublicIPPrefixSku = original.PublicIPPrefixSku
 type QueryTroubleshootingParameters = original.QueryTroubleshootingParameters
+type ReferencedPublicIPAddress = original.ReferencedPublicIPAddress
 type Resource = original.Resource
 type ResourceNavigationLink = original.ResourceNavigationLink
 type ResourceNavigationLinkFormat = original.ResourceNavigationLinkFormat
@@ -1175,6 +1199,21 @@ type SecurityRulePropertiesFormat = original.SecurityRulePropertiesFormat
 type SecurityRulesCreateOrUpdateFuture = original.SecurityRulesCreateOrUpdateFuture
 type SecurityRulesDeleteFuture = original.SecurityRulesDeleteFuture
 type SecurityRulesEvaluationResult = original.SecurityRulesEvaluationResult
+type ServiceEndpointPoliciesCreateOrUpdateFuture = original.ServiceEndpointPoliciesCreateOrUpdateFuture
+type ServiceEndpointPoliciesDeleteFuture = original.ServiceEndpointPoliciesDeleteFuture
+type ServiceEndpointPoliciesUpdateFuture = original.ServiceEndpointPoliciesUpdateFuture
+type ServiceEndpointPolicy = original.ServiceEndpointPolicy
+type ServiceEndpointPolicyDefinition = original.ServiceEndpointPolicyDefinition
+type ServiceEndpointPolicyDefinitionListResult = original.ServiceEndpointPolicyDefinitionListResult
+type ServiceEndpointPolicyDefinitionListResultIterator = original.ServiceEndpointPolicyDefinitionListResultIterator
+type ServiceEndpointPolicyDefinitionListResultPage = original.ServiceEndpointPolicyDefinitionListResultPage
+type ServiceEndpointPolicyDefinitionPropertiesFormat = original.ServiceEndpointPolicyDefinitionPropertiesFormat
+type ServiceEndpointPolicyDefinitionsCreateOrUpdateFuture = original.ServiceEndpointPolicyDefinitionsCreateOrUpdateFuture
+type ServiceEndpointPolicyDefinitionsDeleteFuture = original.ServiceEndpointPolicyDefinitionsDeleteFuture
+type ServiceEndpointPolicyListResult = original.ServiceEndpointPolicyListResult
+type ServiceEndpointPolicyListResultIterator = original.ServiceEndpointPolicyListResultIterator
+type ServiceEndpointPolicyListResultPage = original.ServiceEndpointPolicyListResultPage
+type ServiceEndpointPolicyPropertiesFormat = original.ServiceEndpointPolicyPropertiesFormat
 type ServiceEndpointPropertiesFormat = original.ServiceEndpointPropertiesFormat
 type String = original.String
 type Subnet = original.Subnet
@@ -1315,12 +1354,15 @@ type WatchersVerifyIPFlowFuture = original.WatchersVerifyIPFlowFuture
 type OperationsClient = original.OperationsClient
 type PacketCapturesClient = original.PacketCapturesClient
 type PublicIPAddressesClient = original.PublicIPAddressesClient
+type PublicIPPrefixesClient = original.PublicIPPrefixesClient
 type RouteFilterRulesClient = original.RouteFilterRulesClient
 type RouteFiltersClient = original.RouteFiltersClient
 type RoutesClient = original.RoutesClient
 type RouteTablesClient = original.RouteTablesClient
 type SecurityGroupsClient = original.SecurityGroupsClient
 type SecurityRulesClient = original.SecurityRulesClient
+type ServiceEndpointPoliciesClient = original.ServiceEndpointPoliciesClient
+type ServiceEndpointPolicyDefinitionsClient = original.ServiceEndpointPolicyDefinitionsClient
 type SubnetsClient = original.SubnetsClient
 type UsagesClient = original.UsagesClient
 type VirtualHubsClient = original.VirtualHubsClient
@@ -1680,11 +1722,17 @@ func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
+func PossibleProtocol1Values() []Protocol1 {
+	return original.PossibleProtocol1Values()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 	return original.PossiblePublicIPAddressSkuNameValues()
+}
+func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
+	return original.PossiblePublicIPPrefixSkuNameValues()
 }
 func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	return original.PossibleRouteNextHopTypeValues()
@@ -1755,6 +1803,12 @@ func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
 func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
 	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPublicIPPrefixesClient(subscriptionID string) PublicIPPrefixesClient {
+	return original.NewPublicIPPrefixesClient(subscriptionID)
+}
+func NewPublicIPPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPPrefixesClient {
+	return original.NewPublicIPPrefixesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
 	return original.NewRouteFilterRulesClient(subscriptionID)
 }
@@ -1790,6 +1844,18 @@ func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
 }
 func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceEndpointPoliciesClient(subscriptionID string) ServiceEndpointPoliciesClient {
+	return original.NewServiceEndpointPoliciesClient(subscriptionID)
+}
+func NewServiceEndpointPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ServiceEndpointPoliciesClient {
+	return original.NewServiceEndpointPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceEndpointPolicyDefinitionsClient(subscriptionID string) ServiceEndpointPolicyDefinitionsClient {
+	return original.NewServiceEndpointPolicyDefinitionsClient(subscriptionID)
+}
+func NewServiceEndpointPolicyDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ServiceEndpointPolicyDefinitionsClient {
+	return original.NewServiceEndpointPolicyDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubnetsClient(subscriptionID string) SubnetsClient {
 	return original.NewSubnetsClient(subscriptionID)

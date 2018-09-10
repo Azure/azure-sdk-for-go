@@ -659,14 +659,14 @@ func (future *ContainerServicesDeleteFutureType) Result(client ContainerServices
 type CredentialResult struct {
 	// Name - The name of the credential.
 	Name *string `json:"name,omitempty"`
-	// Value - The value of the credential.
-	Value *string `json:"value,omitempty"`
+	// Value - Base64-encoded Kubernetes configuration file.
+	Value *[]byte `json:"value,omitempty"`
 }
 
 // CredentialResults the list of credential result response.
 type CredentialResults struct {
 	autorest.Response `json:"-"`
-	Values            *[]CredentialResult `json:"values,omitempty"`
+	Kubeconfigs       *[]CredentialResult `json:"kubeconfigs,omitempty"`
 }
 
 // CustomProfile properties to configure a custom container service cluster.

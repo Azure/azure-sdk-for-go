@@ -13665,6 +13665,159 @@ func (client AppsClient) ListApplicationSettingsSlotResponder(resp *http.Respons
 	return
 }
 
+// ListAzureStorageAccounts gets the Azure storage account configurations of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) ListAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string) (result AzureStoragePropertyDictionaryResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListAzureStorageAccounts", err.Error())
+	}
+
+	req, err := client.ListAzureStorageAccountsPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccounts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAzureStorageAccountsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccounts", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListAzureStorageAccountsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccounts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAzureStorageAccountsPreparer prepares the ListAzureStorageAccounts request.
+func (client AppsClient) ListAzureStorageAccountsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAzureStorageAccountsSender sends the ListAzureStorageAccounts request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListAzureStorageAccountsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListAzureStorageAccountsResponder handles the response to the ListAzureStorageAccounts request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListAzureStorageAccountsResponder(resp *http.Response) (result AzureStoragePropertyDictionaryResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListAzureStorageAccountsSlot gets the Azure storage account configurations of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will update the Azure storage
+// account configurations for the production slot.
+func (client AppsClient) ListAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result AzureStoragePropertyDictionaryResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListAzureStorageAccountsSlot", err.Error())
+	}
+
+	req, err := client.ListAzureStorageAccountsSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccountsSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAzureStorageAccountsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccountsSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListAzureStorageAccountsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListAzureStorageAccountsSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAzureStorageAccountsSlotPreparer prepares the ListAzureStorageAccountsSlot request.
+func (client AppsClient) ListAzureStorageAccountsSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts/list", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAzureStorageAccountsSlotSender sends the ListAzureStorageAccountsSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListAzureStorageAccountsSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListAzureStorageAccountsSlotResponder handles the response to the ListAzureStorageAccountsSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListAzureStorageAccountsSlotResponder(resp *http.Response) (result AzureStoragePropertyDictionaryResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListBackups gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -25295,6 +25448,165 @@ func (client AppsClient) UpdateAuthSettingsSlotSender(req *http.Request) (*http.
 // UpdateAuthSettingsSlotResponder handles the response to the UpdateAuthSettingsSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) UpdateAuthSettingsSlotResponder(resp *http.Response) (result SiteAuthSettings, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateAzureStorageAccounts updates the Azure storage account configurations of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// azureStorageAccounts - azure storage accounts of the app.
+func (client AppsClient) UpdateAzureStorageAccounts(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource) (result AzureStoragePropertyDictionaryResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateAzureStorageAccounts", err.Error())
+	}
+
+	req, err := client.UpdateAzureStorageAccountsPreparer(ctx, resourceGroupName, name, azureStorageAccounts)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccounts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateAzureStorageAccountsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccounts", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateAzureStorageAccountsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccounts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateAzureStorageAccountsPreparer prepares the UpdateAzureStorageAccounts request.
+func (client AppsClient) UpdateAzureStorageAccountsPreparer(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts", pathParameters),
+		autorest.WithJSON(azureStorageAccounts),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateAzureStorageAccountsSender sends the UpdateAzureStorageAccounts request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateAzureStorageAccountsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateAzureStorageAccountsResponder handles the response to the UpdateAzureStorageAccounts request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateAzureStorageAccountsResponder(resp *http.Response) (result AzureStoragePropertyDictionaryResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateAzureStorageAccountsSlot updates the Azure storage account configurations of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// azureStorageAccounts - azure storage accounts of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will update the Azure storage
+// account configurations for the production slot.
+func (client AppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, slot string) (result AzureStoragePropertyDictionaryResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateAzureStorageAccountsSlot", err.Error())
+	}
+
+	req, err := client.UpdateAzureStorageAccountsSlotPreparer(ctx, resourceGroupName, name, azureStorageAccounts, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccountsSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateAzureStorageAccountsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccountsSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateAzureStorageAccountsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateAzureStorageAccountsSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateAzureStorageAccountsSlotPreparer prepares the UpdateAzureStorageAccountsSlot request.
+func (client AppsClient) UpdateAzureStorageAccountsSlotPreparer(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts", pathParameters),
+		autorest.WithJSON(azureStorageAccounts),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateAzureStorageAccountsSlotSender sends the UpdateAzureStorageAccountsSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateAzureStorageAccountsSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateAzureStorageAccountsSlotResponder handles the response to the UpdateAzureStorageAccountsSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateAzureStorageAccountsSlotResponder(resp *http.Response) (result AzureStoragePropertyDictionaryResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -28,21 +28,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type PrincipalType = original.PrincipalType
-
-const (
-	Application            PrincipalType = original.Application
-	DirectoryObjectOrGroup PrincipalType = original.DirectoryObjectOrGroup
-	DirectoryRoleTemplate  PrincipalType = original.DirectoryRoleTemplate
-	Everyone               PrincipalType = original.Everyone
-	ForeignGroup           PrincipalType = original.ForeignGroup
-	Group                  PrincipalType = original.Group
-	MSI                    PrincipalType = original.MSI
-	ServicePrincipal       PrincipalType = original.ServicePrincipal
-	Unknown                PrincipalType = original.Unknown
-	User                   PrincipalType = original.User
-)
-
 type ClassicAdministrator = original.ClassicAdministrator
 type ClassicAdministratorListResult = original.ClassicAdministratorListResult
 type ClassicAdministratorListResultIterator = original.ClassicAdministratorListResultIterator
@@ -88,9 +73,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossiblePrincipalTypeValues() []PrincipalType {
-	return original.PossiblePrincipalTypeValues()
 }
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClient(subscriptionID)

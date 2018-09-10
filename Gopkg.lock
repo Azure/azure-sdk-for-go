@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:94ef971d1e136d4aad4bc82b1e297e99f2b667e95ac2b31d2eb61287090f6d6a"
+  digest = "1:bea962ecd1dd8cf351ee534204936ae9d1088e14363c48ccb8981ab0d126fc73"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -16,8 +16,8 @@
     "version",
   ]
   pruneopts = ""
-  revision = "39013ecb48eaf6ced3f4e3e1d95515140ce6b3cf"
-  version = "v10.15.2"
+  revision = "a35eae345f69bbfbe3b8fa0b1d3fe98f8430b21a"
+  version = "v10.15.3"
 
 [[projects]]
   digest = "1:6098222470fe0172157ce9bbef5d2200df4edde17ee649c5d6e48330e4afa4c6"
@@ -244,22 +244,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:793a79198b755828dec284c6f1325e24e09186f1b7ba818b65c7c35104ed86eb"
+  digest = "1:3ff237df1dca22c6296d2446c76ddcff8d359180ca53b8dcd301a44aa5c2f479"
   name = "golang.org/x/crypto"
   packages = [
     "pkcs12",
     "pkcs12/internal/rc2",
   ]
   pruneopts = ""
-  revision = "614d502a4dac94afa3a6ce146bd1736da82514c6"
+  revision = "182538f80094b6a8efaade63a8fd8e0d9d5843dd"
 
 [[projects]]
   branch = "master"
-  digest = "1:79b4fb7cfed68c4d0727858bd32dbe3be4b97ea58e2d767f92287f67810cbc98"
+  digest = "1:12902fee4e8c9475c3f34ed83326414a240e3d3990ab7ac3e81f210d621003a3"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "d99a578cf41bfccdeaf48b0845c823a4b8b0ad5e"
+  revision = "49385e6e15226593f68b26af201feec29d5bba22"
 
 [[projects]]
   digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"

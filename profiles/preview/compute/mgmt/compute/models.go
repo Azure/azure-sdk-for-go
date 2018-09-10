@@ -145,6 +145,15 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskStorageAccountTypes = original.DiskStorageAccountTypes
+
+const (
+	PremiumLRS     DiskStorageAccountTypes = original.PremiumLRS
+	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
+	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
+	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
+)
+
 type HostCaching = original.HostCaching
 
 const (
@@ -316,9 +325,9 @@ const (
 type SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypes
 
 const (
-	PremiumLRS  SnapshotStorageAccountTypes = original.PremiumLRS
-	StandardLRS SnapshotStorageAccountTypes = original.StandardLRS
-	StandardZRS SnapshotStorageAccountTypes = original.StandardZRS
+	SnapshotStorageAccountTypesPremiumLRS  SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesPremiumLRS
+	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardLRS
+	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardZRS
 )
 
 type StatusLevelTypes = original.StatusLevelTypes
@@ -723,6 +732,7 @@ type Snapshot = original.Snapshot
 type SnapshotList = original.SnapshotList
 type SnapshotListIterator = original.SnapshotListIterator
 type SnapshotListPage = original.SnapshotListPage
+type SnapshotProperties = original.SnapshotProperties
 type SnapshotsCreateOrUpdateFuture = original.SnapshotsCreateOrUpdateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
@@ -979,6 +989,9 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 }
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()
+}
+func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
+	return original.PossibleDiskStorageAccountTypesValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()

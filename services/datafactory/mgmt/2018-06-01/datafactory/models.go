@@ -1507,6 +1507,25 @@ func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageForm
 	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
 }
 
+// TypeBasicDependencyReference enumerates the values for type basic dependency reference.
+type TypeBasicDependencyReference string
+
+const (
+	// TypeDependencyReference ...
+	TypeDependencyReference TypeBasicDependencyReference = "DependencyReference"
+	// TypeSelfDependencyTumblingWindowTriggerReference ...
+	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = "SelfDependencyTumblingWindowTriggerReference"
+	// TypeTriggerDependencyReference ...
+	TypeTriggerDependencyReference TypeBasicDependencyReference = "TriggerDependencyReference"
+	// TypeTumblingWindowTriggerDependencyReference ...
+	TypeTumblingWindowTriggerDependencyReference TypeBasicDependencyReference = "TumblingWindowTriggerDependencyReference"
+)
+
+// PossibleTypeBasicDependencyReferenceValues returns an array of possible values for the TypeBasicDependencyReference const type.
+func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
+	return []TypeBasicDependencyReference{TypeDependencyReference, TypeSelfDependencyTumblingWindowTriggerReference, TypeTriggerDependencyReference, TypeTumblingWindowTriggerDependencyReference}
+}
+
 // TypeBasicFactoryRepoConfiguration enumerates the values for type basic factory repo configuration.
 type TypeBasicFactoryRepoConfiguration string
 
@@ -2895,6 +2914,8 @@ type AmazonMWSObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -2915,6 +2936,9 @@ func (amod AmazonMWSObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if amod.Annotations != nil {
 		objectMap["annotations"] = amod.Annotations
+	}
+	if amod.Folder != nil {
+		objectMap["folder"] = amod.Folder
 	}
 	if amod.Type != "" {
 		objectMap["type"] = amod.Type
@@ -4382,6 +4406,8 @@ type AmazonS3Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -4405,6 +4431,9 @@ func (asd AmazonS3Dataset) MarshalJSON() ([]byte, error) {
 	}
 	if asd.Annotations != nil {
 		objectMap["annotations"] = asd.Annotations
+	}
+	if asd.Folder != nil {
+		objectMap["folder"] = asd.Folder
 	}
 	if asd.Type != "" {
 		objectMap["type"] = asd.Type
@@ -4764,6 +4793,15 @@ func (asd *AmazonS3Dataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				asd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				asd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -6070,6 +6108,8 @@ type AzureBlobDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -6093,6 +6133,9 @@ func (abd AzureBlobDataset) MarshalJSON() ([]byte, error) {
 	}
 	if abd.Annotations != nil {
 		objectMap["annotations"] = abd.Annotations
+	}
+	if abd.Folder != nil {
+		objectMap["folder"] = abd.Folder
 	}
 	if abd.Type != "" {
 		objectMap["type"] = abd.Type
@@ -6452,6 +6495,15 @@ func (abd *AzureBlobDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				abd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				abd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -8383,6 +8435,8 @@ type AzureDataLakeStoreDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -8406,6 +8460,9 @@ func (adlsd AzureDataLakeStoreDataset) MarshalJSON() ([]byte, error) {
 	}
 	if adlsd.Annotations != nil {
 		objectMap["annotations"] = adlsd.Annotations
+	}
+	if adlsd.Folder != nil {
+		objectMap["folder"] = adlsd.Folder
 	}
 	if adlsd.Type != "" {
 		objectMap["type"] = adlsd.Type
@@ -8765,6 +8822,15 @@ func (adlsd *AzureDataLakeStoreDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				adlsd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				adlsd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -12458,6 +12524,8 @@ type AzureMySQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -12481,6 +12549,9 @@ func (amstd AzureMySQLTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if amstd.Annotations != nil {
 		objectMap["annotations"] = amstd.Annotations
+	}
+	if amstd.Folder != nil {
+		objectMap["folder"] = amstd.Folder
 	}
 	if amstd.Type != "" {
 		objectMap["type"] = amstd.Type
@@ -12840,6 +12911,15 @@ func (amstd *AzureMySQLTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				amstd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				amstd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -13671,6 +13751,8 @@ type AzurePostgreSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -13691,6 +13773,9 @@ func (apstd AzurePostgreSQLTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if apstd.Annotations != nil {
 		objectMap["annotations"] = apstd.Annotations
+	}
+	if apstd.Folder != nil {
+		objectMap["folder"] = apstd.Folder
 	}
 	if apstd.Type != "" {
 		objectMap["type"] = apstd.Type
@@ -14105,6 +14190,8 @@ type AzureSearchIndexDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -14128,6 +14215,9 @@ func (asid AzureSearchIndexDataset) MarshalJSON() ([]byte, error) {
 	}
 	if asid.Annotations != nil {
 		objectMap["annotations"] = asid.Annotations
+	}
+	if asid.Folder != nil {
+		objectMap["folder"] = asid.Folder
 	}
 	if asid.Type != "" {
 		objectMap["type"] = asid.Type
@@ -14487,6 +14577,15 @@ func (asid *AzureSearchIndexDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				asid.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				asid.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -16331,6 +16430,8 @@ type AzureSQLDWTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -16354,6 +16455,9 @@ func (asdtd AzureSQLDWTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if asdtd.Annotations != nil {
 		objectMap["annotations"] = asdtd.Annotations
+	}
+	if asdtd.Folder != nil {
+		objectMap["folder"] = asdtd.Folder
 	}
 	if asdtd.Type != "" {
 		objectMap["type"] = asdtd.Type
@@ -16714,6 +16818,15 @@ func (asdtd *AzureSQLDWTableDataset) UnmarshalJSON(body []byte) error {
 				}
 				asdtd.Annotations = &annotations
 			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				asdtd.Folder = &folder
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicDataset
@@ -16751,6 +16864,8 @@ type AzureSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -16774,6 +16889,9 @@ func (astd AzureSQLTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if astd.Annotations != nil {
 		objectMap["annotations"] = astd.Annotations
+	}
+	if astd.Folder != nil {
+		objectMap["folder"] = astd.Folder
 	}
 	if astd.Type != "" {
 		objectMap["type"] = astd.Type
@@ -17133,6 +17251,15 @@ func (astd *AzureSQLTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				astd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				astd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -17719,6 +17846,8 @@ type AzureTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -17742,6 +17871,9 @@ func (atd AzureTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if atd.Annotations != nil {
 		objectMap["annotations"] = atd.Annotations
+	}
+	if atd.Folder != nil {
+		objectMap["folder"] = atd.Folder
 	}
 	if atd.Type != "" {
 		objectMap["type"] = atd.Type
@@ -18101,6 +18233,15 @@ func (atd *AzureTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				atd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				atd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -20681,6 +20822,8 @@ type CassandraTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -20704,6 +20847,9 @@ func (ctd CassandraTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if ctd.Annotations != nil {
 		objectMap["annotations"] = ctd.Annotations
+	}
+	if ctd.Folder != nil {
+		objectMap["folder"] = ctd.Folder
 	}
 	if ctd.Type != "" {
 		objectMap["type"] = ctd.Type
@@ -21063,6 +21209,15 @@ func (ctd *CassandraTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ctd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				ctd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -21744,6 +21899,8 @@ type ConcurObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -21764,6 +21921,9 @@ func (cod ConcurObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if cod.Annotations != nil {
 		objectMap["annotations"] = cod.Annotations
+	}
+	if cod.Folder != nil {
+		objectMap["folder"] = cod.Folder
 	}
 	if cod.Type != "" {
 		objectMap["type"] = cod.Type
@@ -25235,6 +25395,8 @@ type CouchbaseTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -25255,6 +25417,9 @@ func (ctd CouchbaseTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if ctd.Annotations != nil {
 		objectMap["annotations"] = ctd.Annotations
+	}
+	if ctd.Folder != nil {
+		objectMap["folder"] = ctd.Folder
 	}
 	if ctd.Type != "" {
 		objectMap["type"] = ctd.Type
@@ -25919,6 +26084,8 @@ type CustomDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -25940,6 +26107,9 @@ func (cd CustomDataset) MarshalJSON() ([]byte, error) {
 	}
 	if cd.Annotations != nil {
 		objectMap["annotations"] = cd.Annotations
+	}
+	if cd.Folder != nil {
+		objectMap["folder"] = cd.Folder
 	}
 	if cd.Type != "" {
 		objectMap["type"] = cd.Type
@@ -28011,6 +28181,8 @@ type Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -28276,6 +28448,9 @@ func (d Dataset) MarshalJSON() ([]byte, error) {
 	}
 	if d.Annotations != nil {
 		objectMap["annotations"] = d.Annotations
+	}
+	if d.Folder != nil {
+		objectMap["folder"] = d.Folder
 	}
 	if d.Type != "" {
 		objectMap["type"] = d.Type
@@ -28775,6 +28950,12 @@ func (ddc DatasetDeflateCompression) AsDatasetCompression() (*DatasetCompression
 // AsBasicDatasetCompression is the BasicDatasetCompression implementation for DatasetDeflateCompression.
 func (ddc DatasetDeflateCompression) AsBasicDatasetCompression() (BasicDatasetCompression, bool) {
 	return &ddc, true
+}
+
+// DatasetFolder the folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+type DatasetFolder struct {
+	// Name - The name of the folder that this Dataset is in.
+	Name *string `json:"name,omitempty"`
 }
 
 // DatasetGZipCompression the GZip compression method used on a dataset.
@@ -29796,6 +29977,106 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BasicDependencyReference referenced dependency.
+type BasicDependencyReference interface {
+	AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool)
+	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+	AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool)
+	AsDependencyReference() (*DependencyReference, bool)
+}
+
+// DependencyReference referenced dependency.
+type DependencyReference struct {
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+func unmarshalBasicDependencyReference(body []byte) (BasicDependencyReference, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeSelfDependencyTumblingWindowTriggerReference):
+		var sdtwtr SelfDependencyTumblingWindowTriggerReference
+		err := json.Unmarshal(body, &sdtwtr)
+		return sdtwtr, err
+	case string(TypeTumblingWindowTriggerDependencyReference):
+		var twtdr TumblingWindowTriggerDependencyReference
+		err := json.Unmarshal(body, &twtdr)
+		return twtdr, err
+	case string(TypeTriggerDependencyReference):
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
+	default:
+		var dr DependencyReference
+		err := json.Unmarshal(body, &dr)
+		return dr, err
+	}
+}
+func unmarshalBasicDependencyReferenceArray(body []byte) ([]BasicDependencyReference, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	drArray := make([]BasicDependencyReference, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		dr, err := unmarshalBasicDependencyReference(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		drArray[index] = dr
+	}
+	return drArray, nil
+}
+
+// MarshalJSON is the custom marshaler for DependencyReference.
+func (dr DependencyReference) MarshalJSON() ([]byte, error) {
+	dr.Type = TypeDependencyReference
+	objectMap := make(map[string]interface{})
+	if dr.Type != "" {
+		objectMap["type"] = dr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return &dr, true
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &dr, true
+}
+
 // DistcpSettings distcp settings.
 type DistcpSettings struct {
 	// ResourceManagerEndpoint - Specifies the Yarn ResourceManager endpoint. Type: string (or Expression with resultType string).
@@ -29822,6 +30103,8 @@ type DocumentDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -29845,6 +30128,9 @@ func (ddcd DocumentDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	}
 	if ddcd.Annotations != nil {
 		objectMap["annotations"] = ddcd.Annotations
+	}
+	if ddcd.Folder != nil {
+		objectMap["folder"] = ddcd.Folder
 	}
 	if ddcd.Type != "" {
 		objectMap["type"] = ddcd.Type
@@ -30204,6 +30490,15 @@ func (ddcd *DocumentDbCollectionDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ddcd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				ddcd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -31444,6 +31739,8 @@ type DrillTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -31464,6 +31761,9 @@ func (dtd DrillTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if dtd.Annotations != nil {
 		objectMap["annotations"] = dtd.Annotations
+	}
+	if dtd.Folder != nil {
+		objectMap["folder"] = dtd.Folder
 	}
 	if dtd.Type != "" {
 		objectMap["type"] = dtd.Type
@@ -31765,6 +32065,8 @@ type DynamicsEntityDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -31788,6 +32090,9 @@ func (ded DynamicsEntityDataset) MarshalJSON() ([]byte, error) {
 	}
 	if ded.Annotations != nil {
 		objectMap["annotations"] = ded.Annotations
+	}
+	if ded.Folder != nil {
+		objectMap["folder"] = ded.Folder
 	}
 	if ded.Type != "" {
 		objectMap["type"] = ded.Type
@@ -32147,6 +32452,15 @@ func (ded *DynamicsEntityDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ded.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				ded.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -33800,6 +34114,8 @@ type EloquaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -33820,6 +34136,9 @@ func (eod EloquaObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if eod.Annotations != nil {
 		objectMap["annotations"] = eod.Annotations
+	}
+	if eod.Folder != nil {
+		objectMap["folder"] = eod.Folder
 	}
 	if eod.Type != "" {
 		objectMap["type"] = eod.Type
@@ -36609,6 +36928,8 @@ type FileShareDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -36632,6 +36953,9 @@ func (fsd FileShareDataset) MarshalJSON() ([]byte, error) {
 	}
 	if fsd.Annotations != nil {
 		objectMap["annotations"] = fsd.Annotations
+	}
+	if fsd.Folder != nil {
+		objectMap["folder"] = fsd.Folder
 	}
 	if fsd.Type != "" {
 		objectMap["type"] = fsd.Type
@@ -36991,6 +37315,15 @@ func (fsd *FileShareDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				fsd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				fsd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -39686,6 +40019,8 @@ type GoogleBigQueryObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -39706,6 +40041,9 @@ func (gbqod GoogleBigQueryObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if gbqod.Annotations != nil {
 		objectMap["annotations"] = gbqod.Annotations
+	}
+	if gbqod.Folder != nil {
+		objectMap["folder"] = gbqod.Folder
 	}
 	if gbqod.Type != "" {
 		objectMap["type"] = gbqod.Type
@@ -41090,6 +41428,8 @@ type GreenplumTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -41110,6 +41450,9 @@ func (gtd GreenplumTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if gtd.Annotations != nil {
 		objectMap["annotations"] = gtd.Annotations
+	}
+	if gtd.Folder != nil {
+		objectMap["folder"] = gtd.Folder
 	}
 	if gtd.Type != "" {
 		objectMap["type"] = gtd.Type
@@ -42045,6 +42388,8 @@ type HBaseObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -42065,6 +42410,9 @@ func (hbod HBaseObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if hbod.Annotations != nil {
 		objectMap["annotations"] = hbod.Annotations
+	}
+	if hbod.Folder != nil {
+		objectMap["folder"] = hbod.Folder
 	}
 	if hbod.Type != "" {
 		objectMap["type"] = hbod.Type
@@ -47396,6 +47744,8 @@ type HiveObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -47416,6 +47766,9 @@ func (hod HiveObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if hod.Annotations != nil {
 		objectMap["annotations"] = hod.Annotations
+	}
+	if hod.Folder != nil {
+		objectMap["folder"] = hod.Folder
 	}
 	if hod.Type != "" {
 		objectMap["type"] = hod.Type
@@ -48007,6 +48360,8 @@ type HTTPDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -48030,6 +48385,9 @@ func (hd HTTPDataset) MarshalJSON() ([]byte, error) {
 	}
 	if hd.Annotations != nil {
 		objectMap["annotations"] = hd.Annotations
+	}
+	if hd.Folder != nil {
+		objectMap["folder"] = hd.Folder
 	}
 	if hd.Type != "" {
 		objectMap["type"] = hd.Type
@@ -48389,6 +48747,15 @@ func (hd *HTTPDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				hd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -49998,6 +50365,8 @@ type HubspotObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -50018,6 +50387,9 @@ func (hod HubspotObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if hod.Annotations != nil {
 		objectMap["annotations"] = hod.Annotations
+	}
+	if hod.Folder != nil {
+		objectMap["folder"] = hod.Folder
 	}
 	if hod.Type != "" {
 		objectMap["type"] = hod.Type
@@ -51571,6 +51943,8 @@ type ImpalaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -51591,6 +51965,9 @@ func (iod ImpalaObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if iod.Annotations != nil {
 		objectMap["annotations"] = iod.Annotations
+	}
+	if iod.Folder != nil {
+		objectMap["folder"] = iod.Folder
 	}
 	if iod.Type != "" {
 		objectMap["type"] = iod.Type
@@ -53555,6 +53932,8 @@ type JiraObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -53575,6 +53954,9 @@ func (jod JiraObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if jod.Annotations != nil {
 		objectMap["annotations"] = jod.Annotations
+	}
+	if jod.Folder != nil {
+		objectMap["folder"] = jod.Folder
 	}
 	if jod.Type != "" {
 		objectMap["type"] = jod.Type
@@ -56379,6 +56761,8 @@ type MagentoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -56399,6 +56783,9 @@ func (mod MagentoObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if mod.Annotations != nil {
 		objectMap["annotations"] = mod.Annotations
+	}
+	if mod.Folder != nil {
+		objectMap["folder"] = mod.Folder
 	}
 	if mod.Type != "" {
 		objectMap["type"] = mod.Type
@@ -58080,6 +58467,8 @@ type MariaDBTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -58100,6 +58489,9 @@ func (mdtd MariaDBTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if mdtd.Annotations != nil {
 		objectMap["annotations"] = mdtd.Annotations
+	}
+	if mdtd.Folder != nil {
+		objectMap["folder"] = mdtd.Folder
 	}
 	if mdtd.Type != "" {
 		objectMap["type"] = mdtd.Type
@@ -58991,6 +59383,8 @@ type MarketoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -59011,6 +59405,9 @@ func (mod MarketoObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if mod.Annotations != nil {
 		objectMap["annotations"] = mod.Annotations
+	}
+	if mod.Folder != nil {
+		objectMap["folder"] = mod.Folder
 	}
 	if mod.Type != "" {
 		objectMap["type"] = mod.Type
@@ -59602,6 +59999,8 @@ type MongoDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -59625,6 +60024,9 @@ func (mdcd MongoDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	}
 	if mdcd.Annotations != nil {
 		objectMap["annotations"] = mdcd.Annotations
+	}
+	if mdcd.Folder != nil {
+		objectMap["folder"] = mdcd.Folder
 	}
 	if mdcd.Type != "" {
 		objectMap["type"] = mdcd.Type
@@ -59984,6 +60386,15 @@ func (mdcd *MongoDbCollectionDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mdcd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				mdcd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -62396,6 +62807,8 @@ type NetezzaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -62416,6 +62829,9 @@ func (ntd NetezzaTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if ntd.Annotations != nil {
 		objectMap["annotations"] = ntd.Annotations
+	}
+	if ntd.Folder != nil {
+		objectMap["folder"] = ntd.Folder
 	}
 	if ntd.Type != "" {
 		objectMap["type"] = ntd.Type
@@ -63287,6 +63703,8 @@ type ODataResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -63310,6 +63728,9 @@ func (odrd ODataResourceDataset) MarshalJSON() ([]byte, error) {
 	}
 	if odrd.Annotations != nil {
 		objectMap["annotations"] = odrd.Annotations
+	}
+	if odrd.Folder != nil {
+		objectMap["folder"] = odrd.Folder
 	}
 	if odrd.Type != "" {
 		objectMap["type"] = odrd.Type
@@ -63669,6 +64090,15 @@ func (odrd *ODataResourceDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				odrd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				odrd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -65578,6 +66008,8 @@ type OracleTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -65601,6 +66033,9 @@ func (otd OracleTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if otd.Annotations != nil {
 		objectMap["annotations"] = otd.Annotations
+	}
+	if otd.Folder != nil {
+		objectMap["folder"] = otd.Folder
 	}
 	if otd.Type != "" {
 		objectMap["type"] = otd.Type
@@ -65960,6 +66395,15 @@ func (otd *OracleTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				otd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				otd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -66720,6 +67164,8 @@ type PaypalObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -66740,6 +67186,9 @@ func (pod PaypalObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if pod.Annotations != nil {
 		objectMap["annotations"] = pod.Annotations
+	}
+	if pod.Folder != nil {
+		objectMap["folder"] = pod.Folder
 	}
 	if pod.Type != "" {
 		objectMap["type"] = pod.Type
@@ -67976,6 +68425,8 @@ type PhoenixObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -67996,6 +68447,9 @@ func (pod PhoenixObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if pod.Annotations != nil {
 		objectMap["annotations"] = pod.Annotations
+	}
+	if pod.Folder != nil {
+		objectMap["folder"] = pod.Folder
 	}
 	if pod.Type != "" {
 		objectMap["type"] = pod.Type
@@ -68583,6 +69037,8 @@ type Pipeline struct {
 	Concurrency *int32 `json:"concurrency,omitempty"`
 	// Annotations - List of tags that can be used for describing the Pipeline.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
+	Folder *PipelineFolder `json:"folder,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Pipeline.
@@ -68602,6 +69058,9 @@ func (p Pipeline) MarshalJSON() ([]byte, error) {
 	}
 	if p.Annotations != nil {
 		objectMap["annotations"] = p.Annotations
+	}
+	if p.Folder != nil {
+		objectMap["folder"] = p.Folder
 	}
 	return json.Marshal(objectMap)
 }
@@ -68659,10 +69118,25 @@ func (p *Pipeline) UnmarshalJSON(body []byte) error {
 				}
 				p.Annotations = &annotations
 			}
+		case "folder":
+			if v != nil {
+				var folder PipelineFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				p.Folder = &folder
+			}
 		}
 	}
 
 	return nil
+}
+
+// PipelineFolder the folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
+type PipelineFolder struct {
+	// Name - The name of the folder that this Pipeline is in.
+	Name *string `json:"name,omitempty"`
 }
 
 // PipelineListResponse a list of pipeline resources.
@@ -70224,6 +70698,8 @@ type PrestoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -70244,6 +70720,9 @@ func (pod PrestoObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if pod.Annotations != nil {
 		objectMap["annotations"] = pod.Annotations
+	}
+	if pod.Folder != nil {
+		objectMap["folder"] = pod.Folder
 	}
 	if pod.Type != "" {
 		objectMap["type"] = pod.Type
@@ -71434,6 +71913,8 @@ type QuickBooksObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -71454,6 +71935,9 @@ func (qbod QuickBooksObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if qbod.Annotations != nil {
 		objectMap["annotations"] = qbod.Annotations
+	}
+	if qbod.Folder != nil {
+		objectMap["folder"] = qbod.Folder
 	}
 	if qbod.Type != "" {
 		objectMap["type"] = qbod.Type
@@ -72431,6 +72915,8 @@ type RelationalTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -72454,6 +72940,9 @@ func (rtd RelationalTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if rtd.Annotations != nil {
 		objectMap["annotations"] = rtd.Annotations
+	}
+	if rtd.Folder != nil {
+		objectMap["folder"] = rtd.Folder
 	}
 	if rtd.Type != "" {
 		objectMap["type"] = rtd.Type
@@ -72813,6 +73302,15 @@ func (rtd *RelationalTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				rtd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				rtd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -73481,6 +73979,8 @@ type ResponsysObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -73501,6 +74001,9 @@ func (rod ResponsysObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if rod.Annotations != nil {
 		objectMap["annotations"] = rod.Annotations
+	}
+	if rod.Folder != nil {
+		objectMap["folder"] = rod.Folder
 	}
 	if rod.Type != "" {
 		objectMap["type"] = rod.Type
@@ -75280,6 +75783,8 @@ type SalesforceMarketingCloudObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -75300,6 +75805,9 @@ func (smcod SalesforceMarketingCloudObjectDataset) MarshalJSON() ([]byte, error)
 	}
 	if smcod.Annotations != nil {
 		objectMap["annotations"] = smcod.Annotations
+	}
+	if smcod.Folder != nil {
+		objectMap["folder"] = smcod.Folder
 	}
 	if smcod.Type != "" {
 		objectMap["type"] = smcod.Type
@@ -75891,6 +76399,8 @@ type SalesforceObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -75914,6 +76424,9 @@ func (sod SalesforceObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if sod.Annotations != nil {
 		objectMap["annotations"] = sod.Annotations
+	}
+	if sod.Folder != nil {
+		objectMap["folder"] = sod.Folder
 	}
 	if sod.Type != "" {
 		objectMap["type"] = sod.Type
@@ -76273,6 +76786,15 @@ func (sod *SalesforceObjectDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sod.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				sod.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -77870,6 +78392,8 @@ type SapCloudForCustomerResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -77893,6 +78417,9 @@ func (scfcrd SapCloudForCustomerResourceDataset) MarshalJSON() ([]byte, error) {
 	}
 	if scfcrd.Annotations != nil {
 		objectMap["annotations"] = scfcrd.Annotations
+	}
+	if scfcrd.Folder != nil {
+		objectMap["folder"] = scfcrd.Folder
 	}
 	if scfcrd.Type != "" {
 		objectMap["type"] = scfcrd.Type
@@ -78252,6 +78779,15 @@ func (scfcrd *SapCloudForCustomerResourceDataset) UnmarshalJSON(body []byte) err
 					return err
 				}
 				scfcrd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				scfcrd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -79257,6 +79793,8 @@ type SapEccResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -79280,6 +79818,9 @@ func (serd SapEccResourceDataset) MarshalJSON() ([]byte, error) {
 	}
 	if serd.Annotations != nil {
 		objectMap["annotations"] = serd.Annotations
+	}
+	if serd.Folder != nil {
+		objectMap["folder"] = serd.Folder
 	}
 	if serd.Type != "" {
 		objectMap["type"] = serd.Type
@@ -79639,6 +80180,15 @@ func (serd *SapEccResourceDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				serd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				serd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -80853,6 +81403,62 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &ss, true
 }
 
+// SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency.
+type SelfDependencyTumblingWindowTriggerReference struct {
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency.
+	Offset *string `json:"offset,omitempty"`
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
+	Size *string `json:"size,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) MarshalJSON() ([]byte, error) {
+	sdtwtr.Type = TypeSelfDependencyTumblingWindowTriggerReference
+	objectMap := make(map[string]interface{})
+	if sdtwtr.Offset != nil {
+		objectMap["offset"] = sdtwtr.Offset
+	}
+	if sdtwtr.Size != nil {
+		objectMap["size"] = sdtwtr.Size
+	}
+	if sdtwtr.Type != "" {
+		objectMap["type"] = sdtwtr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return &sdtwtr, true
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &sdtwtr, true
+}
+
 // SelfHostedIntegrationRuntime self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
 	// SelfHostedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
@@ -81934,6 +82540,8 @@ type ServiceNowObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -81954,6 +82562,9 @@ func (snod ServiceNowObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if snod.Annotations != nil {
 		objectMap["annotations"] = snod.Annotations
+	}
+	if snod.Folder != nil {
+		objectMap["folder"] = snod.Folder
 	}
 	if snod.Type != "" {
 		objectMap["type"] = snod.Type
@@ -83758,6 +84369,8 @@ type ShopifyObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -83778,6 +84391,9 @@ func (sod ShopifyObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if sod.Annotations != nil {
 		objectMap["annotations"] = sod.Annotations
+	}
+	if sod.Folder != nil {
+		objectMap["folder"] = sod.Folder
 	}
 	if sod.Type != "" {
 		objectMap["type"] = sod.Type
@@ -85036,6 +85652,8 @@ type SparkObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -85056,6 +85674,9 @@ func (sod SparkObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if sod.Annotations != nil {
 		objectMap["annotations"] = sod.Annotations
+	}
+	if sod.Folder != nil {
+		objectMap["folder"] = sod.Folder
 	}
 	if sod.Type != "" {
 		objectMap["type"] = sod.Type
@@ -86949,6 +87570,8 @@ type SQLServerTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -86972,6 +87595,9 @@ func (sstd SQLServerTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if sstd.Annotations != nil {
 		objectMap["annotations"] = sstd.Annotations
+	}
+	if sstd.Folder != nil {
+		objectMap["folder"] = sstd.Folder
 	}
 	if sstd.Type != "" {
 		objectMap["type"] = sstd.Type
@@ -87331,6 +87957,15 @@ func (sstd *SQLServerTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sstd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				sstd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -88395,6 +89030,8 @@ type SquareObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -88415,6 +89052,9 @@ func (sod SquareObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if sod.Annotations != nil {
 		objectMap["annotations"] = sod.Annotations
+	}
+	if sod.Folder != nil {
+		objectMap["folder"] = sod.Folder
 	}
 	if sod.Type != "" {
 		objectMap["type"] = sod.Type
@@ -90484,6 +91124,100 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &t, true
 }
 
+// BasicTriggerDependencyReference trigger referenced dependency.
+type BasicTriggerDependencyReference interface {
+	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+}
+
+// TriggerDependencyReference trigger referenced dependency.
+type TriggerDependencyReference struct {
+	// ReferenceTrigger - Referenced trigger.
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+func unmarshalBasicTriggerDependencyReference(body []byte) (BasicTriggerDependencyReference, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeTumblingWindowTriggerDependencyReference):
+		var twtdr TumblingWindowTriggerDependencyReference
+		err := json.Unmarshal(body, &twtdr)
+		return twtdr, err
+	default:
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
+	}
+}
+func unmarshalBasicTriggerDependencyReferenceArray(body []byte) ([]BasicTriggerDependencyReference, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tdrArray := make([]BasicTriggerDependencyReference, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tdr, err := unmarshalBasicTriggerDependencyReference(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tdrArray[index] = tdr
+	}
+	return tdrArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) MarshalJSON() ([]byte, error) {
+	tdr.Type = TypeTriggerDependencyReference
+	objectMap := make(map[string]interface{})
+	if tdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = tdr.ReferenceTrigger
+	}
+	if tdr.Type != "" {
+		objectMap["type"] = tdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &tdr, true
+}
+
 // TriggerListResponse a list of trigger resources.
 type TriggerListResponse struct {
 	autorest.Response `json:"-"`
@@ -90604,6 +91338,14 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 		objectMap["parameters"] = tpr.Parameters
 	}
 	return json.Marshal(objectMap)
+}
+
+// TriggerReference trigger reference type.
+type TriggerReference struct {
+	// Type - Trigger reference type.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Reference trigger name.
+	ReferenceName *string `json:"referenceName,omitempty"`
 }
 
 // TriggerResource trigger resource type.
@@ -90942,6 +91684,67 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency.
+type TumblingWindowTriggerDependencyReference struct {
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency.
+	Offset *string `json:"offset,omitempty"`
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
+	Size *string `json:"size,omitempty"`
+	// ReferenceTrigger - Referenced trigger.
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) MarshalJSON() ([]byte, error) {
+	twtdr.Type = TypeTumblingWindowTriggerDependencyReference
+	objectMap := make(map[string]interface{})
+	if twtdr.Offset != nil {
+		objectMap["offset"] = twtdr.Offset
+	}
+	if twtdr.Size != nil {
+		objectMap["size"] = twtdr.Size
+	}
+	if twtdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = twtdr.ReferenceTrigger
+	}
+	if twtdr.Type != "" {
+		objectMap["type"] = twtdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return &twtdr, true
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return &twtdr, true
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &twtdr, true
+}
+
 // TumblingWindowTriggerTypeProperties tumbling Window Trigger properties.
 type TumblingWindowTriggerTypeProperties struct {
 	// Frequency - The frequency of the time windows. Possible values include: 'TumblingWindowFrequencyMinute', 'TumblingWindowFrequencyHour'
@@ -90958,6 +91761,94 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	// DependsOn - Triggers that this trigger depends on. Only tumbling window triggers are supported.
+	DependsOn *[]BasicDependencyReference `json:"dependsOn,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TumblingWindowTriggerTypeProperties struct.
+func (twtP *TumblingWindowTriggerTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "frequency":
+			if v != nil {
+				var frequency TumblingWindowFrequency
+				err = json.Unmarshal(*v, &frequency)
+				if err != nil {
+					return err
+				}
+				twtP.Frequency = frequency
+			}
+		case "interval":
+			if v != nil {
+				var interval int32
+				err = json.Unmarshal(*v, &interval)
+				if err != nil {
+					return err
+				}
+				twtP.Interval = &interval
+			}
+		case "startTime":
+			if v != nil {
+				var startTime date.Time
+				err = json.Unmarshal(*v, &startTime)
+				if err != nil {
+					return err
+				}
+				twtP.StartTime = &startTime
+			}
+		case "endTime":
+			if v != nil {
+				var endTime date.Time
+				err = json.Unmarshal(*v, &endTime)
+				if err != nil {
+					return err
+				}
+				twtP.EndTime = &endTime
+			}
+		case "delay":
+			if v != nil {
+				var delay interface{}
+				err = json.Unmarshal(*v, &delay)
+				if err != nil {
+					return err
+				}
+				twtP.Delay = delay
+			}
+		case "maxConcurrency":
+			if v != nil {
+				var maxConcurrency int32
+				err = json.Unmarshal(*v, &maxConcurrency)
+				if err != nil {
+					return err
+				}
+				twtP.MaxConcurrency = &maxConcurrency
+			}
+		case "retryPolicy":
+			if v != nil {
+				var retryPolicy RetryPolicy
+				err = json.Unmarshal(*v, &retryPolicy)
+				if err != nil {
+					return err
+				}
+				twtP.RetryPolicy = &retryPolicy
+			}
+		case "dependsOn":
+			if v != nil {
+				dependsOn, err := unmarshalBasicDependencyReferenceArray(*v)
+				if err != nil {
+					return err
+				}
+				twtP.DependsOn = &dependsOn
+			}
+		}
+	}
+
+	return nil
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or
@@ -92120,6 +93011,8 @@ type VerticaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -92140,6 +93033,9 @@ func (vtd VerticaTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if vtd.Annotations != nil {
 		objectMap["annotations"] = vtd.Annotations
+	}
+	if vtd.Folder != nil {
+		objectMap["folder"] = vtd.Folder
 	}
 	if vtd.Type != "" {
 		objectMap["type"] = vtd.Type
@@ -94187,6 +95083,8 @@ type WebTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -94210,6 +95108,9 @@ func (wtd WebTableDataset) MarshalJSON() ([]byte, error) {
 	}
 	if wtd.Annotations != nil {
 		objectMap["annotations"] = wtd.Annotations
+	}
+	if wtd.Folder != nil {
+		objectMap["folder"] = wtd.Folder
 	}
 	if wtd.Type != "" {
 		objectMap["type"] = wtd.Type
@@ -94569,6 +95470,15 @@ func (wtd *WebTableDataset) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				wtd.Annotations = &annotations
+			}
+		case "folder":
+			if v != nil {
+				var folder DatasetFolder
+				err = json.Unmarshal(*v, &folder)
+				if err != nil {
+					return err
+				}
+				wtd.Folder = &folder
 			}
 		case "type":
 			if v != nil {
@@ -95199,6 +96109,8 @@ type XeroObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -95219,6 +96131,9 @@ func (xod XeroObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if xod.Annotations != nil {
 		objectMap["annotations"] = xod.Annotations
+	}
+	if xod.Folder != nil {
+		objectMap["folder"] = xod.Folder
 	}
 	if xod.Type != "" {
 		objectMap["type"] = xod.Type
@@ -96389,6 +97304,8 @@ type ZohoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Folder - The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
 	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
@@ -96409,6 +97326,9 @@ func (zod ZohoObjectDataset) MarshalJSON() ([]byte, error) {
 	}
 	if zod.Annotations != nil {
 		objectMap["annotations"] = zod.Annotations
+	}
+	if zod.Folder != nil {
+		objectMap["folder"] = zod.Folder
 	}
 	if zod.Type != "" {
 		objectMap["type"] = zod.Type

@@ -596,21 +596,6 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return []RollingUpgradeStatusCode{RollingUpgradeStatusCodeCancelled, RollingUpgradeStatusCodeCompleted, RollingUpgradeStatusCodeFaulted, RollingUpgradeStatusCodeRollingForward}
 }
 
-// ScaleTier enumerates the values for scale tier.
-type ScaleTier string
-
-const (
-	// S100 ...
-	S100 ScaleTier = "S100"
-	// S30 ...
-	S30 ScaleTier = "S30"
-)
-
-// PossibleScaleTierValues returns an array of possible values for the ScaleTier const type.
-func PossibleScaleTierValues() []ScaleTier {
-	return []ScaleTier{S100, S30}
-}
-
 // SettingNames enumerates the values for setting names.
 type SettingNames string
 
@@ -1912,7 +1897,7 @@ type DataDisk struct {
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
@@ -2607,9 +2592,9 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
-	// Regions - The regions where the artifact is going to be published.
-	Regions *[]string              `json:"regions,omitempty"`
-	Source  *GalleryArtifactSource `json:"source,omitempty"`
+	// TargetRegions - The target regions where the artifact is going to be published.
+	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
+	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
 
 // GalleryArtifactSource the source of the gallery artifact.
@@ -3159,17 +3144,17 @@ type GalleryImageVersionProperties struct {
 
 // GalleryImageVersionPublishingProfile the publishing profile of a gallery image version.
 type GalleryImageVersionPublishingProfile struct {
-	// ScaleTier - The scale tier of the gallery image version. Valid values are 'S30' and 'S100'. Possible values include: 'S30', 'S100'
-	ScaleTier ScaleTier `json:"scaleTier,omitempty"`
+	// ReplicaCount - This is the number of source blob copies in a region.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// ExcludeFromLatest - The flag means that if it is set to true, people deploying VMs with 'latest' as version will not use this version.
 	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
 	// PublishedDate - The time when the gallery image version is published.
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery image version.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// Regions - The regions where the artifact is going to be published.
-	Regions *[]string              `json:"regions,omitempty"`
-	Source  *GalleryArtifactSource `json:"source,omitempty"`
+	// TargetRegions - The target regions where the artifact is going to be published.
+	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
+	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
 
 // GalleryImageVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4269,7 +4254,7 @@ type OSDisk struct {
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
+	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
@@ -5444,6 +5429,14 @@ type SubResource struct {
 type SubResourceReadOnly struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// TargetRegion describes the target region information.
+type TargetRegion struct {
+	// Name - The name of the region.
+	Name *string `json:"name,omitempty"`
+	// RegionalReplicaCount - This is the number of source blob copies in this specific region.
+	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
 }
 
 // ThrottledRequestsInput api request input for LogAnalytics getThrottledRequests Api.

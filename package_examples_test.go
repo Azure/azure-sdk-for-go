@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-service-bus-go"
-			)
+)
 
 func Example_helloWorld() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

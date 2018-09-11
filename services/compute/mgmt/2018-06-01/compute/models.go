@@ -254,6 +254,25 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
 }
 
+// DiskStorageAccountTypes enumerates the values for disk storage account types.
+type DiskStorageAccountTypes string
+
+const (
+	// PremiumLRS ...
+	PremiumLRS DiskStorageAccountTypes = "Premium_LRS"
+	// StandardLRS ...
+	StandardLRS DiskStorageAccountTypes = "Standard_LRS"
+	// StandardSSDLRS ...
+	StandardSSDLRS DiskStorageAccountTypes = "StandardSSD_LRS"
+	// UltraSSDLRS ...
+	UltraSSDLRS DiskStorageAccountTypes = "UltraSSD_LRS"
+)
+
+// PossibleDiskStorageAccountTypesValues returns an array of possible values for the DiskStorageAccountTypes const type.
+func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
+	return []DiskStorageAccountTypes{PremiumLRS, StandardLRS, StandardSSDLRS, UltraSSDLRS}
+}
+
 // HostCaching enumerates the values for host caching.
 type HostCaching string
 
@@ -615,17 +634,17 @@ func PossibleSettingNamesValues() []SettingNames {
 type SnapshotStorageAccountTypes string
 
 const (
-	// PremiumLRS ...
-	PremiumLRS SnapshotStorageAccountTypes = "Premium_LRS"
-	// StandardLRS ...
-	StandardLRS SnapshotStorageAccountTypes = "Standard_LRS"
-	// StandardZRS ...
-	StandardZRS SnapshotStorageAccountTypes = "Standard_ZRS"
+	// SnapshotStorageAccountTypesPremiumLRS ...
+	SnapshotStorageAccountTypesPremiumLRS SnapshotStorageAccountTypes = "Premium_LRS"
+	// SnapshotStorageAccountTypesStandardLRS ...
+	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = "Standard_LRS"
+	// SnapshotStorageAccountTypesStandardZRS ...
+	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = "Standard_ZRS"
 )
 
 // PossibleSnapshotStorageAccountTypesValues returns an array of possible values for the SnapshotStorageAccountTypes const type.
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
-	return []SnapshotStorageAccountTypes{PremiumLRS, StandardLRS, StandardZRS}
+	return []SnapshotStorageAccountTypes{SnapshotStorageAccountTypesPremiumLRS, SnapshotStorageAccountTypesStandardLRS, SnapshotStorageAccountTypesStandardZRS}
 }
 
 // StatusLevelTypes enumerates the values for status level types.
@@ -655,11 +674,13 @@ const (
 	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
 	// StorageAccountTypesStandardSSDLRS ...
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
+	// StorageAccountTypesUltraSSDLRS ...
+	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
 )
 
 // PossibleStorageAccountTypesValues returns an array of possible values for the StorageAccountTypes const type.
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
-	return []StorageAccountTypes{StorageAccountTypesPremiumLRS, StorageAccountTypesStandardLRS, StorageAccountTypesStandardSSDLRS}
+	return []StorageAccountTypes{StorageAccountTypesPremiumLRS, StorageAccountTypesStandardLRS, StorageAccountTypesStandardSSDLRS, StorageAccountTypesUltraSSDLRS}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -1108,6 +1129,12 @@ type AccessURI struct {
 	autorest.Response `json:"-"`
 	// AccessSAS - A SAS uri for accessing a disk.
 	AccessSAS *string `json:"accessSAS,omitempty"`
+}
+
+// AdditionalCapabilities enables or disables a capability on the virtual machine or virtual machine scale set
+type AdditionalCapabilities struct {
+	// UltraSSDEnabled - Enables or disables a capability to have 1 or more managed data disks with UltraSSD_LRS storage account on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
+	UltraSSDEnabled *bool `json:"ultraSSDEnabled,omitempty"`
 }
 
 // AdditionalUnattendContent specifies additional XML formatted information that can be included in the
@@ -2207,6 +2234,10 @@ type DiskProperties struct {
 	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
 	// ProvisioningState - The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
+	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
+	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
 }
 
 // DisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -2287,10 +2318,10 @@ func (future *DisksGrantAccessFuture) Result(client DisksClient) (au AccessURI, 
 	return
 }
 
-// DiskSku the disks sku name. Can be Standard_LRS, Premium_LRS, or StandardSSD_LRS.
+// DiskSku the disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
 type DiskSku struct {
-	// Name - The sku name. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
-	Name StorageAccountTypes `json:"name,omitempty"`
+	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS', 'UltraSSDLRS'
+	Name DiskStorageAccountTypes `json:"name,omitempty"`
 	// Tier - The sku tier.
 	Tier *string `json:"tier,omitempty"`
 }
@@ -2418,6 +2449,10 @@ type DiskUpdateProperties struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// EncryptionSettings - Encryption settings for disk or snapshot
 	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
+	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
+	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
 }
 
 // EncryptionSettings encryption settings for disk or snapshot
@@ -3473,7 +3508,7 @@ type ImageDataDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -3603,7 +3638,7 @@ type ImageOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -4079,7 +4114,7 @@ type ManagedArtifact struct {
 
 // ManagedDiskParameters the parameters of a managed disk.
 type ManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. UltraSSD_LRS can only be used for data disks. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -4950,9 +4985,9 @@ type Sku struct {
 type Snapshot struct {
 	autorest.Response `json:"-"`
 	// ManagedBy - Unused. Always Null.
-	ManagedBy       *string      `json:"managedBy,omitempty"`
-	Sku             *SnapshotSku `json:"sku,omitempty"`
-	*DiskProperties `json:"properties,omitempty"`
+	ManagedBy           *string      `json:"managedBy,omitempty"`
+	Sku                 *SnapshotSku `json:"sku,omitempty"`
+	*SnapshotProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -4974,8 +5009,8 @@ func (s Snapshot) MarshalJSON() ([]byte, error) {
 	if s.Sku != nil {
 		objectMap["sku"] = s.Sku
 	}
-	if s.DiskProperties != nil {
-		objectMap["properties"] = s.DiskProperties
+	if s.SnapshotProperties != nil {
+		objectMap["properties"] = s.SnapshotProperties
 	}
 	if s.ID != nil {
 		objectMap["id"] = s.ID
@@ -5024,12 +5059,12 @@ func (s *Snapshot) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var diskProperties DiskProperties
-				err = json.Unmarshal(*v, &diskProperties)
+				var snapshotProperties SnapshotProperties
+				err = json.Unmarshal(*v, &snapshotProperties)
 				if err != nil {
 					return err
 				}
-				s.DiskProperties = &diskProperties
+				s.SnapshotProperties = &snapshotProperties
 			}
 		case "id":
 			if v != nil {
@@ -5184,6 +5219,22 @@ func (page SnapshotListPage) Values() []Snapshot {
 	return *page.sl.Value
 }
 
+// SnapshotProperties snapshot resource properties.
+type SnapshotProperties struct {
+	// TimeCreated - The time when the disk was created.
+	TimeCreated *date.Time `json:"timeCreated,omitempty"`
+	// OsType - The Operating System type. Possible values include: 'Windows', 'Linux'
+	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
+	CreationData *CreationData `json:"creationData,omitempty"`
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// EncryptionSettings - Encryption settings for disk or snapshot
+	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
+	// ProvisioningState - The disk provisioning state.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
 // SnapshotsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SnapshotsCreateOrUpdateFuture struct {
@@ -5265,7 +5316,7 @@ func (future *SnapshotsGrantAccessFuture) Result(client SnapshotsClient) (au Acc
 
 // SnapshotSku the snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
 type SnapshotSku struct {
-	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardZRS'
+	// Name - The sku name. Possible values include: 'SnapshotStorageAccountTypesStandardLRS', 'SnapshotStorageAccountTypesPremiumLRS', 'SnapshotStorageAccountTypesStandardZRS'
 	Name SnapshotStorageAccountTypes `json:"name,omitempty"`
 	// Tier - The sku tier.
 	Tier *string `json:"tier,omitempty"`
@@ -5324,7 +5375,7 @@ func (future *SnapshotsUpdateFuture) Result(client SnapshotsClient) (s Snapshot,
 
 // SnapshotUpdate snapshot update resource.
 type SnapshotUpdate struct {
-	*DiskUpdateProperties `json:"properties,omitempty"`
+	*SnapshotUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 	Sku  *SnapshotSku       `json:"sku,omitempty"`
@@ -5333,8 +5384,8 @@ type SnapshotUpdate struct {
 // MarshalJSON is the custom marshaler for SnapshotUpdate.
 func (su SnapshotUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if su.DiskUpdateProperties != nil {
-		objectMap["properties"] = su.DiskUpdateProperties
+	if su.SnapshotUpdateProperties != nil {
+		objectMap["properties"] = su.SnapshotUpdateProperties
 	}
 	if su.Tags != nil {
 		objectMap["tags"] = su.Tags
@@ -5356,12 +5407,12 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var diskUpdateProperties DiskUpdateProperties
-				err = json.Unmarshal(*v, &diskUpdateProperties)
+				var snapshotUpdateProperties SnapshotUpdateProperties
+				err = json.Unmarshal(*v, &snapshotUpdateProperties)
 				if err != nil {
 					return err
 				}
-				su.DiskUpdateProperties = &diskUpdateProperties
+				su.SnapshotUpdateProperties = &snapshotUpdateProperties
 			}
 		case "tags":
 			if v != nil {
@@ -5385,6 +5436,16 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// SnapshotUpdateProperties snapshot resource update properties.
+type SnapshotUpdateProperties struct {
+	// OsType - the Operating System type. Possible values include: 'Windows', 'Linux'
+	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// EncryptionSettings - Encryption settings for disk or snapshot
+	EncryptionSettings *EncryptionSettings `json:"encryptionSettings,omitempty"`
 }
 
 // SourceVault the vault id is an Azure Resource Manager Resoure id in the form
@@ -6510,6 +6571,8 @@ type VirtualMachineProperties struct {
 	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
 	// StorageProfile - Specifies the storage settings for the virtual machine disks.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the virtual machine. For instance: whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
+	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 	// OsProfile - Specifies the operating system settings for the virtual machine.
 	OsProfile *OSProfile `json:"osProfile,omitempty"`
 	// NetworkProfile - Specifies the network interfaces of the virtual machine.
@@ -7524,7 +7587,7 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
 type VirtualMachineScaleSetManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS, Premium_LRS, and StandardSSD_LRS. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
 
@@ -8910,6 +8973,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	OsProfile *VirtualMachineScaleSetOSProfile `json:"osProfile,omitempty"`
 	// StorageProfile - Specifies the storage settings for the virtual machine disks.
 	StorageProfile *VirtualMachineScaleSetStorageProfile `json:"storageProfile,omitempty"`
+	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance: whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
+	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 	// NetworkProfile - Specifies properties of the network interfaces of the virtual machines in the scale set.
 	NetworkProfile *VirtualMachineScaleSetNetworkProfile `json:"networkProfile,omitempty"`
 	// DiagnosticsProfile - Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
@@ -8936,6 +9001,8 @@ type VirtualMachineScaleSetVMProperties struct {
 	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
 	// StorageProfile - Specifies the storage settings for the virtual machine disks.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance: whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage account type.
+	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 	// OsProfile - Specifies the operating system settings for the virtual machine.
 	OsProfile *OSProfile `json:"osProfile,omitempty"`
 	// NetworkProfile - Specifies the network interfaces of the virtual machine.

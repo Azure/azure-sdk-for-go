@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,12 +45,6 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 // Parameters:
 // parameters - objects filtering parameters.
 func (client ObjectsClient) GetObjectsByObjectIds(ctx context.Context, parameters GetObjectsParameters) (result DirectoryObjectListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.IncludeDirectoryObjectReferences", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("graphrbac.ObjectsClient", "GetObjectsByObjectIds", err.Error())
-	}
-
 	result.fn = func(lastResult DirectoryObjectListResult) (DirectoryObjectListResult, error) {
 		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
 			return DirectoryObjectListResult{}, nil

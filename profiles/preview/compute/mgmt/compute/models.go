@@ -344,6 +344,7 @@ const (
 	StorageAccountTypesPremiumLRS     StorageAccountTypes = original.StorageAccountTypesPremiumLRS
 	StorageAccountTypesStandardLRS    StorageAccountTypes = original.StorageAccountTypesStandardLRS
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = original.StorageAccountTypesStandardSSDLRS
+	StorageAccountTypesUltraSSDLRS    StorageAccountTypes = original.StorageAccountTypesUltraSSDLRS
 )
 
 type UpgradeMode = original.UpgradeMode
@@ -564,6 +565,7 @@ const (
 )
 
 type AccessURI = original.AccessURI
+type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
@@ -740,6 +742,7 @@ type SnapshotSku = original.SnapshotSku
 type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
 type SnapshotUpdate = original.SnapshotUpdate
+type SnapshotUpdateProperties = original.SnapshotUpdateProperties
 type SourceVault = original.SourceVault
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey

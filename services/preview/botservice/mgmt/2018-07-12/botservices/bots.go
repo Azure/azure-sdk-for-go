@@ -319,7 +319,7 @@ func (client BotsClient) GetCheckNameAvailabilityPreparer(ctx context.Context, p
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/providers/Microsoft.BotService/checkNameAvailability"),
 		autorest.WithJSON(parameters),

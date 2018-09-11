@@ -73,14 +73,23 @@ func init() {
 
 // SetupSuite prepares the test suite and provisions a standard Service Bus Namespace
 func (suite *BaseSuite) SetupSuite() {
-	suite.TenantID = mustGetEnv("AZURE_TENANT_ID")
-	suite.SubscriptionID = mustGetEnv("AZURE_SUBSCRIPTION_ID")
-	suite.ClientID = mustGetEnv("AZURE_CLIENT_ID")
-	suite.ClientSecret = mustGetEnv("AZURE_CLIENT_SECRET")
-	suite.ConnStr = mustGetEnv("SERVICEBUS_CONNECTION_STRING")
+	setFromEnv := func(key string, target *string) {
+		v := os.Getenv(key)
+		if v == "" {
+			suite.FailNowf("Environment variable %q required for integration tests.", key)
+		}
+
+		*target = v
+	}
+
+	setFromEnv("AZURE_TENANT_ID", &suite.TenantID)
+	setFromEnv("AZURE_SUBSCRIPTION_ID", &suite.SubscriptionID)
+	setFromEnv("AZURE_CLIENT_ID", &suite.ClientID )
+	setFromEnv("AZURE_CLIENT_SECRET", &suite.ClientSecret)
+	setFromEnv("SERVICEBUS_CONNECTION_STRING", &suite.ConnStr)
 	parsed, err := conn.ParsedConnectionFromStr(suite.ConnStr)
 	if !suite.NoError(err) {
-		suite.FailNow("connection string could not be parsed")
+		suite.FailNowf("connection string could not be parsed", "Connection String: %q", suite.ConnStr)
 	}
 	suite.Namespace = parsed.Namespace
 	suite.Token = suite.servicePrincipalToken()
@@ -98,14 +107,6 @@ func (suite *BaseSuite) TearDownSuite() {
 	if suite.closer != nil {
 		_ = suite.closer.Close()
 	}
-}
-
-func mustGetEnv(key string) string {
-	v := os.Getenv(key)
-	if v == "" {
-		panic("Environment variable '" + key + "' required for integration tests.")
-	}
-	return v
 }
 
 func (suite *BaseSuite) servicePrincipalToken() *adal.ServicePrincipalToken {
@@ -161,7 +162,7 @@ func (suite *BaseSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 			return err
 		}
 
-		return res.WaitForCompletion(context.Background(), nsClient.Client)
+		return res.WaitForCompletionRef(context.Background(), nsClient.Client)
 	}
 
 	return nil

@@ -13,7 +13,12 @@ func Example_helloWorld() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	connStr := mustGetenv("SERVICEBUS_CONNECTION_STRING")
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	if connStr == "" {
+		fmt.Println("Fatal: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		return
+	}
+
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
@@ -119,12 +124,4 @@ func getQueue(ctx context.Context, ns *servicebus.Namespace, queueName string) (
 
 	q, err := ns.NewQueue(queueName)
 	return q, err
-}
-
-func mustGetenv(key string) string {
-	v := os.Getenv(key)
-	if v == "" {
-		panic("Environment variable '" + key + "' required for integration tests.")
-	}
-	return v
 }

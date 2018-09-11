@@ -12,7 +12,12 @@ import (
 func ExampleQueue_getOrBuildQueue() {
 	const queueName = "myqueue"
 
-	connStr := mustGetenv("SERVICEBUS_CONNECTION_STRING")
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	if connStr == "" {
+		fmt.Println("Fatal: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		return
+	}
+
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
@@ -45,6 +50,11 @@ func ExampleQueue_getOrBuildQueue() {
 
 func ExampleQueue_scheduledMessage() {
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	if connStr == "" {
+		fmt.Println("Fatal: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		return
+	}
+
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
 	defer func() {
 		if err != nil {

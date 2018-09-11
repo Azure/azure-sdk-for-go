@@ -4482,6 +4482,64 @@ func (future *AppsRestoreSnapshotSlotFuture) Result(client AppsClient) (ar autor
 	return
 }
 
+// AppsStartWebSiteNetworkTraceOperationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AppsStartWebSiteNetworkTraceOperationFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsStartWebSiteNetworkTraceOperationFuture) Result(client AppsClient) (o Operation, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsStartWebSiteNetworkTraceOperationFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+		o, err = client.StartWebSiteNetworkTraceOperationResponder(o.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationFuture", "Result", o.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AppsStartWebSiteNetworkTraceOperationSlotFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AppsStartWebSiteNetworkTraceOperationSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) Result(client AppsClient) (o Operation, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsStartWebSiteNetworkTraceOperationSlotFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+		o, err = client.StartWebSiteNetworkTraceOperationSlotResponder(o.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationSlotFuture", "Result", o.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AppsSwapSlotSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsSwapSlotSlotFuture struct {
 	azure.Future
@@ -10843,6 +10901,12 @@ type ListHostingEnvironmentDiagnostics struct {
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
+// ListNetworkTrace ...
+type ListNetworkTrace struct {
+	autorest.Response `json:"-"`
+	Value             *[]NetworkTrace `json:"value,omitempty"`
+}
+
 // ListOperation ...
 type ListOperation struct {
 	autorest.Response `json:"-"`
@@ -11838,6 +11902,111 @@ type NetworkFeaturesProperties struct {
 	HybridConnections *[]RelayServiceConnectionEntity `json:"hybridConnections,omitempty"`
 	// HybridConnectionsV2 - The Hybrid Connection V2 (Service Bus) view.
 	HybridConnectionsV2 *[]HybridConnection `json:"hybridConnectionsV2,omitempty"`
+}
+
+// NetworkTrace network trace
+type NetworkTrace struct {
+	// NetworkTraceProperties - NetworkTrace resource specific properties
+	*NetworkTraceProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkTrace.
+func (nt NetworkTrace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nt.NetworkTraceProperties != nil {
+		objectMap["properties"] = nt.NetworkTraceProperties
+	}
+	if nt.ID != nil {
+		objectMap["id"] = nt.ID
+	}
+	if nt.Name != nil {
+		objectMap["name"] = nt.Name
+	}
+	if nt.Kind != nil {
+		objectMap["kind"] = nt.Kind
+	}
+	if nt.Type != nil {
+		objectMap["type"] = nt.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NetworkTrace struct.
+func (nt *NetworkTrace) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var networkTraceProperties NetworkTraceProperties
+				err = json.Unmarshal(*v, &networkTraceProperties)
+				if err != nil {
+					return err
+				}
+				nt.NetworkTraceProperties = &networkTraceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nt.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nt.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				nt.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nt.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NetworkTraceProperties networkTrace resource specific properties
+type NetworkTraceProperties struct {
+	// Path - Local file path for the captured network trace file.
+	Path *string `json:"path,omitempty"`
+	// Status - Current status of the network trace operation, same as Operation.Status (InProgress/Succeeded/Failed).
+	Status *string `json:"status,omitempty"`
+	// Message - Detailed message of a network trace operation, e.g. error message in case of failure.
+	Message *string `json:"message,omitempty"`
 }
 
 // Operation an operation on a resource.

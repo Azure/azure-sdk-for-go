@@ -4,6 +4,9 @@
 *.so
 *.dylib
 
+# Project-local configuration
+.env
+
 # Test binary, build with `go test -c`
 *.test
 

@@ -35,15 +35,11 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 	"github.com/uber/jaeger-client-go"
 	"github.com/uber/jaeger-client-go/config"
 	jaegerlog "github.com/uber/jaeger-client-go/log"
-)
-
-const (
-	location          = "eastus"
-	resourceGroupName = "test"
 )
 
 type (
@@ -55,7 +51,9 @@ type (
 		ClientID       string
 		ClientSecret   string
 		ConnStr        string
+		Location       string
 		Namespace      string
+		ResourceGroup  string
 		Token          *adal.ServicePrincipalToken
 		Environment    azure.Environment
 		TagID          string
@@ -73,6 +71,8 @@ func init() {
 
 // SetupSuite prepares the test suite and provisions a standard Service Bus Namespace
 func (suite *BaseSuite) SetupSuite() {
+	godotenv.Load()
+
 	setFromEnv := func(key string, target *string) {
 		v := os.Getenv(key)
 		if v == "" {
@@ -84,9 +84,15 @@ func (suite *BaseSuite) SetupSuite() {
 
 	setFromEnv("AZURE_TENANT_ID", &suite.TenantID)
 	setFromEnv("AZURE_SUBSCRIPTION_ID", &suite.SubscriptionID)
-	setFromEnv("AZURE_CLIENT_ID", &suite.ClientID )
+	setFromEnv("AZURE_CLIENT_ID", &suite.ClientID)
 	setFromEnv("AZURE_CLIENT_SECRET", &suite.ClientSecret)
 	setFromEnv("SERVICEBUS_CONNECTION_STRING", &suite.ConnStr)
+	setFromEnv("TEST_SERVICEBUS_RESOURCE_GROUP", &suite.ResourceGroup)
+
+	// TODO: automatically infer the location from the resource group, if it's not specified.
+	// https://github.com/Azure/azure-service-bus-go/issues/40
+	setFromEnv("TEST_SERVICEBUS_LOCATION", &suite.Location)
+
 	parsed, err := conn.ParsedConnectionFromStr(suite.ConnStr)
 	if !suite.NoError(err) {
 		suite.FailNowf("connection string could not be parsed", "Connection String: %q", suite.ConnStr)
@@ -141,23 +147,22 @@ func (suite *BaseSuite) getNamespaceClient() *sbmgmt.NamespacesClient {
 
 func (suite *BaseSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 	groupsClient := suite.getRmGroupClient()
-	location := location
-	_, err := groupsClient.CreateOrUpdate(context.Background(), resourceGroupName, rm.Group{Location: &location})
+	_, err := groupsClient.CreateOrUpdate(context.Background(), suite.ResourceGroup, rm.Group{Location: &suite.Location})
 	if err != nil {
 		return err
 	}
 
 	nsClient := suite.getNamespaceClient()
-	_, err = nsClient.Get(context.Background(), resourceGroupName, suite.Namespace)
+	_, err = nsClient.Get(context.Background(), suite.ResourceGroup, suite.Namespace)
 	if err != nil {
 		ns := sbmgmt.SBNamespace{
 			Sku: &sbmgmt.SBSku{
 				Name: sbmgmt.SkuName(tier),
 				Tier: tier,
 			},
-			Location: &location,
+			Location: &suite.Location,
 		}
-		res, err := nsClient.CreateOrUpdate(context.Background(), resourceGroupName, suite.Namespace, ns)
+		res, err := nsClient.CreateOrUpdate(context.Background(), suite.ResourceGroup, suite.Namespace, ns)
 		if err != nil {
 			return err
 		}

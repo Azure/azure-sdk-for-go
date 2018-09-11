@@ -19,7 +19,7 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights"
 
 type ActionGroupsClient = original.ActionGroupsClient
 type ActivityLogAlertsClient = original.ActivityLogAlertsClient
@@ -41,6 +41,7 @@ type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricBaselineClient = original.MetricBaselineClient
 type MetricDefinitionsClient = original.MetricDefinitionsClient
+type MetricNamespacesClient = original.MetricNamespacesClient
 type MetricsClient = original.MetricsClient
 type AggregationType = original.AggregationType
 
@@ -362,6 +363,9 @@ type MetricCriteria = original.MetricCriteria
 type MetricDefinition = original.MetricDefinition
 type MetricDefinitionCollection = original.MetricDefinitionCollection
 type MetricDimension = original.MetricDimension
+type MetricNamespace = original.MetricNamespace
+type MetricNamespaceCollection = original.MetricNamespaceCollection
+type MetricNamespaceName = original.MetricNamespaceName
 type MetricSettings = original.MetricSettings
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
@@ -493,6 +497,12 @@ func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
 }
 func NewMetricDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) MetricDefinitionsClient {
 	return original.NewMetricDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetricNamespacesClient(subscriptionID string) MetricNamespacesClient {
+	return original.NewMetricNamespacesClient(subscriptionID)
+}
+func NewMetricNamespacesClientWithBaseURI(baseURI string, subscriptionID string) MetricNamespacesClient {
+	return original.NewMetricNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMetricsClient(subscriptionID string) MetricsClient {
 	return original.NewMetricsClient(subscriptionID)

@@ -622,44 +622,6 @@ func PossibleSupportedDeviceCapabilitiesValues() []SupportedDeviceCapabilities {
 	return []SupportedDeviceCapabilities{SupportedDeviceCapabilitiesFileServer, SupportedDeviceCapabilitiesInvalid, SupportedDeviceCapabilitiesIscsiServer}
 }
 
-// SupportPackageSourceType enumerates the values for support package source type.
-type SupportPackageSourceType string
-
-const (
-	// SupportPackageSourceTypeClientTriggered ...
-	SupportPackageSourceTypeClientTriggered SupportPackageSourceType = "ClientTriggered"
-	// SupportPackageSourceTypeNone ...
-	SupportPackageSourceTypeNone SupportPackageSourceType = "None"
-	// SupportPackageSourceTypeOpsTriggered ...
-	SupportPackageSourceTypeOpsTriggered SupportPackageSourceType = "OpsTriggered"
-)
-
-// PossibleSupportPackageSourceTypeValues returns an array of possible values for the SupportPackageSourceType const type.
-func PossibleSupportPackageSourceTypeValues() []SupportPackageSourceType {
-	return []SupportPackageSourceType{SupportPackageSourceTypeClientTriggered, SupportPackageSourceTypeNone, SupportPackageSourceTypeOpsTriggered}
-}
-
-// SupportPackageType enumerates the values for support package type.
-type SupportPackageType string
-
-const (
-	// SupportPackageTypeCustom ...
-	SupportPackageTypeCustom SupportPackageType = "Custom"
-	// SupportPackageTypeIncludeAll ...
-	SupportPackageTypeIncludeAll SupportPackageType = "IncludeAll"
-	// SupportPackageTypeIncludeDefault ...
-	SupportPackageTypeIncludeDefault SupportPackageType = "IncludeDefault"
-	// SupportPackageTypeMini ...
-	SupportPackageTypeMini SupportPackageType = "Mini"
-	// SupportPackageTypeNone ...
-	SupportPackageTypeNone SupportPackageType = "None"
-)
-
-// PossibleSupportPackageTypeValues returns an array of possible values for the SupportPackageType const type.
-func PossibleSupportPackageTypeValues() []SupportPackageType {
-	return []SupportPackageType{SupportPackageTypeCustom, SupportPackageTypeIncludeAll, SupportPackageTypeIncludeDefault, SupportPackageTypeMini, SupportPackageTypeNone}
-}
-
 // TargetType enumerates the values for target type.
 type TargetType string
 
@@ -2442,29 +2404,6 @@ func (future *DevicesPatchFuture) Result(client DevicesClient) (d Device, err er
 	return
 }
 
-// DevicesPublishSupportPackageFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type DevicesPublishSupportPackageFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DevicesPublishSupportPackageFuture) Result(client DevicesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DevicesPublishSupportPackageFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesPublishSupportPackageFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // DevicesScanForUpdatesFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DevicesScanForUpdatesFuture struct {
@@ -3616,13 +3555,6 @@ type JobStats struct {
 	EstimatedTimeRemaining *int32 `json:"estimatedTimeRemaining,omitempty"`
 }
 
-// Key the key.
-type Key struct {
-	autorest.Response `json:"-"`
-	// ActivationKey - The activation key for the device
-	ActivationKey *string `json:"activationKey,omitempty"`
-}
-
 // Manager the StorSimple Manager
 type Manager struct {
 	autorest.Response `json:"-"`
@@ -4144,13 +4076,6 @@ type RawCertificateData struct {
 	Certificate *string `json:"certificate,omitempty"`
 }
 
-// RegistrationCertificate registration Certificate.
-type RegistrationCertificate struct {
-	autorest.Response `json:"-"`
-	// Certificate - Registration Certificate which Needs to be Uploaded to IDM
-	Certificate *string `json:"certificate,omitempty"`
-}
-
 // Resource the Azure Resource.
 type Resource struct {
 	// ID - The Resource Id
@@ -4618,63 +4543,6 @@ func (future *StorageDomainsDeleteFuture) Result(client StorageDomainsClient) (a
 	return
 }
 
-// SupportPackageRequest support package request entity
-type SupportPackageRequest struct {
-	// SupportPackageRequestProperties - Support Package Request properties
-	*SupportPackageRequestProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SupportPackageRequest.
-func (spr SupportPackageRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if spr.SupportPackageRequestProperties != nil {
-		objectMap["properties"] = spr.SupportPackageRequestProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SupportPackageRequest struct.
-func (spr *SupportPackageRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var supportPackageRequestProperties SupportPackageRequestProperties
-				err = json.Unmarshal(*v, &supportPackageRequestProperties)
-				if err != nil {
-					return err
-				}
-				spr.SupportPackageRequestProperties = &supportPackageRequestProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// SupportPackageRequestProperties support Package properties
-type SupportPackageRequestProperties struct {
-	// SdpPassKey - The SDPPassKey
-	SdpPassKey *string `json:"sdpPassKey,omitempty"`
-	// PackageType - The support package type. Possible values include: 'SupportPackageTypeNone', 'SupportPackageTypeIncludeDefault', 'SupportPackageTypeIncludeAll', 'SupportPackageTypeMini', 'SupportPackageTypeCustom'
-	PackageType SupportPackageType `json:"packageType,omitempty"`
-	// EndTime - The maximum time stamp of the logs.
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// StartTime - The minimum time stamp of the logs.
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// IncludeArchived - The bool which determines whether the archived logs are included or not.
-	IncludeArchived *bool `json:"includeArchived,omitempty"`
-	// SourceType - The support package source type. Possible values include: 'SupportPackageSourceTypeNone', 'SupportPackageSourceTypeOpsTriggered', 'SupportPackageSourceTypeClientTriggered'
-	SourceType SupportPackageSourceType `json:"sourceType,omitempty"`
-	// CustomIncludeList - The list of log categories
-	CustomIncludeList *[]string `json:"customIncludeList,omitempty"`
-}
-
 // SymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as Value,
 // ValueCertificateThumbprint, EncryptionAlgorithm. In this case, "Value" is a secret and the "valueThumbprint"
 // represents the certificate thumbprint of the value. The algorithm field is mainly for future usage to
@@ -4987,8 +4855,6 @@ func (ucr *UploadCertificateRequest) UnmarshalJSON(body []byte) error {
 type UploadCertificateResponse struct {
 	autorest.Response                 `json:"-"`
 	*ResourceCertificateAndAADDetails `json:"properties,omitempty"`
-	// ContractVersion - Constructor. Possible values include: 'InvalidVersion', 'V201109', 'V201202', 'V201205', 'V201212', 'V201304', 'V201310', 'V201311', 'V201404', 'V201406', 'V201407', 'V201409', 'V201410', 'V201412', 'V201501', 'V201502', 'V201504', 'V201505', 'V201506', 'V201507', 'V201508', 'V201510', 'V201512', 'V201601', 'V201602', 'V201604', 'V201605', 'V201607', 'V201608'
-	ContractVersion ContractVersions `json:"contractVersion,omitempty"`
 	// ID - The identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - The name.
@@ -5002,9 +4868,6 @@ func (ucr UploadCertificateResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ucr.ResourceCertificateAndAADDetails != nil {
 		objectMap["properties"] = ucr.ResourceCertificateAndAADDetails
-	}
-	if ucr.ContractVersion != "" {
-		objectMap["contractVersion"] = ucr.ContractVersion
 	}
 	if ucr.ID != nil {
 		objectMap["id"] = ucr.ID
@@ -5035,15 +4898,6 @@ func (ucr *UploadCertificateResponse) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ucr.ResourceCertificateAndAADDetails = &resourceCertificateAndAADDetails
-			}
-		case "contractVersion":
-			if v != nil {
-				var contractVersion ContractVersions
-				err = json.Unmarshal(*v, &contractVersion)
-				if err != nil {
-					return err
-				}
-				ucr.ContractVersion = contractVersion
 			}
 		case "id":
 			if v != nil {

@@ -323,24 +323,6 @@ const (
 	SupportedDeviceCapabilitiesIscsiServer SupportedDeviceCapabilities = original.SupportedDeviceCapabilitiesIscsiServer
 )
 
-type SupportPackageSourceType = original.SupportPackageSourceType
-
-const (
-	SupportPackageSourceTypeClientTriggered SupportPackageSourceType = original.SupportPackageSourceTypeClientTriggered
-	SupportPackageSourceTypeNone            SupportPackageSourceType = original.SupportPackageSourceTypeNone
-	SupportPackageSourceTypeOpsTriggered    SupportPackageSourceType = original.SupportPackageSourceTypeOpsTriggered
-)
-
-type SupportPackageType = original.SupportPackageType
-
-const (
-	SupportPackageTypeCustom         SupportPackageType = original.SupportPackageTypeCustom
-	SupportPackageTypeIncludeAll     SupportPackageType = original.SupportPackageTypeIncludeAll
-	SupportPackageTypeIncludeDefault SupportPackageType = original.SupportPackageTypeIncludeDefault
-	SupportPackageTypeMini           SupportPackageType = original.SupportPackageTypeMini
-	SupportPackageTypeNone           SupportPackageType = original.SupportPackageTypeNone
-)
-
 type TargetType = original.TargetType
 
 const (
@@ -415,7 +397,6 @@ type DevicesDownloadUpdatesFuture = original.DevicesDownloadUpdatesFuture
 type DevicesFailoverFuture = original.DevicesFailoverFuture
 type DevicesInstallUpdatesFuture = original.DevicesInstallUpdatesFuture
 type DevicesPatchFuture = original.DevicesPatchFuture
-type DevicesPublishSupportPackageFuture = original.DevicesPublishSupportPackageFuture
 type DevicesScanForUpdatesFuture = original.DevicesScanForUpdatesFuture
 type EncryptionSettings = original.EncryptionSettings
 type EncryptionSettingsProperties = original.EncryptionSettingsProperties
@@ -455,7 +436,6 @@ type JobListPage = original.JobListPage
 type JobProperties = original.JobProperties
 type JobStage = original.JobStage
 type JobStats = original.JobStats
-type Key = original.Key
 type Manager = original.Manager
 type ManagerExtendedInfo = original.ManagerExtendedInfo
 type ManagerExtendedInfoProperties = original.ManagerExtendedInfoProperties
@@ -480,7 +460,6 @@ type NetworkSettings = original.NetworkSettings
 type NetworkSettingsProperties = original.NetworkSettingsProperties
 type NodeNetwork = original.NodeNetwork
 type RawCertificateData = original.RawCertificateData
-type RegistrationCertificate = original.RegistrationCertificate
 type Resource = original.Resource
 type ResourceCertificateAndAADDetails = original.ResourceCertificateAndAADDetails
 type SecuritySettings = original.SecuritySettings
@@ -496,8 +475,6 @@ type StorageDomainList = original.StorageDomainList
 type StorageDomainProperties = original.StorageDomainProperties
 type StorageDomainsCreateOrUpdateFuture = original.StorageDomainsCreateOrUpdateFuture
 type StorageDomainsDeleteFuture = original.StorageDomainsDeleteFuture
-type SupportPackageRequest = original.SupportPackageRequest
-type SupportPackageRequestProperties = original.SupportPackageRequestProperties
 type SymmetricEncryptedSecret = original.SymmetricEncryptedSecret
 type Time = original.Time
 type TimeSettings = original.TimeSettings
@@ -684,12 +661,6 @@ func PossibleSslStatusValues() []SslStatus {
 }
 func PossibleSupportedDeviceCapabilitiesValues() []SupportedDeviceCapabilities {
 	return original.PossibleSupportedDeviceCapabilitiesValues()
-}
-func PossibleSupportPackageSourceTypeValues() []SupportPackageSourceType {
-	return original.PossibleSupportPackageSourceTypeValues()
-}
-func PossibleSupportPackageTypeValues() []SupportPackageType {
-	return original.PossibleSupportPackageTypeValues()
 }
 func PossibleTargetTypeValues() []TargetType {
 	return original.PossibleTargetTypeValues()

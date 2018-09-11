@@ -40,68 +40,6 @@ func NewAvailableProviderOperationsClientWithBaseURI(baseURI string, subscriptio
 	return AvailableProviderOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate registers Provider
-func (client AvailableProviderOperationsClient) CreateOrUpdate(ctx context.Context) (result Manager, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AvailableProviderOperationsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storsimple.AvailableProviderOperationsClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AvailableProviderOperationsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AvailableProviderOperationsClient) CreateOrUpdatePreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-10-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StorSimple/register", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client AvailableProviderOperationsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client AvailableProviderOperationsClient) CreateOrUpdateResponder(resp *http.Response) (result Manager, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // List list of AvailableProviderOperations
 func (client AvailableProviderOperationsClient) List(ctx context.Context) (result AvailableProviderOperationsPage, err error) {
 	result.fn = client.listNextResults

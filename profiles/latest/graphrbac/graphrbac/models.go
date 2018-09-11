@@ -48,11 +48,9 @@ const (
 	Member UserType = original.Member
 )
 
-type AADObject = original.AADObject
 type AddOwnerParameters = original.AddOwnerParameters
 type ADGroup = original.ADGroup
 type Application = original.Application
-type ApplicationAddOwnerParameters = original.ApplicationAddOwnerParameters
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
@@ -70,9 +68,6 @@ type Domain = original.Domain
 type DomainListResult = original.DomainListResult
 type ErrorMessage = original.ErrorMessage
 type GetObjectsParameters = original.GetObjectsParameters
-type GetObjectsResult = original.GetObjectsResult
-type GetObjectsResultIterator = original.GetObjectsResultIterator
-type GetObjectsResultPage = original.GetObjectsResultPage
 type GraphError = original.GraphError
 type GroupAddMemberParameters = original.GroupAddMemberParameters
 type GroupCreateParameters = original.GroupCreateParameters

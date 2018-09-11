@@ -396,10 +396,10 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result ADGroup, er
 // GetGroupMembers gets the members of a group.
 // Parameters:
 // objectID - the object ID of the group whose members should be retrieved.
-func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (result GetObjectsResultPage, err error) {
-	result.fn = func(lastResult GetObjectsResult) (GetObjectsResult, error) {
+func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (result DirectoryObjectListResultPage, err error) {
+	result.fn = func(lastResult DirectoryObjectListResult) (DirectoryObjectListResult, error) {
 		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return GetObjectsResult{}, nil
+			return DirectoryObjectListResult{}, nil
 		}
 		return client.GetGroupMembersNext(ctx, *lastResult.OdataNextLink)
 	}
@@ -411,12 +411,12 @@ func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string)
 
 	resp, err := client.GetGroupMembersSender(req)
 	if err != nil {
-		result.gor.Response = autorest.Response{Response: resp}
+		result.dolr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure sending request")
 		return
 	}
 
-	result.gor, err = client.GetGroupMembersResponder(resp)
+	result.dolr, err = client.GetGroupMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure responding to request")
 	}
@@ -453,7 +453,7 @@ func (client GroupsClient) GetGroupMembersSender(req *http.Request) (*http.Respo
 
 // GetGroupMembersResponder handles the response to the GetGroupMembers request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -465,7 +465,7 @@ func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result
 }
 
 // GetGroupMembersComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID string) (result GetObjectsResultIterator, err error) {
+func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID string) (result DirectoryObjectListResultIterator, err error) {
 	result.page, err = client.GetGroupMembers(ctx, objectID)
 	return
 }
@@ -473,7 +473,7 @@ func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID
 // GetGroupMembersNext gets the members of a group.
 // Parameters:
 // nextLink - next link for the list operation.
-func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (result DirectoryObjectListResult, err error) {
 	req, err := client.GetGroupMembersNextPreparer(ctx, nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
@@ -524,7 +524,7 @@ func (client GroupsClient) GetGroupMembersNextSender(req *http.Request) (*http.R
 
 // GetGroupMembersNextResponder handles the response to the GetGroupMembersNext request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersNextResponder(resp *http.Response) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersNextResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

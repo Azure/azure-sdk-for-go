@@ -613,7 +613,7 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 // Parameters:
 // objectID - the object ID of the service principal to delete.
 // parameters - parameters to update a service principal.
-func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (result ServicePrincipal, err error) {
+func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, objectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", nil, "Failure preparing request")
@@ -622,7 +622,7 @@ func (client ServicePrincipalsClient) Update(ctx context.Context, objectID strin
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", resp, "Failure sending request")
 		return
 	}
@@ -666,14 +666,13 @@ func (client ServicePrincipalsClient) UpdateSender(req *http.Request) (*http.Res
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ServicePrincipalsClient) UpdateResponder(resp *http.Response) (result ServicePrincipal, err error) {
+func (client ServicePrincipalsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

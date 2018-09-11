@@ -306,13 +306,6 @@ const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = original.RollingUpgradeStatusCodeRollingForward
 )
 
-type ScaleTier = original.ScaleTier
-
-const (
-	S100 ScaleTier = original.S100
-	S30  ScaleTier = original.S30
-)
-
 type SettingNames = original.SettingNames
 
 const (
@@ -743,6 +736,7 @@ type SSHPublicKey = original.SSHPublicKey
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
+type TargetRegion = original.TargetRegion
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UpdateResource = original.UpdateResource
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
@@ -1045,9 +1039,6 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 }
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return original.PossibleRollingUpgradeStatusCodeValues()
-}
-func PossibleScaleTierValues() []ScaleTier {
-	return original.PossibleScaleTierValues()
 }
 func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()

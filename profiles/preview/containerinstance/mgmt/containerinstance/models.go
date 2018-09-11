@@ -19,7 +19,7 @@
 
 package containerinstance
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-06-01/containerinstance"
+import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-09-01/containerinstance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -29,6 +29,13 @@ type BaseClient = original.BaseClient
 type ContainerClient = original.ContainerClient
 type ContainerGroupsClient = original.ContainerGroupsClient
 type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+type ContainerGroupIPAddressType = original.ContainerGroupIPAddressType
+
+const (
+	Private ContainerGroupIPAddressType = original.Private
+	Public  ContainerGroupIPAddressType = original.Public
+)
+
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
@@ -49,6 +56,13 @@ type ContainerNetworkProtocol = original.ContainerNetworkProtocol
 const (
 	ContainerNetworkProtocolTCP ContainerNetworkProtocol = original.ContainerNetworkProtocolTCP
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = original.ContainerNetworkProtocolUDP
+)
+
+type LogAnalyticsLogType = original.LogAnalyticsLogType
+
+const (
+	ContainerInsights     LogAnalyticsLogType = original.ContainerInsights
+	ContainerInstanceLogs LogAnalyticsLogType = original.ContainerInstanceLogs
 )
 
 type OperatingSystemTypes = original.OperatingSystemTypes
@@ -83,6 +97,7 @@ type ContainerGroupDiagnostics = original.ContainerGroupDiagnostics
 type ContainerGroupListResult = original.ContainerGroupListResult
 type ContainerGroupListResultIterator = original.ContainerGroupListResultIterator
 type ContainerGroupListResultPage = original.ContainerGroupListResultPage
+type ContainerGroupNetworkProfile = original.ContainerGroupNetworkProfile
 type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
@@ -139,6 +154,9 @@ func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClie
 func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleContainerGroupIPAddressTypeValues() []ContainerGroupIPAddressType {
+	return original.PossibleContainerGroupIPAddressTypeValues()
+}
 func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
 	return original.PossibleContainerGroupNetworkProtocolValues()
 }
@@ -147,6 +165,9 @@ func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
 }
 func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return original.PossibleContainerNetworkProtocolValues()
+}
+func PossibleLogAnalyticsLogTypeValues() []LogAnalyticsLogType {
+	return original.PossibleLogAnalyticsLogTypeValues()
 }
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()

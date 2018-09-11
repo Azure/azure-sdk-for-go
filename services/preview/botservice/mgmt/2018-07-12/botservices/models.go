@@ -20,6 +20,7 @@ package botservice
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -86,6 +87,68 @@ const (
 // PossibleChannelNameBasicChannelValues returns an array of possible values for the ChannelNameBasicChannel const type.
 func PossibleChannelNameBasicChannelValues() []ChannelNameBasicChannel {
 	return []ChannelNameBasicChannel{ChannelNameChannel, ChannelNameDirectLineChannel1, ChannelNameEmailChannel1, ChannelNameFacebookChannel1, ChannelNameKikChannel1, ChannelNameMsTeamsChannel1, ChannelNameSkypeChannel1, ChannelNameSlackChannel1, ChannelNameSmsChannel1, ChannelNameTelegramChannel1, ChannelNameWebChatChannel1}
+}
+
+// EnterpriseChannelNodeState enumerates the values for enterprise channel node state.
+type EnterpriseChannelNodeState string
+
+const (
+	// CreateFailed ...
+	CreateFailed EnterpriseChannelNodeState = "CreateFailed"
+	// Creating ...
+	Creating EnterpriseChannelNodeState = "Creating"
+	// DeleteFailed ...
+	DeleteFailed EnterpriseChannelNodeState = "DeleteFailed"
+	// Deleting ...
+	Deleting EnterpriseChannelNodeState = "Deleting"
+	// Started ...
+	Started EnterpriseChannelNodeState = "Started"
+	// StartFailed ...
+	StartFailed EnterpriseChannelNodeState = "StartFailed"
+	// Starting ...
+	Starting EnterpriseChannelNodeState = "Starting"
+	// StopFailed ...
+	StopFailed EnterpriseChannelNodeState = "StopFailed"
+	// Stopped ...
+	Stopped EnterpriseChannelNodeState = "Stopped"
+	// Stopping ...
+	Stopping EnterpriseChannelNodeState = "Stopping"
+)
+
+// PossibleEnterpriseChannelNodeStateValues returns an array of possible values for the EnterpriseChannelNodeState const type.
+func PossibleEnterpriseChannelNodeStateValues() []EnterpriseChannelNodeState {
+	return []EnterpriseChannelNodeState{CreateFailed, Creating, DeleteFailed, Deleting, Started, StartFailed, Starting, StopFailed, Stopped, Stopping}
+}
+
+// EnterpriseChannelState enumerates the values for enterprise channel state.
+type EnterpriseChannelState string
+
+const (
+	// EnterpriseChannelStateCreateFailed ...
+	EnterpriseChannelStateCreateFailed EnterpriseChannelState = "CreateFailed"
+	// EnterpriseChannelStateCreating ...
+	EnterpriseChannelStateCreating EnterpriseChannelState = "Creating"
+	// EnterpriseChannelStateDeleteFailed ...
+	EnterpriseChannelStateDeleteFailed EnterpriseChannelState = "DeleteFailed"
+	// EnterpriseChannelStateDeleting ...
+	EnterpriseChannelStateDeleting EnterpriseChannelState = "Deleting"
+	// EnterpriseChannelStateStarted ...
+	EnterpriseChannelStateStarted EnterpriseChannelState = "Started"
+	// EnterpriseChannelStateStartFailed ...
+	EnterpriseChannelStateStartFailed EnterpriseChannelState = "StartFailed"
+	// EnterpriseChannelStateStarting ...
+	EnterpriseChannelStateStarting EnterpriseChannelState = "Starting"
+	// EnterpriseChannelStateStopFailed ...
+	EnterpriseChannelStateStopFailed EnterpriseChannelState = "StopFailed"
+	// EnterpriseChannelStateStopped ...
+	EnterpriseChannelStateStopped EnterpriseChannelState = "Stopped"
+	// EnterpriseChannelStateStopping ...
+	EnterpriseChannelStateStopping EnterpriseChannelState = "Stopping"
+)
+
+// PossibleEnterpriseChannelStateValues returns an array of possible values for the EnterpriseChannelState const type.
+func PossibleEnterpriseChannelStateValues() []EnterpriseChannelState {
+	return []EnterpriseChannelState{EnterpriseChannelStateCreateFailed, EnterpriseChannelStateCreating, EnterpriseChannelStateDeleteFailed, EnterpriseChannelStateDeleting, EnterpriseChannelStateStarted, EnterpriseChannelStateStartFailed, EnterpriseChannelStateStarting, EnterpriseChannelStateStopFailed, EnterpriseChannelStateStopped, EnterpriseChannelStateStopping}
 }
 
 // Kind enumerates the values for kind.
@@ -1047,12 +1110,16 @@ type DirectLineSite struct {
 	Key *string `json:"key,omitempty"`
 	// Key2 - Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
 	Key2 *string `json:"key2,omitempty"`
-	// IsEnabled - Whether this site is enabled for DirectLine channel
+	// IsEnabled - Whether this site is enabled for DirectLine channel.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// IsV1Enabled - Whether this site is enabled for Bot Framework V1 protocol
+	// IsV1Enabled - Whether this site is enabled for Bot Framework V1 protocol.
 	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
-	// IsV3Enabled - Whether this site is enabled for Bot Framework V1 protocol
+	// IsV3Enabled - Whether this site is enabled for Bot Framework V1 protocol.
 	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+	// IsSecureSiteEnabled - Whether this site is enabled for authentication with Bot Framework.
+	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+	// TrustedOrigins - List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
+	TrustedOrigins *[]string `json:"trustedOrigins,omitempty"`
 }
 
 // EmailChannel email channel definition
@@ -1144,6 +1211,284 @@ type EmailChannelProperties struct {
 	Password *string `json:"password,omitempty"`
 	// IsEnabled - Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// EnterpriseChannel enterprise Channel resource definition
+type EnterpriseChannel struct {
+	autorest.Response `json:"-"`
+	// Properties - The set of properties specific to an Enterprise Channel resource.
+	Properties *EnterpriseChannelProperties `json:"properties,omitempty"`
+	// ID - Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Specifies the name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Location - Specifies the location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Type - Specifies the type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Tags - Contains resource tags defined as key/value pairs.
+	Tags map[string]*string `json:"tags"`
+	// Sku - Gets or sets the SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - Required. Gets or sets the Kind of the resource. Possible values include: 'KindSdk', 'KindDesigner', 'KindBot', 'KindFunction'
+	Kind Kind `json:"kind,omitempty"`
+	// Etag - Entity Tag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnterpriseChannel.
+func (ec EnterpriseChannel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ec.Properties != nil {
+		objectMap["properties"] = ec.Properties
+	}
+	if ec.ID != nil {
+		objectMap["id"] = ec.ID
+	}
+	if ec.Name != nil {
+		objectMap["name"] = ec.Name
+	}
+	if ec.Location != nil {
+		objectMap["location"] = ec.Location
+	}
+	if ec.Type != nil {
+		objectMap["type"] = ec.Type
+	}
+	if ec.Tags != nil {
+		objectMap["tags"] = ec.Tags
+	}
+	if ec.Sku != nil {
+		objectMap["sku"] = ec.Sku
+	}
+	if ec.Kind != "" {
+		objectMap["kind"] = ec.Kind
+	}
+	if ec.Etag != nil {
+		objectMap["etag"] = ec.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// EnterpriseChannelCheckNameAvailabilityRequest a request to Bot Service Management to check availability of an
+// Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityRequest struct {
+	// Name - The name of the Enterprise Channel for which availability needs to be checked.
+	Name *string `json:"name,omitempty"`
+}
+
+// EnterpriseChannelCheckNameAvailabilityResponse a request to Bot Service Management to check availability of an
+// Enterprise Channel name.
+type EnterpriseChannelCheckNameAvailabilityResponse struct {
+	autorest.Response `json:"-"`
+	// Valid - Indicates if the Enterprise Channel name is valid.
+	Valid *bool `json:"valid,omitempty"`
+	// Message - Additional information about why a bot name is not available.
+	Message *string `json:"message,omitempty"`
+}
+
+// EnterpriseChannelNode the properties specific to an Enterprise Channel Node.
+type EnterpriseChannelNode struct {
+	// ID - Id of Enterprise Channel Node. This is generated by the Bot Framework.
+	ID *string `json:"id,omitempty"`
+	// State - The current state of the Enterprise Channel Node. Possible values include: 'Creating', 'CreateFailed', 'Started', 'Starting', 'StartFailed', 'Stopped', 'Stopping', 'StopFailed', 'Deleting', 'DeleteFailed'
+	State EnterpriseChannelNodeState `json:"state,omitempty"`
+	// Name - The name of the Enterprise Channel Node.
+	Name *string `json:"name,omitempty"`
+	// AzureSku - The sku of the Enterprise Channel Node.
+	AzureSku *string `json:"azureSku,omitempty"`
+	// AzureLocation - The location of the Enterprise Channel Node.
+	AzureLocation *string `json:"azureLocation,omitempty"`
+}
+
+// EnterpriseChannelProperties the parameters to provide for the Enterprise Channel.
+type EnterpriseChannelProperties struct {
+	// State - The current state of the Enterprise Channel. Possible values include: 'EnterpriseChannelStateCreating', 'EnterpriseChannelStateCreateFailed', 'EnterpriseChannelStateStarted', 'EnterpriseChannelStateStarting', 'EnterpriseChannelStateStartFailed', 'EnterpriseChannelStateStopped', 'EnterpriseChannelStateStopping', 'EnterpriseChannelStateStopFailed', 'EnterpriseChannelStateDeleting', 'EnterpriseChannelStateDeleteFailed'
+	State EnterpriseChannelState `json:"state,omitempty"`
+	// Nodes - The nodes associated with the Enterprise Channel.
+	Nodes *[]EnterpriseChannelNode `json:"nodes,omitempty"`
+}
+
+// EnterpriseChannelResponseList the list of  bot service operation response.
+type EnterpriseChannelResponseList struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of bot service resources.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The list of Enterprise Channels and their properties.
+	Value *[]EnterpriseChannel `json:"value,omitempty"`
+}
+
+// EnterpriseChannelResponseListIterator provides access to a complete listing of EnterpriseChannel values.
+type EnterpriseChannelResponseListIterator struct {
+	i    int
+	page EnterpriseChannelResponseListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EnterpriseChannelResponseListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EnterpriseChannelResponseListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EnterpriseChannelResponseListIterator) Response() EnterpriseChannelResponseList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EnterpriseChannelResponseListIterator) Value() EnterpriseChannel {
+	if !iter.page.NotDone() {
+		return EnterpriseChannel{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ecrl EnterpriseChannelResponseList) IsEmpty() bool {
+	return ecrl.Value == nil || len(*ecrl.Value) == 0
+}
+
+// enterpriseChannelResponseListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ecrl EnterpriseChannelResponseList) enterpriseChannelResponseListPreparer() (*http.Request, error) {
+	if ecrl.NextLink == nil || len(to.String(ecrl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ecrl.NextLink)))
+}
+
+// EnterpriseChannelResponseListPage contains a page of EnterpriseChannel values.
+type EnterpriseChannelResponseListPage struct {
+	fn   func(EnterpriseChannelResponseList) (EnterpriseChannelResponseList, error)
+	ecrl EnterpriseChannelResponseList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EnterpriseChannelResponseListPage) Next() error {
+	next, err := page.fn(page.ecrl)
+	if err != nil {
+		return err
+	}
+	page.ecrl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EnterpriseChannelResponseListPage) NotDone() bool {
+	return !page.ecrl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EnterpriseChannelResponseListPage) Response() EnterpriseChannelResponseList {
+	return page.ecrl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EnterpriseChannelResponseListPage) Values() []EnterpriseChannel {
+	if page.ecrl.IsEmpty() {
+		return nil
+	}
+	return *page.ecrl.Value
+}
+
+// EnterpriseChannelsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EnterpriseChannelsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EnterpriseChannelsCreateFuture) Result(client EnterpriseChannelsClient) (ec EnterpriseChannel, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("botservice.EnterpriseChannelsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.CreateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// EnterpriseChannelsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EnterpriseChannelsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EnterpriseChannelsDeleteFuture) Result(client EnterpriseChannelsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("botservice.EnterpriseChannelsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// EnterpriseChannelsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type EnterpriseChannelsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EnterpriseChannelsUpdateFuture) Result(client EnterpriseChannelsClient) (ec EnterpriseChannel, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("botservice.EnterpriseChannelsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec, err = client.UpdateResponder(ec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsUpdateFuture", "Result", ec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Error bot Service error object.

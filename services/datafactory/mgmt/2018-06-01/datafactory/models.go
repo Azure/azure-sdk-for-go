@@ -1530,8 +1530,8 @@ func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference
 type TypeBasicFactoryRepoConfiguration string
 
 const (
-	// TypeFactoryGithubConfiguration ...
-	TypeFactoryGithubConfiguration TypeBasicFactoryRepoConfiguration = "FactoryGithubConfiguration"
+	// TypeFactoryGitHubConfiguration ...
+	TypeFactoryGitHubConfiguration TypeBasicFactoryRepoConfiguration = "FactoryGitHubConfiguration"
 	// TypeFactoryRepoConfiguration ...
 	TypeFactoryRepoConfiguration TypeBasicFactoryRepoConfiguration = "FactoryRepoConfiguration"
 	// TypeFactoryVSTSConfiguration ...
@@ -1540,7 +1540,7 @@ const (
 
 // PossibleTypeBasicFactoryRepoConfigurationValues returns an array of possible values for the TypeBasicFactoryRepoConfiguration const type.
 func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
-	return []TypeBasicFactoryRepoConfiguration{TypeFactoryGithubConfiguration, TypeFactoryRepoConfiguration, TypeFactoryVSTSConfiguration}
+	return []TypeBasicFactoryRepoConfiguration{TypeFactoryGitHubConfiguration, TypeFactoryRepoConfiguration, TypeFactoryVSTSConfiguration}
 }
 
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
@@ -7694,8 +7694,10 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 	NewClusterNumOfWorker interface{} `json:"newClusterNumOfWorker,omitempty"`
 	// NewClusterNodeType - The node types of new cluster. Type: string (or Expression with resultType string).
 	NewClusterNodeType interface{} `json:"newClusterNodeType,omitempty"`
-	// NewClusterSparkConf - a set of optional, user-specified Spark configuration key-value pairs.
+	// NewClusterSparkConf - A set of optional, user-specified Spark configuration key-value pairs.
 	NewClusterSparkConf map[string]interface{} `json:"newClusterSparkConf"`
+	// NewClusterSparkEnvVars - A set of optional, user-specified Spark environment variables key-value pairs.
+	NewClusterSparkEnvVars map[string]interface{} `json:"newClusterSparkEnvVars"`
 	// NewClusterCustomTags - Additional tags for cluster resources.
 	NewClusterCustomTags map[string]interface{} `json:"newClusterCustomTags"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
@@ -7713,6 +7715,9 @@ func (adlstp AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, 
 	objectMap["newClusterNodeType"] = adlstp.NewClusterNodeType
 	if adlstp.NewClusterSparkConf != nil {
 		objectMap["newClusterSparkConf"] = adlstp.NewClusterSparkConf
+	}
+	if adlstp.NewClusterSparkEnvVars != nil {
+		objectMap["newClusterSparkEnvVars"] = adlstp.NewClusterSparkEnvVars
 	}
 	if adlstp.NewClusterCustomTags != nil {
 		objectMap["newClusterCustomTags"] = adlstp.NewClusterCustomTags
@@ -7791,6 +7796,15 @@ func (adlstp *AzureDatabricksLinkedServiceTypeProperties) UnmarshalJSON(body []b
 					return err
 				}
 				adlstp.NewClusterSparkConf = newClusterSparkConf
+			}
+		case "newClusterSparkEnvVars":
+			if v != nil {
+				var newClusterSparkEnvVars map[string]interface{}
+				err = json.Unmarshal(*v, &newClusterSparkEnvVars)
+				if err != nil {
+					return err
+				}
+				adlstp.NewClusterSparkEnvVars = newClusterSparkEnvVars
 			}
 		case "newClusterCustomTags":
 			if v != nil {
@@ -35887,13 +35901,13 @@ type FactoryGitHubConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FactoryGitHubConfiguration.
 func (fghc FactoryGitHubConfiguration) MarshalJSON() ([]byte, error) {
-	fghc.Type = TypeFactoryGithubConfiguration
+	fghc.Type = TypeFactoryGitHubConfiguration
 	objectMap := make(map[string]interface{})
 	if fghc.HostName != nil {
 		objectMap["hostName"] = fghc.HostName
@@ -36132,7 +36146,7 @@ type FactoryRepoConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 
@@ -36148,7 +36162,7 @@ func unmarshalBasicFactoryRepoConfiguration(body []byte) (BasicFactoryRepoConfig
 		var fvc FactoryVSTSConfiguration
 		err := json.Unmarshal(body, &fvc)
 		return fvc, err
-	case string(TypeFactoryGithubConfiguration):
+	case string(TypeFactoryGitHubConfiguration):
 		var fghc FactoryGitHubConfiguration
 		err := json.Unmarshal(body, &fghc)
 		return fghc, err
@@ -36298,7 +36312,7 @@ type FactoryVSTSConfiguration struct {
 	RootFolder *string `json:"rootFolder,omitempty"`
 	// LastCommitID - Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
-	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGitHubConfiguration'
 	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
 }
 
@@ -39358,6 +39372,23 @@ type GetMetadataActivityTypeProperties struct {
 	Dataset *DatasetReference `json:"dataset,omitempty"`
 	// FieldList - Fields of metadata to get from dataset.
 	FieldList *[]interface{} `json:"fieldList,omitempty"`
+}
+
+// GitHubAccessTokenRequest get GitHub access token request definition.
+type GitHubAccessTokenRequest struct {
+	// GitHubAccessCode - GitHub access code.
+	GitHubAccessCode *string `json:"gitHubAccessCode,omitempty"`
+	// GitHubClientID - GitHub application client ID.
+	GitHubClientID *string `json:"gitHubClientId,omitempty"`
+	// GitHubAccessTokenBaseURL - GitHub access token base URL.
+	GitHubAccessTokenBaseURL *string `json:"gitHubAccessTokenBaseUrl,omitempty"`
+}
+
+// GitHubAccessTokenResponse get GitHub access token response definition.
+type GitHubAccessTokenResponse struct {
+	autorest.Response `json:"-"`
+	// GitHubAccessToken - GitHub access token.
+	GitHubAccessToken *string `json:"gitHubAccessToken,omitempty"`
 }
 
 // GoogleBigQueryLinkedService google BigQuery service linked service.

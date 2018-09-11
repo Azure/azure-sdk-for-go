@@ -35,6 +35,7 @@ type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerability
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 type ElasticPoolsClient = original.ElasticPoolsClient
 type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
+type InterfaceEndpointProfilesClient = original.InterfaceEndpointProfilesClient
 type ManagedInstanceEncryptionProtectorsClient = original.ManagedInstanceEncryptionProtectorsClient
 type ManagedInstanceKeysClient = original.ManagedInstanceKeysClient
 type ManagedInstanceTdeCertificatesClient = original.ManagedInstanceTdeCertificatesClient
@@ -136,6 +137,17 @@ const (
 	Secondary InstanceFailoverGroupReplicationRole = original.Secondary
 )
 
+type InterfaceEndpointProfileStateType = original.InterfaceEndpointProfileStateType
+
+const (
+	Deleting     InterfaceEndpointProfileStateType = original.Deleting
+	Failed       InterfaceEndpointProfileStateType = original.Failed
+	Initializing InterfaceEndpointProfileStateType = original.Initializing
+	InProgress   InterfaceEndpointProfileStateType = original.InProgress
+	Ready        InterfaceEndpointProfileStateType = original.Ready
+	Unknown      InterfaceEndpointProfileStateType = original.Unknown
+)
+
 type LogSizeUnit = original.LogSizeUnit
 
 const (
@@ -149,12 +161,12 @@ const (
 type ManagementOperationState = original.ManagementOperationState
 
 const (
-	CancelInProgress ManagementOperationState = original.CancelInProgress
-	Cancelled        ManagementOperationState = original.Cancelled
-	Failed           ManagementOperationState = original.Failed
-	InProgress       ManagementOperationState = original.InProgress
-	Pending          ManagementOperationState = original.Pending
-	Succeeded        ManagementOperationState = original.Succeeded
+	ManagementOperationStateCancelInProgress ManagementOperationState = original.ManagementOperationStateCancelInProgress
+	ManagementOperationStateCancelled        ManagementOperationState = original.ManagementOperationStateCancelled
+	ManagementOperationStateFailed           ManagementOperationState = original.ManagementOperationStateFailed
+	ManagementOperationStateInProgress       ManagementOperationState = original.ManagementOperationStateInProgress
+	ManagementOperationStatePending          ManagementOperationState = original.ManagementOperationStatePending
+	ManagementOperationStateSucceeded        ManagementOperationState = original.ManagementOperationStateSucceeded
 )
 
 type MaxSizeUnit = original.MaxSizeUnit
@@ -277,6 +289,13 @@ type InstanceFailoverGroupsCreateOrUpdateFuture = original.InstanceFailoverGroup
 type InstanceFailoverGroupsDeleteFuture = original.InstanceFailoverGroupsDeleteFuture
 type InstanceFailoverGroupsFailoverFuture = original.InstanceFailoverGroupsFailoverFuture
 type InstanceFailoverGroupsForceFailoverAllowDataLossFuture = original.InstanceFailoverGroupsForceFailoverAllowDataLossFuture
+type InterfaceEndpointProfile = original.InterfaceEndpointProfile
+type InterfaceEndpointProfileProperties = original.InterfaceEndpointProfileProperties
+type InterfaceEndpointProfilesCreateOrUpdateFuture = original.InterfaceEndpointProfilesCreateOrUpdateFuture
+type InterfaceEndpointProfilesDeleteFuture = original.InterfaceEndpointProfilesDeleteFuture
+type InterfaceEndpointProfilesListResult = original.InterfaceEndpointProfilesListResult
+type InterfaceEndpointProfilesListResultIterator = original.InterfaceEndpointProfilesListResultIterator
+type InterfaceEndpointProfilesListResultPage = original.InterfaceEndpointProfilesListResultPage
 type LicenseTypeCapability = original.LicenseTypeCapability
 type LocationCapabilities = original.LocationCapabilities
 type LogSizeCapability = original.LogSizeCapability
@@ -376,6 +395,12 @@ func NewInstanceFailoverGroupsClient(subscriptionID string) InstanceFailoverGrou
 func NewInstanceFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) InstanceFailoverGroupsClient {
 	return original.NewInstanceFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInterfaceEndpointProfilesClient(subscriptionID string) InterfaceEndpointProfilesClient {
+	return original.NewInterfaceEndpointProfilesClient(subscriptionID)
+}
+func NewInterfaceEndpointProfilesClientWithBaseURI(baseURI string, subscriptionID string) InterfaceEndpointProfilesClient {
+	return original.NewInterfaceEndpointProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
 	return original.NewManagedInstanceEncryptionProtectorsClient(subscriptionID)
 }
@@ -423,6 +448,9 @@ func PossibleElasticPoolStateValues() []ElasticPoolState {
 }
 func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
 	return original.PossibleInstanceFailoverGroupReplicationRoleValues()
+}
+func PossibleInterfaceEndpointProfileStateTypeValues() []InterfaceEndpointProfileStateType {
+	return original.PossibleInterfaceEndpointProfileStateTypeValues()
 }
 func PossibleLogSizeUnitValues() []LogSizeUnit {
 	return original.PossibleLogSizeUnitValues()

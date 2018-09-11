@@ -233,6 +233,29 @@ func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGrou
 	return []InstanceFailoverGroupReplicationRole{Primary, Secondary}
 }
 
+// InterfaceEndpointProfileStateType enumerates the values for interface endpoint profile state type.
+type InterfaceEndpointProfileStateType string
+
+const (
+	// Deleting ...
+	Deleting InterfaceEndpointProfileStateType = "Deleting"
+	// Failed ...
+	Failed InterfaceEndpointProfileStateType = "Failed"
+	// Initializing ...
+	Initializing InterfaceEndpointProfileStateType = "Initializing"
+	// InProgress ...
+	InProgress InterfaceEndpointProfileStateType = "InProgress"
+	// Ready ...
+	Ready InterfaceEndpointProfileStateType = "Ready"
+	// Unknown ...
+	Unknown InterfaceEndpointProfileStateType = "Unknown"
+)
+
+// PossibleInterfaceEndpointProfileStateTypeValues returns an array of possible values for the InterfaceEndpointProfileStateType const type.
+func PossibleInterfaceEndpointProfileStateTypeValues() []InterfaceEndpointProfileStateType {
+	return []InterfaceEndpointProfileStateType{Deleting, Failed, Initializing, InProgress, Ready, Unknown}
+}
+
 // LogSizeUnit enumerates the values for log size unit.
 type LogSizeUnit string
 
@@ -258,23 +281,23 @@ func PossibleLogSizeUnitValues() []LogSizeUnit {
 type ManagementOperationState string
 
 const (
-	// CancelInProgress ...
-	CancelInProgress ManagementOperationState = "CancelInProgress"
-	// Cancelled ...
-	Cancelled ManagementOperationState = "Cancelled"
-	// Failed ...
-	Failed ManagementOperationState = "Failed"
-	// InProgress ...
-	InProgress ManagementOperationState = "InProgress"
-	// Pending ...
-	Pending ManagementOperationState = "Pending"
-	// Succeeded ...
-	Succeeded ManagementOperationState = "Succeeded"
+	// ManagementOperationStateCancelInProgress ...
+	ManagementOperationStateCancelInProgress ManagementOperationState = "CancelInProgress"
+	// ManagementOperationStateCancelled ...
+	ManagementOperationStateCancelled ManagementOperationState = "Cancelled"
+	// ManagementOperationStateFailed ...
+	ManagementOperationStateFailed ManagementOperationState = "Failed"
+	// ManagementOperationStateInProgress ...
+	ManagementOperationStateInProgress ManagementOperationState = "InProgress"
+	// ManagementOperationStatePending ...
+	ManagementOperationStatePending ManagementOperationState = "Pending"
+	// ManagementOperationStateSucceeded ...
+	ManagementOperationStateSucceeded ManagementOperationState = "Succeeded"
 )
 
 // PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
 func PossibleManagementOperationStateValues() []ManagementOperationState {
-	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
+	return []ManagementOperationState{ManagementOperationStateCancelInProgress, ManagementOperationStateCancelled, ManagementOperationStateFailed, ManagementOperationStateInProgress, ManagementOperationStatePending, ManagementOperationStateSucceeded}
 }
 
 // MaxSizeUnit enumerates the values for max size unit.
@@ -1107,7 +1130,7 @@ type DatabaseOperationProperties struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// StartTime - The operation start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// State - The operation state. Possible values include: 'Pending', 'InProgress', 'Succeeded', 'Failed', 'CancelInProgress', 'Cancelled'
+	// State - The operation state. Possible values include: 'ManagementOperationStatePending', 'ManagementOperationStateInProgress', 'ManagementOperationStateSucceeded', 'ManagementOperationStateFailed', 'ManagementOperationStateCancelInProgress', 'ManagementOperationStateCancelled'
 	State ManagementOperationState `json:"state,omitempty"`
 	// ErrorCode - The operation error code.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
@@ -2568,6 +2591,253 @@ func (future *InstanceFailoverGroupsForceFailoverAllowDataLossFuture) Result(cli
 		}
 	}
 	return
+}
+
+// InterfaceEndpointProfile a interface endpoint profile resource.
+type InterfaceEndpointProfile struct {
+	autorest.Response `json:"-"`
+	// InterfaceEndpointProfileProperties - Resource properties.
+	*InterfaceEndpointProfileProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InterfaceEndpointProfile.
+func (iep InterfaceEndpointProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iep.InterfaceEndpointProfileProperties != nil {
+		objectMap["properties"] = iep.InterfaceEndpointProfileProperties
+	}
+	if iep.ID != nil {
+		objectMap["id"] = iep.ID
+	}
+	if iep.Name != nil {
+		objectMap["name"] = iep.Name
+	}
+	if iep.Type != nil {
+		objectMap["type"] = iep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for InterfaceEndpointProfile struct.
+func (iep *InterfaceEndpointProfile) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var interfaceEndpointProfileProperties InterfaceEndpointProfileProperties
+				err = json.Unmarshal(*v, &interfaceEndpointProfileProperties)
+				if err != nil {
+					return err
+				}
+				iep.InterfaceEndpointProfileProperties = &interfaceEndpointProfileProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				iep.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				iep.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				iep.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// InterfaceEndpointProfileProperties the properties of a interface endpoint profile.
+type InterfaceEndpointProfileProperties struct {
+	// VirtualNetworkSubnetID - The ARM resource id of the virtual network subnet.
+	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
+	// PrivateIP - The Private ip associated with the interface endpoint profile
+	PrivateIP *string `json:"privateIp,omitempty"`
+	// State - State of the interface endpoint profile. Possible values include: 'Initializing', 'InProgress', 'Ready', 'Failed', 'Deleting', 'Unknown'
+	State InterfaceEndpointProfileStateType `json:"state,omitempty"`
+}
+
+// InterfaceEndpointProfilesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type InterfaceEndpointProfilesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InterfaceEndpointProfilesCreateOrUpdateFuture) Result(client InterfaceEndpointProfilesClient) (iep InterfaceEndpointProfile, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InterfaceEndpointProfilesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.InterfaceEndpointProfilesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if iep.Response.Response, err = future.GetResult(sender); err == nil && iep.Response.Response.StatusCode != http.StatusNoContent {
+		iep, err = client.CreateOrUpdateResponder(iep.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.InterfaceEndpointProfilesCreateOrUpdateFuture", "Result", iep.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// InterfaceEndpointProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type InterfaceEndpointProfilesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InterfaceEndpointProfilesDeleteFuture) Result(client InterfaceEndpointProfilesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InterfaceEndpointProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.InterfaceEndpointProfilesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// InterfaceEndpointProfilesListResult a list of interface endpoint profiles.
+type InterfaceEndpointProfilesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]InterfaceEndpointProfile `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// InterfaceEndpointProfilesListResultIterator provides access to a complete listing of InterfaceEndpointProfile
+// values.
+type InterfaceEndpointProfilesListResultIterator struct {
+	i    int
+	page InterfaceEndpointProfilesListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *InterfaceEndpointProfilesListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter InterfaceEndpointProfilesListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter InterfaceEndpointProfilesListResultIterator) Response() InterfaceEndpointProfilesListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter InterfaceEndpointProfilesListResultIterator) Value() InterfaceEndpointProfile {
+	if !iter.page.NotDone() {
+		return InterfaceEndpointProfile{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ieplr InterfaceEndpointProfilesListResult) IsEmpty() bool {
+	return ieplr.Value == nil || len(*ieplr.Value) == 0
+}
+
+// interfaceEndpointProfilesListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ieplr InterfaceEndpointProfilesListResult) interfaceEndpointProfilesListResultPreparer() (*http.Request, error) {
+	if ieplr.NextLink == nil || len(to.String(ieplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ieplr.NextLink)))
+}
+
+// InterfaceEndpointProfilesListResultPage contains a page of InterfaceEndpointProfile values.
+type InterfaceEndpointProfilesListResultPage struct {
+	fn    func(InterfaceEndpointProfilesListResult) (InterfaceEndpointProfilesListResult, error)
+	ieplr InterfaceEndpointProfilesListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *InterfaceEndpointProfilesListResultPage) Next() error {
+	next, err := page.fn(page.ieplr)
+	if err != nil {
+		return err
+	}
+	page.ieplr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page InterfaceEndpointProfilesListResultPage) NotDone() bool {
+	return !page.ieplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page InterfaceEndpointProfilesListResultPage) Response() InterfaceEndpointProfilesListResult {
+	return page.ieplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page InterfaceEndpointProfilesListResultPage) Values() []InterfaceEndpointProfile {
+	if page.ieplr.IsEmpty() {
+		return nil
+	}
+	return *page.ieplr.Value
 }
 
 // LicenseTypeCapability the license type capability

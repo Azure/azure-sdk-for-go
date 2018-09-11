@@ -178,6 +178,18 @@ func (future *DeleteFuture) Result(client Client) (ar autorest.Response, err err
 	return
 }
 
+// Dimension specifications of the Dimension of metrics.
+type Dimension struct {
+	// Name - The public facing name of the dimension.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the dimension.
+	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - Name of the dimension as it appears in MDM.
+	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - A Boolean flag indicating whether this dimension should be included for the shoebox export scenario.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+}
+
 // Keys a class represents the access keys of SignalR service.
 type Keys struct {
 	autorest.Response `json:"-"`
@@ -185,6 +197,10 @@ type Keys struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - The secondary access key.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	// PrimaryConnectionString - SignalR connection string constructed via the primaryKey
+	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
+	// SecondaryConnectionString - SignalR connection string constructed via the secondaryKey
+	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring.
@@ -205,6 +221,8 @@ type MetricSpecification struct {
 	FillGapWithZero *string `json:"fillGapWithZero,omitempty"`
 	// Category - The name of the metric category that the metric belongs to. A metric can only belong to a single category.
 	Category *string `json:"category,omitempty"`
+	// Dimensions - The dimensions of the metrics.
+	Dimensions *[]Dimension `json:"dimensions,omitempty"`
 }
 
 // NameAvailability result of the request to check name availability. It contains a flag and possible reason of
@@ -373,6 +391,8 @@ type Properties struct {
 	PublicPort *int32 `json:"publicPort,omitempty"`
 	// ServerPort - The publicly accessibly port of the SignalR service which is designed for customer server side usage.
 	ServerPort *int32 `json:"serverPort,omitempty"`
+	// Version - Version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+	Version *string `json:"version,omitempty"`
 	// HostNamePrefix - Prefix for the hostName of the SignalR service. Retained for future use.
 	// The hostname will be of format: &lt;hostNamePrefix&gt;.service.signalr.net.
 	HostNamePrefix *string `json:"hostNamePrefix,omitempty"`

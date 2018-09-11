@@ -35,6 +35,8 @@ type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerability
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 type ElasticPoolsClient = original.ElasticPoolsClient
 type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
+type ManagedInstanceEncryptionProtectorsClient = original.ManagedInstanceEncryptionProtectorsClient
+type ManagedInstanceKeysClient = original.ManagedInstanceKeysClient
 type ManagedInstanceTdeCertificatesClient = original.ManagedInstanceTdeCertificatesClient
 type CapabilityGroup = original.CapabilityGroup
 
@@ -193,6 +195,13 @@ const (
 	WideWorldImportersStd  SampleName = original.WideWorldImportersStd
 )
 
+type ServerKeyType = original.ServerKeyType
+
+const (
+	AzureKeyVault  ServerKeyType = original.AzureKeyVault
+	ServiceManaged ServerKeyType = original.ServiceManaged
+)
+
 type VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanState
 
 const (
@@ -233,8 +242,6 @@ type DatabasesResumeFuture = original.DatabasesResumeFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
 type DatabasesUpgradeDataWarehouseFuture = original.DatabasesUpgradeDataWarehouseFuture
 type DatabaseUpdate = original.DatabaseUpdate
-type DatabaseVulnerabilityAssessment = original.DatabaseVulnerabilityAssessment
-type DatabaseVulnerabilityAssessmentProperties = original.DatabaseVulnerabilityAssessmentProperties
 type DatabaseVulnerabilityAssessmentScanExportProperties = original.DatabaseVulnerabilityAssessmentScanExportProperties
 type DatabaseVulnerabilityAssessmentScansExport = original.DatabaseVulnerabilityAssessmentScansExport
 type DatabaseVulnerabilityAssessmentScansInitiateScanFuture = original.DatabaseVulnerabilityAssessmentScansInitiateScanFuture
@@ -274,7 +281,20 @@ type LicenseTypeCapability = original.LicenseTypeCapability
 type LocationCapabilities = original.LocationCapabilities
 type LogSizeCapability = original.LogSizeCapability
 type ManagedInstanceEditionCapability = original.ManagedInstanceEditionCapability
+type ManagedInstanceEncryptionProtector = original.ManagedInstanceEncryptionProtector
+type ManagedInstanceEncryptionProtectorListResult = original.ManagedInstanceEncryptionProtectorListResult
+type ManagedInstanceEncryptionProtectorListResultIterator = original.ManagedInstanceEncryptionProtectorListResultIterator
+type ManagedInstanceEncryptionProtectorListResultPage = original.ManagedInstanceEncryptionProtectorListResultPage
+type ManagedInstanceEncryptionProtectorProperties = original.ManagedInstanceEncryptionProtectorProperties
+type ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture = original.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture
 type ManagedInstanceFamilyCapability = original.ManagedInstanceFamilyCapability
+type ManagedInstanceKey = original.ManagedInstanceKey
+type ManagedInstanceKeyListResult = original.ManagedInstanceKeyListResult
+type ManagedInstanceKeyListResultIterator = original.ManagedInstanceKeyListResultIterator
+type ManagedInstanceKeyListResultPage = original.ManagedInstanceKeyListResultPage
+type ManagedInstanceKeyProperties = original.ManagedInstanceKeyProperties
+type ManagedInstanceKeysCreateOrUpdateFuture = original.ManagedInstanceKeysCreateOrUpdateFuture
+type ManagedInstanceKeysDeleteFuture = original.ManagedInstanceKeysDeleteFuture
 type ManagedInstancePairInfo = original.ManagedInstancePairInfo
 type ManagedInstanceTdeCertificatesCreateFuture = original.ManagedInstanceTdeCertificatesCreateFuture
 type ManagedInstanceVcoresCapability = original.ManagedInstanceVcoresCapability
@@ -356,6 +376,18 @@ func NewInstanceFailoverGroupsClient(subscriptionID string) InstanceFailoverGrou
 func NewInstanceFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) InstanceFailoverGroupsClient {
 	return original.NewInstanceFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
+	return original.NewManagedInstanceEncryptionProtectorsClient(subscriptionID)
+}
+func NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
+	return original.NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedInstanceKeysClient(subscriptionID string) ManagedInstanceKeysClient {
+	return original.NewManagedInstanceKeysClient(subscriptionID)
+}
+func NewManagedInstanceKeysClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceKeysClient {
+	return original.NewManagedInstanceKeysClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedInstanceTdeCertificatesClient(subscriptionID string) ManagedInstanceTdeCertificatesClient {
 	return original.NewManagedInstanceTdeCertificatesClient(subscriptionID)
 }
@@ -412,6 +444,9 @@ func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailover
 }
 func PossibleSampleNameValues() []SampleName {
 	return original.PossibleSampleNameValues()
+}
+func PossibleServerKeyTypeValues() []ServerKeyType {
+	return original.PossibleServerKeyTypeValues()
 }
 func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
 	return original.PossibleVulnerabilityAssessmentScanStateValues()

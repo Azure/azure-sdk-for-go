@@ -301,18 +301,18 @@ const (
 	VsoTfvc SourceType = original.VsoTfvc
 )
 
-type StartType = original.StartType
-
-const (
-	AutoSync   StartType = original.AutoSync
-	ManualSync StartType = original.ManualSync
-)
-
 type StreamType = original.StreamType
 
 const (
 	StreamTypeError  StreamType = original.StreamTypeError
 	StreamTypeOutput StreamType = original.StreamTypeOutput
+)
+
+type SyncType = original.SyncType
+
+const (
+	FullSync    SyncType = original.FullSync
+	PartialSync SyncType = original.PartialSync
 )
 
 type TokenType = original.TokenType
@@ -793,11 +793,11 @@ func PossibleSkuNameEnumValues() []SkuNameEnum {
 func PossibleSourceTypeValues() []SourceType {
 	return original.PossibleSourceTypeValues()
 }
-func PossibleStartTypeValues() []StartType {
-	return original.PossibleStartTypeValues()
-}
 func PossibleStreamTypeValues() []StreamType {
 	return original.PossibleStreamTypeValues()
+}
+func PossibleSyncTypeValues() []SyncType {
+	return original.PossibleSyncTypeValues()
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()

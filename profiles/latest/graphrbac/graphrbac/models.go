@@ -28,6 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type DeletedApplicationsClient = original.DeletedApplicationsClient
 type DomainsClient = original.DomainsClient
 type GroupsClient = original.GroupsClient
 type ObjectType = original.ObjectType
@@ -47,27 +48,26 @@ const (
 	Member UserType = original.Member
 )
 
-type AADObject = original.AADObject
+type AddOwnerParameters = original.AddOwnerParameters
 type ADGroup = original.ADGroup
 type Application = original.Application
-type ApplicationAddOwnerParameters = original.ApplicationAddOwnerParameters
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
+type AppRole = original.AppRole
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
 type BasicDirectoryObject = original.BasicDirectoryObject
 type DirectoryObject = original.DirectoryObject
 type DirectoryObjectListResult = original.DirectoryObjectListResult
+type DirectoryObjectListResultIterator = original.DirectoryObjectListResultIterator
+type DirectoryObjectListResultPage = original.DirectoryObjectListResultPage
 type Domain = original.Domain
 type DomainListResult = original.DomainListResult
 type ErrorMessage = original.ErrorMessage
 type GetObjectsParameters = original.GetObjectsParameters
-type GetObjectsResult = original.GetObjectsResult
-type GetObjectsResultIterator = original.GetObjectsResultIterator
-type GetObjectsResultPage = original.GetObjectsResultPage
 type GraphError = original.GraphError
 type GroupAddMemberParameters = original.GroupAddMemberParameters
 type GroupCreateParameters = original.GroupCreateParameters
@@ -92,6 +92,7 @@ type ServicePrincipalCreateParameters = original.ServicePrincipalCreateParameter
 type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
+type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
 type SignInName = original.SignInName
 type User = original.User
 type UserBase = original.UserBase
@@ -105,6 +106,7 @@ type UserUpdateParameters = original.UserUpdateParameters
 type OAuth2Client = original.OAuth2Client
 type ObjectsClient = original.ObjectsClient
 type ServicePrincipalsClient = original.ServicePrincipalsClient
+type SignedInUserClient = original.SignedInUserClient
 type UsersClient = original.UsersClient
 
 func NewApplicationsClient(tenantID string) ApplicationsClient {
@@ -118,6 +120,12 @@ func New(tenantID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClient(tenantID)
+}
+func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID)
 }
 func NewDomainsClient(tenantID string) DomainsClient {
 	return original.NewDomainsClient(tenantID)
@@ -154,6 +162,12 @@ func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 }
 func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
+}
+func NewSignedInUserClient(tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClient(tenantID)
+}
+func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInUserClient {
+	return original.NewSignedInUserClientWithBaseURI(baseURI, tenantID)
 }
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)

@@ -46,7 +46,7 @@ func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) Applicati
 // applicationObjectID - the object ID of the application to which to add the owner.
 // parameters - the URL of the owner object, such as
 // https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
-func (client ApplicationsClient) AddOwner(ctx context.Context, applicationObjectID string, parameters ApplicationAddOwnerParameters) (result autorest.Response, err error) {
+func (client ApplicationsClient) AddOwner(ctx context.Context, applicationObjectID string, parameters AddOwnerParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -75,7 +75,7 @@ func (client ApplicationsClient) AddOwner(ctx context.Context, applicationObject
 }
 
 // AddOwnerPreparer prepares the AddOwner request.
-func (client ApplicationsClient) AddOwnerPreparer(ctx context.Context, applicationObjectID string, parameters ApplicationAddOwnerParameters) (*http.Request, error) {
+func (client ApplicationsClient) AddOwnerPreparer(ctx context.Context, applicationObjectID string, parameters AddOwnerParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationObjectId": autorest.Encode("path", applicationObjectID),
 		"tenantID":            autorest.Encode("path", client.TenantID),
@@ -530,7 +530,8 @@ func (client ApplicationsClient) ListNextResponder(resp *http.Response) (result 
 // ListOwners the owners are a set of non-admin users who are allowed to modify this object.
 // Parameters:
 // applicationObjectID - the object ID of the application for which to get owners.
-func (client ApplicationsClient) ListOwners(ctx context.Context, applicationObjectID string) (result DirectoryObjectListResult, err error) {
+func (client ApplicationsClient) ListOwners(ctx context.Context, applicationObjectID string) (result DirectoryObjectListResultPage, err error) {
+	result.fn = client.listOwnersNextResults
 	req, err := client.ListOwnersPreparer(ctx, applicationObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListOwners", nil, "Failure preparing request")
@@ -539,12 +540,12 @@ func (client ApplicationsClient) ListOwners(ctx context.Context, applicationObje
 
 	resp, err := client.ListOwnersSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dolr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListOwners", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListOwnersResponder(resp)
+	result.dolr, err = client.ListOwnersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListOwners", resp, "Failure responding to request")
 	}
@@ -589,6 +590,33 @@ func (client ApplicationsClient) ListOwnersResponder(resp *http.Response) (resul
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listOwnersNextResults retrieves the next set of results, if any.
+func (client ApplicationsClient) listOwnersNextResults(lastResults DirectoryObjectListResult) (result DirectoryObjectListResult, err error) {
+	req, err := lastResults.directoryObjectListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "listOwnersNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListOwnersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "listOwnersNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListOwnersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "listOwnersNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListOwnersComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ApplicationsClient) ListOwnersComplete(ctx context.Context, applicationObjectID string) (result DirectoryObjectListResultIterator, err error) {
+	result.page, err = client.ListOwners(ctx, applicationObjectID)
 	return
 }
 

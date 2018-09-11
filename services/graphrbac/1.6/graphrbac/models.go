@@ -59,107 +59,21 @@ func PossibleUserTypeValues() []UserType {
 	return []UserType{Guest, Member}
 }
 
-// AADObject the properties of an Active Directory object.
-type AADObject struct {
-	autorest.Response `json:"-"`
+// AddOwnerParameters request parameters for adding a owner to an application.
+type AddOwnerParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// ObjectID - The ID of the object.
-	ObjectID *string `json:"objectId,omitempty"`
-	// ObjectType - The type of AAD object.
-	ObjectType *string `json:"objectType,omitempty"`
-	// DisplayName - The display name of the object.
-	DisplayName *string `json:"displayName,omitempty"`
-	// UserPrincipalName - The principal name of the object.
-	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
-	// Mail - The primary email address of the object.
-	Mail *string `json:"mail,omitempty"`
-	// MailEnabled - Whether the AAD object is mail-enabled.
-	MailEnabled *bool `json:"mailEnabled,omitempty"`
-	// MailNickname - The mail alias for the user.
-	MailNickname *string `json:"mailNickname,omitempty"`
-	// SecurityEnabled - Whether the AAD object is security-enabled.
-	SecurityEnabled *bool `json:"securityEnabled,omitempty"`
-	// SignInName - The sign-in name of the object.
-	SignInName *string `json:"signInName,omitempty"`
-	// ServicePrincipalNames - A collection of service principal names associated with the object.
-	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
-	// UserType - The user type of the object.
-	UserType *string `json:"userType,omitempty"`
-	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
-	UsageLocation *string `json:"usageLocation,omitempty"`
-	// AppID - The application ID.
-	AppID *string `json:"appId,omitempty"`
-	// AppPermissions - The application permissions.
-	AppPermissions *[]string `json:"appPermissions,omitempty"`
-	// AvailableToOtherTenants - Whether the application is be available to other tenants.
-	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
-	// IdentifierUris - A collection of URIs for the application.
-	IdentifierUris *[]string `json:"identifierUris,omitempty"`
-	// ReplyUrls - A collection of reply URLs for the application.
-	ReplyUrls *[]string `json:"replyUrls,omitempty"`
-	// Homepage - The home page of the application.
-	Homepage *string `json:"homepage,omitempty"`
+	// URL - A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
+	URL *string `json:"url,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AADObject.
-func (ao AADObject) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for AddOwnerParameters.
+func (aop AddOwnerParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ao.ObjectID != nil {
-		objectMap["objectId"] = ao.ObjectID
+	if aop.URL != nil {
+		objectMap["url"] = aop.URL
 	}
-	if ao.ObjectType != nil {
-		objectMap["objectType"] = ao.ObjectType
-	}
-	if ao.DisplayName != nil {
-		objectMap["displayName"] = ao.DisplayName
-	}
-	if ao.UserPrincipalName != nil {
-		objectMap["userPrincipalName"] = ao.UserPrincipalName
-	}
-	if ao.Mail != nil {
-		objectMap["mail"] = ao.Mail
-	}
-	if ao.MailEnabled != nil {
-		objectMap["mailEnabled"] = ao.MailEnabled
-	}
-	if ao.MailNickname != nil {
-		objectMap["mailNickname"] = ao.MailNickname
-	}
-	if ao.SecurityEnabled != nil {
-		objectMap["securityEnabled"] = ao.SecurityEnabled
-	}
-	if ao.SignInName != nil {
-		objectMap["signInName"] = ao.SignInName
-	}
-	if ao.ServicePrincipalNames != nil {
-		objectMap["servicePrincipalNames"] = ao.ServicePrincipalNames
-	}
-	if ao.UserType != nil {
-		objectMap["userType"] = ao.UserType
-	}
-	if ao.UsageLocation != nil {
-		objectMap["usageLocation"] = ao.UsageLocation
-	}
-	if ao.AppID != nil {
-		objectMap["appId"] = ao.AppID
-	}
-	if ao.AppPermissions != nil {
-		objectMap["appPermissions"] = ao.AppPermissions
-	}
-	if ao.AvailableToOtherTenants != nil {
-		objectMap["availableToOtherTenants"] = ao.AvailableToOtherTenants
-	}
-	if ao.IdentifierUris != nil {
-		objectMap["identifierUris"] = ao.IdentifierUris
-	}
-	if ao.ReplyUrls != nil {
-		objectMap["replyUrls"] = ao.ReplyUrls
-	}
-	if ao.Homepage != nil {
-		objectMap["homepage"] = ao.Homepage
-	}
-	for k, v := range ao.AdditionalProperties {
+	for k, v := range aop.AdditionalProperties {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
@@ -170,6 +84,10 @@ type ADGroup struct {
 	autorest.Response `json:"-"`
 	// DisplayName - The display name of the group.
 	DisplayName *string `json:"displayName,omitempty"`
+	// MailEnabled - Whether the group is mail-enabled. Must be false. This is because only pure security groups can be created using the Graph API.
+	MailEnabled *bool `json:"mailEnabled,omitempty"`
+	// MailNickname - The mail alias for the group.
+	MailNickname *string `json:"mailNickname,omitempty"`
 	// SecurityEnabled - Whether the group is security-enable.
 	SecurityEnabled *bool `json:"securityEnabled,omitempty"`
 	// Mail - The primary email address of the group.
@@ -190,6 +108,12 @@ func (ag ADGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ag.DisplayName != nil {
 		objectMap["displayName"] = ag.DisplayName
+	}
+	if ag.MailEnabled != nil {
+		objectMap["mailEnabled"] = ag.MailEnabled
+	}
+	if ag.MailNickname != nil {
+		objectMap["mailNickname"] = ag.MailNickname
 	}
 	if ag.SecurityEnabled != nil {
 		objectMap["securityEnabled"] = ag.SecurityEnabled
@@ -247,6 +171,8 @@ type Application struct {
 	autorest.Response `json:"-"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AppPermissions - The application permissions.
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
 	// AvailableToOtherTenants - Whether the application is be available to other tenants.
@@ -277,6 +203,9 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AppID != nil {
 		objectMap["appId"] = a.AppID
+	}
+	if a.AppRoles != nil {
+		objectMap["appRoles"] = a.AppRoles
 	}
 	if a.AppPermissions != nil {
 		objectMap["appPermissions"] = a.AppPermissions
@@ -344,30 +273,12 @@ func (a Application) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
 	return &a, true
 }
 
-// ApplicationAddOwnerParameters request parameters for adding a owner to an application.
-type ApplicationAddOwnerParameters struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
-	// URL - A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
-	URL *string `json:"url,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ApplicationAddOwnerParameters.
-func (aaop ApplicationAddOwnerParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if aaop.URL != nil {
-		objectMap["url"] = aaop.URL
-	}
-	for k, v := range aaop.AdditionalProperties {
-		objectMap[k] = v
-	}
-	return json.Marshal(objectMap)
-}
-
 // ApplicationCreateParameters request parameters for creating a new application.
 type ApplicationCreateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -391,6 +302,9 @@ type ApplicationCreateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationCreateParameters.
 func (acp ApplicationCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if acp.AppRoles != nil {
+		objectMap["appRoles"] = acp.AppRoles
+	}
 	if acp.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = acp.AvailableToOtherTenants
 	}
@@ -518,6 +432,8 @@ func (page ApplicationListResultPage) Values() []Application {
 type ApplicationUpdateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -541,6 +457,9 @@ type ApplicationUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationUpdateParameters.
 func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if aup.AppRoles != nil {
+		objectMap["appRoles"] = aup.AppRoles
+	}
 	if aup.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = aup.AvailableToOtherTenants
 	}
@@ -572,6 +491,22 @@ func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AppRole ...
+type AppRole struct {
+	// ID - Unique role identifier inside the appRoles collection.
+	ID *string `json:"id,omitempty"`
+	// AllowedMemberTypes - Specifies whether this app role definition can be assigned to users and groups by setting to 'User', or to other applications (that are accessing this application in daemon service scenarios) by setting to 'Application', or to both.
+	AllowedMemberTypes *[]string `json:"allowedMemberTypes,omitempty"`
+	// Description - Permission help text that appears in the admin app assignment and consent experiences.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - Display name for the permission that appears in the admin consent and app assignment experiences.
+	DisplayName *string `json:"displayName,omitempty"`
+	// IsEnabled - When creating or updating a role definition, this must be set to true (which is the default). To delete a role, this must first be set to false. At that point, in a subsequent call, this role may be removed.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Value - Specifies the value of the roles claim that the application should expect in the authentication and access tokens.
+	Value *string `json:"value,omitempty"`
 }
 
 // CheckGroupMembershipParameters request parameters for IsMemberOf API call.
@@ -744,6 +679,8 @@ type DirectoryObjectListResult struct {
 	autorest.Response `json:"-"`
 	// Value - A collection of DirectoryObject.
 	Value *[]BasicDirectoryObject `json:"value,omitempty"`
+	// OdataNextLink - The URL to get the next set of results.
+	OdataNextLink *string `json:"odata.nextLink,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DirectoryObjectListResult struct.
@@ -763,10 +700,100 @@ func (dolr *DirectoryObjectListResult) UnmarshalJSON(body []byte) error {
 				}
 				dolr.Value = &value
 			}
+		case "odata.nextLink":
+			if v != nil {
+				var odataNextLink string
+				err = json.Unmarshal(*v, &odataNextLink)
+				if err != nil {
+					return err
+				}
+				dolr.OdataNextLink = &odataNextLink
+			}
 		}
 	}
 
 	return nil
+}
+
+// DirectoryObjectListResultIterator provides access to a complete listing of DirectoryObject values.
+type DirectoryObjectListResultIterator struct {
+	i    int
+	page DirectoryObjectListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DirectoryObjectListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DirectoryObjectListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DirectoryObjectListResultIterator) Response() DirectoryObjectListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DirectoryObjectListResultIterator) Value() BasicDirectoryObject {
+	if !iter.page.NotDone() {
+		return DirectoryObject{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dolr DirectoryObjectListResult) IsEmpty() bool {
+	return dolr.Value == nil || len(*dolr.Value) == 0
+}
+
+// DirectoryObjectListResultPage contains a page of BasicDirectoryObject values.
+type DirectoryObjectListResultPage struct {
+	fn   func(DirectoryObjectListResult) (DirectoryObjectListResult, error)
+	dolr DirectoryObjectListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DirectoryObjectListResultPage) Next() error {
+	next, err := page.fn(page.dolr)
+	if err != nil {
+		return err
+	}
+	page.dolr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DirectoryObjectListResultPage) NotDone() bool {
+	return !page.dolr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DirectoryObjectListResultPage) Response() DirectoryObjectListResult {
+	return page.dolr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
+	if page.dolr.IsEmpty() {
+		return nil
+	}
+	return *page.dolr.Value
 }
 
 // Domain active Directory Domain information.
@@ -846,96 +873,6 @@ func (gop GetObjectsParameters) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
-}
-
-// GetObjectsResult the response to an Active Directory object inquiry API request.
-type GetObjectsResult struct {
-	autorest.Response `json:"-"`
-	// Value - A collection of Active Directory objects.
-	Value *[]AADObject `json:"value,omitempty"`
-	// OdataNextLink - The URL to get the next set of results.
-	OdataNextLink *string `json:"odata.nextLink,omitempty"`
-}
-
-// GetObjectsResultIterator provides access to a complete listing of AADObject values.
-type GetObjectsResultIterator struct {
-	i    int
-	page GetObjectsResultPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *GetObjectsResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter GetObjectsResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter GetObjectsResultIterator) Response() GetObjectsResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter GetObjectsResultIterator) Value() AADObject {
-	if !iter.page.NotDone() {
-		return AADObject{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (gor GetObjectsResult) IsEmpty() bool {
-	return gor.Value == nil || len(*gor.Value) == 0
-}
-
-// GetObjectsResultPage contains a page of AADObject values.
-type GetObjectsResultPage struct {
-	fn  func(GetObjectsResult) (GetObjectsResult, error)
-	gor GetObjectsResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *GetObjectsResultPage) Next() error {
-	next, err := page.fn(page.gor)
-	if err != nil {
-		return err
-	}
-	page.gor = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page GetObjectsResultPage) NotDone() bool {
-	return !page.gor.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page GetObjectsResultPage) Response() GetObjectsResult {
-	return page.gor
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page GetObjectsResultPage) Values() []AADObject {
-	if page.gor.IsEmpty() {
-		return nil
-	}
-	return *page.gor.Value
 }
 
 // GraphError active Directory error information.
@@ -1420,6 +1357,8 @@ type ServicePrincipal struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare. These roles can be assigned to users, groups or service principals.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// ServicePrincipalNames - A collection of service principal names.
 	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -1441,6 +1380,9 @@ func (sp ServicePrincipal) MarshalJSON() ([]byte, error) {
 	}
 	if sp.AppID != nil {
 		objectMap["appId"] = sp.AppID
+	}
+	if sp.AppRoles != nil {
+		objectMap["appRoles"] = sp.AppRoles
 	}
 	if sp.ServicePrincipalNames != nil {
 		objectMap["servicePrincipalNames"] = sp.ServicePrincipalNames
@@ -1494,30 +1436,72 @@ func (sp ServicePrincipal) AsBasicDirectoryObject() (BasicDirectoryObject, bool)
 type ServicePrincipalCreateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// AppID - application Id
-	AppID *string `json:"appId,omitempty"`
 	// AccountEnabled - Whether the account is enabled
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
+	// AppID - application Id
+	AppID *string `json:"appId,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
+	// DisplayName - The display name for the service principal.
+	DisplayName *string `json:"displayName,omitempty"`
+	ErrorURL    *string `json:"errorUrl,omitempty"`
+	// Homepage - The URL to the homepage of the associated application.
+	Homepage *string `json:"homepage,omitempty"`
 	// KeyCredentials - A collection of KeyCredential objects.
 	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
 	// PasswordCredentials - A collection of PasswordCredential objects
 	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PublisherName - The display name of the tenant in which the associated application is specified.
+	PublisherName *string `json:"publisherName,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the service principal.
+	ReplyUrls       *[]string `json:"replyUrls,omitempty"`
+	SamlMetadataURL *string   `json:"samlMetadataUrl,omitempty"`
+	// ServicePrincipalNames - A collection of service principal names.
+	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
+	Tags                  *[]string `json:"tags,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServicePrincipalCreateParameters.
 func (spcp ServicePrincipalCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if spcp.AccountEnabled != nil {
+		objectMap["accountEnabled"] = spcp.AccountEnabled
+	}
 	if spcp.AppID != nil {
 		objectMap["appId"] = spcp.AppID
 	}
-	if spcp.AccountEnabled != nil {
-		objectMap["accountEnabled"] = spcp.AccountEnabled
+	if spcp.AppRoleAssignmentRequired != nil {
+		objectMap["appRoleAssignmentRequired"] = spcp.AppRoleAssignmentRequired
+	}
+	if spcp.DisplayName != nil {
+		objectMap["displayName"] = spcp.DisplayName
+	}
+	if spcp.ErrorURL != nil {
+		objectMap["errorUrl"] = spcp.ErrorURL
+	}
+	if spcp.Homepage != nil {
+		objectMap["homepage"] = spcp.Homepage
 	}
 	if spcp.KeyCredentials != nil {
 		objectMap["keyCredentials"] = spcp.KeyCredentials
 	}
 	if spcp.PasswordCredentials != nil {
 		objectMap["passwordCredentials"] = spcp.PasswordCredentials
+	}
+	if spcp.PublisherName != nil {
+		objectMap["publisherName"] = spcp.PublisherName
+	}
+	if spcp.ReplyUrls != nil {
+		objectMap["replyUrls"] = spcp.ReplyUrls
+	}
+	if spcp.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = spcp.SamlMetadataURL
+	}
+	if spcp.ServicePrincipalNames != nil {
+		objectMap["servicePrincipalNames"] = spcp.ServicePrincipalNames
+	}
+	if spcp.Tags != nil {
+		objectMap["tags"] = spcp.Tags
 	}
 	for k, v := range spcp.AdditionalProperties {
 		objectMap[k] = v
@@ -1613,6 +1597,83 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 		return nil
 	}
 	return *page.splr.Value
+}
+
+// ServicePrincipalUpdateParameters request parameters for creating a new service principal.
+type ServicePrincipalUpdateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// AccountEnabled - Whether the account is enabled
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
+	// AppID - application Id
+	AppID *string `json:"appId,omitempty"`
+	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
+	// DisplayName - The display name for the service principal.
+	DisplayName *string `json:"displayName,omitempty"`
+	ErrorURL    *string `json:"errorUrl,omitempty"`
+	// Homepage - The URL to the homepage of the associated application.
+	Homepage *string `json:"homepage,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	// PublisherName - The display name of the tenant in which the associated application is specified.
+	PublisherName *string `json:"publisherName,omitempty"`
+	// ReplyUrls - A collection of reply URLs for the service principal.
+	ReplyUrls       *[]string `json:"replyUrls,omitempty"`
+	SamlMetadataURL *string   `json:"samlMetadataUrl,omitempty"`
+	// ServicePrincipalNames - A collection of service principal names.
+	ServicePrincipalNames *[]string `json:"servicePrincipalNames,omitempty"`
+	Tags                  *[]string `json:"tags,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrincipalUpdateParameters.
+func (spup ServicePrincipalUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spup.AccountEnabled != nil {
+		objectMap["accountEnabled"] = spup.AccountEnabled
+	}
+	if spup.AppID != nil {
+		objectMap["appId"] = spup.AppID
+	}
+	if spup.AppRoleAssignmentRequired != nil {
+		objectMap["appRoleAssignmentRequired"] = spup.AppRoleAssignmentRequired
+	}
+	if spup.DisplayName != nil {
+		objectMap["displayName"] = spup.DisplayName
+	}
+	if spup.ErrorURL != nil {
+		objectMap["errorUrl"] = spup.ErrorURL
+	}
+	if spup.Homepage != nil {
+		objectMap["homepage"] = spup.Homepage
+	}
+	if spup.KeyCredentials != nil {
+		objectMap["keyCredentials"] = spup.KeyCredentials
+	}
+	if spup.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = spup.PasswordCredentials
+	}
+	if spup.PublisherName != nil {
+		objectMap["publisherName"] = spup.PublisherName
+	}
+	if spup.ReplyUrls != nil {
+		objectMap["replyUrls"] = spup.ReplyUrls
+	}
+	if spup.SamlMetadataURL != nil {
+		objectMap["samlMetadataUrl"] = spup.SamlMetadataURL
+	}
+	if spup.ServicePrincipalNames != nil {
+		objectMap["servicePrincipalNames"] = spup.ServicePrincipalNames
+	}
+	if spup.Tags != nil {
+		objectMap["tags"] = spup.Tags
+	}
+	for k, v := range spup.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
 }
 
 // SignInName contains information about a sign-in name of a local account user in an Azure Active Directory B2C

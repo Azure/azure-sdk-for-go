@@ -132,7 +132,7 @@ type ReportRecurrencePeriod = original.ReportRecurrencePeriod
 type ReportSchedule = original.ReportSchedule
 type ReportTimePeriod = original.ReportTimePeriod
 type Resource = original.Resource
-type ReportClient = original.ReportClient
+type ReportsClient = original.ReportsClient
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 
@@ -181,11 +181,11 @@ func PossibleStatusTypeValues() []StatusType {
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()
 }
-func NewReportClient(subscriptionID string) ReportClient {
-	return original.NewReportClient(subscriptionID)
+func NewReportsClient(subscriptionID string) ReportsClient {
+	return original.NewReportsClient(subscriptionID)
 }
-func NewReportClientWithBaseURI(baseURI string, subscriptionID string) ReportClient {
-	return original.NewReportClientWithBaseURI(baseURI, subscriptionID)
+func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
+	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
 	return original.NewResourceGroupDimensionsClient(subscriptionID)

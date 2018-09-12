@@ -97,7 +97,7 @@ type ListLinkTarget struct {
 	Value             *[]LinkTarget `json:"value,omitempty"`
 }
 
-// Operation supported operation of OperationsManagement resource provider.
+// Operation supported operation of OperationalInsights resource provider.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
@@ -107,7 +107,7 @@ type Operation struct {
 
 // OperationDisplay display metadata associated with the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft OperationsManagement.
+	// Provider - Service provider: OperationalInsights.
 	Provider *string `json:"provider,omitempty"`
 	// Resource - Resource on which the operation is performed etc.
 	Resource *string `json:"resource,omitempty"`
@@ -115,10 +115,10 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list solution operations.
+// OperationListResult result of the request to list OperationalInsights operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of solution operations supported by the OperationsManagement resource provider.
+	// Value - List of operations supported by the OperationalInsights resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 }
 
@@ -196,9 +196,9 @@ type SavedSearch struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the saved search.
 	Type *string `json:"type,omitempty"`
-	// ETag - The etag of the saved search.
-	ETag *string `json:"eTag,omitempty"`
-	// SavedSearchProperties - Gets or sets properties of the saved search.
+	// Etag - The etag of the saved search.
+	Etag *string `json:"etag,omitempty"`
+	// SavedSearchProperties - The properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
 }
 
@@ -214,8 +214,8 @@ func (ss SavedSearch) MarshalJSON() ([]byte, error) {
 	if ss.Type != nil {
 		objectMap["type"] = ss.Type
 	}
-	if ss.ETag != nil {
-		objectMap["eTag"] = ss.ETag
+	if ss.Etag != nil {
+		objectMap["etag"] = ss.Etag
 	}
 	if ss.SavedSearchProperties != nil {
 		objectMap["properties"] = ss.SavedSearchProperties
@@ -259,14 +259,14 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 				}
 				ss.Type = &typeVar
 			}
-		case "eTag":
+		case "etag":
 			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
+				var etag string
+				err = json.Unmarshal(*v, &etag)
 				if err != nil {
 					return err
 				}
-				ss.ETag = &eTag
+				ss.Etag = &etag
 			}
 		case "properties":
 			if v != nil {
@@ -283,11 +283,11 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SavedSearchesListResult the saved search operation response.
+// SavedSearchesListResult the saved search list operation response.
 type SavedSearchesListResult struct {
 	autorest.Response `json:"-"`
-	// Metadata - The metadata from search results.
-	Metadata *SearchMetadata `json:"metaData,omitempty"`
+	// Metadata - Not used.
+	Metadata interface{} `json:"__metadata,omitempty"`
 	// Value - The array of result values.
 	Value *[]SavedSearch `json:"value,omitempty"`
 }
@@ -300,7 +300,7 @@ type SavedSearchProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Query - The query expression for the saved search. Please see https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-search-reference for reference.
 	Query *string `json:"query,omitempty"`
-	// Version - The version number of the query lanuage. Only verion 1 is allowed here.
+	// Version - The version number of the query lanuage. The current version is 2 and is the default.
 	Version *int64 `json:"version,omitempty"`
 	// Tags - The tags attached to the saved search.
 	Tags *[]Tag `json:"tags,omitempty"`
@@ -351,8 +351,8 @@ type SearchMetadata struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// LastUpdated - The time of last update.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// ETag - The ETag of the search results.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - The etag of the search results.
+	Etag *string `json:"etag,omitempty"`
 	// Sort - How the results are sorted.
 	Sort *[]SearchSort `json:"sort,omitempty"`
 	// RequestTime - The request time.
@@ -430,6 +430,15 @@ type SearchSort struct {
 	Order SearchSortEnum `json:"order,omitempty"`
 }
 
+// SharedKeys the shared keys for a workspace.
+type SharedKeys struct {
+	autorest.Response `json:"-"`
+	// PrimarySharedKey - The primary shared key of a workspace.
+	PrimarySharedKey *string `json:"primarySharedKey,omitempty"`
+	// SecondarySharedKey - The secondary shared key of a workspace.
+	SecondarySharedKey *string `json:"secondarySharedKey,omitempty"`
+}
+
 // StorageAccount describes a storage account connection.
 type StorageAccount struct {
 	// ID - The Azure Resource Manager ID of the storage account resource.
@@ -443,8 +452,8 @@ type StorageInsight struct {
 	autorest.Response `json:"-"`
 	// StorageInsightProperties - Storage insight properties.
 	*StorageInsightProperties `json:"properties,omitempty"`
-	// ETag - The ETag of the storage insight.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - The etag of the storage insight.
+	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -461,8 +470,8 @@ func (si StorageInsight) MarshalJSON() ([]byte, error) {
 	if si.StorageInsightProperties != nil {
 		objectMap["properties"] = si.StorageInsightProperties
 	}
-	if si.ETag != nil {
-		objectMap["eTag"] = si.ETag
+	if si.Etag != nil {
+		objectMap["etag"] = si.Etag
 	}
 	if si.ID != nil {
 		objectMap["id"] = si.ID
@@ -497,14 +506,14 @@ func (si *StorageInsight) UnmarshalJSON(body []byte) error {
 				}
 				si.StorageInsightProperties = &storageInsightProperties
 			}
-		case "eTag":
+		case "etag":
 			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
+				var etag string
+				err = json.Unmarshal(*v, &etag)
 				if err != nil {
 					return err
 				}
-				si.ETag = &eTag
+				si.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -551,7 +560,7 @@ func (si *StorageInsight) UnmarshalJSON(body []byte) error {
 // StorageInsightListResult the list storage insights operation response.
 type StorageInsightListResult struct {
 	autorest.Response `json:"-"`
-	// Value - Gets or sets a list of storage insight instances.
+	// Value - A list of storage insight items.
 	Value *[]StorageInsight `json:"value,omitempty"`
 	// OdataNextLink - The link (url) to the next page of results.
 	OdataNextLink *string `json:"@odata.nextLink,omitempty"`

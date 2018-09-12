@@ -26,6 +26,57 @@ import (
 	"net/http"
 )
 
+// AccessProtocol enumerates the values for access protocol.
+type AccessProtocol string
+
+const (
+	// NFS ...
+	NFS AccessProtocol = "NFS"
+	// SMB ...
+	SMB AccessProtocol = "SMB"
+)
+
+// PossibleAccessProtocolValues returns an array of possible values for the AccessProtocol const type.
+func PossibleAccessProtocolValues() []AccessProtocol {
+	return []AccessProtocol{NFS, SMB}
+}
+
+// AccessTier enumerates the values for access tier.
+type AccessTier string
+
+const (
+	// Cold ...
+	Cold AccessTier = "Cold"
+	// Cool ...
+	Cool AccessTier = "Cool"
+	// Hot ...
+	Hot AccessTier = "Hot"
+	// Invalid ...
+	Invalid AccessTier = "Invalid"
+)
+
+// PossibleAccessTierValues returns an array of possible values for the AccessTier const type.
+func PossibleAccessTierValues() []AccessTier {
+	return []AccessTier{Cold, Cool, Hot, Invalid}
+}
+
+// AccountType enumerates the values for account type.
+type AccountType string
+
+const (
+	// BlobStorage ...
+	BlobStorage AccountType = "BlobStorage"
+	// GeneralPurposeStorage ...
+	GeneralPurposeStorage AccountType = "GeneralPurposeStorage"
+	// UnknownType ...
+	UnknownType AccountType = "UnknownType"
+)
+
+// PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
+func PossibleAccountTypeValues() []AccountType {
+	return []AccountType{BlobStorage, GeneralPurposeStorage, UnknownType}
+}
+
 // AddressType enumerates the values for address type.
 type AddressType string
 
@@ -47,17 +98,17 @@ func PossibleAddressTypeValues() []AddressType {
 type AddressValidationStatus string
 
 const (
-	// Ambiguous ...
-	Ambiguous AddressValidationStatus = "Ambiguous"
-	// Invalid ...
-	Invalid AddressValidationStatus = "Invalid"
-	// Valid ...
-	Valid AddressValidationStatus = "Valid"
+	// AddressValidationStatusAmbiguous ...
+	AddressValidationStatusAmbiguous AddressValidationStatus = "Ambiguous"
+	// AddressValidationStatusInvalid ...
+	AddressValidationStatusInvalid AddressValidationStatus = "Invalid"
+	// AddressValidationStatusValid ...
+	AddressValidationStatusValid AddressValidationStatus = "Valid"
 )
 
 // PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
 func PossibleAddressValidationStatusValues() []AddressValidationStatus {
-	return []AddressValidationStatus{Ambiguous, Invalid, Valid}
+	return []AddressValidationStatus{AddressValidationStatusAmbiguous, AddressValidationStatusInvalid, AddressValidationStatusValid}
 }
 
 // CopyLogDetailsType enumerates the values for copy log details type.
@@ -66,15 +117,17 @@ type CopyLogDetailsType string
 const (
 	// CopyLogDetailsTypeCopyLogDetails ...
 	CopyLogDetailsTypeCopyLogDetails CopyLogDetailsType = "CopyLogDetails"
-	// CopyLogDetailsTypeDisk ...
-	CopyLogDetailsTypeDisk CopyLogDetailsType = "Disk"
-	// CopyLogDetailsTypePod ...
-	CopyLogDetailsTypePod CopyLogDetailsType = "Pod"
+	// CopyLogDetailsTypeDataBox ...
+	CopyLogDetailsTypeDataBox CopyLogDetailsType = "DataBox"
+	// CopyLogDetailsTypeDataBoxDisk ...
+	CopyLogDetailsTypeDataBoxDisk CopyLogDetailsType = "DataBoxDisk"
+	// CopyLogDetailsTypeDataBoxHeavy ...
+	CopyLogDetailsTypeDataBoxHeavy CopyLogDetailsType = "DataBoxHeavy"
 )
 
 // PossibleCopyLogDetailsTypeValues returns an array of possible values for the CopyLogDetailsType const type.
 func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
-	return []CopyLogDetailsType{CopyLogDetailsTypeCopyLogDetails, CopyLogDetailsTypeDisk, CopyLogDetailsTypePod}
+	return []CopyLogDetailsType{CopyLogDetailsTypeCopyLogDetails, CopyLogDetailsTypeDataBox, CopyLogDetailsTypeDataBoxDisk, CopyLogDetailsTypeDataBoxHeavy}
 }
 
 // CopyStatus enumerates the values for copy status.
@@ -89,106 +142,53 @@ const (
 	Failed CopyStatus = "Failed"
 	// InProgress ...
 	InProgress CopyStatus = "InProgress"
+	// NotReturned ...
+	NotReturned CopyStatus = "NotReturned"
 	// NotStarted ...
 	NotStarted CopyStatus = "NotStarted"
 )
 
 // PossibleCopyStatusValues returns an array of possible values for the CopyStatus const type.
 func PossibleCopyStatusValues() []CopyStatus {
-	return []CopyStatus{Completed, CompletedWithErrors, Failed, InProgress, NotStarted}
-}
-
-// DeviceIssueType enumerates the values for device issue type.
-type DeviceIssueType string
-
-const (
-	// DeviceHealthCheckShowFailures ...
-	DeviceHealthCheckShowFailures DeviceIssueType = "DeviceHealthCheckShowFailures"
-	// DeviceNotBootingUp ...
-	DeviceNotBootingUp DeviceIssueType = "DeviceNotBootingUp"
-	// DeviceTampering ...
-	DeviceTampering DeviceIssueType = "DeviceTampering"
-	// Misc ...
-	Misc DeviceIssueType = "Misc"
-	// NICsAreNotWorking ...
-	NICsAreNotWorking DeviceIssueType = "NICsAreNotWorking"
-)
-
-// PossibleDeviceIssueTypeValues returns an array of possible values for the DeviceIssueType const type.
-func PossibleDeviceIssueTypeValues() []DeviceIssueType {
-	return []DeviceIssueType{DeviceHealthCheckShowFailures, DeviceNotBootingUp, DeviceTampering, Misc, NICsAreNotWorking}
-}
-
-// DeviceType enumerates the values for device type.
-type DeviceType string
-
-const (
-	// Cabinet ...
-	Cabinet DeviceType = "Cabinet"
-	// Disk ...
-	Disk DeviceType = "Disk"
-	// Pod ...
-	Pod DeviceType = "Pod"
-)
-
-// PossibleDeviceTypeValues returns an array of possible values for the DeviceType const type.
-func PossibleDeviceTypeValues() []DeviceType {
-	return []DeviceType{Cabinet, Disk, Pod}
-}
-
-// IssueType enumerates the values for issue type.
-type IssueType string
-
-const (
-	// CredentialNotWorking ...
-	CredentialNotWorking IssueType = "CredentialNotWorking"
-	// DeviceFailure ...
-	DeviceFailure IssueType = "DeviceFailure"
-	// DeviceMismatch ...
-	DeviceMismatch IssueType = "DeviceMismatch"
-	// ValidationStringMismatch ...
-	ValidationStringMismatch IssueType = "ValidationStringMismatch"
-)
-
-// PossibleIssueTypeValues returns an array of possible values for the IssueType const type.
-func PossibleIssueTypeValues() []IssueType {
-	return []IssueType{CredentialNotWorking, DeviceFailure, DeviceMismatch, ValidationStringMismatch}
+	return []CopyStatus{Completed, CompletedWithErrors, Failed, InProgress, NotReturned, NotStarted}
 }
 
 // JobDetailsType enumerates the values for job details type.
 type JobDetailsType string
 
 const (
-	// JobDetailsTypeDisk ...
-	JobDetailsTypeDisk JobDetailsType = "Disk"
+	// JobDetailsTypeDataBox ...
+	JobDetailsTypeDataBox JobDetailsType = "DataBox"
+	// JobDetailsTypeDataBoxDisk ...
+	JobDetailsTypeDataBoxDisk JobDetailsType = "DataBoxDisk"
+	// JobDetailsTypeDataBoxHeavy ...
+	JobDetailsTypeDataBoxHeavy JobDetailsType = "DataBoxHeavy"
 	// JobDetailsTypeJobDetails ...
 	JobDetailsTypeJobDetails JobDetailsType = "JobDetails"
-	// JobDetailsTypePod ...
-	JobDetailsTypePod JobDetailsType = "Pod"
 )
 
 // PossibleJobDetailsTypeValues returns an array of possible values for the JobDetailsType const type.
 func PossibleJobDetailsTypeValues() []JobDetailsType {
-	return []JobDetailsType{JobDetailsTypeDisk, JobDetailsTypeJobDetails, JobDetailsTypePod}
+	return []JobDetailsType{JobDetailsTypeDataBox, JobDetailsTypeDataBoxDisk, JobDetailsTypeDataBoxHeavy, JobDetailsTypeJobDetails}
 }
 
 // JobSecretsType enumerates the values for job secrets type.
 type JobSecretsType string
 
 const (
-	// JobSecretsTypeCabinet ...
-	JobSecretsTypeCabinet JobSecretsType = "Cabinet"
-	// JobSecretsTypeDisk ...
-	JobSecretsTypeDisk JobSecretsType = "Disk"
+	// JobSecretsTypeDataBox ...
+	JobSecretsTypeDataBox JobSecretsType = "DataBox"
+	// JobSecretsTypeDataBoxDisk ...
+	JobSecretsTypeDataBoxDisk JobSecretsType = "DataBoxDisk"
+	// JobSecretsTypeDataBoxHeavy ...
+	JobSecretsTypeDataBoxHeavy JobSecretsType = "DataBoxHeavy"
 	// JobSecretsTypeJobSecrets ...
 	JobSecretsTypeJobSecrets JobSecretsType = "JobSecrets"
-	// JobSecretsTypePod ...
-	JobSecretsTypePod JobSecretsType = "Pod"
 )
 
 // PossibleJobSecretsTypeValues returns an array of possible values for the JobSecretsType const type.
 func PossibleJobSecretsTypeValues() []JobSecretsType {
-	return []JobSecretsType{JobSecretsTypeCabinet, JobSecretsTypeDisk, JobSecretsTypeJobSecrets, JobSecretsTypePod}
+	return []JobSecretsType{JobSecretsTypeDataBox, JobSecretsTypeDataBoxDisk, JobSecretsTypeDataBoxHeavy, JobSecretsTypeJobSecrets}
 }
 
 // NotificationStageName enumerates the values for notification stage name.
@@ -214,6 +214,82 @@ func PossibleNotificationStageNameValues() []NotificationStageName {
 	return []NotificationStageName{AtAzureDC, DataCopy, Delivered, DevicePrepared, Dispatched, PickedUp}
 }
 
+// PerformanceTier enumerates the values for performance tier.
+type PerformanceTier string
+
+const (
+	// Premium ...
+	Premium PerformanceTier = "Premium"
+	// Standard ...
+	Standard PerformanceTier = "Standard"
+)
+
+// PossiblePerformanceTierValues returns an array of possible values for the PerformanceTier const type.
+func PossiblePerformanceTierValues() []PerformanceTier {
+	return []PerformanceTier{Premium, Standard}
+}
+
+// ShareDestinationFormatType enumerates the values for share destination format type.
+type ShareDestinationFormatType string
+
+const (
+	// ShareDestinationFormatTypeAzureFile ...
+	ShareDestinationFormatTypeAzureFile ShareDestinationFormatType = "AzureFile"
+	// ShareDestinationFormatTypeBlockBlob ...
+	ShareDestinationFormatTypeBlockBlob ShareDestinationFormatType = "BlockBlob"
+	// ShareDestinationFormatTypeHCS ...
+	ShareDestinationFormatTypeHCS ShareDestinationFormatType = "HCS"
+	// ShareDestinationFormatTypeHDC ...
+	ShareDestinationFormatTypeHDC ShareDestinationFormatType = "HDC"
+	// ShareDestinationFormatTypePageBlob ...
+	ShareDestinationFormatTypePageBlob ShareDestinationFormatType = "PageBlob"
+	// ShareDestinationFormatTypeUnknownType ...
+	ShareDestinationFormatTypeUnknownType ShareDestinationFormatType = "UnknownType"
+)
+
+// PossibleShareDestinationFormatTypeValues returns an array of possible values for the ShareDestinationFormatType const type.
+func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
+	return []ShareDestinationFormatType{ShareDestinationFormatTypeAzureFile, ShareDestinationFormatTypeBlockBlob, ShareDestinationFormatTypeHCS, ShareDestinationFormatTypeHDC, ShareDestinationFormatTypePageBlob, ShareDestinationFormatTypeUnknownType}
+}
+
+// SkuDisabledReason enumerates the values for sku disabled reason.
+type SkuDisabledReason string
+
+const (
+	// SkuDisabledReasonCountry ...
+	SkuDisabledReasonCountry SkuDisabledReason = "Country"
+	// SkuDisabledReasonFeature ...
+	SkuDisabledReasonFeature SkuDisabledReason = "Feature"
+	// SkuDisabledReasonNone ...
+	SkuDisabledReasonNone SkuDisabledReason = "None"
+	// SkuDisabledReasonOfferType ...
+	SkuDisabledReasonOfferType SkuDisabledReason = "OfferType"
+	// SkuDisabledReasonRegion ...
+	SkuDisabledReasonRegion SkuDisabledReason = "Region"
+)
+
+// PossibleSkuDisabledReasonValues returns an array of possible values for the SkuDisabledReason const type.
+func PossibleSkuDisabledReasonValues() []SkuDisabledReason {
+	return []SkuDisabledReason{SkuDisabledReasonCountry, SkuDisabledReasonFeature, SkuDisabledReasonNone, SkuDisabledReasonOfferType, SkuDisabledReasonRegion}
+}
+
+// SkuName enumerates the values for sku name.
+type SkuName string
+
+const (
+	// DataBox ...
+	DataBox SkuName = "DataBox"
+	// DataBoxDisk ...
+	DataBoxDisk SkuName = "DataBoxDisk"
+	// DataBoxHeavy ...
+	DataBoxHeavy SkuName = "DataBoxHeavy"
+)
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{DataBox, DataBoxDisk, DataBoxHeavy}
+}
+
 // StageName enumerates the values for stage name.
 type StageName string
 
@@ -228,6 +304,8 @@ const (
 	StageNameCompleted StageName = "Completed"
 	// StageNameCompletedWithErrors ...
 	StageNameCompletedWithErrors StageName = "CompletedWithErrors"
+	// StageNameCurrent ...
+	StageNameCurrent StageName = "Current"
 	// StageNameDataCopy ...
 	StageNameDataCopy StageName = "DataCopy"
 	// StageNameDelivered ...
@@ -248,7 +326,7 @@ const (
 
 // PossibleStageNameValues returns an array of possible values for the StageName const type.
 func PossibleStageNameValues() []StageName {
-	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp}
+	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameCurrent, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp}
 }
 
 // StageStatus enumerates the values for stage status.
@@ -276,19 +354,19 @@ func PossibleStageStatusValues() []StageStatus {
 	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors}
 }
 
-// AccountCopyLogDetails copy log details for an storage account
+// AccountCopyLogDetails copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
 	// AccountName - Destination account name.
 	AccountName *string `json:"accountName,omitempty"`
 	// CopyLogLink - Link for copy logs.
 	CopyLogLink *string `json:"copyLogLink,omitempty"`
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypePod', 'CopyLogDetailsTypeDisk'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountCopyLogDetails.
 func (acld AccountCopyLogDetails) MarshalJSON() ([]byte, error) {
-	acld.CopyLogDetailsType = CopyLogDetailsTypePod
+	acld.CopyLogDetailsType = CopyLogDetailsTypeDataBox
 	objectMap := make(map[string]interface{})
 	if acld.AccountName != nil {
 		objectMap["accountName"] = acld.AccountName
@@ -312,6 +390,11 @@ func (acld AccountCopyLogDetails) AsDiskCopyLogDetails() (*DiskCopyLogDetails, b
 	return nil, false
 }
 
+// AsHeavyAccountCopyLogDetails is the BasicCopyLogDetails implementation for AccountCopyLogDetails.
+func (acld AccountCopyLogDetails) AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool) {
+	return nil, false
+}
+
 // AsCopyLogDetails is the BasicCopyLogDetails implementation for AccountCopyLogDetails.
 func (acld AccountCopyLogDetails) AsCopyLogDetails() (*CopyLogDetails, bool) {
 	return nil, false
@@ -326,6 +409,8 @@ func (acld AccountCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, 
 type AccountCredentialDetails struct {
 	// AccountName - Name of the account.
 	AccountName *string `json:"accountName,omitempty"`
+	// AccountConnectionString - Connection string of the account endpoint to use the account as a storage endpoint on the device.
+	AccountConnectionString *string `json:"accountConnectionString,omitempty"`
 	// ShareCredentialDetails - Per share level unencrypted access credentials.
 	ShareCredentialDetails *[]ShareCredentialDetails `json:"shareCredentialDetails,omitempty"`
 }
@@ -372,10 +457,18 @@ func (avo *AddressValidationOutput) UnmarshalJSON(body []byte) error {
 
 // AddressValidationProperties the address validation output.
 type AddressValidationProperties struct {
-	// ValidationStatus - The address validation status. Possible values include: 'Valid', 'Invalid', 'Ambiguous'
+	// ValidationStatus - The address validation status. Possible values include: 'AddressValidationStatusValid', 'AddressValidationStatusInvalid', 'AddressValidationStatusAmbiguous'
 	ValidationStatus AddressValidationStatus `json:"validationStatus,omitempty"`
 	// AlternateAddresses - List of alternate addresses.
 	AlternateAddresses *[]ShippingAddress `json:"alternateAddresses,omitempty"`
+}
+
+// ApplianceNetworkConfiguration the Network Adapter configuration of a DataBox.
+type ApplianceNetworkConfiguration struct {
+	// Name - Name of the network
+	Name *string `json:"name,omitempty"`
+	// MacAddress - Mac Address
+	MacAddress *string `json:"macAddress,omitempty"`
 }
 
 // ArmBaseObject base class for all objects under resource.
@@ -500,62 +593,6 @@ func (page AvailableSkusResultPage) Values() []SkuInformation {
 	return *page.asr.Value
 }
 
-// CabinetJobSecrets the secrets related to a cabinet job.
-type CabinetJobSecrets struct {
-	// CabinetPodSecrets - Contains the list of secret objects for a cabinet job.
-	CabinetPodSecrets *[]CabinetPodSecret `json:"cabinetPodSecrets,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeCabinet', 'JobSecretsTypeDisk', 'JobSecretsTypePod'
-	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) MarshalJSON() ([]byte, error) {
-	cjs.JobSecretsType = JobSecretsTypeCabinet
-	objectMap := make(map[string]interface{})
-	if cjs.CabinetPodSecrets != nil {
-		objectMap["cabinetPodSecrets"] = cjs.CabinetPodSecrets
-	}
-	if cjs.JobSecretsType != "" {
-		objectMap["jobSecretsType"] = cjs.JobSecretsType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsCabinetJobSecrets is the BasicJobSecrets implementation for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) AsCabinetJobSecrets() (*CabinetJobSecrets, bool) {
-	return &cjs, true
-}
-
-// AsDiskJobSecrets is the BasicJobSecrets implementation for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
-	return nil, false
-}
-
-// AsPodJobSecrets is the BasicJobSecrets implementation for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) AsPodJobSecrets() (*PodJobSecrets, bool) {
-	return nil, false
-}
-
-// AsJobSecrets is the BasicJobSecrets implementation for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) AsJobSecrets() (*JobSecrets, bool) {
-	return nil, false
-}
-
-// AsBasicJobSecrets is the BasicJobSecrets implementation for CabinetJobSecrets.
-func (cjs CabinetJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
-	return &cjs, true
-}
-
-// CabinetPodSecret the secrets related to a cabinet pod.
-type CabinetPodSecret struct {
-	// DeviceSerialNumber - Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
-	// DevicePassword - Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty"`
-	// AccountCredentialDetails - Per account level access credentials.
-	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
-}
-
 // CancellationReason reason for cancellation.
 type CancellationReason struct {
 	// Reason - Reason for cancellation.
@@ -582,12 +619,13 @@ type ContactDetails struct {
 type BasicCopyLogDetails interface {
 	AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool)
 	AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool)
+	AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool)
 	AsCopyLogDetails() (*CopyLogDetails, bool)
 }
 
 // CopyLogDetails details for log generated during copy.
 type CopyLogDetails struct {
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypePod', 'CopyLogDetailsTypeDisk'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
@@ -599,14 +637,18 @@ func unmarshalBasicCopyLogDetails(body []byte) (BasicCopyLogDetails, error) {
 	}
 
 	switch m["copyLogDetailsType"] {
-	case string(CopyLogDetailsTypePod):
+	case string(CopyLogDetailsTypeDataBox):
 		var acld AccountCopyLogDetails
 		err := json.Unmarshal(body, &acld)
 		return acld, err
-	case string(CopyLogDetailsTypeDisk):
+	case string(CopyLogDetailsTypeDataBoxDisk):
 		var dcld DiskCopyLogDetails
 		err := json.Unmarshal(body, &dcld)
 		return dcld, err
+	case string(CopyLogDetailsTypeDataBoxHeavy):
+		var hacld HeavyAccountCopyLogDetails
+		err := json.Unmarshal(body, &hacld)
+		return hacld, err
 	default:
 		var cld CopyLogDetails
 		err := json.Unmarshal(body, &cld)
@@ -652,6 +694,11 @@ func (cld CopyLogDetails) AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool) {
 	return nil, false
 }
 
+// AsHeavyAccountCopyLogDetails is the BasicCopyLogDetails implementation for CopyLogDetails.
+func (cld CopyLogDetails) AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool) {
+	return nil, false
+}
+
 // AsCopyLogDetails is the BasicCopyLogDetails implementation for CopyLogDetails.
 func (cld CopyLogDetails) AsCopyLogDetails() (*CopyLogDetails, bool) {
 	return &cld, true
@@ -666,6 +713,8 @@ func (cld CopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, bool) {
 type CopyProgress struct {
 	// StorageAccountName - Name of the storage account where the data needs to be uploaded.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// AccountID - Id of the account where the data needs to be uploaded.
+	AccountID *string `json:"accountId,omitempty"`
 	// BytesSentToCloud - Amount of data uploaded by the job as of now.
 	BytesSentToCloud *int64 `json:"bytesSentToCloud,omitempty"`
 	// TotalBytesToProcess - Total amount of data to be processed by the job.
@@ -676,6 +725,14 @@ type CopyProgress struct {
 type DestinationAccountDetails struct {
 	// AccountID - Destination storage account id.
 	AccountID *string `json:"accountId,omitempty"`
+	// SharedAccessSignature - Shared access signature for the storage account.
+	SharedAccessSignature *string `json:"sharedAccessSignature,omitempty"`
+	// AccountType - Account type. Possible values include: 'UnknownType', 'GeneralPurposeStorage', 'BlobStorage'
+	AccountType AccountType `json:"accountType,omitempty"`
+	// StorageAccessTier - Access tier of the account. Possible values include: 'Invalid', 'Hot', 'Cool', 'Cold'
+	StorageAccessTier AccessTier `json:"storageAccessTier,omitempty"`
+	// StoragePerformanceTier - Performance tier of the account. Possible values include: 'Standard', 'Premium'
+	StoragePerformanceTier PerformanceTier `json:"storagePerformanceTier,omitempty"`
 }
 
 // DestinationToServiceLocationMap map of destination location to service location
@@ -694,13 +751,13 @@ type DiskCopyLogDetails struct {
 	ErrorLogLink *string `json:"errorLogLink,omitempty"`
 	// VerboseLogLink - Link for copy verbose logs.
 	VerboseLogLink *string `json:"verboseLogLink,omitempty"`
-	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypePod', 'CopyLogDetailsTypeDisk'
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
 	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskCopyLogDetails.
 func (dcld DiskCopyLogDetails) MarshalJSON() ([]byte, error) {
-	dcld.CopyLogDetailsType = CopyLogDetailsTypeDisk
+	dcld.CopyLogDetailsType = CopyLogDetailsTypeDataBoxDisk
 	objectMap := make(map[string]interface{})
 	if dcld.DiskSerialNumber != nil {
 		objectMap["diskSerialNumber"] = dcld.DiskSerialNumber
@@ -727,6 +784,11 @@ func (dcld DiskCopyLogDetails) AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool
 	return &dcld, true
 }
 
+// AsHeavyAccountCopyLogDetails is the BasicCopyLogDetails implementation for DiskCopyLogDetails.
+func (dcld DiskCopyLogDetails) AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool) {
+	return nil, false
+}
+
 // AsCopyLogDetails is the BasicCopyLogDetails implementation for DiskCopyLogDetails.
 func (dcld DiskCopyLogDetails) AsCopyLogDetails() (*CopyLogDetails, bool) {
 	return nil, false
@@ -737,17 +799,19 @@ func (dcld DiskCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, boo
 	return &dcld, true
 }
 
-// DiskCopyProgress disk Copy Progress
+// DiskCopyProgress dataBox Disk Copy Progress
 type DiskCopyProgress struct {
 	// SerialNumber - The serial number of the disk
 	SerialNumber *string `json:"serialNumber,omitempty"`
+	// BytesCopied - Bytes copied during the copy of disk.
+	BytesCopied *int64 `json:"bytesCopied,omitempty"`
 	// PercentComplete - Indicates the percentage completed for the copy of the disk.
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
-	// Status - The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed'
+	// Status - The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned'
 	Status CopyStatus `json:"status,omitempty"`
 }
 
-// DiskJobDetails disk Job Details.
+// DiskJobDetails dataBox Disk Job Details.
 type DiskJobDetails struct {
 	// PreferredDisks - User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB size. Key is string but will be checked against an int.
 	PreferredDisks map[string]*int32 `json:"preferredDisks"`
@@ -755,6 +819,8 @@ type DiskJobDetails struct {
 	CopyProgress *[]DiskCopyProgress `json:"copyProgress,omitempty"`
 	// DisksAndSizeDetails - Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks are shipped to the customer.
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails"`
+	// Passkey - User entered passkey for DataBox Disk job.
+	Passkey *string `json:"passkey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - List of stages that run in the job.
@@ -763,15 +829,29 @@ type DiskJobDetails struct {
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	// DeliveryPackage - Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
+	// ReturnPackage - Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
+	// DestinationAccountDetails - Destination account details.
+	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
 	// ErrorDetails - Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDisk', 'JobDetailsTypePod'
+	// Preferences - Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+	// CopyLogDetails - List of copy log details.
+	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
+	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsType `json:"jobDetailsType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskJobDetails.
 func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
-	djd.JobDetailsType = JobDetailsTypeDisk
+	djd.JobDetailsType = JobDetailsTypeDataBoxDisk
 	objectMap := make(map[string]interface{})
 	if djd.PreferredDisks != nil {
 		objectMap["preferredDisks"] = djd.PreferredDisks
@@ -781,6 +861,9 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	}
 	if djd.DisksAndSizeDetails != nil {
 		objectMap["disksAndSizeDetails"] = djd.DisksAndSizeDetails
+	}
+	if djd.Passkey != nil {
+		objectMap["passkey"] = djd.Passkey
 	}
 	if djd.ExpectedDataSizeInTeraBytes != nil {
 		objectMap["expectedDataSizeInTeraBytes"] = djd.ExpectedDataSizeInTeraBytes
@@ -794,8 +877,29 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	if djd.ShippingAddress != nil {
 		objectMap["shippingAddress"] = djd.ShippingAddress
 	}
+	if djd.DeliveryPackage != nil {
+		objectMap["deliveryPackage"] = djd.DeliveryPackage
+	}
+	if djd.ReturnPackage != nil {
+		objectMap["returnPackage"] = djd.ReturnPackage
+	}
+	if djd.DestinationAccountDetails != nil {
+		objectMap["destinationAccountDetails"] = djd.DestinationAccountDetails
+	}
 	if djd.ErrorDetails != nil {
 		objectMap["errorDetails"] = djd.ErrorDetails
+	}
+	if djd.Preferences != nil {
+		objectMap["preferences"] = djd.Preferences
+	}
+	if djd.CopyLogDetails != nil {
+		objectMap["copyLogDetails"] = djd.CopyLogDetails
+	}
+	if djd.ReverseShipmentLabelSasKey != nil {
+		objectMap["reverseShipmentLabelSasKey"] = djd.ReverseShipmentLabelSasKey
+	}
+	if djd.ChainOfCustodySasKey != nil {
+		objectMap["chainOfCustodySasKey"] = djd.ChainOfCustodySasKey
 	}
 	if djd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = djd.JobDetailsType
@@ -808,8 +912,13 @@ func (djd DiskJobDetails) AsDiskJobDetails() (*DiskJobDetails, bool) {
 	return &djd, true
 }
 
-// AsPodJobDetails is the BasicJobDetails implementation for DiskJobDetails.
-func (djd DiskJobDetails) AsPodJobDetails() (*PodJobDetails, bool) {
+// AsHeavyJobDetails is the BasicJobDetails implementation for DiskJobDetails.
+func (djd DiskJobDetails) AsHeavyJobDetails() (*HeavyJobDetails, bool) {
+	return nil, false
+}
+
+// AsJobDetailsType is the BasicJobDetails implementation for DiskJobDetails.
+func (djd DiskJobDetails) AsJobDetailsType() (*JobDetailsType, bool) {
 	return nil, false
 }
 
@@ -823,20 +932,197 @@ func (djd DiskJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
 	return &djd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for DiskJobDetails struct.
+func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "preferredDisks":
+			if v != nil {
+				var preferredDisks map[string]*int32
+				err = json.Unmarshal(*v, &preferredDisks)
+				if err != nil {
+					return err
+				}
+				djd.PreferredDisks = preferredDisks
+			}
+		case "copyProgress":
+			if v != nil {
+				var copyProgress []DiskCopyProgress
+				err = json.Unmarshal(*v, &copyProgress)
+				if err != nil {
+					return err
+				}
+				djd.CopyProgress = &copyProgress
+			}
+		case "disksAndSizeDetails":
+			if v != nil {
+				var disksAndSizeDetails map[string]*int32
+				err = json.Unmarshal(*v, &disksAndSizeDetails)
+				if err != nil {
+					return err
+				}
+				djd.DisksAndSizeDetails = disksAndSizeDetails
+			}
+		case "passkey":
+			if v != nil {
+				var passkey string
+				err = json.Unmarshal(*v, &passkey)
+				if err != nil {
+					return err
+				}
+				djd.Passkey = &passkey
+			}
+		case "expectedDataSizeInTeraBytes":
+			if v != nil {
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
+				if err != nil {
+					return err
+				}
+				djd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "jobStages":
+			if v != nil {
+				var jobStages []JobStages
+				err = json.Unmarshal(*v, &jobStages)
+				if err != nil {
+					return err
+				}
+				djd.JobStages = &jobStages
+			}
+		case "contactDetails":
+			if v != nil {
+				var contactDetails ContactDetails
+				err = json.Unmarshal(*v, &contactDetails)
+				if err != nil {
+					return err
+				}
+				djd.ContactDetails = &contactDetails
+			}
+		case "shippingAddress":
+			if v != nil {
+				var shippingAddress ShippingAddress
+				err = json.Unmarshal(*v, &shippingAddress)
+				if err != nil {
+					return err
+				}
+				djd.ShippingAddress = &shippingAddress
+			}
+		case "deliveryPackage":
+			if v != nil {
+				var deliveryPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &deliveryPackage)
+				if err != nil {
+					return err
+				}
+				djd.DeliveryPackage = &deliveryPackage
+			}
+		case "returnPackage":
+			if v != nil {
+				var returnPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &returnPackage)
+				if err != nil {
+					return err
+				}
+				djd.ReturnPackage = &returnPackage
+			}
+		case "destinationAccountDetails":
+			if v != nil {
+				var destinationAccountDetails []DestinationAccountDetails
+				err = json.Unmarshal(*v, &destinationAccountDetails)
+				if err != nil {
+					return err
+				}
+				djd.DestinationAccountDetails = &destinationAccountDetails
+			}
+		case "errorDetails":
+			if v != nil {
+				var errorDetails []JobErrorDetails
+				err = json.Unmarshal(*v, &errorDetails)
+				if err != nil {
+					return err
+				}
+				djd.ErrorDetails = &errorDetails
+			}
+		case "preferences":
+			if v != nil {
+				var preferences Preferences
+				err = json.Unmarshal(*v, &preferences)
+				if err != nil {
+					return err
+				}
+				djd.Preferences = &preferences
+			}
+		case "copyLogDetails":
+			if v != nil {
+				copyLogDetails, err := unmarshalBasicCopyLogDetailsArray(*v)
+				if err != nil {
+					return err
+				}
+				djd.CopyLogDetails = &copyLogDetails
+			}
+		case "reverseShipmentLabelSasKey":
+			if v != nil {
+				var reverseShipmentLabelSasKey string
+				err = json.Unmarshal(*v, &reverseShipmentLabelSasKey)
+				if err != nil {
+					return err
+				}
+				djd.ReverseShipmentLabelSasKey = &reverseShipmentLabelSasKey
+			}
+		case "chainOfCustodySasKey":
+			if v != nil {
+				var chainOfCustodySasKey string
+				err = json.Unmarshal(*v, &chainOfCustodySasKey)
+				if err != nil {
+					return err
+				}
+				djd.ChainOfCustodySasKey = &chainOfCustodySasKey
+			}
+		case "jobDetailsType":
+			if v != nil {
+				var jobDetailsType JobDetailsType
+				err = json.Unmarshal(*v, &jobDetailsType)
+				if err != nil {
+					return err
+				}
+				djd.JobDetailsType = jobDetailsType
+			}
+		}
+	}
+
+	return nil
+}
+
 // DiskJobSecrets the secrets related to disk job.
 type DiskJobSecrets struct {
 	// DiskSecrets - Contains the list of secrets object for that device.
 	DiskSecrets *[]DiskSecret `json:"diskSecrets,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeCabinet', 'JobSecretsTypeDisk', 'JobSecretsTypePod'
+	// PassKey - PassKey for the disk Job.
+	PassKey *string `json:"passKey,omitempty"`
+	// IsPasskeyUserDefined - Whether passkey was provided by user.
+	IsPasskeyUserDefined *bool `json:"isPasskeyUserDefined,omitempty"`
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskJobSecrets.
 func (djs DiskJobSecrets) MarshalJSON() ([]byte, error) {
-	djs.JobSecretsType = JobSecretsTypeDisk
+	djs.JobSecretsType = JobSecretsTypeDataBoxDisk
 	objectMap := make(map[string]interface{})
 	if djs.DiskSecrets != nil {
 		objectMap["diskSecrets"] = djs.DiskSecrets
+	}
+	if djs.PassKey != nil {
+		objectMap["passKey"] = djs.PassKey
+	}
+	if djs.IsPasskeyUserDefined != nil {
+		objectMap["isPasskeyUserDefined"] = djs.IsPasskeyUserDefined
 	}
 	if djs.JobSecretsType != "" {
 		objectMap["jobSecretsType"] = djs.JobSecretsType
@@ -844,18 +1130,18 @@ func (djs DiskJobSecrets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsCabinetJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
-func (djs DiskJobSecrets) AsCabinetJobSecrets() (*CabinetJobSecrets, bool) {
-	return nil, false
-}
-
 // AsDiskJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
 func (djs DiskJobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
 	return &djs, true
 }
 
-// AsPodJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
-func (djs DiskJobSecrets) AsPodJobSecrets() (*PodJobSecrets, bool) {
+// AsHeavyJobSecrets is the BasicJobSecrets implementation for DiskJobSecrets.
+func (djs DiskJobSecrets) AsHeavyJobSecrets() (*HeavyJobSecrets, bool) {
+	return nil, false
+}
+
+// AsJobSecretsType is the BasicJobSecrets implementation for DiskJobSecrets.
+func (djs DiskJobSecrets) AsJobSecretsType() (*JobSecretsType, bool) {
 	return nil, false
 }
 
@@ -885,17 +1171,165 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// GetCopyLogsURIOutput output for the GetCopyLogsUri.
-type GetCopyLogsURIOutput struct {
-	autorest.Response `json:"-"`
-	// LogType - Type/Level of the log.
-	LogType *string `json:"logType,omitempty"`
-	// CopyLogDetails - List of copy log details.
-	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+// HeavyAccountCopyLogDetails copy log details for a storage account for Databox heavy
+type HeavyAccountCopyLogDetails struct {
+	// AccountName - Destination account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// CopyLogLink - Link for copy logs.
+	CopyLogLink *[]string `json:"copyLogLink,omitempty"`
+	// CopyLogDetailsType - Possible values include: 'CopyLogDetailsTypeCopyLogDetails', 'CopyLogDetailsTypeDataBox', 'CopyLogDetailsTypeDataBoxDisk', 'CopyLogDetailsTypeDataBoxHeavy'
+	CopyLogDetailsType CopyLogDetailsType `json:"copyLogDetailsType,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for GetCopyLogsURIOutput struct.
-func (gcluo *GetCopyLogsURIOutput) UnmarshalJSON(body []byte) error {
+// MarshalJSON is the custom marshaler for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) MarshalJSON() ([]byte, error) {
+	hacld.CopyLogDetailsType = CopyLogDetailsTypeDataBoxHeavy
+	objectMap := make(map[string]interface{})
+	if hacld.AccountName != nil {
+		objectMap["accountName"] = hacld.AccountName
+	}
+	if hacld.CopyLogLink != nil {
+		objectMap["copyLogLink"] = hacld.CopyLogLink
+	}
+	if hacld.CopyLogDetailsType != "" {
+		objectMap["copyLogDetailsType"] = hacld.CopyLogDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAccountCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsAccountCopyLogDetails() (*AccountCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsDiskCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsDiskCopyLogDetails() (*DiskCopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsHeavyAccountCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsHeavyAccountCopyLogDetails() (*HeavyAccountCopyLogDetails, bool) {
+	return &hacld, true
+}
+
+// AsCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsCopyLogDetails() (*CopyLogDetails, bool) {
+	return nil, false
+}
+
+// AsBasicCopyLogDetails is the BasicCopyLogDetails implementation for HeavyAccountCopyLogDetails.
+func (hacld HeavyAccountCopyLogDetails) AsBasicCopyLogDetails() (BasicCopyLogDetails, bool) {
+	return &hacld, true
+}
+
+// HeavyJobDetails databox Heavy Device Job Details
+type HeavyJobDetails struct {
+	// CopyProgress - Copy progress per account.
+	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// JobStages - List of stages that run in the job.
+	JobStages *[]JobStages `json:"jobStages,omitempty"`
+	// ContactDetails - Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	// ShippingAddress - Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	// DeliveryPackage - Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
+	// ReturnPackage - Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
+	// DestinationAccountDetails - Destination account details.
+	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
+	// ErrorDetails - Error details for failure. This is optional.
+	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
+	// Preferences - Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+	// CopyLogDetails - List of copy log details.
+	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
+	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	JobDetailsType JobDetailsType `json:"jobDetailsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HeavyJobDetails.
+func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
+	hjd.JobDetailsType = JobDetailsTypeDataBoxHeavy
+	objectMap := make(map[string]interface{})
+	if hjd.CopyProgress != nil {
+		objectMap["copyProgress"] = hjd.CopyProgress
+	}
+	if hjd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = hjd.ExpectedDataSizeInTeraBytes
+	}
+	if hjd.JobStages != nil {
+		objectMap["jobStages"] = hjd.JobStages
+	}
+	if hjd.ContactDetails != nil {
+		objectMap["contactDetails"] = hjd.ContactDetails
+	}
+	if hjd.ShippingAddress != nil {
+		objectMap["shippingAddress"] = hjd.ShippingAddress
+	}
+	if hjd.DeliveryPackage != nil {
+		objectMap["deliveryPackage"] = hjd.DeliveryPackage
+	}
+	if hjd.ReturnPackage != nil {
+		objectMap["returnPackage"] = hjd.ReturnPackage
+	}
+	if hjd.DestinationAccountDetails != nil {
+		objectMap["destinationAccountDetails"] = hjd.DestinationAccountDetails
+	}
+	if hjd.ErrorDetails != nil {
+		objectMap["errorDetails"] = hjd.ErrorDetails
+	}
+	if hjd.Preferences != nil {
+		objectMap["preferences"] = hjd.Preferences
+	}
+	if hjd.CopyLogDetails != nil {
+		objectMap["copyLogDetails"] = hjd.CopyLogDetails
+	}
+	if hjd.ReverseShipmentLabelSasKey != nil {
+		objectMap["reverseShipmentLabelSasKey"] = hjd.ReverseShipmentLabelSasKey
+	}
+	if hjd.ChainOfCustodySasKey != nil {
+		objectMap["chainOfCustodySasKey"] = hjd.ChainOfCustodySasKey
+	}
+	if hjd.JobDetailsType != "" {
+		objectMap["jobDetailsType"] = hjd.JobDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsDiskJobDetails() (*DiskJobDetails, bool) {
+	return nil, false
+}
+
+// AsHeavyJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsHeavyJobDetails() (*HeavyJobDetails, bool) {
+	return &hjd, true
+}
+
+// AsJobDetailsType is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsJobDetailsType() (*JobDetailsType, bool) {
+	return nil, false
+}
+
+// AsJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsJobDetails() (*JobDetails, bool) {
+	return nil, false
+}
+
+// AsBasicJobDetails is the BasicJobDetails implementation for HeavyJobDetails.
+func (hjd HeavyJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
+	return &hjd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HeavyJobDetails struct.
+func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -903,14 +1337,95 @@ func (gcluo *GetCopyLogsURIOutput) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "logType":
+		case "copyProgress":
 			if v != nil {
-				var logType string
-				err = json.Unmarshal(*v, &logType)
+				var copyProgress []CopyProgress
+				err = json.Unmarshal(*v, &copyProgress)
 				if err != nil {
 					return err
 				}
-				gcluo.LogType = &logType
+				hjd.CopyProgress = &copyProgress
+			}
+		case "expectedDataSizeInTeraBytes":
+			if v != nil {
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
+				if err != nil {
+					return err
+				}
+				hjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "jobStages":
+			if v != nil {
+				var jobStages []JobStages
+				err = json.Unmarshal(*v, &jobStages)
+				if err != nil {
+					return err
+				}
+				hjd.JobStages = &jobStages
+			}
+		case "contactDetails":
+			if v != nil {
+				var contactDetails ContactDetails
+				err = json.Unmarshal(*v, &contactDetails)
+				if err != nil {
+					return err
+				}
+				hjd.ContactDetails = &contactDetails
+			}
+		case "shippingAddress":
+			if v != nil {
+				var shippingAddress ShippingAddress
+				err = json.Unmarshal(*v, &shippingAddress)
+				if err != nil {
+					return err
+				}
+				hjd.ShippingAddress = &shippingAddress
+			}
+		case "deliveryPackage":
+			if v != nil {
+				var deliveryPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &deliveryPackage)
+				if err != nil {
+					return err
+				}
+				hjd.DeliveryPackage = &deliveryPackage
+			}
+		case "returnPackage":
+			if v != nil {
+				var returnPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &returnPackage)
+				if err != nil {
+					return err
+				}
+				hjd.ReturnPackage = &returnPackage
+			}
+		case "destinationAccountDetails":
+			if v != nil {
+				var destinationAccountDetails []DestinationAccountDetails
+				err = json.Unmarshal(*v, &destinationAccountDetails)
+				if err != nil {
+					return err
+				}
+				hjd.DestinationAccountDetails = &destinationAccountDetails
+			}
+		case "errorDetails":
+			if v != nil {
+				var errorDetails []JobErrorDetails
+				err = json.Unmarshal(*v, &errorDetails)
+				if err != nil {
+					return err
+				}
+				hjd.ErrorDetails = &errorDetails
+			}
+		case "preferences":
+			if v != nil {
+				var preferences Preferences
+				err = json.Unmarshal(*v, &preferences)
+				if err != nil {
+					return err
+				}
+				hjd.Preferences = &preferences
 			}
 		case "copyLogDetails":
 			if v != nil {
@@ -918,7 +1433,34 @@ func (gcluo *GetCopyLogsURIOutput) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				gcluo.CopyLogDetails = &copyLogDetails
+				hjd.CopyLogDetails = &copyLogDetails
+			}
+		case "reverseShipmentLabelSasKey":
+			if v != nil {
+				var reverseShipmentLabelSasKey string
+				err = json.Unmarshal(*v, &reverseShipmentLabelSasKey)
+				if err != nil {
+					return err
+				}
+				hjd.ReverseShipmentLabelSasKey = &reverseShipmentLabelSasKey
+			}
+		case "chainOfCustodySasKey":
+			if v != nil {
+				var chainOfCustodySasKey string
+				err = json.Unmarshal(*v, &chainOfCustodySasKey)
+				if err != nil {
+					return err
+				}
+				hjd.ChainOfCustodySasKey = &chainOfCustodySasKey
+			}
+		case "jobDetailsType":
+			if v != nil {
+				var jobDetailsType JobDetailsType
+				err = json.Unmarshal(*v, &jobDetailsType)
+				if err != nil {
+					return err
+				}
+				hjd.JobDetailsType = jobDetailsType
 			}
 		}
 	}
@@ -926,10 +1468,71 @@ func (gcluo *GetCopyLogsURIOutput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// HeavyJobSecrets the secrets related to a databox heavy job.
+type HeavyJobSecrets struct {
+	// CabinetPodSecrets - Contains the list of secret objects for a databox heavy job.
+	CabinetPodSecrets *[]HeavySecret `json:"cabinetPodSecrets,omitempty"`
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) MarshalJSON() ([]byte, error) {
+	hjs.JobSecretsType = JobSecretsTypeDataBoxHeavy
+	objectMap := make(map[string]interface{})
+	if hjs.CabinetPodSecrets != nil {
+		objectMap["cabinetPodSecrets"] = hjs.CabinetPodSecrets
+	}
+	if hjs.JobSecretsType != "" {
+		objectMap["jobSecretsType"] = hjs.JobSecretsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
+	return nil, false
+}
+
+// AsHeavyJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsHeavyJobSecrets() (*HeavyJobSecrets, bool) {
+	return &hjs, true
+}
+
+// AsJobSecretsType is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsJobSecretsType() (*JobSecretsType, bool) {
+	return nil, false
+}
+
+// AsJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsJobSecrets() (*JobSecrets, bool) {
+	return nil, false
+}
+
+// AsBasicJobSecrets is the BasicJobSecrets implementation for HeavyJobSecrets.
+func (hjs HeavyJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
+	return &hjs, true
+}
+
+// HeavySecret the secrets related to a databox heavy.
+type HeavySecret struct {
+	// DeviceSerialNumber - Serial number of the assigned device.
+	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
+	// DevicePassword - Password for out of the box experience on device.
+	DevicePassword *string `json:"devicePassword,omitempty"`
+	// NetworkConfigurations - Network configuration of the appliance.
+	NetworkConfigurations *[]ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty"`
+	// EncodedValidationCertPubKey - The base 64 encoded public key to authenticate with the device
+	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
+	// AccountCredentialDetails - Per account level access credentials.
+	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
+}
+
 // BasicJobDetails job details.
 type BasicJobDetails interface {
 	AsDiskJobDetails() (*DiskJobDetails, bool)
-	AsPodJobDetails() (*PodJobDetails, bool)
+	AsHeavyJobDetails() (*HeavyJobDetails, bool)
+	AsJobDetailsType() (*JobDetailsType, bool)
 	AsJobDetails() (*JobDetails, bool)
 }
 
@@ -943,9 +1546,23 @@ type JobDetails struct {
 	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	// DeliveryPackage - Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
+	// ReturnPackage - Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
+	// DestinationAccountDetails - Destination account details.
+	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
 	// ErrorDetails - Error details for failure. This is optional.
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDisk', 'JobDetailsTypePod'
+	// Preferences - Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+	// CopyLogDetails - List of copy log details.
+	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
+	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsType `json:"jobDetailsType,omitempty"`
 }
 
@@ -957,14 +1574,18 @@ func unmarshalBasicJobDetails(body []byte) (BasicJobDetails, error) {
 	}
 
 	switch m["jobDetailsType"] {
-	case string(JobDetailsTypeDisk):
+	case string(JobDetailsTypeDataBoxDisk):
 		var djd DiskJobDetails
 		err := json.Unmarshal(body, &djd)
 		return djd, err
-	case string(JobDetailsTypePod):
-		var pjd PodJobDetails
-		err := json.Unmarshal(body, &pjd)
-		return pjd, err
+	case string(JobDetailsTypeDataBoxHeavy):
+		var hjd HeavyJobDetails
+		err := json.Unmarshal(body, &hjd)
+		return hjd, err
+	case string(JobDetailsTypeDataBox):
+		var jdt JobDetailsType
+		err := json.Unmarshal(body, &jdt)
+		return jdt, err
 	default:
 		var jd JobDetails
 		err := json.Unmarshal(body, &jd)
@@ -1006,8 +1627,29 @@ func (jd JobDetails) MarshalJSON() ([]byte, error) {
 	if jd.ShippingAddress != nil {
 		objectMap["shippingAddress"] = jd.ShippingAddress
 	}
+	if jd.DeliveryPackage != nil {
+		objectMap["deliveryPackage"] = jd.DeliveryPackage
+	}
+	if jd.ReturnPackage != nil {
+		objectMap["returnPackage"] = jd.ReturnPackage
+	}
+	if jd.DestinationAccountDetails != nil {
+		objectMap["destinationAccountDetails"] = jd.DestinationAccountDetails
+	}
 	if jd.ErrorDetails != nil {
 		objectMap["errorDetails"] = jd.ErrorDetails
+	}
+	if jd.Preferences != nil {
+		objectMap["preferences"] = jd.Preferences
+	}
+	if jd.CopyLogDetails != nil {
+		objectMap["copyLogDetails"] = jd.CopyLogDetails
+	}
+	if jd.ReverseShipmentLabelSasKey != nil {
+		objectMap["reverseShipmentLabelSasKey"] = jd.ReverseShipmentLabelSasKey
+	}
+	if jd.ChainOfCustodySasKey != nil {
+		objectMap["chainOfCustodySasKey"] = jd.ChainOfCustodySasKey
 	}
 	if jd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = jd.JobDetailsType
@@ -1020,8 +1662,13 @@ func (jd JobDetails) AsDiskJobDetails() (*DiskJobDetails, bool) {
 	return nil, false
 }
 
-// AsPodJobDetails is the BasicJobDetails implementation for JobDetails.
-func (jd JobDetails) AsPodJobDetails() (*PodJobDetails, bool) {
+// AsHeavyJobDetails is the BasicJobDetails implementation for JobDetails.
+func (jd JobDetails) AsHeavyJobDetails() (*HeavyJobDetails, bool) {
+	return nil, false
+}
+
+// AsJobDetailsType is the BasicJobDetails implementation for JobDetails.
+func (jd JobDetails) AsJobDetailsType() (*JobDetailsType, bool) {
 	return nil, false
 }
 
@@ -1033,6 +1680,383 @@ func (jd JobDetails) AsJobDetails() (*JobDetails, bool) {
 // AsBasicJobDetails is the BasicJobDetails implementation for JobDetails.
 func (jd JobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
 	return &jd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for JobDetails struct.
+func (jd *JobDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "expectedDataSizeInTeraBytes":
+			if v != nil {
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
+				if err != nil {
+					return err
+				}
+				jd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "jobStages":
+			if v != nil {
+				var jobStages []JobStages
+				err = json.Unmarshal(*v, &jobStages)
+				if err != nil {
+					return err
+				}
+				jd.JobStages = &jobStages
+			}
+		case "contactDetails":
+			if v != nil {
+				var contactDetails ContactDetails
+				err = json.Unmarshal(*v, &contactDetails)
+				if err != nil {
+					return err
+				}
+				jd.ContactDetails = &contactDetails
+			}
+		case "shippingAddress":
+			if v != nil {
+				var shippingAddress ShippingAddress
+				err = json.Unmarshal(*v, &shippingAddress)
+				if err != nil {
+					return err
+				}
+				jd.ShippingAddress = &shippingAddress
+			}
+		case "deliveryPackage":
+			if v != nil {
+				var deliveryPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &deliveryPackage)
+				if err != nil {
+					return err
+				}
+				jd.DeliveryPackage = &deliveryPackage
+			}
+		case "returnPackage":
+			if v != nil {
+				var returnPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &returnPackage)
+				if err != nil {
+					return err
+				}
+				jd.ReturnPackage = &returnPackage
+			}
+		case "destinationAccountDetails":
+			if v != nil {
+				var destinationAccountDetails []DestinationAccountDetails
+				err = json.Unmarshal(*v, &destinationAccountDetails)
+				if err != nil {
+					return err
+				}
+				jd.DestinationAccountDetails = &destinationAccountDetails
+			}
+		case "errorDetails":
+			if v != nil {
+				var errorDetails []JobErrorDetails
+				err = json.Unmarshal(*v, &errorDetails)
+				if err != nil {
+					return err
+				}
+				jd.ErrorDetails = &errorDetails
+			}
+		case "preferences":
+			if v != nil {
+				var preferences Preferences
+				err = json.Unmarshal(*v, &preferences)
+				if err != nil {
+					return err
+				}
+				jd.Preferences = &preferences
+			}
+		case "copyLogDetails":
+			if v != nil {
+				copyLogDetails, err := unmarshalBasicCopyLogDetailsArray(*v)
+				if err != nil {
+					return err
+				}
+				jd.CopyLogDetails = &copyLogDetails
+			}
+		case "reverseShipmentLabelSasKey":
+			if v != nil {
+				var reverseShipmentLabelSasKey string
+				err = json.Unmarshal(*v, &reverseShipmentLabelSasKey)
+				if err != nil {
+					return err
+				}
+				jd.ReverseShipmentLabelSasKey = &reverseShipmentLabelSasKey
+			}
+		case "chainOfCustodySasKey":
+			if v != nil {
+				var chainOfCustodySasKey string
+				err = json.Unmarshal(*v, &chainOfCustodySasKey)
+				if err != nil {
+					return err
+				}
+				jd.ChainOfCustodySasKey = &chainOfCustodySasKey
+			}
+		case "jobDetailsType":
+			if v != nil {
+				var jobDetailsType JobDetailsType
+				err = json.Unmarshal(*v, &jobDetailsType)
+				if err != nil {
+					return err
+				}
+				jd.JobDetailsType = jobDetailsType
+			}
+		}
+	}
+
+	return nil
+}
+
+// JobDetailsType databox Job Details
+type JobDetailsType struct {
+	// CopyProgress - Copy progress per storage account.
+	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// JobStages - List of stages that run in the job.
+	JobStages *[]JobStages `json:"jobStages,omitempty"`
+	// ContactDetails - Contact details for notification and shipping.
+	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	// ShippingAddress - Shipping address of the customer.
+	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	// DeliveryPackage - Delivery package shipping details.
+	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
+	// ReturnPackage - Return package shipping details.
+	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
+	// DestinationAccountDetails - Destination account details.
+	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
+	// ErrorDetails - Error details for failure. This is optional.
+	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
+	// Preferences - Preferences for the order.
+	Preferences *Preferences `json:"preferences,omitempty"`
+	// CopyLogDetails - List of copy log details.
+	CopyLogDetails *[]BasicCopyLogDetails `json:"copyLogDetails,omitempty"`
+	// ReverseShipmentLabelSasKey - Shared access key to download the return shipment label
+	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
+	// ChainOfCustodySasKey - Shared access key to download the chain of custody logs
+	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
+	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
+	JobDetailsType JobDetailsType `json:"jobDetailsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobDetailsType.
+func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
+	jdt.JobDetailsType = JobDetailsTypeDataBox
+	objectMap := make(map[string]interface{})
+	if jdt.CopyProgress != nil {
+		objectMap["copyProgress"] = jdt.CopyProgress
+	}
+	if jdt.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = jdt.ExpectedDataSizeInTeraBytes
+	}
+	if jdt.JobStages != nil {
+		objectMap["jobStages"] = jdt.JobStages
+	}
+	if jdt.ContactDetails != nil {
+		objectMap["contactDetails"] = jdt.ContactDetails
+	}
+	if jdt.ShippingAddress != nil {
+		objectMap["shippingAddress"] = jdt.ShippingAddress
+	}
+	if jdt.DeliveryPackage != nil {
+		objectMap["deliveryPackage"] = jdt.DeliveryPackage
+	}
+	if jdt.ReturnPackage != nil {
+		objectMap["returnPackage"] = jdt.ReturnPackage
+	}
+	if jdt.DestinationAccountDetails != nil {
+		objectMap["destinationAccountDetails"] = jdt.DestinationAccountDetails
+	}
+	if jdt.ErrorDetails != nil {
+		objectMap["errorDetails"] = jdt.ErrorDetails
+	}
+	if jdt.Preferences != nil {
+		objectMap["preferences"] = jdt.Preferences
+	}
+	if jdt.CopyLogDetails != nil {
+		objectMap["copyLogDetails"] = jdt.CopyLogDetails
+	}
+	if jdt.ReverseShipmentLabelSasKey != nil {
+		objectMap["reverseShipmentLabelSasKey"] = jdt.ReverseShipmentLabelSasKey
+	}
+	if jdt.ChainOfCustodySasKey != nil {
+		objectMap["chainOfCustodySasKey"] = jdt.ChainOfCustodySasKey
+	}
+	if jdt.JobDetailsType != "" {
+		objectMap["jobDetailsType"] = jdt.JobDetailsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskJobDetails is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsDiskJobDetails() (*DiskJobDetails, bool) {
+	return nil, false
+}
+
+// AsHeavyJobDetails is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsHeavyJobDetails() (*HeavyJobDetails, bool) {
+	return nil, false
+}
+
+// AsJobDetailsType is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsJobDetailsType() (*JobDetailsType, bool) {
+	return &jdt, true
+}
+
+// AsJobDetails is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsJobDetails() (*JobDetails, bool) {
+	return nil, false
+}
+
+// AsBasicJobDetails is the BasicJobDetails implementation for JobDetailsType.
+func (jdt JobDetailsType) AsBasicJobDetails() (BasicJobDetails, bool) {
+	return &jdt, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for JobDetailsType struct.
+func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "copyProgress":
+			if v != nil {
+				var copyProgress []CopyProgress
+				err = json.Unmarshal(*v, &copyProgress)
+				if err != nil {
+					return err
+				}
+				jdt.CopyProgress = &copyProgress
+			}
+		case "expectedDataSizeInTeraBytes":
+			if v != nil {
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
+				if err != nil {
+					return err
+				}
+				jdt.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "jobStages":
+			if v != nil {
+				var jobStages []JobStages
+				err = json.Unmarshal(*v, &jobStages)
+				if err != nil {
+					return err
+				}
+				jdt.JobStages = &jobStages
+			}
+		case "contactDetails":
+			if v != nil {
+				var contactDetails ContactDetails
+				err = json.Unmarshal(*v, &contactDetails)
+				if err != nil {
+					return err
+				}
+				jdt.ContactDetails = &contactDetails
+			}
+		case "shippingAddress":
+			if v != nil {
+				var shippingAddress ShippingAddress
+				err = json.Unmarshal(*v, &shippingAddress)
+				if err != nil {
+					return err
+				}
+				jdt.ShippingAddress = &shippingAddress
+			}
+		case "deliveryPackage":
+			if v != nil {
+				var deliveryPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &deliveryPackage)
+				if err != nil {
+					return err
+				}
+				jdt.DeliveryPackage = &deliveryPackage
+			}
+		case "returnPackage":
+			if v != nil {
+				var returnPackage PackageShippingDetails
+				err = json.Unmarshal(*v, &returnPackage)
+				if err != nil {
+					return err
+				}
+				jdt.ReturnPackage = &returnPackage
+			}
+		case "destinationAccountDetails":
+			if v != nil {
+				var destinationAccountDetails []DestinationAccountDetails
+				err = json.Unmarshal(*v, &destinationAccountDetails)
+				if err != nil {
+					return err
+				}
+				jdt.DestinationAccountDetails = &destinationAccountDetails
+			}
+		case "errorDetails":
+			if v != nil {
+				var errorDetails []JobErrorDetails
+				err = json.Unmarshal(*v, &errorDetails)
+				if err != nil {
+					return err
+				}
+				jdt.ErrorDetails = &errorDetails
+			}
+		case "preferences":
+			if v != nil {
+				var preferences Preferences
+				err = json.Unmarshal(*v, &preferences)
+				if err != nil {
+					return err
+				}
+				jdt.Preferences = &preferences
+			}
+		case "copyLogDetails":
+			if v != nil {
+				copyLogDetails, err := unmarshalBasicCopyLogDetailsArray(*v)
+				if err != nil {
+					return err
+				}
+				jdt.CopyLogDetails = &copyLogDetails
+			}
+		case "reverseShipmentLabelSasKey":
+			if v != nil {
+				var reverseShipmentLabelSasKey string
+				err = json.Unmarshal(*v, &reverseShipmentLabelSasKey)
+				if err != nil {
+					return err
+				}
+				jdt.ReverseShipmentLabelSasKey = &reverseShipmentLabelSasKey
+			}
+		case "chainOfCustodySasKey":
+			if v != nil {
+				var chainOfCustodySasKey string
+				err = json.Unmarshal(*v, &chainOfCustodySasKey)
+				if err != nil {
+					return err
+				}
+				jdt.ChainOfCustodySasKey = &chainOfCustodySasKey
+			}
+		case "jobDetailsType":
+			if v != nil {
+				var jobDetailsType JobDetailsType
+				err = json.Unmarshal(*v, &jobDetailsType)
+				if err != nil {
+					return err
+				}
+				jdt.JobDetailsType = jobDetailsType
+			}
+		}
+	}
+
+	return nil
 }
 
 // JobErrorDetails job Error Details for providing the information and recommended action.
@@ -1049,24 +2073,18 @@ type JobErrorDetails struct {
 
 // JobProperties job Properties
 type JobProperties struct {
-	// DeviceType - Type of the device to be used for the job. Possible values include: 'Pod', 'Disk', 'Cabinet'
-	DeviceType DeviceType `json:"deviceType,omitempty"`
 	// IsCancellable - Describes whether the job is cancellable or not.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
+	// IsDeletable - Describes whether the job is deletable or not.
+	IsDeletable *bool `json:"isDeletable,omitempty"`
 	// IsShippingAddressEditable - Describes whether the shipping address is editable or not.
 	IsShippingAddressEditable *bool `json:"isShippingAddressEditable,omitempty"`
-	// Status - Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
+	// Status - Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCurrent'
 	Status StageName `json:"status,omitempty"`
 	// StartTime - Time at which the job was started in UTC ISO 8601 format.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// Error - Top level error for the job.
 	Error *Error `json:"error,omitempty"`
-	// DeliveryPackage - Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty"`
-	// ReturnPackage - Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty"`
-	// DestinationAccountDetails - Destination account details.
-	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
 	// Details - Details of a job run. This field will only be sent for expand details filter.
 	Details BasicJobDetails `json:"details,omitempty"`
 	// CancellationReason - Reason for cancellation.
@@ -1082,15 +2100,6 @@ func (jp *JobProperties) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "deviceType":
-			if v != nil {
-				var deviceType DeviceType
-				err = json.Unmarshal(*v, &deviceType)
-				if err != nil {
-					return err
-				}
-				jp.DeviceType = deviceType
-			}
 		case "isCancellable":
 			if v != nil {
 				var isCancellable bool
@@ -1099,6 +2108,15 @@ func (jp *JobProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				jp.IsCancellable = &isCancellable
+			}
+		case "isDeletable":
+			if v != nil {
+				var isDeletable bool
+				err = json.Unmarshal(*v, &isDeletable)
+				if err != nil {
+					return err
+				}
+				jp.IsDeletable = &isDeletable
 			}
 		case "isShippingAddressEditable":
 			if v != nil {
@@ -1135,33 +2153,6 @@ func (jp *JobProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				jp.Error = &errorVar
-			}
-		case "deliveryPackage":
-			if v != nil {
-				var deliveryPackage PackageShippingDetails
-				err = json.Unmarshal(*v, &deliveryPackage)
-				if err != nil {
-					return err
-				}
-				jp.DeliveryPackage = &deliveryPackage
-			}
-		case "returnPackage":
-			if v != nil {
-				var returnPackage PackageShippingDetails
-				err = json.Unmarshal(*v, &returnPackage)
-				if err != nil {
-					return err
-				}
-				jp.ReturnPackage = &returnPackage
-			}
-		case "destinationAccountDetails":
-			if v != nil {
-				var destinationAccountDetails []DestinationAccountDetails
-				err = json.Unmarshal(*v, &destinationAccountDetails)
-				if err != nil {
-					return err
-				}
-				jp.DestinationAccountDetails = &destinationAccountDetails
 			}
 		case "details":
 			if v != nil {
@@ -1493,17 +2484,39 @@ func (future *JobsCreateFuture) Result(client JobsClient) (jr JobResource, err e
 	return
 }
 
+// JobsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type JobsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("databox.JobsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // BasicJobSecrets the base class for the secrets
 type BasicJobSecrets interface {
-	AsCabinetJobSecrets() (*CabinetJobSecrets, bool)
 	AsDiskJobSecrets() (*DiskJobSecrets, bool)
-	AsPodJobSecrets() (*PodJobSecrets, bool)
+	AsHeavyJobSecrets() (*HeavyJobSecrets, bool)
+	AsJobSecretsType() (*JobSecretsType, bool)
 	AsJobSecrets() (*JobSecrets, bool)
 }
 
 // JobSecrets the base class for the secrets
 type JobSecrets struct {
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeCabinet', 'JobSecretsTypeDisk', 'JobSecretsTypePod'
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
 	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
 }
 
@@ -1515,18 +2528,18 @@ func unmarshalBasicJobSecrets(body []byte) (BasicJobSecrets, error) {
 	}
 
 	switch m["jobSecretsType"] {
-	case string(JobSecretsTypeCabinet):
-		var cjs CabinetJobSecrets
-		err := json.Unmarshal(body, &cjs)
-		return cjs, err
-	case string(JobSecretsTypeDisk):
+	case string(JobSecretsTypeDataBoxDisk):
 		var djs DiskJobSecrets
 		err := json.Unmarshal(body, &djs)
 		return djs, err
-	case string(JobSecretsTypePod):
-		var pjs PodJobSecrets
-		err := json.Unmarshal(body, &pjs)
-		return pjs, err
+	case string(JobSecretsTypeDataBoxHeavy):
+		var hjs HeavyJobSecrets
+		err := json.Unmarshal(body, &hjs)
+		return hjs, err
+	case string(JobSecretsTypeDataBox):
+		var jst JobSecretsType
+		err := json.Unmarshal(body, &jst)
+		return jst, err
 	default:
 		var js JobSecrets
 		err := json.Unmarshal(body, &js)
@@ -1562,18 +2575,18 @@ func (js JobSecrets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsCabinetJobSecrets is the BasicJobSecrets implementation for JobSecrets.
-func (js JobSecrets) AsCabinetJobSecrets() (*CabinetJobSecrets, bool) {
-	return nil, false
-}
-
 // AsDiskJobSecrets is the BasicJobSecrets implementation for JobSecrets.
 func (js JobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
 	return nil, false
 }
 
-// AsPodJobSecrets is the BasicJobSecrets implementation for JobSecrets.
-func (js JobSecrets) AsPodJobSecrets() (*PodJobSecrets, bool) {
+// AsHeavyJobSecrets is the BasicJobSecrets implementation for JobSecrets.
+func (js JobSecrets) AsHeavyJobSecrets() (*HeavyJobSecrets, bool) {
+	return nil, false
+}
+
+// AsJobSecretsType is the BasicJobSecrets implementation for JobSecrets.
+func (js JobSecrets) AsJobSecretsType() (*JobSecretsType, bool) {
 	return nil, false
 }
 
@@ -1587,9 +2600,55 @@ func (js JobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 	return &js, true
 }
 
+// JobSecretsType the secrets related to a databox job.
+type JobSecretsType struct {
+	// PodSecrets - Contains the list of secret objects for a job.
+	PodSecrets *[]Secret `json:"podSecrets,omitempty"`
+	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeDataBoxDisk', 'JobSecretsTypeDataBoxHeavy', 'JobSecretsTypeDataBox'
+	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobSecretsType.
+func (jst JobSecretsType) MarshalJSON() ([]byte, error) {
+	jst.JobSecretsType = JobSecretsTypeDataBox
+	objectMap := make(map[string]interface{})
+	if jst.PodSecrets != nil {
+		objectMap["podSecrets"] = jst.PodSecrets
+	}
+	if jst.JobSecretsType != "" {
+		objectMap["jobSecretsType"] = jst.JobSecretsType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDiskJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
+	return nil, false
+}
+
+// AsHeavyJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsHeavyJobSecrets() (*HeavyJobSecrets, bool) {
+	return nil, false
+}
+
+// AsJobSecretsType is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsJobSecretsType() (*JobSecretsType, bool) {
+	return &jst, true
+}
+
+// AsJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsJobSecrets() (*JobSecrets, bool) {
+	return nil, false
+}
+
+// AsBasicJobSecrets is the BasicJobSecrets implementation for JobSecretsType.
+func (jst JobSecretsType) AsBasicJobSecrets() (BasicJobSecrets, bool) {
+	return &jst, true
+}
+
 // JobStages job stages.
 type JobStages struct {
-	// StageName - Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
+	// StageName - Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCurrent'
 	StageName StageName `json:"stageName,omitempty"`
 	// DisplayName - Display name of the job stage.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -1775,134 +2834,9 @@ type PackageShippingDetails struct {
 	TrackingURL *string `json:"trackingUrl,omitempty"`
 }
 
-// PodJobDetails pod Job Details
-type PodJobDetails struct {
-	// CopyProgress - Copy progress per account.
-	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
-	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transfered in this job, in tera bytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
-	// JobStages - List of stages that run in the job.
-	JobStages *[]JobStages `json:"jobStages,omitempty"`
-	// ContactDetails - Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
-	// ShippingAddress - Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// ErrorDetails - Error details for failure. This is optional.
-	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
-	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDisk', 'JobDetailsTypePod'
-	JobDetailsType JobDetailsType `json:"jobDetailsType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PodJobDetails.
-func (pjd PodJobDetails) MarshalJSON() ([]byte, error) {
-	pjd.JobDetailsType = JobDetailsTypePod
-	objectMap := make(map[string]interface{})
-	if pjd.CopyProgress != nil {
-		objectMap["copyProgress"] = pjd.CopyProgress
-	}
-	if pjd.ExpectedDataSizeInTeraBytes != nil {
-		objectMap["expectedDataSizeInTeraBytes"] = pjd.ExpectedDataSizeInTeraBytes
-	}
-	if pjd.JobStages != nil {
-		objectMap["jobStages"] = pjd.JobStages
-	}
-	if pjd.ContactDetails != nil {
-		objectMap["contactDetails"] = pjd.ContactDetails
-	}
-	if pjd.ShippingAddress != nil {
-		objectMap["shippingAddress"] = pjd.ShippingAddress
-	}
-	if pjd.ErrorDetails != nil {
-		objectMap["errorDetails"] = pjd.ErrorDetails
-	}
-	if pjd.JobDetailsType != "" {
-		objectMap["jobDetailsType"] = pjd.JobDetailsType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsDiskJobDetails is the BasicJobDetails implementation for PodJobDetails.
-func (pjd PodJobDetails) AsDiskJobDetails() (*DiskJobDetails, bool) {
-	return nil, false
-}
-
-// AsPodJobDetails is the BasicJobDetails implementation for PodJobDetails.
-func (pjd PodJobDetails) AsPodJobDetails() (*PodJobDetails, bool) {
-	return &pjd, true
-}
-
-// AsJobDetails is the BasicJobDetails implementation for PodJobDetails.
-func (pjd PodJobDetails) AsJobDetails() (*JobDetails, bool) {
-	return nil, false
-}
-
-// AsBasicJobDetails is the BasicJobDetails implementation for PodJobDetails.
-func (pjd PodJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
-	return &pjd, true
-}
-
-// PodJobSecrets the secrets related to a pod job.
-type PodJobSecrets struct {
-	// PodSecrets - Contains the list of secret objects for a job.
-	PodSecrets *[]PodSecret `json:"podSecrets,omitempty"`
-	// JobSecretsType - Possible values include: 'JobSecretsTypeJobSecrets', 'JobSecretsTypeCabinet', 'JobSecretsTypeDisk', 'JobSecretsTypePod'
-	JobSecretsType JobSecretsType `json:"jobSecretsType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PodJobSecrets.
-func (pjs PodJobSecrets) MarshalJSON() ([]byte, error) {
-	pjs.JobSecretsType = JobSecretsTypePod
-	objectMap := make(map[string]interface{})
-	if pjs.PodSecrets != nil {
-		objectMap["podSecrets"] = pjs.PodSecrets
-	}
-	if pjs.JobSecretsType != "" {
-		objectMap["jobSecretsType"] = pjs.JobSecretsType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsCabinetJobSecrets is the BasicJobSecrets implementation for PodJobSecrets.
-func (pjs PodJobSecrets) AsCabinetJobSecrets() (*CabinetJobSecrets, bool) {
-	return nil, false
-}
-
-// AsDiskJobSecrets is the BasicJobSecrets implementation for PodJobSecrets.
-func (pjs PodJobSecrets) AsDiskJobSecrets() (*DiskJobSecrets, bool) {
-	return nil, false
-}
-
-// AsPodJobSecrets is the BasicJobSecrets implementation for PodJobSecrets.
-func (pjs PodJobSecrets) AsPodJobSecrets() (*PodJobSecrets, bool) {
-	return &pjs, true
-}
-
-// AsJobSecrets is the BasicJobSecrets implementation for PodJobSecrets.
-func (pjs PodJobSecrets) AsJobSecrets() (*JobSecrets, bool) {
-	return nil, false
-}
-
-// AsBasicJobSecrets is the BasicJobSecrets implementation for PodJobSecrets.
-func (pjs PodJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
-	return &pjs, true
-}
-
-// PodSecret the secrets related to a Pod.
-type PodSecret struct {
-	// DeviceSerialNumber - Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
-	// DevicePassword - Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty"`
-	// AccountCredentialDetails - Per account level access credentials.
-	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
-}
-
-// ReportIssueDetails details of the reported issue.
-type ReportIssueDetails struct {
-	// IssueType - Issue Type. Possible values include: 'DeviceMismatch', 'ValidationStringMismatch', 'CredentialNotWorking', 'DeviceFailure'
-	IssueType IssueType `json:"issueType,omitempty"`
-	// DeviceIssueType - Device Issue Type. Only used for Device failure issue. Possible values include: 'DeviceTampering', 'DeviceNotBootingUp', 'DeviceHealthCheckShowFailures', 'NICsAreNotWorking', 'Misc'
-	DeviceIssueType DeviceIssueType `json:"deviceIssueType,omitempty"`
+// Preferences preferences related to the order
+type Preferences struct {
+	PreferredDataCenterRegion *[]string `json:"preferredDataCenterRegion,omitempty"`
 }
 
 // Resource model of the Resource.
@@ -1930,14 +2864,52 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Secret the secrets related to a DataBox.
+type Secret struct {
+	// DeviceSerialNumber - Serial number of the assigned device.
+	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty"`
+	// DevicePassword - Password for out of the box experience on device.
+	DevicePassword *string `json:"devicePassword,omitempty"`
+	// NetworkConfigurations - Network configuration of the appliance.
+	NetworkConfigurations *[]ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty"`
+	// EncodedValidationCertPubKey - The base 64 encoded public key to authenticate with the device
+	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
+	// AccountCredentialDetails - Per account level access credentials.
+	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
+}
+
+// ServiceHealthResponse response of the GetServiceHealth api.
+type ServiceHealthResponse struct {
+	// ConnectorType - Name of the connector.
+	ConnectorType *string `json:"connectorType,omitempty"`
+	// StartTime - Time when the action was triggered.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Time when the action got completed.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Status - Status of the service.
+	Status *bool `json:"status,omitempty"`
+}
+
+// ServiceHealthResponseList list of service health response.
+type ServiceHealthResponseList struct {
+	// Dependencies - List of ServiceHealthResponse.
+	Dependencies *[]ServiceHealthResponse `json:"dependencies,omitempty"`
+	// ServiceVersion - Version of the service.
+	ServiceVersion *string `json:"serviceVersion,omitempty"`
+}
+
 // ShareCredentialDetails credential details of the shares in account.
 type ShareCredentialDetails struct {
 	// ShareName - Name of the share.
 	ShareName *string `json:"shareName,omitempty"`
+	// ShareType - Type of the share. Possible values include: 'ShareDestinationFormatTypeUnknownType', 'ShareDestinationFormatTypeHCS', 'ShareDestinationFormatTypeBlockBlob', 'ShareDestinationFormatTypePageBlob', 'ShareDestinationFormatTypeAzureFile', 'ShareDestinationFormatTypeHDC'
+	ShareType ShareDestinationFormatType `json:"shareType,omitempty"`
 	// UserName - User name for the share.
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password for the share.
 	Password *string `json:"password,omitempty"`
+	// SupportedAccessProtocols - Access protocols supported on the device.
+	SupportedAccessProtocols *[]AccessProtocol `json:"supportedAccessProtocols,omitempty"`
 }
 
 // ShipmentPickUpRequest shipment pick up request details.
@@ -1983,17 +2955,10 @@ type ShippingAddress struct {
 	AddressType AddressType `json:"addressType,omitempty"`
 }
 
-// ShippingLabelDetails details for the shipping label.
-type ShippingLabelDetails struct {
-	autorest.Response `json:"-"`
-	// ShippingLabelSasURI - Sas uri for accessing the shipping label.
-	ShippingLabelSasURI *string `json:"shippingLabelSasUri,omitempty"`
-}
-
 // Sku the Sku.
 type Sku struct {
-	// Name - The sku name.
-	Name *string `json:"name,omitempty"`
+	// Name - The sku name. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	Name SkuName `json:"name,omitempty"`
 	// DisplayName - The display name of the sku.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Family - The sku family.
@@ -2093,8 +3058,12 @@ type SkuProperties struct {
 	Costs *[]SkuCost `json:"costs,omitempty"`
 	// APIVersions - Api versions that support this Sku.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
-	// DisabledReason - Reason why the Sku is disabled.
-	DisabledReason *string `json:"disabledReason,omitempty"`
+	// DisabledReason - Reason why the Sku is disabled. Possible values include: 'SkuDisabledReasonNone', 'SkuDisabledReasonCountry', 'SkuDisabledReasonRegion', 'SkuDisabledReasonFeature', 'SkuDisabledReasonOfferType'
+	DisabledReason SkuDisabledReason `json:"disabledReason,omitempty"`
+	// DisabledReasonMessage - Message for why the Sku is disabled.
+	DisabledReasonMessage *string `json:"disabledReasonMessage,omitempty"`
+	// RequiredFeature - Required feature to access the sku.
+	RequiredFeature *string `json:"requiredFeature,omitempty"`
 }
 
 // UnencryptedSecrets unencrypted secrets for accessing device.
@@ -2102,8 +3071,6 @@ type UnencryptedSecrets struct {
 	autorest.Response `json:"-"`
 	// JobName - Name of the job.
 	JobName *string `json:"jobName,omitempty"`
-	// DeviceType - The Device Type used in the job. Possible values include: 'Pod', 'Disk', 'Cabinet'
-	DeviceType DeviceType `json:"deviceType,omitempty"`
 	// JobSecrets - Secrets related to this job.
 	JobSecrets BasicJobSecrets `json:"jobSecrets,omitempty"`
 }
@@ -2125,15 +3092,6 @@ func (us *UnencryptedSecrets) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				us.JobName = &jobName
-			}
-		case "deviceType":
-			if v != nil {
-				var deviceType DeviceType
-				err = json.Unmarshal(*v, &deviceType)
-				if err != nil {
-					return err
-				}
-				us.DeviceType = deviceType
 			}
 		case "jobSecrets":
 			if v != nil {
@@ -2161,12 +3119,14 @@ type UpdateJobDetails struct {
 type UpdateJobProperties struct {
 	// Details - Details of a job to be updated.
 	Details *UpdateJobDetails `json:"details,omitempty"`
+	// DestinationAccountDetails - Destination account details.
+	DestinationAccountDetails *[]DestinationAccountDetails `json:"destinationAccountDetails,omitempty"`
 }
 
 // ValidateAddress the requirements to validate customer address where the device needs to be shipped.
 type ValidateAddress struct {
 	// ShippingAddress - Shipping address of the customer.
 	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
-	// DeviceType - Device type to be used for the job. Possible values include: 'Pod', 'Disk', 'Cabinet'
-	DeviceType DeviceType `json:"deviceType,omitempty"`
+	// DeviceType - Device type to be used for the job. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
+	DeviceType SkuName `json:"deviceType,omitempty"`
 }

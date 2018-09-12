@@ -6,8 +6,13 @@ import (
 	"os"
 	"time"
 
-	servicebus "github.com/Azure/azure-service-bus-go"
+	"github.com/Azure/azure-service-bus-go"
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	godotenv.Load()
+}
 
 func ExampleQueue_getOrBuildQueue() {
 	const queueName = "myqueue"
@@ -56,21 +61,16 @@ func ExampleQueue_scheduledMessage() {
 	}
 
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
-	defer func() {
-		if err != nil {
-			os.Exit(1)
-		}
-	}()
-
 	if err != nil {
-		fmt.Printf("error: %v\n", err)
+		fmt.Println("error: ", err)
 		return
 	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
-	// Initialize and create a Service Bus Queue named helloworld if it doesn't exist
-	q, err := ns.NewQueue("helloworld", servicebus.QueueWithReceiveAndDelete())
+	// Initialize a client to communicate with a Service Bus Queue named scheduledmessages
+	q, err := ns.NewQueue("scheduledmessages", servicebus.QueueWithReceiveAndDelete())
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 		return

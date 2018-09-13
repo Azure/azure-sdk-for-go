@@ -757,9 +757,9 @@ type Information struct {
 	Type TypeEnum `json:"type,omitempty"`
 	// Submitter - the user or account that submitted the job.
 	Submitter *string `json:"submitter,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism used for this job. At most one of degreeOfParallelism and degreeOfParallelismPercent should be specified. If none, a default value of 1 will be used.
+	// DegreeOfParallelism - the degree of parallelism used for this job.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// DegreeOfParallelismPercent - the degree of parallelism in percentage used for this job. At most one of degreeOfParallelism and degreeOfParallelismPercent should be specified. If none, a default value of 1 will be used for degreeOfParallelism.
+	// DegreeOfParallelismPercent - the degree of parallelism in percentage used for this job.
 	DegreeOfParallelismPercent *float64 `json:"degreeOfParallelismPercent,omitempty"`
 	// Priority - the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
@@ -967,9 +967,9 @@ type InformationBasic struct {
 	Type TypeEnum `json:"type,omitempty"`
 	// Submitter - the user or account that submitted the job.
 	Submitter *string `json:"submitter,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism used for this job. At most one of degreeOfParallelism and degreeOfParallelismPercent should be specified. If none, a default value of 1 will be used.
+	// DegreeOfParallelism - the degree of parallelism used for this job.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// DegreeOfParallelismPercent - the degree of parallelism in percentage used for this job. At most one of degreeOfParallelism and degreeOfParallelismPercent should be specified. If none, a default value of 1 will be used for degreeOfParallelism.
+	// DegreeOfParallelismPercent - the degree of parallelism in percentage used for this job.
 	DegreeOfParallelismPercent *float64 `json:"degreeOfParallelismPercent,omitempty"`
 	// Priority - the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`

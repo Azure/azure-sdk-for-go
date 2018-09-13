@@ -196,8 +196,8 @@ type SavedSearch struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the saved search.
 	Type *string `json:"type,omitempty"`
-	// Etag - The etag of the saved search.
-	Etag *string `json:"etag,omitempty"`
+	// ETag - The ETag of the saved search.
+	ETag *string `json:"eTag,omitempty"`
 	// SavedSearchProperties - The properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
 }
@@ -214,8 +214,8 @@ func (ss SavedSearch) MarshalJSON() ([]byte, error) {
 	if ss.Type != nil {
 		objectMap["type"] = ss.Type
 	}
-	if ss.Etag != nil {
-		objectMap["etag"] = ss.Etag
+	if ss.ETag != nil {
+		objectMap["eTag"] = ss.ETag
 	}
 	if ss.SavedSearchProperties != nil {
 		objectMap["properties"] = ss.SavedSearchProperties
@@ -259,14 +259,14 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 				}
 				ss.Type = &typeVar
 			}
-		case "etag":
+		case "eTag":
 			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
 				if err != nil {
 					return err
 				}
-				ss.Etag = &etag
+				ss.ETag = &eTag
 			}
 		case "properties":
 			if v != nil {
@@ -351,7 +351,7 @@ type SearchMetadata struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// LastUpdated - The time of last update.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// ETag - The etag of the search results.
+	// ETag - The ETag of the search results.
 	ETag *string `json:"eTag,omitempty"`
 	// Sort - How the results are sorted.
 	Sort *[]SearchSort `json:"sort,omitempty"`
@@ -452,8 +452,8 @@ type StorageInsight struct {
 	autorest.Response `json:"-"`
 	// StorageInsightProperties - Storage insight properties.
 	*StorageInsightProperties `json:"properties,omitempty"`
-	// Etag - The etag of the storage insight.
-	Etag *string `json:"etag,omitempty"`
+	// ETag - The ETag of the storage insight.
+	ETag *string `json:"eTag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -470,8 +470,8 @@ func (si StorageInsight) MarshalJSON() ([]byte, error) {
 	if si.StorageInsightProperties != nil {
 		objectMap["properties"] = si.StorageInsightProperties
 	}
-	if si.Etag != nil {
-		objectMap["etag"] = si.Etag
+	if si.ETag != nil {
+		objectMap["eTag"] = si.ETag
 	}
 	if si.ID != nil {
 		objectMap["id"] = si.ID
@@ -506,14 +506,14 @@ func (si *StorageInsight) UnmarshalJSON(body []byte) error {
 				}
 				si.StorageInsightProperties = &storageInsightProperties
 			}
-		case "etag":
+		case "eTag":
 			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
 				if err != nil {
 					return err
 				}
-				si.Etag = &etag
+				si.ETag = &eTag
 			}
 		case "id":
 			if v != nil {

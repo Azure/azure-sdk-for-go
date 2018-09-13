@@ -47,23 +47,17 @@ func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID s
 // workspaceName - name of Azure Machine Learning workspace.
 // computeName - name of the Azure Machine Learning compute.
 // parameters - payload with Machine Learning compute definition.
-func (client MachineLearningComputeClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource) (result ComputeResource, err error) {
+func (client MachineLearningComputeClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource) (result MachineLearningComputeCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, computeName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -95,9 +89,19 @@ func (client MachineLearningComputeClient) CreateOrUpdatePreparer(ctx context.Co
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client MachineLearningComputeClient) CreateOrUpdateSender(req *http.Request) (future MachineLearningComputeCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -118,23 +122,17 @@ func (client MachineLearningComputeClient) CreateOrUpdateResponder(resp *http.Re
 // resourceGroupName - name of the resource group in which workspace is located.
 // workspaceName - name of Azure Machine Learning workspace.
 // computeName - name of the Azure Machine Learning compute.
-func (client MachineLearningComputeClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result autorest.Response, err error) {
+func (client MachineLearningComputeClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result MachineLearningComputeDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, computeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -164,9 +162,19 @@ func (client MachineLearningComputeClient) DeletePreparer(ctx context.Context, r
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client MachineLearningComputeClient) DeleteSender(req *http.Request) (future MachineLearningComputeDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -424,23 +432,17 @@ func (client MachineLearningComputeClient) ListKeysResponder(resp *http.Response
 // resourceGroupName - name of the resource group in which workspace is located.
 // workspaceName - name of Azure Machine Learning workspace.
 // computeName - name of the Azure Machine Learning compute.
-func (client MachineLearningComputeClient) SystemUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result autorest.Response, err error) {
+func (client MachineLearningComputeClient) SystemUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result MachineLearningComputeSystemUpdateFuture, err error) {
 	req, err := client.SystemUpdatePreparer(ctx, resourceGroupName, workspaceName, computeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "SystemUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.SystemUpdateSender(req)
+	result, err = client.SystemUpdateSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "SystemUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "SystemUpdate", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.SystemUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeClient", "SystemUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -470,9 +472,19 @@ func (client MachineLearningComputeClient) SystemUpdatePreparer(ctx context.Cont
 
 // SystemUpdateSender sends the SystemUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client MachineLearningComputeClient) SystemUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client MachineLearningComputeClient) SystemUpdateSender(req *http.Request) (future MachineLearningComputeSystemUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // SystemUpdateResponder handles the response to the SystemUpdate request. The method always

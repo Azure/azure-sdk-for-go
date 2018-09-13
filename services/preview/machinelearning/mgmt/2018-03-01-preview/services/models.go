@@ -20,6 +20,7 @@ package services
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -989,6 +990,81 @@ type ListWorkspaceKeysResult struct {
 	UserStorageResourceID         *string                        `json:"userStorageResourceId,omitempty"`
 	AppInsightsInstrumentationKey *string                        `json:"appInsightsInstrumentationKey,omitempty"`
 	ContainerRegistryCredentials  *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
+}
+
+// MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MachineLearningComputeCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MachineLearningComputeCreateOrUpdateFuture) Result(client MachineLearningComputeClient) (cr ComputeResource, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("services.MachineLearningComputeCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr, err = client.CreateOrUpdateResponder(cr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// MachineLearningComputeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type MachineLearningComputeDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MachineLearningComputeDeleteFuture) Result(client MachineLearningComputeClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("services.MachineLearningComputeDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// MachineLearningComputeSystemUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MachineLearningComputeSystemUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MachineLearningComputeSystemUpdateFuture) Result(client MachineLearningComputeClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeSystemUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("services.MachineLearningComputeSystemUpdateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // MachineLearningServiceError wrapper for error response to follow ARM guidelines.

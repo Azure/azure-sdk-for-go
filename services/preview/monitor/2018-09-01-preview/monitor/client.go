@@ -61,7 +61,7 @@ func NewWithBaseURI(baseURI string) BaseClient {
 // body - the Azure metrics document json payload
 // contentType - supports application/json and application/x-ndjson
 // contentLength - content length of the payload
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPI(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result MicrosoftAspNetCoreMvcObjectResult, err error) {
+func (client BaseClient) AzureMonitorCustomMetricsIngestionAPI(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result AzureMetricsResult, err error) {
 	req, err := client.AzureMonitorCustomMetricsIngestionAPIPreparer(ctx, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.BaseClient", "AzureMonitorCustomMetricsIngestionAPI", nil, "Failure preparing request")
@@ -119,7 +119,7 @@ func (client BaseClient) AzureMonitorCustomMetricsIngestionAPISender(req *http.R
 
 // AzureMonitorCustomMetricsIngestionAPIResponder handles the response to the AzureMonitorCustomMetricsIngestionAPI request. The method always
 // closes the http.Response Body.
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPIResponder(resp *http.Response) (result MicrosoftAspNetCoreMvcObjectResult, err error) {
+func (client BaseClient) AzureMonitorCustomMetricsIngestionAPIResponder(resp *http.Response) (result AzureMetricsResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -42,7 +42,7 @@ func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 
 // Get settings of different configurations in security center
 // Parameters:
-// settingName - name of setting
+// settingName - name of setting: 'MCAS', 'WDATP'
 func (client SettingsClient) Get(ctx context.Context, settingName string) (result SettingModel, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
@@ -209,7 +209,7 @@ func (client SettingsClient) ListComplete(ctx context.Context) (result SettingsL
 
 // Update updating settings about different configurations in security center
 // Parameters:
-// settingName - name of setting
+// settingName - name of setting: 'MCAS', 'WDATP'
 // setting - setting object
 func (client SettingsClient) Update(ctx context.Context, settingName string, setting BasicSetting) (result SettingModel, err error) {
 	if err := validation.Validate([]validation.Validation{

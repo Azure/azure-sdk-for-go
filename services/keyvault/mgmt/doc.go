@@ -17,7 +17,7 @@
 	store secrets in Azure. These vaults are backed by secure hardware modules
 	to keep your information safe.
 
-	You can learn more about Azure Key vault on the Microsoft documentation site:
+	You can learn more about Azure Key Vault on the Microsoft documentation site:
 
 	    - What is Azure Key Vault: https://docs.microsoft.com/en-us/azure/key-vault/key-vault-overview
 	    - About keys, secrets, and certificates: https://docs.microsoft.com/en-us/azure/key-vault/about-keys-secrets-and-certificates
@@ -72,7 +72,7 @@
 
 	Samples
 
-	You can see all of the available samples for key vault by browsing our samples repository. All samples are runnable through go test.
+	You can see all of the available samples for Azure Key Vault by browsing our samples repository. All samples are runnable through go test.
 	    https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/keyvault
 
 	Contribute

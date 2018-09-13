@@ -20,7 +20,7 @@
 	To create and manage vaults themselves, use the mgmt subpackage to interact with the key vault
 	management API.
 
-	You can learn more about Azure Key vault on the Microsoft documentation site:
+	You can learn more about Azure Key Vault on the Microsoft documentation site:
 
 	    - What is Azure Key Vault: https://docs.microsoft.com/en-us/azure/key-vault/key-vault-overview
 	    - About keys, secrets, and certificates: https://docs.microsoft.com/en-us/azure/key-vault/about-keys-secrets-and-certificates
@@ -29,7 +29,7 @@
 	Example - Create a new key
 
 	The following example shows how to create a new key, given a vault name. Some helper functions are included
-	to elide boilerplate details of authentication and configuring a connection to the management plane of key vault.
+	to elide boilerplate details of authentication and configuring a connection to the management plane of Key Vault.
 
 	    func CreateKeyBundle(ctx context.Context, vaultName string) (key keyvault.KeyBundle, err error) {
 		vaultsClient := getVaultsClient()
@@ -59,7 +59,7 @@
 
 	Samples
 
-	You can see all of the available samples for key vault by browsing our samples repository. All samples are runnable through go test.
+	You can see all of the available samples for Azure Key Vault by browsing our samples repository. All samples are runnable through go test.
 	    https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/keyvault
 
 	Contribute

@@ -2943,7 +2943,7 @@ func (s Setting) AsBasicSetting() (BasicSetting, bool) {
 
 // SettingKind1 the kind of the security setting
 type SettingKind1 struct {
-	// Kind - the kind of the settings string. Possible values include: 'SettingKindDataExportSetting'
+	// Kind - String options: 'DataExportSetting'. Possible values include: 'SettingKindDataExportSetting'
 	Kind SettingKind `json:"kind,omitempty"`
 }
 

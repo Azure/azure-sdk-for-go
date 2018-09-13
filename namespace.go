@@ -24,6 +24,7 @@ package servicebus
 
 import (
 	"context"
+	"fmt"
 	"runtime"
 
 	"github.com/Azure/azure-amqp-common-go/auth"
@@ -125,11 +126,11 @@ func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, enti
 }
 
 func (ns *Namespace) getAMQPHostURI() string {
-	return "amqps://" + ns.Name + "." + ns.Environment.ServiceBusEndpointSuffix + "/"
+	return fmt.Sprintf("amqps://%s.%s/", ns.Name, ns.Environment.ServiceBusEndpointSuffix)
 }
 
 func (ns *Namespace) getHTTPSHostURI() string {
-	return "https://" + ns.Name + "." + ns.Environment.ServiceBusEndpointSuffix + "/"
+	return fmt.Sprintf("https://%s.%s/", ns.Name, ns.Environment.ServiceBusEndpointSuffix)
 }
 
 func (ns *Namespace) getEntityAudience(entityPath string) string {

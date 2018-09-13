@@ -40,7 +40,7 @@ test-race:    ARGS=-race         							## Run tests with race detector
 test-cover:   ARGS=-cover -coverprofile=cover.out -v     	## Run tests in verbose mode with coverage
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
-check test tests: cyclo lint vet vendor megacheck ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+check test tests: cyclo lint vet vendor megacheck terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
 
 .PHONY: vet
@@ -66,6 +66,9 @@ fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
 .PHONY: cyclo
 cyclo: ; $(info $(M) running gocyclo...) @ ## Run gocyclo on all source files
 	$Q cd $(BASE) && $(GOCYCLO) -over 19 $$($(GO_FILES))
+
+terraform.tfstate: terraform.tfvars ; $(info $(M) running terraform...) @ ## Run terraform to provision infrastructure needed for testing
+	$Q terraform apply -auto-approve
 
 # Dependency management
 

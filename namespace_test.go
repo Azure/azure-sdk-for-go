@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-service-bus-go/internal/test"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -44,7 +45,13 @@ func TestSB(t *testing.T) {
 }
 
 func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
+	godotenv.Load()
+
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
+	if connStr == "" {
+		suite.FailNow("environment variable SERVICEBUS_CONNECTION_STRING was not set")
+	}
+
 	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
 	if suite.NoError(err) {
 		suite.Contains(connStr, ns.Name)

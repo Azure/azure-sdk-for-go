@@ -4,6 +4,16 @@
 *.so
 *.dylib
 
+# Project-local configuration
+.env
+
+# Test Infrastructure
+terraform.tfvars
+*.auto.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+
 # Test binary, build with `go test -c`
 *.test
 
@@ -15,4 +25,4 @@
 
 .idea
 
-vendor
+vendor/

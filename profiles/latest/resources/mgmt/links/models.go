@@ -26,12 +26,18 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type GroupClient = original.GroupClient
 type Filter = original.Filter
 
 const (
 	AtScope Filter = original.AtScope
 )
 
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type ResourceLink = original.ResourceLink
 type ResourceLinkFilter = original.ResourceLinkFilter
 type ResourceLinkProperties = original.ResourceLinkProperties
@@ -45,6 +51,12 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewGroupClient(subscriptionID string) GroupClient {
+	return original.NewGroupClient(subscriptionID)
+}
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleFilterValues() []Filter {
 	return original.PossibleFilterValues()

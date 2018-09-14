@@ -1,7 +1,4 @@
-// Package resources implements the Azure ARM Resources service API version 2018-05-01.
-//
-// Provides operations for working with resources and resource groups.
-package resources
+package links
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -27,59 +24,51 @@ import (
 	"net/http"
 )
 
-const (
-	// DefaultBaseURI is the default URI used for the service Resources
-	DefaultBaseURI = "https://management.azure.com"
-)
-
-// BaseClient is the base client for Resources.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+// GroupClient is the azure resources can be linked together to form logical relationships. You can establish links
+// between resources belonging to different resource groups. However, all the linked resources must belong to the same
+// subscription. Each resource can be linked to 50 other resources. If any of the linked resources are deleted or
+// moved, the link owner must clean up the remaining link.
+type GroupClient struct {
+	BaseClient
 }
 
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewGroupClient creates an instance of the GroupClient client.
+func NewGroupClient(subscriptionID string) GroupClient {
+	return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-	}
+// NewGroupClientWithBaseURI creates an instance of the GroupClient client.
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListOperations lists all of the available Microsoft.Resources REST API operations.
-func (client BaseClient) ListOperations(ctx context.Context) (result OperationListResultPage, err error) {
+func (client GroupClient) ListOperations(ctx context.Context) (result OperationListResultPage, err error) {
 	result.fn = client.listOperationsNextResults
 	req, err := client.ListOperationsPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.BaseClient", "ListOperations", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "links.GroupClient", "ListOperations", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListOperationsSender(req)
 	if err != nil {
 		result.olr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "resources.BaseClient", "ListOperations", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "links.GroupClient", "ListOperations", resp, "Failure sending request")
 		return
 	}
 
 	result.olr, err = client.ListOperationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.BaseClient", "ListOperations", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "links.GroupClient", "ListOperations", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListOperationsPreparer prepares the ListOperations request.
-func (client BaseClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-05-01"
+func (client GroupClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2016-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -94,14 +83,14 @@ func (client BaseClient) ListOperationsPreparer(ctx context.Context) (*http.Requ
 
 // ListOperationsSender sends the ListOperations request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
+func (client GroupClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListOperationsResponder handles the response to the ListOperations request. The method always
 // closes the http.Response Body.
-func (client BaseClient) ListOperationsResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client GroupClient) ListOperationsResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -113,10 +102,10 @@ func (client BaseClient) ListOperationsResponder(resp *http.Response) (result Op
 }
 
 // listOperationsNextResults retrieves the next set of results, if any.
-func (client BaseClient) listOperationsNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
+func (client GroupClient) listOperationsNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
 	req, err := lastResults.operationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "resources.BaseClient", "listOperationsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "links.GroupClient", "listOperationsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -124,17 +113,17 @@ func (client BaseClient) listOperationsNextResults(lastResults OperationListResu
 	resp, err := client.ListOperationsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "resources.BaseClient", "listOperationsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "links.GroupClient", "listOperationsNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListOperationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.BaseClient", "listOperationsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "links.GroupClient", "listOperationsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListOperationsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BaseClient) ListOperationsComplete(ctx context.Context) (result OperationListResultIterator, err error) {
+func (client GroupClient) ListOperationsComplete(ctx context.Context) (result OperationListResultIterator, err error) {
 	result.page, err = client.ListOperations(ctx)
 	return
 }

@@ -589,6 +589,27 @@ func PossibleOverwriteOptionsValues() []OverwriteOptions {
 	return []OverwriteOptions{OverwriteOptionsFailOnConflict, OverwriteOptionsInvalid, OverwriteOptionsOverwrite}
 }
 
+// PolicyType enumerates the values for policy type.
+type PolicyType string
+
+const (
+	// PolicyTypeCopyOnlyFull ...
+	PolicyTypeCopyOnlyFull PolicyType = "CopyOnlyFull"
+	// PolicyTypeDifferential ...
+	PolicyTypeDifferential PolicyType = "Differential"
+	// PolicyTypeFull ...
+	PolicyTypeFull PolicyType = "Full"
+	// PolicyTypeInvalid ...
+	PolicyTypeInvalid PolicyType = "Invalid"
+	// PolicyTypeLog ...
+	PolicyTypeLog PolicyType = "Log"
+)
+
+// PossiblePolicyTypeValues returns an array of possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{PolicyTypeCopyOnlyFull, PolicyTypeDifferential, PolicyTypeFull, PolicyTypeInvalid, PolicyTypeLog}
+}
+
 // ProtectableContainerType enumerates the values for protectable container type.
 type ProtectableContainerType string
 
@@ -1596,6 +1617,8 @@ type AzureFileshareProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -1648,6 +1671,9 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if afpi.CreateMode != "" {
 		objectMap["createMode"] = afpi.CreateMode
+	}
+	if afpi.VaultID != nil {
+		objectMap["vaultId"] = afpi.VaultID
 	}
 	if afpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = afpi.ProtectedItemType
@@ -1742,8 +1768,8 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 
 // AzureFileShareProtectionPolicy azureStorage backup policy.
 type AzureFileShareProtectionPolicy struct {
-	// WorkLoadType - Type of workload for the backup management
-	WorkLoadType *string `json:"workLoadType,omitempty"`
+	// WorkLoadType - Type of workload for the backup management. Possible values include: 'WorkloadTypeInvalid', 'WorkloadTypeVM', 'WorkloadTypeFileFolder', 'WorkloadTypeAzureSQLDb', 'WorkloadTypeSQLDB', 'WorkloadTypeExchange', 'WorkloadTypeSharepoint', 'WorkloadTypeVMwareVM', 'WorkloadTypeSystemState', 'WorkloadTypeClient', 'WorkloadTypeGenericDataSource', 'WorkloadTypeSQLDataBase', 'WorkloadTypeAzureFileShare', 'WorkloadTypeSAPHanaDatabase'
+	WorkLoadType WorkloadType `json:"workLoadType,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -1760,7 +1786,7 @@ type AzureFileShareProtectionPolicy struct {
 func (afspp AzureFileShareProtectionPolicy) MarshalJSON() ([]byte, error) {
 	afspp.BackupManagementType = BackupManagementTypeAzureStorage
 	objectMap := make(map[string]interface{})
-	if afspp.WorkLoadType != nil {
+	if afspp.WorkLoadType != "" {
 		objectMap["workLoadType"] = afspp.WorkLoadType
 	}
 	objectMap["schedulePolicy"] = afspp.SchedulePolicy
@@ -1828,12 +1854,12 @@ func (afspp *AzureFileShareProtectionPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "workLoadType":
 			if v != nil {
-				var workLoadType string
+				var workLoadType WorkloadType
 				err = json.Unmarshal(*v, &workLoadType)
 				if err != nil {
 					return err
 				}
-				afspp.WorkLoadType = &workLoadType
+				afspp.WorkLoadType = workLoadType
 			}
 		case "schedulePolicy":
 			if v != nil {
@@ -2368,6 +2394,8 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2429,6 +2457,9 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if aisccvpi.CreateMode != "" {
 		objectMap["createMode"] = aisccvpi.CreateMode
+	}
+	if aisccvpi.VaultID != nil {
+		objectMap["vaultId"] = aisccvpi.VaultID
 	}
 	if aisccvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aisccvpi.ProtectedItemType
@@ -2794,6 +2825,8 @@ type AzureIaaSComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2855,6 +2888,9 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aiscvpi.CreateMode != "" {
 		objectMap["createMode"] = aiscvpi.CreateMode
+	}
+	if aiscvpi.VaultID != nil {
+		objectMap["vaultId"] = aiscvpi.VaultID
 	}
 	if aiscvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aiscvpi.ProtectedItemType
@@ -2994,6 +3030,8 @@ type AzureIaaSVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -3096,6 +3134,9 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aispi.CreateMode != "" {
 		objectMap["createMode"] = aispi.CreateMode
+	}
+	if aispi.VaultID != nil {
+		objectMap["vaultId"] = aispi.VaultID
 	}
 	if aispi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aispi.ProtectedItemType
@@ -3608,6 +3649,8 @@ type AzureSQLProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -3648,6 +3691,9 @@ func (aspi AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aspi.CreateMode != "" {
 		objectMap["createMode"] = aspi.CreateMode
+	}
+	if aspi.VaultID != nil {
+		objectMap["vaultId"] = aspi.VaultID
 	}
 	if aspi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aspi.ProtectedItemType
@@ -4409,6 +4455,8 @@ type AzureVMWorkloadProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -4495,6 +4543,9 @@ func (avwpi AzureVMWorkloadProtectableItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwpi.IsAutoProtectable
+	}
+	if avwpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwpi.IsAutoProtected
 	}
 	if avwpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwpi.Subinquireditemcount
@@ -4641,6 +4692,8 @@ type AzureVMWorkloadProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -4746,6 +4799,9 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	if avwpi.CreateMode != "" {
 		objectMap["createMode"] = avwpi.CreateMode
 	}
+	if avwpi.VaultID != nil {
+		objectMap["vaultId"] = avwpi.VaultID
+	}
 	if avwpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwpi.ProtectedItemType
 	}
@@ -4839,8 +4895,8 @@ type AzureVMWorkloadProtectedItemExtendedInfo struct {
 
 // AzureVMWorkloadProtectionPolicy azure VM (Mercury) workload-specific backup policy.
 type AzureVMWorkloadProtectionPolicy struct {
-	// WorkLoadType - Type of workload for the backup management
-	WorkLoadType *string `json:"workLoadType,omitempty"`
+	// WorkLoadType - Type of workload for the backup management. Possible values include: 'WorkloadTypeInvalid', 'WorkloadTypeVM', 'WorkloadTypeFileFolder', 'WorkloadTypeAzureSQLDb', 'WorkloadTypeSQLDB', 'WorkloadTypeExchange', 'WorkloadTypeSharepoint', 'WorkloadTypeVMwareVM', 'WorkloadTypeSystemState', 'WorkloadTypeClient', 'WorkloadTypeGenericDataSource', 'WorkloadTypeSQLDataBase', 'WorkloadTypeAzureFileShare', 'WorkloadTypeSAPHanaDatabase'
+	WorkLoadType WorkloadType `json:"workLoadType,omitempty"`
 	// Settings - Common settings for the backup management
 	Settings *Settings `json:"settings,omitempty"`
 	// SubProtectionPolicy - List of sub-protection policies which includes schedule and retention
@@ -4855,7 +4911,7 @@ type AzureVMWorkloadProtectionPolicy struct {
 func (avwpp AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	avwpp.BackupManagementType = BackupManagementTypeAzureWorkload
 	objectMap := make(map[string]interface{})
-	if avwpp.WorkLoadType != nil {
+	if avwpp.WorkLoadType != "" {
 		objectMap["workLoadType"] = avwpp.WorkLoadType
 	}
 	if avwpp.Settings != nil {
@@ -4925,6 +4981,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -4958,6 +5016,9 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) MarshalJSON() ([]b
 	}
 	if avwshdpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwshdpi.IsAutoProtectable
+	}
+	if avwshdpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwshdpi.IsAutoProtected
 	}
 	if avwshdpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwshdpi.Subinquireditemcount
@@ -5099,6 +5160,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -5166,6 +5229,9 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	}
 	if avwshdpi.CreateMode != "" {
 		objectMap["createMode"] = avwshdpi.CreateMode
+	}
+	if avwshdpi.VaultID != nil {
+		objectMap["vaultId"] = avwshdpi.VaultID
 	}
 	if avwshdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwshdpi.ProtectedItemType
@@ -5362,6 +5428,8 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -5395,6 +5463,9 @@ func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) MarshalJSON() ([]byt
 	}
 	if avwshspi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwshspi.IsAutoProtectable
+	}
+	if avwshspi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwshspi.IsAutoProtected
 	}
 	if avwshspi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwshspi.Subinquireditemcount
@@ -5606,6 +5677,8 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -5639,6 +5712,9 @@ func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) MarshalJSON()
 	}
 	if avwsagpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsagpi.IsAutoProtectable
+	}
+	if avwsagpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsagpi.IsAutoProtected
 	}
 	if avwsagpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsagpi.Subinquireditemcount
@@ -5748,6 +5824,8 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -5781,6 +5859,9 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsdpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsdpi.IsAutoProtectable
+	}
+	if avwsdpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsdpi.IsAutoProtected
 	}
 	if avwsdpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsdpi.Subinquireditemcount
@@ -5921,6 +6002,8 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -5988,6 +6071,9 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if avwsdpi.CreateMode != "" {
 		objectMap["createMode"] = avwsdpi.CreateMode
+	}
+	if avwsdpi.VaultID != nil {
+		objectMap["vaultId"] = avwsdpi.VaultID
 	}
 	if avwsdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwsdpi.ProtectedItemType
@@ -6182,6 +6268,8 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -6215,6 +6303,9 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsipi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsipi.IsAutoProtectable
+	}
+	if avwsipi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsipi.IsAutoProtected
 	}
 	if avwsipi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsipi.Subinquireditemcount
@@ -8387,6 +8478,8 @@ type DPMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -8433,6 +8526,9 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if dpi.CreateMode != "" {
 		objectMap["createMode"] = dpi.CreateMode
+	}
+	if dpi.VaultID != nil {
+		objectMap["vaultId"] = dpi.VaultID
 	}
 	if dpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = dpi.ProtectedItemType
@@ -9187,6 +9283,8 @@ type GenericProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -9236,6 +9334,9 @@ func (gpi GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if gpi.CreateMode != "" {
 		objectMap["createMode"] = gpi.CreateMode
+	}
+	if gpi.VaultID != nil {
+		objectMap["vaultId"] = gpi.VaultID
 	}
 	if gpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = gpi.ProtectedItemType
@@ -10828,6 +10929,8 @@ type MabFileFolderProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -10880,6 +10983,9 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if mffpi.CreateMode != "" {
 		objectMap["createMode"] = mffpi.CreateMode
+	}
+	if mffpi.VaultID != nil {
+		objectMap["vaultId"] = mffpi.VaultID
 	}
 	if mffpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = mffpi.ProtectedItemType
@@ -11824,6 +11930,8 @@ type ProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// VaultID - ID of the vault which protects this item
+	VaultID *string `json:"vaultId,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -11932,6 +12040,9 @@ func (pi ProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if pi.CreateMode != "" {
 		objectMap["createMode"] = pi.CreateMode
+	}
+	if pi.VaultID != nil {
+		objectMap["vaultId"] = pi.VaultID
 	}
 	if pi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = pi.ProtectedItemType
@@ -14203,8 +14314,8 @@ type SQLDataDirectoryMapping struct {
 
 // SubProtectionPolicy sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
-	// PolicyType - Type of backup policy type
-	PolicyType *string `json:"policyType,omitempty"`
+	// PolicyType - Type of backup policy type. Possible values include: 'PolicyTypeInvalid', 'PolicyTypeFull', 'PolicyTypeDifferential', 'PolicyTypeLog', 'PolicyTypeCopyOnlyFull'
+	PolicyType PolicyType `json:"policyType,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -14222,12 +14333,12 @@ func (spp *SubProtectionPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "policyType":
 			if v != nil {
-				var policyType string
+				var policyType PolicyType
 				err = json.Unmarshal(*v, &policyType)
 				if err != nil {
 					return err
 				}
-				spp.PolicyType = &policyType
+				spp.PolicyType = policyType
 			}
 		case "schedulePolicy":
 			if v != nil {

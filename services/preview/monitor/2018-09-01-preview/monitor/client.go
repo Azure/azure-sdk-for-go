@@ -21,10 +21,7 @@ package monitor
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 const (
@@ -49,83 +46,4 @@ func NewWithBaseURI(baseURI string) BaseClient {
 		Client:  autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI: baseURI,
 	}
-}
-
-// AzureMonitorCustomMetricsIngestionAPI sends the azure monitor custom metrics ingestion api request.
-// Parameters:
-// subscriptionID - the azure subscription id
-// resourceGroupName - the ARM resource group name
-// resourceProvider - the ARM resource provider name
-// resourceTypeName - the ARM resource type name
-// resourceName - the ARM resource name
-// body - the Azure metrics document json payload
-// contentType - supports application/json and application/x-ndjson
-// contentLength - content length of the payload
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPI(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result AzureMetricsResult, err error) {
-	req, err := client.AzureMonitorCustomMetricsIngestionAPIPreparer(ctx, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "monitor.BaseClient", "AzureMonitorCustomMetricsIngestionAPI", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.AzureMonitorCustomMetricsIngestionAPISender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "monitor.BaseClient", "AzureMonitorCustomMetricsIngestionAPI", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.AzureMonitorCustomMetricsIngestionAPIResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "monitor.BaseClient", "AzureMonitorCustomMetricsIngestionAPI", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AzureMonitorCustomMetricsIngestionAPIPreparer prepares the AzureMonitorCustomMetricsIngestionAPI request.
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPIPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"resourceName":      autorest.Encode("path", resourceName),
-		"resourceProvider":  autorest.Encode("path", resourceProvider),
-		"resourceTypeName":  autorest.Encode("path", resourceTypeName),
-		"subscriptionId":    autorest.Encode("path", subscriptionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProvider}/{resourceTypeName}/{resourceName}/metrics", pathParameters),
-		autorest.WithJSON(body))
-	if len(contentType) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	}
-	if contentLength != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Content-Length", autorest.String(contentLength)))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// AzureMonitorCustomMetricsIngestionAPISender sends the AzureMonitorCustomMetricsIngestionAPI request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AzureMonitorCustomMetricsIngestionAPIResponder handles the response to the AzureMonitorCustomMetricsIngestionAPI request. The method always
-// closes the http.Response Body.
-func (client BaseClient) AzureMonitorCustomMetricsIngestionAPIResponder(resp *http.Response) (result AzureMetricsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

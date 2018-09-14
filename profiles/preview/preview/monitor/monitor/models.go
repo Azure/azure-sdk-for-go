@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type MetricsClient = original.MetricsClient
 type APIError = original.APIError
 type APIFailureResponse = original.APIFailureResponse
 type AzureMetricsBaseData = original.AzureMetricsBaseData
@@ -39,6 +40,12 @@ func New() BaseClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewMetricsClient() MetricsClient {
+	return original.NewMetricsClient()
+}
+func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
+	return original.NewMetricsClientWithBaseURI(baseURI)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

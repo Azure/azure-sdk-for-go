@@ -39,7 +39,7 @@ func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
 	return MetricsClient{NewWithBaseURI(baseURI)}
 }
 
-// POST **Post the metric values for a resource**.
+// Create **Post the metric values for a resource**.
 // Parameters:
 // subscriptionID - the azure subscription id
 // resourceGroupName - the ARM resource group name
@@ -49,30 +49,30 @@ func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
 // body - the Azure metrics document json payload
 // contentType - supports application/json and application/x-ndjson
 // contentLength - content length of the payload
-func (client MetricsClient) POST(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result AzureMetricsResult, err error) {
-	req, err := client.POSTPreparer(ctx, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength)
+func (client MetricsClient) Create(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result AzureMetricsResult, err error) {
+	req, err := client.CreatePreparer(ctx, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "POST", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.POSTSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "POST", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "Create", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.POSTResponder(resp)
+	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "POST", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// POSTPreparer prepares the POST request.
-func (client MetricsClient) POSTPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client MetricsClient) CreatePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -98,16 +98,16 @@ func (client MetricsClient) POSTPreparer(ctx context.Context, subscriptionID str
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// POSTSender sends the POST request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client MetricsClient) POSTSender(req *http.Request) (*http.Response, error) {
+func (client MetricsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// POSTResponder handles the response to the POST request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client MetricsClient) POSTResponder(resp *http.Response) (result AzureMetricsResult, err error) {
+func (client MetricsClient) CreateResponder(resp *http.Response) (result AzureMetricsResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

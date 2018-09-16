@@ -496,6 +496,14 @@ type ApplicationUpdateObject struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// AppVersionSettingObject object model of an application version setting.
+type AppVersionSettingObject struct {
+	// Name - The application version setting name.
+	Name *string `json:"name,omitempty"`
+	// Value - The application version setting value.
+	Value *string `json:"value,omitempty"`
+}
+
 // AvailableCulture available culture for using in a new application.
 type AvailableCulture struct {
 	// Name - The language name.
@@ -997,6 +1005,12 @@ type LabelTextObject struct {
 type ListApplicationInfoResponse struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationInfoResponse `json:"value,omitempty"`
+}
+
+// ListAppVersionSettingObject ...
+type ListAppVersionSettingObject struct {
+	autorest.Response `json:"-"`
+	Value             *[]AppVersionSettingObject `json:"value,omitempty"`
 }
 
 // ListAvailableCulture ...

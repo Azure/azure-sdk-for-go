@@ -253,6 +253,7 @@ type TimeAggregationType = original.TimeAggregationType
 const (
 	TimeAggregationTypeAverage TimeAggregationType = original.TimeAggregationTypeAverage
 	TimeAggregationTypeCount   TimeAggregationType = original.TimeAggregationTypeCount
+	TimeAggregationTypeLast    TimeAggregationType = original.TimeAggregationTypeLast
 	TimeAggregationTypeMaximum TimeAggregationType = original.TimeAggregationTypeMaximum
 	TimeAggregationTypeMinimum TimeAggregationType = original.TimeAggregationTypeMinimum
 	TimeAggregationTypeTotal   TimeAggregationType = original.TimeAggregationTypeTotal

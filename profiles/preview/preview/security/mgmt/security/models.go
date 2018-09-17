@@ -21,6 +21,7 @@ package security
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
 
+type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AlertsClient = original.AlertsClient
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 
@@ -136,6 +137,8 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
+type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
 type Alert = original.Alert
 type AlertConfidenceReason = original.AlertConfidenceReason
 type AlertEntity = original.AlertEntity
@@ -235,6 +238,12 @@ type SettingsClient = original.SettingsClient
 type TasksClient = original.TasksClient
 type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
+func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
+	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
+}
+func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
+	return original.NewAdvancedThreatProtectionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID, ascLocation)
 }

@@ -30,9 +30,9 @@ import (
 type AccessProtocol string
 
 const (
-	// NFS ...
+	// NFS Network File System protocol(NFS).
 	NFS AccessProtocol = "NFS"
-	// SMB ...
+	// SMB Server Message Block protocol(SMB).
 	SMB AccessProtocol = "SMB"
 )
 
@@ -41,51 +41,15 @@ func PossibleAccessProtocolValues() []AccessProtocol {
 	return []AccessProtocol{NFS, SMB}
 }
 
-// AccessTier enumerates the values for access tier.
-type AccessTier string
-
-const (
-	// Cold ...
-	Cold AccessTier = "Cold"
-	// Cool ...
-	Cool AccessTier = "Cool"
-	// Hot ...
-	Hot AccessTier = "Hot"
-	// Invalid ...
-	Invalid AccessTier = "Invalid"
-)
-
-// PossibleAccessTierValues returns an array of possible values for the AccessTier const type.
-func PossibleAccessTierValues() []AccessTier {
-	return []AccessTier{Cold, Cool, Hot, Invalid}
-}
-
-// AccountType enumerates the values for account type.
-type AccountType string
-
-const (
-	// BlobStorage ...
-	BlobStorage AccountType = "BlobStorage"
-	// GeneralPurposeStorage ...
-	GeneralPurposeStorage AccountType = "GeneralPurposeStorage"
-	// UnknownType ...
-	UnknownType AccountType = "UnknownType"
-)
-
-// PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
-func PossibleAccountTypeValues() []AccountType {
-	return []AccountType{BlobStorage, GeneralPurposeStorage, UnknownType}
-}
-
 // AddressType enumerates the values for address type.
 type AddressType string
 
 const (
-	// Commercial ...
+	// Commercial Commercial Address.
 	Commercial AddressType = "Commercial"
-	// None ...
+	// None Address type not known.
 	None AddressType = "None"
-	// Residential ...
+	// Residential Residential Address.
 	Residential AddressType = "Residential"
 )
 
@@ -98,17 +62,17 @@ func PossibleAddressTypeValues() []AddressType {
 type AddressValidationStatus string
 
 const (
-	// AddressValidationStatusAmbiguous ...
-	AddressValidationStatusAmbiguous AddressValidationStatus = "Ambiguous"
-	// AddressValidationStatusInvalid ...
-	AddressValidationStatusInvalid AddressValidationStatus = "Invalid"
-	// AddressValidationStatusValid ...
-	AddressValidationStatusValid AddressValidationStatus = "Valid"
+	// Ambiguous Address provided is ambiguous, please choose one of the alternate addresses returned.
+	Ambiguous AddressValidationStatus = "Ambiguous"
+	// Invalid Address provided is invalid or not supported.
+	Invalid AddressValidationStatus = "Invalid"
+	// Valid Address provided is valid.
+	Valid AddressValidationStatus = "Valid"
 )
 
 // PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
 func PossibleAddressValidationStatusValues() []AddressValidationStatus {
-	return []AddressValidationStatus{AddressValidationStatusAmbiguous, AddressValidationStatusInvalid, AddressValidationStatusValid}
+	return []AddressValidationStatus{Ambiguous, Invalid, Valid}
 }
 
 // CopyLogDetailsType enumerates the values for copy log details type.
@@ -134,17 +98,17 @@ func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
 type CopyStatus string
 
 const (
-	// Completed ...
+	// Completed Data copy completed.
 	Completed CopyStatus = "Completed"
-	// CompletedWithErrors ...
+	// CompletedWithErrors Data copy completed with errors.
 	CompletedWithErrors CopyStatus = "CompletedWithErrors"
-	// Failed ...
+	// Failed Data copy failed. No data was copied.
 	Failed CopyStatus = "Failed"
-	// InProgress ...
+	// InProgress Data copy is in progress.
 	InProgress CopyStatus = "InProgress"
-	// NotReturned ...
+	// NotReturned No copy triggered as device was not returned.
 	NotReturned CopyStatus = "NotReturned"
-	// NotStarted ...
+	// NotStarted Data copy hasnt started yet.
 	NotStarted CopyStatus = "NotStarted"
 )
 
@@ -195,17 +159,17 @@ func PossibleJobSecretsTypeValues() []JobSecretsType {
 type NotificationStageName string
 
 const (
-	// AtAzureDC ...
+	// AtAzureDC Notification at device received at azure datacenter stage.
 	AtAzureDC NotificationStageName = "AtAzureDC"
-	// DataCopy ...
+	// DataCopy Notification at data copy started stage.
 	DataCopy NotificationStageName = "DataCopy"
-	// Delivered ...
+	// Delivered Notification at device delivered stage.
 	Delivered NotificationStageName = "Delivered"
-	// DevicePrepared ...
+	// DevicePrepared Notification at device prepared stage.
 	DevicePrepared NotificationStageName = "DevicePrepared"
-	// Dispatched ...
+	// Dispatched Notification at device dispatched stage.
 	Dispatched NotificationStageName = "Dispatched"
-	// PickedUp ...
+	// PickedUp Notification at device picked up from user stage.
 	PickedUp NotificationStageName = "PickedUp"
 )
 
@@ -214,57 +178,40 @@ func PossibleNotificationStageNameValues() []NotificationStageName {
 	return []NotificationStageName{AtAzureDC, DataCopy, Delivered, DevicePrepared, Dispatched, PickedUp}
 }
 
-// PerformanceTier enumerates the values for performance tier.
-type PerformanceTier string
-
-const (
-	// Premium ...
-	Premium PerformanceTier = "Premium"
-	// Standard ...
-	Standard PerformanceTier = "Standard"
-)
-
-// PossiblePerformanceTierValues returns an array of possible values for the PerformanceTier const type.
-func PossiblePerformanceTierValues() []PerformanceTier {
-	return []PerformanceTier{Premium, Standard}
-}
-
 // ShareDestinationFormatType enumerates the values for share destination format type.
 type ShareDestinationFormatType string
 
 const (
-	// ShareDestinationFormatTypeAzureFile ...
-	ShareDestinationFormatTypeAzureFile ShareDestinationFormatType = "AzureFile"
-	// ShareDestinationFormatTypeBlockBlob ...
-	ShareDestinationFormatTypeBlockBlob ShareDestinationFormatType = "BlockBlob"
-	// ShareDestinationFormatTypeHCS ...
-	ShareDestinationFormatTypeHCS ShareDestinationFormatType = "HCS"
-	// ShareDestinationFormatTypeHDC ...
-	ShareDestinationFormatTypeHDC ShareDestinationFormatType = "HDC"
-	// ShareDestinationFormatTypePageBlob ...
-	ShareDestinationFormatTypePageBlob ShareDestinationFormatType = "PageBlob"
-	// ShareDestinationFormatTypeUnknownType ...
-	ShareDestinationFormatTypeUnknownType ShareDestinationFormatType = "UnknownType"
+	// AzureFile Azure storage file format.
+	AzureFile ShareDestinationFormatType = "AzureFile"
+	// BlockBlob Azure storage block blob format.
+	BlockBlob ShareDestinationFormatType = "BlockBlob"
+	// HCS Storsimple data format.
+	HCS ShareDestinationFormatType = "HCS"
+	// PageBlob Azure storage page blob format.
+	PageBlob ShareDestinationFormatType = "PageBlob"
+	// UnknownType Unknown format.
+	UnknownType ShareDestinationFormatType = "UnknownType"
 )
 
 // PossibleShareDestinationFormatTypeValues returns an array of possible values for the ShareDestinationFormatType const type.
 func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
-	return []ShareDestinationFormatType{ShareDestinationFormatTypeAzureFile, ShareDestinationFormatTypeBlockBlob, ShareDestinationFormatTypeHCS, ShareDestinationFormatTypeHDC, ShareDestinationFormatTypePageBlob, ShareDestinationFormatTypeUnknownType}
+	return []ShareDestinationFormatType{AzureFile, BlockBlob, HCS, PageBlob, UnknownType}
 }
 
 // SkuDisabledReason enumerates the values for sku disabled reason.
 type SkuDisabledReason string
 
 const (
-	// SkuDisabledReasonCountry ...
+	// SkuDisabledReasonCountry SKU is not available in the requested country.
 	SkuDisabledReasonCountry SkuDisabledReason = "Country"
-	// SkuDisabledReasonFeature ...
+	// SkuDisabledReasonFeature Required features are not enabled for the SKU.
 	SkuDisabledReasonFeature SkuDisabledReason = "Feature"
-	// SkuDisabledReasonNone ...
+	// SkuDisabledReasonNone SKU is not disabled.
 	SkuDisabledReasonNone SkuDisabledReason = "None"
-	// SkuDisabledReasonOfferType ...
+	// SkuDisabledReasonOfferType Subscription does not have required offer types for the SKU.
 	SkuDisabledReasonOfferType SkuDisabledReason = "OfferType"
-	// SkuDisabledReasonRegion ...
+	// SkuDisabledReasonRegion SKU is not available to push data to the requested storage account region.
 	SkuDisabledReasonRegion SkuDisabledReason = "Region"
 )
 
@@ -277,11 +224,11 @@ func PossibleSkuDisabledReasonValues() []SkuDisabledReason {
 type SkuName string
 
 const (
-	// DataBox ...
+	// DataBox Databox.
 	DataBox SkuName = "DataBox"
-	// DataBoxDisk ...
+	// DataBoxDisk DataboxDisk.
 	DataBoxDisk SkuName = "DataBoxDisk"
-	// DataBoxHeavy ...
+	// DataBoxHeavy DataboxHeavy.
 	DataBoxHeavy SkuName = "DataBoxHeavy"
 )
 
@@ -294,58 +241,56 @@ func PossibleSkuNameValues() []SkuName {
 type StageName string
 
 const (
-	// StageNameAborted ...
+	// StageNameAborted Order has been aborted.
 	StageNameAborted StageName = "Aborted"
-	// StageNameAtAzureDC ...
+	// StageNameAtAzureDC Device has been received at azure datacenter from the user.
 	StageNameAtAzureDC StageName = "AtAzureDC"
-	// StageNameCancelled ...
+	// StageNameCancelled Order has been cancelled.
 	StageNameCancelled StageName = "Cancelled"
-	// StageNameCompleted ...
+	// StageNameCompleted Order has completed.
 	StageNameCompleted StageName = "Completed"
-	// StageNameCompletedWithErrors ...
+	// StageNameCompletedWithErrors Order has completed with errors.
 	StageNameCompletedWithErrors StageName = "CompletedWithErrors"
-	// StageNameCurrent ...
-	StageNameCurrent StageName = "Current"
-	// StageNameDataCopy ...
+	// StageNameDataCopy Data copy from the device at azure datacenter.
 	StageNameDataCopy StageName = "DataCopy"
-	// StageNameDelivered ...
+	// StageNameDelivered Device has been delivered to the user of the order.
 	StageNameDelivered StageName = "Delivered"
-	// StageNameDeviceOrdered ...
+	// StageNameDeviceOrdered An order has been created.
 	StageNameDeviceOrdered StageName = "DeviceOrdered"
-	// StageNameDevicePrepared ...
+	// StageNameDevicePrepared A device has been prepared for the order.
 	StageNameDevicePrepared StageName = "DevicePrepared"
-	// StageNameDispatched ...
+	// StageNameDispatched Device has been dispatched to the user of the order.
 	StageNameDispatched StageName = "Dispatched"
-	// StageNameFailedIssueDetectedAtAzureDC ...
+	// StageNameFailedIssueDetectedAtAzureDC Order has failed due to issue detected at azure datacenter.
 	StageNameFailedIssueDetectedAtAzureDC StageName = "Failed_IssueDetectedAtAzureDC"
-	// StageNameFailedIssueReportedAtCustomer ...
+	// StageNameFailedIssueReportedAtCustomer Order has failed due to issue reported by user.
 	StageNameFailedIssueReportedAtCustomer StageName = "Failed_IssueReportedAtCustomer"
-	// StageNamePickedUp ...
+	// StageNamePickedUp Device has been picked up from user and in transit to azure datacenter.
 	StageNamePickedUp StageName = "PickedUp"
 )
 
 // PossibleStageNameValues returns an array of possible values for the StageName const type.
 func PossibleStageNameValues() []StageName {
-	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameCurrent, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp}
+	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp}
 }
 
 // StageStatus enumerates the values for stage status.
 type StageStatus string
 
 const (
-	// StageStatusCancelled ...
+	// StageStatusCancelled Stage has been cancelled.
 	StageStatusCancelled StageStatus = "Cancelled"
-	// StageStatusCancelling ...
+	// StageStatusCancelling Stage is cancelling.
 	StageStatusCancelling StageStatus = "Cancelling"
-	// StageStatusFailed ...
+	// StageStatusFailed Stage has failed.
 	StageStatusFailed StageStatus = "Failed"
-	// StageStatusInProgress ...
+	// StageStatusInProgress Stage is in progress.
 	StageStatusInProgress StageStatus = "InProgress"
-	// StageStatusNone ...
+	// StageStatusNone No status available yet.
 	StageStatusNone StageStatus = "None"
-	// StageStatusSucceeded ...
+	// StageStatusSucceeded Stage has succeeded.
 	StageStatusSucceeded StageStatus = "Succeeded"
-	// StageStatusSucceededWithErrors ...
+	// StageStatusSucceededWithErrors Stage has succeeded with errors.
 	StageStatusSucceededWithErrors StageStatus = "SucceededWithErrors"
 )
 
@@ -457,7 +402,7 @@ func (avo *AddressValidationOutput) UnmarshalJSON(body []byte) error {
 
 // AddressValidationProperties the address validation output.
 type AddressValidationProperties struct {
-	// ValidationStatus - The address validation status. Possible values include: 'AddressValidationStatusValid', 'AddressValidationStatusInvalid', 'AddressValidationStatusAmbiguous'
+	// ValidationStatus - The address validation status. Possible values include: 'Valid', 'Invalid', 'Ambiguous'
 	ValidationStatus AddressValidationStatus `json:"validationStatus,omitempty"`
 	// AlternateAddresses - List of alternate addresses.
 	AlternateAddresses *[]ShippingAddress `json:"alternateAddresses,omitempty"`
@@ -465,9 +410,9 @@ type AddressValidationProperties struct {
 
 // ApplianceNetworkConfiguration the Network Adapter configuration of a DataBox.
 type ApplianceNetworkConfiguration struct {
-	// Name - Name of the network
+	// Name - Name of the network.
 	Name *string `json:"name,omitempty"`
-	// MacAddress - Mac Address
+	// MacAddress - Mac Address.
 	MacAddress *string `json:"macAddress,omitempty"`
 }
 
@@ -725,14 +670,6 @@ type CopyProgress struct {
 type DestinationAccountDetails struct {
 	// AccountID - Destination storage account id.
 	AccountID *string `json:"accountId,omitempty"`
-	// SharedAccessSignature - Shared access signature for the storage account.
-	SharedAccessSignature *string `json:"sharedAccessSignature,omitempty"`
-	// AccountType - Account type. Possible values include: 'UnknownType', 'GeneralPurposeStorage', 'BlobStorage'
-	AccountType AccountType `json:"accountType,omitempty"`
-	// StorageAccessTier - Access tier of the account. Possible values include: 'Invalid', 'Hot', 'Cool', 'Cold'
-	StorageAccessTier AccessTier `json:"storageAccessTier,omitempty"`
-	// StoragePerformanceTier - Performance tier of the account. Possible values include: 'Standard', 'Premium'
-	StoragePerformanceTier PerformanceTier `json:"storagePerformanceTier,omitempty"`
 }
 
 // DestinationToServiceLocationMap map of destination location to service location
@@ -2079,7 +2016,7 @@ type JobProperties struct {
 	IsDeletable *bool `json:"isDeletable,omitempty"`
 	// IsShippingAddressEditable - Describes whether the shipping address is editable or not.
 	IsShippingAddressEditable *bool `json:"isShippingAddressEditable,omitempty"`
-	// Status - Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCurrent'
+	// Status - Name of the stage which is in progress. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
 	Status StageName `json:"status,omitempty"`
 	// StartTime - Time at which the job was started in UTC ISO 8601 format.
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -2648,7 +2585,7 @@ func (jst JobSecretsType) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // JobStages job stages.
 type JobStages struct {
-	// StageName - Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted', 'StageNameCurrent'
+	// StageName - Name of the job stage. Possible values include: 'StageNameDeviceOrdered', 'StageNameDevicePrepared', 'StageNameDispatched', 'StageNameDelivered', 'StageNamePickedUp', 'StageNameAtAzureDC', 'StageNameDataCopy', 'StageNameCompleted', 'StageNameCompletedWithErrors', 'StageNameCancelled', 'StageNameFailedIssueReportedAtCustomer', 'StageNameFailedIssueDetectedAtAzureDC', 'StageNameAborted'
 	StageName StageName `json:"stageName,omitempty"`
 	// DisplayName - Display name of the job stage.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -2878,31 +2815,11 @@ type Secret struct {
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
 }
 
-// ServiceHealthResponse response of the GetServiceHealth api.
-type ServiceHealthResponse struct {
-	// ConnectorType - Name of the connector.
-	ConnectorType *string `json:"connectorType,omitempty"`
-	// StartTime - Time when the action was triggered.
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Time when the action got completed.
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// Status - Status of the service.
-	Status *bool `json:"status,omitempty"`
-}
-
-// ServiceHealthResponseList list of service health response.
-type ServiceHealthResponseList struct {
-	// Dependencies - List of ServiceHealthResponse.
-	Dependencies *[]ServiceHealthResponse `json:"dependencies,omitempty"`
-	// ServiceVersion - Version of the service.
-	ServiceVersion *string `json:"serviceVersion,omitempty"`
-}
-
 // ShareCredentialDetails credential details of the shares in account.
 type ShareCredentialDetails struct {
 	// ShareName - Name of the share.
 	ShareName *string `json:"shareName,omitempty"`
-	// ShareType - Type of the share. Possible values include: 'ShareDestinationFormatTypeUnknownType', 'ShareDestinationFormatTypeHCS', 'ShareDestinationFormatTypeBlockBlob', 'ShareDestinationFormatTypePageBlob', 'ShareDestinationFormatTypeAzureFile', 'ShareDestinationFormatTypeHDC'
+	// ShareType - Type of the share. Possible values include: 'UnknownType', 'HCS', 'BlockBlob', 'PageBlob', 'AzureFile'
 	ShareType ShareDestinationFormatType `json:"shareType,omitempty"`
 	// UserName - User name for the share.
 	UserName *string `json:"userName,omitempty"`

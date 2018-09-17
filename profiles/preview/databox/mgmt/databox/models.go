@@ -34,23 +34,6 @@ const (
 	SMB AccessProtocol = original.SMB
 )
 
-type AccessTier = original.AccessTier
-
-const (
-	Cold    AccessTier = original.Cold
-	Cool    AccessTier = original.Cool
-	Hot     AccessTier = original.Hot
-	Invalid AccessTier = original.Invalid
-)
-
-type AccountType = original.AccountType
-
-const (
-	BlobStorage           AccountType = original.BlobStorage
-	GeneralPurposeStorage AccountType = original.GeneralPurposeStorage
-	UnknownType           AccountType = original.UnknownType
-)
-
 type AddressType = original.AddressType
 
 const (
@@ -62,9 +45,9 @@ const (
 type AddressValidationStatus = original.AddressValidationStatus
 
 const (
-	AddressValidationStatusAmbiguous AddressValidationStatus = original.AddressValidationStatusAmbiguous
-	AddressValidationStatusInvalid   AddressValidationStatus = original.AddressValidationStatusInvalid
-	AddressValidationStatusValid     AddressValidationStatus = original.AddressValidationStatusValid
+	Ambiguous AddressValidationStatus = original.Ambiguous
+	Invalid   AddressValidationStatus = original.Invalid
+	Valid     AddressValidationStatus = original.Valid
 )
 
 type CopyLogDetailsType = original.CopyLogDetailsType
@@ -116,22 +99,14 @@ const (
 	PickedUp       NotificationStageName = original.PickedUp
 )
 
-type PerformanceTier = original.PerformanceTier
-
-const (
-	Premium  PerformanceTier = original.Premium
-	Standard PerformanceTier = original.Standard
-)
-
 type ShareDestinationFormatType = original.ShareDestinationFormatType
 
 const (
-	ShareDestinationFormatTypeAzureFile   ShareDestinationFormatType = original.ShareDestinationFormatTypeAzureFile
-	ShareDestinationFormatTypeBlockBlob   ShareDestinationFormatType = original.ShareDestinationFormatTypeBlockBlob
-	ShareDestinationFormatTypeHCS         ShareDestinationFormatType = original.ShareDestinationFormatTypeHCS
-	ShareDestinationFormatTypeHDC         ShareDestinationFormatType = original.ShareDestinationFormatTypeHDC
-	ShareDestinationFormatTypePageBlob    ShareDestinationFormatType = original.ShareDestinationFormatTypePageBlob
-	ShareDestinationFormatTypeUnknownType ShareDestinationFormatType = original.ShareDestinationFormatTypeUnknownType
+	AzureFile   ShareDestinationFormatType = original.AzureFile
+	BlockBlob   ShareDestinationFormatType = original.BlockBlob
+	HCS         ShareDestinationFormatType = original.HCS
+	PageBlob    ShareDestinationFormatType = original.PageBlob
+	UnknownType ShareDestinationFormatType = original.UnknownType
 )
 
 type SkuDisabledReason = original.SkuDisabledReason
@@ -160,7 +135,6 @@ const (
 	StageNameCancelled                     StageName = original.StageNameCancelled
 	StageNameCompleted                     StageName = original.StageNameCompleted
 	StageNameCompletedWithErrors           StageName = original.StageNameCompletedWithErrors
-	StageNameCurrent                       StageName = original.StageNameCurrent
 	StageNameDataCopy                      StageName = original.StageNameDataCopy
 	StageNameDelivered                     StageName = original.StageNameDelivered
 	StageNameDeviceOrdered                 StageName = original.StageNameDeviceOrdered
@@ -237,8 +211,6 @@ type PackageShippingDetails = original.PackageShippingDetails
 type Preferences = original.Preferences
 type Resource = original.Resource
 type Secret = original.Secret
-type ServiceHealthResponse = original.ServiceHealthResponse
-type ServiceHealthResponseList = original.ServiceHealthResponseList
 type ShareCredentialDetails = original.ShareCredentialDetails
 type ShipmentPickUpRequest = original.ShipmentPickUpRequest
 type ShipmentPickUpResponse = original.ShipmentPickUpResponse
@@ -271,12 +243,6 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 func PossibleAccessProtocolValues() []AccessProtocol {
 	return original.PossibleAccessProtocolValues()
 }
-func PossibleAccessTierValues() []AccessTier {
-	return original.PossibleAccessTierValues()
-}
-func PossibleAccountTypeValues() []AccountType {
-	return original.PossibleAccountTypeValues()
-}
 func PossibleAddressTypeValues() []AddressType {
 	return original.PossibleAddressTypeValues()
 }
@@ -297,9 +263,6 @@ func PossibleJobSecretsTypeValues() []JobSecretsType {
 }
 func PossibleNotificationStageNameValues() []NotificationStageName {
 	return original.PossibleNotificationStageNameValues()
-}
-func PossiblePerformanceTierValues() []PerformanceTier {
-	return original.PossiblePerformanceTierValues()
 }
 func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
 	return original.PossibleShareDestinationFormatTypeValues()

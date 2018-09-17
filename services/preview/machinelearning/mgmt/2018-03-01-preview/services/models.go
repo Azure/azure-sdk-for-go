@@ -1501,6 +1501,8 @@ type WorkspaceProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// CreationTime - The creation time of the machine learning workspace in ISO8601 format.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// BatchaiWorkspace - ARM id of the Batch AI workspace associated with this workspace. This cannot be changed once the workspace has been created
+	BatchaiWorkspace *string `json:"batchaiWorkspace,omitempty"`
 	// KeyVault - ARM id of the key vault associated with this workspace. This cannot be changed once the workspace has been created
 	KeyVault *string `json:"keyVault,omitempty"`
 	// ApplicationInsights - ARM id of the application insights associated with this workspace. This cannot be changed once the workspace has been created

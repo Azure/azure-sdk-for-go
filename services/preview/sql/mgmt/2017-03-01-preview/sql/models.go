@@ -2633,7 +2633,7 @@ func (dsap *DatabaseSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 type DatabaseSecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
-	// DisabledAlerts - Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
+	// DisabledAlerts - Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration; Unsafe_Action.
 	DisabledAlerts *string `json:"disabledAlerts,omitempty"`
 	// EmailAddresses - Specifies the semicolon-separated list of e-mail addresses to which the alert is sent.
 	EmailAddresses *string `json:"emailAddresses,omitempty"`
@@ -8952,7 +8952,7 @@ func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp 
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
-	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action
 	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
 	// EmailAddresses - Specifies an array of e-mail addresses to which the alert is sent.
 	EmailAddresses *[]string `json:"emailAddresses,omitempty"`

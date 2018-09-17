@@ -3146,6 +3146,42 @@ func (mac MetricAlertCriteria) AsBasicMetricAlertCriteria() (BasicMetricAlertCri
 	return &mac, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for MetricAlertCriteria struct.
+func (mac *MetricAlertCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mac.AdditionalProperties == nil {
+					mac.AdditionalProperties = make(map[string]interface{})
+				}
+				mac.AdditionalProperties[k] = additionalProperties
+			}
+		case "odata.type":
+			if v != nil {
+				var odataType OdataTypeBasicMetricAlertCriteria
+				err = json.Unmarshal(*v, &odataType)
+				if err != nil {
+					return err
+				}
+				mac.OdataType = odataType
+			}
+		}
+	}
+
+	return nil
+}
+
 // MetricAlertProperties an alert rule.
 type MetricAlertProperties struct {
 	// Description - the description of the metric alert that will be included in the alert email.
@@ -3484,6 +3520,51 @@ func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsMetricAlertCrit
 // AsBasicMetricAlertCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
 func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsBasicMetricAlertCriteria() (BasicMetricAlertCriteria, bool) {
 	return &masrmmc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetricAlertSingleResourceMultipleMetricCriteria struct.
+func (masrmmc *MetricAlertSingleResourceMultipleMetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "allOf":
+			if v != nil {
+				var allOf []MetricCriteria
+				err = json.Unmarshal(*v, &allOf)
+				if err != nil {
+					return err
+				}
+				masrmmc.AllOf = &allOf
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if masrmmc.AdditionalProperties == nil {
+					masrmmc.AdditionalProperties = make(map[string]interface{})
+				}
+				masrmmc.AdditionalProperties[k] = additionalProperties
+			}
+		case "odata.type":
+			if v != nil {
+				var odataType OdataTypeBasicMetricAlertCriteria
+				err = json.Unmarshal(*v, &odataType)
+				if err != nil {
+					return err
+				}
+				masrmmc.OdataType = odataType
+			}
+		}
+	}
+
+	return nil
 }
 
 // MetricAlertStatus an alert status.

@@ -177,7 +177,7 @@ func QueueEntityWithDuplicateDetection(window *time.Duration) QueueManagementOpt
 	return func(q *QueueDescription) error {
 		q.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
-			q.DuplicateDetectionHistoryTimeWindow = durationTo8601Seconds(window)
+			q.DuplicateDetectionHistoryTimeWindow = ptrString(durationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -207,7 +207,7 @@ func QueueEntityWithAutoDeleteOnIdle(window *time.Duration) QueueManagementOptio
 			if window.Minutes() < 5 {
 				return errors.New("QueueEntityWithAutoDeleteOnIdle: window must be greater than 5 minutes")
 			}
-			q.AutoDeleteOnIdle = durationTo8601Seconds(window)
+			q.AutoDeleteOnIdle = ptrString(durationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -222,7 +222,7 @@ func QueueEntityWithMessageTimeToLive(window *time.Duration) QueueManagementOpti
 			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
-		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
+		q.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}
 }
@@ -236,7 +236,7 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
-		q.LockDuration = durationTo8601Seconds(window)
+		q.LockDuration = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}
 }

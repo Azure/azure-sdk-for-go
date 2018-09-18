@@ -369,7 +369,7 @@ func SubscriptionWithLockDuration(window *time.Duration) SubscriptionManagementO
 			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
-		s.LockDuration = durationTo8601Seconds(window)
+		s.LockDuration = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}
 }
@@ -399,7 +399,7 @@ func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionManagem
 			if window.Minutes() < 5 {
 				return errors.New("window must be greater than 5 minutes")
 			}
-			s.AutoDeleteOnIdle = durationTo8601Seconds(window)
+			s.AutoDeleteOnIdle = ptrString(durationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -414,7 +414,7 @@ func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionManage
 			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
-		s.DefaultMessageTimeToLive = durationTo8601Seconds(window)
+		s.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}
 }

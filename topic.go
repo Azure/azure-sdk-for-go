@@ -362,7 +362,7 @@ func TopicWithDuplicateDetection(window *time.Duration) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
-			t.DuplicateDetectionHistoryTimeWindow = durationTo8601Seconds(window)
+			t.DuplicateDetectionHistoryTimeWindow = ptrString(durationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -392,7 +392,7 @@ func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicManagementOption {
 			if window.Minutes() < 5 {
 				return errors.New("TopicWithAutoDeleteOnIdle: window must be greater than 5 minutes")
 			}
-			t.AutoDeleteOnIdle = durationTo8601Seconds(window)
+			t.AutoDeleteOnIdle = ptrString(durationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -407,7 +407,7 @@ func TopicWithMessageTimeToLive(window *time.Duration) TopicManagementOption {
 			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
-		t.DefaultMessageTimeToLive = durationTo8601Seconds(window)
+		t.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
 		return nil
 	}
 }

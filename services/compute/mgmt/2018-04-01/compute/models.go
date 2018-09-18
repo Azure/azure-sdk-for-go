@@ -1180,6 +1180,8 @@ type BootDiagnosticsInstanceView struct {
 	ConsoleScreenshotBlobURI *string `json:"consoleScreenshotBlobUri,omitempty"`
 	// SerialConsoleLogBlobURI - The Linux serial console log blob Uri.
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
+	// Status - The status of a virtual machine's boot diagnostics. It will not be set if there are no errors.
+	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
 // CreationData data used when creating a disk.

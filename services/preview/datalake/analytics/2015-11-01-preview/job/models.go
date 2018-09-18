@@ -400,6 +400,8 @@ type Information struct {
 	ErrorMessage *[]ErrorDetails `json:"errorMessage,omitempty"`
 	// DegreeOfParallelism - Gets or sets the degree of parallelism used for this job. This must be greater than 0.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
+	// DegreeOfParallelismPercent - the degree of parallelism in percentage used for this job.
+	DegreeOfParallelismPercent *float64 `json:"degreeOfParallelismPercent,omitempty"`
 	// Priority - Gets or sets the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
 	// SubmitTime - Gets the time the job was submitted to the service.
@@ -480,6 +482,15 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				i.DegreeOfParallelism = &degreeOfParallelism
+			}
+		case "degreeOfParallelismPercent":
+			if v != nil {
+				var degreeOfParallelismPercent float64
+				err = json.Unmarshal(*v, &degreeOfParallelismPercent)
+				if err != nil {
+					return err
+				}
+				i.DegreeOfParallelismPercent = &degreeOfParallelismPercent
 			}
 		case "priority":
 			if v != nil {

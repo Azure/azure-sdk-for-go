@@ -4497,6 +4497,12 @@ type ManagedInstanceProperties struct {
 	VCores *int32 `json:"vCores,omitempty"`
 	// StorageSizeInGB - The maximum storage size in GB.
 	StorageSizeInGB *int32 `json:"storageSizeInGB,omitempty"`
+	// Collation - Collation of the managed instance.
+	Collation *string `json:"collation,omitempty"`
+	// DNSZone - The Dns Zone that the managed instance is in.
+	DNSZone *string `json:"dnsZone,omitempty"`
+	// DNSZonePartner - The resource id of another managed instance whose DNS zone this managed instance will share after creation.
+	DNSZonePartner *string `json:"dnsZonePartner,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

@@ -110,7 +110,7 @@ func (client ProtectionContainersClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// Inquire inquires all the protectable items that are protectable under the given container.
+// Inquire this is an async operation and the results should be tracked using location header or Azure-async-url.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

@@ -39,11 +39,13 @@ func NewGalleriesClientWithBaseURI(baseURI string, subscriptionID string) Galler
 	return GalleriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a gallery.
+// CreateOrUpdate create or update a Shared Image Gallery.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// galleryName - the name of the gallery.
-// gallery - parameters supplied to the create or update gallery operation.
+// galleryName - the name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
+// dots, dashes, and periods allowed in the middle. The maximum length is 80 characters as limited by
+// Constants.MaxResourceNameLength for any type of resource created in Azure.
+// gallery - parameters supplied to the create or update Shared Image Gallery operation.
 func (client GalleriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (result GalleriesCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, galleryName, gallery)
 	if err != nil {
@@ -113,10 +115,10 @@ func (client GalleriesClient) CreateOrUpdateResponder(resp *http.Response) (resu
 	return
 }
 
-// Delete delete a gallery.
+// Delete delete a Shared Image Gallery.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// galleryName - the name of the gallery.
+// galleryName - the name of the Shared Image Gallery to be deleted.
 func (client GalleriesClient) Delete(ctx context.Context, resourceGroupName string, galleryName string) (result GalleriesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, galleryName)
 	if err != nil {
@@ -183,10 +185,10 @@ func (client GalleriesClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// Get retrieves information about a gallery.
+// Get retrieves information about a Shared Image Gallery.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// galleryName - the name of the gallery.
+// galleryName - the name of the Shared Image Gallery.
 func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string) (result Gallery, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, galleryName)
 	if err != nil {

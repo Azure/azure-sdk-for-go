@@ -1,5 +1,35 @@
 # CHANGELOG
 
+## `v20.2.0`
+
+### New Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|           authorization |   2018-09-01-preview  |
+|              automation |    2018-06-preview    |
+|             consumption |       2018-08-31      |
+|       containerinstance |       2018-09-01      |
+|               eventgrid |   2018-09-15-preview  |
+|                insights |       2018-09-01      |
+|                 mariadb |   2018-06-01-preview  |
+|                 monitor |   2018-09-01-preview  |
+|                 network |       2018-08-01      |
+|             storagesync | 2018-04-02<br/>2018-07-01 |
+|              storsimple |       2016-10-01      |
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|             botservices |       2018-07-12      |
+|             hanaonazure |   2017-11-03-preview  |
+|                     job | 2015-11-01-preview<br/>2016-03-20-preview<br/>2016-11-01<br/>2017-09-01-preview |
+|                   locks |       2016-09-01      |
+|                 network |       2018-06-01      |
+|                security |   2017-08-01-preview  |
+|                services |   2018-03-01-preview  |
+
 ## `v20.1.0`
 
 ### New Services

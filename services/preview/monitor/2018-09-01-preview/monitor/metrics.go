@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,16 +42,29 @@ func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
 
 // Create **Post the metric values for a resource**.
 // Parameters:
+// contentType - supports application/json and application/x-ndjson
+// contentLength - content length of the payload
 // subscriptionID - the azure subscription id
 // resourceGroupName - the ARM resource group name
 // resourceProvider - the ARM resource provider name
 // resourceTypeName - the ARM resource type name
 // resourceName - the ARM resource name
 // body - the Azure metrics document json payload
-// contentType - supports application/json and application/x-ndjson
-// contentLength - content length of the payload
-func (client MetricsClient) Create(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (result AzureMetricsResult, err error) {
-	req, err := client.CreatePreparer(ctx, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body, contentType, contentLength)
+func (client MetricsClient) Create(ctx context.Context, contentType string, contentLength int32, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument) (result AzureMetricsResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Time", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "body.Data", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "body.Data.BaseData", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "body.Data.BaseData.Metric", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Data.BaseData.Namespace", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Data.BaseData.Series", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					}}}}}); err != nil {
+		return result, validation.NewError("monitor.MetricsClient", "Create", err.Error())
+	}
+
+	req, err := client.CreatePreparer(ctx, contentType, contentLength, subscriptionID, resourceGroupName, resourceProvider, resourceTypeName, resourceName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.MetricsClient", "Create", nil, "Failure preparing request")
 		return
@@ -72,7 +86,7 @@ func (client MetricsClient) Create(ctx context.Context, subscriptionID string, r
 }
 
 // CreatePreparer prepares the Create request.
-func (client MetricsClient) CreatePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument, contentType string, contentLength *int32) (*http.Request, error) {
+func (client MetricsClient) CreatePreparer(ctx context.Context, contentType string, contentLength int32, subscriptionID string, resourceGroupName string, resourceProvider string, resourceTypeName string, resourceName string, body AzureMetricsDocument) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -86,15 +100,9 @@ func (client MetricsClient) CreatePreparer(ctx context.Context, subscriptionID s
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProvider}/{resourceTypeName}/{resourceName}/metrics", pathParameters),
-		autorest.WithJSON(body))
-	if len(contentType) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	}
-	if contentLength != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Content-Length", autorest.String(contentLength)))
-	}
+		autorest.WithJSON(body),
+		autorest.WithHeader("Content-Type", autorest.String(contentType)),
+		autorest.WithHeader("Content-Length", autorest.String(contentLength)))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

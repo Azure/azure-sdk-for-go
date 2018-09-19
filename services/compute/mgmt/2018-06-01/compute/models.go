@@ -2627,7 +2627,7 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
-	// TargetRegions - The target regions where the Image Version is going to be replicated to.
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updateable.
 	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
 	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
@@ -2884,7 +2884,7 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 
 // GalleryImageProperties describes the properties of a gallery Image Definition.
 type GalleryImageProperties struct {
-	// Description - The description of this gallery Image Definition resource.
+	// Description - The description of this gallery Image Definition resource. This property is updateable.
 	Description *string `json:"description,omitempty"`
 	// Eula - The Eula agreement for the gallery Image Definition.
 	Eula *string `json:"eula,omitempty"`
@@ -2896,7 +2896,7 @@ type GalleryImageProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// OsState - The allowed values for OS State are 'Generalized'. Possible values include: 'Generalized', 'Specialized'
 	OsState OperatingSystemStateTypes `json:"osState,omitempty"`
-	// EndOfLifeDate - The end of life of this gallery Image Definition.
+	// EndOfLifeDate - The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updateable.
 	EndOfLifeDate *date.Time                       `json:"endOfLifeDate,omitempty"`
 	Identifier    *GalleryImageIdentifier          `json:"identifier,omitempty"`
 	Recommended   *RecommendedMachineConfiguration `json:"recommended,omitempty"`
@@ -3179,15 +3179,15 @@ type GalleryImageVersionProperties struct {
 
 // GalleryImageVersionPublishingProfile the publishing profile of a gallery Image Version.
 type GalleryImageVersionPublishingProfile struct {
-	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified.
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updateable.
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
 	// PublishedDate - The timestamp for when the gallery Image Version is published.
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
-	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes.
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updateable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// TargetRegions - The target regions where the Image Version is going to be replicated to.
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updateable.
 	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
 	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
@@ -3363,7 +3363,7 @@ type GalleryOSDiskImage struct {
 
 // GalleryProperties describes the properties of a Shared Image Gallery.
 type GalleryProperties struct {
-	// Description - The description of this Shared Image Gallery resource.
+	// Description - The description of this Shared Image Gallery resource. This property is updateable.
 	Description *string            `json:"description,omitempty"`
 	Identifier  *GalleryIdentifier `json:"identifier,omitempty"`
 	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateDeleting', 'ProvisioningStateMigrating'
@@ -4346,7 +4346,8 @@ type PurchasePlan struct {
 	Product *string `json:"product,omitempty"`
 }
 
-// RecommendedMachineConfiguration describes the recommended machine configuration.
+// RecommendedMachineConfiguration the properties describe the recommended machine configuration for this Image
+// Definition. These properties are updateable.
 type RecommendedMachineConfiguration struct {
 	VCPUs  *ResourceRange `json:"vCPUs,omitempty"`
 	Memory *ResourceRange `json:"memory,omitempty"`

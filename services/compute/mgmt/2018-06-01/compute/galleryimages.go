@@ -46,7 +46,7 @@ func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) Ga
 // galleryName - the name of the Shared Image Gallery in which the Image Definition is to be created.
 // galleryImageName - the name of the gallery Image Definition to be created or updated. The allowed characters
 // are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
-// characters as limited by Constants.MaxResourceNameLength for any type of resource created in Azure.
+// characters.
 // galleryImage - parameters supplied to the create or update gallery image operation.
 func (client GalleryImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage) (result GalleryImagesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{

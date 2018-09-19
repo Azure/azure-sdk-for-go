@@ -2516,7 +2516,7 @@ func (future *GalleriesDeleteFuture) Result(client GalleriesClient) (ar autorest
 	return
 }
 
-// Gallery specifies information about the gallery that you want to create or update.
+// Gallery specifies information about the Shared Image Gallery that you want to create or update.
 type Gallery struct {
 	autorest.Response  `json:"-"`
 	*GalleryProperties `json:"properties,omitempty"`
@@ -2627,21 +2627,21 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
-	// TargetRegions - The target regions where the artifact is going to be published.
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updateable.
 	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
 	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
 
-// GalleryArtifactSource the source of the gallery artifact.
+// GalleryArtifactSource the source image from which the Image Version is going to be created.
 type GalleryArtifactSource struct {
 	ManagedImage *ManagedArtifact `json:"managedImage,omitempty"`
 }
 
 // GalleryDataDiskImage this is the data disk image.
 type GalleryDataDiskImage struct {
-	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
+	// Lun - This property specifies the logical unit number of the data disk. This value is used to identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the Virtual Machine.
 	Lun *int32 `json:"lun,omitempty"`
-	// SizeInGB - It indicates the size of the VHD to create.
+	// SizeInGB - This property indicates the size of the VHD to be created.
 	SizeInGB *int32 `json:"sizeInGB,omitempty"`
 	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
 	HostCaching HostCaching `json:"hostCaching,omitempty"`
@@ -2649,7 +2649,7 @@ type GalleryDataDiskImage struct {
 
 // GalleryDiskImage this is the disk image base class.
 type GalleryDiskImage struct {
-	// SizeInGB - It indicates the size of the VHD to create.
+	// SizeInGB - This property indicates the size of the VHD to be created.
 	SizeInGB *int32 `json:"sizeInGB,omitempty"`
 	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
 	HostCaching HostCaching `json:"hostCaching,omitempty"`
@@ -2657,11 +2657,11 @@ type GalleryDiskImage struct {
 
 // GalleryIdentifier describes the gallery unique name.
 type GalleryIdentifier struct {
-	// UniqueName - The unique name of the gallery
+	// UniqueName - The unique name of the Shared Image Gallery. This name is generated automatically by Azure.
 	UniqueName *string `json:"uniqueName,omitempty"`
 }
 
-// GalleryImage specifies information about the gallery image that you want to create or update.
+// GalleryImage specifies information about the gallery Image Definition that you want to create or update.
 type GalleryImage struct {
 	autorest.Response       `json:"-"`
 	*GalleryImageProperties `json:"properties,omitempty"`
@@ -2770,22 +2770,22 @@ func (gi *GalleryImage) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GalleryImageIdentifier this is the gallery image identifier.
+// GalleryImageIdentifier this is the gallery Image Definition identifier.
 type GalleryImageIdentifier struct {
-	// Publisher - The gallery image publisher name.
+	// Publisher - The name of the gallery Image Definition publisher.
 	Publisher *string `json:"publisher,omitempty"`
-	// Offer - The gallery image offer name.
+	// Offer - The name of the gallery Image Definition offer.
 	Offer *string `json:"offer,omitempty"`
-	// Sku - The gallery image sku name.
+	// Sku - The name of the gallery Image Definition SKU.
 	Sku *string `json:"sku,omitempty"`
 }
 
 // GalleryImageList the List Gallery Images operation response.
 type GalleryImageList struct {
 	autorest.Response `json:"-"`
-	// Value - A list of gallery images.
+	// Value - A list of Shared Image Gallery images.
 	Value *[]GalleryImage `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of gallery images. Call ListNext() with this to fetch the next page of gallery images.
+	// NextLink - The uri to fetch the next page of Image Definitions in the Shared Image Gallery. Call ListNext() with this to fetch the next page of gallery Image Definitions.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -2882,21 +2882,21 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 	return *page.gil.Value
 }
 
-// GalleryImageProperties describes the properties of a gallery image.
+// GalleryImageProperties describes the properties of a gallery Image Definition.
 type GalleryImageProperties struct {
-	// Description - The description of this gallery image resource.
+	// Description - The description of this gallery Image Definition resource. This property is updateable.
 	Description *string `json:"description,omitempty"`
-	// Eula - The Eula agreement for the gallery image.
+	// Eula - The Eula agreement for the gallery Image Definition.
 	Eula *string `json:"eula,omitempty"`
 	// PrivacyStatementURI - The privacy statement uri.
 	PrivacyStatementURI *string `json:"privacyStatementUri,omitempty"`
 	// ReleaseNoteURI - The release note uri.
 	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
-	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
+	// OsType - This property allows you to specify the type of the OS that is included in the disk when creating a VM from a managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// OsState - The OS State. Possible values include: 'Generalized', 'Specialized'
+	// OsState - The allowed values for OS State are 'Generalized'. Possible values include: 'Generalized', 'Specialized'
 	OsState OperatingSystemStateTypes `json:"osState,omitempty"`
-	// EndOfLifeDate - The end of life of this gallery image.
+	// EndOfLifeDate - The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updateable.
 	EndOfLifeDate *date.Time                       `json:"endOfLifeDate,omitempty"`
 	Identifier    *GalleryImageIdentifier          `json:"identifier,omitempty"`
 	Recommended   *RecommendedMachineConfiguration `json:"recommended,omitempty"`
@@ -2957,7 +2957,7 @@ func (future *GalleryImagesDeleteFuture) Result(client GalleryImagesClient) (ar 
 	return
 }
 
-// GalleryImageVersion specifies information about the gallery image version that you want to create or update.
+// GalleryImageVersion specifies information about the gallery Image Version that you want to create or update.
 type GalleryImageVersion struct {
 	autorest.Response              `json:"-"`
 	*GalleryImageVersionProperties `json:"properties,omitempty"`
@@ -3069,9 +3069,9 @@ func (giv *GalleryImageVersion) UnmarshalJSON(body []byte) error {
 // GalleryImageVersionList the List Gallery Image version operation response.
 type GalleryImageVersionList struct {
 	autorest.Response `json:"-"`
-	// Value - A list of gallery image versions.
+	// Value - A list of gallery Image Versions.
 	Value *[]GalleryImageVersion `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of gallery image versions. Call ListNext() with this to fetch the next page of gallery image versions.
+	// NextLink - The uri to fetch the next page of gallery Image Versions. Call ListNext() with this to fetch the next page of gallery Image Versions.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -3168,7 +3168,7 @@ func (page GalleryImageVersionListPage) Values() []GalleryImageVersion {
 	return *page.givl.Value
 }
 
-// GalleryImageVersionProperties describes the properties of a gallery image version.
+// GalleryImageVersionProperties describes the properties of a gallery Image Version.
 type GalleryImageVersionProperties struct {
 	PublishingProfile *GalleryImageVersionPublishingProfile `json:"publishingProfile,omitempty"`
 	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
@@ -3177,17 +3177,17 @@ type GalleryImageVersionProperties struct {
 	ReplicationStatus *ReplicationStatus                 `json:"replicationStatus,omitempty"`
 }
 
-// GalleryImageVersionPublishingProfile the publishing profile of a gallery image version.
+// GalleryImageVersionPublishingProfile the publishing profile of a gallery Image Version.
 type GalleryImageVersionPublishingProfile struct {
-	// ReplicaCount - This is the number of source blob copies in a region.
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updateable.
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
-	// ExcludeFromLatest - The flag means that if it is set to true, people deploying VMs with 'latest' as version will not use this version.
+	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
 	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
-	// PublishedDate - The time when the gallery image version is published.
+	// PublishedDate - The timestamp for when the gallery Image Version is published.
 	PublishedDate *date.Time `json:"publishedDate,omitempty"`
-	// EndOfLifeDate - The end of life date of the gallery image version.
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updateable.
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
-	// TargetRegions - The target regions where the artifact is going to be published.
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updateable.
 	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
 	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
@@ -3244,7 +3244,7 @@ func (future *GalleryImageVersionsDeleteFuture) Result(client GalleryImageVersio
 	return
 }
 
-// GalleryImageVersionStorageProfile this is the storage profile of a gallery image version.
+// GalleryImageVersionStorageProfile this is the storage profile of a gallery Image Version.
 type GalleryImageVersionStorageProfile struct {
 	OsDiskImage *GalleryOSDiskImage `json:"osDiskImage,omitempty"`
 	// DataDiskImages - A list of data disk images.
@@ -3355,15 +3355,15 @@ func (page GalleryListPage) Values() []Gallery {
 
 // GalleryOSDiskImage this is the OS disk image.
 type GalleryOSDiskImage struct {
-	// SizeInGB - It indicates the size of the VHD to create.
+	// SizeInGB - This property indicates the size of the VHD to be created.
 	SizeInGB *int32 `json:"sizeInGB,omitempty"`
 	// HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. Possible values include: 'HostCachingNone', 'HostCachingReadOnly', 'HostCachingReadWrite'
 	HostCaching HostCaching `json:"hostCaching,omitempty"`
 }
 
-// GalleryProperties describes the properties of a gallery.
+// GalleryProperties describes the properties of a Shared Image Gallery.
 type GalleryProperties struct {
-	// Description - The description of this gallery resource.
+	// Description - The description of this Shared Image Gallery resource. This property is updateable.
 	Description *string            `json:"description,omitempty"`
 	Identifier  *GalleryIdentifier `json:"identifier,omitempty"`
 	// ProvisioningState - The provisioning state, which only appears in the response. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateDeleting', 'ProvisioningStateMigrating'
@@ -3652,7 +3652,7 @@ type ImageProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ImagePurchasePlan describes the gallery image purchase plan. This is used by marketplace images.
+// ImagePurchasePlan describes the gallery Image Definition purchase plan. This is used by marketplace images.
 type ImagePurchasePlan struct {
 	// Name - The plan ID.
 	Name *string `json:"name,omitempty"`
@@ -4346,7 +4346,8 @@ type PurchasePlan struct {
 	Product *string `json:"product,omitempty"`
 }
 
-// RecommendedMachineConfiguration describes the recommended machine configuration.
+// RecommendedMachineConfiguration the properties describe the recommended machine configuration for this Image
+// Definition. These properties are updateable.
 type RecommendedMachineConfiguration struct {
 	VCPUs  *ResourceRange `json:"vCPUs,omitempty"`
 	Memory *ResourceRange `json:"memory,omitempty"`
@@ -4363,7 +4364,7 @@ type RecoveryWalkResponse struct {
 
 // RegionalReplicationStatus this is the regional replication status.
 type RegionalReplicationStatus struct {
-	// Region - The region where the gallery image version is published to.
+	// Region - The region to which the gallery Image Version is being replicated to.
 	Region *string `json:"region,omitempty"`
 	// State - This is the regional replication state. Possible values include: 'ReplicationStateUnknown', 'ReplicationStateReplicating', 'ReplicationStateCompleted', 'ReplicationStateFailed'
 	State ReplicationState `json:"state,omitempty"`
@@ -4373,9 +4374,9 @@ type RegionalReplicationStatus struct {
 	Progress *int32 `json:"progress,omitempty"`
 }
 
-// ReplicationStatus this is the replication status of the gallery image version.
+// ReplicationStatus this is the replication status of the gallery Image Version.
 type ReplicationStatus struct {
-	// AggregatedState - This is the aggregated replication status based on the regional replication status. Possible values include: 'Unknown', 'InProgress', 'Completed', 'Failed'
+	// AggregatedState - This is the aggregated replication status based on all the regional replication status flags. Possible values include: 'Unknown', 'InProgress', 'Completed', 'Failed'
 	AggregatedState AggregatedReplicationState `json:"aggregatedState,omitempty"`
 	// Summary - This is a summary of replication status for each region.
 	Summary *[]RegionalReplicationStatus `json:"summary,omitempty"`
@@ -5496,7 +5497,7 @@ type SubResourceReadOnly struct {
 type TargetRegion struct {
 	// Name - The name of the region.
 	Name *string `json:"name,omitempty"`
-	// RegionalReplicaCount - This is the number of source blob copies in this specific region.
+	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region. This property is updateable.
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
 }
 

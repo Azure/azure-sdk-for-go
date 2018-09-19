@@ -1036,7 +1036,7 @@ type Information struct {
 	Related *RelationshipProperties `json:"related,omitempty"`
 	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
-	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, Null if job has not been assigned yet or the account doesn't have hierarchy queue.
 	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
@@ -1332,7 +1332,7 @@ type InformationBasic struct {
 	Related *RelationshipProperties `json:"related,omitempty"`
 	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
-	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, Null if job has not been assigned yet or the account doesn't have hierarchy queue.
 	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 

@@ -2289,6 +2289,8 @@ type ActivityPolicy struct {
 	Retry interface{} `json:"retry,omitempty"`
 	// RetryIntervalInSeconds - Interval between each retry attempt (in seconds). The default is 30 sec.
 	RetryIntervalInSeconds *int32 `json:"retryIntervalInSeconds,omitempty"`
+	// SecureInput - When set to true, Input from activity is considered as secure and will not be logged to monitoring.
+	SecureInput *bool `json:"secureInput,omitempty"`
 	// SecureOutput - When set to true, Output from activity is considered as secure and will not be logged to monitoring.
 	SecureOutput *bool `json:"secureOutput,omitempty"`
 }
@@ -2300,6 +2302,9 @@ func (ap ActivityPolicy) MarshalJSON() ([]byte, error) {
 	objectMap["retry"] = ap.Retry
 	if ap.RetryIntervalInSeconds != nil {
 		objectMap["retryIntervalInSeconds"] = ap.RetryIntervalInSeconds
+	}
+	if ap.SecureInput != nil {
+		objectMap["secureInput"] = ap.SecureInput
 	}
 	if ap.SecureOutput != nil {
 		objectMap["secureOutput"] = ap.SecureOutput
@@ -2357,6 +2362,15 @@ func (ap *ActivityPolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ap.RetryIntervalInSeconds = &retryIntervalInSeconds
+			}
+		case "secureInput":
+			if v != nil {
+				var secureInput bool
+				err = json.Unmarshal(*v, &secureInput)
+				if err != nil {
+					return err
+				}
+				ap.SecureInput = &secureInput
 			}
 		case "secureOutput":
 			if v != nil {
@@ -41585,7 +41599,7 @@ func (fa *FilterActivity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FilterActivityTypeProperties fitler activity properties.
+// FilterActivityTypeProperties filter activity properties.
 type FilterActivityTypeProperties struct {
 	// Items - Input array on which filter should be applied.
 	Items *Expression `json:"items,omitempty"`

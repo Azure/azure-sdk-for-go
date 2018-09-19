@@ -87,7 +87,7 @@ func (client BaseClient) ListOperationsPreparer(ctx context.Context) (*http.Requ
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Features/operations"),
+		autorest.WithPath("/providers/Microsoft.Authorization/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

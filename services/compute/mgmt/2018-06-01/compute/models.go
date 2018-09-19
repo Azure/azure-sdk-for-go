@@ -5497,7 +5497,7 @@ type SubResourceReadOnly struct {
 type TargetRegion struct {
 	// Name - The name of the region.
 	Name *string `json:"name,omitempty"`
-	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region.
+	// RegionalReplicaCount - The number of replicas of the Image Version to be created per region. This property is updateable.
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
 }
 

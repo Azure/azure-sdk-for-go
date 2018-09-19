@@ -1959,8 +1959,6 @@ type DiagnosticsProfile struct {
 type DiffDiskSettings struct {
 	// Option - Specifies the diff disk option for operating system disk. Possible values are: Local. Possible values include: 'Local'
 	Option DiffDiskOption `json:"option,omitempty"`
-	// ID - Resource Id
-	ID *string `json:"id,omitempty"`
 }
 
 // Disallowed describes the disallowed disk types.

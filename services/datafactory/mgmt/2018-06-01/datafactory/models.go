@@ -30412,6 +30412,27 @@ func (dlauatp DataLakeAnalyticsUSQLActivityTypeProperties) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
+// DataPlaneReadOnlyTokenRequest get Data Plane read only token request definition.
+type DataPlaneReadOnlyTokenRequest struct {
+	// StartTime - Start time for the token. If not specified the current time will be used.
+	StartTime *string `json:"startTime,omitempty"`
+	// ExpireTime - Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire in eight hours.
+	ExpireTime *string `json:"expireTime,omitempty"`
+}
+
+// DataPlaneReadOnlyTokenResponse get Data Plane read only token response definition.
+type DataPlaneReadOnlyTokenResponse struct {
+	autorest.Response `json:"-"`
+	// StartTime - Start time for the token. If not specified the current time will be used.
+	StartTime *string `json:"startTime,omitempty"`
+	// ExpireTime - Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire in eight hours.
+	ExpireTime *string `json:"expireTime,omitempty"`
+	// AccessToken - Data Plane read only access token.
+	AccessToken *string `json:"accessToken,omitempty"`
+	// DataPlaneURL - Data Plane service base URL.
+	DataPlaneURL *string `json:"dataPlaneUrl,omitempty"`
+}
+
 // BasicDataset the Azure Data Factory nested object which identifies data within different data stores, such as
 // tables, files, folders, and documents.
 type BasicDataset interface {

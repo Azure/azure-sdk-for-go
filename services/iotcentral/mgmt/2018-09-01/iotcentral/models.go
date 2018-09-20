@@ -443,12 +443,19 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // ErrorDetails error details.
 type ErrorDetails struct {
-	// Code - The error code.
+	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// ErrorResponseBody details of error response.
+type ErrorResponseBody struct {
+	// Code - Error code, intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - Description of the error, intended for display in user interface.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - Target of the particular error, for example name of the property.
 	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]ErrorResponseBody `json:"details,omitempty"`
 }
 
 // Operation ioT Central REST API operation
@@ -475,6 +482,8 @@ type OperationDisplay struct {
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
+	// Type - The name of the IoT Central resource name to query.
+	Type *string `json:"type,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the

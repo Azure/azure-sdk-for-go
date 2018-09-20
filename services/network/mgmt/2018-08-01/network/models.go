@@ -2398,9 +2398,9 @@ type ApplicationGatewayFirewallDisabledRuleGroup struct {
 type ApplicationGatewayFirewallExclusion struct {
 	// MatchVariable - The variable to be excluded.
 	MatchVariable *string `json:"matchVariable,omitempty"`
-	// SelectorMatchOperator - The operation on selector.
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to.
 	SelectorMatchOperator *string `json:"selectorMatchOperator,omitempty"`
-	// Selector - The selector to be operated on for the variable to be excluded.
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
 	Selector *string `json:"selector,omitempty"`
 }
 

@@ -51,6 +51,13 @@ const (
 	Unknown    AggregatedReplicationState = original.Unknown
 )
 
+type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
+
+const (
+	Aligned AvailabilitySetSkuTypes = original.Aligned
+	Classic AvailabilitySetSkuTypes = original.Classic
+)
+
 type CachingTypes = original.CachingTypes
 
 const (
@@ -974,6 +981,9 @@ func PossibleAccessLevelValues() []AccessLevel {
 }
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return original.PossibleAggregatedReplicationStateValues()
+}
+func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
+	return original.PossibleAvailabilitySetSkuTypesValues()
 }
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()

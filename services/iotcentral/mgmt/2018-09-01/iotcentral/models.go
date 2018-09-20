@@ -25,21 +25,6 @@ import (
 	"net/http"
 )
 
-// AppNameUnavailabilityReason enumerates the values for app name unavailability reason.
-type AppNameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists AppNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid AppNameUnavailabilityReason = "Invalid"
-)
-
-// PossibleAppNameUnavailabilityReasonValues returns an array of possible values for the AppNameUnavailabilityReason const type.
-func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
-	return []AppNameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
 // AppSku enumerates the values for app sku.
 type AppSku string
 
@@ -286,8 +271,8 @@ type AppNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason AppNameUnavailabilityReason `json:"reason,omitempty"`
+	// Reason - The reason for unavailability.
+	Reason *string `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
 }

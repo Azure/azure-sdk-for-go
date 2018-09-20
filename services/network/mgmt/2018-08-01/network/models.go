@@ -2394,6 +2394,16 @@ type ApplicationGatewayFirewallDisabledRuleGroup struct {
 	Rules *[]int32 `json:"rules,omitempty"`
 }
 
+// ApplicationGatewayFirewallExclusion allow to exclude some variable satisfy the condition for the WAF check
+type ApplicationGatewayFirewallExclusion struct {
+	// MatchVariable - The variable to be excluded.
+	MatchVariable *string `json:"matchVariable,omitempty"`
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to.
+	SelectorMatchOperator *string `json:"selectorMatchOperator,omitempty"`
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+	Selector *string `json:"selector,omitempty"`
+}
+
 // ApplicationGatewayFirewallRule a web application firewall rule.
 type ApplicationGatewayFirewallRule struct {
 	// RuleID - The identifier of the web application firewall rule.
@@ -4162,6 +4172,12 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
 	// MaxRequestBodySize - Maxium request body size for WAF.
 	MaxRequestBodySize *int32 `json:"maxRequestBodySize,omitempty"`
+	// MaxRequestBodySizeInKb - Maxium request body size in Kb for WAF.
+	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
+	// FileUploadLimitInMb - Maxium file upload size in Mb for WAF.
+	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
+	// Exclusions - The exclusion list.
+	Exclusions *[]ApplicationGatewayFirewallExclusion `json:"exclusions,omitempty"`
 }
 
 // ApplicationSecurityGroup an application security group in a resource group.

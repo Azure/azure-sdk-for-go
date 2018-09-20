@@ -429,6 +429,8 @@ type Information struct {
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
 	// StateAuditRecords - the job state audit records, indicating when various operations have been performed on this job.
 	StateAuditRecords *[]StateAuditRecord `json:"stateAuditRecords,omitempty"`
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 	// Properties - the job specific properties.
 	Properties BasicProperties `json:"properties,omitempty"`
 }
@@ -585,6 +587,15 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				i.StateAuditRecords = &stateAuditRecords
+			}
+		case "hierarchyQueueNode":
+			if v != nil {
+				var hierarchyQueueNode string
+				err = json.Unmarshal(*v, &hierarchyQueueNode)
+				if err != nil {
+					return err
+				}
+				i.HierarchyQueueNode = &hierarchyQueueNode
 			}
 		case "properties":
 			if v != nil {

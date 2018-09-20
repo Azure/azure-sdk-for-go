@@ -28,6 +28,16 @@ var changelogCmd = &cobra.Command{
 	Short: "Generates a CHANGELOG report in markdown format for the packages under the specified directory.",
 	Long: `The changelog command generates a CHANGELOG for all of the packages under the directory specified in <package dir>.
 A table for added, removed, updated, and breaking changes will be created as required.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		// there should be exactly three args, a directory and two commit hashes
+		if err := cobra.ExactArgs(3)(cmd, args); err != nil {
+			return err
+		}
+		if strings.Index(args[2], ",") > -1 {
+			return errors.New("sequence of target commits is not supported")
+		}
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return theChangelogCmd(args)
 	},
@@ -38,15 +48,7 @@ func init() {
 }
 
 func theChangelogCmd(args []string) error {
-	// there should be exactly three args, a directory and two commit hashes
-	if len(args) < 3 {
-		return errors.New("not enough args were supplied")
-	} else if len(args) > 3 {
-		return errors.New("too many args were supplied")
-	} else if strings.Index(args[2], ",") > -1 {
-		return errors.New("sequence of target commits is not supported")
-	}
-
+	// TODO: refactor so that we don't depend on the packages command
 	rpt, err := thePackagesCmd(args)
 	if err != nil {
 		return err

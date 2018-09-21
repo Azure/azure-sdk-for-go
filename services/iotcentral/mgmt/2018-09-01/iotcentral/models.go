@@ -164,6 +164,19 @@ func (a *App) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AppAvailabilityInfo the properties indicating whether a given IoT Central application information is available.
+type AppAvailabilityInfo struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - The value which indicates whether the provided name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Subdomain - The value which indicates whether the provided subdomain is available.
+	Subdomain *string `json:"subdomain,omitempty"`
+	// Reason - The reason for unavailability.
+	Reason *string `json:"reason,omitempty"`
+	// Message - The detailed reason message.
+	Message *string `json:"message,omitempty"`
+}
+
 // AppListResult a list of IoT Central Applications with a next link.
 type AppListResult struct {
 	autorest.Response `json:"-"`
@@ -264,17 +277,6 @@ func (page AppListResultPage) Values() []App {
 		return nil
 	}
 	return *page.alr.Value
-}
-
-// AppNameAvailabilityInfo the properties indicating whether a given IoT Central application name is available.
-type AppNameAvailabilityInfo struct {
-	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability.
-	Reason *string `json:"reason,omitempty"`
-	// Message - The detailed reason message.
-	Message *string `json:"message,omitempty"`
 }
 
 // AppPatch the description of the IoT Central application.
@@ -467,6 +469,8 @@ type OperationDisplay struct {
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
+	// Subdomain - The subdomain of the IoT Central application instance to check.
+	Subdomain *string `json:"subdomain,omitempty"`
 	// Type - The name of the IoT Central resource name to query.
 	Type *string `json:"type,omitempty"`
 }

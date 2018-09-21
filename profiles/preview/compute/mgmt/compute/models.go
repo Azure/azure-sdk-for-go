@@ -19,7 +19,7 @@
 
 package compute
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute"
 
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 
@@ -49,6 +49,13 @@ const (
 	Failed     AggregatedReplicationState = original.Failed
 	InProgress AggregatedReplicationState = original.InProgress
 	Unknown    AggregatedReplicationState = original.Unknown
+)
+
+type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
+
+const (
+	Aligned AvailabilitySetSkuTypes = original.Aligned
+	Classic AvailabilitySetSkuTypes = original.Classic
 )
 
 type CachingTypes = original.CachingTypes
@@ -570,7 +577,7 @@ type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
-type AutoOSUpgradePolicy = original.AutoOSUpgradePolicy
+type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetListResultIterator = original.AvailabilitySetListResultIterator
@@ -974,6 +981,9 @@ func PossibleAccessLevelValues() []AccessLevel {
 }
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return original.PossibleAggregatedReplicationStateValues()
+}
+func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
+	return original.PossibleAvailabilitySetSkuTypesValues()
 }
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()

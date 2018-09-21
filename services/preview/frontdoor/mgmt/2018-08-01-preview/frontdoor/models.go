@@ -455,6 +455,29 @@ func PossibleTransformValues() []Transform {
 	return []Transform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, Uppercase, URLDecode, URLEncode}
 }
 
+// WebApplicationFirewallPolicy enumerates the values for web application firewall policy.
+type WebApplicationFirewallPolicy string
+
+const (
+	// WebApplicationFirewallPolicyCreating ...
+	WebApplicationFirewallPolicyCreating WebApplicationFirewallPolicy = "Creating"
+	// WebApplicationFirewallPolicyDeleting ...
+	WebApplicationFirewallPolicyDeleting WebApplicationFirewallPolicy = "Deleting"
+	// WebApplicationFirewallPolicyDisabled ...
+	WebApplicationFirewallPolicyDisabled WebApplicationFirewallPolicy = "Disabled"
+	// WebApplicationFirewallPolicyDisabling ...
+	WebApplicationFirewallPolicyDisabling WebApplicationFirewallPolicy = "Disabling"
+	// WebApplicationFirewallPolicyEnabled ...
+	WebApplicationFirewallPolicyEnabled WebApplicationFirewallPolicy = "Enabled"
+	// WebApplicationFirewallPolicyEnabling ...
+	WebApplicationFirewallPolicyEnabling WebApplicationFirewallPolicy = "Enabling"
+)
+
+// PossibleWebApplicationFirewallPolicyValues returns an array of possible values for the WebApplicationFirewallPolicy const type.
+func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
+	return []WebApplicationFirewallPolicy{WebApplicationFirewallPolicyCreating, WebApplicationFirewallPolicyDeleting, WebApplicationFirewallPolicyDisabled, WebApplicationFirewallPolicyDisabling, WebApplicationFirewallPolicyEnabled, WebApplicationFirewallPolicyEnabling}
+}
+
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
 // indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from the
 // HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
@@ -2669,8 +2692,8 @@ type ValidateCustomDomainOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// WebApplicationFirewallPolicy defines web application firewall policy.
-type WebApplicationFirewallPolicy struct {
+// WebApplicationFirewallPolicy1 defines web application firewall policy.
+type WebApplicationFirewallPolicy1 struct {
 	autorest.Response `json:"-"`
 	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
 	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
@@ -2688,35 +2711,35 @@ type WebApplicationFirewallPolicy struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
-func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy1.
+func (wafp1 WebApplicationFirewallPolicy1) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wafp.WebApplicationFirewallPolicyPropertiesFormat != nil {
-		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat
+	if wafp1.WebApplicationFirewallPolicyPropertiesFormat != nil {
+		objectMap["properties"] = wafp1.WebApplicationFirewallPolicyPropertiesFormat
 	}
-	if wafp.Etag != nil {
-		objectMap["etag"] = wafp.Etag
+	if wafp1.Etag != nil {
+		objectMap["etag"] = wafp1.Etag
 	}
-	if wafp.ID != nil {
-		objectMap["id"] = wafp.ID
+	if wafp1.ID != nil {
+		objectMap["id"] = wafp1.ID
 	}
-	if wafp.Name != nil {
-		objectMap["name"] = wafp.Name
+	if wafp1.Name != nil {
+		objectMap["name"] = wafp1.Name
 	}
-	if wafp.Type != nil {
-		objectMap["type"] = wafp.Type
+	if wafp1.Type != nil {
+		objectMap["type"] = wafp1.Type
 	}
-	if wafp.Location != nil {
-		objectMap["location"] = wafp.Location
+	if wafp1.Location != nil {
+		objectMap["location"] = wafp1.Location
 	}
-	if wafp.Tags != nil {
-		objectMap["tags"] = wafp.Tags
+	if wafp1.Tags != nil {
+		objectMap["tags"] = wafp1.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
-func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy1 struct.
+func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -2731,7 +2754,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
+				wafp1.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
 			}
 		case "etag":
 			if v != nil {
@@ -2740,7 +2763,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.Etag = &etag
+				wafp1.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -2749,7 +2772,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.ID = &ID
+				wafp1.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -2758,7 +2781,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.Name = &name
+				wafp1.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -2767,7 +2790,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.Type = &typeVar
+				wafp1.Type = &typeVar
 			}
 		case "location":
 			if v != nil {
@@ -2776,7 +2799,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.Location = &location
+				wafp1.Location = &location
 			}
 		case "tags":
 			if v != nil {
@@ -2785,7 +2808,7 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp.Tags = tags
+				wafp1.Tags = tags
 			}
 		}
 	}
@@ -2798,13 +2821,13 @@ func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 type WebApplicationFirewallPolicyListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of WebApplicationFirewallPolicies within a resource group.
-	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
+	Value *[]WebApplicationFirewallPolicy1 `json:"value,omitempty"`
 	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
-// WebApplicationFirewallPolicy values.
+// WebApplicationFirewallPolicy1 values.
 type WebApplicationFirewallPolicyListResultIterator struct {
 	i    int
 	page WebApplicationFirewallPolicyListResultPage
@@ -2838,9 +2861,9 @@ func (iter WebApplicationFirewallPolicyListResultIterator) Response() WebApplica
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy {
+func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy1 {
 	if !iter.page.NotDone() {
-		return WebApplicationFirewallPolicy{}
+		return WebApplicationFirewallPolicy1{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -2862,7 +2885,7 @@ func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolic
 		autorest.WithBaseURL(to.String(wafplr.NextLink)))
 }
 
-// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy values.
+// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy1 values.
 type WebApplicationFirewallPolicyListResultPage struct {
 	fn     func(WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)
 	wafplr WebApplicationFirewallPolicyListResult
@@ -2890,7 +2913,7 @@ func (page WebApplicationFirewallPolicyListResultPage) Response() WebApplication
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy {
+func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy1 {
 	if page.wafplr.IsEmpty() {
 		return nil
 	}
@@ -2907,4 +2930,6 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	ManagedRules *ManagedRuleSets `json:"managedRules,omitempty"`
 	// ProvisioningState - Provisioning state of the WebApplicationFirewallPolicy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyCreating', 'WebApplicationFirewallPolicyEnabling', 'WebApplicationFirewallPolicyEnabled', 'WebApplicationFirewallPolicyDisabling', 'WebApplicationFirewallPolicyDisabled', 'WebApplicationFirewallPolicyDeleting'
+	ResourceState WebApplicationFirewallPolicy `json:"ResourceState,omitempty"`
 }

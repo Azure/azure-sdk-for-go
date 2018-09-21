@@ -45,7 +45,7 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 // resourceGroupName - the name of the resource group.
 // policyName - the name of the resource group.
 // parameters - policy to be created.
-func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy) (result WebApplicationFirewallPolicy, err error) {
+func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy1) (result WebApplicationFirewallPolicy1, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
@@ -74,7 +74,7 @@ func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy) (*http.Request, error) {
+func (client PoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy1) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyName":        autorest.Encode("path", policyName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -105,7 +105,7 @@ func (client PoliciesClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client PoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result WebApplicationFirewallPolicy, err error) {
+func (client PoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result WebApplicationFirewallPolicy1, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -196,7 +196,7 @@ func (client PoliciesClient) DeleteResponder(resp *http.Response) (result autore
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // policyName - the name of the resource group.
-func (client PoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string) (result WebApplicationFirewallPolicy, err error) {
+func (client PoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string) (result WebApplicationFirewallPolicy1, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
@@ -254,7 +254,7 @@ func (client PoliciesClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PoliciesClient) GetResponder(resp *http.Response) (result WebApplicationFirewallPolicy, err error) {
+func (client PoliciesClient) GetResponder(resp *http.Response) (result WebApplicationFirewallPolicy1, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

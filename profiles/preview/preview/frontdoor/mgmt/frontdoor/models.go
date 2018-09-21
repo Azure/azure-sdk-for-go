@@ -236,6 +236,17 @@ const (
 	URLEncode        Transform = original.URLEncode
 )
 
+type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+
+const (
+	WebApplicationFirewallPolicyCreating  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyCreating
+	WebApplicationFirewallPolicyDeleting  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDeleting
+	WebApplicationFirewallPolicyDisabled  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDisabled
+	WebApplicationFirewallPolicyDisabling WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyDisabling
+	WebApplicationFirewallPolicyEnabled   WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyEnabled
+	WebApplicationFirewallPolicyEnabling  WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicyEnabling
+)
+
 type AzureAsyncOperationResult = original.AzureAsyncOperationResult
 type AzureManagedOverrideRuleGroup = original.AzureManagedOverrideRuleGroup
 type AzureManagedRuleSet = original.AzureManagedRuleSet
@@ -316,7 +327,7 @@ type TagsObject = original.TagsObject
 type UpdateParameters = original.UpdateParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
-type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+type WebApplicationFirewallPolicy1 = original.WebApplicationFirewallPolicy1
 type WebApplicationFirewallPolicyListResult = original.WebApplicationFirewallPolicyListResult
 type WebApplicationFirewallPolicyListResultIterator = original.WebApplicationFirewallPolicyListResultIterator
 type WebApplicationFirewallPolicyListResultPage = original.WebApplicationFirewallPolicyListResultPage
@@ -437,6 +448,9 @@ func PossibleTLSProtocolTypeValues() []TLSProtocolType {
 }
 func PossibleTransformValues() []Transform {
 	return original.PossibleTransformValues()
+}
+func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
+	return original.PossibleWebApplicationFirewallPolicyValues()
 }
 func NewPoliciesClient(subscriptionID string) PoliciesClient {
 	return original.NewPoliciesClient(subscriptionID)

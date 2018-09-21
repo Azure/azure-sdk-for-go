@@ -43,7 +43,7 @@ func NewGalleriesClientWithBaseURI(baseURI string, subscriptionID string) Galler
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-// dots and periods allowed in the middle. The maximum length is 80 characters.
+// dots, dashes, and periods allowed in the middle. The maximum length is 80 characters.
 // gallery - parameters supplied to the create or update Shared Image Gallery operation.
 func (client GalleriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (result GalleriesCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, galleryName, gallery)

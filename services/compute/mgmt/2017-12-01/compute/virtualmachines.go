@@ -961,6 +961,105 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 	return
 }
 
+// ListByLocation gets all the virtual machines under the specified subscription for the specified location.
+// Parameters:
+// location - the location for which virtual machines under the subscription are queried.
+func (client VirtualMachinesClient) ListByLocation(ctx context.Context, location string) (result VirtualMachineListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: location,
+			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("compute.VirtualMachinesClient", "ListByLocation", err.Error())
+	}
+
+	result.fn = client.listByLocationNextResults
+	req, err := client.ListByLocationPreparer(ctx, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListByLocation", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByLocationSender(req)
+	if err != nil {
+		result.vmlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListByLocation", resp, "Failure sending request")
+		return
+	}
+
+	result.vmlr, err = client.ListByLocationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListByLocation", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByLocationPreparer prepares the ListByLocation request.
+func (client VirtualMachinesClient) ListByLocationPreparer(ctx context.Context, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachines", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByLocationSender sends the ListByLocation request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachinesClient) ListByLocationSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByLocationResponder handles the response to the ListByLocation request. The method always
+// closes the http.Response Body.
+func (client VirtualMachinesClient) ListByLocationResponder(resp *http.Response) (result VirtualMachineListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByLocationNextResults retrieves the next set of results, if any.
+func (client VirtualMachinesClient) listByLocationNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
+	req, err := lastResults.virtualMachineListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listByLocationNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByLocationSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listByLocationNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByLocationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listByLocationNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByLocationComplete enumerates all values, automatically crossing page boundaries as required.
+func (client VirtualMachinesClient) ListByLocationComplete(ctx context.Context, location string) (result VirtualMachineListResultIterator, err error) {
+	result.page, err = client.ListByLocation(ctx, location)
+	return
+}
+
 // PerformMaintenance the operation to perform maintenance on a virtual machine.
 // Parameters:
 // resourceGroupName - the name of the resource group.

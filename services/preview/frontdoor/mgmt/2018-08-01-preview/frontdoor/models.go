@@ -2931,5 +2931,5 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	// ProvisioningState - Provisioning state of the WebApplicationFirewallPolicy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ResourceState - Possible values include: 'WebApplicationFirewallPolicyCreating', 'WebApplicationFirewallPolicyEnabling', 'WebApplicationFirewallPolicyEnabled', 'WebApplicationFirewallPolicyDisabling', 'WebApplicationFirewallPolicyDisabled', 'WebApplicationFirewallPolicyDeleting'
-	ResourceState WebApplicationFirewallPolicy `json:"ResourceState,omitempty"`
+	ResourceState WebApplicationFirewallPolicy `json:"resourceState,omitempty"`
 }

@@ -62,9 +62,6 @@ type (
 		Environment   azure.Environment
 	}
 
-	// Handler is the function signature for any receiver of AMQP messages
-	Handler func(context.Context, *Message) DispositionAction
-
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
 	NamespaceOption func(h *Namespace) error
 )

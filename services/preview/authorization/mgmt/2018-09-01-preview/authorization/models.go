@@ -246,6 +246,232 @@ type ClassicAdministratorProperties struct {
 	Role *string `json:"role,omitempty"`
 }
 
+// DenyAssignment deny Assignment
+type DenyAssignment struct {
+	autorest.Response `json:"-"`
+	// ID - The deny assignment ID.
+	ID *string `json:"id,omitempty"`
+	// Name - The deny assignment name.
+	Name *string `json:"name,omitempty"`
+	// Type - The deny assignment type.
+	Type *string `json:"type,omitempty"`
+	// DenyAssignmentProperties - Deny assignment properties.
+	*DenyAssignmentProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DenyAssignment.
+func (da DenyAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if da.ID != nil {
+		objectMap["id"] = da.ID
+	}
+	if da.Name != nil {
+		objectMap["name"] = da.Name
+	}
+	if da.Type != nil {
+		objectMap["type"] = da.Type
+	}
+	if da.DenyAssignmentProperties != nil {
+		objectMap["properties"] = da.DenyAssignmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DenyAssignment struct.
+func (da *DenyAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				da.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				da.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				da.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var denyAssignmentProperties DenyAssignmentProperties
+				err = json.Unmarshal(*v, &denyAssignmentProperties)
+				if err != nil {
+					return err
+				}
+				da.DenyAssignmentProperties = &denyAssignmentProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// DenyAssignmentFilter deny Assignments filter
+type DenyAssignmentFilter struct {
+	// DenyAssignmentName - Return deny assignment with specified name.
+	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
+	// PrincipalID - Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// GdprExportPrincipalID - Return all deny assignments where the specified principal is listed either in the principals list or exclude principals list of deny assignments.
+	GdprExportPrincipalID *string `json:"gdprExportPrincipalId,omitempty"`
+}
+
+// DenyAssignmentListResult deny assignment list operation result.
+type DenyAssignmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Deny assignment list.
+	Value *[]DenyAssignment `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DenyAssignmentListResultIterator provides access to a complete listing of DenyAssignment values.
+type DenyAssignmentListResultIterator struct {
+	i    int
+	page DenyAssignmentListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DenyAssignmentListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DenyAssignmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DenyAssignmentListResultIterator) Response() DenyAssignmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DenyAssignmentListResultIterator) Value() DenyAssignment {
+	if !iter.page.NotDone() {
+		return DenyAssignment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dalr DenyAssignmentListResult) IsEmpty() bool {
+	return dalr.Value == nil || len(*dalr.Value) == 0
+}
+
+// denyAssignmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dalr DenyAssignmentListResult) denyAssignmentListResultPreparer() (*http.Request, error) {
+	if dalr.NextLink == nil || len(to.String(dalr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dalr.NextLink)))
+}
+
+// DenyAssignmentListResultPage contains a page of DenyAssignment values.
+type DenyAssignmentListResultPage struct {
+	fn   func(DenyAssignmentListResult) (DenyAssignmentListResult, error)
+	dalr DenyAssignmentListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DenyAssignmentListResultPage) Next() error {
+	next, err := page.fn(page.dalr)
+	if err != nil {
+		return err
+	}
+	page.dalr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DenyAssignmentListResultPage) NotDone() bool {
+	return !page.dalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DenyAssignmentListResultPage) Response() DenyAssignmentListResult {
+	return page.dalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DenyAssignmentListResultPage) Values() []DenyAssignment {
+	if page.dalr.IsEmpty() {
+		return nil
+	}
+	return *page.dalr.Value
+}
+
+// DenyAssignmentPermission deny assignment permissions.
+type DenyAssignmentPermission struct {
+	// Actions - Actions to which the deny assignment does not grant access.
+	Actions *[]string `json:"actions,omitempty"`
+	// NotActions - Actions to exclude from that the deny assignment does not grant access.
+	NotActions *[]string `json:"notActions,omitempty"`
+	// DataActions - Data actions to which the deny assignment does not grant access.
+	DataActions *[]string `json:"dataActions,omitempty"`
+	// NotDataActions - Data actions to exclude from that the deny assignment does not grant access.
+	NotDataActions *[]string `json:"notDataActions,omitempty"`
+}
+
+// DenyAssignmentProperties deny assignment properties.
+type DenyAssignmentProperties struct {
+	// DenyAssignmentName - The display name of the deny assignment.
+	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
+	// Description - The description of the deny assignment.
+	Description *string `json:"description,omitempty"`
+	// Permissions - An array of permissions that are denied by the deny assignment.
+	Permissions *[]DenyAssignmentPermission `json:"permissions,omitempty"`
+	// Scope - The deny assignment scope.
+	Scope *string `json:"scope,omitempty"`
+	// DoNotApplyToChildScopes - Determines if the deny assignment applies to child scopes. Default value is false.
+	DoNotApplyToChildScopes *bool `json:"doNotApplyToChildScopes,omitempty"`
+	// Principals - Array of principals to which the deny assignment applies.
+	Principals *[]Principal `json:"principals,omitempty"`
+	// ExcludePrincipals - Array of principals to which the deny assignment does not apply.
+	ExcludePrincipals *[]Principal `json:"excludePrincipals,omitempty"`
+	// IsSystemProtected - Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
+	IsSystemProtected *bool `json:"isSystemProtected,omitempty"`
+}
+
 // Permission role definition permissions.
 type Permission struct {
 	// Actions - Allowed actions.
@@ -358,6 +584,14 @@ func (page PermissionGetResultPage) Values() []Permission {
 		return nil
 	}
 	return *page.pgr.Value
+}
+
+// Principal deny assignment principal.
+type Principal struct {
+	// ID - Object ID of the Azure AD principal (user, group, or service principal) to which the deny assignment applies. An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	ID *string `json:"id,omitempty"`
+	// Type - Type of object represented by principal id (user, group, or service principal). An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	Type *string `json:"type,omitempty"`
 }
 
 // ProviderOperation operation

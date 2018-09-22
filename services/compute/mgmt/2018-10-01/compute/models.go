@@ -1209,10 +1209,12 @@ type APIErrorBase struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// AutoOSUpgradePolicy the configuration parameters used for performing automatic OS upgrade.
-type AutoOSUpgradePolicy struct {
-	// DisableAutoRollback - Whether OS image rollback feature should be disabled. Default value is false.
-	DisableAutoRollback *bool `json:"disableAutoRollback,omitempty"`
+// AutomaticOSUpgradePolicy the configuration parameters used for performing automatic OS upgrade.
+type AutomaticOSUpgradePolicy struct {
+	// EnableAutomaticOSUpgrade - Whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available. Default value is false.
+	EnableAutomaticOSUpgrade *bool `json:"enableAutomaticOSUpgrade,omitempty"`
+	// DisableAutomaticRollback - Whether OS image rollback feature should be disabled. Default value is false.
+	DisableAutomaticRollback *bool `json:"disableAutomaticRollback,omitempty"`
 }
 
 // AvailabilitySet specifies information about the availability set that the virtual machine should be assigned to.
@@ -5611,10 +5613,8 @@ type UpgradePolicy struct {
 	Mode UpgradeMode `json:"mode,omitempty"`
 	// RollingUpgradePolicy - The configuration parameters used while performing a rolling upgrade.
 	RollingUpgradePolicy *RollingUpgradePolicy `json:"rollingUpgradePolicy,omitempty"`
-	// AutomaticOSUpgrade - Whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available.
-	AutomaticOSUpgrade *bool `json:"automaticOSUpgrade,omitempty"`
-	// AutoOSUpgradePolicy - Configuration parameters used for performing automatic OS Upgrade.
-	AutoOSUpgradePolicy *AutoOSUpgradePolicy `json:"autoOSUpgradePolicy,omitempty"`
+	// AutomaticOSUpgradePolicy - Configuration parameters used for performing automatic OS Upgrade.
+	AutomaticOSUpgradePolicy *AutomaticOSUpgradePolicy `json:"automaticOSUpgradePolicy,omitempty"`
 }
 
 // Usage describes Compute Resource Usage.

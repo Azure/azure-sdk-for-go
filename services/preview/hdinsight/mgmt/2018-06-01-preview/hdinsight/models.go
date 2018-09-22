@@ -1507,6 +1507,10 @@ type SecurityProfile struct {
 	DomainUserPassword *string `json:"domainUserPassword,omitempty"`
 	// ClusterUsersGroupDNS - Optional. The Distinguished Names for cluster user groups
 	ClusterUsersGroupDNS *[]string `json:"clusterUsersGroupDNs,omitempty"`
+	// AaddsResourceID - The resource ID of the user's Azure Active Directory Domain Service.
+	AaddsResourceID *string `json:"aaddsResourceId,omitempty"`
+	// MsiResourceID - User assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
+	MsiResourceID *string `json:"msiResourceId,omitempty"`
 }
 
 // SetString ...

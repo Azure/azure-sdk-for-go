@@ -24,7 +24,8 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// OperationsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type OperationsClient struct {
 	BaseClient
 }

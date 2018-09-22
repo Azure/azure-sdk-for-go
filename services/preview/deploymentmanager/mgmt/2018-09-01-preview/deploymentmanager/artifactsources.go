@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// ArtifactSourcesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// ArtifactSourcesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type ArtifactSourcesClient struct {
 	BaseClient
 }
@@ -40,44 +41,43 @@ func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ArtifactSourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create this is an asynchronous operation and can be polled to completion using the operation resource returned by
-// this operation.
+// CreateOrUpdate synchronously creates a new artifact source or updates an existing artifact source.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // artifactSourceName - the name of the artifact source.
 // artifactSourceInfo - source object that defines the resource.
-func (client ArtifactSourcesClient) Create(ctx context.Context, resourceGroupName string, artifactSourceName string, artifactSourceInfo *ArtifactSource) (result ArtifactSource, err error) {
+func (client ArtifactSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, artifactSourceName string, artifactSourceInfo *ArtifactSource) (result ArtifactSource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("deploymentmanager.ArtifactSourcesClient", "Create", err.Error())
+		return result, validation.NewError("deploymentmanager.ArtifactSourcesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, artifactSourceName, artifactSourceInfo)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, artifactSourceName, artifactSourceInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ArtifactSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ArtifactSourcesClient) CreatePreparer(ctx context.Context, resourceGroupName string, artifactSourceName string, artifactSourceInfo *ArtifactSource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ArtifactSourcesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, artifactSourceName string, artifactSourceInfo *ArtifactSource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"artifactSourceName": autorest.Encode("path", artifactSourceName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -102,16 +102,16 @@ func (client ArtifactSourcesClient) CreatePreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ArtifactSourcesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client ArtifactSourcesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ArtifactSourcesClient) CreateResponder(resp *http.Response) (result ArtifactSource, err error) {
+func (client ArtifactSourcesClient) CreateOrUpdateResponder(resp *http.Response) (result ArtifactSource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

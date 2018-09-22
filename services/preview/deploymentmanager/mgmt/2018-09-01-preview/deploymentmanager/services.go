@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// ServicesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// ServicesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type ServicesClient struct {
 	BaseClient
 }
@@ -40,14 +41,13 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create this is an asynchronous operation and can be polled to completion using the operation resource returned by
-// this operation.
+// CreateOrUpdate synchronously creates a new service or updates an existing service.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
 // serviceName - the name of the service resource.
 // serviceInfo - the topoogy group resource object
-func (client ServicesClient) Create(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource) (result ServiceResource, err error) {
+func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource) (result ServiceResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -55,32 +55,32 @@ func (client ServicesClient) Create(ctx context.Context, resourceGroupName strin
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: serviceInfo,
 			Constraints: []validation.Constraint{{Target: "serviceInfo.ServiceResourceProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("deploymentmanager.ServicesClient", "Create", err.Error())
+		return result, validation.NewError("deploymentmanager.ServicesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceInfo)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
 		"serviceName":         autorest.Encode("path", serviceName),
@@ -103,16 +103,16 @@ func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client ServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) CreateResponder(resp *http.Response) (result ServiceResource, err error) {
+func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

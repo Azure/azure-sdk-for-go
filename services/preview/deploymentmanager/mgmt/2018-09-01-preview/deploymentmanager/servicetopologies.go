@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// ServiceTopologiesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// ServiceTopologiesClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type ServiceTopologiesClient struct {
 	BaseClient
 }
@@ -40,13 +41,12 @@ func NewServiceTopologiesClientWithBaseURI(baseURI string, subscriptionID string
 	return ServiceTopologiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create this is an asynchronous operation and can be polled to completion using the operation resource returned by
-// this operation.
+// CreateOrUpdate synchronously creates a new service topology or updates an existing service topology.
 // Parameters:
 // serviceTopologyInfo - source topology object defines the resource.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
-func (client ServiceTopologiesClient) Create(ctx context.Context, serviceTopologyInfo ServiceTopologyResource, resourceGroupName string, serviceTopologyName string) (result ServiceTopologyResource, err error) {
+func (client ServiceTopologiesClient) CreateOrUpdate(ctx context.Context, serviceTopologyInfo ServiceTopologyResource, resourceGroupName string, serviceTopologyName string) (result ServiceTopologyResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceTopologyInfo,
 			Constraints: []validation.Constraint{{Target: "serviceTopologyInfo.ServiceTopologyResourceProperties", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -54,32 +54,32 @@ func (client ServiceTopologiesClient) Create(ctx context.Context, serviceTopolog
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("deploymentmanager.ServiceTopologiesClient", "Create", err.Error())
+		return result, validation.NewError("deploymentmanager.ServiceTopologiesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, serviceTopologyInfo, resourceGroupName, serviceTopologyName)
+	req, err := client.CreateOrUpdatePreparer(ctx, serviceTopologyInfo, resourceGroupName, serviceTopologyName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceTopologiesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ServiceTopologiesClient) CreatePreparer(ctx context.Context, serviceTopologyInfo ServiceTopologyResource, resourceGroupName string, serviceTopologyName string) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ServiceTopologiesClient) CreateOrUpdatePreparer(ctx context.Context, serviceTopologyInfo ServiceTopologyResource, resourceGroupName string, serviceTopologyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
 		"serviceTopologyName": autorest.Encode("path", serviceTopologyName),
@@ -101,16 +101,16 @@ func (client ServiceTopologiesClient) CreatePreparer(ctx context.Context, servic
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServiceTopologiesClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client ServiceTopologiesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ServiceTopologiesClient) CreateResponder(resp *http.Response) (result ServiceTopologyResource, err error) {
+func (client ServiceTopologiesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceTopologyResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

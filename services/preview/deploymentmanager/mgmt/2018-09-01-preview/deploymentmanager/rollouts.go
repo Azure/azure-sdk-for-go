@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// RolloutsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// RolloutsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type RolloutsClient struct {
 	BaseClient
 }
@@ -115,13 +116,13 @@ func (client RolloutsClient) CancelResponder(resp *http.Response) (result Rollou
 	return
 }
 
-// Create this is an asynchronous operation and can be polled to completion using the rollout identifier returned by
-// this operation.
+// CreateOrUpdate this is an asynchronous operation and can be polled to completion using the location header returned
+// by this operation.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // rolloutName - the rollout name.
 // rolloutRequest - source rollout request object that defines the rollout.
-func (client RolloutsClient) Create(ctx context.Context, resourceGroupName string, rolloutName string, rolloutRequest *RolloutRequest) (result RolloutsCreateFuture, err error) {
+func (client RolloutsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, rolloutName string, rolloutRequest *RolloutRequest) (result RolloutsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -139,26 +140,26 @@ func (client RolloutsClient) Create(ctx context.Context, resourceGroupName strin
 							{Target: "rolloutRequest.RolloutRequestProperties.StepGroups", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("deploymentmanager.RolloutsClient", "Create", err.Error())
+		return result, validation.NewError("deploymentmanager.RolloutsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, rolloutName, rolloutRequest)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, rolloutName, rolloutRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client RolloutsClient) CreatePreparer(ctx context.Context, resourceGroupName string, rolloutName string, rolloutRequest *RolloutRequest) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client RolloutsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, rolloutName string, rolloutRequest *RolloutRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"rolloutName":       autorest.Encode("path", rolloutName),
@@ -183,9 +184,9 @@ func (client RolloutsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client RolloutsClient) CreateSender(req *http.Request) (future RolloutsCreateFuture, err error) {
+func (client RolloutsClient) CreateOrUpdateSender(req *http.Request) (future RolloutsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -200,9 +201,9 @@ func (client RolloutsClient) CreateSender(req *http.Request) (future RolloutsCre
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client RolloutsClient) CreateResponder(resp *http.Response) (result RolloutRequest, err error) {
+func (client RolloutsClient) CreateOrUpdateResponder(resp *http.Response) (result RolloutRequest, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

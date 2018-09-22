@@ -1,6 +1,7 @@
 // Package deploymentmanager implements the Azure ARM Deploymentmanager service API version 2018-09-01-preview.
 //
-// REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 package deploymentmanager
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

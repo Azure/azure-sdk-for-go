@@ -25,7 +25,8 @@ import (
 	"net/http"
 )
 
-// StepsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM).
+// StepsClient is the REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See
+// https://docs.microsoft.com/en-us/azure/azure-resource-manager/deployment-manager-overview for more information.
 type StepsClient struct {
 	BaseClient
 }
@@ -40,13 +41,12 @@ func NewStepsClientWithBaseURI(baseURI string, subscriptionID string) StepsClien
 	return StepsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create this is an asynchronous operation and can be polled to completion using the operation resource returned by
-// this operation.
+// CreateOrUpdate synchronously creates a new step or updates an existing step.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // stepName - the name of the deployment step.
 // stepInfo - the resource object.
-func (client StepsClient) Create(ctx context.Context, resourceGroupName string, stepName string, stepInfo *StepResource) (result StepResource, err error) {
+func (client StepsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, stepName string, stepInfo *StepResource) (result StepResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -55,32 +55,32 @@ func (client StepsClient) Create(ctx context.Context, resourceGroupName string, 
 		{TargetValue: stepInfo,
 			Constraints: []validation.Constraint{{Target: "stepInfo", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "stepInfo.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("deploymentmanager.StepsClient", "Create", err.Error())
+		return result, validation.NewError("deploymentmanager.StepsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, stepName, stepInfo)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, stepName, stepInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.StepsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client StepsClient) CreatePreparer(ctx context.Context, resourceGroupName string, stepName string, stepInfo *StepResource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client StepsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, stepName string, stepInfo *StepResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"stepName":          autorest.Encode("path", stepName),
@@ -105,16 +105,16 @@ func (client StepsClient) CreatePreparer(ctx context.Context, resourceGroupName 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client StepsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client StepsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client StepsClient) CreateResponder(resp *http.Response) (result StepResource, err error) {
+func (client StepsClient) CreateOrUpdateResponder(resp *http.Response) (result StepResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

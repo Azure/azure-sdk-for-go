@@ -781,29 +781,30 @@ type RolloutRequestProperties struct {
 	StepGroups *[]Step `json:"stepGroups,omitempty"`
 }
 
-// RolloutsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type RolloutsCreateFuture struct {
+// RolloutsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type RolloutsCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *RolloutsCreateFuture) Result(client RolloutsClient) (rr RolloutRequest, err error) {
+func (future *RolloutsCreateOrUpdateFuture) Result(client RolloutsClient) (rr RolloutRequest, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("deploymentmanager.RolloutsCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("deploymentmanager.RolloutsCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if rr.Response.Response, err = future.GetResult(sender); err == nil && rr.Response.Response.StatusCode != http.StatusNoContent {
-		rr, err = client.CreateResponder(rr.Response.Response)
+		rr, err = client.CreateOrUpdateResponder(rr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateFuture", "Result", rr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "deploymentmanager.RolloutsCreateOrUpdateFuture", "Result", rr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1316,29 +1317,30 @@ type ServiceUnitResourceProperties struct {
 	Artifacts *ServiceUnitArtifacts `json:"artifacts,omitempty"`
 }
 
-// ServiceUnitsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServiceUnitsCreateFuture struct {
+// ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServiceUnitsCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServiceUnitsCreateFuture) Result(client ServiceUnitsClient) (sur ServiceUnitResource, err error) {
+func (future *ServiceUnitsCreateOrUpdateFuture) Result(client ServiceUnitsClient) (sur ServiceUnitResource, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("deploymentmanager.ServiceUnitsCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("deploymentmanager.ServiceUnitsCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if sur.Response.Response, err = future.GetResult(sender); err == nil && sur.Response.Response.StatusCode != http.StatusNoContent {
-		sur, err = client.CreateResponder(sur.Response.Response)
+		sur, err = client.CreateOrUpdateResponder(sur.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateFuture", "Result", sur.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsCreateOrUpdateFuture", "Result", sur.Response.Response, "Failure responding to request")
 		}
 	}
 	return

@@ -510,6 +510,42 @@ func (ae AlertEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for AlertEntity struct.
+func (ae *AlertEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if ae.AdditionalProperties == nil {
+					ae.AdditionalProperties = make(map[string]interface{})
+				}
+				ae.AdditionalProperties[k] = additionalProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ae.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // AlertList list of security alerts
 type AlertList struct {
 	autorest.Response `json:"-"`
@@ -934,6 +970,69 @@ func (asp AtaSolutionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for AtaSolutionProperties struct.
+func (asp *AtaSolutionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "lastEventReceived":
+			if v != nil {
+				var lastEventReceived string
+				err = json.Unmarshal(*v, &lastEventReceived)
+				if err != nil {
+					return err
+				}
+				asp.LastEventReceived = &lastEventReceived
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if asp.AdditionalProperties == nil {
+					asp.AdditionalProperties = make(map[string]interface{})
+				}
+				asp.AdditionalProperties[k] = additionalProperties
+			}
+		case "deviceVendor":
+			if v != nil {
+				var deviceVendor string
+				err = json.Unmarshal(*v, &deviceVendor)
+				if err != nil {
+					return err
+				}
+				asp.DeviceVendor = &deviceVendor
+			}
+		case "deviceType":
+			if v != nil {
+				var deviceType string
+				err = json.Unmarshal(*v, &deviceType)
+				if err != nil {
+					return err
+				}
+				asp.DeviceType = &deviceType
+			}
+		case "workspace":
+			if v != nil {
+				var workspace ConnectedWorkspace
+				err = json.Unmarshal(*v, &workspace)
+				if err != nil {
+					return err
+				}
+				asp.Workspace = &workspace
+			}
+		}
+	}
+
+	return nil
+}
+
 // AutoProvisioningSetting auto provisioning setting
 type AutoProvisioningSetting struct {
 	autorest.Response `json:"-"`
@@ -1226,6 +1325,87 @@ func (csp CefSolutionProperties) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CefSolutionProperties struct.
+func (csp *CefSolutionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hostname":
+			if v != nil {
+				var hostname string
+				err = json.Unmarshal(*v, &hostname)
+				if err != nil {
+					return err
+				}
+				csp.Hostname = &hostname
+			}
+		case "agent":
+			if v != nil {
+				var agent string
+				err = json.Unmarshal(*v, &agent)
+				if err != nil {
+					return err
+				}
+				csp.Agent = &agent
+			}
+		case "lastEventReceived":
+			if v != nil {
+				var lastEventReceived string
+				err = json.Unmarshal(*v, &lastEventReceived)
+				if err != nil {
+					return err
+				}
+				csp.LastEventReceived = &lastEventReceived
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if csp.AdditionalProperties == nil {
+					csp.AdditionalProperties = make(map[string]interface{})
+				}
+				csp.AdditionalProperties[k] = additionalProperties
+			}
+		case "deviceVendor":
+			if v != nil {
+				var deviceVendor string
+				err = json.Unmarshal(*v, &deviceVendor)
+				if err != nil {
+					return err
+				}
+				csp.DeviceVendor = &deviceVendor
+			}
+		case "deviceType":
+			if v != nil {
+				var deviceType string
+				err = json.Unmarshal(*v, &deviceType)
+				if err != nil {
+					return err
+				}
+				csp.DeviceType = &deviceType
+			}
+		case "workspace":
+			if v != nil {
+				var workspace ConnectedWorkspace
+				err = json.Unmarshal(*v, &workspace)
+				if err != nil {
+					return err
+				}
+				csp.Workspace = &workspace
+			}
+		}
+	}
+
+	return nil
 }
 
 // CloudError error response structure.
@@ -2307,6 +2487,60 @@ func (essp ExternalSecuritySolutionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for ExternalSecuritySolutionProperties struct.
+func (essp *ExternalSecuritySolutionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if essp.AdditionalProperties == nil {
+					essp.AdditionalProperties = make(map[string]interface{})
+				}
+				essp.AdditionalProperties[k] = additionalProperties
+			}
+		case "deviceVendor":
+			if v != nil {
+				var deviceVendor string
+				err = json.Unmarshal(*v, &deviceVendor)
+				if err != nil {
+					return err
+				}
+				essp.DeviceVendor = &deviceVendor
+			}
+		case "deviceType":
+			if v != nil {
+				var deviceType string
+				err = json.Unmarshal(*v, &deviceType)
+				if err != nil {
+					return err
+				}
+				essp.DeviceType = &deviceType
+			}
+		case "workspace":
+			if v != nil {
+				var workspace ConnectedWorkspace
+				err = json.Unmarshal(*v, &workspace)
+				if err != nil {
+					return err
+				}
+				essp.Workspace = &workspace
+			}
+		}
+	}
+
+	return nil
+}
+
 // JitNetworkAccessPoliciesList ...
 type JitNetworkAccessPoliciesList struct {
 	autorest.Response `json:"-"`
@@ -3385,6 +3619,42 @@ func (tp TaskParameters) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskParameters struct.
+func (tp *TaskParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if tp.AdditionalProperties == nil {
+					tp.AdditionalProperties = make(map[string]interface{})
+				}
+				tp.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				tp.Name = &name
+			}
+		}
+	}
+
+	return nil
 }
 
 // TaskProperties describes properties of a task.

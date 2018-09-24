@@ -2927,12 +2927,12 @@ func (ID *ISCSIDisk) UnmarshalJSON(body []byte) error {
 			}
 		case "id":
 			if v != nil {
-				var id string
-				err = json.Unmarshal(*v, &id)
+				var ID1 string
+				err = json.Unmarshal(*v, &ID1)
 				if err != nil {
 					return err
 				}
-				ID.ID = &id
+				ID.ID = &ID1
 			}
 		case "name":
 			if v != nil {

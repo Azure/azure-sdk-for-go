@@ -35,21 +35,13 @@ type IntegrationAccountPartnersClient = original.IntegrationAccountPartnersClien
 type IntegrationAccountsClient = original.IntegrationAccountsClient
 type IntegrationAccountSchemasClient = original.IntegrationAccountSchemasClient
 type IntegrationAccountSessionsClient = original.IntegrationAccountSessionsClient
-type AccessKeyType = original.AccessKeyType
-
-const (
-	NotSpecified AccessKeyType = original.NotSpecified
-	Primary      AccessKeyType = original.Primary
-	Secondary    AccessKeyType = original.Secondary
-)
-
 type AgreementType = original.AgreementType
 
 const (
-	AgreementTypeAS2          AgreementType = original.AgreementTypeAS2
-	AgreementTypeEdifact      AgreementType = original.AgreementTypeEdifact
-	AgreementTypeNotSpecified AgreementType = original.AgreementTypeNotSpecified
-	AgreementTypeX12          AgreementType = original.AgreementTypeX12
+	AS2          AgreementType = original.AS2
+	Edifact      AgreementType = original.Edifact
+	NotSpecified AgreementType = original.NotSpecified
+	X12          AgreementType = original.X12
 )
 
 type DayOfWeek = original.DayOfWeek
@@ -395,7 +387,6 @@ const (
 	X12TimeFormatNotSpecified X12TimeFormat = original.X12TimeFormatNotSpecified
 )
 
-type AccessKeyRegenerateActionDefinition = original.AccessKeyRegenerateActionDefinition
 type AgreementContent = original.AgreementContent
 type ArtifactContentPropertiesDefinition = original.ArtifactContentPropertiesDefinition
 type ArtifactProperties = original.ArtifactProperties
@@ -648,9 +639,6 @@ func NewIntegrationAccountSessionsClient(subscriptionID string) IntegrationAccou
 }
 func NewIntegrationAccountSessionsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountSessionsClient {
 	return original.NewIntegrationAccountSessionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAccessKeyTypeValues() []AccessKeyType {
-	return original.PossibleAccessKeyTypeValues()
 }
 func PossibleAgreementTypeValues() []AgreementType {
 	return original.PossibleAgreementTypeValues()

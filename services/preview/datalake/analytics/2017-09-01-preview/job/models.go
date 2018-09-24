@@ -1036,6 +1036,8 @@ type Information struct {
 	Related *RelationshipProperties `json:"related,omitempty"`
 	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, Null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Information.
@@ -1095,6 +1097,9 @@ func (i Information) MarshalJSON() ([]byte, error) {
 	}
 	if i.Tags != nil {
 		objectMap["tags"] = i.Tags
+	}
+	if i.HierarchyQueueNode != nil {
+		objectMap["hierarchyQueueNode"] = i.HierarchyQueueNode
 	}
 	return json.Marshal(objectMap)
 }
@@ -1278,6 +1283,15 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 				}
 				i.Tags = tags
 			}
+		case "hierarchyQueueNode":
+			if v != nil {
+				var hierarchyQueueNode string
+				err = json.Unmarshal(*v, &hierarchyQueueNode)
+				if err != nil {
+					return err
+				}
+				i.HierarchyQueueNode = &hierarchyQueueNode
+			}
 		}
 	}
 
@@ -1318,6 +1332,8 @@ type InformationBasic struct {
 	Related *RelationshipProperties `json:"related,omitempty"`
 	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, Null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for InformationBasic.
@@ -1370,6 +1386,9 @@ func (ib InformationBasic) MarshalJSON() ([]byte, error) {
 	}
 	if ib.Tags != nil {
 		objectMap["tags"] = ib.Tags
+	}
+	if ib.HierarchyQueueNode != nil {
+		objectMap["hierarchyQueueNode"] = ib.HierarchyQueueNode
 	}
 	return json.Marshal(objectMap)
 }

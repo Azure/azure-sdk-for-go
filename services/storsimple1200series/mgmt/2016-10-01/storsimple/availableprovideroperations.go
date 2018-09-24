@@ -66,10 +66,6 @@ func (client AvailableProviderOperationsClient) List(ctx context.Context) (resul
 
 // ListPreparer prepares the List request.
 func (client AvailableProviderOperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
 	const APIVersion = "2016-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -78,7 +74,7 @@ func (client AvailableProviderOperationsClient) ListPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StorSimple/operations", pathParameters),
+		autorest.WithPath("/providers/Microsoft.StorSimple/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,7 +83,7 @@ func (client AvailableProviderOperationsClient) ListPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client AvailableProviderOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

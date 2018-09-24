@@ -55,7 +55,7 @@ func (client AppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "applianceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "applianceName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ApplianceProperties", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "parameters.ApplianceProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ApplianceProperties.ManagedResourceGroupID", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "parameters.Plan", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Plan.Name", Name: validation.Null, Rule: true, Chain: nil},
@@ -63,7 +63,7 @@ func (client AppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 						{Target: "parameters.Plan.Product", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.Plan.Version", Name: validation.Null, Rule: true, Chain: nil},
 					}},
-				{Target: "parameters.Kind", Name: validation.Null, Rule: true,
+				{Target: "parameters.Kind", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("managedapplications.AppliancesClient", "CreateOrUpdate", err.Error())
 	}
@@ -145,7 +145,7 @@ func (client AppliancesClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client AppliancesClient) CreateOrUpdateByID(ctx context.Context, applianceID string, parameters Appliance) (result AppliancesCreateOrUpdateByIDFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ApplianceProperties", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "parameters.ApplianceProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ApplianceProperties.ManagedResourceGroupID", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "parameters.Plan", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Plan.Name", Name: validation.Null, Rule: true, Chain: nil},
@@ -153,7 +153,7 @@ func (client AppliancesClient) CreateOrUpdateByID(ctx context.Context, appliance
 						{Target: "parameters.Plan.Product", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.Plan.Version", Name: validation.Null, Rule: true, Chain: nil},
 					}},
-				{Target: "parameters.Kind", Name: validation.Null, Rule: true,
+				{Target: "parameters.Kind", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("managedapplications.AppliancesClient", "CreateOrUpdateByID", err.Error())
 	}

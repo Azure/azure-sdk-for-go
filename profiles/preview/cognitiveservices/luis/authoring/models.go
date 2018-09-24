@@ -222,6 +222,7 @@ type ApplicationPublishObject = original.ApplicationPublishObject
 type ApplicationSettings = original.ApplicationSettings
 type ApplicationSettingUpdateObject = original.ApplicationSettingUpdateObject
 type ApplicationUpdateObject = original.ApplicationUpdateObject
+type AppVersionSettingObject = original.AppVersionSettingObject
 type AvailableCulture = original.AvailableCulture
 type AvailablePrebuiltEntityModel = original.AvailablePrebuiltEntityModel
 type BatchLabelExample = original.BatchLabelExample
@@ -272,6 +273,7 @@ type LabeledUtterance = original.LabeledUtterance
 type LabelExampleResponse = original.LabelExampleResponse
 type LabelTextObject = original.LabelTextObject
 type ListApplicationInfoResponse = original.ListApplicationInfoResponse
+type ListAppVersionSettingObject = original.ListAppVersionSettingObject
 type ListAvailableCulture = original.ListAvailableCulture
 type ListAvailablePrebuiltEntityModel = original.ListAvailablePrebuiltEntityModel
 type ListBatchLabelExample = original.ListBatchLabelExample
@@ -351,6 +353,7 @@ type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
 type PatternClient = original.PatternClient
 type PermissionsClient = original.PermissionsClient
+type SettingsClient = original.SettingsClient
 type TrainClient = original.TrainClient
 type VersionsClient = original.VersionsClient
 
@@ -422,6 +425,9 @@ func NewPatternClient(endpoint string) PatternClient {
 }
 func NewPermissionsClient(endpoint string) PermissionsClient {
 	return original.NewPermissionsClient(endpoint)
+}
+func NewSettingsClient(endpoint string) SettingsClient {
+	return original.NewSettingsClient(endpoint)
 }
 func NewTrainClient(endpoint string) TrainClient {
 	return original.NewTrainClient(endpoint)

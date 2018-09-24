@@ -19,7 +19,7 @@
 
 package compute
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute"
 
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 
@@ -49,6 +49,13 @@ const (
 	Failed     AggregatedReplicationState = original.Failed
 	InProgress AggregatedReplicationState = original.InProgress
 	Unknown    AggregatedReplicationState = original.Unknown
+)
+
+type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
+
+const (
+	Aligned AvailabilitySetSkuTypes = original.Aligned
+	Classic AvailabilitySetSkuTypes = original.Classic
 )
 
 type CachingTypes = original.CachingTypes
@@ -126,6 +133,12 @@ const (
 	StandardGS5   ContainerServiceVMSizeTypes = original.StandardGS5
 )
 
+type DiffDiskOptions = original.DiffDiskOptions
+
+const (
+	Local DiffDiskOptions = original.Local
+)
+
 type DiskCreateOption = original.DiskCreateOption
 
 const (
@@ -143,6 +156,15 @@ const (
 	DiskCreateOptionTypesAttach    DiskCreateOptionTypes = original.DiskCreateOptionTypesAttach
 	DiskCreateOptionTypesEmpty     DiskCreateOptionTypes = original.DiskCreateOptionTypesEmpty
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
+)
+
+type DiskStorageAccountTypes = original.DiskStorageAccountTypes
+
+const (
+	PremiumLRS     DiskStorageAccountTypes = original.PremiumLRS
+	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
+	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
+	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
 )
 
 type HostCaching = original.HostCaching
@@ -306,13 +328,6 @@ const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = original.RollingUpgradeStatusCodeRollingForward
 )
 
-type ScaleTier = original.ScaleTier
-
-const (
-	S100 ScaleTier = original.S100
-	S30  ScaleTier = original.S30
-)
-
 type SettingNames = original.SettingNames
 
 const (
@@ -323,9 +338,9 @@ const (
 type SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypes
 
 const (
-	PremiumLRS  SnapshotStorageAccountTypes = original.PremiumLRS
-	StandardLRS SnapshotStorageAccountTypes = original.StandardLRS
-	StandardZRS SnapshotStorageAccountTypes = original.StandardZRS
+	SnapshotStorageAccountTypesPremiumLRS  SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesPremiumLRS
+	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardLRS
+	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypesStandardZRS
 )
 
 type StatusLevelTypes = original.StatusLevelTypes
@@ -342,6 +357,7 @@ const (
 	StorageAccountTypesPremiumLRS     StorageAccountTypes = original.StorageAccountTypesPremiumLRS
 	StorageAccountTypesStandardLRS    StorageAccountTypes = original.StorageAccountTypesStandardLRS
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = original.StorageAccountTypesStandardSSDLRS
+	StorageAccountTypesUltraSSDLRS    StorageAccountTypes = original.StorageAccountTypesUltraSSDLRS
 )
 
 type UpgradeMode = original.UpgradeMode
@@ -562,11 +578,12 @@ const (
 )
 
 type AccessURI = original.AccessURI
+type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
-type AutoOSUpgradePolicy = original.AutoOSUpgradePolicy
+type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetListResultIterator = original.AvailabilitySetListResultIterator
@@ -598,6 +615,7 @@ type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
 type DiagnosticsProfile = original.DiagnosticsProfile
+type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
 type Disk = original.Disk
 type DiskEncryptionSettings = original.DiskEncryptionSettings
@@ -730,6 +748,7 @@ type Snapshot = original.Snapshot
 type SnapshotList = original.SnapshotList
 type SnapshotListIterator = original.SnapshotListIterator
 type SnapshotListPage = original.SnapshotListPage
+type SnapshotProperties = original.SnapshotProperties
 type SnapshotsCreateOrUpdateFuture = original.SnapshotsCreateOrUpdateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
@@ -737,12 +756,14 @@ type SnapshotSku = original.SnapshotSku
 type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
 type SnapshotUpdate = original.SnapshotUpdate
+type SnapshotUpdateProperties = original.SnapshotUpdateProperties
 type SourceVault = original.SourceVault
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
+type TargetRegion = original.TargetRegion
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UpdateResource = original.UpdateResource
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
@@ -968,6 +989,9 @@ func PossibleAccessLevelValues() []AccessLevel {
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return original.PossibleAggregatedReplicationStateValues()
 }
+func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
+	return original.PossibleAvailabilitySetSkuTypesValues()
+}
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()
 }
@@ -980,11 +1004,17 @@ func PossibleContainerServiceOrchestratorTypesValues() []ContainerServiceOrchest
 func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	return original.PossibleContainerServiceVMSizeTypesValues()
 }
+func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
+	return original.PossibleDiffDiskOptionsValues()
+}
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()
+}
+func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
+	return original.PossibleDiskStorageAccountTypesValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
@@ -1045,9 +1075,6 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 }
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return original.PossibleRollingUpgradeStatusCodeValues()
-}
-func PossibleScaleTierValues() []ScaleTier {
-	return original.PossibleScaleTierValues()
 }
 func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()

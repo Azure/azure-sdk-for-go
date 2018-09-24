@@ -779,6 +779,8 @@ type Information struct {
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
 	// Related - the recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for Information struct.
@@ -951,6 +953,15 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 				}
 				i.Related = &related
 			}
+		case "hierarchyQueueNode":
+			if v != nil {
+				var hierarchyQueueNode string
+				err = json.Unmarshal(*v, &hierarchyQueueNode)
+				if err != nil {
+					return err
+				}
+				i.HierarchyQueueNode = &hierarchyQueueNode
+			}
 		}
 	}
 
@@ -989,6 +1000,8 @@ type InformationBasic struct {
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
 	// Related - the recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
+	// HierarchyQueueNode - the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
+	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
 // InnerError the Data Lake Analytics job error details.

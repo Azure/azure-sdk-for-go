@@ -1,5 +1,55 @@
 # CHANGELOG
 
+## `v21.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2018-10-01 |
+| deploymentmanager | 2018-09-01-preview |
+| frontdoor | 2018-08-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| advisor | 2017-04-19 |
+| compute | 2017-08-01-preview |
+| datafactory | 2017-09-01-preview |
+| features | 2015-12-01 |
+| graphrbac | 1.6 |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2017-05-01-preview<br/>2018-03-01<br/>2018-09-01<br/>v1 |
+| job | 2015-11-01-preview<br/>2016-03-20-preview<br/>2016-11-01<br/>2017-09-01-preview |
+| locks | 2016-09-01 |
+| managedapplications | 2016-09-01-preview |
+| policyinsights | 2017-08-09-preview<br/>2017-10-17-preview<br/>2017-12-12-preview<br/>2018-04-04 |
+| runtime | luis |
+| security | 2017-08-01-preview |
+| sql | 2015-05-01-preview<br/>2017-10-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authoring | luis |
+| automation | 2018-06-preview |
+| backup | 2016-06-01<br/>2017-07-01 |
+| compute | 2018-06-01 |
+| costmanagement | 2018-08-01-preview |
+| customimagesearch | v1.0 |
+| customsearch | v1.0 |
+| databox | 2018-01-01 |
+| datafactory | 2018-06-01 |
+| eventhub | 2018-01-01-preview |
+| logic | 2018-07-01-preview |
+| monitor | 2018-09-01-preview |
+| operationalinsights | v1 |
+| services | 2018-03-01-preview |
+| sql | 2017-03-01-preview |
+| web | 2018-02-01 |
+
 ## `v20.2.0`
 
 ### New Services

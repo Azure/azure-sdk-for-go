@@ -133,6 +133,12 @@ const (
 	StandardGS5   ContainerServiceVMSizeTypes = original.StandardGS5
 )
 
+type DiffDiskOptions = original.DiffDiskOptions
+
+const (
+	Local DiffDiskOptions = original.Local
+)
+
 type DiskCreateOption = original.DiskCreateOption
 
 const (
@@ -609,6 +615,7 @@ type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
 type DiagnosticsProfile = original.DiagnosticsProfile
+type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
 type Disk = original.Disk
 type DiskEncryptionSettings = original.DiskEncryptionSettings
@@ -996,6 +1003,9 @@ func PossibleContainerServiceOrchestratorTypesValues() []ContainerServiceOrchest
 }
 func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	return original.PossibleContainerServiceVMSizeTypesValues()
+}
+func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
+	return original.PossibleDiffDiskOptionsValues()
 }
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()

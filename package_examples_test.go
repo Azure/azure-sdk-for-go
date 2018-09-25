@@ -40,11 +40,13 @@ func Example_helloWorld() {
 	go func(ctx context.Context, client *servicebus.Queue, quitAfter int) {
 		received := make(chan struct{})
 
-		listenHandle, err := client.Receive(ctx, func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
-			fmt.Println(string(message.Data))
-			received <- struct{}{}
-			return message.Complete()
-		})
+		listenHandle, err := client.Receive(
+			ctx,
+			servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
+				fmt.Println(string(message.Data))
+				received <- struct{}{}
+				return message.Complete()
+			}))
 		if err != nil {
 			errs <- err
 			return

@@ -471,8 +471,9 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 		wg.Add(2)
 		var receivedMsg *Message
 		fail := true
+
 		listenHandle, err := q.Receive(context.Background(),
-			func(ctx context.Context, msg *Message) DispositionAction {
+			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
 				receivedMsg = msg
 				defer func() {
 					wg.Done()
@@ -482,7 +483,8 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 					return msg.Abandon()
 				}
 				return msg.Complete()
-			})
+			}))
+
 		if assert.NoError(t, err) {
 			defer listenHandle.Close(ctx)
 			end, _ := ctx.Deadline()
@@ -501,13 +503,13 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 		wg.Add(1)
 		var receivedMsg *Message
 		listenHandle, err := q.Receive(context.Background(),
-			func(ctx context.Context, msg *Message) DispositionAction {
+			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
 				receivedMsg = msg
 				defer func() {
 					wg.Done()
 				}()
 				return msg.Complete()
-			})
+			}))
 		if assert.NoError(t, err) {
 			defer listenHandle.Close(ctx)
 			end, _ := ctx.Deadline()
@@ -549,12 +551,12 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 	wg.Add(numMessages)
 	// ensure in-order processing of messages from the queue
 	count := 0
-	listener, err := queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
+	listener, err := queue.Receive(ctx, HandlerFunc(func(ctx context.Context, event *Message) DispositionAction {
 		assert.Equal(t, messages[count], string(event.Data))
 		count++
 		wg.Done()
 		return event.Complete()
-	})
+	}))
 	if assert.NoError(t, err) {
 		defer listener.Close(ctx)
 		end, _ := ctx.Deadline()
@@ -580,11 +582,11 @@ func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *
 	if assert.NoError(t, queue.Send(ctx, msg)) {
 		var wg sync.WaitGroup
 		wg.Add(1)
-		listener, err := queue.Receive(ctx, func(ctx context.Context, received *Message) DispositionAction {
+		listener, err := queue.Receive(ctx, HandlerFunc(func(ctx context.Context, received *Message) DispositionAction {
 			defer wg.Done()
 			assert.WithinDuration(t, time.Now(), futureTime, buffer)
 			return received.Complete()
-		})
+		}))
 		if assert.NoError(t, err) {
 			defer listener.Close(ctx)
 			end, _ := ctx.Deadline()
@@ -617,7 +619,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	wg.Add(2)
 	received := make(map[interface{}]string)
 	var all []*Message
-	queue.Receive(ctx, func(ctx context.Context, message *Message) DispositionAction {
+	queue.Receive(ctx, HandlerFunc(func(ctx context.Context, message *Message) DispositionAction {
 		all = append(all, message)
 		if _, ok := received[message.ID]; !ok {
 			// caught a new one
@@ -631,7 +633,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 			}
 		}
 		return message.Complete()
-	})
+	}))
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
 }
@@ -679,12 +681,12 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	var wg sync.WaitGroup
 	wg.Add(numMessages)
 	count := 0
-	queue.Receive(ctx, func(ctx context.Context, msg *Message) DispositionAction {
+	queue.Receive(ctx, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
 		assert.Equal(t, messages[count], string(msg.Data))
 		count++
 		wg.Done()
 		return nil
-	})
+	}))
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
 }

@@ -275,10 +275,10 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
 		var wg sync.WaitGroup
 		wg.Add(1)
-		_, err := sub.Receive(ctx, func(eventCtx context.Context, msg *Message) DispositionAction {
+		_, err := sub.Receive(ctx, HandlerFunc(func(eventCtx context.Context, msg *Message) DispositionAction {
 			wg.Done()
 			return msg.Complete()
-		})
+		}))
 		if !assert.NoError(t, err) {
 			t.FailNow()
 		}

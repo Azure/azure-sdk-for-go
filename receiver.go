@@ -193,7 +193,7 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
 
-	dispositionAction := handler(ctx, event)
+	dispositionAction := handler.Handle(ctx, event)
 
 	if r.mode == ReceiveAndDeleteMode {
 		return

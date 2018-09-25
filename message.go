@@ -58,9 +58,6 @@ type (
 	// DispositionAction represents the action to notify Azure Service Bus of the Message's disposition
 	DispositionAction func(ctx context.Context)
 
-	// Handler is the function signature for any receiver of AMQP messages
-	Handler func(context.Context, *Message) DispositionAction
-
 	// MessageErrorCondition represents a well-known collection of AMQP errors
 	MessageErrorCondition string
 

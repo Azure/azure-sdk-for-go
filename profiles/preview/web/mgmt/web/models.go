@@ -551,14 +551,16 @@ const (
 type SkuName = original.SkuName
 
 const (
-	SkuNameBasic     SkuName = original.SkuNameBasic
-	SkuNameDynamic   SkuName = original.SkuNameDynamic
-	SkuNameFree      SkuName = original.SkuNameFree
-	SkuNameIsolated  SkuName = original.SkuNameIsolated
-	SkuNamePremium   SkuName = original.SkuNamePremium
-	SkuNamePremiumV2 SkuName = original.SkuNamePremiumV2
-	SkuNameShared    SkuName = original.SkuNameShared
-	SkuNameStandard  SkuName = original.SkuNameStandard
+	SkuNameBasic           SkuName = original.SkuNameBasic
+	SkuNameDynamic         SkuName = original.SkuNameDynamic
+	SkuNameElasticIsolated SkuName = original.SkuNameElasticIsolated
+	SkuNameElasticPremium  SkuName = original.SkuNameElasticPremium
+	SkuNameFree            SkuName = original.SkuNameFree
+	SkuNameIsolated        SkuName = original.SkuNameIsolated
+	SkuNamePremium         SkuName = original.SkuNamePremium
+	SkuNamePremiumV2       SkuName = original.SkuNamePremiumV2
+	SkuNameShared          SkuName = original.SkuNameShared
+	SkuNameStandard        SkuName = original.SkuNameStandard
 )
 
 type SolutionType = original.SolutionType

@@ -3856,6 +3856,227 @@ func (iu *ImageUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// InGuestSoftwareItem describes a InGuest software item.
+type InGuestSoftwareItem struct {
+	autorest.Response              `json:"-"`
+	*InGuestSoftwareItemProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for InGuestSoftwareItem.
+func (igsi InGuestSoftwareItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if igsi.InGuestSoftwareItemProperties != nil {
+		objectMap["properties"] = igsi.InGuestSoftwareItemProperties
+	}
+	if igsi.ID != nil {
+		objectMap["id"] = igsi.ID
+	}
+	if igsi.Name != nil {
+		objectMap["name"] = igsi.Name
+	}
+	if igsi.Type != nil {
+		objectMap["type"] = igsi.Type
+	}
+	if igsi.Location != nil {
+		objectMap["location"] = igsi.Location
+	}
+	if igsi.Tags != nil {
+		objectMap["tags"] = igsi.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for InGuestSoftwareItem struct.
+func (igsi *InGuestSoftwareItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var inGuestSoftwareItemProperties InGuestSoftwareItemProperties
+				err = json.Unmarshal(*v, &inGuestSoftwareItemProperties)
+				if err != nil {
+					return err
+				}
+				igsi.InGuestSoftwareItemProperties = &inGuestSoftwareItemProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				igsi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				igsi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				igsi.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				igsi.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				igsi.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// InGuestSoftwareItemProperties describes the properties of an InGuest software item.
+type InGuestSoftwareItemProperties struct {
+	// Name - Specifies the name of the software.
+	Name *string `json:"name,omitempty"`
+	// Version - Specifies the version of the software.
+	Version *string `json:"version,omitempty"`
+	// Publisher - Specifies the publisher of the software.
+	Publisher *string `json:"publisher,omitempty"`
+}
+
+// InGuestSoftwareItemsListResult the List of Software items operation response.
+type InGuestSoftwareItemsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of InGuest software items on the VM.
+	Value *[]InGuestSoftwareItem `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of InGuest software items on the VM. Call ListNext() with this to fetch the next page of items.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// InGuestSoftwareItemsListResultIterator provides access to a complete listing of InGuestSoftwareItem values.
+type InGuestSoftwareItemsListResultIterator struct {
+	i    int
+	page InGuestSoftwareItemsListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *InGuestSoftwareItemsListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter InGuestSoftwareItemsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter InGuestSoftwareItemsListResultIterator) Response() InGuestSoftwareItemsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter InGuestSoftwareItemsListResultIterator) Value() InGuestSoftwareItem {
+	if !iter.page.NotDone() {
+		return InGuestSoftwareItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (igsilr InGuestSoftwareItemsListResult) IsEmpty() bool {
+	return igsilr.Value == nil || len(*igsilr.Value) == 0
+}
+
+// inGuestSoftwareItemsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (igsilr InGuestSoftwareItemsListResult) inGuestSoftwareItemsListResultPreparer() (*http.Request, error) {
+	if igsilr.NextLink == nil || len(to.String(igsilr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(igsilr.NextLink)))
+}
+
+// InGuestSoftwareItemsListResultPage contains a page of InGuestSoftwareItem values.
+type InGuestSoftwareItemsListResultPage struct {
+	fn     func(InGuestSoftwareItemsListResult) (InGuestSoftwareItemsListResult, error)
+	igsilr InGuestSoftwareItemsListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *InGuestSoftwareItemsListResultPage) Next() error {
+	next, err := page.fn(page.igsilr)
+	if err != nil {
+		return err
+	}
+	page.igsilr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page InGuestSoftwareItemsListResultPage) NotDone() bool {
+	return !page.igsilr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page InGuestSoftwareItemsListResultPage) Response() InGuestSoftwareItemsListResult {
+	return page.igsilr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page InGuestSoftwareItemsListResultPage) Values() []InGuestSoftwareItem {
+	if page.igsilr.IsEmpty() {
+		return nil
+	}
+	return *page.igsilr.Value
+}
+
 // InnerError inner error details.
 type InnerError struct {
 	// Exceptiontype - The exception type.

@@ -567,6 +567,77 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 	return
 }
 
+// GetInGuestSoftwareItem get the In-Guest software item of the virtual machine in the specified subscription
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// guestResourceTypeName - the name of the In-Guest resource type.
+// itemID - identifier of the In-Guest resource type.
+func (client VirtualMachinesClient) GetInGuestSoftwareItem(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string, itemID string) (result InGuestSoftwareItem, err error) {
+	req, err := client.GetInGuestSoftwareItemPreparer(ctx, resourceGroupName, VMName, guestResourceTypeName, itemID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "GetInGuestSoftwareItem", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetInGuestSoftwareItemSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "GetInGuestSoftwareItem", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetInGuestSoftwareItemResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "GetInGuestSoftwareItem", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetInGuestSoftwareItemPreparer prepares the GetInGuestSoftwareItem request.
+func (client VirtualMachinesClient) GetInGuestSoftwareItemPreparer(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string, itemID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"guestResourceTypeName": autorest.Encode("path", guestResourceTypeName),
+		"itemId":                autorest.Encode("path", itemID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"vmName":                autorest.Encode("path", VMName),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/guestResourceTypes/software/items/{itemId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetInGuestSoftwareItemSender sends the GetInGuestSoftwareItem request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachinesClient) GetInGuestSoftwareItemSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetInGuestSoftwareItemResponder handles the response to the GetInGuestSoftwareItem request. The method always
+// closes the http.Response Body.
+func (client VirtualMachinesClient) GetInGuestSoftwareItemResponder(resp *http.Response) (result InGuestSoftwareItem, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // InstanceView retrieves information about the run-time state of a virtual machine.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -982,6 +1053,104 @@ func (client VirtualMachinesClient) listByLocationNextResults(lastResults Virtua
 // ListByLocationComplete enumerates all values, automatically crossing page boundaries as required.
 func (client VirtualMachinesClient) ListByLocationComplete(ctx context.Context, location string) (result VirtualMachineListResultIterator, err error) {
 	result.page, err = client.ListByLocation(ctx, location)
+	return
+}
+
+// ListInGuestSoftwareItems lists all of the In-Guest software items of virtual machines in the specified subscription.
+// Use the nextLink property in the response to get the next page of items.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// guestResourceTypeName - the name of the In-Guest resource type.
+func (client VirtualMachinesClient) ListInGuestSoftwareItems(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (result InGuestSoftwareItemsListResultPage, err error) {
+	result.fn = client.listInGuestSoftwareItemsNextResults
+	req, err := client.ListInGuestSoftwareItemsPreparer(ctx, resourceGroupName, VMName, guestResourceTypeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListInGuestSoftwareItems", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListInGuestSoftwareItemsSender(req)
+	if err != nil {
+		result.igsilr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListInGuestSoftwareItems", resp, "Failure sending request")
+		return
+	}
+
+	result.igsilr, err = client.ListInGuestSoftwareItemsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListInGuestSoftwareItems", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListInGuestSoftwareItemsPreparer prepares the ListInGuestSoftwareItems request.
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsPreparer(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"guestResourceTypeName": autorest.Encode("path", guestResourceTypeName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"vmName":                autorest.Encode("path", VMName),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/guestResourceTypes/software/items", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListInGuestSoftwareItemsSender sends the ListInGuestSoftwareItems request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListInGuestSoftwareItemsResponder handles the response to the ListInGuestSoftwareItems request. The method always
+// closes the http.Response Body.
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsResponder(resp *http.Response) (result InGuestSoftwareItemsListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listInGuestSoftwareItemsNextResults retrieves the next set of results, if any.
+func (client VirtualMachinesClient) listInGuestSoftwareItemsNextResults(lastResults InGuestSoftwareItemsListResult) (result InGuestSoftwareItemsListResult, err error) {
+	req, err := lastResults.inGuestSoftwareItemsListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listInGuestSoftwareItemsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListInGuestSoftwareItemsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listInGuestSoftwareItemsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListInGuestSoftwareItemsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listInGuestSoftwareItemsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListInGuestSoftwareItemsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsComplete(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (result InGuestSoftwareItemsListResultIterator, err error) {
+	result.page, err = client.ListInGuestSoftwareItems(ctx, resourceGroupName, VMName, guestResourceTypeName)
 	return
 }
 

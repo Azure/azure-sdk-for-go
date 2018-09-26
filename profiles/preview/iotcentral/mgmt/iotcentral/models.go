@@ -48,13 +48,14 @@ type AppSkuInfo = original.AppSkuInfo
 type AppsUpdateFuture = original.AppsUpdateFuture
 type ErrorDetails = original.ErrorDetails
 type ErrorResponseBody = original.ErrorResponseBody
+type NameAvailabilityInputs = original.NameAvailabilityInputs
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
-type OperationInputs = original.OperationInputs
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
+type SubdomainAvailabilityInputs = original.SubdomainAvailabilityInputs
 type OperationsClient = original.OperationsClient
 
 func NewAppsClient(subscriptionID string) AppsClient {

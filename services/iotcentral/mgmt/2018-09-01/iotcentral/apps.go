@@ -42,19 +42,17 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 
 // CheckNameAvailability check if an IoT Central application name is available.
 // Parameters:
-// operationInputs - set the name parameter in the OperationInputs structure to the name of the IoT Central
-// application to check.
-func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
+// nameAvailabilityInputs - set the name parameter in the NameAvailabilityInputs structure to the name of the
+// IoT Central application to check.
+func (client AppsClient) CheckNameAvailability(ctx context.Context, nameAvailabilityInputs NameAvailabilityInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: operationInputs,
-			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}},
-				{Target: "operationInputs.Subdomain", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "operationInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
+		{TargetValue: nameAvailabilityInputs,
+			Constraints: []validation.Constraint{{Target: "nameAvailabilityInputs.Name", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "nameAvailabilityInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckNameAvailability", err.Error())
 	}
 
-	req, err := client.CheckNameAvailabilityPreparer(ctx, operationInputs)
+	req, err := client.CheckNameAvailabilityPreparer(ctx, nameAvailabilityInputs)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CheckNameAvailability", nil, "Failure preparing request")
 		return
@@ -76,7 +74,7 @@ func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInp
 }
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-func (client AppsClient) CheckNameAvailabilityPreparer(ctx context.Context, operationInputs OperationInputs) (*http.Request, error) {
+func (client AppsClient) CheckNameAvailabilityPreparer(ctx context.Context, nameAvailabilityInputs NameAvailabilityInputs) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -91,7 +89,7 @@ func (client AppsClient) CheckNameAvailabilityPreparer(ctx context.Context, oper
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkNameAvailability", pathParameters),
-		autorest.WithJSON(operationInputs),
+		autorest.WithJSON(nameAvailabilityInputs),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -118,19 +116,17 @@ func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 
 // CheckSubdomainAvailability check if an IoT Central application subdomain is available.
 // Parameters:
-// operationInputs - set the subdomain parameter in the OperationInputs structure to the subdomain of the IoT
-// Central application to check.
-func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
+// subdomainAvailabilityInputs - set the subdomain parameter in the SubdomainAvailabilityInputs structure to
+// the subdomain of the IoT Central application to check.
+func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, subdomainAvailabilityInputs SubdomainAvailabilityInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: operationInputs,
-			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}},
-				{Target: "operationInputs.Subdomain", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "operationInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
+		{TargetValue: subdomainAvailabilityInputs,
+			Constraints: []validation.Constraint{{Target: "subdomainAvailabilityInputs.Subdomain", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "subdomainAvailabilityInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckSubdomainAvailability", err.Error())
 	}
 
-	req, err := client.CheckSubdomainAvailabilityPreparer(ctx, operationInputs)
+	req, err := client.CheckSubdomainAvailabilityPreparer(ctx, subdomainAvailabilityInputs)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CheckSubdomainAvailability", nil, "Failure preparing request")
 		return
@@ -152,7 +148,7 @@ func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, operati
 }
 
 // CheckSubdomainAvailabilityPreparer prepares the CheckSubdomainAvailability request.
-func (client AppsClient) CheckSubdomainAvailabilityPreparer(ctx context.Context, operationInputs OperationInputs) (*http.Request, error) {
+func (client AppsClient) CheckSubdomainAvailabilityPreparer(ctx context.Context, subdomainAvailabilityInputs SubdomainAvailabilityInputs) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -167,7 +163,7 @@ func (client AppsClient) CheckSubdomainAvailabilityPreparer(ctx context.Context,
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability", pathParameters),
-		autorest.WithJSON(operationInputs),
+		autorest.WithJSON(subdomainAvailabilityInputs),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

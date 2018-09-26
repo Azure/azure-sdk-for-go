@@ -443,6 +443,14 @@ type ErrorResponseBody struct {
 	Details *[]ErrorResponseBody `json:"details,omitempty"`
 }
 
+// NameAvailabilityInputs input values.
+type NameAvailabilityInputs struct {
+	// Name - The name of the IoT Central application instance to check.
+	Name *string `json:"name,omitempty"`
+	// Type - The name of the IoT Central resource name to query.
+	Type *string `json:"type,omitempty"`
+}
+
 // Operation ioT Central REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{read | write | action | delete}
@@ -461,16 +469,6 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
-}
-
-// OperationInputs input values.
-type OperationInputs struct {
-	// Name - The name of the IoT Central application instance to check.
-	Name *string `json:"name,omitempty"`
-	// Subdomain - The subdomain of the IoT Central application instance to check.
-	Subdomain *string `json:"subdomain,omitempty"`
-	// Type - The name of the IoT Central resource name to query.
-	Type *string `json:"type,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the
@@ -609,4 +607,12 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// SubdomainAvailabilityInputs input values.
+type SubdomainAvailabilityInputs struct {
+	// Subdomain - The subdomain of the IoT Central application instance to check.
+	Subdomain *string `json:"subdomain,omitempty"`
+	// Type - The name of the IoT Central resource name to query.
+	Type *string `json:"type,omitempty"`
 }

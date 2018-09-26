@@ -53,9 +53,9 @@ func (client RoutingRulesClient) CreateOrUpdate(ctx context.Context, resourceGro
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: routingRuleName,
 			Constraints: []validation.Constraint{{Target: "routingRuleName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "routingRuleName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -144,9 +144,9 @@ func (client RoutingRulesClient) Delete(ctx context.Context, resourceGroupName s
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: routingRuleName,
 			Constraints: []validation.Constraint{{Target: "routingRuleName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "routingRuleName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -232,9 +232,9 @@ func (client RoutingRulesClient) Get(ctx context.Context, resourceGroupName stri
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: routingRuleName,
 			Constraints: []validation.Constraint{{Target: "routingRuleName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "routingRuleName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -316,9 +316,9 @@ func (client RoutingRulesClient) ListByFrontDoor(ctx context.Context, resourceGr
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}}}); err != nil {
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.RoutingRulesClient", "ListByFrontDoor", err.Error())
 	}
 

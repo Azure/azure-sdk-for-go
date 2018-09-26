@@ -43,10 +43,10 @@ const (
 )
 
 type App = original.App
+type AppAvailabilityInfo = original.AppAvailabilityInfo
 type AppListResult = original.AppListResult
 type AppListResultIterator = original.AppListResultIterator
 type AppListResultPage = original.AppListResultPage
-type AppNameAvailabilityInfo = original.AppNameAvailabilityInfo
 type AppPatch = original.AppPatch
 type AppProperties = original.AppProperties
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture

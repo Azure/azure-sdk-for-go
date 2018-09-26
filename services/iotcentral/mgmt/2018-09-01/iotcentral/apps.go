@@ -44,7 +44,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 // Parameters:
 // operationInputs - set the name parameter in the OperationInputs structure to the name of the IoT Central
 // application to check.
-func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppNameAvailabilityInfo, err error) {
+func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
 			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -102,7 +102,7 @@ func (client AppsClient) CheckNameAvailabilitySender(req *http.Request) (*http.R
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (result AppNameAvailabilityInfo, err error) {
+func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (result AppAvailabilityInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

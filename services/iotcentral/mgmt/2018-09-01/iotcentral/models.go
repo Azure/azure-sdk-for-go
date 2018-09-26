@@ -179,6 +179,17 @@ func (a *App) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AppAvailabilityInfo the properties indicating whether a given IoT Central application information is available.
+type AppAvailabilityInfo struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - The value which indicates whether the provided name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
+	Reason AppNameUnavailabilityReason `json:"reason,omitempty"`
+	// Message - The detailed reason message.
+	Message *string `json:"message,omitempty"`
+}
+
 // AppListResult a list of IoT Central Applications with a next link.
 type AppListResult struct {
 	autorest.Response `json:"-"`
@@ -279,17 +290,6 @@ func (page AppListResultPage) Values() []App {
 		return nil
 	}
 	return *page.alr.Value
-}
-
-// AppNameAvailabilityInfo the properties indicating whether a given IoT Central application name is available.
-type AppNameAvailabilityInfo struct {
-	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason AppNameUnavailabilityReason `json:"reason,omitempty"`
-	// Message - The detailed reason message.
-	Message *string `json:"message,omitempty"`
 }
 
 // AppPatch the description of the IoT Central application.

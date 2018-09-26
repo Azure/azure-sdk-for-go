@@ -25,21 +25,6 @@ import (
 	"net/http"
 )
 
-// AppNameUnavailabilityReason enumerates the values for app name unavailability reason.
-type AppNameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists AppNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid AppNameUnavailabilityReason = "Invalid"
-)
-
-// PossibleAppNameUnavailabilityReasonValues returns an array of possible values for the AppNameUnavailabilityReason const type.
-func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
-	return []AppNameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
 // AppSku enumerates the values for app sku.
 type AppSku string
 
@@ -179,6 +164,17 @@ func (a *App) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AppAvailabilityInfo the properties indicating whether a given IoT Central application information is available.
+type AppAvailabilityInfo struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - The value which indicates whether the provided name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason for unavailability.
+	Reason *string `json:"reason,omitempty"`
+	// Message - The detailed reason message.
+	Message *string `json:"message,omitempty"`
+}
+
 // AppListResult a list of IoT Central Applications with a next link.
 type AppListResult struct {
 	autorest.Response `json:"-"`
@@ -279,17 +275,6 @@ func (page AppListResultPage) Values() []App {
 		return nil
 	}
 	return *page.alr.Value
-}
-
-// AppNameAvailabilityInfo the properties indicating whether a given IoT Central application name is available.
-type AppNameAvailabilityInfo struct {
-	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason AppNameUnavailabilityReason `json:"reason,omitempty"`
-	// Message - The detailed reason message.
-	Message *string `json:"message,omitempty"`
 }
 
 // AppPatch the description of the IoT Central application.
@@ -443,12 +428,27 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // ErrorDetails error details.
 type ErrorDetails struct {
-	// Code - The error code.
+	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// ErrorResponseBody details of error response.
+type ErrorResponseBody struct {
+	// Code - Error code, intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - Description of the error, intended for display in user interface.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error.
+	// Target - Target of the particular error, for example name of the property.
 	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]ErrorResponseBody `json:"details,omitempty"`
+}
+
+// NameAvailabilityInputs input values.
+type NameAvailabilityInputs struct {
+	// Name - The name of the IoT Central application instance to check.
+	Name *string `json:"name,omitempty"`
+	// Type - The name of the IoT Central resource name to query.
+	Type *string `json:"type,omitempty"`
 }
 
 // Operation ioT Central REST API operation
@@ -469,12 +469,6 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
-}
-
-// OperationInputs input values.
-type OperationInputs struct {
-	// Name - The name of the IoT Central application instance to check.
-	Name *string `json:"name,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the
@@ -613,4 +607,12 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// SubdomainAvailabilityInputs input values.
+type SubdomainAvailabilityInputs struct {
+	// Subdomain - The subdomain of the IoT Central application instance to check.
+	Subdomain *string `json:"subdomain,omitempty"`
+	// Type - The name of the IoT Central resource name to query.
+	Type *string `json:"type,omitempty"`
 }

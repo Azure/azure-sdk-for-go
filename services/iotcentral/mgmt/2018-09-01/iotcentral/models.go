@@ -169,8 +169,6 @@ type AppAvailabilityInfo struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Subdomain - The value which indicates whether the provided subdomain is available.
-	Subdomain *string `json:"subdomain,omitempty"`
 	// Reason - The reason for unavailability.
 	Reason *string `json:"reason,omitempty"`
 	// Message - The detailed reason message.
@@ -469,10 +467,6 @@ type OperationDisplay struct {
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
-	// Subdomain - The subdomain of the IoT Central application instance to check.
-	Subdomain *string `json:"subdomain,omitempty"`
-	// Type - The name of the IoT Central resource name to query.
-	Type *string `json:"type,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the

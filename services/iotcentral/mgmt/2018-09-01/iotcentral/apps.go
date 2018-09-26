@@ -48,9 +48,7 @@ func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInp
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
 			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}},
-				{Target: "operationInputs.Subdomain", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "operationInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckNameAvailability", err.Error())
 	}
 
@@ -118,15 +116,13 @@ func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 
 // CheckSubdomainAvailability check if an IoT Central application subdomain is available.
 // Parameters:
-// operationInputs - set the subdomain parameter in the OperationInputs model to the subdomain of the IoT
+// operationInputs - set the subdomain parameter in the OperationInputs structure to the subdomain of the IoT
 // Central application to check.
 func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
 			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}},
-				{Target: "operationInputs.Subdomain", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "operationInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckSubdomainAvailability", err.Error())
 	}
 

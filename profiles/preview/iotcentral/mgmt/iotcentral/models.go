@@ -28,13 +28,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type AppNameUnavailabilityReason = original.AppNameUnavailabilityReason
-
-const (
-	AlreadyExists AppNameUnavailabilityReason = original.AlreadyExists
-	Invalid       AppNameUnavailabilityReason = original.Invalid
-)
-
 type AppSku = original.AppSku
 
 const (
@@ -75,9 +68,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
-	return original.PossibleAppNameUnavailabilityReasonValues()
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()

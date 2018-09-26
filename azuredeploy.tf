@@ -38,3 +38,10 @@ resource "azurerm_servicebus_queue" "helloworld" {
   resource_group_name = "${azurerm_resource_group.test.name}"
   namespace_name = "${azurerm_servicebus_namespace.test.name}"
 }
+
+resource "azurerm_servicebus_queue" "receiveSession" {
+  name = "receivesession"
+  resource_group_name = "${azurerm_resource_group.test.name}"
+  namespace_name = "${azurerm_servicebus_namespace.test.name}"
+  default_message_ttl = "PT300S"
+}

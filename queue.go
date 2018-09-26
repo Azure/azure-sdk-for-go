@@ -175,6 +175,17 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
+// ReceiveSession waits for the lock on a particular session to become available, takes it, then process the session.
+func (q *Queue) ReceiveSession(ctx context.Context, sessionID string, handler SessionHandler) error {
+	panic("not implemented")
+}
+
+// ReceiveSessions is the session-based counterpart of `Receive`. It subscribes to a Queue and waits for new sessions to
+// become available.
+func (q *Queue) ReceiveSessions(ctx context.Context, handler SessionHandler) error {
+	panic("not implemented")
+}
+
 func (q *Queue) ensureReceiver(ctx context.Context) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
 	defer span.Finish()

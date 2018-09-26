@@ -26,7 +26,6 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"sync"
 	"testing"
 	"time"
 
@@ -273,30 +272,22 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
-		var wg sync.WaitGroup
-		wg.Add(1)
-		_, err := sub.Receive(ctx, func(eventCtx context.Context, msg *Message) DispositionAction {
-			wg.Done()
+		inner, cancel := context.WithCancel(ctx)
+		err := sub.Receive(inner, HandlerFunc(func(eventCtx context.Context, msg *Message) DispositionAction {
+			defer cancel()
 			return msg.Complete()
-		})
-		if !assert.NoError(t, err) {
-			t.FailNow()
-		}
-		end, _ := ctx.Deadline()
-		waitUntil(t, &wg, time.Until(end))
+		}))
+		assert.EqualError(t, err, context.Canceled.Error())
 	}
 }
 
 func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
-	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
-
-	msg, err := sub.ReceiveOne(ctx)
-	if !assert.NoError(t, err) {
-		t.FailNow()
+	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
+		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+			return msg.Complete()
+		}))
+		assert.NoError(t, err)
 	}
-
-	msg.Complete()
 }
 
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {

@@ -54,7 +54,7 @@ type (
 	receiverOption func(receiver *receiver) error
 
 	// ListenerHandle provides the ability to close or listen to the close of a Receiver
-	ListenerHandle struct {
+	listenerHandle struct {
 		r   *receiver
 		ctx context.Context
 	}
@@ -106,46 +106,24 @@ func (r *receiver) Recover(ctx context.Context) error {
 	return r.newSessionAndLink(ctx)
 }
 
-func (r *receiver) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+func (r *receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.ReceiveOne")
 	defer span.Finish()
 
 	amqpMsg, err := r.listenForMessage(ctx)
 	if err != nil {
 		log.For(ctx).Error(err)
-		return nil, err
+		return err
 	}
 
-	msg, err := messageFromAMQPMessage(amqpMsg)
-	if err != nil {
-		log.For(ctx).Error(err)
-		return nil, err
-	}
+	r.handleMessage(ctx, amqpMsg, handler)
 
-	return r.messageToMessageWithContext(ctx, msg), nil
-}
-
-func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) *MessageWithContext {
-	const optName = "sb.receiver.amqpEventToMessageWithContext"
-	var span opentracing.Span
-	wireContext, err := extractWireContext(msg)
-	if err == nil {
-		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
-	} else {
-		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
-	}
-	defer span.Finish()
-
-	span.SetTag("amqp.message-id", msg.ID)
-	return &MessageWithContext{
-		Message: msg,
-		Ctx:     ctx,
-	}
+	return nil
 }
 
 // Listen start a listener for messages sent to the entity path
-func (r *receiver) Listen(handler Handler) *ListenerHandle {
-	ctx, done := context.WithCancel(context.Background())
+func (r *receiver) Listen(ctx context.Context, handler Handler) *listenerHandle {
+	ctx, done := context.WithCancel(ctx)
 	r.done = done
 
 	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.Listen")
@@ -155,7 +133,7 @@ func (r *receiver) Listen(handler Handler) *ListenerHandle {
 	go r.listenForMessages(ctx, messages)
 	go r.handleMessages(ctx, messages, handler)
 
-	return &ListenerHandle{
+	return &listenerHandle{
 		r:   r,
 		ctx: ctx,
 	}
@@ -193,7 +171,7 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
 
-	dispositionAction := handler(ctx, event)
+	dispositionAction := handler.Handle(ctx, event)
 
 	if r.mode == ReceiveAndDeleteMode {
 		return
@@ -349,17 +327,17 @@ func messageID(msg *amqp.Message) interface{} {
 }
 
 // Close will close the listener
-func (lc *ListenerHandle) Close(ctx context.Context) error {
+func (lc *listenerHandle) Close(ctx context.Context) error {
 	return lc.r.Close(ctx)
 }
 
 // Done will close the channel when the listener has stopped
-func (lc *ListenerHandle) Done() <-chan struct{} {
+func (lc *listenerHandle) Done() <-chan struct{} {
 	return lc.ctx.Done()
 }
 
 // Err will return the last error encountered
-func (lc *ListenerHandle) Err() error {
+func (lc *listenerHandle) Err() error {
 	if lc.r.lastError != nil {
 		return lc.r.lastError
 	}

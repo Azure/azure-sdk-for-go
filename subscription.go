@@ -96,28 +96,28 @@ func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subsc
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
-func (s *Subscription) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
 	defer span.Finish()
 
-	err := s.ensureReceiver(ctx)
-	if err != nil {
-		return nil, err
+	if err := s.ensureReceiver(ctx); err != nil {
+		return err
 	}
 
-	return s.receiver.ReceiveOne(ctx)
+	return s.receiver.ReceiveOne(ctx, handler)
 }
 
 // Receive subscribes for messages sent to the Subscription
-func (s *Subscription) Receive(ctx context.Context, handler Handler) (*ListenerHandle, error) {
+func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
 	defer span.Finish()
 
-	err := s.ensureReceiver(ctx)
-	if err != nil {
-		return nil, err
+	if err := s.ensureReceiver(ctx); err != nil {
+		return err
 	}
-	return s.receiver.Listen(handler), nil
+	handle := s.receiver.Listen(ctx, handler)
+	<-handle.Done()
+	return handle.Err()
 }
 
 func (s *Subscription) ensureReceiver(ctx context.Context) error {

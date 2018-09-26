@@ -1061,10 +1061,9 @@ func (client VirtualMachinesClient) ListByLocationComplete(ctx context.Context, 
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
-// guestResourceTypeName - the name of the In-Guest resource type.
-func (client VirtualMachinesClient) ListInGuestSoftwareItems(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (result InGuestSoftwareItemsListResultPage, err error) {
+func (client VirtualMachinesClient) ListInGuestSoftwareItems(ctx context.Context, resourceGroupName string, VMName string) (result InGuestSoftwareItemsListResultPage, err error) {
 	result.fn = client.listInGuestSoftwareItemsNextResults
-	req, err := client.ListInGuestSoftwareItemsPreparer(ctx, resourceGroupName, VMName, guestResourceTypeName)
+	req, err := client.ListInGuestSoftwareItemsPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListInGuestSoftwareItems", nil, "Failure preparing request")
 		return
@@ -1086,12 +1085,11 @@ func (client VirtualMachinesClient) ListInGuestSoftwareItems(ctx context.Context
 }
 
 // ListInGuestSoftwareItemsPreparer prepares the ListInGuestSoftwareItems request.
-func (client VirtualMachinesClient) ListInGuestSoftwareItemsPreparer(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (*http.Request, error) {
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsPreparer(ctx context.Context, resourceGroupName string, VMName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"guestResourceTypeName": autorest.Encode("path", guestResourceTypeName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-		"vmName":                autorest.Encode("path", VMName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmName":            autorest.Encode("path", VMName),
 	}
 
 	const APIVersion = "2018-10-01"
@@ -1149,8 +1147,8 @@ func (client VirtualMachinesClient) listInGuestSoftwareItemsNextResults(lastResu
 }
 
 // ListInGuestSoftwareItemsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualMachinesClient) ListInGuestSoftwareItemsComplete(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string) (result InGuestSoftwareItemsListResultIterator, err error) {
-	result.page, err = client.ListInGuestSoftwareItems(ctx, resourceGroupName, VMName, guestResourceTypeName)
+func (client VirtualMachinesClient) ListInGuestSoftwareItemsComplete(ctx context.Context, resourceGroupName string, VMName string) (result InGuestSoftwareItemsListResultIterator, err error) {
+	result.page, err = client.ListInGuestSoftwareItems(ctx, resourceGroupName, VMName)
 	return
 }
 

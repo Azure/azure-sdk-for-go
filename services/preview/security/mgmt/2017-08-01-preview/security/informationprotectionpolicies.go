@@ -173,3 +173,96 @@ func (client InformationProtectionPoliciesClient) GetResponder(resp *http.Respon
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// List information protection policies of a specific management group.
+// Parameters:
+// scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+// management group (/providers/Microsoft.Management/managementGroups/mgName).
+func (client InformationProtectionPoliciesClient) List(ctx context.Context, scope string) (result InformationProtectionPolicyListPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, scope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "List", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.ippl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "List", resp, "Failure sending request")
+		return
+	}
+
+	result.ippl, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client InformationProtectionPoliciesClient) ListPreparer(ctx context.Context, scope string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"scope": autorest.Encode("path", scope),
+	}
+
+	const APIVersion = "2017-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/informationProtectionPolicies", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client InformationProtectionPoliciesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client InformationProtectionPoliciesClient) ListResponder(resp *http.Response) (result InformationProtectionPolicyList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client InformationProtectionPoliciesClient) listNextResults(lastResults InformationProtectionPolicyList) (result InformationProtectionPolicyList, err error) {
+	req, err := lastResults.informationProtectionPolicyListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.InformationProtectionPoliciesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client InformationProtectionPoliciesClient) ListComplete(ctx context.Context, scope string) (result InformationProtectionPolicyListIterator, err error) {
+	result.page, err = client.List(ctx, scope)
+	return
+}

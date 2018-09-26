@@ -34,7 +34,6 @@ type CompliancesClient = original.CompliancesClient
 type ContactsClient = original.ContactsClient
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
-type InformationProtectionClient = original.InformationProtectionClient
 type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type LocationsClient = original.LocationsClient
@@ -295,12 +294,6 @@ func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation strin
 }
 func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
 	return original.NewExternalSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewInformationProtectionClient(subscriptionID string, ascLocation string) InformationProtectionClient {
-	return original.NewInformationProtectionClient(subscriptionID, ascLocation)
-}
-func NewInformationProtectionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) InformationProtectionClient {
-	return original.NewInformationProtectionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewInformationProtectionPoliciesClient(subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
 	return original.NewInformationProtectionPoliciesClient(subscriptionID, ascLocation)

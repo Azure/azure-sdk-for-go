@@ -47,7 +47,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
-			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckNameAvailability", err.Error())
 	}

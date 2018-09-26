@@ -1111,6 +1111,10 @@ const (
 	SkuNameBasic SkuName = "Basic"
 	// SkuNameDynamic ...
 	SkuNameDynamic SkuName = "Dynamic"
+	// SkuNameElasticIsolated ...
+	SkuNameElasticIsolated SkuName = "ElasticIsolated"
+	// SkuNameElasticPremium ...
+	SkuNameElasticPremium SkuName = "ElasticPremium"
 	// SkuNameFree ...
 	SkuNameFree SkuName = "Free"
 	// SkuNameIsolated ...
@@ -1127,7 +1131,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameBasic, SkuNameDynamic, SkuNameFree, SkuNameIsolated, SkuNamePremium, SkuNamePremiumV2, SkuNameShared, SkuNameStandard}
+	return []SkuName{SkuNameBasic, SkuNameDynamic, SkuNameElasticIsolated, SkuNameElasticPremium, SkuNameFree, SkuNameIsolated, SkuNamePremium, SkuNamePremiumV2, SkuNameShared, SkuNameStandard}
 }
 
 // SolutionType enumerates the values for solution type.
@@ -4033,6 +4037,8 @@ type AppServicePlanPatchResourceProperties struct {
 	// PerSiteScaling - If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
 	// If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+	// MaximumElasticWorkerCount - Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
+	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
 	// NumberOfSites - Number of apps assigned to this App Service plan.
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
 	// IsSpot - If <code>true</code>, this App Service Plan owns spot instances.
@@ -4076,6 +4082,8 @@ type AppServicePlanProperties struct {
 	// PerSiteScaling - If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
 	// If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
 	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+	// MaximumElasticWorkerCount - Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
+	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
 	// NumberOfSites - Number of apps assigned to this App Service plan.
 	NumberOfSites *int32 `json:"numberOfSites,omitempty"`
 	// IsSpot - If <code>true</code>, this App Service Plan owns spot instances.

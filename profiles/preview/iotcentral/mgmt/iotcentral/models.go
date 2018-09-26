@@ -54,6 +54,7 @@ type AppsDeleteFuture = original.AppsDeleteFuture
 type AppSkuInfo = original.AppSkuInfo
 type AppsUpdateFuture = original.AppsUpdateFuture
 type ErrorDetails = original.ErrorDetails
+type ErrorResponseBody = original.ErrorResponseBody
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationInputs = original.OperationInputs

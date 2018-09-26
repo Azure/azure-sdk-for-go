@@ -116,8 +116,8 @@ func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 
 // CheckSubdomainAvailability check if an IoT Central application subdomain is available.
 // Parameters:
-// subdomainAvailabilityInputs - set the subdomain parameter in the SubdomainAvailabilityInputs structure to
-// the subdomain of the IoT Central application to check.
+// subdomainAvailabilityInputs - set the subdomain parameter in the SubdomainAvailabilityInputs model to the
+// subdomain of the IoT Central application to check.
 func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, subdomainAvailabilityInputs SubdomainAvailabilityInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: subdomainAvailabilityInputs,

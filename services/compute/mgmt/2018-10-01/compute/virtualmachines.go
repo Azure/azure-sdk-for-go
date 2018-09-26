@@ -571,10 +571,9 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
-// guestResourceTypeName - the name of the In-Guest resource type.
 // itemID - identifier of the In-Guest resource type.
-func (client VirtualMachinesClient) GetInGuestSoftwareItem(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string, itemID string) (result InGuestSoftwareItem, err error) {
-	req, err := client.GetInGuestSoftwareItemPreparer(ctx, resourceGroupName, VMName, guestResourceTypeName, itemID)
+func (client VirtualMachinesClient) GetInGuestSoftwareItem(ctx context.Context, resourceGroupName string, VMName string, itemID string) (result InGuestSoftwareItem, err error) {
+	req, err := client.GetInGuestSoftwareItemPreparer(ctx, resourceGroupName, VMName, itemID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "GetInGuestSoftwareItem", nil, "Failure preparing request")
 		return
@@ -596,13 +595,12 @@ func (client VirtualMachinesClient) GetInGuestSoftwareItem(ctx context.Context, 
 }
 
 // GetInGuestSoftwareItemPreparer prepares the GetInGuestSoftwareItem request.
-func (client VirtualMachinesClient) GetInGuestSoftwareItemPreparer(ctx context.Context, resourceGroupName string, VMName string, guestResourceTypeName string, itemID string) (*http.Request, error) {
+func (client VirtualMachinesClient) GetInGuestSoftwareItemPreparer(ctx context.Context, resourceGroupName string, VMName string, itemID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"guestResourceTypeName": autorest.Encode("path", guestResourceTypeName),
-		"itemId":                autorest.Encode("path", itemID),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-		"vmName":                autorest.Encode("path", VMName),
+		"itemId":            autorest.Encode("path", itemID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmName":            autorest.Encode("path", VMName),
 	}
 
 	const APIVersion = "2018-10-01"

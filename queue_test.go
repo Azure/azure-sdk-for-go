@@ -533,37 +533,6 @@ func testQueueSend(ctx context.Context, t *testing.T, queue *Queue) {
 	assert.Nil(t, err)
 }
 
-func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Queue) {
-	numMessages := rand.Intn(100) + 20
-	messages := make([]string, numMessages)
-	for i := 0; i < numMessages; i++ {
-		messages[i] = test.RandomString("hello", 10)
-	}
-
-	for _, message := range messages {
-		err := queue.Send(ctx, NewMessageFromString(message))
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(numMessages)
-	// ensure in-order processing of messages from the queue
-	count := 0
-	listener, err := queue.Receive(ctx, HandlerFunc(func(ctx context.Context, event *Message) DispositionAction {
-		assert.Equal(t, messages[count], string(event.Data))
-		count++
-		wg.Done()
-		return event.Complete()
-	}))
-	if assert.NoError(t, err) {
-		defer listener.Close(ctx)
-		end, _ := ctx.Deadline()
-		waitUntil(t, &wg, time.Until(end))
-	}
-}
-
 func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *Queue) {
 	if testing.Short() {
 		t.Skip()

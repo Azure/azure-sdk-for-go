@@ -106,23 +106,19 @@ func (r *receiver) Recover(ctx context.Context) error {
 	return r.newSessionAndLink(ctx)
 }
 
-func (r *receiver) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+func (r *receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.ReceiveOne")
 	defer span.Finish()
 
 	amqpMsg, err := r.listenForMessage(ctx)
 	if err != nil {
 		log.For(ctx).Error(err)
-		return nil, err
+		return err
 	}
 
-	msg, err := messageFromAMQPMessage(amqpMsg)
-	if err != nil {
-		log.For(ctx).Error(err)
-		return nil, err
-	}
+	r.handleMessage(ctx, amqpMsg, handler)
 
-	return r.messageToMessageWithContext(ctx, msg), nil
+	return nil
 }
 
 func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) *MessageWithContext {
@@ -144,8 +140,8 @@ func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message
 }
 
 // Listen start a listener for messages sent to the entity path
-func (r *receiver) Listen(handler Handler) *ListenerHandle {
-	ctx, done := context.WithCancel(context.Background())
+func (r *receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle {
+	ctx, done := context.WithCancel(ctx)
 	r.done = done
 
 	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.Listen")

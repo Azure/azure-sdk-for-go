@@ -78,12 +78,6 @@ type (
 		ViaPartitionKey        *string    `mapstructure:"x-opt-via-partition-key"`
 	}
 
-	// MessageWithContext is a Service Bus message with its context which propagates the distributed trace information
-	MessageWithContext struct {
-		*Message
-		Ctx context.Context
-	}
-
 	mapStructureTag struct {
 		Name         string
 		PersistEmpty bool
@@ -109,26 +103,6 @@ const (
 const (
 	lockTokenName = "x-opt-lock-token"
 )
-
-// Complete will notify Azure Service Bus that the message was successfully handled and should be deleted from the queue
-func (m *MessageWithContext) Complete() {
-	m.Message.Complete()(m.Ctx)
-}
-
-// Abandon will notify Azure Service Bus the message failed but should be re-queued for delivery.
-func (m *MessageWithContext) Abandon() {
-	m.Message.Abandon()(m.Ctx)
-}
-
-// DeadLetter will notify Azure Service Bus the message failed and should not re-queued
-func (m *MessageWithContext) DeadLetter(err error) {
-	m.Message.DeadLetter(err)(m.Ctx)
-}
-
-// DeadLetterWithInfo will notify Azure Service Bus the message failed and should not be re-queued with additional context
-func (m *MessageWithContext) DeadLetterWithInfo(err error, condition MessageErrorCondition, additionalData map[string]string) {
-	m.Message.DeadLetterWithInfo(err, condition, additionalData)(m.Ctx)
-}
 
 // NewMessageFromString builds an Message from a string message
 func NewMessageFromString(message string) *Message {

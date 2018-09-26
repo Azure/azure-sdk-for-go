@@ -34,7 +34,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/azure-service-bus-go/internal/test"
-	"github.com/opentracing/opentracing-go"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -382,7 +381,7 @@ func testQueueWithDuplicateDetection(ctx context.Context, t *testing.T, qm *Queu
 }
 
 func testQueueWithMessageTimeToLive(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	window := time.Duration(10 * 24 * 60 * time.Minute)
+	window := time.Duration(10 * 24 * time.Hour)
 	q := buildQueue(ctx, t, qm, name, QueueEntityWithMessageTimeToLive(&window))
 	assert.Equal(t, "P10D", *q.DefaultMessageTimeToLive)
 }
@@ -409,13 +408,10 @@ func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string
 
 func (suite *serviceBusSuite) TestQueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SimpleSend":              testQueueSend,
-		"SendAndReceiveInOrder":   testQueueSendAndReceiveInOrder,
-		"DuplicateDetection":      testDuplicateDetection,
-		"MessageProperties":       testMessageProperties,
-		"Retry":                   testRequeueOnFail,
-		"ReceiveOne":              testReceiveOne,
-		"SendAndReceiveScheduled": testQueueSendAndReceiveScheduled,
+		"SimpleSend":         testQueueSend,
+		"DuplicateDetection": testDuplicateDetection,
+		"MessageProperties":  testMessageProperties,
+		"Retry":              testRequeueOnFail,
 	}
 
 	timeouts := map[string]time.Duration{
@@ -453,115 +449,61 @@ func (suite *serviceBusSuite) TestQueueClient() {
 	}
 }
 
-func testReceiveOne(ctx context.Context, t *testing.T, q *Queue) {
-	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
-		messageWithContext, err := q.ReceiveOne(ctx)
-		if assert.NoError(t, err) {
-			span, _ := opentracing.StartSpanFromContext(messageWithContext.Ctx, "continue-message-span")
-			defer span.Finish()
-
-			messageWithContext.Complete()
-		}
-	}
-}
-
 func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
-	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
-		var wg sync.WaitGroup
-		wg.Add(2)
-		var receivedMsg *Message
-		fail := true
+	const payload = "Hello World!!!"
 
-		listenHandle, err := q.Receive(context.Background(),
-			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
-				receivedMsg = msg
-				defer func() {
-					wg.Done()
-				}()
-				if fail {
-					fail = false
-					return msg.Abandon()
-				}
-				return msg.Complete()
-			}))
+	if assert.NoError(t, q.Send(ctx, NewMessageFromString(payload))) {
+		inner, cancel := context.WithCancel(ctx)
+		errs := make(chan error, 1)
 
-		if assert.NoError(t, err) {
-			defer listenHandle.Close(ctx)
-			end, _ := ctx.Deadline()
-			waitUntil(t, &wg, time.Until(end))
+		go func() {
+			fail := true
 
-			if assert.NoError(t, err) {
-				assert.EqualValues(t, 2, receivedMsg.DeliveryCount)
-			}
+			errs <- q.Receive(inner,
+				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+					assert.EqualValues(t, payload, string(msg.Data))
+					if fail {
+						fail = false
+						assert.EqualValues(t, 1, msg.DeliveryCount)
+						return msg.Abandon()
+					}
+					assert.EqualValues(t, 2, msg.DeliveryCount)
+					cancel()
+					return msg.Complete()
+				}))
+		}()
+
+		select {
+		case <-ctx.Done():
+			t.Error(ctx.Err())
+			return
+		case err := <-errs:
+			assert.EqualError(t, err, context.Canceled.Error())
 		}
 	}
 }
 
 func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
-		var wg sync.WaitGroup
-		wg.Add(1)
-		var receivedMsg *Message
-		listenHandle, err := q.Receive(context.Background(),
+		err := q.ReceiveOne(context.Background(),
 			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
-				receivedMsg = msg
-				defer func() {
-					wg.Done()
-				}()
-				return msg.Complete()
-			}))
-		if assert.NoError(t, err) {
-			defer listenHandle.Close(ctx)
-			end, _ := ctx.Deadline()
-			waitUntil(t, &wg, time.Until(end))
-
-			if assert.NoError(t, err) {
-				sp := receivedMsg.SystemProperties
+				sp := msg.SystemProperties
 				assert.NotNil(t, sp.LockedUntil, "LockedUntil")
 				assert.NotNil(t, sp.EnqueuedSequenceNumber, "EnqueuedSequenceNumber")
 				assert.NotNil(t, sp.EnqueuedTime, "EnqueuedTime")
 				assert.NotNil(t, sp.SequenceNumber, "SequenceNumber")
 				assert.NotNil(t, sp.PartitionID, "PartitionID")
 				assert.NotNil(t, sp.PartitionKey, "PartitionKey")
-			}
-		}
+				return msg.Complete()
+			}))
+
+		assert.NoError(t, err)
 	}
 }
 
 func testQueueSend(ctx context.Context, t *testing.T, queue *Queue) {
 	err := queue.Send(ctx, NewMessageFromString("hello!"))
 	assert.Nil(t, err)
-}
-
-func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *Queue) {
-	if testing.Short() {
-		t.Skip()
-		return
-	}
-
-	// The delay to schedule a message for.
-	const waitTime = time.Duration(1 * time.Minute)
-	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll give them
-	// a buffer on either side.
-	const buffer = time.Duration(20 * time.Second)
-
-	msg := NewMessageFromString("to the future!!")
-	futureTime := time.Now().Add(waitTime)
-	msg.ScheduleAt(futureTime)
-	if assert.NoError(t, queue.Send(ctx, msg)) {
-		var wg sync.WaitGroup
-		wg.Add(1)
-		listener, err := queue.Receive(ctx, HandlerFunc(func(ctx context.Context, received *Message) DispositionAction {
-			defer wg.Done()
-			assert.WithinDuration(t, time.Now(), futureTime, buffer)
-			return received.Complete()
-		}))
-		if assert.NoError(t, err) {
-			defer listener.Close(ctx)
-			end, _ := ctx.Deadline()
-			waitUntil(t, &wg, time.Until(end))
-		}
-	}
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
@@ -584,15 +526,14 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 		t.FailNow()
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(2)
 	received := make(map[interface{}]string)
+	inner, cancel := context.WithCancel(ctx)
+
 	var all []*Message
-	queue.Receive(ctx, HandlerFunc(func(ctx context.Context, message *Message) DispositionAction {
+	err := queue.Receive(inner, HandlerFunc(func(ctx context.Context, message *Message) DispositionAction {
 		all = append(all, message)
 		if _, ok := received[message.ID]; !ok {
 			// caught a new one
-			defer wg.Done()
 			received[message.ID] = string(message.Data)
 		} else {
 			// caught a dup
@@ -601,10 +542,12 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 				t.Logf("mID: %q, gID: %q, gSeq: %q, lockT: %q", item.ID, *item.GroupID, *item.GroupSequence, *item.LockToken)
 			}
 		}
+		if len(all) == len(messages) {
+			cancel()
+		}
 		return message.Complete()
 	}))
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
+	assert.EqualError(t, err, context.Canceled.Error())
 }
 
 func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
@@ -635,29 +578,41 @@ func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
 }
 
 func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing.T, queue *Queue) {
+	ttl := 5 * time.Minute
 	numMessages := rand.Intn(100) + 20
-	messages := make([]string, numMessages)
+	expected := make(map[string]int, numMessages)
+	seen := make(map[string]int, numMessages)
+	errs := make(chan error, 1)
+
+	t.Logf("Sending/receiving %d messages", numMessages)
+
+	go func() {
+		inner, cancel := context.WithCancel(ctx)
+		numSeen := 0
+		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+			numSeen++
+			seen[string(msg.Data)]++
+			if numSeen >= numMessages {
+				cancel()
+			}
+			return nil
+		}))
+	}()
+
 	for i := 0; i < numMessages; i++ {
-		messages[i] = test.RandomString("hello", 10)
+		payload := test.RandomString("hello", 10)
+		expected[payload]++
+		msg := NewMessageFromString(payload)
+		msg.TTL = &ttl
+		assert.NoError(t, queue.Send(ctx, msg))
 	}
 
-	for _, message := range messages {
-		if !assert.NoError(t, queue.Send(ctx, NewMessageFromString(message))) {
-			assert.FailNow(t, "failed to send message")
-		}
-	}
+	assert.EqualError(t, <-errs, context.Canceled.Error())
 
-	var wg sync.WaitGroup
-	wg.Add(numMessages)
-	count := 0
-	queue.Receive(ctx, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
-		assert.Equal(t, messages[count], string(msg.Data))
-		count++
-		wg.Done()
-		return nil
-	}))
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
+	assert.Equal(t, len(expected), len(seen))
+	for k, v := range seen {
+		assert.Equal(t, expected[k], v)
+	}
 }
 
 //func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {

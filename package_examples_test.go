@@ -15,115 +15,43 @@ func Example_helloWorld() {
 
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 	if connStr == "" {
-		fmt.Println("Fatal: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		fmt.Println("FATAL: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
 		return
 	}
 
+	// Create a client to communicate with a Service Bus Namespace.
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	const queueName = "helloworld"
-	q, err := getQueue(ctx, ns, queueName)
+	// Create a client to communicate with the queue. (The queue must have already been created, see `QueueManager`)
+	q, err := ns.NewQueue("helloworld")
 	if err != nil {
-		fmt.Printf("failed to build a new queue named %q\n", queueName)
+		fmt.Println("FATAL: ", err)
 		return
 	}
 
-	errs := make(chan error, 2)
-
-	messages := []string{"hello", "world"}
-
-	// Start a receiver that will print messages that it is informed of by Service Bus.
-	go func(ctx context.Context, client *servicebus.Queue, quitAfter int) {
-		received := make(chan struct{})
-
-		listenHandle, err := client.Receive(
-			ctx,
-			servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
-				fmt.Println(string(message.Data))
-				received <- struct{}{}
-				return message.Complete()
-			}))
-		if err != nil {
-			errs <- err
-			return
-		}
-		defer listenHandle.Close(context.Background())
-		defer fmt.Println("...no longer listening")
-		fmt.Println("listening...")
-
-		for i := 0; i < quitAfter; i++ {
-			select {
-			case <-received:
-				// Intentionally Left Blank
-			case <-ctx.Done():
-				errs <- ctx.Err()
-				return
-			case <-listenHandle.Done():
-				errs <- listenHandle.Err()
-				return
-			}
-		}
-		errs <- nil
-	}(ctx, q, len(messages))
-
-	// Publish messages to Service Bus so that the receiver defined above will print them
-	go func(ctx context.Context, client *servicebus.Queue, messages ...string) {
-		for i := range messages {
-			messageSent := make(chan error, 1)
-
-			go func() {
-				messageSent <- client.Send(ctx, servicebus.NewMessageFromString(messages[i]))
-			}()
-			select {
-			case <-ctx.Done():
-				errs <- ctx.Err()
-				return
-			case err := <-messageSent:
-				if err != nil {
-					errs <- err
-					return
-				}
-			}
-		}
-		errs <- nil
-	}(ctx, q, messages...)
-
-	for i := 0; i < 2; i++ {
-		select {
-		case err := <-errs:
-			if err != nil {
-				fmt.Println(err)
-			}
-		case <-ctx.Done():
-			return
-		}
-	}
-
-	// Output:
-	// listening...
-	// hello
-	// world
-	// ...no longer listening
-}
-
-func getQueue(ctx context.Context, ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
-	qm := ns.NewQueueManager()
-	qe, err := qm.Get(ctx, queueName)
+	err = q.Send(ctx, servicebus.NewMessageFromString("Hello, World!!!"))
 	if err != nil {
-		return nil, err
+		return
+	}
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
 	}
 
-	if qe == nil {
-		_, err := qm.Put(ctx, queueName)
-		if err != nil {
-			return nil, err
-		}
+	err = q.ReceiveOne(
+		ctx,
+		servicebus.HandlerFunc(func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
+			fmt.Println(string(message.Data))
+			return message.Complete()
+		}))
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
 	}
 
-	q, err := ns.NewQueue(queueName)
-	return q, err
+	// Output: Hello, World!!!
 }

@@ -149,28 +149,30 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
-func (q *Queue) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
 	defer span.Finish()
 
-	err := q.ensureReceiver(ctx)
-	if err != nil {
-		return nil, err
+	if err := q.ensureReceiver(ctx); err != nil {
+		return err
 	}
 
-	return q.receiver.ReceiveOne(ctx)
+	return q.receiver.ReceiveOne(ctx, handler)
 }
 
 // Receive subscribes for messages sent to the Queue
-func (q *Queue) Receive(ctx context.Context, handler Handler) (*ListenerHandle, error) {
+func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
 	defer span.Finish()
 
 	err := q.ensureReceiver(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return q.receiver.Listen(handler), nil
+
+	handle := q.receiver.Listen(ctx, handler)
+	<-handle.Done()
+	return handle.Err()
 }
 
 func (q *Queue) ensureReceiver(ctx context.Context) error {

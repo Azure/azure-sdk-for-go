@@ -52,9 +52,9 @@ func (client FrontDoorsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}}}); err != nil {
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.FrontDoorsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -137,9 +137,9 @@ func (client FrontDoorsClient) Delete(ctx context.Context, resourceGroupName str
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}}}); err != nil {
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.FrontDoorsClient", "Delete", err.Error())
 	}
 
@@ -219,9 +219,9 @@ func (client FrontDoorsClient) Get(ctx context.Context, resourceGroupName string
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}}}); err != nil {
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.FrontDoorsClient", "Get", err.Error())
 	}
 
@@ -491,9 +491,9 @@ func (client FrontDoorsClient) ValidateCustomDomain(ctx context.Context, resourc
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: customDomainProperties,
 			Constraints: []validation.Constraint{{Target: "customDomainProperties.HostName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.FrontDoorsClient", "ValidateCustomDomain", err.Error())

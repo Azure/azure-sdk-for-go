@@ -53,9 +53,9 @@ func (client HealthProbeSettingsClient) CreateOrUpdate(ctx context.Context, reso
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: healthProbeSettingsName,
 			Constraints: []validation.Constraint{{Target: "healthProbeSettingsName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "healthProbeSettingsName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -144,9 +144,9 @@ func (client HealthProbeSettingsClient) Delete(ctx context.Context, resourceGrou
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: healthProbeSettingsName,
 			Constraints: []validation.Constraint{{Target: "healthProbeSettingsName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "healthProbeSettingsName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -232,9 +232,9 @@ func (client HealthProbeSettingsClient) Get(ctx context.Context, resourceGroupNa
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
 		{TargetValue: healthProbeSettingsName,
 			Constraints: []validation.Constraint{{Target: "healthProbeSettingsName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "healthProbeSettingsName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -316,9 +316,9 @@ func (client HealthProbeSettingsClient) ListByFrontDoor(ctx context.Context, res
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
 		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 74, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9][a-zA-Z0-9])$`, Chain: nil}}}}); err != nil {
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.HealthProbeSettingsClient", "ListByFrontDoor", err.Error())
 	}
 

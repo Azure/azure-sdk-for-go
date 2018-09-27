@@ -49737,6 +49737,8 @@ type HDInsightOnDemandLinkedServiceTypeProperties struct {
 	DataNodeSize interface{} `json:"dataNodeSize,omitempty"`
 	// ZookeeperNodeSize - Specifies the size of the Zoo Keeper node for the HDInsight cluster.
 	ZookeeperNodeSize interface{} `json:"zookeeperNodeSize,omitempty"`
+	// ScriptActions - Custom script actions to run on HDI ondemand cluster once it's up. Please refer to https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+	ScriptActions *[]ScriptAction `json:"scriptActions,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for HDInsightOnDemandLinkedServiceTypeProperties struct.
@@ -50014,6 +50016,15 @@ func (hiodlstp *HDInsightOnDemandLinkedServiceTypeProperties) UnmarshalJSON(body
 					return err
 				}
 				hiodlstp.ZookeeperNodeSize = zookeeperNodeSize
+			}
+		case "scriptActions":
+			if v != nil {
+				var scriptActions []ScriptAction
+				err = json.Unmarshal(*v, &scriptActions)
+				if err != nil {
+					return err
+				}
+				hiodlstp.ScriptActions = &scriptActions
 			}
 		}
 	}
@@ -89555,6 +89566,18 @@ func (str *ScheduleTriggerRecurrence) UnmarshalJSON(body []byte) error {
 type ScheduleTriggerTypeProperties struct {
 	// Recurrence - Recurrence schedule configuration.
 	Recurrence *ScheduleTriggerRecurrence `json:"recurrence,omitempty"`
+}
+
+// ScriptAction custom script action to run on HDI ondemand cluster once it's up.
+type ScriptAction struct {
+	// Name - The user provided name of the script action.
+	Name *string `json:"name,omitempty"`
+	// URI - The URI for the script action.
+	URI *string `json:"uri,omitempty"`
+	// Roles - The node types on which the script action should be executed.
+	Roles interface{} `json:"roles,omitempty"`
+	// Parameters - The parameters for the script action.
+	Parameters *string `json:"parameters,omitempty"`
 }
 
 // BasicSecretBase the base definition of a secret type.

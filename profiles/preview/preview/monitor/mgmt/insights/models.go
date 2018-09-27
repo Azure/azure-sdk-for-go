@@ -143,8 +143,9 @@ const (
 type OdataTypeBasicAction = original.OdataTypeBasicAction
 
 const (
-	OdataTypeAction                                                                                                                                OdataTypeBasicAction = original.OdataTypeAction
-	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
+	OdataTypeAction                                                                                                                                   OdataTypeBasicAction = original.OdataTypeAction
+	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction    OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
+	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction
 )
 
 type OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteria
@@ -311,12 +312,14 @@ type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
 type CalculateBaselineResponse = original.CalculateBaselineResponse
+type Criteria = original.Criteria
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
 type DiagnosticSettingsCategoryResource = original.DiagnosticSettingsCategoryResource
 type DiagnosticSettingsCategoryResourceCollection = original.DiagnosticSettingsCategoryResourceCollection
 type DiagnosticSettingsResource = original.DiagnosticSettingsResource
 type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
+type Dimension = original.Dimension
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
@@ -344,6 +347,7 @@ type LogSearchRuleResource = original.LogSearchRuleResource
 type LogSearchRuleResourceCollection = original.LogSearchRuleResourceCollection
 type LogSearchRuleResourcePatch = original.LogSearchRuleResourcePatch
 type LogSettings = original.LogSettings
+type LogToMetricAction = original.LogToMetricAction
 type ManagementEventAggregationCondition = original.ManagementEventAggregationCondition
 type ManagementEventRuleCondition = original.ManagementEventRuleCondition
 type MetadataValue = original.MetadataValue

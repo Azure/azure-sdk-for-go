@@ -416,9 +416,11 @@ func (client BaseClient) ListBillingMetersComplete(ctx context.Context, billingL
 // workers.
 // xenonWorkersEnabled - specify <code>true</code> if you want to filter to only regions that support Xenon
 // workers.
-func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool) (result GeoRegionCollectionPage, err error) {
+// linuxDynamicWorkersEnabled - specify <code>true</code> if you want to filter to only regions that support
+// Linux Consumption Workers.
+func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool, linuxDynamicWorkersEnabled *bool) (result GeoRegionCollectionPage, err error) {
 	result.fn = client.listGeoRegionsNextResults
-	req, err := client.ListGeoRegionsPreparer(ctx, sku, linuxWorkersEnabled, xenonWorkersEnabled)
+	req, err := client.ListGeoRegionsPreparer(ctx, sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListGeoRegions", nil, "Failure preparing request")
 		return
@@ -440,7 +442,7 @@ func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxW
 }
 
 // ListGeoRegionsPreparer prepares the ListGeoRegions request.
-func (client BaseClient) ListGeoRegionsPreparer(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool) (*http.Request, error) {
+func (client BaseClient) ListGeoRegionsPreparer(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool, linuxDynamicWorkersEnabled *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -457,6 +459,9 @@ func (client BaseClient) ListGeoRegionsPreparer(ctx context.Context, sku SkuName
 	}
 	if xenonWorkersEnabled != nil {
 		queryParameters["xenonWorkersEnabled"] = autorest.Encode("query", *xenonWorkersEnabled)
+	}
+	if linuxDynamicWorkersEnabled != nil {
+		queryParameters["linuxDynamicWorkersEnabled"] = autorest.Encode("query", *linuxDynamicWorkersEnabled)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -509,8 +514,8 @@ func (client BaseClient) listGeoRegionsNextResults(lastResults GeoRegionCollecti
 }
 
 // ListGeoRegionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BaseClient) ListGeoRegionsComplete(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool) (result GeoRegionCollectionIterator, err error) {
-	result.page, err = client.ListGeoRegions(ctx, sku, linuxWorkersEnabled, xenonWorkersEnabled)
+func (client BaseClient) ListGeoRegionsComplete(ctx context.Context, sku SkuName, linuxWorkersEnabled *bool, xenonWorkersEnabled *bool, linuxDynamicWorkersEnabled *bool) (result GeoRegionCollectionIterator, err error) {
+	result.page, err = client.ListGeoRegions(ctx, sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled)
 	return
 }
 

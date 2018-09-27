@@ -47,7 +47,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 func (client AppsClient) CheckNameAvailability(ctx context.Context, nameAvailabilityInputs NameAvailabilityInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: nameAvailabilityInputs,
-			Constraints: []validation.Constraint{{Target: "nameAvailabilityInputs.Name", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "nameAvailabilityInputs.Name", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "nameAvailabilityInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckNameAvailability", err.Error())
 	}
@@ -121,7 +121,7 @@ func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, subdomainAvailabilityInputs SubdomainAvailabilityInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: subdomainAvailabilityInputs,
-			Constraints: []validation.Constraint{{Target: "subdomainAvailabilityInputs.Subdomain", Name: validation.Null, Rule: true,
+			Constraints: []validation.Constraint{{Target: "subdomainAvailabilityInputs.Subdomain", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "subdomainAvailabilityInputs.Subdomain", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckSubdomainAvailability", err.Error())
 	}

@@ -6118,6 +6118,80 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// PythonPackageCreateParameters the parameters supplied to the create or update module operation.
+type PythonPackageCreateParameters struct {
+	// PythonPackageCreateProperties - Gets or sets the module create properties.
+	*PythonPackageCreateProperties `json:"properties,omitempty"`
+	// Tags - Gets or sets the tags attached to the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PythonPackageCreateParameters.
+func (ppcp PythonPackageCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ppcp.PythonPackageCreateProperties != nil {
+		objectMap["properties"] = ppcp.PythonPackageCreateProperties
+	}
+	if ppcp.Tags != nil {
+		objectMap["tags"] = ppcp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PythonPackageCreateParameters struct.
+func (ppcp *PythonPackageCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var pythonPackageCreateProperties PythonPackageCreateProperties
+				err = json.Unmarshal(*v, &pythonPackageCreateProperties)
+				if err != nil {
+					return err
+				}
+				ppcp.PythonPackageCreateProperties = &pythonPackageCreateProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ppcp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// PythonPackageCreateProperties the parameters supplied to the create or update module properties.
+type PythonPackageCreateProperties struct {
+	// ContentLink - Gets or sets the module content link.
+	ContentLink *ContentLink `json:"contentLink,omitempty"`
+}
+
+// PythonPackageUpdateParameters the parameters supplied to the update module operation.
+type PythonPackageUpdateParameters struct {
+	// Tags - Gets or sets the tags attached to the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PythonPackageUpdateParameters.
+func (ppup PythonPackageUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ppup.Tags != nil {
+		objectMap["tags"] = ppup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // ReadCloser ...
 type ReadCloser struct {
 	autorest.Response `json:"-"`

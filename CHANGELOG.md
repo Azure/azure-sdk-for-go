@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v21.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| media | 2018-07-01 |
+| storage | 2018-07-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authorization | 2018-09-01-preview |
+| links | 2016-09-01 |
+| resources | 2018-05-01 |
+| servicebus | 2017-04-01 |
+| subscriptions | 2016-06-01 |
+| web | 2018-02-01 |
+
 ## `v21.0.0`
 
 ### New Packages

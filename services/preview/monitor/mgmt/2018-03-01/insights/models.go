@@ -143,6 +143,21 @@ func PossibleConditionOperatorValues() []ConditionOperator {
 	return []ConditionOperator{ConditionOperatorGreaterThan, ConditionOperatorGreaterThanOrEqual, ConditionOperatorLessThan, ConditionOperatorLessThanOrEqual}
 }
 
+// CriterionType enumerates the values for criterion type.
+type CriterionType string
+
+const (
+	// CriterionTypeMultiMetricCriteria ...
+	CriterionTypeMultiMetricCriteria CriterionType = "MultiMetricCriteria"
+	// CriterionTypeStaticThresholdCriterion ...
+	CriterionTypeStaticThresholdCriterion CriterionType = "StaticThresholdCriterion"
+)
+
+// PossibleCriterionTypeValues returns an array of possible values for the CriterionType const type.
+func PossibleCriterionTypeValues() []CriterionType {
+	return []CriterionType{CriterionTypeMultiMetricCriteria, CriterionTypeStaticThresholdCriterion}
+}
+
 // Enabled enumerates the values for enabled.
 type Enabled string
 
@@ -251,13 +266,15 @@ type OdataTypeBasicMetricAlertCriteria string
 const (
 	// OdataTypeMetricAlertCriteria ...
 	OdataTypeMetricAlertCriteria OdataTypeBasicMetricAlertCriteria = "MetricAlertCriteria"
+	// OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria ...
+	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
 	// OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria ...
 	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
 )
 
 // PossibleOdataTypeBasicMetricAlertCriteriaValues returns an array of possible values for the OdataTypeBasicMetricAlertCriteria const type.
 func PossibleOdataTypeBasicMetricAlertCriteriaValues() []OdataTypeBasicMetricAlertCriteria {
-	return []OdataTypeBasicMetricAlertCriteria{OdataTypeMetricAlertCriteria, OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria}
+	return []OdataTypeBasicMetricAlertCriteria{OdataTypeMetricAlertCriteria, OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria, OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria}
 }
 
 // OdataTypeBasicRuleAction enumerates the values for odata type basic rule action.
@@ -3072,6 +3089,7 @@ func (maa MetricAlertAction) MarshalJSON() ([]byte, error) {
 // BasicMetricAlertCriteria the rule criteria that defines the conditions of the alert rule.
 type BasicMetricAlertCriteria interface {
 	AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool)
+	AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool)
 	AsMetricAlertCriteria() (*MetricAlertCriteria, bool)
 }
 
@@ -3079,7 +3097,7 @@ type BasicMetricAlertCriteria interface {
 type MetricAlertCriteria struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria'
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
 	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
 }
 
@@ -3095,6 +3113,10 @@ func unmarshalBasicMetricAlertCriteria(body []byte) (BasicMetricAlertCriteria, e
 		var masrmmc MetricAlertSingleResourceMultipleMetricCriteria
 		err := json.Unmarshal(body, &masrmmc)
 		return masrmmc, err
+	case string(OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria):
+		var mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria
+		err := json.Unmarshal(body, &mamrmmc)
+		return mamrmmc, err
 	default:
 		var mac MetricAlertCriteria
 		err := json.Unmarshal(body, &mac)
@@ -3135,6 +3157,11 @@ func (mac MetricAlertCriteria) MarshalJSON() ([]byte, error) {
 
 // AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertCriteria.
 func (mac MetricAlertCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsMetricAlertMultipleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertCriteria.
+func (mac MetricAlertCriteria) AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool) {
 	return nil, false
 }
 
@@ -3184,6 +3211,97 @@ func (mac *MetricAlertCriteria) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// MetricAlertMultipleResourceMultipleMetricCriteria speficies the metric alert criteria for multiple resource that
+// has multiple metric criteria.
+type MetricAlertMultipleResourceMultipleMetricCriteria struct {
+	// AllOf - the list of multiple metric criteria for this 'all of' operation.
+	AllOf *[]BasicMultiMetricCriteria `json:"allOf,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
+	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) MarshalJSON() ([]byte, error) {
+	mamrmmc.OdataType = OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
+	objectMap := make(map[string]interface{})
+	if mamrmmc.AllOf != nil {
+		objectMap["allOf"] = mamrmmc.AllOf
+	}
+	if mamrmmc.OdataType != "" {
+		objectMap["odata.type"] = mamrmmc.OdataType
+	}
+	for k, v := range mamrmmc.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsMetricAlertMultipleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool) {
+	return &mamrmmc, true
+}
+
+// AsMetricAlertCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsMetricAlertCriteria() (*MetricAlertCriteria, bool) {
+	return nil, false
+}
+
+// AsBasicMetricAlertCriteria is the BasicMetricAlertCriteria implementation for MetricAlertMultipleResourceMultipleMetricCriteria.
+func (mamrmmc MetricAlertMultipleResourceMultipleMetricCriteria) AsBasicMetricAlertCriteria() (BasicMetricAlertCriteria, bool) {
+	return &mamrmmc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetricAlertMultipleResourceMultipleMetricCriteria struct.
+func (mamrmmc *MetricAlertMultipleResourceMultipleMetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "allOf":
+			if v != nil {
+				allOf, err := unmarshalBasicMultiMetricCriteriaArray(*v)
+				if err != nil {
+					return err
+				}
+				mamrmmc.AllOf = &allOf
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mamrmmc.AdditionalProperties == nil {
+					mamrmmc.AdditionalProperties = make(map[string]interface{})
+				}
+				mamrmmc.AdditionalProperties[k] = additionalProperties
+			}
+		case "odata.type":
+			if v != nil {
+				var odataType OdataTypeBasicMetricAlertCriteria
+				err = json.Unmarshal(*v, &odataType)
+				if err != nil {
+					return err
+				}
+				mamrmmc.OdataType = odataType
+			}
+		}
+	}
+
+	return nil
+}
+
 // MetricAlertProperties an alert rule.
 type MetricAlertProperties struct {
 	// Description - the description of the metric alert that will be included in the alert email.
@@ -3198,6 +3316,10 @@ type MetricAlertProperties struct {
 	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
 	// WindowSize - the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
 	WindowSize *string `json:"windowSize,omitempty"`
+	// TargetResourceType - the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	// TargetResourceRegion - the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
 	// Criteria - defines the specific alert criteria information.
 	Criteria BasicMetricAlertCriteria `json:"criteria,omitempty"`
 	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
@@ -3270,6 +3392,24 @@ func (mapVar *MetricAlertProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mapVar.WindowSize = &windowSize
+			}
+		case "targetResourceType":
+			if v != nil {
+				var targetResourceType string
+				err = json.Unmarshal(*v, &targetResourceType)
+				if err != nil {
+					return err
+				}
+				mapVar.TargetResourceType = &targetResourceType
+			}
+		case "targetResourceRegion":
+			if v != nil {
+				var targetResourceRegion string
+				err = json.Unmarshal(*v, &targetResourceRegion)
+				if err != nil {
+					return err
+				}
+				mapVar.TargetResourceRegion = &targetResourceRegion
 			}
 		case "criteria":
 			if v != nil {
@@ -3489,7 +3629,7 @@ type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	AllOf *[]MetricCriteria `json:"allOf,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
-	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria'
+	// OdataType - Possible values include: 'OdataTypeMetricAlertCriteria', 'OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria', 'OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria'
 	OdataType OdataTypeBasicMetricAlertCriteria `json:"odata.type,omitempty"`
 }
 
@@ -3512,6 +3652,11 @@ func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) MarshalJSON() ([]
 // AsMetricAlertSingleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
 func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool) {
 	return &masrmmc, true
+}
+
+// AsMetricAlertMultipleResourceMultipleMetricCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
+func (masrmmc MetricAlertSingleResourceMultipleMetricCriteria) AsMetricAlertMultipleResourceMultipleMetricCriteria() (*MetricAlertMultipleResourceMultipleMetricCriteria, bool) {
+	return nil, false
 }
 
 // AsMetricAlertCriteria is the BasicMetricAlertCriteria implementation for MetricAlertSingleResourceMultipleMetricCriteria.
@@ -3638,6 +3783,154 @@ type MetricCriteria struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 	// Dimensions - List of dimension conditions.
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion'
+	CriterionType CriterionType `json:"criterionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricCriteria.
+func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
+	mc.CriterionType = CriterionTypeStaticThresholdCriterion
+	objectMap := make(map[string]interface{})
+	if mc.Name != nil {
+		objectMap["name"] = mc.Name
+	}
+	if mc.MetricName != nil {
+		objectMap["metricName"] = mc.MetricName
+	}
+	if mc.MetricNamespace != nil {
+		objectMap["metricNamespace"] = mc.MetricNamespace
+	}
+	objectMap["operator"] = mc.Operator
+	objectMap["timeAggregation"] = mc.TimeAggregation
+	if mc.Threshold != nil {
+		objectMap["threshold"] = mc.Threshold
+	}
+	if mc.Dimensions != nil {
+		objectMap["dimensions"] = mc.Dimensions
+	}
+	if mc.CriterionType != "" {
+		objectMap["criterionType"] = mc.CriterionType
+	}
+	for k, v := range mc.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
+func (mc MetricCriteria) AsMetricCriteria() (*MetricCriteria, bool) {
+	return &mc, true
+}
+
+// AsMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
+func (mc MetricCriteria) AsMultiMetricCriteria() (*MultiMetricCriteria, bool) {
+	return nil, false
+}
+
+// AsBasicMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MetricCriteria.
+func (mc MetricCriteria) AsBasicMultiMetricCriteria() (BasicMultiMetricCriteria, bool) {
+	return &mc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetricCriteria struct.
+func (mc *MetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mc.Name = &name
+			}
+		case "metricName":
+			if v != nil {
+				var metricName string
+				err = json.Unmarshal(*v, &metricName)
+				if err != nil {
+					return err
+				}
+				mc.MetricName = &metricName
+			}
+		case "metricNamespace":
+			if v != nil {
+				var metricNamespace string
+				err = json.Unmarshal(*v, &metricNamespace)
+				if err != nil {
+					return err
+				}
+				mc.MetricNamespace = &metricNamespace
+			}
+		case "operator":
+			if v != nil {
+				var operator interface{}
+				err = json.Unmarshal(*v, &operator)
+				if err != nil {
+					return err
+				}
+				mc.Operator = operator
+			}
+		case "timeAggregation":
+			if v != nil {
+				var timeAggregation interface{}
+				err = json.Unmarshal(*v, &timeAggregation)
+				if err != nil {
+					return err
+				}
+				mc.TimeAggregation = timeAggregation
+			}
+		case "threshold":
+			if v != nil {
+				var threshold float64
+				err = json.Unmarshal(*v, &threshold)
+				if err != nil {
+					return err
+				}
+				mc.Threshold = &threshold
+			}
+		case "dimensions":
+			if v != nil {
+				var dimensions []MetricDimension
+				err = json.Unmarshal(*v, &dimensions)
+				if err != nil {
+					return err
+				}
+				mc.Dimensions = &dimensions
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mc.AdditionalProperties == nil {
+					mc.AdditionalProperties = make(map[string]interface{})
+				}
+				mc.AdditionalProperties[k] = additionalProperties
+			}
+		case "criterionType":
+			if v != nil {
+				var criterionType CriterionType
+				err = json.Unmarshal(*v, &criterionType)
+				if err != nil {
+					return err
+				}
+				mc.CriterionType = criterionType
+			}
+		}
+	}
+
+	return nil
 }
 
 // MetricDefinition metric definition class specifies the metadata for a metric.
@@ -3675,7 +3968,7 @@ type MetricDefinitionCollection struct {
 type MetricDimension struct {
 	// Name - Name of the dimension.
 	Name *string `json:"name,omitempty"`
-	// Operator - the dimension operator.
+	// Operator - the dimension operator. Only 'Include' and 'Exclude' are supported
 	Operator *string `json:"operator,omitempty"`
 	// Values - list of dimension values.
 	Values *[]string `json:"values,omitempty"`
@@ -3727,6 +4020,121 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 	// Count - the number of samples in the time range. Can be used to determine the number of values that contributed to the average value.
 	Count *int64 `json:"count,omitempty"`
+}
+
+// BasicMultiMetricCriteria the types of conditions for a multi resource alert
+type BasicMultiMetricCriteria interface {
+	AsMetricCriteria() (*MetricCriteria, bool)
+	AsMultiMetricCriteria() (*MultiMetricCriteria, bool)
+}
+
+// MultiMetricCriteria the types of conditions for a multi resource alert
+type MultiMetricCriteria struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// CriterionType - Possible values include: 'CriterionTypeMultiMetricCriteria', 'CriterionTypeStaticThresholdCriterion'
+	CriterionType CriterionType `json:"criterionType,omitempty"`
+}
+
+func unmarshalBasicMultiMetricCriteria(body []byte) (BasicMultiMetricCriteria, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["criterionType"] {
+	case string(CriterionTypeStaticThresholdCriterion):
+		var mc MetricCriteria
+		err := json.Unmarshal(body, &mc)
+		return mc, err
+	default:
+		var mmc MultiMetricCriteria
+		err := json.Unmarshal(body, &mmc)
+		return mmc, err
+	}
+}
+func unmarshalBasicMultiMetricCriteriaArray(body []byte) ([]BasicMultiMetricCriteria, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mmcArray := make([]BasicMultiMetricCriteria, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mmc, err := unmarshalBasicMultiMetricCriteria(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mmcArray[index] = mmc
+	}
+	return mmcArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) MarshalJSON() ([]byte, error) {
+	mmc.CriterionType = CriterionTypeMultiMetricCriteria
+	objectMap := make(map[string]interface{})
+	if mmc.CriterionType != "" {
+		objectMap["criterionType"] = mmc.CriterionType
+	}
+	for k, v := range mmc.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) AsMetricCriteria() (*MetricCriteria, bool) {
+	return nil, false
+}
+
+// AsMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) AsMultiMetricCriteria() (*MultiMetricCriteria, bool) {
+	return &mmc, true
+}
+
+// AsBasicMultiMetricCriteria is the BasicMultiMetricCriteria implementation for MultiMetricCriteria.
+func (mmc MultiMetricCriteria) AsBasicMultiMetricCriteria() (BasicMultiMetricCriteria, bool) {
+	return &mmc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MultiMetricCriteria struct.
+func (mmc *MultiMetricCriteria) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if mmc.AdditionalProperties == nil {
+					mmc.AdditionalProperties = make(map[string]interface{})
+				}
+				mmc.AdditionalProperties[k] = additionalProperties
+			}
+		case "criterionType":
+			if v != nil {
+				var criterionType CriterionType
+				err = json.Unmarshal(*v, &criterionType)
+				if err != nil {
+					return err
+				}
+				mmc.CriterionType = criterionType
+			}
+		}
+	}
+
+	return nil
 }
 
 // Operation microsoft Insights API operation definition.

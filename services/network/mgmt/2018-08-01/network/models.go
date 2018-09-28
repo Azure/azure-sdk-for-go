@@ -78,6 +78,22 @@ func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayC
 	return []ApplicationGatewayCookieBasedAffinity{Disabled, Enabled}
 }
 
+// ApplicationGatewayCustomErrorStatusCode enumerates the values for application gateway custom error status
+// code.
+type ApplicationGatewayCustomErrorStatusCode string
+
+const (
+	// FiveZeroTwo ...
+	FiveZeroTwo ApplicationGatewayCustomErrorStatusCode = "502"
+	// FourZeroThree ...
+	FourZeroThree ApplicationGatewayCustomErrorStatusCode = "403"
+)
+
+// PossibleApplicationGatewayCustomErrorStatusCodeValues returns an array of possible values for the ApplicationGatewayCustomErrorStatusCode const type.
+func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
+	return []ApplicationGatewayCustomErrorStatusCode{FiveZeroTwo, FourZeroThree}
+}
+
 // ApplicationGatewayFirewallMode enumerates the values for application gateway firewall mode.
 type ApplicationGatewayFirewallMode string
 
@@ -398,6 +414,8 @@ type AzureFirewallNetworkRuleProtocol string
 const (
 	// Any ...
 	Any AzureFirewallNetworkRuleProtocol = "Any"
+	// ICMP ...
+	ICMP AzureFirewallNetworkRuleProtocol = "ICMP"
 	// TCP ...
 	TCP AzureFirewallNetworkRuleProtocol = "TCP"
 	// UDP ...
@@ -406,7 +424,7 @@ const (
 
 // PossibleAzureFirewallNetworkRuleProtocolValues returns an array of possible values for the AzureFirewallNetworkRuleProtocol const type.
 func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRuleProtocol {
-	return []AzureFirewallNetworkRuleProtocol{Any, TCP, UDP}
+	return []AzureFirewallNetworkRuleProtocol{Any, ICMP, TCP, UDP}
 }
 
 // AzureFirewallRCActionType enumerates the values for azure firewall rc action type.
@@ -1375,6 +1393,23 @@ const (
 // PossibleTunnelConnectionStatusValues returns an array of possible values for the TunnelConnectionStatus const type.
 func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 	return []TunnelConnectionStatus{TunnelConnectionStatusConnected, TunnelConnectionStatusConnecting, TunnelConnectionStatusNotConnected, TunnelConnectionStatusUnknown}
+}
+
+// VerbosityLevel enumerates the values for verbosity level.
+type VerbosityLevel string
+
+const (
+	// Full ...
+	Full VerbosityLevel = "Full"
+	// Minimum ...
+	Minimum VerbosityLevel = "Minimum"
+	// Normal ...
+	Normal VerbosityLevel = "Normal"
+)
+
+// PossibleVerbosityLevelValues returns an array of possible values for the VerbosityLevel const type.
+func PossibleVerbosityLevelValues() []VerbosityLevel {
+	return []VerbosityLevel{Full, Minimum, Normal}
 }
 
 // VirtualNetworkGatewayConnectionProtocol enumerates the values for virtual network gateway connection
@@ -2386,12 +2421,30 @@ type ApplicationGatewayConnectionDraining struct {
 	DrainTimeoutInSec *int32 `json:"drainTimeoutInSec,omitempty"`
 }
 
+// ApplicationGatewayCustomError customer error of an application gateway.
+type ApplicationGatewayCustomError struct {
+	// StatusCode - Status code of the application gateway customer error. Possible values include: 'FourZeroThree', 'FiveZeroTwo'
+	StatusCode ApplicationGatewayCustomErrorStatusCode `json:"statusCode,omitempty"`
+	// CustomErrorPageURL - Error page URL of the application gateway customer error.
+	CustomErrorPageURL *string `json:"customErrorPageUrl,omitempty"`
+}
+
 // ApplicationGatewayFirewallDisabledRuleGroup allows to disable rules within a rule group or an entire rule group.
 type ApplicationGatewayFirewallDisabledRuleGroup struct {
 	// RuleGroupName - The name of the rule group that will be disabled.
 	RuleGroupName *string `json:"ruleGroupName,omitempty"`
 	// Rules - The list of rules that will be disabled. If null, all rules of the rule group will be disabled.
 	Rules *[]int32 `json:"rules,omitempty"`
+}
+
+// ApplicationGatewayFirewallExclusion allow to exclude some variable satisfy the condition for the WAF check
+type ApplicationGatewayFirewallExclusion struct {
+	// MatchVariable - The variable to be excluded.
+	MatchVariable *string `json:"matchVariable,omitempty"`
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to.
+	SelectorMatchOperator *string `json:"selectorMatchOperator,omitempty"`
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+	Selector *string `json:"selector,omitempty"`
 }
 
 // ApplicationGatewayFirewallRule a web application firewall rule.
@@ -2853,6 +2906,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	RequireServerNameIndication *bool `json:"requireServerNameIndication,omitempty"`
 	// ProvisioningState - Provisioning state of the HTTP listener resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// CustomErrorConfiguration - Custom error configurations of the HTTP listener.
+	CustomErrorConfiguration *[]ApplicationGatewayCustomError `json:"customErrorConfiguration,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1 private
@@ -3340,6 +3395,8 @@ type ApplicationGatewayPropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// CustomErrorConfiguration - Custom error configurations of the application gateway resource.
+	CustomErrorConfiguration *[]ApplicationGatewayCustomError `json:"customErrorConfiguration,omitempty"`
 }
 
 // ApplicationGatewayRedirectConfiguration redirect configuration of an application gateway.
@@ -4162,6 +4219,12 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
 	// MaxRequestBodySize - Maxium request body size for WAF.
 	MaxRequestBodySize *int32 `json:"maxRequestBodySize,omitempty"`
+	// MaxRequestBodySizeInKb - Maxium request body size in Kb for WAF.
+	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
+	// FileUploadLimitInMb - Maxium file upload size in Mb for WAF.
+	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
+	// Exclusions - The exclusion list.
+	Exclusions *[]ApplicationGatewayFirewallExclusion `json:"exclusions,omitempty"`
 }
 
 // ApplicationSecurityGroup an application security group in a resource group.
@@ -6132,8 +6195,24 @@ type BgpSettings struct {
 type ConfigurationDiagnosticParameters struct {
 	// TargetResourceID - The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// Queries - List of traffic queries.
-	Queries *[]TrafficQuery `json:"queries,omitempty"`
+	// VerbosityLevel - Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'. Possible values include: 'Normal', 'Minimum', 'Full'
+	VerbosityLevel VerbosityLevel `json:"verbosityLevel,omitempty"`
+	// Profiles - List of network configuration diagnostic profiles.
+	Profiles *[]ConfigurationDiagnosticProfile `json:"profiles,omitempty"`
+}
+
+// ConfigurationDiagnosticProfile parameters to compare with network configuration.
+type ConfigurationDiagnosticProfile struct {
+	// Direction - The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
+	Direction Direction `json:"direction,omitempty"`
+	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
+	Protocol *string `json:"protocol,omitempty"`
+	// Source - Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
+	Source *string `json:"source,omitempty"`
+	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
+	Destination *string `json:"destination,omitempty"`
+	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
 // ConfigurationDiagnosticResponse results of network configuration diagnostic on the target resource.
@@ -6145,8 +6224,8 @@ type ConfigurationDiagnosticResponse struct {
 
 // ConfigurationDiagnosticResult network configuration diagnostic result corresponded to provided traffic query.
 type ConfigurationDiagnosticResult struct {
-	TrafficQuery               *TrafficQuery        `json:"trafficQuery,omitempty"`
-	NetworkSecurityGroupResult *SecurityGroupResult `json:"networkSecurityGroupResult,omitempty"`
+	Profile                    *ConfigurationDiagnosticProfile `json:"profile,omitempty"`
+	NetworkSecurityGroupResult *SecurityGroupResult            `json:"networkSecurityGroupResult,omitempty"`
 }
 
 // ConnectionMonitor parameters that define the operation to create a connection monitor.
@@ -7595,8 +7674,10 @@ type ErrorResponse struct {
 // EvaluatedNetworkSecurityGroup results of network security group evaluation.
 type EvaluatedNetworkSecurityGroup struct {
 	// NetworkSecurityGroupID - Network security group ID.
-	NetworkSecurityGroupID *string      `json:"networkSecurityGroupId,omitempty"`
-	MatchedRule            *MatchedRule `json:"matchedRule,omitempty"`
+	NetworkSecurityGroupID *string `json:"networkSecurityGroupId,omitempty"`
+	// AppliedTo - Resource ID of nic or subnet to which network security group is applied.
+	AppliedTo   *string      `json:"appliedTo,omitempty"`
+	MatchedRule *MatchedRule `json:"matchedRule,omitempty"`
 	// RulesEvaluationResult - List of network security rules evaluation results.
 	RulesEvaluationResult *[]SecurityRulesEvaluationResult `json:"rulesEvaluationResult,omitempty"`
 }
@@ -19974,20 +20055,6 @@ type TrafficAnalyticsConfigurationProperties struct {
 // TrafficAnalyticsProperties parameters that define the configuration of traffic analytics.
 type TrafficAnalyticsProperties struct {
 	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties `json:"networkWatcherFlowAnalyticsConfiguration,omitempty"`
-}
-
-// TrafficQuery parameters to compare with network configuration.
-type TrafficQuery struct {
-	// Direction - The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
-	Direction Direction `json:"direction,omitempty"`
-	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
-	Protocol *string `json:"protocol,omitempty"`
-	// Source - Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
-	Source *string `json:"source,omitempty"`
-	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
-	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
-	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
 // TroubleshootingDetails information gained from troubleshooting of specified resource.

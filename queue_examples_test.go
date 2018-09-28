@@ -56,3 +56,47 @@ func ExampleQueue_getOrBuildQueue() {
 	fmt.Println(q.Name)
 	// Output: myqueue
 }
+
+func ExampleQueue_Send() {
+	// Instantiate the clients needed to communicate with a Service Bus Queue.
+	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString("<your connection string here>"))
+	if err != nil {
+		return
+	}
+
+	client, err := ns.NewQueue("myqueue")
+	if err != nil {
+		return
+	}
+
+	// Create a context to limit how long we will try to send, then push the message over the wire.
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	client.Send(ctx, servicebus.NewMessageFromString("Hello World!!!"))
+}
+
+func ExampleQueue_Receive() {
+	// Define a function that should be executed when a message is received.
+	var printMessage servicebus.HandlerFunc = func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+		fmt.Println(string(msg.Data))
+		return msg.Complete()
+	}
+
+	// Instantiate the clients needed to communicate with a Service Bus Queue.
+	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString("<your connection string here>"))
+	if err != nil {
+		return
+	}
+
+	client, err := ns.NewQueue("myqueue")
+	if err != nil {
+		return
+	}
+
+	// Define a context to limit how long we will block to receive messages, then start serving our function.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+
+	client.Receive(ctx, printMessage)
+}

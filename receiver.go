@@ -27,11 +27,10 @@ import (
 	"fmt"
 	"time"
 
-	"pack.ag/amqp"
-
 	"github.com/Azure/azure-amqp-common-go"
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/opentracing/opentracing-go"
+	"pack.ag/amqp"
 )
 
 // receiver provides session and link handling for a receiving entity path

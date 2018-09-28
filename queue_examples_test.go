@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/Azure/azure-amqp-common-go/uuid"
 	"math/rand"
 	"os"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/azure-service-bus-go"
 	"github.com/joho/godotenv"
 )
@@ -153,7 +153,7 @@ func ExampleQueue_ReceiveSessions() {
 
 			return msg.Complete()
 		}),
-		func(_ string) error {
+		func(_ *servicebus.MessageSession) error {
 			builder.Reset()
 			return nil
 		},

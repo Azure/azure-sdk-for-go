@@ -11,6 +11,7 @@ type MessageSession struct {
 	mu sync.RWMutex
 	*receiver
 	*sender
+	SessionID string
 }
 
 func newMessageSession(s *sender, r *receiver) *MessageSession {
@@ -24,10 +25,8 @@ func (ms *MessageSession) LockedUntil() time.Time {
 	panic("not implemented")
 }
 
-func (ms *MessageSession) RenewSessionLock() error {
-	ms.mu.Lock()
-	defer ms.mu.Unlock()
-
+// RenewSessionLock requests that the Service Bus Server renews this client's lock on an existing Session.
+func (ms *MessageSession) RenewSessionLock(ctx context.Context) error {
 	panic("not implemented")
 }
 

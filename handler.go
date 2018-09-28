@@ -17,7 +17,7 @@ type (
 		Handler
 
 		// Start is called when a Receiver is informed that has acquired a lock on a Service Bus Session.
-		Start(sessionID string) error
+		Start(*MessageSession) error
 
 		// End is called when a Receiver is informed that the last message of a Session has been passed to it.
 		End()
@@ -31,11 +31,11 @@ func (hf HandlerFunc) Handle(ctx context.Context, msg *Message) DispositionActio
 
 type defaultSessionHandler struct {
 	Handler
-	start func(string) error
+	start func(*MessageSession) error
 	end   func()
 }
 
-func NewSessionHandler(base Handler, start func(string) error, end func()) SessionHandler {
+func NewSessionHandler(base Handler, start func(*MessageSession) error, end func()) SessionHandler {
 	return &defaultSessionHandler{
 		Handler: base,
 		start:   start,
@@ -43,8 +43,8 @@ func NewSessionHandler(base Handler, start func(string) error, end func()) Sessi
 	}
 }
 
-func (dsh defaultSessionHandler) Start(sessionID string) error {
-	return dsh.start(sessionID)
+func (dsh defaultSessionHandler) Start(ms *MessageSession) error {
+	return dsh.start(ms)
 }
 
 func (dsh defaultSessionHandler) End() {

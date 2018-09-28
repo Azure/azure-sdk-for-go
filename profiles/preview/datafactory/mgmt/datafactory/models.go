@@ -1289,6 +1289,7 @@ type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
 type ScheduleTrigger = original.ScheduleTrigger
 type ScheduleTriggerRecurrence = original.ScheduleTriggerRecurrence
 type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties
+type ScriptAction = original.ScriptAction
 type BasicSecretBase = original.BasicSecretBase
 type SecretBase = original.SecretBase
 type SecureString = original.SecureString

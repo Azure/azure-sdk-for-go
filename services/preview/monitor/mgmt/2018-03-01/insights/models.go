@@ -238,11 +238,13 @@ const (
 	OdataTypeAction OdataTypeBasicAction = "Action"
 	// OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction ...
 	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction OdataTypeBasicAction = "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction"
+	// OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction ...
+	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction OdataTypeBasicAction = "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction"
 )
 
 // PossibleOdataTypeBasicActionValues returns an array of possible values for the OdataTypeBasicAction const type.
 func PossibleOdataTypeBasicActionValues() []OdataTypeBasicAction {
-	return []OdataTypeBasicAction{OdataTypeAction, OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction}
+	return []OdataTypeBasicAction{OdataTypeAction, OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction, OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction}
 }
 
 // OdataTypeBasicMetricAlertCriteria enumerates the values for odata type basic metric alert criteria.
@@ -514,12 +516,13 @@ func PossibleUnitValues() []Unit {
 // BasicAction action descriptor.
 type BasicAction interface {
 	AsAlertingAction() (*AlertingAction, bool)
+	AsLogToMetricAction() (*LogToMetricAction, bool)
 	AsAction() (*Action, bool)
 }
 
 // Action action descriptor.
 type Action struct {
-	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
+	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
 
@@ -535,6 +538,10 @@ func unmarshalBasicAction(body []byte) (BasicAction, error) {
 		var aa AlertingAction
 		err := json.Unmarshal(body, &aa)
 		return aa, err
+	case string(OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction):
+		var ltma LogToMetricAction
+		err := json.Unmarshal(body, &ltma)
+		return ltma, err
 	default:
 		var a Action
 		err := json.Unmarshal(body, &a)
@@ -572,6 +579,11 @@ func (a Action) MarshalJSON() ([]byte, error) {
 
 // AsAlertingAction is the BasicAction implementation for Action.
 func (a Action) AsAlertingAction() (*AlertingAction, bool) {
+	return nil, false
+}
+
+// AsLogToMetricAction is the BasicAction implementation for Action.
+func (a Action) AsLogToMetricAction() (*LogToMetricAction, bool) {
 	return nil, false
 }
 
@@ -1033,7 +1045,7 @@ type AlertingAction struct {
 	ThrottlingInMin *int32 `json:"throttlingInMin,omitempty"`
 	// Trigger - The trigger condition that results in the alert rule being.
 	Trigger *TriggerCondition `json:"trigger,omitempty"`
-	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
+	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
 
@@ -1062,6 +1074,11 @@ func (aa AlertingAction) MarshalJSON() ([]byte, error) {
 // AsAlertingAction is the BasicAction implementation for AlertingAction.
 func (aa AlertingAction) AsAlertingAction() (*AlertingAction, bool) {
 	return &aa, true
+}
+
+// AsLogToMetricAction is the BasicAction implementation for AlertingAction.
+func (aa AlertingAction) AsLogToMetricAction() (*LogToMetricAction, bool) {
+	return nil, false
 }
 
 // AsAction is the BasicAction implementation for AlertingAction.
@@ -1804,6 +1821,14 @@ type CalculateBaselineResponse struct {
 	Baseline *[]Baseline `json:"baseline,omitempty"`
 }
 
+// Criteria specifies the criteria for converting log to metric.
+type Criteria struct {
+	// MetricName - Name of the metric
+	MetricName *string `json:"metricName,omitempty"`
+	// Dimensions - List of Dimensions for creating metric
+	Dimensions *[]Dimension `json:"dimensions,omitempty"`
+}
+
 // DiagnosticSettings the diagnostic settings.
 type DiagnosticSettings struct {
 	// StorageAccountID - The resource ID of the storage account to which you would like to send Diagnostic Logs.
@@ -2004,6 +2029,16 @@ type DiagnosticSettingsResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The collection of diagnostic settings resources;.
 	Value *[]DiagnosticSettingsResource `json:"value,omitempty"`
+}
+
+// Dimension specifies the criteria for converting log to metric.
+type Dimension struct {
+	// Name - Name of the dimension
+	Name *string `json:"name,omitempty"`
+	// Operator - Operator for dimension values
+	Operator *string `json:"operator,omitempty"`
+	// Values - List of dimension values
+	Values *[]string `json:"values,omitempty"`
 }
 
 // EmailNotification email notification of an autoscale event.
@@ -2658,7 +2693,7 @@ type LogSearchRule struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Source - Data Source against which rule will Query Data
 	Source *Source `json:"source,omitempty"`
-	// Schedule - Schedule (Frequnecy, Time Window) for rule.
+	// Schedule - Schedule (Frequnecy, Time Window) for rule. Required for action type - AlertingAction
 	Schedule *Schedule `json:"schedule,omitempty"`
 	// Action - Action needs to be taken on rule execution.
 	Action BasicAction `json:"action,omitempty"`
@@ -2925,6 +2960,47 @@ type LogSettings struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// RetentionPolicy - the retention policy for this log.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+}
+
+// LogToMetricAction specifiy action need to be taken when rule type is converting log to metric
+type LogToMetricAction struct {
+	// Criteria - Severity of the alert
+	Criteria *Criteria `json:"criteria,omitempty"`
+	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction'
+	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogToMetricAction.
+func (ltma LogToMetricAction) MarshalJSON() ([]byte, error) {
+	ltma.OdataType = OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction
+	objectMap := make(map[string]interface{})
+	if ltma.Criteria != nil {
+		objectMap["criteria"] = ltma.Criteria
+	}
+	if ltma.OdataType != "" {
+		objectMap["odata.type"] = ltma.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAlertingAction is the BasicAction implementation for LogToMetricAction.
+func (ltma LogToMetricAction) AsAlertingAction() (*AlertingAction, bool) {
+	return nil, false
+}
+
+// AsLogToMetricAction is the BasicAction implementation for LogToMetricAction.
+func (ltma LogToMetricAction) AsLogToMetricAction() (*LogToMetricAction, bool) {
+	return &ltma, true
+}
+
+// AsAction is the BasicAction implementation for LogToMetricAction.
+func (ltma LogToMetricAction) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicAction implementation for LogToMetricAction.
+func (ltma LogToMetricAction) AsBasicAction() (BasicAction, bool) {
+	return &ltma, true
 }
 
 // ManagementEventAggregationCondition how the data that is collected should be combined over time.
@@ -4449,7 +4525,7 @@ type SmsReceiver struct {
 
 // Source specifies the log search query.
 type Source struct {
-	// Query - Log search query.
+	// Query - Log search query. Required for action type - AlertingAction
 	Query *string `json:"query,omitempty"`
 	// AuthorizedResources - List of  Resource referred into query
 	AuthorizedResources *[]string `json:"authorizedResources,omitempty"`

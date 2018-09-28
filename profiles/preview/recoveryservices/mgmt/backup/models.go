@@ -70,7 +70,7 @@ type ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtecti
 const (
 	ContainerTypeAzureBackupServerContainer1            ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureBackupServerContainer1
 	ContainerTypeAzureSQLContainer1                     ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureSQLContainer1
-	ContainerTypeAzureWorkloadContainer                 ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureWorkloadContainer
+	ContainerTypeAzureWorkloadBackupRequest             ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureWorkloadBackupRequest
 	ContainerTypeDPMContainer1                          ContainerTypeBasicProtectionContainer = original.ContainerTypeDPMContainer1
 	ContainerTypeGenericContainer1                      ContainerTypeBasicProtectionContainer = original.ContainerTypeGenericContainer1
 	ContainerTypeIaaSVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeIaaSVMContainer

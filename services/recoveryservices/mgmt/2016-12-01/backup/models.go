@@ -91,8 +91,8 @@ const (
 	ContainerTypeAzureBackupServerContainer1 ContainerTypeBasicProtectionContainer = "AzureBackupServerContainer"
 	// ContainerTypeAzureSQLContainer1 ...
 	ContainerTypeAzureSQLContainer1 ContainerTypeBasicProtectionContainer = "AzureSqlContainer"
-	// ContainerTypeAzureWorkloadContainer ...
-	ContainerTypeAzureWorkloadContainer ContainerTypeBasicProtectionContainer = "AzureWorkloadContainer"
+	// ContainerTypeAzureWorkloadBackupRequest ...
+	ContainerTypeAzureWorkloadBackupRequest ContainerTypeBasicProtectionContainer = "AzureWorkloadBackupRequest"
 	// ContainerTypeDPMContainer1 ...
 	ContainerTypeDPMContainer1 ContainerTypeBasicProtectionContainer = "DPMContainer"
 	// ContainerTypeGenericContainer1 ...
@@ -117,7 +117,7 @@ const (
 
 // PossibleContainerTypeBasicProtectionContainerValues returns an array of possible values for the ContainerTypeBasicProtectionContainer const type.
 func PossibleContainerTypeBasicProtectionContainerValues() []ContainerTypeBasicProtectionContainer {
-	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadContainer, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
+	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadBackupRequest, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
 }
 
 // CopyOptions enumerates the values for copy options.
@@ -1192,7 +1192,7 @@ type AzureBackupServerContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -2123,7 +2123,7 @@ type AzureIaaSClassicComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -2549,7 +2549,7 @@ type AzureIaaSComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -3371,7 +3371,7 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -3499,7 +3499,7 @@ type AzureSQLContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -3884,7 +3884,7 @@ type AzureStorageContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -4132,7 +4132,7 @@ type AzureVMAppContainerProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -6551,7 +6551,7 @@ type AzureWorkloadContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -6598,7 +6598,7 @@ func unmarshalBasicAzureWorkloadContainerArray(body []byte) ([]BasicAzureWorkloa
 
 // MarshalJSON is the custom marshaler for AzureWorkloadContainer.
 func (awc AzureWorkloadContainer) MarshalJSON() ([]byte, error) {
-	awc.ContainerType = ContainerTypeAzureWorkloadContainer
+	awc.ContainerType = ContainerTypeAzureWorkloadBackupRequest
 	objectMap := make(map[string]interface{})
 	if awc.SourceResourceID != nil {
 		objectMap["sourceResourceId"] = awc.SourceResourceID
@@ -8274,7 +8274,7 @@ type DpmContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -9071,7 +9071,7 @@ type GenericContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -9621,7 +9621,7 @@ type IaaSVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -10694,7 +10694,7 @@ type MabContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -12217,7 +12217,7 @@ type ProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -12257,7 +12257,7 @@ func unmarshalBasicProtectionContainer(body []byte) (BasicProtectionContainer, e
 		var avacpc AzureVMAppContainerProtectionContainer
 		err := json.Unmarshal(body, &avacpc)
 		return avacpc, err
-	case string(ContainerTypeAzureWorkloadContainer):
+	case string(ContainerTypeAzureWorkloadBackupRequest):
 		var awc AzureWorkloadContainer
 		err := json.Unmarshal(body, &awc)
 		return awc, err

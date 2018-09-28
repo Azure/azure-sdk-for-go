@@ -584,6 +584,7 @@ type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
+type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetListResultIterator = original.AvailabilitySetListResultIterator

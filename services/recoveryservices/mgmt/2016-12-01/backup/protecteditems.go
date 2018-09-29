@@ -49,7 +49,7 @@ func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) P
 // containerName - container name associated with the backup item.
 // protectedItemName - item name to be backed up.
 // parameters - resource backed up item
-func (client ProtectedItemsClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource) (result autorest.Response, err error) {
+func (client ProtectedItemsClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource) (result ProtectedItemResource, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -58,7 +58,7 @@ func (client ProtectedItemsClient) CreateOrUpdate(ctx context.Context, vaultName
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
@@ -106,13 +106,14 @@ func (client ProtectedItemsClient) CreateOrUpdateSender(req *http.Request) (*htt
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ProtectedItemsClient) CreateOrUpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ProtectedItemsClient) CreateOrUpdateResponder(resp *http.Response) (result ProtectedItemResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

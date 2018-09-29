@@ -91,8 +91,8 @@ const (
 	ContainerTypeAzureBackupServerContainer1 ContainerTypeBasicProtectionContainer = "AzureBackupServerContainer"
 	// ContainerTypeAzureSQLContainer1 ...
 	ContainerTypeAzureSQLContainer1 ContainerTypeBasicProtectionContainer = "AzureSqlContainer"
-	// ContainerTypeAzureWorkloadContainer ...
-	ContainerTypeAzureWorkloadContainer ContainerTypeBasicProtectionContainer = "AzureWorkloadContainer"
+	// ContainerTypeAzureWorkloadBackupRequest ...
+	ContainerTypeAzureWorkloadBackupRequest ContainerTypeBasicProtectionContainer = "AzureWorkloadBackupRequest"
 	// ContainerTypeDPMContainer1 ...
 	ContainerTypeDPMContainer1 ContainerTypeBasicProtectionContainer = "DPMContainer"
 	// ContainerTypeGenericContainer1 ...
@@ -117,7 +117,7 @@ const (
 
 // PossibleContainerTypeBasicProtectionContainerValues returns an array of possible values for the ContainerTypeBasicProtectionContainer const type.
 func PossibleContainerTypeBasicProtectionContainerValues() []ContainerTypeBasicProtectionContainer {
-	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadContainer, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
+	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadBackupRequest, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
 }
 
 // CopyOptions enumerates the values for copy options.
@@ -446,6 +446,23 @@ const (
 // PossibleInquiryStatusValues returns an array of possible values for the InquiryStatus const type.
 func PossibleInquiryStatusValues() []InquiryStatus {
 	return []InquiryStatus{InquiryStatusFailed, InquiryStatusInvalid, InquiryStatusSuccess}
+}
+
+// IntentItemType enumerates the values for intent item type.
+type IntentItemType string
+
+const (
+	// IntentItemTypeInvalid ...
+	IntentItemTypeInvalid IntentItemType = "Invalid"
+	// IntentItemTypeSQLAvailabilityGroupContainer ...
+	IntentItemTypeSQLAvailabilityGroupContainer IntentItemType = "SQLAvailabilityGroupContainer"
+	// IntentItemTypeSQLInstance ...
+	IntentItemTypeSQLInstance IntentItemType = "SQLInstance"
+)
+
+// PossibleIntentItemTypeValues returns an array of possible values for the IntentItemType const type.
+func PossibleIntentItemTypeValues() []IntentItemType {
+	return []IntentItemType{IntentItemTypeInvalid, IntentItemTypeSQLAvailabilityGroupContainer, IntentItemTypeSQLInstance}
 }
 
 // ItemType enumerates the values for item type.
@@ -911,6 +928,27 @@ const (
 // PossibleOverwriteOptionsValues returns an array of possible values for the OverwriteOptions const type.
 func PossibleOverwriteOptionsValues() []OverwriteOptions {
 	return []OverwriteOptions{OverwriteOptionsFailOnConflict, OverwriteOptionsInvalid, OverwriteOptionsOverwrite}
+}
+
+// PolicyType enumerates the values for policy type.
+type PolicyType string
+
+const (
+	// PolicyTypeCopyOnlyFull ...
+	PolicyTypeCopyOnlyFull PolicyType = "CopyOnlyFull"
+	// PolicyTypeDifferential ...
+	PolicyTypeDifferential PolicyType = "Differential"
+	// PolicyTypeFull ...
+	PolicyTypeFull PolicyType = "Full"
+	// PolicyTypeInvalid ...
+	PolicyTypeInvalid PolicyType = "Invalid"
+	// PolicyTypeLog ...
+	PolicyTypeLog PolicyType = "Log"
+)
+
+// PossiblePolicyTypeValues returns an array of possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{PolicyTypeCopyOnlyFull, PolicyTypeDifferential, PolicyTypeFull, PolicyTypeInvalid, PolicyTypeLog}
 }
 
 // ProtectableContainerType enumerates the values for protectable container type.
@@ -1630,7 +1668,7 @@ type AzureBackupServerContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -2201,8 +2239,8 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 
 // AzureFileShareProtectionPolicy azureStorage backup policy.
 type AzureFileShareProtectionPolicy struct {
-	// WorkLoadType - Type of workload for the backup management
-	WorkLoadType *string `json:"workLoadType,omitempty"`
+	// WorkLoadType - Type of workload for the backup management. Possible values include: 'WorkloadTypeInvalid', 'WorkloadTypeVM', 'WorkloadTypeFileFolder', 'WorkloadTypeAzureSQLDb', 'WorkloadTypeSQLDB', 'WorkloadTypeExchange', 'WorkloadTypeSharepoint', 'WorkloadTypeVMwareVM', 'WorkloadTypeSystemState', 'WorkloadTypeClient', 'WorkloadTypeGenericDataSource', 'WorkloadTypeSQLDataBase', 'WorkloadTypeAzureFileShare', 'WorkloadTypeSAPHanaDatabase'
+	WorkLoadType WorkloadType `json:"workLoadType,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -2219,7 +2257,7 @@ type AzureFileShareProtectionPolicy struct {
 func (afspp AzureFileShareProtectionPolicy) MarshalJSON() ([]byte, error) {
 	afspp.BackupManagementType = BackupManagementTypeAzureStorage
 	objectMap := make(map[string]interface{})
-	if afspp.WorkLoadType != nil {
+	if afspp.WorkLoadType != "" {
 		objectMap["workLoadType"] = afspp.WorkLoadType
 	}
 	objectMap["schedulePolicy"] = afspp.SchedulePolicy
@@ -2287,12 +2325,12 @@ func (afspp *AzureFileShareProtectionPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "workLoadType":
 			if v != nil {
-				var workLoadType string
+				var workLoadType WorkloadType
 				err = json.Unmarshal(*v, &workLoadType)
 				if err != nil {
 					return err
 				}
-				afspp.WorkLoadType = &workLoadType
+				afspp.WorkLoadType = workLoadType
 			}
 		case "schedulePolicy":
 			if v != nil {
@@ -2561,7 +2599,7 @@ type AzureIaaSClassicComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -2987,7 +3025,7 @@ type AzureIaaSComputeVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -4209,7 +4247,7 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -4337,7 +4375,7 @@ type AzureSQLContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -4722,7 +4760,7 @@ type AzureStorageContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -5129,7 +5167,7 @@ type AzureVMAppContainerProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -5480,6 +5518,8 @@ type AzureVMWorkloadProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -5566,6 +5606,9 @@ func (avwpi AzureVMWorkloadProtectableItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwpi.IsAutoProtectable
+	}
+	if avwpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwpi.IsAutoProtected
 	}
 	if avwpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwpi.Subinquireditemcount
@@ -5910,8 +5953,8 @@ type AzureVMWorkloadProtectedItemExtendedInfo struct {
 
 // AzureVMWorkloadProtectionPolicy azure VM (Mercury) workload-specific backup policy.
 type AzureVMWorkloadProtectionPolicy struct {
-	// WorkLoadType - Type of workload for the backup management
-	WorkLoadType *string `json:"workLoadType,omitempty"`
+	// WorkLoadType - Type of workload for the backup management. Possible values include: 'WorkloadTypeInvalid', 'WorkloadTypeVM', 'WorkloadTypeFileFolder', 'WorkloadTypeAzureSQLDb', 'WorkloadTypeSQLDB', 'WorkloadTypeExchange', 'WorkloadTypeSharepoint', 'WorkloadTypeVMwareVM', 'WorkloadTypeSystemState', 'WorkloadTypeClient', 'WorkloadTypeGenericDataSource', 'WorkloadTypeSQLDataBase', 'WorkloadTypeAzureFileShare', 'WorkloadTypeSAPHanaDatabase'
+	WorkLoadType WorkloadType `json:"workLoadType,omitempty"`
 	// Settings - Common settings for the backup management
 	Settings *Settings `json:"settings,omitempty"`
 	// SubProtectionPolicy - List of sub-protection policies which includes schedule and retention
@@ -5926,7 +5969,7 @@ type AzureVMWorkloadProtectionPolicy struct {
 func (avwpp AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	avwpp.BackupManagementType = BackupManagementTypeAzureWorkload
 	objectMap := make(map[string]interface{})
-	if avwpp.WorkLoadType != nil {
+	if avwpp.WorkLoadType != "" {
 		objectMap["workLoadType"] = avwpp.WorkLoadType
 	}
 	if avwpp.Settings != nil {
@@ -5996,6 +6039,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -6029,6 +6074,9 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) MarshalJSON() ([]b
 	}
 	if avwshdpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwshdpi.IsAutoProtectable
+	}
+	if avwshdpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwshdpi.IsAutoProtected
 	}
 	if avwshdpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwshdpi.Subinquireditemcount
@@ -6433,6 +6481,8 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -6466,6 +6516,9 @@ func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) MarshalJSON() ([]byt
 	}
 	if avwshspi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwshspi.IsAutoProtectable
+	}
+	if avwshspi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwshspi.IsAutoProtected
 	}
 	if avwshspi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwshspi.Subinquireditemcount
@@ -6677,6 +6730,8 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -6710,6 +6765,9 @@ func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) MarshalJSON()
 	}
 	if avwsagpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsagpi.IsAutoProtectable
+	}
+	if avwsagpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsagpi.IsAutoProtected
 	}
 	if avwsagpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsagpi.Subinquireditemcount
@@ -6819,6 +6877,8 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -6852,6 +6912,9 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsdpi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsdpi.IsAutoProtectable
+	}
+	if avwsdpi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsdpi.IsAutoProtected
 	}
 	if avwsdpi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsdpi.Subinquireditemcount
@@ -7253,6 +7316,8 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if protectable item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
+	// IsAutoProtected - Indicates if protectable item is auto-protected
+	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
 	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
 	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
@@ -7286,6 +7351,9 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsipi.IsAutoProtectable != nil {
 		objectMap["isAutoProtectable"] = avwsipi.IsAutoProtectable
+	}
+	if avwsipi.IsAutoProtected != nil {
+		objectMap["isAutoProtected"] = avwsipi.IsAutoProtected
 	}
 	if avwsipi.Subinquireditemcount != nil {
 		objectMap["subinquireditemcount"] = avwsipi.Subinquireditemcount
@@ -7695,7 +7763,7 @@ type AzureWorkloadContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -7742,7 +7810,7 @@ func unmarshalBasicAzureWorkloadContainerArray(body []byte) ([]BasicAzureWorkloa
 
 // MarshalJSON is the custom marshaler for AzureWorkloadContainer.
 func (awc AzureWorkloadContainer) MarshalJSON() ([]byte, error) {
-	awc.ContainerType = ContainerTypeAzureWorkloadContainer
+	awc.ContainerType = ContainerTypeAzureWorkloadBackupRequest
 	objectMap := make(map[string]interface{})
 	if awc.SourceResourceID != nil {
 		objectMap["sourceResourceId"] = awc.SourceResourceID
@@ -9818,7 +9886,7 @@ type DpmContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -10918,7 +10986,7 @@ type GenericContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -11468,7 +11536,7 @@ type IaaSVMContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -12929,7 +12997,7 @@ type MabContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -14167,8 +14235,6 @@ type PreValidateEnableBackupRequest struct {
 	ResourceType DataSourceType `json:"resourceType,omitempty"`
 	// ResourceID - ARM Virtual Machine Id
 	ResourceID *string `json:"resourceId,omitempty"`
-	// VaultID - ARM id of the Recovery Services Vault
-	VaultID *string `json:"vaultId,omitempty"`
 	// Properties - Configuration of VM if any needs to be validated like OS type etc
 	Properties *string `json:"properties,omitempty"`
 }
@@ -15020,7 +15086,7 @@ type ProtectionContainer struct {
 	RegistrationStatus *string `json:"registrationStatus,omitempty"`
 	// HealthStatus - Status of health of the container.
 	HealthStatus *string `json:"healthStatus,omitempty"`
-	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadContainer', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
+	// ContainerType - Possible values include: 'ContainerTypeProtectionContainer', 'ContainerTypeAzureBackupServerContainer1', 'ContainerTypeMicrosoftClassicComputevirtualMachines', 'ContainerTypeMicrosoftComputevirtualMachines', 'ContainerTypeSQLAGWorkLoadContainer1', 'ContainerTypeAzureSQLContainer1', 'ContainerTypeStorageContainer1', 'ContainerTypeVMAppContainer1', 'ContainerTypeAzureWorkloadBackupRequest', 'ContainerTypeDPMContainer1', 'ContainerTypeGenericContainer1', 'ContainerTypeIaaSVMContainer', 'ContainerTypeWindows1'
 	ContainerType ContainerTypeBasicProtectionContainer `json:"containerType,omitempty"`
 }
 
@@ -15060,7 +15126,7 @@ func unmarshalBasicProtectionContainer(body []byte) (BasicProtectionContainer, e
 		var avacpc AzureVMAppContainerProtectionContainer
 		err := json.Unmarshal(body, &avacpc)
 		return avacpc, err
-	case string(ContainerTypeAzureWorkloadContainer):
+	case string(ContainerTypeAzureWorkloadBackupRequest):
 		var awc AzureWorkloadContainer
 		err := json.Unmarshal(body, &awc)
 		return awc, err
@@ -15573,6 +15639,18 @@ func (pi ProtectionIntent) AsBasicProtectionIntent() (BasicProtectionIntent, boo
 	return &pi, true
 }
 
+// ProtectionIntentQueryObject filters to list protection intent.
+type ProtectionIntentQueryObject struct {
+	// BackupManagementType - Backup management type for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
+	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
+	// ItemType - Type of workload this item represents. Possible values include: 'IntentItemTypeInvalid', 'IntentItemTypeSQLInstance', 'IntentItemTypeSQLAvailabilityGroupContainer'
+	ItemType IntentItemType `json:"itemType,omitempty"`
+	// ParentName - Parent name of the intent
+	ParentName *string `json:"parentName,omitempty"`
+	// ItemName - Item name of the intent
+	ItemName *string `json:"itemName,omitempty"`
+}
+
 // ProtectionIntentResource base class for backup ProtectionIntent.
 type ProtectionIntentResource struct {
 	autorest.Response `json:"-"`
@@ -15692,6 +15770,108 @@ func (pir *ProtectionIntentResource) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ProtectionIntentResourceList list of ProtectionIntent resources
+type ProtectionIntentResourceList struct {
+	autorest.Response `json:"-"`
+	// Value - List of resources.
+	Value *[]ProtectionIntentResource `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ProtectionIntentResourceListIterator provides access to a complete listing of ProtectionIntentResource values.
+type ProtectionIntentResourceListIterator struct {
+	i    int
+	page ProtectionIntentResourceListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ProtectionIntentResourceListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ProtectionIntentResourceListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ProtectionIntentResourceListIterator) Response() ProtectionIntentResourceList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ProtectionIntentResourceListIterator) Value() ProtectionIntentResource {
+	if !iter.page.NotDone() {
+		return ProtectionIntentResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pirl ProtectionIntentResourceList) IsEmpty() bool {
+	return pirl.Value == nil || len(*pirl.Value) == 0
+}
+
+// protectionIntentResourceListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pirl ProtectionIntentResourceList) protectionIntentResourceListPreparer() (*http.Request, error) {
+	if pirl.NextLink == nil || len(to.String(pirl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pirl.NextLink)))
+}
+
+// ProtectionIntentResourceListPage contains a page of ProtectionIntentResource values.
+type ProtectionIntentResourceListPage struct {
+	fn   func(ProtectionIntentResourceList) (ProtectionIntentResourceList, error)
+	pirl ProtectionIntentResourceList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ProtectionIntentResourceListPage) Next() error {
+	next, err := page.fn(page.pirl)
+	if err != nil {
+		return err
+	}
+	page.pirl = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ProtectionIntentResourceListPage) NotDone() bool {
+	return !page.pirl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ProtectionIntentResourceListPage) Response() ProtectionIntentResourceList {
+	return page.pirl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ProtectionIntentResourceListPage) Values() []ProtectionIntentResource {
+	if page.pirl.IsEmpty() {
+		return nil
+	}
+	return *page.pirl.Value
 }
 
 // BasicProtectionPolicy base class for backup policy. Workload-specific backup policies are derived from this class.
@@ -17444,8 +17624,6 @@ type StatusResponse struct {
 	autorest.Response `json:"-"`
 	// ProtectionStatus - Specifies whether the container is registered or not. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionStatus ProtectionStatus `json:"protectionStatus,omitempty"`
-	// VaultID - Specifies the arm resource id of the vault
-	VaultID *string `json:"vaultId,omitempty"`
 	// FabricName - Specifies the fabric name - Azure or AD. Possible values include: 'FabricNameInvalid', 'FabricNameAzure'
 	FabricName FabricName `json:"fabricName,omitempty"`
 	// ContainerName - Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
@@ -17464,8 +17642,8 @@ type StatusResponse struct {
 
 // SubProtectionPolicy sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
-	// PolicyType - Type of backup policy type
-	PolicyType *string `json:"policyType,omitempty"`
+	// PolicyType - Type of backup policy type. Possible values include: 'PolicyTypeInvalid', 'PolicyTypeFull', 'PolicyTypeDifferential', 'PolicyTypeLog', 'PolicyTypeCopyOnlyFull'
+	PolicyType PolicyType `json:"policyType,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -17483,12 +17661,12 @@ func (spp *SubProtectionPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "policyType":
 			if v != nil {
-				var policyType string
+				var policyType PolicyType
 				err = json.Unmarshal(*v, &policyType)
 				if err != nil {
 					return err
 				}
-				spp.PolicyType = &policyType
+				spp.PolicyType = policyType
 			}
 		case "schedulePolicy":
 			if v != nil {

@@ -39,7 +39,7 @@ func NewProtectableContainersClientWithBaseURI(baseURI string, subscriptionID st
 	return ProtectableContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the containers registered to Recovery Services Vault.
+// List lists the containers that can be registered to Recovery Services Vault.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

@@ -204,13 +204,17 @@ type RunType string
 const (
 	// AutoBuild ...
 	AutoBuild RunType = "AutoBuild"
+	// AutoRun ...
+	AutoRun RunType = "AutoRun"
 	// QuickBuild ...
 	QuickBuild RunType = "QuickBuild"
+	// QuickRun ...
+	QuickRun RunType = "QuickRun"
 )
 
 // PossibleRunTypeValues returns an array of possible values for the RunType const type.
 func PossibleRunTypeValues() []RunType {
-	return []RunType{AutoBuild, QuickBuild}
+	return []RunType{AutoBuild, AutoRun, QuickBuild, QuickRun}
 }
 
 // SkuName enumerates the values for sku name.
@@ -272,11 +276,13 @@ type SourceTriggerEvent string
 const (
 	// Commit ...
 	Commit SourceTriggerEvent = "commit"
+	// Pullrequest ...
+	Pullrequest SourceTriggerEvent = "pullrequest"
 )
 
 // PossibleSourceTriggerEventValues returns an array of possible values for the SourceTriggerEvent const type.
 func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
-	return []SourceTriggerEvent{Commit}
+	return []SourceTriggerEvent{Commit, Pullrequest}
 }
 
 // TaskStatus enumerates the values for task status.
@@ -514,7 +520,7 @@ type BaseImageDependency struct {
 type BaseImageTrigger struct {
 	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
-	// Status - The current status of build trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -524,7 +530,7 @@ type BaseImageTrigger struct {
 type BaseImageTriggerUpdateParameters struct {
 	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
-	// Status - The current status of build trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -563,15 +569,15 @@ type DockerBuildRequest struct {
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing the run.
 	Arguments *[]Argument `json:"arguments,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
-	// If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
-	SourceLocation *string `json:"sourceLocation,omitempty"`
-	// Timeout - Build timeout in seconds.
+	// Timeout - Run timeout in seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
-	// Platform - The platform properties against which the build will happen.
+	// Platform - The platform properties against which the run has to happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
-	// AgentConfiguration - The machine configuration of the build agent.
+	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -597,9 +603,6 @@ func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
 	if dbr.Arguments != nil {
 		objectMap["arguments"] = dbr.Arguments
 	}
-	if dbr.SourceLocation != nil {
-		objectMap["sourceLocation"] = dbr.SourceLocation
-	}
 	if dbr.Timeout != nil {
 		objectMap["timeout"] = dbr.Timeout
 	}
@@ -608,6 +611,9 @@ func (dbr DockerBuildRequest) MarshalJSON() ([]byte, error) {
 	}
 	if dbr.AgentConfiguration != nil {
 		objectMap["agentConfiguration"] = dbr.AgentConfiguration
+	}
+	if dbr.SourceLocation != nil {
+		objectMap["sourceLocation"] = dbr.SourceLocation
 	}
 	if dbr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = dbr.IsArchiveEnabled
@@ -660,11 +666,10 @@ type DockerBuildStep struct {
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
-	ContextPath *string `json:"contextPath,omitempty"`
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -688,11 +693,11 @@ func (dbs DockerBuildStep) MarshalJSON() ([]byte, error) {
 	if dbs.Arguments != nil {
 		objectMap["arguments"] = dbs.Arguments
 	}
-	if dbs.ContextPath != nil {
-		objectMap["contextPath"] = dbs.ContextPath
-	}
 	if dbs.BaseImageDependencies != nil {
 		objectMap["baseImageDependencies"] = dbs.BaseImageDependencies
+	}
+	if dbs.ContextPath != nil {
+		objectMap["contextPath"] = dbs.ContextPath
 	}
 	if dbs.Type != "" {
 		objectMap["type"] = dbs.Type
@@ -737,8 +742,7 @@ type DockerBuildStepUpdateParameters struct {
 	DockerFilePath *string `json:"dockerFilePath,omitempty"`
 	// Arguments - The collection of override arguments to be used when executing this build step.
 	Arguments *[]Argument `json:"arguments,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
@@ -805,12 +809,15 @@ type EncodedTaskRunRequest struct {
 	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
 	// Values - The collection of overridable values that can be passed when running a task.
 	Values *[]SetValue `json:"values,omitempty"`
-	// Timeout - Build timeout in seconds.
+	// Timeout - Run timeout in seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
-	// Platform - The platform properties against which the build will happen.
+	// Platform - The platform properties against which the run has to happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
-	// AgentConfiguration - The machine configuration of the build agent.
+	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -838,6 +845,9 @@ func (etrr EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if etrr.AgentConfiguration != nil {
 		objectMap["agentConfiguration"] = etrr.AgentConfiguration
+	}
+	if etrr.SourceLocation != nil {
+		objectMap["sourceLocation"] = etrr.SourceLocation
 	}
 	if etrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = etrr.IsArchiveEnabled
@@ -888,6 +898,8 @@ type EncodedTaskStep struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -907,6 +919,9 @@ func (ets EncodedTaskStep) MarshalJSON() ([]byte, error) {
 	}
 	if ets.BaseImageDependencies != nil {
 		objectMap["baseImageDependencies"] = ets.BaseImageDependencies
+	}
+	if ets.ContextPath != nil {
+		objectMap["contextPath"] = ets.ContextPath
 	}
 	if ets.Type != "" {
 		objectMap["type"] = ets.Type
@@ -947,6 +962,8 @@ type EncodedTaskStepUpdateParameters struct {
 	EncodedValuesContent *string `json:"encodedValuesContent,omitempty"`
 	// Values - The collection of overridable values that can be passed when running a task.
 	Values *[]SetValue `json:"values,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -963,6 +980,9 @@ func (etsup EncodedTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if etsup.Values != nil {
 		objectMap["values"] = etsup.Values
+	}
+	if etsup.ContextPath != nil {
+		objectMap["contextPath"] = etsup.ContextPath
 	}
 	if etsup.Type != "" {
 		objectMap["type"] = etsup.Type
@@ -1210,15 +1230,15 @@ type FileTaskRunRequest struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 	// Values - The collection of overridable values that can be passed when running a task.
 	Values *[]SetValue `json:"values,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
-	// If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
-	SourceLocation *string `json:"sourceLocation,omitempty"`
-	// Timeout - Build timeout in seconds.
+	// Timeout - Run timeout in seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
-	// Platform - The platform properties against which the build will happen.
+	// Platform - The platform properties against which the run has to happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
-	// AgentConfiguration - The machine configuration of the build agent.
+	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Type - Possible values include: 'TypeRunRequest', 'TypeDockerBuildRequest', 'TypeFileTaskRunRequest', 'TypeTaskRunRequest', 'TypeEncodedTaskRunRequest'
@@ -1238,9 +1258,6 @@ func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
 	if ftrr.Values != nil {
 		objectMap["values"] = ftrr.Values
 	}
-	if ftrr.SourceLocation != nil {
-		objectMap["sourceLocation"] = ftrr.SourceLocation
-	}
 	if ftrr.Timeout != nil {
 		objectMap["timeout"] = ftrr.Timeout
 	}
@@ -1249,6 +1266,9 @@ func (ftrr FileTaskRunRequest) MarshalJSON() ([]byte, error) {
 	}
 	if ftrr.AgentConfiguration != nil {
 		objectMap["agentConfiguration"] = ftrr.AgentConfiguration
+	}
+	if ftrr.SourceLocation != nil {
+		objectMap["sourceLocation"] = ftrr.SourceLocation
 	}
 	if ftrr.IsArchiveEnabled != nil {
 		objectMap["isArchiveEnabled"] = ftrr.IsArchiveEnabled
@@ -1297,11 +1317,10 @@ type FileTaskStep struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 	// Values - The collection of overridable values that can be passed when running a task.
 	Values *[]SetValue `json:"values,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
-	ContextPath *string `json:"contextPath,omitempty"`
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -1319,11 +1338,11 @@ func (fts FileTaskStep) MarshalJSON() ([]byte, error) {
 	if fts.Values != nil {
 		objectMap["values"] = fts.Values
 	}
-	if fts.ContextPath != nil {
-		objectMap["contextPath"] = fts.ContextPath
-	}
 	if fts.BaseImageDependencies != nil {
 		objectMap["baseImageDependencies"] = fts.BaseImageDependencies
+	}
+	if fts.ContextPath != nil {
+		objectMap["contextPath"] = fts.ContextPath
 	}
 	if fts.Type != "" {
 		objectMap["type"] = fts.Type
@@ -1364,8 +1383,7 @@ type FileTaskStepUpdateParameters struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 	// Values - The collection of overridable values that can be passed when running a task.
 	Values *[]SetValue `json:"values,omitempty"`
-	// ContextPath - The URL(absolute or relative) of the source context for the build task.
-	// If it is relative, the context will be relative to the source repository URL of the build task.
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
@@ -2719,7 +2737,7 @@ func (r *Run) UnmarshalJSON(body []byte) error {
 type RunFilter struct {
 	// RunID - The unique identifier for the run.
 	RunID *string `json:"runId,omitempty"`
-	// RunType - The type of run. Possible values include: 'QuickBuild', 'AutoBuild'
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
 	RunType RunType `json:"runType,omitempty"`
 	// Status - The current status of the run. Possible values include: 'RunStatusQueued', 'RunStatusStarted', 'RunStatusRunning', 'RunStatusSucceeded', 'RunStatusFailed', 'RunStatusCanceled', 'RunStatusError', 'RunStatusTimeout'
 	Status RunStatus `json:"status,omitempty"`
@@ -2853,7 +2871,7 @@ type RunProperties struct {
 	Status RunStatus `json:"status,omitempty"`
 	// LastUpdatedTime - The last updated time for the run.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
-	// RunType - The type of run. Possible values include: 'QuickBuild', 'AutoBuild'
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
 	RunType RunType `json:"runType,omitempty"`
 	// CreateTime - The time the run was scheduled.
 	CreateTime *date.Time `json:"createTime,omitempty"`
@@ -2861,11 +2879,11 @@ type RunProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// FinishTime - The time the run finished.
 	FinishTime *date.Time `json:"finishTime,omitempty"`
-	// OutputImages - The list of all images that were generated from the run. This is applicable if the run is of type Build.
+	// OutputImages - The list of all images that were generated from the run. This is applicable if the run generates base image dependencies.
 	OutputImages *[]ImageDescriptor `json:"outputImages,omitempty"`
 	// Task - The task against which run was scheduled.
 	Task *string `json:"task,omitempty"`
-	// ImageUpdateTrigger - The image update trigger that caused the run. This is applicable if the task is of build type.
+	// ImageUpdateTrigger - The image update trigger that caused the run. This is applicable if the task has base image trigger configured.
 	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
 	// SourceTrigger - The source trigger that caused the run.
 	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
@@ -3090,7 +3108,7 @@ type SourceTrigger struct {
 	SourceRepository *SourceProperties `json:"sourceRepository,omitempty"`
 	// SourceTriggerEvents - The source event corresponding to the trigger.
 	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
-	// Status - The current status of build trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -3120,7 +3138,7 @@ type SourceTriggerUpdateParameters struct {
 	SourceRepository *SourceUpdateParameters `json:"sourceRepository,omitempty"`
 	// SourceTriggerEvents - The source event corresponding to the trigger.
 	SourceTriggerEvents *[]SourceTriggerEvent `json:"sourceTriggerEvents,omitempty"`
-	// Status - The current status of build trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
+	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
@@ -3709,6 +3727,8 @@ type BasicTaskStepProperties interface {
 type TaskStepProperties struct {
 	// BaseImageDependencies - List of base image dependencies for a step.
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -3765,6 +3785,9 @@ func (tsp TaskStepProperties) MarshalJSON() ([]byte, error) {
 	if tsp.BaseImageDependencies != nil {
 		objectMap["baseImageDependencies"] = tsp.BaseImageDependencies
 	}
+	if tsp.ContextPath != nil {
+		objectMap["contextPath"] = tsp.ContextPath
+	}
 	if tsp.Type != "" {
 		objectMap["type"] = tsp.Type
 	}
@@ -3806,6 +3829,8 @@ type BasicTaskStepUpdateParameters interface {
 
 // TaskStepUpdateParameters base properties for updating any task step.
 type TaskStepUpdateParameters struct {
+	// ContextPath - The URL(absolute or relative) of the source context for the task step.
+	ContextPath *string `json:"contextPath,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -3859,6 +3884,9 @@ func unmarshalBasicTaskStepUpdateParametersArray(body []byte) ([]BasicTaskStepUp
 func (tsup TaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	tsup.Type = TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters
 	objectMap := make(map[string]interface{})
+	if tsup.ContextPath != nil {
+		objectMap["contextPath"] = tsup.ContextPath
+	}
 	if tsup.Type != "" {
 		objectMap["type"] = tsup.Type
 	}
@@ -3971,7 +3999,7 @@ func (tup *TaskUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TriggerProperties the properties of a build trigger.
+// TriggerProperties the properties of a trigger.
 type TriggerProperties struct {
 	// SourceTriggers - The collection of triggers based on source code repository.
 	SourceTriggers *[]SourceTrigger `json:"sourceTriggers,omitempty"`
@@ -3979,7 +4007,7 @@ type TriggerProperties struct {
 	BaseImageTrigger *BaseImageTrigger `json:"baseImageTrigger,omitempty"`
 }
 
-// TriggerUpdateParameters the properties for updating build triggers.
+// TriggerUpdateParameters the properties for updating triggers.
 type TriggerUpdateParameters struct {
 	// SourceTriggers - The collection of triggers based on source code repository.
 	SourceTriggers *[]SourceTriggerUpdateParameters `json:"sourceTriggers,omitempty"`

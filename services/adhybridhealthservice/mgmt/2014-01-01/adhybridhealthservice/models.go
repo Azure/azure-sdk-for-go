@@ -907,7 +907,7 @@ type ConnectorConnectionError struct {
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// Message - The message for the connection error.
 	Message *string `json:"message,omitempty"`
-	// TimeOccured - The time when the connection error occured.
+	// TimeOccured - The time when the connection error occurred.
 	TimeOccured *date.Time `json:"timeOccured,omitempty"`
 	// Server - The server where the connection error happened.
 	Server *string `json:"server,omitempty"`
@@ -939,7 +939,7 @@ type ConnectorObjectError struct {
 	LineNumber *int32 `json:"lineNumber,omitempty"`
 	// ColumnNumber - The column number for the object error.
 	ColumnNumber *int32 `json:"columnNumber,omitempty"`
-	// Dn - The distingished name of the object.
+	// Dn - The distinguished name of the object.
 	Dn *string `json:"dn,omitempty"`
 	// Anchor - The name for the anchor of the object.
 	Anchor *string `json:"anchor,omitempty"`
@@ -1194,7 +1194,7 @@ type ExportError struct {
 	Message *string `json:"message,omitempty"`
 	// ServerErrorDetail - The server error detail.
 	ServerErrorDetail *string `json:"serverErrorDetail,omitempty"`
-	// TimeFirstOccured - The date and time when the export error first occured.
+	// TimeFirstOccured - The date and time when the export error first occurred.
 	TimeFirstOccured *date.Time `json:"timeFirstOccured,omitempty"`
 	// RetryCount - The retry count.
 	RetryCount *int32 `json:"retryCount,omitempty"`
@@ -1234,7 +1234,7 @@ type ExportError struct {
 	AdDistinguishedName *string `json:"adDistinguishedName,omitempty"`
 	// AdMail - The email for the AD object.
 	AdMail *string `json:"adMail,omitempty"`
-	// TimeOccured - The date and time of occurance.
+	// TimeOccured - The date and time of occurrance.
 	TimeOccured *date.Time `json:"timeOccured,omitempty"`
 	// AadObjectType - The AAD side object type.
 	AadObjectType *string `json:"aadObjectType,omitempty"`
@@ -1252,7 +1252,7 @@ type ExportError struct {
 	AadMail *string `json:"aadMail,omitempty"`
 	// LastDirSyncTime - The date and time of last sync run.
 	LastDirSyncTime *date.Time `json:"lastDirSyncTime,omitempty"`
-	// ModifiedAttributeValue - The modified atttribute value.
+	// ModifiedAttributeValue - The modified attribute value.
 	ModifiedAttributeValue *string `json:"modifiedAttributeValue,omitempty"`
 }
 
@@ -1494,7 +1494,7 @@ type ImportErrors struct {
 type InboundReplicationNeighbor struct {
 	// SourceDomainController - The name of the source domain controller.
 	SourceDomainController *string `json:"sourceDomainController,omitempty"`
-	// ConsecutiveFailureCount - The number of consecutive faulire counts.
+	// ConsecutiveFailureCount - The number of consecutive failure counts.
 	ConsecutiveFailureCount *int32 `json:"consecutiveFailureCount,omitempty"`
 	// NamingContext - The naming context.
 	NamingContext *string `json:"namingContext,omitempty"`
@@ -1569,7 +1569,7 @@ type MergedExportError struct {
 	IncomingObject *AssociatedObject `json:"incomingObject,omitempty"`
 	// ExistingObject - The existing object
 	ExistingObject *AssociatedObject `json:"existingObject,omitempty"`
-	// ModifiedOrRemovedAttributeValue - The modified or removed attribute vlaue.
+	// ModifiedOrRemovedAttributeValue - The modified or removed attribute value.
 	ModifiedOrRemovedAttributeValue *string `json:"modifiedOrRemovedAttributeValue,omitempty"`
 	// RunStepResultID - The run step result Id.
 	RunStepResultID *uuid.UUID `json:"runStepResultId,omitempty"`
@@ -1894,7 +1894,7 @@ type ModuleConfigurations struct {
 	Value *[]ModuleConfiguration `json:"value,omitempty"`
 }
 
-// ObjectWithSyncError the objects withg sync errors.
+// ObjectWithSyncError the objects with sync errors.
 type ObjectWithSyncError struct {
 	// SourceOfAuthority - The source of authority.
 	SourceOfAuthority *string `json:"sourceOfAuthority,omitempty"`
@@ -1912,7 +1912,7 @@ type ObjectWithSyncError struct {
 	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
 	// ObjectGUID - The object guid.
 	ObjectGUID *string `json:"objectGuid,omitempty"`
-	// AttributeMultiValues - Indicates if the atttibute is multi-valued or not.
+	// AttributeMultiValues - Indicates if the attribute is multi-valued or not.
 	AttributeMultiValues *bool `json:"attributeMultiValues,omitempty"`
 	// MinLimit - The minimum limit.
 	MinLimit *string `json:"minLimit,omitempty"`
@@ -1922,7 +1922,7 @@ type ObjectWithSyncError struct {
 	DistinguishedName *string `json:"distinguishedName,omitempty"`
 	// Mail - The email.
 	Mail *string `json:"mail,omitempty"`
-	// TimeOccured - The date and time of occurance.
+	// TimeOccured - The date and time of occurrance.
 	TimeOccured *date.Time `json:"timeOccured,omitempty"`
 	// ErrorType - The error type.
 	ErrorType *string `json:"errorType,omitempty"`
@@ -1943,9 +1943,9 @@ type OperationListResponse struct {
 	autorest.Response `json:"-"`
 	// NextLink - URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - List of operations supported by the Microsoft.ADHybridhHealthService resource provider.
+	// Value - List of operations supported by the Microsoft.ADHybridHealthService resource provider.
 	Value *[]Operation `json:"value,omitempty"`
-	// TotalCount - The total count of opertaions.
+	// TotalCount - The total count of operations.
 	TotalCount *int32 `json:"totalCount,omitempty"`
 	// ContinuationToken - The continuation token to get next set of operations.
 	ContinuationToken *string `json:"continuationToken,omitempty"`
@@ -2094,7 +2094,7 @@ type PasswordManagementSettings struct {
 	ExtensionFilePath *string `json:"extensionFilePath,omitempty"`
 	// ConnectTo - Connection point of password management.
 	ConnectTo *string `json:"connectTo,omitempty"`
-	// ConnectionTimeout - Connection timeoit for password extension.
+	// ConnectionTimeout - Connection timeout for password extension.
 	ConnectionTimeout *int32 `json:"connectionTimeout,omitempty"`
 	// User - User to execute password extension.
 	User *string `json:"user,omitempty"`
@@ -2106,7 +2106,7 @@ type PasswordManagementSettings struct {
 	RetryIntervalInSeconds *int32 `json:"retryIntervalInSeconds,omitempty"`
 	// RequiresSecureConnection - Indicates if a secure connection is required for password management.
 	RequiresSecureConnection *bool `json:"requiresSecureConnection,omitempty"`
-	// UnlockAccount - Indicates if accounts should be unloacked when resetting password.
+	// UnlockAccount - Indicates if accounts should be unlocked when resetting password.
 	UnlockAccount *bool `json:"unlockAccount,omitempty"`
 }
 
@@ -2250,7 +2250,7 @@ type ServiceMember struct {
 	ActiveAlerts *int32 `json:"activeAlerts,omitempty"`
 	// AdditionalInformation - The additional information, if any, for the server.
 	AdditionalInformation *string `json:"additionalInformation,omitempty"`
-	// CreatedDate - The date time , in UTC, when the server was onboaraded to Azure Active Directory Connect Health.
+	// CreatedDate - The date time , in UTC, when the server was onboarded to Azure Active Directory Connect Health.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// Dimensions - The server specific configuration related dimensions.
 	Dimensions interface{} `json:"dimensions,omitempty"`
@@ -2266,7 +2266,7 @@ type ServiceMember struct {
 	LastReboot *date.Time `json:"lastReboot,omitempty"`
 	// LastServerReportedMonitoringLevelChange - The date and time, in UTC, when the server's data monitoring configuration was last changed.
 	LastServerReportedMonitoringLevelChange *date.Time `json:"lastServerReportedMonitoringLevelChange,omitempty"`
-	// LastUpdated - The date and time, in UTC, when the server proeprties were last updated.
+	// LastUpdated - The date and time, in UTC, when the server properties were last updated.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// MachineID - The id of the machine.
 	MachineID *string `json:"machineId,omitempty"`
@@ -2411,7 +2411,7 @@ type ServiceProperties struct {
 	AdditionalInformation *string `json:"additionalInformation,omitempty"`
 	// CreatedDate - The date and time, in UTC, when the service was onboarded to Azure Active Directory Connect Health.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// CustomNotificationEmails - The list of additional emails that are configured to recieve notifications about the service.
+	// CustomNotificationEmails - The list of additional emails that are configured to receive notifications about the service.
 	CustomNotificationEmails *[]string `json:"customNotificationEmails,omitempty"`
 	// Disabled - Indicates if the service is disabled or not.
 	Disabled *bool `json:"disabled,omitempty"`
@@ -2582,7 +2582,7 @@ type Tenant struct {
 	AadPremium *bool `json:"aadPremium,omitempty"`
 	// AgentAutoUpdate - Indicates if the tenant is configured to automatically receive updates for Azure Active Directory Connect Health client side features.
 	AgentAutoUpdate *bool `json:"agentAutoUpdate,omitempty"`
-	// AlertSuppressionTimeInMins - The time in minutues after which an alert will be autosupressed.
+	// AlertSuppressionTimeInMins - The time in minutes after which an alert will be autosupressed.
 	AlertSuppressionTimeInMins *int32 `json:"alertSuppressionTimeInMins,omitempty"`
 	// ConsentedToMicrosoftDevOps - Indicates if the tenant data can be seen by Microsoft through Azure portal.
 	ConsentedToMicrosoftDevOps *bool `json:"consentedToMicrosoftDevOps,omitempty"`

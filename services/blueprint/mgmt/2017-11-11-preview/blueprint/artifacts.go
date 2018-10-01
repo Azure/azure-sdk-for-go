@@ -70,10 +70,9 @@ func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, managementGrou
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ArtifactsClient) CreateOrUpdatePreparer(ctx context.Context, managementGroupName string, blueprintName string, artifactName string, artifact BasicArtifact) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"artifactName":              autorest.Encode("path", artifactName),
-		"blueprintName":             autorest.Encode("path", blueprintName),
-		"managementGroupName":       autorest.Encode("path", managementGroupName),
-		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"artifactName":        autorest.Encode("path", artifactName),
+		"blueprintName":       autorest.Encode("path", blueprintName),
+		"managementGroupName": autorest.Encode("path", managementGroupName),
 	}
 
 	const APIVersion = "2017-11-11-preview"
@@ -85,7 +84,7 @@ func (client ArtifactsClient) CreateOrUpdatePreparer(ctx context.Context, manage
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithJSON(artifact),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -141,10 +140,9 @@ func (client ArtifactsClient) Delete(ctx context.Context, managementGroupName st
 // DeletePreparer prepares the Delete request.
 func (client ArtifactsClient) DeletePreparer(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"artifactName":              autorest.Encode("path", artifactName),
-		"blueprintName":             autorest.Encode("path", blueprintName),
-		"managementGroupName":       autorest.Encode("path", managementGroupName),
-		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"artifactName":        autorest.Encode("path", artifactName),
+		"blueprintName":       autorest.Encode("path", blueprintName),
+		"managementGroupName": autorest.Encode("path", managementGroupName),
 	}
 
 	const APIVersion = "2017-11-11-preview"
@@ -155,7 +153,7 @@ func (client ArtifactsClient) DeletePreparer(ctx context.Context, managementGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -210,10 +208,9 @@ func (client ArtifactsClient) Get(ctx context.Context, managementGroupName strin
 // GetPreparer prepares the Get request.
 func (client ArtifactsClient) GetPreparer(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"artifactName":              autorest.Encode("path", artifactName),
-		"blueprintName":             autorest.Encode("path", blueprintName),
-		"managementGroupName":       autorest.Encode("path", managementGroupName),
-		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"artifactName":        autorest.Encode("path", artifactName),
+		"blueprintName":       autorest.Encode("path", blueprintName),
+		"managementGroupName": autorest.Encode("path", managementGroupName),
 	}
 
 	const APIVersion = "2017-11-11-preview"
@@ -224,7 +221,7 @@ func (client ArtifactsClient) GetPreparer(ctx context.Context, managementGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts/{artifactName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -279,9 +276,8 @@ func (client ArtifactsClient) List(ctx context.Context, managementGroupName stri
 // ListPreparer prepares the List request.
 func (client ArtifactsClient) ListPreparer(ctx context.Context, managementGroupName string, blueprintName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"blueprintName":             autorest.Encode("path", blueprintName),
-		"managementGroupName":       autorest.Encode("path", managementGroupName),
-		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"blueprintName":       autorest.Encode("path", blueprintName),
+		"managementGroupName": autorest.Encode("path", managementGroupName),
 	}
 
 	const APIVersion = "2017-11-11-preview"
@@ -292,7 +288,7 @@ func (client ArtifactsClient) ListPreparer(ctx context.Context, managementGroupN
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/artifacts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

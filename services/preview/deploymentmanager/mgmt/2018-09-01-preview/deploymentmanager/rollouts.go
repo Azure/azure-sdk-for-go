@@ -41,7 +41,7 @@ func NewRolloutsClientWithBaseURI(baseURI string, subscriptionID string) Rollout
 	return RolloutsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Cancel a rollout can be canceled only if it is in running state.
+// Cancel only running rollouts can be canceled.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // rolloutName - the rollout name.
@@ -214,7 +214,7 @@ func (client RolloutsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	return
 }
 
-// Delete a rollout can only be deleted if it is in a terminal state.
+// Delete only rollouts in terminal state can be deleted.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // rolloutName - the rollout name.
@@ -368,7 +368,7 @@ func (client RolloutsClient) GetResponder(resp *http.Response) (result Rollout, 
 	return
 }
 
-// Restart a rollout can be restarted only if is in a terminal state and failed.
+// Restart only failed rollouts can be restarted.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // rolloutName - the rollout name.

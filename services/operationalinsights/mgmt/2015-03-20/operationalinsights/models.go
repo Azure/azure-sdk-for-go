@@ -703,6 +703,8 @@ type WorkspacePurgeBodyFilters struct {
 	Operator *string `json:"operator,omitempty"`
 	// Value - the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values.
 	Value interface{} `json:"value,omitempty"`
+	// Key - When filtering over custom dimensions, this key will be used as the name of the custom dimension.
+	Key *string `json:"key,omitempty"`
 }
 
 // WorkspacePurgeResponse response containing operationId for a specific purge action.

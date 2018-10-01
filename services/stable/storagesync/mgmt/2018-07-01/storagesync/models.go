@@ -55,21 +55,6 @@ func PossibleCloudTiering1Values() []CloudTiering1 {
 	return []CloudTiering1{CloudTiering1Off, CloudTiering1On}
 }
 
-// CloudTiering2 enumerates the values for cloud tiering 2.
-type CloudTiering2 string
-
-const (
-	// CloudTiering2Off ...
-	CloudTiering2Off CloudTiering2 = "off"
-	// CloudTiering2On ...
-	CloudTiering2On CloudTiering2 = "on"
-)
-
-// PossibleCloudTiering2Values returns an array of possible values for the CloudTiering2 const type.
-func PossibleCloudTiering2Values() []CloudTiering2 {
-	return []CloudTiering2{CloudTiering2Off, CloudTiering2On}
-}
-
 // NameAvailabilityReason enumerates the values for name availability reason.
 type NameAvailabilityReason string
 
@@ -142,18 +127,6 @@ const (
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
 	return []Status{Aborted, Active, Expired, Failed, Succeeded}
-}
-
-// APIError error type
-type APIError struct {
-	// Code - Error code of the given entry.
-	Code *string `json:"code,omitempty"`
-	// Message - Error message of the given entry.
-	Message *string `json:"message,omitempty"`
-	// Target - Target of the given error entry.
-	Target *string `json:"target,omitempty"`
-	// Details - Error details of the given entry.
-	Details *ErrorDetails `json:"details,omitempty"`
 }
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
@@ -282,85 +255,12 @@ type CloudEndpointArray struct {
 	Value *[]CloudEndpoint `json:"value,omitempty"`
 }
 
-// CloudEndpointCreateParameters the parameters used when creating a storage sync service.
-type CloudEndpointCreateParameters struct {
-	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-	Tags map[string]*string `json:"tags"`
-	// CloudEndpointCreateParametersProperties - The parameters used to create the storage sync service.
-	*CloudEndpointCreateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CloudEndpointCreateParameters.
-func (cecp CloudEndpointCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cecp.Location != nil {
-		objectMap["location"] = cecp.Location
-	}
-	if cecp.Tags != nil {
-		objectMap["tags"] = cecp.Tags
-	}
-	if cecp.CloudEndpointCreateParametersProperties != nil {
-		objectMap["properties"] = cecp.CloudEndpointCreateParametersProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CloudEndpointCreateParameters struct.
-func (cecp *CloudEndpointCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				cecp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				cecp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var cloudEndpointCreateParametersProperties CloudEndpointCreateParametersProperties
-				err = json.Unmarshal(*v, &cloudEndpointCreateParametersProperties)
-				if err != nil {
-					return err
-				}
-				cecp.CloudEndpointCreateParametersProperties = &cloudEndpointCreateParametersProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// CloudEndpointCreateParametersProperties cloudEndpoint Properties object.
-type CloudEndpointCreateParametersProperties struct {
-	// StorageAccountResourceID - Storage Account Resource Id
-	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
-	// StorageAccountShareName - Storage Account Share name
-	StorageAccountShareName *string `json:"storageAccountShareName,omitempty"`
-	// StorageAccountTenantID - Storage Account Tenant Id
-	StorageAccountTenantID *string `json:"storageAccountTenantId,omitempty"`
-}
-
 // CloudEndpointProperties cloudEndpoint Properties object.
 type CloudEndpointProperties struct {
+	// StorageAccountKey - Storage Account access key.
+	StorageAccountKey *string `json:"storageAccountKey,omitempty"`
+	// StorageAccount - Storage Account name.
+	StorageAccount *string `json:"storageAccount,omitempty"`
 	// StorageAccountResourceID - Storage Account Resource Id
 	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
 	// StorageAccountShareName - Storage Account Share name
@@ -531,10 +431,12 @@ func (future *CloudEndpointsPreRestoreFuture) Result(client CloudEndpointsClient
 
 // Error error type
 type Error struct {
-	// Error - Error details of the given entry.
-	Error *APIError `json:"error,omitempty"`
-	// Innererror - Error details of the given entry.
-	Innererror *APIError `json:"innererror,omitempty"`
+	// Code - Error code of the given entry.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message of the given entry.
+	Message *string `json:"message,omitempty"`
+	// Details - Error details of the given entry.
+	Details *ErrorDetails `json:"details,omitempty"`
 }
 
 // ErrorDetails error Details object.
@@ -782,33 +684,22 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RecallActionParameters the parameters used when calling recall action on server endpoint.
-type RecallActionParameters struct {
-	// Pattern - Pattern of the files.
-	Pattern *string `json:"pattern,omitempty"`
-	// RecallPath - Recall path.
-	RecallPath *string `json:"recallPath,omitempty"`
-}
-
 // RegisteredServer registered Server resource.
 type RegisteredServer struct {
 	autorest.Response `json:"-"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// RegisteredServerProperties - RegisteredServer properties.
 	*RegisteredServerProperties `json:"properties,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegisteredServer.
 func (rs RegisteredServer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rs.RegisteredServerProperties != nil {
-		objectMap["properties"] = rs.RegisteredServerProperties
-	}
 	if rs.ID != nil {
 		objectMap["id"] = rs.ID
 	}
@@ -817,6 +708,9 @@ func (rs RegisteredServer) MarshalJSON() ([]byte, error) {
 	}
 	if rs.Type != nil {
 		objectMap["type"] = rs.Type
+	}
+	if rs.RegisteredServerProperties != nil {
+		objectMap["properties"] = rs.RegisteredServerProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -830,15 +724,6 @@ func (rs *RegisteredServer) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var registeredServerProperties RegisteredServerProperties
-				err = json.Unmarshal(*v, &registeredServerProperties)
-				if err != nil {
-					return err
-				}
-				rs.RegisteredServerProperties = &registeredServerProperties
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -866,6 +751,15 @@ func (rs *RegisteredServer) UnmarshalJSON(body []byte) error {
 				}
 				rs.Type = &typeVar
 			}
+		case "properties":
+			if v != nil {
+				var registeredServerProperties RegisteredServerProperties
+				err = json.Unmarshal(*v, &registeredServerProperties)
+				if err != nil {
+					return err
+				}
+				rs.RegisteredServerProperties = &registeredServerProperties
+			}
 		}
 	}
 
@@ -877,95 +771,6 @@ type RegisteredServerArray struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of Registered Server.
 	Value *[]RegisteredServer `json:"value,omitempty"`
-}
-
-// RegisteredServerCreateParameters the parameters used when creating a storage sync service.
-type RegisteredServerCreateParameters struct {
-	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-	Tags map[string]*string `json:"tags"`
-	// RegisteredServerCreateParametersProperties - The parameters used to create the storage sync service.
-	*RegisteredServerCreateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RegisteredServerCreateParameters.
-func (rscp RegisteredServerCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rscp.Location != nil {
-		objectMap["location"] = rscp.Location
-	}
-	if rscp.Tags != nil {
-		objectMap["tags"] = rscp.Tags
-	}
-	if rscp.RegisteredServerCreateParametersProperties != nil {
-		objectMap["properties"] = rscp.RegisteredServerCreateParametersProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for RegisteredServerCreateParameters struct.
-func (rscp *RegisteredServerCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				rscp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				rscp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var registeredServerCreateParametersProperties RegisteredServerCreateParametersProperties
-				err = json.Unmarshal(*v, &registeredServerCreateParametersProperties)
-				if err != nil {
-					return err
-				}
-				rscp.RegisteredServerCreateParametersProperties = &registeredServerCreateParametersProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// RegisteredServerCreateParametersProperties registeredServer Properties object.
-type RegisteredServerCreateParametersProperties struct {
-	// ServerCertificate - Registered Server Certificate
-	ServerCertificate *string `json:"serverCertificate,omitempty"`
-	// AgentVersion - Registered Server Agent Version
-	AgentVersion *string `json:"agentVersion,omitempty"`
-	// ServerOSVersion - Registered Server OS Version
-	ServerOSVersion *string `json:"serverOSVersion,omitempty"`
-	// LastHeartBeat - Registered Server last heart beat
-	LastHeartBeat *string `json:"lastHeartBeat,omitempty"`
-	// ServerRole - Registered Server serverRole
-	ServerRole *string `json:"serverRole,omitempty"`
-	// ClusterID - Registered Server clusterId
-	ClusterID *string `json:"clusterId,omitempty"`
-	// ClusterName - Registered Server clusterName
-	ClusterName *string `json:"clusterName,omitempty"`
-	// ServerID - Registered Server serverId
-	ServerID *string `json:"serverId,omitempty"`
-	// FriendlyName - Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
 // RegisteredServerProperties registeredServer Properties object.
@@ -1054,6 +859,29 @@ func (future *RegisteredServersDeleteFuture) Result(client RegisteredServersClie
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// RegisteredServersTriggerRolloverFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type RegisteredServersTriggerRolloverFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *RegisteredServersTriggerRolloverFuture) Result(client RegisteredServersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersTriggerRolloverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersTriggerRolloverFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -1175,95 +1003,16 @@ type ServerEndpointArray struct {
 	Value *[]ServerEndpoint `json:"value,omitempty"`
 }
 
-// ServerEndpointCreateParameters the parameters used when creating a storage sync service.
-type ServerEndpointCreateParameters struct {
-	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-	Tags map[string]*string `json:"tags"`
-	// ServerEndpointCreateParametersProperties - The parameters used to create the storage sync service.
-	*ServerEndpointCreateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ServerEndpointCreateParameters.
-func (secp ServerEndpointCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if secp.Location != nil {
-		objectMap["location"] = secp.Location
-	}
-	if secp.Tags != nil {
-		objectMap["tags"] = secp.Tags
-	}
-	if secp.ServerEndpointCreateParametersProperties != nil {
-		objectMap["properties"] = secp.ServerEndpointCreateParametersProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ServerEndpointCreateParameters struct.
-func (secp *ServerEndpointCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				secp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				secp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var serverEndpointCreateParametersProperties ServerEndpointCreateParametersProperties
-				err = json.Unmarshal(*v, &serverEndpointCreateParametersProperties)
-				if err != nil {
-					return err
-				}
-				secp.ServerEndpointCreateParametersProperties = &serverEndpointCreateParametersProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// ServerEndpointCreateParametersProperties serverEndpoint Properties object.
-type ServerEndpointCreateParametersProperties struct {
-	// ServerLocalPath - Server Local path.
-	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
-	// CloudTiering - Cloud Tiering. Possible values include: 'On', 'Off'
-	CloudTiering CloudTiering `json:"cloudTiering,omitempty"`
-	// VolumeFreeSpacePercent - Level of free space to be maintained by Cloud Tiering if it is enabled.
-	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
-	// FriendlyName - Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ServerResourceID - Server Resource Id.
-	ServerResourceID *string `json:"serverResourceId,omitempty"`
-}
-
 // ServerEndpointProperties serverEndpoint Properties object.
 type ServerEndpointProperties struct {
 	// ServerLocalPath - Server Local path.
 	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
-	// CloudTiering - Cloud Tiering. Possible values include: 'CloudTiering2On', 'CloudTiering2Off'
-	CloudTiering CloudTiering2 `json:"cloudTiering,omitempty"`
+	// CloudTiering - Cloud Tiering. Possible values include: 'CloudTiering1On', 'CloudTiering1Off'
+	CloudTiering CloudTiering1 `json:"cloudTiering,omitempty"`
 	// VolumeFreeSpacePercent - Level of free space to be maintained by Cloud Tiering if it is enabled.
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
+	// TierFilesOlderThanDays - Tier files older than days.
+	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
 	// FriendlyName - Friendly Name
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ServerResourceID - Server Resource Id.
@@ -1384,8 +1133,6 @@ func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) 
 
 // ServerEndpointUpdateParameters parameters for updating an Server Endpoint.
 type ServerEndpointUpdateParameters struct {
-	// Tags - The user-specified tags associated with the server endpoint.
-	Tags map[string]*string `json:"tags"`
 	// ServerEndpointUpdateProperties - The properties of the serverendpoint.
 	*ServerEndpointUpdateProperties `json:"properties,omitempty"`
 }
@@ -1393,9 +1140,6 @@ type ServerEndpointUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ServerEndpointUpdateParameters.
 func (seup ServerEndpointUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if seup.Tags != nil {
-		objectMap["tags"] = seup.Tags
-	}
 	if seup.ServerEndpointUpdateProperties != nil {
 		objectMap["properties"] = seup.ServerEndpointUpdateProperties
 	}
@@ -1411,15 +1155,6 @@ func (seup *ServerEndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				seup.Tags = tags
-			}
 		case "properties":
 			if v != nil {
 				var serverEndpointUpdateProperties ServerEndpointUpdateProperties
@@ -1437,10 +1172,12 @@ func (seup *ServerEndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 
 // ServerEndpointUpdateProperties serverEndpoint Update Properties object.
 type ServerEndpointUpdateProperties struct {
-	// CloudTiering - Cloud Tiering. Possible values include: 'CloudTiering1On', 'CloudTiering1Off'
-	CloudTiering CloudTiering1 `json:"cloudTiering,omitempty"`
+	// CloudTiering - Cloud Tiering. Possible values include: 'On', 'Off'
+	CloudTiering CloudTiering `json:"cloudTiering,omitempty"`
 	// VolumeFreeSpacePercent - Level of free space to be maintained by Cloud Tiering if it is enabled.
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
+	// TierFilesOlderThanDays - Tier files older than days.
+	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
 }
 
 // Service storage Sync Service object.
@@ -1558,26 +1295,6 @@ type ServiceArray struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of StorageSyncServices.
 	Value *[]Service `json:"value,omitempty"`
-}
-
-// ServiceCreateParameters the parameters used when creating a storage sync service.
-type ServiceCreateParameters struct {
-	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for ServiceCreateParameters.
-func (scp ServiceCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if scp.Location != nil {
-		objectMap["location"] = scp.Location
-	}
-	if scp.Tags != nil {
-		objectMap["tags"] = scp.Tags
-	}
-	return json.Marshal(objectMap)
 }
 
 // ServiceProperties storage Sync Service Properties object.
@@ -1703,29 +1420,6 @@ type SyncGroupArray struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of SyncGroup.
 	Value *[]SyncGroup `json:"value,omitempty"`
-}
-
-// SyncGroupCreateParameters the parameters used when creating a sync group.
-type SyncGroupCreateParameters struct {
-	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
-	Tags map[string]*string `json:"tags"`
-	// Properties - The parameters used to create the sync group
-	Properties interface{} `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SyncGroupCreateParameters.
-func (sgcp SyncGroupCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sgcp.Location != nil {
-		objectMap["location"] = sgcp.Location
-	}
-	if sgcp.Tags != nil {
-		objectMap["tags"] = sgcp.Tags
-	}
-	objectMap["properties"] = sgcp.Properties
-	return json.Marshal(objectMap)
 }
 
 // SyncGroupProperties syncGroup Properties object.

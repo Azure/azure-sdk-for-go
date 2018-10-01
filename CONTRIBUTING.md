@@ -80,3 +80,9 @@ the form of a [GitHub Gist](https://gist.github.com) or [Go Playground](https://
 ### Feature Requests
 
 For expanded capabilities, please describe what you'd like to see and whom you believe would benefit.
+
+## Reference
+
+- [Clemens Vaster explains AMQP 1.0 - youtube.com](https://www.youtube.com/playlist?list=PLmE4bZU0qx-wAP02i0I7PJWvDWoCytEjD)
+- [Service Bus AMQP Protocol Guide - docs.microsoft.com](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-protocol-guide)
+- [.NET Service Bus Library - github.com](https://github.com/Azure/azure-service-bus-dotnet)

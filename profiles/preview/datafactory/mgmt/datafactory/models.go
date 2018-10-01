@@ -547,6 +547,7 @@ type TypeBasicActivity = original.TypeBasicActivity
 
 const (
 	TypeActivity                 TypeBasicActivity = original.TypeActivity
+	TypeAppendVariable           TypeBasicActivity = original.TypeAppendVariable
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
@@ -569,6 +570,7 @@ const (
 	TypeHDInsightStreaming       TypeBasicActivity = original.TypeHDInsightStreaming
 	TypeIfCondition              TypeBasicActivity = original.TypeIfCondition
 	TypeLookup                   TypeBasicActivity = original.TypeLookup
+	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeWait                     TypeBasicActivity = original.TypeWait
@@ -860,6 +862,14 @@ const (
 	TypeTumblingWindowTrigger   TypeBasicTrigger = original.TypeTumblingWindowTrigger
 )
 
+type VariableType = original.VariableType
+
+const (
+	VariableTypeArray  VariableType = original.VariableTypeArray
+	VariableTypeBool   VariableType = original.VariableTypeBool
+	VariableTypeString VariableType = original.VariableTypeString
+)
+
 type WebActivityMethod = original.WebActivityMethod
 
 const (
@@ -886,6 +896,8 @@ type AmazonS3Dataset = original.AmazonS3Dataset
 type AmazonS3DatasetTypeProperties = original.AmazonS3DatasetTypeProperties
 type AmazonS3LinkedService = original.AmazonS3LinkedService
 type AmazonS3LinkedServiceTypeProperties = original.AmazonS3LinkedServiceTypeProperties
+type AppendVariableActivity = original.AppendVariableActivity
+type AppendVariableActivityTypeProperties = original.AppendVariableActivityTypeProperties
 type AvroFormat = original.AvroFormat
 type AzureBatchLinkedService = original.AzureBatchLinkedService
 type AzureBatchLinkedServiceTypeProperties = original.AzureBatchLinkedServiceTypeProperties
@@ -1303,6 +1315,8 @@ type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset
 type ServiceNowSource = original.ServiceNowSource
+type SetVariableActivity = original.SetVariableActivity
+type SetVariableActivityTypeProperties = original.SetVariableActivityTypeProperties
 type SftpServerLinkedService = original.SftpServerLinkedService
 type SftpServerLinkedServiceTypeProperties = original.SftpServerLinkedServiceTypeProperties
 type ShopifyLinkedService = original.ShopifyLinkedService
@@ -1361,6 +1375,7 @@ type UntilActivityTypeProperties = original.UntilActivityTypeProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
 type UserProperty = original.UserProperty
+type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
 type VerticaLinkedServiceTypeProperties = original.VerticaLinkedServiceTypeProperties
 type VerticaSource = original.VerticaSource
@@ -1653,6 +1668,9 @@ func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
 }
 func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
 	return original.PossibleTypeBasicTriggerValues()
+}
+func PossibleVariableTypeValues() []VariableType {
+	return original.PossibleVariableTypeValues()
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()

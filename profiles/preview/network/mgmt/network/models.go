@@ -88,8 +88,8 @@ const (
 type ApplicationGatewayCustomErrorStatusCode = original.ApplicationGatewayCustomErrorStatusCode
 
 const (
-	FiveZeroTwo   ApplicationGatewayCustomErrorStatusCode = original.FiveZeroTwo
-	FourZeroThree ApplicationGatewayCustomErrorStatusCode = original.FourZeroThree
+	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus403
+	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus502
 )
 
 type ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallMode

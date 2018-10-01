@@ -20,7 +20,8 @@ This library is currently a preview. There may be breaking interface changes unt
 If you run into an issue, please don't hesitate to log a 
 [new issue](https://github.com/Azure/azure-service-bus-go/issues/new) or open a pull request.
 
-## Installing the library
+## Getting Started
+### Installing the library
 To more reliably manage dependencies in your application we recommend [golang/dep](https://github.com/golang/dep).
 
 With dep:
@@ -35,71 +36,17 @@ go get -u github.com/Azure/azure-service-bus-go/...
 
 If you need to install Go, follow [the official instructions](https://golang.org/dl/)
 
-## Using Service Bus
-In this section we'll cover some basics of the library to help you get started.
+### Examples
 
-### Quick start
-Let's send and receive `"hello, world!"`.
-```go
-package main
+Find up-to-date examples and documentation on [godoc.org](https://godoc.org/github.com/Azure/azure-service-bus-go#pkg-examples).
 
-import (
-	"context"
-	"fmt"
-	"os"
-	"os/signal"
+### Have questions?
 
-	"github.com/Azure/azure-service-bus-go"
-)
+The developers of this library are all active on the [Gopher Slack](https://gophers.slack.com), it is likely easiest to 
+get our attention in the [Microsoft Channel](https://gophers.slack.com/messages/C6NH8V2E9). We'll also find your issue
+if you ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/go+azure) with the tags `azure` and `go`.
 
-func main() {
-	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
-	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
-	if err != nil {
-		// handle error
-	}
-
-	// Initialize and create a Service Bus Queue named helloworld if it doesn't exist
-	queueName := "helloworld"
-	q, err := ns.NewQueue(queueName)
-	if err != nil {
-		// handle queue creation error
-	}
-
-	// Send message to the Queue named helloworld
-	err = q.Send(context.Background(), servicebus.NewMessageFromString("Hello World!"))
-	if err != nil {
-		// handle message send error
-	}
-
-	// Receive message from queue named helloworld
-	listenHandle, err := q.Receive(context.Background(),
-		func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
-			fmt.Println(string(msg.Data))
-			return msg.Accept()
-		})
-	if err != nil {
-		// handle queue listener creation err
-	}
-	// Close the listener handle for the Service Bus Queue
-	defer listenHandle.Close(context.Background())
-
-	// Wait for a signal to quit:
-	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, os.Interrupt, os.Kill)
-	<-signalChan
-}
-```
-
-# Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Code of Conduct
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or

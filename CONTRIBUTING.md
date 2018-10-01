@@ -8,6 +8,9 @@ First of all, welcome. Thank you for your interest in furthering Go support for 
 
 The following programs should be installed on your machine before you begin developing.
 
+> Note: Adhering to the linters below is enforced in CI. It is not required to have the tools locally, but contributors 
+are expected to fix those issues found in CI.
+
 | Tool | Necessary | Description |
 | :---------------------------------------------------: | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [go](https://godoc.org)                               | Required |This is a Go project, and as such you should have Go installed on your machine. As a general rule of thumb, we support two minor versions behind the current latest stable release. |
@@ -15,9 +18,9 @@ The following programs should be installed on your machine before you begin deve
 | [dep](https://github.com/golang/dep)                  | Required |`dep` is used to vendor our dependencies. We plan on adopting Go modules in the future.                                                                                             |
 | [az](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) | Optional | The Azure CLI is used for its ability to authenticate against Azure. Tests themselves only need a connection string and other metadata about the Service Bus namespace, but tooling to automatically setup the necessary infrastructure to run the tests may depend on the Azure CLI. |
 | [terraform](https://terraform.io)                     | Optional | `terraform` is used to help provision the Azure infrastructure needed to run our tests both in CI and on your local machine. If you have already provisioned a Service Bus Namespace, and created the necessary Service Bus Queues, you do not need terraform. |
-| [golint](https://godoc.org/golang.org/x/lint/golint)  | Required |`golint` is a linter that finds basic stylistic mistakes in Go programs.                                                                                                            |
-| [gocyclo](https://github.com/fzipp/gocyclo)           | Required |`gocyclo`  checks for programmatic complexity, to ensure code readability.                                                                                                          |
-| [megacheck](https://honnef.co/go/tools/cmd/megacheck) | Required | `megacheck` is a linter that checks for a broader set of errors than `go vet` or `golint`.                                                                                         |
+| [golint](https://godoc.org/golang.org/x/lint/golint)  | Optional |`golint` is a linter that finds basic stylistic mistakes in Go programs.                                                                                                            |
+| [gocyclo](https://github.com/fzipp/gocyclo)           | Optional |`gocyclo`  checks for programmatic complexity, to ensure code readability.                                                                                                          |
+| [megacheck](https://honnef.co/go/tools/cmd/megacheck) | Optional | `megacheck` is a linter that checks for a broader set of errors than `go vet` or `golint`.                                                                                         |
 
 #### Editors
 
@@ -46,6 +49,7 @@ your GitHub account. Sign once and commit to any Microsoft Open Source Project.
 	| AZURE_SUBSCRIPTION_ID          | The Azure Subscription to be used to run your tests.                                                          |
 	| AZURE_TENANT_ID                | The UUID used to identify the tenant your Azure Subscription belongs to.                                      |
 	| TEST_SERVICEBUS_RESOURCE_GROUP | The Azure Resource Group that holds the infrastructure needed to run the tests.                               |
+	| TEST_SERVICEBUS_LOCATION       | The Azure Region containing your resource group. (e.g. "eastus", "westus2", etc.)                             |
 1. Authenticate using the CLI byt running the command `az login`. 
 	> Note: Alternatively, set environment variables `ARM_CLIENT_ID`, `ARM_CLIENT_SECRET`, `ARM_TENANT_ID`, and `ARM_SUBSCRIPTION_ID` equal to their AZURE counterparts.
 1. Run `terraform apply` to make sure that all of the infrastructure needed to run the tests is available. 
@@ -76,14 +80,3 @@ the form of a [GitHub Gist](https://gist.github.com) or [Go Playground](https://
 ### Feature Requests
 
 For expanded capabilities, please describe what you'd like to see and whom you believe would benefit.
-
-## Communication
-
-The developers of this library are all active on the [Gopher Slack](https://gophers.slack.com), it is likely easiest to 
-get our attention in the [Microsoft Channel](https://gophers.slack.com/messages/C6NH8V2E9). We'll also find your issue
-if you ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/go+azure) with the tags `azure` and `go`.
-
-## Code of Conduct
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). 
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact 
-[opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

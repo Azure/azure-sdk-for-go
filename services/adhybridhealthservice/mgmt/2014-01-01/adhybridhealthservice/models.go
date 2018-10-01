@@ -272,7 +272,7 @@ type AdditionalInformation struct {
 	// TitleValue - The title value for the property.
 	TitleValue *string `json:"titleValue,omitempty"`
 	// Properties - The list of properties which are included in the additional information.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties *[]Item `json:"properties,omitempty"`
 	// HasProperties - Indicates if properties are present or not.
 	HasProperties *bool `json:"hasProperties,omitempty"`
 }
@@ -876,9 +876,9 @@ type Connector struct {
 	// SchemaXML - The schema xml for the connector.
 	SchemaXML *string `json:"schemaXml,omitempty"`
 	// PasswordManagementSettings - The password management settings of the connector.
-	PasswordManagementSettings interface{} `json:"passwordManagementSettings,omitempty"`
+	PasswordManagementSettings *PasswordManagementSettings `json:"passwordManagementSettings,omitempty"`
 	// PasswordHashSyncConfiguration - The password hash synchronization configuration of the connector.
-	PasswordHashSyncConfiguration interface{} `json:"passwordHashSyncConfiguration,omitempty"`
+	PasswordHashSyncConfiguration *PasswordHashSyncConfiguration `json:"passwordHashSyncConfiguration,omitempty"`
 	// TimeCreated - The date and time when this connector was created.
 	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// TimeLastModified - The date and time when this connector was last modified.
@@ -993,7 +993,7 @@ type Dimension struct {
 	// Health - The health status for the domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
 	Health HealthStatus `json:"health,omitempty"`
 	// SimpleProperties - List of service specific configuration properties.
-	SimpleProperties interface{} `json:"simpleProperties,omitempty"`
+	SimpleProperties *[]Item `json:"simpleProperties,omitempty"`
 	// ActiveAlerts - The count of alerts that are currently active for the service.
 	ActiveAlerts *int32 `json:"activeAlerts,omitempty"`
 	// AdditionalInformation - The additional information related to the service.
@@ -2596,8 +2596,8 @@ type Tenant struct {
 	Disabled *bool `json:"disabled,omitempty"`
 	// DisabledReason - The reason due to which the tenant was disabled in Azure Active Directory Connect Health.
 	DisabledReason *int32 `json:"disabledReason,omitempty"`
-	// GlobalAdminsEmail - The list of golbal administrators for the tenant.
-	GlobalAdminsEmail interface{} `json:"globalAdminsEmail,omitempty"`
+	// GlobalAdminsEmail - The list of global administrators for the tenant.
+	GlobalAdminsEmail *[]string `json:"globalAdminsEmail,omitempty"`
 	// InitialDomain - The initial domain of the tenant.
 	InitialDomain *string `json:"initialDomain,omitempty"`
 	// LastDisabled - The date and time, in UTC, when the tenant was last disabled in Azure Active Directory Connect Health.

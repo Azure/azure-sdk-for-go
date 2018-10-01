@@ -46,7 +46,7 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
 // serviceName - the name of the service resource.
-// serviceInfo - the topoogy group resource object
+// serviceInfo - the service object
 func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceInfo ServiceResource) (result ServiceResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

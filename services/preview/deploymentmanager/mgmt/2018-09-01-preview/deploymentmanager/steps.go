@@ -45,7 +45,7 @@ func NewStepsClientWithBaseURI(baseURI string, subscriptionID string) StepsClien
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // stepName - the name of the deployment step.
-// stepInfo - the resource object.
+// stepInfo - the step object.
 func (client StepsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, stepName string, stepInfo *StepResource) (result StepResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

@@ -1240,7 +1240,7 @@ type ManagedClusterProperties struct {
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
 	// NetworkProfile - Profile of network configuration.
-	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
 }
@@ -1487,8 +1487,16 @@ type MasterProfile struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
-// NetworkProfile profile of network configuration.
+// NetworkProfile represents the OpenShift networking configuration
 type NetworkProfile struct {
+	// VnetCIDR - CIDR for the OpenShift Vnet.
+	VnetCIDR *string `json:"vnetCIDR,omitempty"`
+	// PeerVnetID - CIDR of the Vnet to peer.
+	PeerVnetID *string `json:"peerVnetID,omitempty"`
+}
+
+// NetworkProfileType profile of network configuration.
+type NetworkProfileType struct {
 	// NetworkPlugin - Network plugin used for building Kubernetes network. Possible values include: 'Azure', 'Kubenet'
 	NetworkPlugin NetworkPlugin `json:"networkPlugin,omitempty"`
 	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'Calico'
@@ -1635,8 +1643,8 @@ type OpenShiftManagedClusterAgentPoolProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardD2sV3', 'StandardD4sV3'
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`
-	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
-	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
+	// SubnetCIDR - Subnet CIDR for the peering.
+	SubnetCIDR *string `json:"subnetCIDR,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
 	// Role - Define the role of the AgentPoolProfile. Possible values include: 'Compute', 'Infra'
@@ -1667,8 +1675,8 @@ type OpenShiftManagedClusterMasterPoolProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardD2sV3', 'StandardD4sV3'
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`
-	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
-	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
+	// SubnetCIDR - Subnet CIDR for the peering.
+	SubnetCIDR *string `json:"subnetCIDR,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
 }
@@ -1683,6 +1691,8 @@ type OpenShiftManagedClusterProperties struct {
 	PublicHostname *string `json:"publicHostname,omitempty"`
 	// Fqdn - User-specified FQDN for OpenShift API server loadbalancer internal hostname.
 	Fqdn *string `json:"fqdn,omitempty"`
+	// NetworkProfile - Configuration for OpenShift networking.
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 	// RouterProfiles - Configuration for OpenShift router(s).
 	RouterProfiles *[]OpenShiftRouterProfile `json:"routerProfiles,omitempty"`
 	// MasterPoolProfile - Configuration for OpenShift master VMs.

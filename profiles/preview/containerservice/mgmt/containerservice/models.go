@@ -290,6 +290,7 @@ type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
+type NetworkProfileType = original.NetworkProfileType
 type OpenShiftManagedCluster = original.OpenShiftManagedCluster
 type OpenShiftManagedClusterAgentPoolProfile = original.OpenShiftManagedClusterAgentPoolProfile
 type OpenShiftManagedClusterAuthProfile = original.OpenShiftManagedClusterAuthProfile

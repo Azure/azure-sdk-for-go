@@ -48,6 +48,10 @@ func ExampleQueue_getOrBuildQueue() {
 	}
 
 	q, err := ns.NewQueue(queueName)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	fmt.Println(q.Name)
 	// Output: myqueue

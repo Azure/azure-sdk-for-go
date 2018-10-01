@@ -62,7 +62,7 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 						{Target: "parameters.ServerEndpointProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
 					{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
+						Chain: []validation.Constraint{{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
 							{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 						}},
 				}}}}}); err != nil {

@@ -83,15 +83,15 @@ func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayC
 type ApplicationGatewayCustomErrorStatusCode string
 
 const (
-	// FiveZeroTwo ...
-	FiveZeroTwo ApplicationGatewayCustomErrorStatusCode = "502"
-	// FourZeroThree ...
-	FourZeroThree ApplicationGatewayCustomErrorStatusCode = "403"
+	// HTTPStatus403 ...
+	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = "HttpStatus403"
+	// HTTPStatus502 ...
+	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
 )
 
 // PossibleApplicationGatewayCustomErrorStatusCodeValues returns an array of possible values for the ApplicationGatewayCustomErrorStatusCode const type.
 func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
-	return []ApplicationGatewayCustomErrorStatusCode{FiveZeroTwo, FourZeroThree}
+	return []ApplicationGatewayCustomErrorStatusCode{HTTPStatus403, HTTPStatus502}
 }
 
 // ApplicationGatewayFirewallMode enumerates the values for application gateway firewall mode.
@@ -2423,7 +2423,7 @@ type ApplicationGatewayConnectionDraining struct {
 
 // ApplicationGatewayCustomError customer error of an application gateway.
 type ApplicationGatewayCustomError struct {
-	// StatusCode - Status code of the application gateway customer error. Possible values include: 'FourZeroThree', 'FiveZeroTwo'
+	// StatusCode - Status code of the application gateway customer error. Possible values include: 'HTTPStatus403', 'HTTPStatus502'
 	StatusCode ApplicationGatewayCustomErrorStatusCode `json:"statusCode,omitempty"`
 	// CustomErrorPageURL - Error page URL of the application gateway customer error.
 	CustomErrorPageURL *string `json:"customErrorPageUrl,omitempty"`
@@ -2906,8 +2906,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	RequireServerNameIndication *bool `json:"requireServerNameIndication,omitempty"`
 	// ProvisioningState - Provisioning state of the HTTP listener resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CustomErrorConfiguration - Custom error configurations of the HTTP listener.
-	CustomErrorConfiguration *[]ApplicationGatewayCustomError `json:"customErrorConfiguration,omitempty"`
+	// CustomErrorConfigurations - Custom error configurations of the HTTP listener.
+	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1 private
@@ -3395,8 +3395,8 @@ type ApplicationGatewayPropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// CustomErrorConfiguration - Custom error configurations of the application gateway resource.
-	CustomErrorConfiguration *[]ApplicationGatewayCustomError `json:"customErrorConfiguration,omitempty"`
+	// CustomErrorConfigurations - Custom error configurations of the application gateway resource.
+	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 }
 
 // ApplicationGatewayRedirectConfiguration redirect configuration of an application gateway.

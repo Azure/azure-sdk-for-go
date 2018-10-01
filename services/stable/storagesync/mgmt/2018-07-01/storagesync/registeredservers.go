@@ -46,7 +46,7 @@ func NewRegisteredServersClientWithBaseURI(baseURI string, subscriptionID string
 // storageSyncServiceName - name of Storage Sync Service resource.
 // serverID - GUID identifying the on-premises server.
 // parameters - body of Registered Server object.
-func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServer) (result RegisteredServersCreateFuture, err error) {
+func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters) (result RegisteredServersCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -73,7 +73,7 @@ func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupN
 }
 
 // CreatePreparer prepares the Create request.
-func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServer) (*http.Request, error) {
+func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverId":               autorest.Encode("path", serverID),
@@ -369,7 +369,8 @@ func (client RegisteredServersClient) ListByStorageSyncServiceResponder(resp *ht
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // serverID - server Id
-func (client RegisteredServersClient) TriggerRollover(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (result RegisteredServersTriggerRolloverFuture, err error) {
+// parameters - body of Trigger Rollover request.
+func (client RegisteredServersClient) TriggerRollover(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest) (result RegisteredServersTriggerRolloverFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -380,7 +381,7 @@ func (client RegisteredServersClient) TriggerRollover(ctx context.Context, resou
 		return result, validation.NewError("storagesync.RegisteredServersClient", "TriggerRollover", err.Error())
 	}
 
-	req, err := client.TriggerRolloverPreparer(ctx, resourceGroupName, storageSyncServiceName, serverID)
+	req, err := client.TriggerRolloverPreparer(ctx, resourceGroupName, storageSyncServiceName, serverID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "TriggerRollover", nil, "Failure preparing request")
 		return
@@ -396,7 +397,7 @@ func (client RegisteredServersClient) TriggerRollover(ctx context.Context, resou
 }
 
 // TriggerRolloverPreparer prepares the TriggerRollover request.
-func (client RegisteredServersClient) TriggerRolloverPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (*http.Request, error) {
+func (client RegisteredServersClient) TriggerRolloverPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverId":               autorest.Encode("path", serverID),
@@ -410,9 +411,11 @@ func (client RegisteredServersClient) TriggerRolloverPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover", pathParameters),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

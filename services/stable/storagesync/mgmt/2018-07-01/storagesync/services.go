@@ -122,7 +122,7 @@ func (client ServicesClient) CheckNameAvailabilityResponder(resp *http.Response)
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // parameters - storage Sync Service resource name.
-func (client ServicesClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters Service) (result Service, err error) {
+func (client ServicesClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters) (result Service, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -155,7 +155,7 @@ func (client ServicesClient) Create(ctx context.Context, resourceGroupName strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters Service) (*http.Request, error) {
+func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),

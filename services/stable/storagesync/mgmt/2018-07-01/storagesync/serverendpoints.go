@@ -47,7 +47,7 @@ func NewServerEndpointsClientWithBaseURI(baseURI string, subscriptionID string) 
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
 // parameters - body of Server Endpoint object.
-func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpoint) (result ServerEndpointsCreateFuture, err error) {
+func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (result ServerEndpointsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -56,14 +56,14 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ServerEndpointProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ServerEndpointProperties.VolumeFreeSpacePercent", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.ServerEndpointProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-						{Target: "parameters.ServerEndpointProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
+						{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
-					{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
-							{Target: "parameters.ServerEndpointProperties.TierFilesOlderThanDays", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
+							{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Create", err.Error())
@@ -85,7 +85,7 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpoint) (*http.Request, error) {
+func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -389,7 +389,8 @@ func (client ServerEndpointsClient) ListBySyncGroupResponder(resp *http.Response
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
-func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (result ServerEndpointsRecallActionFuture, err error) {
+// parameters - body of Recall Action object.
+func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (result ServerEndpointsRecallActionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -400,7 +401,7 @@ func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGr
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "RecallAction", err.Error())
 	}
 
-	req, err := client.RecallActionPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName)
+	req, err := client.RecallActionPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "RecallAction", nil, "Failure preparing request")
 		return
@@ -416,7 +417,7 @@ func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGr
 }
 
 // RecallActionPreparer prepares the RecallAction request.
-func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (*http.Request, error) {
+func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -431,9 +432,11 @@ func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, re
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/serverEndpoints/{serverEndpointName}/recallAction", pathParameters),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

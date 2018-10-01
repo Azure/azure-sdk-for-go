@@ -47,7 +47,7 @@ func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) C
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint resource.
-func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpoint) (result CloudEndpointsCreateFuture, err error) {
+func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (result CloudEndpointsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -74,7 +74,7 @@ func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName
 }
 
 // CreatePreparer prepares the Create request.
-func (client CloudEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpoint) (*http.Request, error) {
+func (client CloudEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),

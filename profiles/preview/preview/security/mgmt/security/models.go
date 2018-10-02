@@ -34,6 +34,7 @@ type CompliancesClient = original.CompliancesClient
 type ContactsClient = original.ContactsClient
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
+type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type LocationsClient = original.LocationsClient
 type AadConnectivityState = original.AadConnectivityState
@@ -188,6 +189,13 @@ type ExternalSecuritySolutionListIterator = original.ExternalSecuritySolutionLis
 type ExternalSecuritySolutionListPage = original.ExternalSecuritySolutionListPage
 type ExternalSecuritySolutionModel = original.ExternalSecuritySolutionModel
 type ExternalSecuritySolutionProperties = original.ExternalSecuritySolutionProperties
+type InformationProtectionKeyword = original.InformationProtectionKeyword
+type InformationProtectionPolicy = original.InformationProtectionPolicy
+type InformationProtectionPolicyList = original.InformationProtectionPolicyList
+type InformationProtectionPolicyListIterator = original.InformationProtectionPolicyListIterator
+type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
+type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
+type InformationType = original.InformationType
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
 type JitNetworkAccessPoliciesListPage = original.JitNetworkAccessPoliciesListPage
@@ -214,6 +222,7 @@ type PricingListIterator = original.PricingListIterator
 type PricingListPage = original.PricingListPage
 type PricingProperties = original.PricingProperties
 type Resource = original.Resource
+type SensitivityLabel = original.SensitivityLabel
 type BasicSetting = original.BasicSetting
 type Setting = original.Setting
 type SettingKind1 = original.SettingKind1
@@ -285,6 +294,12 @@ func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation strin
 }
 func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
 	return original.NewExternalSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewInformationProtectionPoliciesClient(subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
+	return original.NewInformationProtectionPoliciesClient(subscriptionID, ascLocation)
+}
+func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
+	return original.NewInformationProtectionPoliciesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)

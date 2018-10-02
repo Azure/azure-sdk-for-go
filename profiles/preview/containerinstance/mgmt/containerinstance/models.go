@@ -19,7 +19,7 @@
 
 package containerinstance
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-09-01/containerinstance"
+import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -79,6 +79,15 @@ const (
 	User   OperationsOrigin = original.User
 )
 
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
+)
+
 type Scheme = original.Scheme
 
 const (
@@ -94,6 +103,8 @@ type ContainerExecRequestTerminalSize = original.ContainerExecRequestTerminalSiz
 type ContainerExecResponse = original.ContainerExecResponse
 type ContainerGroup = original.ContainerGroup
 type ContainerGroupDiagnostics = original.ContainerGroupDiagnostics
+type ContainerGroupIdentity = original.ContainerGroupIdentity
+type ContainerGroupIdentityUserAssignedIdentitiesValue = original.ContainerGroupIdentityUserAssignedIdentitiesValue
 type ContainerGroupListResult = original.ContainerGroupListResult
 type ContainerGroupListResultIterator = original.ContainerGroupListResultIterator
 type ContainerGroupListResultPage = original.ContainerGroupListResultPage
@@ -129,6 +140,7 @@ type UsageName = original.UsageName
 type Volume = original.Volume
 type VolumeMount = original.VolumeMount
 type OperationsClient = original.OperationsClient
+type ServiceAssociationLinkClient = original.ServiceAssociationLinkClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -175,6 +187,9 @@ func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 func PossibleOperationsOriginValues() []OperationsOrigin {
 	return original.PossibleOperationsOriginValues()
 }
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func PossibleSchemeValues() []Scheme {
 	return original.PossibleSchemeValues()
 }
@@ -183,6 +198,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceAssociationLinkClient(subscriptionID string) ServiceAssociationLinkClient {
+	return original.NewServiceAssociationLinkClient(subscriptionID)
+}
+func NewServiceAssociationLinkClientWithBaseURI(baseURI string, subscriptionID string) ServiceAssociationLinkClient {
+	return original.NewServiceAssociationLinkClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

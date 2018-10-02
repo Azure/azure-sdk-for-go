@@ -1489,10 +1489,10 @@ type MasterProfile struct {
 
 // NetworkProfile represents the OpenShift networking configuration
 type NetworkProfile struct {
-	// VnetCIDR - CIDR for the OpenShift Vnet.
-	VnetCIDR *string `json:"vnetCIDR,omitempty"`
+	// VnetCidr - CIDR for the OpenShift Vnet.
+	VnetCidr *string `json:"vnetCidr,omitempty"`
 	// PeerVnetID - CIDR of the Vnet to peer.
-	PeerVnetID *string `json:"peerVnetID,omitempty"`
+	PeerVnetID *string `json:"peerVnetId,omitempty"`
 }
 
 // NetworkProfileType profile of network configuration.
@@ -1643,8 +1643,8 @@ type OpenShiftManagedClusterAgentPoolProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardD2sV3', 'StandardD4sV3'
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`
-	// SubnetCIDR - Subnet CIDR for the peering.
-	SubnetCIDR *string `json:"subnetCIDR,omitempty"`
+	// SubnetCidr - Subnet CIDR for the peering.
+	SubnetCidr *string `json:"subnetCidr,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
 	// Role - Define the role of the AgentPoolProfile. Possible values include: 'Compute', 'Infra'
@@ -1675,8 +1675,8 @@ type OpenShiftManagedClusterMasterPoolProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardD2sV3', 'StandardD4sV3'
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`
-	// SubnetCIDR - Subnet CIDR for the peering.
-	SubnetCIDR *string `json:"subnetCIDR,omitempty"`
+	// SubnetCidr - Subnet CIDR for the peering.
+	SubnetCidr *string `json:"subnetCidr,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
 }

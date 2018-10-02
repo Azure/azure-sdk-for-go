@@ -1619,36 +1619,23 @@ type ServiceArray struct {
 
 // ServiceCreateParameters the parameters used when creating a storage sync service.
 type ServiceCreateParameters struct {
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// Location - The geo-location where the resource lives
+	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
 	Location *string `json:"location,omitempty"`
-	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
+	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
+	Tags       map[string]*string `json:"tags"`
+	Properties interface{}        `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceCreateParameters.
 func (scp ServiceCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scp.Tags != nil {
-		objectMap["tags"] = scp.Tags
-	}
 	if scp.Location != nil {
 		objectMap["location"] = scp.Location
 	}
-	if scp.ID != nil {
-		objectMap["id"] = scp.ID
+	if scp.Tags != nil {
+		objectMap["tags"] = scp.Tags
 	}
-	if scp.Name != nil {
-		objectMap["name"] = scp.Name
-	}
-	if scp.Type != nil {
-		objectMap["type"] = scp.Type
-	}
+	objectMap["properties"] = scp.Properties
 	return json.Marshal(objectMap)
 }
 

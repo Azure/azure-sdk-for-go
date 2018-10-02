@@ -35,6 +35,8 @@ type defaultSessionHandler struct {
 	end   func()
 }
 
+// NewSessionHandler is a type converter that allows three funcs to be tied together into a type that fulfills the
+// SessionHandler interface.
 func NewSessionHandler(base Handler, start func(*MessageSession) error, end func()) SessionHandler {
 	return &defaultSessionHandler{
 		Handler: base,
@@ -43,10 +45,12 @@ func NewSessionHandler(base Handler, start func(*MessageSession) error, end func
 	}
 }
 
+// Start calls the func() that was provided to `NewSessionHandler` when a new session lock is established.
 func (dsh defaultSessionHandler) Start(ms *MessageSession) error {
 	return dsh.start(ms)
 }
 
+// End calls the func() that was provided to `NewSessionHandler` when a session is finished processing for any reason.
 func (dsh defaultSessionHandler) End() {
 	dsh.end()
 }

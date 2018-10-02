@@ -1,11 +1,11 @@
 package servicebus_test
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
@@ -56,7 +56,7 @@ func ExampleQueue_getOrBuildQueue() {
 	// Output: myqueue
 }
 
-func ExampleQueue_ReceiveSessions() {
+func ExampleQueue_sessionsRoundTrip() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -135,13 +135,16 @@ func ExampleQueue_ReceiveSessions() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Receive and process the previously published sessions.                                                         //
+	//                                                                                                                //
+	// The order the sessions are received in is not guaranteed, so the expected output must be "Unordered output".   //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	inner, innerCancel := context.WithCancel(ctx)
 
-	builder := &bytes.Buffer{}
+	builder := &strings.Builder{}
 	messagesReceived := 0
 
 	handler := servicebus.NewSessionHandler(
+		// The action to take when an individual message in the locked session is received.
 		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
 			builder.Write(msg.Data)
 
@@ -153,21 +156,23 @@ func ExampleQueue_ReceiveSessions() {
 
 			return msg.Complete()
 		}),
+		// The action to take when a new session lock is acquired.
 		func(_ *servicebus.MessageSession) error {
 			builder.Reset()
 			return nil
 		},
+		// The action to take when a session lock is ended.
 		func() {
 			fmt.Println(builder.String())
 		})
 
 	err = client.ReceiveSessions(inner, handler)
-	if err != nil {
+	if err != context.Canceled {
 		fmt.Println("FATAL: ", err)
 		return
 	}
 
-	// Output:
+	// Unordered output:
 	// FoolishMonkey10
 	// JuvenileNeanderthal50
 	// FoolishMonkey37

@@ -235,8 +235,11 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 		MessageID: m.ID,
 	}
 
-	if m.GroupID != nil && m.GroupSequence != nil {
+	if m.GroupID != nil {
 		amqpMsg.Properties.GroupID = *m.GroupID
+	}
+
+	if m.GroupSequence != nil {
 		amqpMsg.Properties.GroupSequence = *m.GroupSequence
 	}
 

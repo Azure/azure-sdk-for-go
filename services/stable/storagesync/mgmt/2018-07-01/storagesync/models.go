@@ -1909,6 +1909,7 @@ func (w *Workflow) UnmarshalJSON(body []byte) error {
 
 // WorkflowArray array of Workflow
 type WorkflowArray struct {
+	autorest.Response `json:"-"`
 	// Value - Collection of workflow items.
 	Value *[]Workflow `json:"value,omitempty"`
 }

@@ -196,3 +196,80 @@ func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// ListByStorageSyncService get a Workflow List
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// storageSyncServiceName - name of Storage Sync Service resource.
+func (client WorkflowsClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result WorkflowArray, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagesync.WorkflowsClient", "ListByStorageSyncService", err.Error())
+	}
+
+	req, err := client.ListByStorageSyncServicePreparer(ctx, resourceGroupName, storageSyncServiceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "ListByStorageSyncService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByStorageSyncServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "ListByStorageSyncService", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByStorageSyncServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "ListByStorageSyncService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByStorageSyncServicePreparer prepares the ListByStorageSyncService request.
+func (client WorkflowsClient) ListByStorageSyncServicePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/workflows", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByStorageSyncServiceSender sends the ListByStorageSyncService request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkflowsClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByStorageSyncServiceResponder handles the response to the ListByStorageSyncService request. The method always
+// closes the http.Response Body.
+func (client WorkflowsClient) ListByStorageSyncServiceResponder(resp *http.Response) (result WorkflowArray, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

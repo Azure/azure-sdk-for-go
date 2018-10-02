@@ -21,6 +21,7 @@ package costmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
 
+type AlertsClient = original.AlertsClient
 type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
 
 const (
@@ -29,12 +30,60 @@ const (
 
 type BaseClient = original.BaseClient
 type ConnectorClient = original.ConnectorClient
+type AlertCategory = original.AlertCategory
+
+const (
+	Billing    AlertCategory = original.Billing
+	Compliance AlertCategory = original.Compliance
+	Cost       AlertCategory = original.Cost
+	Usage      AlertCategory = original.Usage
+)
+
+type AlertCostEntity = original.AlertCostEntity
+
+const (
+	Budget             AlertCostEntity = original.Budget
+	Invoice            AlertCostEntity = original.Invoice
+	MonetaryCommitment AlertCostEntity = original.MonetaryCommitment
+)
+
+type AlertSource = original.AlertSource
+
+const (
+	Preset AlertSource = original.Preset
+	User   AlertSource = original.User
+)
+
+type AlertStatus = original.AlertStatus
+
+const (
+	Acknowledged AlertStatus = original.Acknowledged
+	Active       AlertStatus = original.Active
+	Overridden   AlertStatus = original.Overridden
+	Resolved     AlertStatus = original.Resolved
+)
+
+type AlertType = original.AlertType
+
+const (
+	BudgetExceeded                AlertType = original.BudgetExceeded
+	CostThresholdExceeded         AlertType = original.CostThresholdExceeded
+	NewInvoiceReceived            AlertType = original.NewInvoiceReceived
+	ReservationEnd                AlertType = original.ReservationEnd
+	ThresholdExceeded             AlertType = original.ThresholdExceeded
+	UnpaidInvoice                 AlertType = original.UnpaidInvoice
+	UntaggedInstances             AlertType = original.UntaggedInstances
+	UsageThresholdExceededHours   AlertType = original.UsageThresholdExceededHours
+	UsageThresholdExceededNetwork AlertType = original.UsageThresholdExceededNetwork
+	UsageThresholdExceededStorage AlertType = original.UsageThresholdExceededStorage
+)
+
 type ConnectorStatus = original.ConnectorStatus
 
 const (
-	Active    ConnectorStatus = original.Active
-	Error     ConnectorStatus = original.Error
-	Suspended ConnectorStatus = original.Suspended
+	ConnectorStatusActive    ConnectorStatus = original.ConnectorStatusActive
+	ConnectorStatusError     ConnectorStatus = original.ConnectorStatusError
+	ConnectorStatusSuspended ConnectorStatus = original.ConnectorStatusSuspended
 )
 
 type ExecutionStatus = original.ExecutionStatus
@@ -97,6 +146,12 @@ const (
 	WeekToDate  TimeframeType = original.WeekToDate
 )
 
+type Alert = original.Alert
+type AlertDefinition = original.AlertDefinition
+type AlertListResult = original.AlertListResult
+type AlertListResultIterator = original.AlertListResultIterator
+type AlertListResultPage = original.AlertListResultPage
+type AlertProperties = original.AlertProperties
 type CommonReportProperties = original.CommonReportProperties
 type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
 type ConnectorCollectionInfo = original.ConnectorCollectionInfo
@@ -136,6 +191,12 @@ type ReportsClient = original.ReportsClient
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
 	return original.NewBillingAccountDimensionsClient(subscriptionID)
 }
@@ -153,6 +214,21 @@ func NewConnectorClient(subscriptionID string) ConnectorClient {
 }
 func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) ConnectorClient {
 	return original.NewConnectorClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAlertCategoryValues() []AlertCategory {
+	return original.PossibleAlertCategoryValues()
+}
+func PossibleAlertCostEntityValues() []AlertCostEntity {
+	return original.PossibleAlertCostEntityValues()
+}
+func PossibleAlertSourceValues() []AlertSource {
+	return original.PossibleAlertSourceValues()
+}
+func PossibleAlertStatusValues() []AlertStatus {
+	return original.PossibleAlertStatusValues()
+}
+func PossibleAlertTypeValues() []AlertType {
+	return original.PossibleAlertTypeValues()
 }
 func PossibleConnectorStatusValues() []ConnectorStatus {
 	return original.PossibleConnectorStatusValues()

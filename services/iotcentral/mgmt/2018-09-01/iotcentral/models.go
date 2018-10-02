@@ -429,7 +429,40 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // ErrorDetails error details.
 type ErrorDetails struct {
-	Error *ErrorResponseBody `json:"error,omitempty"`
+	*ErrorResponseBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ed.ErrorResponseBody != nil {
+		objectMap["error"] = ed.ErrorResponseBody
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ErrorDetails struct.
+func (ed *ErrorDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "error":
+			if v != nil {
+				var errorResponseBody ErrorResponseBody
+				err = json.Unmarshal(*v, &errorResponseBody)
+				if err != nil {
+					return err
+				}
+				ed.ErrorResponseBody = &errorResponseBody
+			}
+		}
+	}
+
+	return nil
 }
 
 // ErrorResponseBody details of error response.

@@ -282,9 +282,9 @@ type CloudEndpointArray struct {
 	Value *[]CloudEndpoint `json:"value,omitempty"`
 }
 
-// CloudEndpointCreateParameters the parameters used when creating a storage sync service.
+// CloudEndpointCreateParameters the parameters used when creating a cloud endpoint.
 type CloudEndpointCreateParameters struct {
-	// CloudEndpointCreateParametersProperties - The parameters used to create the storage sync service.
+	// CloudEndpointCreateParametersProperties - The parameters used to create the cloud endpoint.
 	*CloudEndpointCreateParametersProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1226,9 +1226,9 @@ type ServerEndpointArray struct {
 	Value *[]ServerEndpoint `json:"value,omitempty"`
 }
 
-// ServerEndpointCreateParameters the parameters used when creating a storage sync service.
+// ServerEndpointCreateParameters the parameters used when creating a server endpoint.
 type ServerEndpointCreateParameters struct {
-	// ServerEndpointCreateParametersProperties - The parameters used to create the storage sync service.
+	// ServerEndpointCreateParametersProperties - The parameters used to create the server endpoint.
 	*ServerEndpointCreateParametersProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`

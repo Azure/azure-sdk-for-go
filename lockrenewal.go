@@ -18,6 +18,9 @@ const (
 
 //RenewLocks renews the locks on messages provided
 func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
+	span, ctx := e.startSpanFromContext(ctx, "sb.entity.renewLocks")
+	defer span.Finish()
+
 	lockTokens := make([]*uuid.UUID, 0, len(messages))
 	for _, m := range messages {
 		if m.LockToken == nil {

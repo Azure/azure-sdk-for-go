@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Message Tests",
+            "name": "Debug Tests",
             "type": "go",
             "request": "launch",
             "mode": "test",
@@ -25,7 +25,9 @@
             "args": [
                 "-test.v",
                 "-test.timeout",
-                "15m"
+                "15m",
+                "-test.run",
+                "TestSB/TestQueueSendReceiveWithLock"
             ],
             "showLog": true,
         }

@@ -137,5 +137,5 @@ func (ns *Namespace) getEntityAudience(entityPath string) string {
 }
 
 func (ns *Namespace) getEntityManagementPath(entityPath string) string {
-	return ns.getAMQPHostURI() + entityPath + "/$management"
+	return entityPath + "/$management"
 }

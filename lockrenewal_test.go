@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/azure-service-bus-go/internal/test"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
@@ -29,6 +30,7 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 			testFunc(ctx, t, q)
 			q.Close(ctx)
 			if !t.Failed() {
+				// If there are message on the queue this would mean that a lock wasn't held and the message was requeued.
 				checkZeroQueueMessages(ctx, t, ns, queueName)
 			}
 		}
@@ -46,7 +48,6 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 
 	renewEvery := time.Second * 35
 	processingTime := time.Second * 240
-	buffer := time.Second * 15
 
 	t.Logf("Sending/receiving %d messages", numMessages)
 
@@ -68,6 +69,23 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 		}))
 	}()
 
+	// Renewal Loop
+	runRenewal := true
+	go func() {
+		for runRenewal {
+			time.Sleep(renewEvery)
+			err := queue.RenewLocks(ctx, activeMessages)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			// If a renewal is taking place when the test ends
+			// it will fail and cause a panic without this check
+			if err != nil && runRenewal {
+				t.Error(err)
+			}
+		}
+	}()
+
 	// Sending Loop
 	for i := 0; i < numMessages; i++ {
 		payload := test.RandomString("hello", 10)
@@ -77,23 +95,17 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 		assert.NoError(t, queue.Send(ctx, msg))
 	}
 
-	// Renewal Loop
-	go func() {
-		assert.NoError(t, queue.RenewLocks(ctx, activeMessages))
-		time.Sleep(renewEvery)
-	}()
-
 	// Wait for the all the messages to be send and recieved.
 	// The renewal loop should keep locks live on the messages during this wait
-	time.Sleep(processingTime + buffer)
+	time.Sleep(processingTime)
+	runRenewal = false
 
 	// Then finally accept all the messages we're holding locks on
 	for _, msg := range activeMessages {
-		msg.Complete()
+		msg.Complete()(ctx)
 	}
 
-	//Check for any errors and check no messages left on the queue
-	// (If there are this would mean that a lock wasn't held and the message was requeued)
+	//Check for any errors
 	assert.EqualError(t, <-errs, context.Canceled.Error())
 
 	assert.Equal(t, len(expected), len(seen))

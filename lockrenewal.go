@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
-	"github.com/Azure/azure-amqp-common-go/uuid"
 	otlogger "github.com/opentracing/opentracing-go/log"
 	"time"
 
@@ -21,14 +20,15 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 	span, ctx := e.startSpanFromContext(ctx, "sb.entity.renewLocks")
 	defer span.Finish()
 
-	lockTokens := make([]*uuid.UUID, 0, len(messages))
+	lockTokens := make([]amqp.UUID, 0, len(messages))
 	for _, m := range messages {
 		if m.LockToken == nil {
 			log.For(ctx).Error(fmt.Errorf("failed: message has nil lock token, cannot renew lock"), otlogger.Object("messageId", m))
 			continue
 		}
 
-		lockTokens = append(lockTokens, m.LockToken)
+		amqpLockToken := amqp.UUID(*m.LockToken)
+		lockTokens = append(lockTokens, amqpLockToken)
 	}
 
 	if len(lockTokens) < 1 {
@@ -39,35 +39,27 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 	e.renewMessageLockMutex.Lock()
 	defer e.renewMessageLockMutex.Unlock()
 
-	messageID, err := uuid.NewV4()
-	if err != nil {
-		return fmt.Errorf("error creating messageID: %+v", err)
-	}
-
-	replyToAddress, err := uuid.NewV4()
-	if err != nil {
-		return fmt.Errorf("error creating replyToAddress: %+v", err)
-	}
-
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": serviceBuslockRenewalOperationName,
-		},
-		Properties: &amqp.MessageProperties{
-			MessageID: messageID,
-			ReplyTo:   replyToAddress.String(),
 		},
 		Value: map[string]interface{}{
 			"lock-tokens": lockTokens,
 		},
 	}
 
+	entityManagementAddress := e.namespace.getEntityManagementPath(e.Name)
 	conn, err := e.namespace.newConnection()
 	if err != nil {
 		return err
 	}
+	err = e.namespace.negotiateClaim(ctx, conn, entityManagementAddress)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
 
-	rpcLink, err := rpc.NewLink(conn, e.namespace.getEntityManagementPath(e.Name))
+	rpcLink, err := rpc.NewLink(conn, entityManagementAddress)
 	if err != nil {
 		return err
 	}

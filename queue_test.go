@@ -620,6 +620,7 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"TestSendAndReceiveOneSession": testQueueWithRequiredSessionSendAndReceive,
+		"TestStateRoundTrip":           testQueueWithRequiredSessionStateRoundTrip,
 	}
 
 	for name, testFunc := range tests {
@@ -710,6 +711,46 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 	assert.True(t, initialized)
 	assert.True(t, closed)
 	assert.Equal(t, count, len(payloads))
+}
+
+func testQueueWithRequiredSessionStateRoundTrip(ctx context.Context, t *testing.T, queue *Queue) {
+	ctx, cancel := context.WithCancel(ctx)
+
+	var sessionID = "mySessionID"
+	var timeRemaining = 5 * time.Minute
+	if deadline, ok := ctx.Deadline(); ok {
+		timeRemaining = time.Until(deadline)
+	}
+
+	msg := NewMessageFromString("obligatory message")
+	msg.GroupID = &sessionID
+	msg.TTL = &timeRemaining
+	require.NoError(t, queue.Send(ctx, msg), "Unable to send message to establish a session.")
+	//queue.Send(ctx, msg)
+
+	const desiredState = "bridge over troubled water"
+
+	var session *MessageSession
+
+	assert.NoError(t, queue.ReceiveOneSession(ctx, sessionID, NewSessionHandler(
+		HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+			defer cancel()
+
+			currentState, err := session.State(ctx)
+			require.NoError(t, err)
+
+			assert.Equal(t, desiredState, string(currentState))
+
+			return msg.Complete()
+		}),
+		func(ms *MessageSession) error {
+			session = ms
+			require.NoError(t, session.SetState(ctx, []byte(desiredState)))
+			return nil
+		},
+		func() {
+			// Intentionally Left Blank
+		})))
 }
 
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {

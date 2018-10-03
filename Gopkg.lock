@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:b12a6ebf761476b20cf4369e1d114c50d4d78657347bb21cdfbf1a8996e725bf"
+  digest = "1:4255cd7fce34b261f2f0a10425878848419c8cabf2b3f87aeb0b330ada623c59"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -17,8 +17,8 @@
     "uuid",
   ]
   pruneopts = "UT"
-  revision = "1fa44b828b6a39462b3d0e6248c69103b02272b2"
-  version = "v0.7.0"
+  revision = "dead23a10516c64bf754a2aabc7063304adcf736"
+  version = "v1.0.2"
 
 [[projects]]
   digest = "1:e0cd7a155f27aa2eb4dfaeb68087b5e8b7cd87aa6bbd4096d7954ef5ab19d10c"
@@ -162,6 +162,19 @@
   pruneopts = "UT"
   revision = "ed3a127ec5fef7ae9ea95b01b542c47fbd999ce5"
   version = "v1.5.0"
+
+[[projects]]
+  digest = "1:77a7a73aa27e254e202b0329945cdae2dc8e4df24ea787d7ed0b960fd3b9eb3c"
+  name = "go.opencensus.io"
+  packages = [
+    ".",
+    "internal",
+    "trace",
+    "trace/internal",
+  ]
+  pruneopts = "UT"
+  revision = "7b558058b7cc960667590e5413ef55157b06652e"
+  version = "v0.15.0"
 
 [[projects]]
   branch = "master"

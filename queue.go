@@ -286,7 +286,7 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 }
 
 func (e *entity) Path() string {
-	return fmt.Sprint(e.namespace.getAMQPHostURI(), e.Name)
+	return fmt.Sprint(e.Name)
 }
 
 func (e *entity) ManagementPath() string {

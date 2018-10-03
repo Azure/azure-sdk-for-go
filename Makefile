@@ -69,8 +69,12 @@ cyclo: ; $(info $(M) running gocyclo...) @ ## Run gocyclo on all source files
 
 terraform.tfstate: $(wildcard terraform.tfvars) .terraform ; $(info $(M) running terraform...) @ ## Run terraform to provision infrastructure needed for testing
 	$Q terraform apply -auto-approve
+	$Q rm -f ./.env && terraform output | xargs -l bash -c 'echo $$0=$$2 >> .env'
 
 .terraform:
+	$Q az group list >> /dev/null ## Ensure Azure CLI Token in valid before running TF
+	## Prevents 'No valid (unexpired) Azure CLI Auth Tokens found.' error message.
+	## Fix pending in PR: https://github.com/terraform-providers/terraform-provider-azurerm/pull/1752
 	$Q terraform init
 
 # Dependency management

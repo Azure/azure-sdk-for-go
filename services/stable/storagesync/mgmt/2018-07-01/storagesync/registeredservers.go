@@ -364,7 +364,7 @@ func (client RegisteredServersClient) ListByStorageSyncServiceResponder(resp *ht
 	return
 }
 
-// TriggerRollover recall a serverendpoint.
+// TriggerRollover triggers Server certificate rollover.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.

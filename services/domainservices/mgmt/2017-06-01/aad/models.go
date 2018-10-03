@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
 
@@ -284,6 +285,101 @@ type DomainServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - the list of domain services.
 	Value *[]DomainService `json:"value,omitempty"`
+	// NextLink - The continuation token for the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DomainServiceListResultIterator provides access to a complete listing of DomainService values.
+type DomainServiceListResultIterator struct {
+	i    int
+	page DomainServiceListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DomainServiceListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DomainServiceListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DomainServiceListResultIterator) Response() DomainServiceListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DomainServiceListResultIterator) Value() DomainService {
+	if !iter.page.NotDone() {
+		return DomainService{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dslr DomainServiceListResult) IsEmpty() bool {
+	return dslr.Value == nil || len(*dslr.Value) == 0
+}
+
+// domainServiceListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dslr DomainServiceListResult) domainServiceListResultPreparer() (*http.Request, error) {
+	if dslr.NextLink == nil || len(to.String(dslr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dslr.NextLink)))
+}
+
+// DomainServiceListResultPage contains a page of DomainService values.
+type DomainServiceListResultPage struct {
+	fn   func(DomainServiceListResult) (DomainServiceListResult, error)
+	dslr DomainServiceListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DomainServiceListResultPage) Next() error {
+	next, err := page.fn(page.dslr)
+	if err != nil {
+		return err
+	}
+	page.dslr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DomainServiceListResultPage) NotDone() bool {
+	return !page.dslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DomainServiceListResultPage) Response() DomainServiceListResult {
+	return page.dslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DomainServiceListResultPage) Values() []DomainService {
+	if page.dslr.IsEmpty() {
+		return nil
+	}
+	return *page.dslr.Value
 }
 
 // DomainServicePatchProperties update Properties of the Domain Service.
@@ -500,6 +596,101 @@ type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
+	// NextLink - The continuation token for the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// OperationEntityListResultIterator provides access to a complete listing of OperationEntity values.
+type OperationEntityListResultIterator struct {
+	i    int
+	page OperationEntityListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OperationEntityListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OperationEntityListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OperationEntityListResultIterator) Response() OperationEntityListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OperationEntityListResultIterator) Value() OperationEntity {
+	if !iter.page.NotDone() {
+		return OperationEntity{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (oelr OperationEntityListResult) IsEmpty() bool {
+	return oelr.Value == nil || len(*oelr.Value) == 0
+}
+
+// operationEntityListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http.Request, error) {
+	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(oelr.NextLink)))
+}
+
+// OperationEntityListResultPage contains a page of OperationEntity values.
+type OperationEntityListResultPage struct {
+	fn   func(OperationEntityListResult) (OperationEntityListResult, error)
+	oelr OperationEntityListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OperationEntityListResultPage) Next() error {
+	next, err := page.fn(page.oelr)
+	if err != nil {
+		return err
+	}
+	page.oelr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OperationEntityListResultPage) NotDone() bool {
+	return !page.oelr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OperationEntityListResultPage) Response() OperationEntityListResult {
+	return page.oelr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OperationEntityListResultPage) Values() []OperationEntity {
+	if page.oelr.IsEmpty() {
+		return nil
+	}
+	return *page.oelr.Value
 }
 
 // Resource the Resource model definition.

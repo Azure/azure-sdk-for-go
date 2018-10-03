@@ -87,6 +87,8 @@ const (
 type DomainSecuritySettings = original.DomainSecuritySettings
 type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult
+type DomainServiceListResultIterator = original.DomainServiceListResultIterator
+type DomainServiceListResultPage = original.DomainServiceListResultPage
 type DomainServicePatchProperties = original.DomainServicePatchProperties
 type DomainServiceProperties = original.DomainServiceProperties
 type DomainServicesCreateOrUpdateFuture = original.DomainServicesCreateOrUpdateFuture
@@ -99,6 +101,8 @@ type NotificationSettings = original.NotificationSettings
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
+type OperationEntityListResultIterator = original.OperationEntityListResultIterator
+type OperationEntityListResultPage = original.OperationEntityListResultPage
 type Resource = original.Resource
 
 func New(subscriptionID string) BaseClient {

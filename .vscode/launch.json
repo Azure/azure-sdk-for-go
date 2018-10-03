@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Message Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceRoot}/message_test.go",
+            "envFile": "${workspaceRoot}/.env",
+            "args": [
+                "-test.v",
+                "-test.timeout",
+                "15m"
+            ],
+            "showLog": true,
+        }
+    ]
+}

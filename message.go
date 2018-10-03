@@ -347,7 +347,7 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 }
 
 func lockTokenFromMessageTag(msg *amqp.Message) (*uuid.UUID, error) {
-	if msg.DeliveryTag == nil || len(msg.DeliveryTag) != 16 {
+	if len(msg.DeliveryTag) != 16 {
 		return nil, fmt.Errorf("the message contained an invalid delivery tag: %v", msg.DeliveryTag)
 	}
 

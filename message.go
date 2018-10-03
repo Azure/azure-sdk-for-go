@@ -61,10 +61,6 @@ type (
 	// MessageErrorCondition represents a well-known collection of AMQP errors
 	MessageErrorCondition string
 
-	deliveryAnnotations struct {
-		LockToken *amqp.UUID `mapstructure:"x-opt-lock-token"`
-	}
-
 	// SystemProperties are used to store properties that are set by the system.
 	SystemProperties struct {
 		LockedUntil            *time.Time `mapstructure:"x-opt-locked-until"`
@@ -341,19 +337,37 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		}
 	}
 
-	if amqpMsg.DeliveryAnnotations != nil {
-		var da deliveryAnnotations
-		if err := mapstructure.Decode(amqpMsg.DeliveryAnnotations, &da); err != nil {
-			return msg, err
-		}
-		if da.LockToken != nil {
-			foo := *da.LockToken
-			bar := uuid.UUID(foo)
-			msg.LockToken = &bar
-		}
+	lockToken, err := lockTokenFromMessageTag(amqpMsg)
+	if err != nil {
+		return msg, err
 	}
+	msg.LockToken = lockToken
 
 	return msg, nil
+}
+
+func lockTokenFromMessageTag(msg *amqp.Message) (*uuid.UUID, error) {
+	if msg.DeliveryTag == nil || len(msg.DeliveryTag) != 16 {
+		return nil, fmt.Errorf("the message contained an invalid delivery tag: %v", msg.DeliveryTag)
+	}
+
+	var swapIndex = func(indexOne, indexTwo int, array *[16]byte) {
+		v1 := array[indexOne]
+		array[indexOne] = array[indexTwo]
+		array[indexTwo] = v1
+	}
+
+	// Get lock token from the deliveryTag
+	var lockTokenBytes [16]byte
+	copy(lockTokenBytes[:], msg.DeliveryTag[:16])
+	// translate from .net guid byte serialisation format to amqp rfc standard
+	swapIndex(0, 3, &lockTokenBytes)
+	swapIndex(1, 2, &lockTokenBytes)
+	swapIndex(4, 5, &lockTokenBytes)
+	swapIndex(6, 7, &lockTokenBytes)
+	amqpUUID := uuid.UUID(lockTokenBytes)
+
+	return &amqpUUID, nil
 }
 
 func encodeStructureToMap(structPointer interface{}) (map[string]interface{}, error) {

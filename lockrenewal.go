@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-amqp-common-go/rpc"
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	otlogger "github.com/opentracing/opentracing-go/log"
+	"time"
 
 	"pack.ag/amqp"
 )
@@ -13,29 +15,6 @@ import (
 const (
 	serviceBuslockRenewalOperationName = "com.microsoft:renew-lock"
 )
-
-func (e *entity) createManagementChannels(ctx context.Context, amqpPath string) (*sender, *receiver, error) {
-	if e.namespace == nil {
-		panic("expect namespace not nil")
-	}
-
-	subscriptionAddress := e.namespace.getEntityManagementPath(amqpPath)
-
-	// receiver := uuid.NewV4().String()
-	sender, err := e.namespace.newSender(ctx, subscriptionAddress)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	reciever, err := e.namespace.newReceiver(ctx, subscriptionAddress)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return sender, reciever, nil
-}
 
 //RenewLocks renews the locks on messages provided
 func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
@@ -56,14 +35,6 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 
 	e.renewMessageLockMutex.Lock()
 	defer e.renewMessageLockMutex.Unlock()
-
-	sender, receiver, err := e.createManagementChannels(ctx, e.Name)
-	if err != nil {
-		return err
-	}
-
-	defer sender.Close(ctx)
-	defer receiver.Close(ctx)
 
 	messageID, err := uuid.NewV4()
 	if err != nil {
@@ -88,25 +59,23 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 		},
 	}
 
-	err = sender.Send(ctx, &Message{
-		message: renewRequestMsg,
-	})
+	conn, err := e.namespace.newConnection()
 	if err != nil {
 		return err
 	}
 
-	response, err := receiver.ReceiveOne(ctx)
+	rpcLink, err := rpc.NewLink(conn, e.namespace.getEntityManagementPath(e.Name))
 	if err != nil {
 		return err
 	}
 
-	responseCode, ok := response.UserProperties["statusCode"]
-	if !ok {
-		return fmt.Errorf("unexpected response from renewal request: %+v", response)
+	response, err := rpcLink.RetryableRPC(ctx, 3, 1*time.Second, renewRequestMsg)
+	if err != nil {
+		return err
 	}
 
-	if responseCode != "200" {
-		return fmt.Errorf("error renewing locks: %v", response.UserProperties["statusDescription"])
+	if response.Code != 200 {
+		return fmt.Errorf("error renewing locks: %v", response.Description)
 	}
 
 	return nil

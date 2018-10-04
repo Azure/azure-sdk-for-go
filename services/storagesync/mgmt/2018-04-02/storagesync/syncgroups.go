@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// RegisteredServersGroupClient is the microsoft Storage Sync Service API
-type RegisteredServersGroupClient struct {
+// SyncGroupsClient is the microsoft Storage Sync Service API
+type SyncGroupsClient struct {
 	BaseClient
 }
 
-// NewRegisteredServersGroupClient creates an instance of the RegisteredServersGroupClient client.
-func NewRegisteredServersGroupClient(subscriptionID string) RegisteredServersGroupClient {
-	return NewRegisteredServersGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSyncGroupsClient creates an instance of the SyncGroupsClient client.
+func NewSyncGroupsClient(subscriptionID string) SyncGroupsClient {
+	return NewSyncGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewRegisteredServersGroupClientWithBaseURI creates an instance of the RegisteredServersGroupClient client.
-func NewRegisteredServersGroupClientWithBaseURI(baseURI string, subscriptionID string) RegisteredServersGroupClient {
-	return RegisteredServersGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSyncGroupsClientWithBaseURI creates an instance of the SyncGroupsClient client.
+func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncGroupsClient {
+	return SyncGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create add a new registered server.
+// Create create a new SyncGroup.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
-// serverID - GUID identifying the on-premises server.
-// parameters - body of Registered Server object.
-func (client RegisteredServersGroupClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters) (result RegisteredServersGroupCreateFuture, err error) {
+// syncGroupName - name of Sync Group resource.
+// parameters - sync Group Body
+func (client SyncGroupsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters) (result SyncGroup, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -54,31 +54,37 @@ func (client RegisteredServersGroupClient) Create(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.RegisteredServersGroupClient", "Create", err.Error())
+		return result, validation.NewError("storagesync.SyncGroupsClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, storageSyncServiceName, serverID, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Create", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Create", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client RegisteredServersGroupClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters) (*http.Request, error) {
+func (client SyncGroupsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, parameters SyncGroupCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"serverId":               autorest.Encode("path", serverID),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
 	const APIVersion = "2018-04-02"
@@ -90,7 +96,7 @@ func (client RegisteredServersGroupClient) CreatePreparer(ctx context.Context, r
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -98,185 +104,14 @@ func (client RegisteredServersGroupClient) CreatePreparer(ctx context.Context, r
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client RegisteredServersGroupClient) CreateSender(req *http.Request) (future RegisteredServersGroupCreateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client RegisteredServersGroupClient) CreateResponder(resp *http.Response) (result RegisteredServer, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Delete delete the given registered server.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// storageSyncServiceName - name of Storage Sync Service resource.
-// serverID - GUID identifying the on-premises server.
-func (client RegisteredServersGroupClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (result RegisteredServersGroupDeleteFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.RegisteredServersGroupClient", "Delete", err.Error())
-	}
-
-	req, err := client.DeletePreparer(ctx, resourceGroupName, storageSyncServiceName, serverID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Delete", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.DeleteSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Delete", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// DeletePreparer prepares the Delete request.
-func (client RegisteredServersGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"serverId":               autorest.Encode("path", serverID),
-		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-04-02"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client RegisteredServersGroupClient) DeleteSender(req *http.Request) (future RegisteredServersGroupDeleteFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client RegisteredServersGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// Get get a given registered server.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// storageSyncServiceName - name of Storage Sync Service resource.
-// serverID - GUID identifying the on-premises server.
-func (client RegisteredServersGroupClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (result RegisteredServer, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.RegisteredServersGroupClient", "Get", err.Error())
-	}
-
-	req, err := client.GetPreparer(ctx, resourceGroupName, storageSyncServiceName, serverID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Get", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Get", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client RegisteredServersGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"serverId":               autorest.Encode("path", serverID),
-		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-04-02"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client RegisteredServersGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SyncGroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetResponder handles the response to the Get request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client RegisteredServersGroupClient) GetResponder(resp *http.Response) (result RegisteredServer, err error) {
+func (client SyncGroupsClient) CreateResponder(resp *http.Response) (result SyncGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -287,11 +122,12 @@ func (client RegisteredServersGroupClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// ListByStorageSyncService get a given registered server list.
+// Delete delete a given SyncGroup.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
-func (client RegisteredServersGroupClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result RegisteredServerArray, err error) {
+// syncGroupName - name of Sync Group resource.
+func (client SyncGroupsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -299,32 +135,188 @@ func (client RegisteredServersGroupClient) ListByStorageSyncService(ctx context.
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.RegisteredServersGroupClient", "ListByStorageSyncService", err.Error())
+		return result, validation.NewError("storagesync.SyncGroupsClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client SyncGroupsClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"syncGroupName":          autorest.Encode("path", syncGroupName),
+	}
+
+	const APIVersion = "2018-04-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client SyncGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client SyncGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get get a given SyncGroup.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// storageSyncServiceName - name of Storage Sync Service resource.
+// syncGroupName - name of Sync Group resource.
+func (client SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result SyncGroup, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagesync.SyncGroupsClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client SyncGroupsClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+		"syncGroupName":          autorest.Encode("path", syncGroupName),
+	}
+
+	const APIVersion = "2018-04-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client SyncGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client SyncGroupsClient) GetResponder(resp *http.Response) (result SyncGroup, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByStorageSyncService get a SyncGroup List.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// storageSyncServiceName - name of Storage Sync Service resource.
+func (client SyncGroupsClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result SyncGroupArray, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagesync.SyncGroupsClient", "ListByStorageSyncService", err.Error())
 	}
 
 	req, err := client.ListByStorageSyncServicePreparer(ctx, resourceGroupName, storageSyncServiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "ListByStorageSyncService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "ListByStorageSyncService", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByStorageSyncServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "ListByStorageSyncService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "ListByStorageSyncService", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByStorageSyncServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupClient", "ListByStorageSyncService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.SyncGroupsClient", "ListByStorageSyncService", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByStorageSyncServicePreparer prepares the ListByStorageSyncService request.
-func (client RegisteredServersGroupClient) ListByStorageSyncServicePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (*http.Request, error) {
+func (client SyncGroupsClient) ListByStorageSyncServicePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
@@ -339,21 +331,21 @@ func (client RegisteredServersGroupClient) ListByStorageSyncServicePreparer(ctx 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByStorageSyncServiceSender sends the ListByStorageSyncService request. The method will close the
 // http.Response Body if it receives an error.
-func (client RegisteredServersGroupClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
+func (client SyncGroupsClient) ListByStorageSyncServiceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByStorageSyncServiceResponder handles the response to the ListByStorageSyncService request. The method always
 // closes the http.Response Body.
-func (client RegisteredServersGroupClient) ListByStorageSyncServiceResponder(resp *http.Response) (result RegisteredServerArray, err error) {
+func (client SyncGroupsClient) ListByStorageSyncServiceResponder(resp *http.Response) (result SyncGroupArray, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -19,7 +19,7 @@
 
 package storagesync
 
-import original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-04-02/storagesync"
+import original "github.com/Azure/azure-sdk-for-go/services/stable/storagesync/mgmt/2018-07-01/storagesync"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -120,6 +120,7 @@ type RegisteredServerCreateParametersProperties = original.RegisteredServerCreat
 type RegisteredServerProperties = original.RegisteredServerProperties
 type RegisteredServersCreateFuture = original.RegisteredServersCreateFuture
 type RegisteredServersDeleteFuture = original.RegisteredServersDeleteFuture
+type RegisteredServersTriggerRolloverFuture = original.RegisteredServersTriggerRolloverFuture
 type Resource = original.Resource
 type ResourcesMoveInfo = original.ResourcesMoveInfo
 type RestoreFileSpec = original.RestoreFileSpec
@@ -145,6 +146,7 @@ type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type TrackedResource = original.TrackedResource
+type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
 type WorkflowArray = original.WorkflowArray
 type WorkflowProperties = original.WorkflowProperties

@@ -941,6 +941,16 @@ func (r *Registry) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// RegistryIdentity identity of the container registry.
+type RegistryIdentity struct {
+	// IdentityType - The type of identity used for registry.
+	IdentityType *string `json:"identityType,omitempty"`
+	// IdentityPrincipalID - The principal ID of registry identity.
+	IdentityPrincipalID *string `json:"identityPrincipalId,omitempty"`
+	// TenantID - The tenant ID of registry.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // RegistryListCredentialsResult the response from the ListCredentials operation.
 type RegistryListCredentialsResult struct {
 	autorest.Response `json:"-"`

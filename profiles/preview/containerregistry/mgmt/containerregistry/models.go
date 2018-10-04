@@ -111,7 +111,9 @@ type RunType = original.RunType
 
 const (
 	AutoBuild  RunType = original.AutoBuild
+	AutoRun    RunType = original.AutoRun
 	QuickBuild RunType = original.QuickBuild
+	QuickRun   RunType = original.QuickRun
 )
 
 type SkuName = original.SkuName
@@ -142,7 +144,8 @@ const (
 type SourceTriggerEvent = original.SourceTriggerEvent
 
 const (
-	Commit SourceTriggerEvent = original.Commit
+	Commit      SourceTriggerEvent = original.Commit
+	Pullrequest SourceTriggerEvent = original.Pullrequest
 )
 
 type TaskStatus = original.TaskStatus

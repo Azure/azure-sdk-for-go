@@ -917,6 +917,8 @@ type APIContractProperties struct {
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	// SubscriptionRequired - Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
 // APIContractUpdateProperties API update contract properties.
@@ -951,6 +953,8 @@ type APIContractUpdateProperties struct {
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	// SubscriptionRequired - Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
 // APICreateOrUpdateParameter API Create or Update Parameters.
@@ -1035,6 +1039,8 @@ type APICreateOrUpdateProperties struct {
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	// SubscriptionRequired - Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
 // APICreateOrUpdatePropertiesWsdlSelector criteria to limit import of WSDL to a subset of the document.
@@ -1069,6 +1075,8 @@ type APIEntityBaseContract struct {
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	// SubscriptionRequired - Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
 // APIExportResult API Export result Blob Uri.
@@ -1472,6 +1480,8 @@ type APITagResourceContractProperties struct {
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 	// APIVersionSetID - A resource identifier for the related ApiVersionSet.
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	// SubscriptionRequired - Specifies whether an API or Product subscription is required for accessing the API.
+	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
 }
 
 // APIUpdateContract API update contract details.
@@ -8866,10 +8876,10 @@ func (sc *SubscriptionContract) UnmarshalJSON(body []byte) error {
 
 // SubscriptionContractProperties subscription details.
 type SubscriptionContractProperties struct {
-	// UserID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{uid} where {uid} is a user identifier.
-	UserID *string `json:"userId,omitempty"`
-	// ProductID - The product resource identifier of the subscribed product. The value is a valid relative URL in the format of /products/{productId} where {productId} is a product identifier.
-	ProductID *string `json:"productId,omitempty"`
+	// OwnerID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{uid} where {uid} is a user identifier.
+	OwnerID *string `json:"ownerId,omitempty"`
+	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}.
+	Scope *string `json:"scope,omitempty"`
 	// DisplayName - The name of the subscription, or null if the subscription has no name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// State - Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
@@ -8890,14 +8900,16 @@ type SubscriptionContractProperties struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 	// StateComment - Optional subscription comment added by an administrator.
 	StateComment *string `json:"stateComment,omitempty"`
+	// AllowTracing - Determines whether tracing is enabled
+	AllowTracing *bool `json:"allowTracing,omitempty"`
 }
 
 // SubscriptionCreateParameterProperties parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameterProperties struct {
-	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
-	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product (product id path) for which subscription is being created in form /products/{productid}
-	ProductID *string `json:"productId,omitempty"`
+	// OwnerID - User (user id path) for whom subscription is being created in form /users/{uid}
+	OwnerID *string `json:"ownerId,omitempty"`
+	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}.
+	Scope *string `json:"scope,omitempty"`
 	// DisplayName - Subscription name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// PrimaryKey - Primary subscription key. If not specified during request key will be generated automatically.
@@ -8906,6 +8918,8 @@ type SubscriptionCreateParameterProperties struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 	// State - Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated. Possible values include: 'Suspended', 'Active', 'Expired', 'Submitted', 'Rejected', 'Cancelled'
 	State SubscriptionState `json:"state,omitempty"`
+	// AllowTracing - Determines whether tracing can be enabled
+	AllowTracing *bool `json:"allowTracing,omitempty"`
 }
 
 // SubscriptionCreateParameters subscription create details.
@@ -8963,10 +8977,10 @@ type SubscriptionsDelegationSettingsProperties struct {
 
 // SubscriptionUpdateParameterProperties parameters supplied to the Update subscription operation.
 type SubscriptionUpdateParameterProperties struct {
-	// UserID - User identifier path: /users/{uid}
-	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product identifier path: /products/{productId}
-	ProductID *string `json:"productId,omitempty"`
+	// OwnerID - User identifier path: /users/{uid}
+	OwnerID *string `json:"ownerId,omitempty"`
+	// Scope - Scope like /products/{productId} or /apis or /apis/{apiId}
+	Scope *string `json:"scope,omitempty"`
 	// ExpirationDate - Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// DisplayName - Subscription name.
@@ -8979,6 +8993,8 @@ type SubscriptionUpdateParameterProperties struct {
 	State SubscriptionState `json:"state,omitempty"`
 	// StateComment - Comments describing subscription state change by the administrator.
 	StateComment *string `json:"stateComment,omitempty"`
+	// AllowTracing - Determines whether tracing can be enabled
+	AllowTracing *bool `json:"allowTracing,omitempty"`
 }
 
 // SubscriptionUpdateParameters subscription update details.

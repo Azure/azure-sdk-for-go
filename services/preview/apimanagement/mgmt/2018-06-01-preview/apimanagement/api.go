@@ -530,7 +530,8 @@ func (client APIClient) ListByServiceComplete(ctx context.Context, resourceGroup
 // | isCurrent   | eq                     | substringof, contains, startswith, endswith |
 // top - number of records to return.
 // skip - number of records to skip.
-func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result TagResourceCollectionPage, err error) {
+// includeNotTaggedApis - include not tagged apis in response
+func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedApis *bool) (result TagResourceCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -546,7 +547,7 @@ func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string
 	}
 
 	result.fn = client.listByTagsNextResults
-	req, err := client.ListByTagsPreparer(ctx, resourceGroupName, serviceName, filter, top, skip)
+	req, err := client.ListByTagsPreparer(ctx, resourceGroupName, serviceName, filter, top, skip, includeNotTaggedApis)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "ListByTags", nil, "Failure preparing request")
 		return
@@ -568,7 +569,7 @@ func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string
 }
 
 // ListByTagsPreparer prepares the ListByTags request.
-func (client APIClient) ListByTagsPreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client APIClient) ListByTagsPreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedApis *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -587,6 +588,11 @@ func (client APIClient) ListByTagsPreparer(ctx context.Context, resourceGroupNam
 	}
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if includeNotTaggedApis != nil {
+		queryParameters["includeNotTaggedApis"] = autorest.Encode("query", *includeNotTaggedApis)
+	} else {
+		queryParameters["includeNotTaggedApis"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -639,8 +645,8 @@ func (client APIClient) listByTagsNextResults(lastResults TagResourceCollection)
 }
 
 // ListByTagsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client APIClient) ListByTagsComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result TagResourceCollectionIterator, err error) {
-	result.page, err = client.ListByTags(ctx, resourceGroupName, serviceName, filter, top, skip)
+func (client APIClient) ListByTagsComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedApis *bool) (result TagResourceCollectionIterator, err error) {
+	result.page, err = client.ListByTags(ctx, resourceGroupName, serviceName, filter, top, skip, includeNotTaggedApis)
 	return
 }
 

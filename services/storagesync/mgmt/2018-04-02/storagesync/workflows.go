@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// WorkflowsGroupClient is the microsoft Storage Sync Service API
-type WorkflowsGroupClient struct {
+// WorkflowsClient is the microsoft Storage Sync Service API
+type WorkflowsClient struct {
 	BaseClient
 }
 
-// NewWorkflowsGroupClient creates an instance of the WorkflowsGroupClient client.
-func NewWorkflowsGroupClient(subscriptionID string) WorkflowsGroupClient {
-	return NewWorkflowsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkflowsClient creates an instance of the WorkflowsClient client.
+func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
+	return NewWorkflowsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkflowsGroupClientWithBaseURI creates an instance of the WorkflowsGroupClient client.
-func NewWorkflowsGroupClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsGroupClient {
-	return WorkflowsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkflowsClientWithBaseURI creates an instance of the WorkflowsClient client.
+func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
+	return WorkflowsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Abort abort the given workflow.
@@ -45,7 +45,7 @@ func NewWorkflowsGroupClientWithBaseURI(baseURI string, subscriptionID string) W
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // workflowID - workflow Id
-func (client WorkflowsGroupClient) Abort(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result autorest.Response, err error) {
+func (client WorkflowsClient) Abort(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -53,32 +53,32 @@ func (client WorkflowsGroupClient) Abort(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.WorkflowsGroupClient", "Abort", err.Error())
+		return result, validation.NewError("storagesync.WorkflowsClient", "Abort", err.Error())
 	}
 
 	req, err := client.AbortPreparer(ctx, resourceGroupName, storageSyncServiceName, workflowID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Abort", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Abort", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AbortSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Abort", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Abort", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AbortResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Abort", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Abort", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // AbortPreparer prepares the Abort request.
-func (client WorkflowsGroupClient) AbortPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (*http.Request, error) {
+func (client WorkflowsClient) AbortPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
@@ -101,14 +101,14 @@ func (client WorkflowsGroupClient) AbortPreparer(ctx context.Context, resourceGr
 
 // AbortSender sends the Abort request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowsGroupClient) AbortSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowsClient) AbortSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AbortResponder handles the response to the Abort request. The method always
 // closes the http.Response Body.
-func (client WorkflowsGroupClient) AbortResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client WorkflowsClient) AbortResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -123,7 +123,7 @@ func (client WorkflowsGroupClient) AbortResponder(resp *http.Response) (result a
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // workflowID - workflow Id
-func (client WorkflowsGroupClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result Workflow, err error) {
+func (client WorkflowsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result Workflow, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -131,32 +131,32 @@ func (client WorkflowsGroupClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.WorkflowsGroupClient", "Get", err.Error())
+		return result, validation.NewError("storagesync.WorkflowsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, storageSyncServiceName, workflowID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.WorkflowsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkflowsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (*http.Request, error) {
+func (client WorkflowsClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
@@ -179,14 +179,14 @@ func (client WorkflowsGroupClient) GetPreparer(ctx context.Context, resourceGrou
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkflowsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowsGroupClient) GetResponder(resp *http.Response) (result Workflow, err error) {
+func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

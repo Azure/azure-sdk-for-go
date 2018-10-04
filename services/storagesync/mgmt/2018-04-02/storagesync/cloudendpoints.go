@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// CloudEndpointsGroupClient is the microsoft Storage Sync Service API
-type CloudEndpointsGroupClient struct {
+// CloudEndpointsClient is the microsoft Storage Sync Service API
+type CloudEndpointsClient struct {
 	BaseClient
 }
 
-// NewCloudEndpointsGroupClient creates an instance of the CloudEndpointsGroupClient client.
-func NewCloudEndpointsGroupClient(subscriptionID string) CloudEndpointsGroupClient {
-	return NewCloudEndpointsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewCloudEndpointsClient creates an instance of the CloudEndpointsClient client.
+func NewCloudEndpointsClient(subscriptionID string) CloudEndpointsClient {
+	return NewCloudEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCloudEndpointsGroupClientWithBaseURI creates an instance of the CloudEndpointsGroupClient client.
-func NewCloudEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsGroupClient {
-	return CloudEndpointsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewCloudEndpointsClientWithBaseURI creates an instance of the CloudEndpointsClient client.
+func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsClient {
+	return CloudEndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a new CloudEndpoint.
@@ -47,7 +47,7 @@ func NewCloudEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID stri
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint resource.
-func (client CloudEndpointsGroupClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (result CloudEndpointsGroupCreateFuture, err error) {
+func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (result CloudEndpointsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -55,18 +55,18 @@ func (client CloudEndpointsGroupClient) Create(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "Create", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -74,7 +74,7 @@ func (client CloudEndpointsGroupClient) Create(ctx context.Context, resourceGrou
 }
 
 // CreatePreparer prepares the Create request.
-func (client CloudEndpointsGroupClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (*http.Request, error) {
+func (client CloudEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -100,7 +100,7 @@ func (client CloudEndpointsGroupClient) CreatePreparer(ctx context.Context, reso
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) CreateSender(req *http.Request) (future CloudEndpointsGroupCreateFuture, err error) {
+func (client CloudEndpointsClient) CreateSender(req *http.Request) (future CloudEndpointsCreateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -117,7 +117,7 @@ func (client CloudEndpointsGroupClient) CreateSender(req *http.Request) (future 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) CreateResponder(resp *http.Response) (result CloudEndpoint, err error) {
+func (client CloudEndpointsClient) CreateResponder(resp *http.Response) (result CloudEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -134,7 +134,7 @@ func (client CloudEndpointsGroupClient) CreateResponder(resp *http.Response) (re
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
-func (client CloudEndpointsGroupClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpointsGroupDeleteFuture, err error) {
+func (client CloudEndpointsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpointsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -142,18 +142,18 @@ func (client CloudEndpointsGroupClient) Delete(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "Delete", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -161,7 +161,7 @@ func (client CloudEndpointsGroupClient) Delete(ctx context.Context, resourceGrou
 }
 
 // DeletePreparer prepares the Delete request.
-func (client CloudEndpointsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
+func (client CloudEndpointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -185,7 +185,7 @@ func (client CloudEndpointsGroupClient) DeletePreparer(ctx context.Context, reso
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) DeleteSender(req *http.Request) (future CloudEndpointsGroupDeleteFuture, err error) {
+func (client CloudEndpointsClient) DeleteSender(req *http.Request) (future CloudEndpointsDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -202,7 +202,7 @@ func (client CloudEndpointsGroupClient) DeleteSender(req *http.Request) (future 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -218,7 +218,7 @@ func (client CloudEndpointsGroupClient) DeleteResponder(resp *http.Response) (re
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
-func (client CloudEndpointsGroupClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpoint, err error) {
+func (client CloudEndpointsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpoint, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -226,32 +226,32 @@ func (client CloudEndpointsGroupClient) Get(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "Get", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client CloudEndpointsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
+func (client CloudEndpointsClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -275,14 +275,14 @@ func (client CloudEndpointsGroupClient) GetPreparer(ctx context.Context, resourc
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client CloudEndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) GetResponder(resp *http.Response) (result CloudEndpoint, err error) {
+func (client CloudEndpointsClient) GetResponder(resp *http.Response) (result CloudEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -298,7 +298,7 @@ func (client CloudEndpointsGroupClient) GetResponder(resp *http.Response) (resul
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
-func (client CloudEndpointsGroupClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result CloudEndpointArray, err error) {
+func (client CloudEndpointsClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result CloudEndpointArray, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -306,32 +306,32 @@ func (client CloudEndpointsGroupClient) ListBySyncGroup(ctx context.Context, res
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "ListBySyncGroup", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "ListBySyncGroup", err.Error())
 	}
 
 	req, err := client.ListBySyncGroupPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "ListBySyncGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "ListBySyncGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySyncGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "ListBySyncGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "ListBySyncGroup", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListBySyncGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "ListBySyncGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "ListBySyncGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySyncGroupPreparer prepares the ListBySyncGroup request.
-func (client CloudEndpointsGroupClient) ListBySyncGroupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
+func (client CloudEndpointsClient) ListBySyncGroupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
@@ -354,14 +354,14 @@ func (client CloudEndpointsGroupClient) ListBySyncGroupPreparer(ctx context.Cont
 
 // ListBySyncGroupSender sends the ListBySyncGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) ListBySyncGroupSender(req *http.Request) (*http.Response, error) {
+func (client CloudEndpointsClient) ListBySyncGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySyncGroupResponder handles the response to the ListBySyncGroup request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) ListBySyncGroupResponder(resp *http.Response) (result CloudEndpointArray, err error) {
+func (client CloudEndpointsClient) ListBySyncGroupResponder(resp *http.Response) (result CloudEndpointArray, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -379,7 +379,7 @@ func (client CloudEndpointsGroupClient) ListBySyncGroupResponder(resp *http.Resp
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Backup request.
-func (client CloudEndpointsGroupClient) PostBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsGroupPostBackupFuture, err error) {
+func (client CloudEndpointsClient) PostBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsPostBackupFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -387,18 +387,18 @@ func (client CloudEndpointsGroupClient) PostBackup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "PostBackup", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "PostBackup", err.Error())
 	}
 
 	req, err := client.PostBackupPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PostBackup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PostBackup", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PostBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PostBackup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PostBackup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -406,7 +406,7 @@ func (client CloudEndpointsGroupClient) PostBackup(ctx context.Context, resource
 }
 
 // PostBackupPreparer prepares the PostBackup request.
-func (client CloudEndpointsGroupClient) PostBackupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (*http.Request, error) {
+func (client CloudEndpointsClient) PostBackupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -432,7 +432,7 @@ func (client CloudEndpointsGroupClient) PostBackupPreparer(ctx context.Context, 
 
 // PostBackupSender sends the PostBackup request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) PostBackupSender(req *http.Request) (future CloudEndpointsGroupPostBackupFuture, err error) {
+func (client CloudEndpointsClient) PostBackupSender(req *http.Request) (future CloudEndpointsPostBackupFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -449,7 +449,7 @@ func (client CloudEndpointsGroupClient) PostBackupSender(req *http.Request) (fut
 
 // PostBackupResponder handles the response to the PostBackup request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) PostBackupResponder(resp *http.Response) (result PostBackupResponse, err error) {
+func (client CloudEndpointsClient) PostBackupResponder(resp *http.Response) (result PostBackupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -467,7 +467,7 @@ func (client CloudEndpointsGroupClient) PostBackupResponder(resp *http.Response)
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint object.
-func (client CloudEndpointsGroupClient) PostRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest) (result CloudEndpointsGroupPostRestoreFuture, err error) {
+func (client CloudEndpointsClient) PostRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest) (result CloudEndpointsPostRestoreFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -475,18 +475,18 @@ func (client CloudEndpointsGroupClient) PostRestore(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "PostRestore", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "PostRestore", err.Error())
 	}
 
 	req, err := client.PostRestorePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PostRestore", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PostRestore", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PostRestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PostRestore", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PostRestore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -494,7 +494,7 @@ func (client CloudEndpointsGroupClient) PostRestore(ctx context.Context, resourc
 }
 
 // PostRestorePreparer prepares the PostRestore request.
-func (client CloudEndpointsGroupClient) PostRestorePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest) (*http.Request, error) {
+func (client CloudEndpointsClient) PostRestorePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -520,7 +520,7 @@ func (client CloudEndpointsGroupClient) PostRestorePreparer(ctx context.Context,
 
 // PostRestoreSender sends the PostRestore request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) PostRestoreSender(req *http.Request) (future CloudEndpointsGroupPostRestoreFuture, err error) {
+func (client CloudEndpointsClient) PostRestoreSender(req *http.Request) (future CloudEndpointsPostRestoreFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -537,7 +537,7 @@ func (client CloudEndpointsGroupClient) PostRestoreSender(req *http.Request) (fu
 
 // PostRestoreResponder handles the response to the PostRestore request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) PostRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) PostRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -554,7 +554,7 @@ func (client CloudEndpointsGroupClient) PostRestoreResponder(resp *http.Response
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Backup request.
-func (client CloudEndpointsGroupClient) PreBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsGroupPreBackupFuture, err error) {
+func (client CloudEndpointsClient) PreBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsPreBackupFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -562,18 +562,18 @@ func (client CloudEndpointsGroupClient) PreBackup(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "PreBackup", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "PreBackup", err.Error())
 	}
 
 	req, err := client.PreBackupPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PreBackup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PreBackup", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PreBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PreBackup", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PreBackup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -581,7 +581,7 @@ func (client CloudEndpointsGroupClient) PreBackup(ctx context.Context, resourceG
 }
 
 // PreBackupPreparer prepares the PreBackup request.
-func (client CloudEndpointsGroupClient) PreBackupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (*http.Request, error) {
+func (client CloudEndpointsClient) PreBackupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -607,7 +607,7 @@ func (client CloudEndpointsGroupClient) PreBackupPreparer(ctx context.Context, r
 
 // PreBackupSender sends the PreBackup request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) PreBackupSender(req *http.Request) (future CloudEndpointsGroupPreBackupFuture, err error) {
+func (client CloudEndpointsClient) PreBackupSender(req *http.Request) (future CloudEndpointsPreBackupFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -624,7 +624,7 @@ func (client CloudEndpointsGroupClient) PreBackupSender(req *http.Request) (futu
 
 // PreBackupResponder handles the response to the PreBackup request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) PreBackupResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) PreBackupResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -641,7 +641,7 @@ func (client CloudEndpointsGroupClient) PreBackupResponder(resp *http.Response) 
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint object.
-func (client CloudEndpointsGroupClient) PreRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest) (result CloudEndpointsGroupPreRestoreFuture, err error) {
+func (client CloudEndpointsClient) PreRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest) (result CloudEndpointsPreRestoreFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -649,18 +649,18 @@ func (client CloudEndpointsGroupClient) PreRestore(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "PreRestore", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "PreRestore", err.Error())
 	}
 
 	req, err := client.PreRestorePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PreRestore", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PreRestore", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PreRestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "PreRestore", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "PreRestore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -668,7 +668,7 @@ func (client CloudEndpointsGroupClient) PreRestore(ctx context.Context, resource
 }
 
 // PreRestorePreparer prepares the PreRestore request.
-func (client CloudEndpointsGroupClient) PreRestorePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest) (*http.Request, error) {
+func (client CloudEndpointsClient) PreRestorePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -694,7 +694,7 @@ func (client CloudEndpointsGroupClient) PreRestorePreparer(ctx context.Context, 
 
 // PreRestoreSender sends the PreRestore request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) PreRestoreSender(req *http.Request) (future CloudEndpointsGroupPreRestoreFuture, err error) {
+func (client CloudEndpointsClient) PreRestoreSender(req *http.Request) (future CloudEndpointsPreRestoreFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -711,7 +711,7 @@ func (client CloudEndpointsGroupClient) PreRestoreSender(req *http.Request) (fut
 
 // PreRestoreResponder handles the response to the PreRestore request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) PreRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) PreRestoreResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -727,7 +727,7 @@ func (client CloudEndpointsGroupClient) PreRestoreResponder(resp *http.Response)
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
-func (client CloudEndpointsGroupClient) Restoreheartbeat(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) Restoreheartbeat(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -735,32 +735,32 @@ func (client CloudEndpointsGroupClient) Restoreheartbeat(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.CloudEndpointsGroupClient", "Restoreheartbeat", err.Error())
+		return result, validation.NewError("storagesync.CloudEndpointsClient", "Restoreheartbeat", err.Error())
 	}
 
 	req, err := client.RestoreheartbeatPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Restoreheartbeat", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Restoreheartbeat", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.RestoreheartbeatSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Restoreheartbeat", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Restoreheartbeat", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.RestoreheartbeatResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupClient", "Restoreheartbeat", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsClient", "Restoreheartbeat", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // RestoreheartbeatPreparer prepares the Restoreheartbeat request.
-func (client CloudEndpointsGroupClient) RestoreheartbeatPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
+func (client CloudEndpointsClient) RestoreheartbeatPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cloudEndpointName":      autorest.Encode("path", cloudEndpointName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -784,14 +784,14 @@ func (client CloudEndpointsGroupClient) RestoreheartbeatPreparer(ctx context.Con
 
 // RestoreheartbeatSender sends the Restoreheartbeat request. The method will close the
 // http.Response Body if it receives an error.
-func (client CloudEndpointsGroupClient) RestoreheartbeatSender(req *http.Request) (*http.Response, error) {
+func (client CloudEndpointsClient) RestoreheartbeatSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestoreheartbeatResponder handles the response to the Restoreheartbeat request. The method always
 // closes the http.Response Body.
-func (client CloudEndpointsGroupClient) RestoreheartbeatResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudEndpointsClient) RestoreheartbeatResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

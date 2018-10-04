@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// ServerEndpointsGroupClient is the microsoft Storage Sync Service API
-type ServerEndpointsGroupClient struct {
+// ServerEndpointsClient is the microsoft Storage Sync Service API
+type ServerEndpointsClient struct {
 	BaseClient
 }
 
-// NewServerEndpointsGroupClient creates an instance of the ServerEndpointsGroupClient client.
-func NewServerEndpointsGroupClient(subscriptionID string) ServerEndpointsGroupClient {
-	return NewServerEndpointsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewServerEndpointsClient creates an instance of the ServerEndpointsClient client.
+func NewServerEndpointsClient(subscriptionID string) ServerEndpointsClient {
+	return NewServerEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServerEndpointsGroupClientWithBaseURI creates an instance of the ServerEndpointsGroupClient client.
-func NewServerEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID string) ServerEndpointsGroupClient {
-	return ServerEndpointsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewServerEndpointsClientWithBaseURI creates an instance of the ServerEndpointsClient client.
+func NewServerEndpointsClientWithBaseURI(baseURI string, subscriptionID string) ServerEndpointsClient {
+	return ServerEndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a new ServerEndpoint.
@@ -47,7 +47,7 @@ func NewServerEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID str
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
 // parameters - body of Server Endpoint object.
-func (client ServerEndpointsGroupClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (result ServerEndpointsGroupCreateFuture, err error) {
+func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (result ServerEndpointsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -62,18 +62,18 @@ func (client ServerEndpointsGroupClient) Create(ctx context.Context, resourceGro
 						{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "Create", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -81,7 +81,7 @@ func (client ServerEndpointsGroupClient) Create(ctx context.Context, resourceGro
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServerEndpointsGroupClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (*http.Request, error) {
+func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -107,7 +107,7 @@ func (client ServerEndpointsGroupClient) CreatePreparer(ctx context.Context, res
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) CreateSender(req *http.Request) (future ServerEndpointsGroupCreateFuture, err error) {
+func (client ServerEndpointsClient) CreateSender(req *http.Request) (future ServerEndpointsCreateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -124,7 +124,7 @@ func (client ServerEndpointsGroupClient) CreateSender(req *http.Request) (future
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) CreateResponder(resp *http.Response) (result ServerEndpoint, err error) {
+func (client ServerEndpointsClient) CreateResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -141,7 +141,7 @@ func (client ServerEndpointsGroupClient) CreateResponder(resp *http.Response) (r
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
-func (client ServerEndpointsGroupClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (result ServerEndpointsGroupDeleteFuture, err error) {
+func (client ServerEndpointsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (result ServerEndpointsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -149,18 +149,18 @@ func (client ServerEndpointsGroupClient) Delete(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "Delete", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -168,7 +168,7 @@ func (client ServerEndpointsGroupClient) Delete(ctx context.Context, resourceGro
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ServerEndpointsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (*http.Request, error) {
+func (client ServerEndpointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -192,7 +192,7 @@ func (client ServerEndpointsGroupClient) DeletePreparer(ctx context.Context, res
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) DeleteSender(req *http.Request) (future ServerEndpointsGroupDeleteFuture, err error) {
+func (client ServerEndpointsClient) DeleteSender(req *http.Request) (future ServerEndpointsDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -209,7 +209,7 @@ func (client ServerEndpointsGroupClient) DeleteSender(req *http.Request) (future
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServerEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -225,7 +225,7 @@ func (client ServerEndpointsGroupClient) DeleteResponder(resp *http.Response) (r
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
-func (client ServerEndpointsGroupClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (result ServerEndpoint, err error) {
+func (client ServerEndpointsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (result ServerEndpoint, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -233,32 +233,32 @@ func (client ServerEndpointsGroupClient) Get(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "Get", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ServerEndpointsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (*http.Request, error) {
+func (client ServerEndpointsClient) GetPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -282,14 +282,14 @@ func (client ServerEndpointsGroupClient) GetPreparer(ctx context.Context, resour
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ServerEndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) GetResponder(resp *http.Response) (result ServerEndpoint, err error) {
+func (client ServerEndpointsClient) GetResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -305,7 +305,7 @@ func (client ServerEndpointsGroupClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
-func (client ServerEndpointsGroupClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result ServerEndpointArray, err error) {
+func (client ServerEndpointsClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result ServerEndpointArray, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -313,32 +313,32 @@ func (client ServerEndpointsGroupClient) ListBySyncGroup(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "ListBySyncGroup", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "ListBySyncGroup", err.Error())
 	}
 
 	req, err := client.ListBySyncGroupPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "ListBySyncGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "ListBySyncGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySyncGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "ListBySyncGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "ListBySyncGroup", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListBySyncGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "ListBySyncGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "ListBySyncGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySyncGroupPreparer prepares the ListBySyncGroup request.
-func (client ServerEndpointsGroupClient) ListBySyncGroupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
+func (client ServerEndpointsClient) ListBySyncGroupPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
@@ -361,14 +361,14 @@ func (client ServerEndpointsGroupClient) ListBySyncGroupPreparer(ctx context.Con
 
 // ListBySyncGroupSender sends the ListBySyncGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) ListBySyncGroupSender(req *http.Request) (*http.Response, error) {
+func (client ServerEndpointsClient) ListBySyncGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySyncGroupResponder handles the response to the ListBySyncGroup request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) ListBySyncGroupResponder(resp *http.Response) (result ServerEndpointArray, err error) {
+func (client ServerEndpointsClient) ListBySyncGroupResponder(resp *http.Response) (result ServerEndpointArray, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -386,7 +386,7 @@ func (client ServerEndpointsGroupClient) ListBySyncGroupResponder(resp *http.Res
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
 // parameters - body of Recall Action object.
-func (client ServerEndpointsGroupClient) RecallAction(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (result ServerEndpointsGroupRecallActionFuture, err error) {
+func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (result ServerEndpointsRecallActionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -394,18 +394,18 @@ func (client ServerEndpointsGroupClient) RecallAction(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "RecallAction", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "RecallAction", err.Error())
 	}
 
 	req, err := client.RecallActionPreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "RecallAction", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "RecallAction", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.RecallActionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "RecallAction", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "RecallAction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -413,7 +413,7 @@ func (client ServerEndpointsGroupClient) RecallAction(ctx context.Context, resou
 }
 
 // RecallActionPreparer prepares the RecallAction request.
-func (client ServerEndpointsGroupClient) RecallActionPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (*http.Request, error) {
+func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters RecallActionParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -439,7 +439,7 @@ func (client ServerEndpointsGroupClient) RecallActionPreparer(ctx context.Contex
 
 // RecallActionSender sends the RecallAction request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) RecallActionSender(req *http.Request) (future ServerEndpointsGroupRecallActionFuture, err error) {
+func (client ServerEndpointsClient) RecallActionSender(req *http.Request) (future ServerEndpointsRecallActionFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -456,7 +456,7 @@ func (client ServerEndpointsGroupClient) RecallActionSender(req *http.Request) (
 
 // RecallActionResponder handles the response to the RecallAction request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) RecallActionResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServerEndpointsClient) RecallActionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -473,7 +473,7 @@ func (client ServerEndpointsGroupClient) RecallActionResponder(resp *http.Respon
 // syncGroupName - name of Sync Group resource.
 // serverEndpointName - name of Server Endpoint object.
 // parameters - any of the properties applicable in PUT request.
-func (client ServerEndpointsGroupClient) Update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters *ServerEndpointUpdateParameters) (result ServerEndpointsGroupUpdateFuture, err error) {
+func (client ServerEndpointsClient) Update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters *ServerEndpointUpdateParameters) (result ServerEndpointsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -481,18 +481,18 @@ func (client ServerEndpointsGroupClient) Update(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storagesync.ServerEndpointsGroupClient", "Update", err.Error())
+		return result, validation.NewError("storagesync.ServerEndpointsClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, serverEndpointName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -500,7 +500,7 @@ func (client ServerEndpointsGroupClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServerEndpointsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters *ServerEndpointUpdateParameters) (*http.Request, error) {
+func (client ServerEndpointsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters *ServerEndpointUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
 		"serverEndpointName":     autorest.Encode("path", serverEndpointName),
@@ -529,7 +529,7 @@ func (client ServerEndpointsGroupClient) UpdatePreparer(ctx context.Context, res
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerEndpointsGroupClient) UpdateSender(req *http.Request) (future ServerEndpointsGroupUpdateFuture, err error) {
+func (client ServerEndpointsClient) UpdateSender(req *http.Request) (future ServerEndpointsUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -546,7 +546,7 @@ func (client ServerEndpointsGroupClient) UpdateSender(req *http.Request) (future
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ServerEndpointsGroupClient) UpdateResponder(resp *http.Response) (result ServerEndpoint, err error) {
+func (client ServerEndpointsClient) UpdateResponder(resp *http.Response) (result ServerEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

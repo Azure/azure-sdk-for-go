@@ -318,6 +318,70 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 	return
 }
 
+// HardDelete hard-delete an application.
+// Parameters:
+// applicationObjectID - application object ID.
+func (client ApplicationsClient) HardDelete(ctx context.Context, applicationObjectID string) (result autorest.Response, err error) {
+	req, err := client.HardDeletePreparer(ctx, applicationObjectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "HardDelete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.HardDeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "HardDelete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.HardDeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "HardDelete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// HardDeletePreparer prepares the HardDelete request.
+func (client ApplicationsClient) HardDeletePreparer(ctx context.Context, applicationObjectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"applicationObjectId": autorest.Encode("path", applicationObjectID),
+		"tenantID":            autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/deletedApplications/{applicationObjectId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// HardDeleteSender sends the HardDelete request. The method will close the
+// http.Response Body if it receives an error.
+func (client ApplicationsClient) HardDeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// HardDeleteResponder handles the response to the HardDelete request. The method always
+// closes the http.Response Body.
+func (client ApplicationsClient) HardDeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // List lists applications by filter parameters.
 // Parameters:
 // filter - the filters to apply to the operation.

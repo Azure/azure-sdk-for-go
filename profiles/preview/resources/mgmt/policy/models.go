@@ -73,23 +73,23 @@ type SetDefinitionProperties = original.SetDefinitionProperties
 type Sku = original.Sku
 type SetDefinitionsClient = original.SetDefinitionsClient
 
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
+func NewAssignmentsClient() AssignmentsClient {
+	return original.NewAssignmentsClient()
 }
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New() BaseClient {
+	return original.New()
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
-func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClient(subscriptionID)
+func NewDefinitionsClient() DefinitionsClient {
+	return original.NewDefinitionsClient()
 }
-func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+func NewDefinitionsClientWithBaseURI(baseURI string) DefinitionsClient {
+	return original.NewDefinitionsClientWithBaseURI(baseURI)
 }
 func PossibleModeValues() []Mode {
 	return original.PossibleModeValues()
@@ -100,11 +100,11 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
-func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
-	return original.NewSetDefinitionsClient(subscriptionID)
+func NewSetDefinitionsClient() SetDefinitionsClient {
+	return original.NewSetDefinitionsClient()
 }
-func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
-	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+func NewSetDefinitionsClientWithBaseURI(baseURI string) SetDefinitionsClient {
+	return original.NewSetDefinitionsClientWithBaseURI(baseURI)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

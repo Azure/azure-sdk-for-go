@@ -283,7 +283,8 @@ func (client DomainServicesClient) GetResponder(resp *http.Response) (result Dom
 
 // List the List Domain Services in Subscription operation lists all the domain services available under the given
 // subscription (and across all resource groups within that subscription).
-func (client DomainServicesClient) List(ctx context.Context) (result DomainServiceListResult, err error) {
+func (client DomainServicesClient) List(ctx context.Context) (result DomainServiceListResultPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", nil, "Failure preparing request")
@@ -292,12 +293,12 @@ func (client DomainServicesClient) List(ctx context.Context) (result DomainServi
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.dslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", resp, "Failure responding to request")
 	}
@@ -344,12 +345,39 @@ func (client DomainServicesClient) ListResponder(resp *http.Response) (result Do
 	return
 }
 
+// listNextResults retrieves the next set of results, if any.
+func (client DomainServicesClient) listNextResults(lastResults DomainServiceListResult) (result DomainServiceListResult, err error) {
+	req, err := lastResults.domainServiceListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DomainServicesClient) ListComplete(ctx context.Context) (result DomainServiceListResultIterator, err error) {
+	result.page, err = client.List(ctx)
+	return
+}
+
 // ListByResourceGroup the List Domain Services in Resource Group operation lists all the domain services available
 // under the given resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainServiceListResult, err error) {
+func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainServiceListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -358,6 +386,7 @@ func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, reso
 		return result, validation.NewError("aad.DomainServicesClient", "ListByResourceGroup", err.Error())
 	}
 
+	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -366,12 +395,12 @@ func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, reso
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.dslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -416,6 +445,33 @@ func (client DomainServicesClient) ListByResourceGroupResponder(resp *http.Respo
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client DomainServicesClient) listByResourceGroupNextResults(lastResults DomainServiceListResult) (result DomainServiceListResult, err error) {
+	req, err := lastResults.domainServiceListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DomainServicesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result DomainServiceListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
 

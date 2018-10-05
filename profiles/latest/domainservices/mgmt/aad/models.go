@@ -35,6 +35,13 @@ const (
 	Enabled  ExternalAccess = original.Enabled
 )
 
+type FilteredSync = original.FilteredSync
+
+const (
+	FilteredSyncDisabled FilteredSync = original.FilteredSyncDisabled
+	FilteredSyncEnabled  FilteredSync = original.FilteredSyncEnabled
+)
+
 type Ldaps = original.Ldaps
 
 const (
@@ -42,17 +49,60 @@ const (
 	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
 
+type NotifyDcAdmins = original.NotifyDcAdmins
+
+const (
+	NotifyDcAdminsDisabled NotifyDcAdmins = original.NotifyDcAdminsDisabled
+	NotifyDcAdminsEnabled  NotifyDcAdmins = original.NotifyDcAdminsEnabled
+)
+
+type NotifyGlobalAdmins = original.NotifyGlobalAdmins
+
+const (
+	NotifyGlobalAdminsDisabled NotifyGlobalAdmins = original.NotifyGlobalAdminsDisabled
+	NotifyGlobalAdminsEnabled  NotifyGlobalAdmins = original.NotifyGlobalAdminsEnabled
+)
+
+type NtlmV1 = original.NtlmV1
+
+const (
+	NtlmV1Disabled NtlmV1 = original.NtlmV1Disabled
+	NtlmV1Enabled  NtlmV1 = original.NtlmV1Enabled
+)
+
+type SyncNtlmPasswords = original.SyncNtlmPasswords
+
+const (
+	SyncNtlmPasswordsDisabled SyncNtlmPasswords = original.SyncNtlmPasswordsDisabled
+	SyncNtlmPasswordsEnabled  SyncNtlmPasswords = original.SyncNtlmPasswordsEnabled
+)
+
+type TLSV1 = original.TLSV1
+
+const (
+	TLSV1Disabled TLSV1 = original.TLSV1Disabled
+	TLSV1Enabled  TLSV1 = original.TLSV1Enabled
+)
+
+type DomainSecuritySettings = original.DomainSecuritySettings
 type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult
+type DomainServiceListResultIterator = original.DomainServiceListResultIterator
+type DomainServiceListResultPage = original.DomainServiceListResultPage
 type DomainServicePatchProperties = original.DomainServicePatchProperties
 type DomainServiceProperties = original.DomainServiceProperties
 type DomainServicesCreateOrUpdateFuture = original.DomainServicesCreateOrUpdateFuture
 type DomainServicesDeleteFuture = original.DomainServicesDeleteFuture
 type DomainServicesUpdateFuture = original.DomainServicesUpdateFuture
+type HealthAlert = original.HealthAlert
+type HealthMonitor = original.HealthMonitor
 type LdapsSettings = original.LdapsSettings
+type NotificationSettings = original.NotificationSettings
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
+type OperationEntityListResultIterator = original.OperationEntityListResultIterator
+type OperationEntityListResultPage = original.OperationEntityListResultPage
 type Resource = original.Resource
 
 func New(subscriptionID string) BaseClient {
@@ -76,8 +126,26 @@ func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) D
 func PossibleExternalAccessValues() []ExternalAccess {
 	return original.PossibleExternalAccessValues()
 }
+func PossibleFilteredSyncValues() []FilteredSync {
+	return original.PossibleFilteredSyncValues()
+}
 func PossibleLdapsValues() []Ldaps {
 	return original.PossibleLdapsValues()
+}
+func PossibleNotifyDcAdminsValues() []NotifyDcAdmins {
+	return original.PossibleNotifyDcAdminsValues()
+}
+func PossibleNotifyGlobalAdminsValues() []NotifyGlobalAdmins {
+	return original.PossibleNotifyGlobalAdminsValues()
+}
+func PossibleNtlmV1Values() []NtlmV1 {
+	return original.PossibleNtlmV1Values()
+}
+func PossibleSyncNtlmPasswordsValues() []SyncNtlmPasswords {
+	return original.PossibleSyncNtlmPasswordsValues()
+}
+func PossibleTLSV1Values() []TLSV1 {
+	return original.PossibleTLSV1Values()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

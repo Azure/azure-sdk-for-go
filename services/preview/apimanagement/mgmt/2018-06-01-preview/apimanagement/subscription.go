@@ -62,8 +62,7 @@ func (client SubscriptionClient) CreateOrUpdate(ctx context.Context, resourceGro
 				{Target: "sid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.SubscriptionCreateParameterProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.SubscriptionCreateParameterProperties.UserID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.SubscriptionCreateParameterProperties.ProductID", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.SubscriptionCreateParameterProperties.Scope", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.SubscriptionCreateParameterProperties.DisplayName", Name: validation.Null, Rule: true,
 						Chain: []validation.Constraint{{Target: "parameters.SubscriptionCreateParameterProperties.DisplayName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 							{Target: "parameters.SubscriptionCreateParameterProperties.DisplayName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -405,8 +404,8 @@ func (client SubscriptionClient) GetEntityTagResponder(resp *http.Response) (res
 // | id           | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | stateComment | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | userId       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | productId    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | ownerId      | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | scope        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | state        | eq                     |                                             |
 // top - number of records to return.
 // skip - number of records to skip.

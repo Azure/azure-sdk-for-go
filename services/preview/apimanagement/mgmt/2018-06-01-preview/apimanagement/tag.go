@@ -1885,7 +1885,8 @@ func (client TagClient) ListByProductComplete(ctx context.Context, resourceGroup
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // top - number of records to return.
 // skip - number of records to skip.
-func (client TagClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result TagCollectionPage, err error) {
+// scope - scope like 'apis', 'products' or 'apis/{apiId}
+func (client TagClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, scope string) (result TagCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -1901,7 +1902,7 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 	}
 
 	result.fn = client.listByServiceNextResults
-	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, filter, top, skip)
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, filter, top, skip, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByService", nil, "Failure preparing request")
 		return
@@ -1923,7 +1924,7 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 }
 
 // ListByServicePreparer prepares the ListByService request.
-func (client TagClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
+func (client TagClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -1942,6 +1943,9 @@ func (client TagClient) ListByServicePreparer(ctx context.Context, resourceGroup
 	}
 	if skip != nil {
 		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(scope) > 0 {
+		queryParameters["scope"] = autorest.Encode("query", scope)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1994,8 +1998,8 @@ func (client TagClient) listByServiceNextResults(lastResults TagCollection) (res
 }
 
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client TagClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result TagCollectionIterator, err error) {
-	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip)
+func (client TagClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, scope string) (result TagCollectionIterator, err error) {
+	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip, scope)
 	return
 }
 

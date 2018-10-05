@@ -516,6 +516,139 @@ func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceG
 	return
 }
 
+// ListByTags lists a collection of products associated with tags.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// filter - | Field       | Supported operators    | Supported functions                         |
+// |-------------|------------------------|---------------------------------------------|
+// | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | terms       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// | state       | eq                     | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
+// includeNotTaggedProducts - include not tagged products in response
+func (client ProductClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedProducts *bool) (result TagResourceCollectionPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("apimanagement.ProductClient", "ListByTags", err.Error())
+	}
+
+	result.fn = client.listByTagsNextResults
+	req, err := client.ListByTagsPreparer(ctx, resourceGroupName, serviceName, filter, top, skip, includeNotTaggedProducts)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "ListByTags", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByTagsSender(req)
+	if err != nil {
+		result.trc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "ListByTags", resp, "Failure sending request")
+		return
+	}
+
+	result.trc, err = client.ListByTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "ListByTags", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByTagsPreparer prepares the ListByTags request.
+func (client ProductClient) ListByTagsPreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedProducts *bool) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if includeNotTaggedProducts != nil {
+		queryParameters["includeNotTaggedProducts"] = autorest.Encode("query", *includeNotTaggedProducts)
+	} else {
+		queryParameters["includeNotTaggedProducts"] = autorest.Encode("query", false)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/productsByTags", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByTagsSender sends the ListByTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProductClient) ListByTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByTagsResponder handles the response to the ListByTags request. The method always
+// closes the http.Response Body.
+func (client ProductClient) ListByTagsResponder(resp *http.Response) (result TagResourceCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByTagsNextResults retrieves the next set of results, if any.
+func (client ProductClient) listByTagsNextResults(lastResults TagResourceCollection) (result TagResourceCollection, err error) {
+	req, err := lastResults.tagResourceCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByTagsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByTagsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByTagsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByTagsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByTagsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ProductClient) ListByTagsComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedProducts *bool) (result TagResourceCollectionIterator, err error) {
+	result.page, err = client.ListByTags(ctx, resourceGroupName, serviceName, filter, top, skip, includeNotTaggedProducts)
+	return
+}
+
 // Update update product.
 // Parameters:
 // resourceGroupName - the name of the resource group.

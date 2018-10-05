@@ -3,11 +3,12 @@ package servicebus
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-service-bus-go/internal/test"
-	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-service-bus-go/internal/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {

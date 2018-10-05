@@ -3,16 +3,12 @@ package servicebus
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
 	otlogger "github.com/opentracing/opentracing-go/log"
-	"time"
-
 	"pack.ag/amqp"
-)
-
-const (
-	serviceBuslockRenewalOperationName = "com.microsoft:renew-lock"
 )
 
 //RenewLocks renews the locks on messages provided
@@ -41,10 +37,10 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
-			"operation": serviceBuslockRenewalOperationName,
+			operationFieldName: serviceBuslockRenewalOperationName,
 		},
 		Value: map[string]interface{}{
-			"lock-tokens": lockTokens,
+			lockTokensFieldName: lockTokens,
 		},
 	}
 

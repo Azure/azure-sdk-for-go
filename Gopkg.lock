@@ -184,6 +184,7 @@
     "github.com/Azure/azure-amqp-common-go/cbs",
     "github.com/Azure/azure-amqp-common-go/conn",
     "github.com/Azure/azure-amqp-common-go/log",
+    "github.com/Azure/azure-amqp-common-go/rpc",
     "github.com/Azure/azure-amqp-common-go/sas",
     "github.com/Azure/azure-amqp-common-go/uuid",
     "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources",

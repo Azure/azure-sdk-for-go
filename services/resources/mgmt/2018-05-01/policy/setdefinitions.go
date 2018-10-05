@@ -32,13 +32,13 @@ type SetDefinitionsClient struct {
 }
 
 // NewSetDefinitionsClient creates an instance of the SetDefinitionsClient client.
-func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
-	return NewSetDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSetDefinitionsClient() SetDefinitionsClient {
+	return NewSetDefinitionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewSetDefinitionsClientWithBaseURI creates an instance of the SetDefinitionsClient client.
-func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
-	return SetDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSetDefinitionsClientWithBaseURI(baseURI string) SetDefinitionsClient {
+	return SetDefinitionsClient{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate this operation creates or updates a policy set definition in the given subscription with the given
@@ -46,7 +46,8 @@ func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) S
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to create.
 // parameters - the policy set definition properties.
-func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition) (result SetDefinition, err error) {
+// subscriptionID - the ID of the target subscription.
+func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, subscriptionID string) (result SetDefinition, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.SetDefinitionProperties", Name: validation.Null, Rule: false,
@@ -54,7 +55,7 @@ func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySet
 		return result, validation.NewError("policy.SetDefinitionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, policySetDefinitionName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, policySetDefinitionName, parameters, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -76,10 +77,10 @@ func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySet
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SetDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policySetDefinitionName string, parameters SetDefinition) (*http.Request, error) {
+func (client SetDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":          autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-05-01"
@@ -197,8 +198,9 @@ func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroupResponder(resp
 // Delete this operation deletes the policy set definition in the given subscription with the given name.
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to delete.
-func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, policySetDefinitionName)
+// subscriptionID - the ID of the target subscription.
+func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string, subscriptionID string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx, policySetDefinitionName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -220,10 +222,10 @@ func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefiniti
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SetDefinitionsClient) DeletePreparer(ctx context.Context, policySetDefinitionName string) (*http.Request, error) {
+func (client SetDefinitionsClient) DeletePreparer(ctx context.Context, policySetDefinitionName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":          autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-05-01"
@@ -327,8 +329,9 @@ func (client SetDefinitionsClient) DeleteAtManagementGroupResponder(resp *http.R
 // Get this operation retrieves the policy set definition in the given subscription with the given name.
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to get.
-func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string) (result SetDefinition, err error) {
-	req, err := client.GetPreparer(ctx, policySetDefinitionName)
+// subscriptionID - the ID of the target subscription.
+func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string, subscriptionID string) (result SetDefinition, err error) {
+	req, err := client.GetPreparer(ctx, policySetDefinitionName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -350,10 +353,10 @@ func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionN
 }
 
 // GetPreparer prepares the Get request.
-func (client SetDefinitionsClient) GetPreparer(ctx context.Context, policySetDefinitionName string) (*http.Request, error) {
+func (client SetDefinitionsClient) GetPreparer(ctx context.Context, policySetDefinitionName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":          autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-05-01"
@@ -521,9 +524,11 @@ func (client SetDefinitionsClient) GetBuiltInResponder(resp *http.Response) (res
 }
 
 // List this operation retrieves a list of all the policy set definitions in the given subscription.
-func (client SetDefinitionsClient) List(ctx context.Context) (result SetDefinitionListResultPage, err error) {
+// Parameters:
+// subscriptionID - the ID of the target subscription.
+func (client SetDefinitionsClient) List(ctx context.Context, subscriptionID string) (result SetDefinitionListResultPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "List", nil, "Failure preparing request")
 		return
@@ -545,9 +550,9 @@ func (client SetDefinitionsClient) List(ctx context.Context) (result SetDefiniti
 }
 
 // ListPreparer prepares the List request.
-func (client SetDefinitionsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client SetDefinitionsClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2018-05-01"
@@ -605,8 +610,8 @@ func (client SetDefinitionsClient) listNextResults(lastResults SetDefinitionList
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SetDefinitionsClient) ListComplete(ctx context.Context) (result SetDefinitionListResultIterator, err error) {
-	result.page, err = client.List(ctx)
+func (client SetDefinitionsClient) ListComplete(ctx context.Context, subscriptionID string) (result SetDefinitionListResultIterator, err error) {
+	result.page, err = client.List(ctx, subscriptionID)
 	return
 }
 

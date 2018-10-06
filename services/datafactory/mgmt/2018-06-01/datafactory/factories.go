@@ -382,6 +382,88 @@ func (client FactoriesClient) GetResponder(resp *http.Response) (result Factory,
 	return
 }
 
+// GetDataPlaneReadOnlyToken get Data Plane read only token.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// dataPlaneReadOnlyTokenRequest - data Plane read only access token request definition.
+func (client FactoriesClient) GetDataPlaneReadOnlyToken(ctx context.Context, resourceGroupName string, factoryName string, dataPlaneReadOnlyTokenRequest DataPlaneReadOnlyTokenRequest) (result DataPlaneReadOnlyTokenResponse, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.FactoriesClient", "GetDataPlaneReadOnlyToken", err.Error())
+	}
+
+	req, err := client.GetDataPlaneReadOnlyTokenPreparer(ctx, resourceGroupName, factoryName, dataPlaneReadOnlyTokenRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "GetDataPlaneReadOnlyToken", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDataPlaneReadOnlyTokenSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "GetDataPlaneReadOnlyToken", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDataPlaneReadOnlyTokenResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "GetDataPlaneReadOnlyToken", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetDataPlaneReadOnlyTokenPreparer prepares the GetDataPlaneReadOnlyToken request.
+func (client FactoriesClient) GetDataPlaneReadOnlyTokenPreparer(ctx context.Context, resourceGroupName string, factoryName string, dataPlaneReadOnlyTokenRequest DataPlaneReadOnlyTokenRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneReadOnlyToken", pathParameters),
+		autorest.WithJSON(dataPlaneReadOnlyTokenRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDataPlaneReadOnlyTokenSender sends the GetDataPlaneReadOnlyToken request. The method will close the
+// http.Response Body if it receives an error.
+func (client FactoriesClient) GetDataPlaneReadOnlyTokenSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDataPlaneReadOnlyTokenResponder handles the response to the GetDataPlaneReadOnlyToken request. The method always
+// closes the http.Response Body.
+func (client FactoriesClient) GetDataPlaneReadOnlyTokenResponder(resp *http.Response) (result DataPlaneReadOnlyTokenResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetGitHubAccessToken get GitHub Access Token.
 // Parameters:
 // resourceGroupName - the resource group name.

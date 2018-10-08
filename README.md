@@ -226,13 +226,41 @@ below.
   credentials from an auth file created by the [Azure CLI][]. Follow these
   steps to utilize:
 
-  1.  Create a service principal and output an auth file using `az ad sp create-for-rbac --sdk-auth > client_credentials.json`.
-  2.  Set environment variable `AZURE_AUTH_LOCATION` to the path of the saved
-      output file.
-  3.  Use the authorizer returned by `auth.NewAuthorizerFromFile()` in your
-      client as described above.
-
-[azure cli]: https://github.com/Azure/azure-cli
+    1. Create a service principal and output an auth file using `az ad sp
+       create-for-rbac --sdk-auth > client_credentials.json`.
+    2. Set environment variable `AZURE_AUTH_LOCATION` to the path of the saved
+       output file.
+    3. Use the authorizer returned by `auth.NewAuthorizerFromFile()` in your
+       client as described above.
+	  
+* The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
+  uses [Azure CLI][] to obtain its credentials. To use this method follow
+  these steps:
+  
+    1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
+    2. Use `az login` to sign in to Azure.
+  
+  If you receive an error, use `az account get-access-token` to verify access.
+  
+  If Azure CLI is not installed to the default directory, you may receive an error 
+  reporting that `az` cannot be found.  
+  Use the `AzureCLIPath` environment variable to define the Azure CLI installation folder.
+  
+  If you are signed in to Azure CLI using multiple accounts or your account has 
+  access to multiple subscriptions, you need to specify the specific subscription 
+  to be used.  To do so, use:
+  
+  ```
+  az account set --subscription <subscription-id>
+  ```
+  
+  To verify the current account settings, use:
+  
+  ```
+  az account list
+  ```
+  
+[Azure CLI]: https://github.com/Azure/azure-cli
 
 - Finally, you can use OAuth's [Device Flow][] by calling
   `auth.NewDeviceFlowConfig()` and extracting the Authorizer as follows:

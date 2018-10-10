@@ -85,6 +85,13 @@ const (
 	Enabled  ApplicationGatewayCookieBasedAffinity = original.Enabled
 )
 
+type ApplicationGatewayCustomErrorStatusCode = original.ApplicationGatewayCustomErrorStatusCode
+
+const (
+	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus403
+	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus502
+)
+
 type ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallMode
 
 const (
@@ -236,9 +243,10 @@ const (
 type AzureFirewallNetworkRuleProtocol = original.AzureFirewallNetworkRuleProtocol
 
 const (
-	Any AzureFirewallNetworkRuleProtocol = original.Any
-	TCP AzureFirewallNetworkRuleProtocol = original.TCP
-	UDP AzureFirewallNetworkRuleProtocol = original.UDP
+	Any  AzureFirewallNetworkRuleProtocol = original.Any
+	ICMP AzureFirewallNetworkRuleProtocol = original.ICMP
+	TCP  AzureFirewallNetworkRuleProtocol = original.TCP
+	UDP  AzureFirewallNetworkRuleProtocol = original.UDP
 )
 
 type AzureFirewallRCActionType = original.AzureFirewallRCActionType
@@ -698,6 +706,14 @@ const (
 	TunnelConnectionStatusUnknown      TunnelConnectionStatus = original.TunnelConnectionStatusUnknown
 )
 
+type VerbosityLevel = original.VerbosityLevel
+
+const (
+	Full    VerbosityLevel = original.Full
+	Minimum VerbosityLevel = original.Minimum
+	Normal  VerbosityLevel = original.Normal
+)
+
 type VirtualNetworkGatewayConnectionProtocol = original.VirtualNetworkGatewayConnectionProtocol
 
 const (
@@ -833,7 +849,9 @@ type ApplicationGatewayBackendHealthServer = original.ApplicationGatewayBackendH
 type ApplicationGatewayBackendHTTPSettings = original.ApplicationGatewayBackendHTTPSettings
 type ApplicationGatewayBackendHTTPSettingsPropertiesFormat = original.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
 type ApplicationGatewayConnectionDraining = original.ApplicationGatewayConnectionDraining
+type ApplicationGatewayCustomError = original.ApplicationGatewayCustomError
 type ApplicationGatewayFirewallDisabledRuleGroup = original.ApplicationGatewayFirewallDisabledRuleGroup
+type ApplicationGatewayFirewallExclusion = original.ApplicationGatewayFirewallExclusion
 type ApplicationGatewayFirewallRule = original.ApplicationGatewayFirewallRule
 type ApplicationGatewayFirewallRuleGroup = original.ApplicationGatewayFirewallRuleGroup
 type ApplicationGatewayFirewallRuleSet = original.ApplicationGatewayFirewallRuleSet
@@ -941,6 +959,7 @@ type BgpServiceCommunityListResultPage = original.BgpServiceCommunityListResultP
 type BgpServiceCommunityPropertiesFormat = original.BgpServiceCommunityPropertiesFormat
 type BgpSettings = original.BgpSettings
 type ConfigurationDiagnosticParameters = original.ConfigurationDiagnosticParameters
+type ConfigurationDiagnosticProfile = original.ConfigurationDiagnosticProfile
 type ConfigurationDiagnosticResponse = original.ConfigurationDiagnosticResponse
 type ConfigurationDiagnosticResult = original.ConfigurationDiagnosticResult
 type ConnectionMonitor = original.ConnectionMonitor
@@ -1360,7 +1379,6 @@ type TopologyParameters = original.TopologyParameters
 type TopologyResource = original.TopologyResource
 type TrafficAnalyticsConfigurationProperties = original.TrafficAnalyticsConfigurationProperties
 type TrafficAnalyticsProperties = original.TrafficAnalyticsProperties
-type TrafficQuery = original.TrafficQuery
 type TroubleshootingDetails = original.TroubleshootingDetails
 type TroubleshootingParameters = original.TroubleshootingParameters
 type TroubleshootingProperties = original.TroubleshootingProperties
@@ -1744,6 +1762,9 @@ func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGa
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
 }
+func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
+	return original.PossibleApplicationGatewayCustomErrorStatusCodeValues()
+}
 func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewallMode {
 	return original.PossibleApplicationGatewayFirewallModeValues()
 }
@@ -1953,6 +1974,9 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 }
 func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 	return original.PossibleTunnelConnectionStatusValues()
+}
+func PossibleVerbosityLevelValues() []VerbosityLevel {
+	return original.PossibleVerbosityLevelValues()
 }
 func PossibleVirtualNetworkGatewayConnectionProtocolValues() []VirtualNetworkGatewayConnectionProtocol {
 	return original.PossibleVirtualNetworkGatewayConnectionProtocolValues()

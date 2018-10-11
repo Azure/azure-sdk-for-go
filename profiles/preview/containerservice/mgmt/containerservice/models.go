@@ -260,6 +260,8 @@ const (
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ContainerService = original.ContainerService
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
 type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType

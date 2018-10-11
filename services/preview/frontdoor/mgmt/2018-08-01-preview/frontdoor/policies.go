@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// PoliciesClient is the frontdoor Client
+// PoliciesClient is the frontDoor Client
 type PoliciesClient struct {
 	BaseClient
 }

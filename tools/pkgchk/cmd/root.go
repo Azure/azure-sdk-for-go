@@ -195,60 +195,54 @@ type verifier func(p pkg) error
 // returns a list of verifiers to execute
 func getVerifiers() []verifier {
 	return []verifier{
-		verifyPkgName(),
-		verifyLowerCase(),
-		verifyDirectorySturcture(),
+		verifyPkgMatchesDir,
+		verifyLowerCase,
+		verifyDirectorySturcture,
 	}
 }
 
 // ensures that the leaf directory name matches the package name
-func verifyPkgName() verifier {
-	return func(p pkg) error {
-		leaf := p.d[strings.LastIndex(p.d, "/")+1:]
-		if strings.Compare(leaf, p.p.Name) != 0 {
-			return fmt.Errorf("leaf directory of '%s' doesn't match package name '%s'", p.d, p.p.Name)
-		}
-		return nil
+func verifyPkgMatchesDir(p pkg) error {
+	leaf := p.d[strings.LastIndex(p.d, "/")+1:]
+	if strings.Compare(leaf, p.p.Name) != 0 {
+		return fmt.Errorf("leaf directory of '%s' doesn't match package name '%s'", p.d, p.p.Name)
 	}
+	return nil
 }
 
 // ensures that there are no upper-case letters in a package's directory
-func verifyLowerCase() verifier {
-	return func(p pkg) error {
-		// walk the package directory looking for upper-case characters
-		for _, r := range p.d {
-			if r == '/' {
-				continue
-			}
-			if unicode.IsUpper(r) {
-				return fmt.Errorf("found upper-case character in directory '%s'", p.d)
-			}
+func verifyLowerCase(p pkg) error {
+	// walk the package directory looking for upper-case characters
+	for _, r := range p.d {
+		if r == '/' {
+			continue
 		}
-		return nil
+		if unicode.IsUpper(r) {
+			return fmt.Errorf("found upper-case character in directory '%s'", p.d)
+		}
 	}
+	return nil
 }
 
 // ensures that the package's directory hierarchy is properly formed
-func verifyDirectorySturcture() verifier {
-	return func(p pkg) error {
-		// for ARM the package directory structure is highly deterministic:
-		// /redis/mgmt/2015-08-01/redis
-		// /resources/mgmt/2017-06-01-preview/policy
-		// /preview/signalr/mgmt/2018-03-01-preview/signalr
-		if !p.isARMPkg() {
-			return nil
-		}
-		regexStr := strings.Join([]string{
-			`^(?:/preview)?`,
-			`[a-z0-9\-]+`,
-			`mgmt`,
-			`\d{4}-\d{2}-\d{2}(?:-preview)?`,
-			`[a-z0-9]+`,
-		}, "/")
-		regex := regexp.MustCompile(regexStr)
-		if !regex.MatchString(p.d) {
-			return fmt.Errorf("bad directory structure '%s'", p.d)
-		}
+func verifyDirectorySturcture(p pkg) error {
+	// for ARM the package directory structure is highly deterministic:
+	// /redis/mgmt/2015-08-01/redis
+	// /resources/mgmt/2017-06-01-preview/policy
+	// /preview/signalr/mgmt/2018-03-01-preview/signalr
+	if !p.isARMPkg() {
 		return nil
 	}
+	regexStr := strings.Join([]string{
+		`^(?:/preview)?`,
+		`[a-z0-9\-]+`,
+		`mgmt`,
+		`\d{4}-\d{2}-\d{2}(?:-preview)?`,
+		`[a-z0-9]+`,
+	}, "/")
+	regex := regexp.MustCompile(regexStr)
+	if !regex.MatchString(p.d) {
+		return fmt.Errorf("bad directory structure '%s'", p.d)
+	}
+	return nil
 }

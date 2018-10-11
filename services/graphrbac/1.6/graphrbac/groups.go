@@ -115,6 +115,80 @@ func (client GroupsClient) AddMemberResponder(resp *http.Response) (result autor
 	return
 }
 
+// AddOwner add an owner to a group.
+// Parameters:
+// objectID - the object ID of the application to which to add the owner.
+// parameters - the URL of the owner object, such as
+// https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+func (client GroupsClient) AddOwner(ctx context.Context, objectID string, parameters AddOwnerParameters) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("graphrbac.GroupsClient", "AddOwner", err.Error())
+	}
+
+	req, err := client.AddOwnerPreparer(ctx, objectID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddOwnerSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddOwnerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddOwner", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddOwnerPreparer prepares the AddOwner request.
+func (client GroupsClient) AddOwnerPreparer(ctx context.Context, objectID string, parameters AddOwnerParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/$links/owners", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddOwnerSender sends the AddOwner request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupsClient) AddOwnerSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddOwnerResponder handles the response to the AddOwner request. The method always
+// closes the http.Response Body.
+func (client GroupsClient) AddOwnerResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Create create a group in the directory.
 // Parameters:
 // parameters - the parameters for the group to create.
@@ -322,10 +396,10 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result ADGroup, er
 // GetGroupMembers gets the members of a group.
 // Parameters:
 // objectID - the object ID of the group whose members should be retrieved.
-func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (result GetObjectsResultPage, err error) {
-	result.fn = func(lastResult GetObjectsResult) (GetObjectsResult, error) {
+func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (result DirectoryObjectListResultPage, err error) {
+	result.fn = func(lastResult DirectoryObjectListResult) (DirectoryObjectListResult, error) {
 		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return GetObjectsResult{}, nil
+			return DirectoryObjectListResult{}, nil
 		}
 		return client.GetGroupMembersNext(ctx, *lastResult.OdataNextLink)
 	}
@@ -337,12 +411,12 @@ func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string)
 
 	resp, err := client.GetGroupMembersSender(req)
 	if err != nil {
-		result.gor.Response = autorest.Response{Response: resp}
+		result.dolr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure sending request")
 		return
 	}
 
-	result.gor, err = client.GetGroupMembersResponder(resp)
+	result.dolr, err = client.GetGroupMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure responding to request")
 	}
@@ -379,7 +453,7 @@ func (client GroupsClient) GetGroupMembersSender(req *http.Request) (*http.Respo
 
 // GetGroupMembersResponder handles the response to the GetGroupMembers request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -391,7 +465,7 @@ func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result
 }
 
 // GetGroupMembersComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID string) (result GetObjectsResultIterator, err error) {
+func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID string) (result DirectoryObjectListResultIterator, err error) {
 	result.page, err = client.GetGroupMembers(ctx, objectID)
 	return
 }
@@ -399,7 +473,7 @@ func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID
 // GetGroupMembersNext gets the members of a group.
 // Parameters:
 // nextLink - next link for the list operation.
-func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (result DirectoryObjectListResult, err error) {
 	req, err := client.GetGroupMembersNextPreparer(ctx, nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
@@ -450,7 +524,7 @@ func (client GroupsClient) GetGroupMembersNextSender(req *http.Request) (*http.R
 
 // GetGroupMembersNextResponder handles the response to the GetGroupMembersNext request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersNextResponder(resp *http.Response) (result GetObjectsResult, err error) {
+func (client GroupsClient) GetGroupMembersNextResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -753,6 +827,99 @@ func (client GroupsClient) ListNextResponder(resp *http.Response) (result GroupL
 	return
 }
 
+// ListOwners the owners are a set of non-admin users who are allowed to modify this object.
+// Parameters:
+// objectID - the object ID of the group for which to get owners.
+func (client GroupsClient) ListOwners(ctx context.Context, objectID string) (result DirectoryObjectListResultPage, err error) {
+	result.fn = client.listOwnersNextResults
+	req, err := client.ListOwnersPreparer(ctx, objectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListOwnersSender(req)
+	if err != nil {
+		result.dolr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", resp, "Failure sending request")
+		return
+	}
+
+	result.dolr, err = client.ListOwnersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListOwners", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListOwnersPreparer prepares the ListOwners request.
+func (client GroupsClient) ListOwnersPreparer(ctx context.Context, objectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/owners", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListOwnersSender sends the ListOwners request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupsClient) ListOwnersSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListOwnersResponder handles the response to the ListOwners request. The method always
+// closes the http.Response Body.
+func (client GroupsClient) ListOwnersResponder(resp *http.Response) (result DirectoryObjectListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listOwnersNextResults retrieves the next set of results, if any.
+func (client GroupsClient) listOwnersNextResults(lastResults DirectoryObjectListResult) (result DirectoryObjectListResult, err error) {
+	req, err := lastResults.directoryObjectListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "listOwnersNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListOwnersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "listOwnersNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListOwnersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "listOwnersNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListOwnersComplete enumerates all values, automatically crossing page boundaries as required.
+func (client GroupsClient) ListOwnersComplete(ctx context.Context, objectID string) (result DirectoryObjectListResultIterator, err error) {
+	result.page, err = client.ListOwners(ctx, objectID)
+	return
+}
+
 // RemoveMember remove a member from a group.
 // Parameters:
 // groupObjectID - the object ID of the group from which to remove the member.
@@ -810,6 +977,72 @@ func (client GroupsClient) RemoveMemberSender(req *http.Request) (*http.Response
 // RemoveMemberResponder handles the response to the RemoveMember request. The method always
 // closes the http.Response Body.
 func (client GroupsClient) RemoveMemberResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// RemoveOwner remove a member from owners.
+// Parameters:
+// objectID - the object ID of the group from which to remove the owner.
+// ownerObjectID - owner object id
+func (client GroupsClient) RemoveOwner(ctx context.Context, objectID string, ownerObjectID string) (result autorest.Response, err error) {
+	req, err := client.RemoveOwnerPreparer(ctx, objectID, ownerObjectID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveOwner", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RemoveOwnerSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveOwner", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RemoveOwnerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveOwner", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RemoveOwnerPreparer prepares the RemoveOwner request.
+func (client GroupsClient) RemoveOwnerPreparer(ctx context.Context, objectID string, ownerObjectID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId":      autorest.Encode("path", objectID),
+		"ownerObjectId": autorest.Encode("path", ownerObjectID),
+		"tenantID":      autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/$links/owners/{ownerObjectId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RemoveOwnerSender sends the RemoveOwner request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupsClient) RemoveOwnerSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// RemoveOwnerResponder handles the response to the RemoveOwner request. The method always
+// closes the http.Response Body.
+func (client GroupsClient) RemoveOwnerResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

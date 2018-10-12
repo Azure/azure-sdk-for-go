@@ -75,6 +75,21 @@ func PossibleContentSourceTypeValues() []ContentSourceType {
 	return []ContentSourceType{EmbeddedContent, URI}
 }
 
+// CountType enumerates the values for count type.
+type CountType string
+
+const (
+	// Nodeconfiguration ...
+	Nodeconfiguration CountType = "nodeconfiguration"
+	// Status ...
+	Status CountType = "status"
+)
+
+// PossibleCountTypeValues returns an array of possible values for the CountType const type.
+func PossibleCountTypeValues() []CountType {
+	return []CountType{Nodeconfiguration, Status}
+}
+
 // DscConfigurationProvisioningState enumerates the values for dsc configuration provisioning state.
 type DscConfigurationProvisioningState string
 
@@ -1341,30 +1356,6 @@ type AgentRegistrationKeys struct {
 type AgentRegistrationRegenerateKeyParameter struct {
 	// KeyName - Gets or sets the agent registration key name - primary or secondary. Possible values include: 'Primary', 'Secondary'
 	KeyName AgentRegistrationKeyName `json:"keyName,omitempty"`
-	// Name - Gets or sets the name of the resource.
-	Name *string `json:"name,omitempty"`
-	// Location - Gets or sets the location of the resource.
-	Location *string `json:"location,omitempty"`
-	// Tags - Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for AgentRegistrationRegenerateKeyParameter.
-func (arrkp AgentRegistrationRegenerateKeyParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if arrkp.KeyName != "" {
-		objectMap["keyName"] = arrkp.KeyName
-	}
-	if arrkp.Name != nil {
-		objectMap["name"] = arrkp.Name
-	}
-	if arrkp.Location != nil {
-		objectMap["location"] = arrkp.Location
-	}
-	if arrkp.Tags != nil {
-		objectMap["tags"] = arrkp.Tags
-	}
-	return json.Marshal(objectMap)
 }
 
 // AzureQueryProperties azure query specific to the group of machines for update configuration.
@@ -2813,6 +2804,35 @@ func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DscCompilationJobCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DscCompilationJobCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DscCompilationJobCreateFuture) Result(client DscCompilationJobClient) (dcj DscCompilationJob, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("automation.DscCompilationJobCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dcj.Response.Response, err = future.GetResult(sender); err == nil && dcj.Response.Response.StatusCode != http.StatusNoContent {
+		dcj, err = client.CreateResponder(dcj.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", dcj.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
 	// DscCompilationJobCreateProperties - Gets or sets the list of compilation job properties.
@@ -3609,27 +3629,11 @@ type DscMetaConfiguration struct {
 	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 }
 
-// DscNode definition of the dsc node type.
+// DscNode definition of a DscNode
 type DscNode struct {
 	autorest.Response `json:"-"`
-	// LastSeen - Gets or sets the last seen time of the node.
-	LastSeen *date.Time `json:"lastSeen,omitempty"`
-	// RegistrationTime - Gets or sets the registration time of the node.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
-	// IP - Gets or sets the ip of the node.
-	IP *string `json:"ip,omitempty"`
-	// AccountID - Gets or sets the account id of the node.
-	AccountID *string `json:"accountId,omitempty"`
-	// NodeConfiguration - Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
-	// Status - Gets or sets the status of the node.
-	Status *string `json:"status,omitempty"`
-	// NodeID - Gets or sets the node id.
-	NodeID *string `json:"nodeId,omitempty"`
-	// Etag - Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
-	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+	// DscNodeProperties - The properties of a DscNode.
+	*DscNodeProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -3638,21 +3642,155 @@ type DscNode struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DscNode.
+func (dn DscNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dn.DscNodeProperties != nil {
+		objectMap["properties"] = dn.DscNodeProperties
+	}
+	if dn.ID != nil {
+		objectMap["id"] = dn.ID
+	}
+	if dn.Name != nil {
+		objectMap["name"] = dn.Name
+	}
+	if dn.Type != nil {
+		objectMap["type"] = dn.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNode struct.
+func (dn *DscNode) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeProperties DscNodeProperties
+				err = json.Unmarshal(*v, &dscNodeProperties)
+				if err != nil {
+					return err
+				}
+				dn.DscNodeProperties = &dscNodeProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dn.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dn.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dn.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // DscNodeConfiguration definition of the dsc node configuration.
 type DscNodeConfiguration struct {
 	autorest.Response `json:"-"`
-	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// CreationTime - Gets or sets creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Configuration - Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// DscNodeConfigurationProperties - Gets or sets the configuration properties.
+	*DscNodeConfigurationProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeConfiguration.
+func (dnc DscNodeConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnc.DscNodeConfigurationProperties != nil {
+		objectMap["properties"] = dnc.DscNodeConfigurationProperties
+	}
+	if dnc.ID != nil {
+		objectMap["id"] = dnc.ID
+	}
+	if dnc.Name != nil {
+		objectMap["name"] = dnc.Name
+	}
+	if dnc.Type != nil {
+		objectMap["type"] = dnc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeConfiguration struct.
+func (dnc *DscNodeConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeConfigurationProperties DscNodeConfigurationProperties
+				err = json.Unmarshal(*v, &dscNodeConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				dnc.DscNodeConfigurationProperties = &dscNodeConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dnc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dnc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dnc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeConfigurationAssociationProperty the dsc nodeconfiguration property associated with the entity.
@@ -3661,13 +3799,108 @@ type DscNodeConfigurationAssociationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// DscNodeConfigurationCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DscNodeConfigurationCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DscNodeConfigurationCreateOrUpdateFuture) Result(client DscNodeConfigurationClient) (dnc DscNodeConfiguration, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("automation.DscNodeConfigurationCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dnc.Response.Response, err = future.GetResult(sender); err == nil && dnc.Response.Response.StatusCode != http.StatusNoContent {
+		dnc, err = client.CreateOrUpdateResponder(dnc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", dnc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DscNodeConfigurationCreateOrUpdateParameters the parameters supplied to the create or update node configuration
 // operation.
 type DscNodeConfigurationCreateOrUpdateParameters struct {
-	// Source - Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	// DscNodeConfigurationCreateOrUpdateParametersProperties - Node configuration properties
+	*DscNodeConfigurationCreateOrUpdateParametersProperties `json:"properties,omitempty"`
 	// Name - Name of the node configuration.
 	Name *string `json:"name,omitempty"`
+	// Tags - Gets or sets the tags attached to the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeConfigurationCreateOrUpdateParameters.
+func (dnccoup DscNodeConfigurationCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnccoup.DscNodeConfigurationCreateOrUpdateParametersProperties != nil {
+		objectMap["properties"] = dnccoup.DscNodeConfigurationCreateOrUpdateParametersProperties
+	}
+	if dnccoup.Name != nil {
+		objectMap["name"] = dnccoup.Name
+	}
+	if dnccoup.Tags != nil {
+		objectMap["tags"] = dnccoup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeConfigurationCreateOrUpdateParameters struct.
+func (dnccoup *DscNodeConfigurationCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeConfigurationCreateOrUpdateParametersProperties DscNodeConfigurationCreateOrUpdateParametersProperties
+				err = json.Unmarshal(*v, &dscNodeConfigurationCreateOrUpdateParametersProperties)
+				if err != nil {
+					return err
+				}
+				dnccoup.DscNodeConfigurationCreateOrUpdateParametersProperties = &dscNodeConfigurationCreateOrUpdateParametersProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dnccoup.Name = &name
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dnccoup.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DscNodeConfigurationCreateOrUpdateParametersProperties the parameter properties supplied to the create or update
+// node configuration operation.
+type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
+	// Source - Gets or sets the source.
+	Source *ContentSource `json:"source,omitempty"`
 	// Configuration - Gets or sets the configuration of the node.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
@@ -3681,6 +3914,8 @@ type DscNodeConfigurationListResult struct {
 	Value *[]DscNodeConfiguration `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
 	NextLink *string `json:"nextLink,omitempty"`
+	// TotalCount - Gets or sets the total rows in query.
+	TotalCount *int32 `json:"totalCount,omitempty"`
 }
 
 // DscNodeConfigurationListResultIterator provides access to a complete listing of DscNodeConfiguration values.
@@ -3776,6 +4011,22 @@ func (page DscNodeConfigurationListResultPage) Values() []DscNodeConfiguration {
 	return *page.dnclr.Value
 }
 
+// DscNodeConfigurationProperties properties for the DscNodeConfiguration
+type DscNodeConfigurationProperties struct {
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// CreationTime - Gets or sets creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// Configuration - Gets or sets the configuration of the node.
+	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// Source - Source of node configuration.
+	Source *string `json:"source,omitempty"`
+	// NodeCount - Number of nodes with this nodeconfiguration assigned
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
+}
+
 // DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
 type DscNodeExtensionHandlerAssociationProperty struct {
 	// Name - Gets or sets the name of the extension handler.
@@ -3791,6 +4042,8 @@ type DscNodeListResult struct {
 	Value *[]DscNode `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
 	NextLink *string `json:"nextLink,omitempty"`
+	// TotalCount - Gets the total number of nodes matching filter criteria.
+	TotalCount *int32 `json:"totalCount,omitempty"`
 }
 
 // DscNodeListResultIterator provides access to a complete listing of DscNode values.
@@ -3884,6 +4137,171 @@ func (page DscNodeListResultPage) Values() []DscNode {
 		return nil
 	}
 	return *page.dnlr.Value
+}
+
+// DscNodeProperties the properties of a DscNode
+type DscNodeProperties struct {
+	// LastSeen - Gets or sets the last seen time of the node.
+	LastSeen *date.Time `json:"lastSeen,omitempty"`
+	// RegistrationTime - Gets or sets the registration time of the node.
+	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
+	// IP - Gets or sets the ip of the node.
+	IP *string `json:"ip,omitempty"`
+	// AccountID - Gets or sets the account id of the node.
+	AccountID *string `json:"accountId,omitempty"`
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	// Status - Gets or sets the status of the node.
+	Status *string `json:"status,omitempty"`
+	// NodeID - Gets or sets the node id.
+	NodeID *string `json:"nodeId,omitempty"`
+	// Etag - Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// TotalCount - Gets the total number of records matching filter criteria.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
+	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeProperties.
+func (dnp DscNodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnp.LastSeen != nil {
+		objectMap["lastSeen"] = dnp.LastSeen
+	}
+	if dnp.RegistrationTime != nil {
+		objectMap["registrationTime"] = dnp.RegistrationTime
+	}
+	if dnp.IP != nil {
+		objectMap["ip"] = dnp.IP
+	}
+	if dnp.AccountID != nil {
+		objectMap["accountId"] = dnp.AccountID
+	}
+	if dnp.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnp.DscNodeConfigurationAssociationProperty
+	}
+	if dnp.Status != nil {
+		objectMap["status"] = dnp.Status
+	}
+	if dnp.NodeID != nil {
+		objectMap["nodeId"] = dnp.NodeID
+	}
+	if dnp.Etag != nil {
+		objectMap["etag"] = dnp.Etag
+	}
+	if dnp.TotalCount != nil {
+		objectMap["totalCount"] = dnp.TotalCount
+	}
+	if dnp.ExtensionHandler != nil {
+		objectMap["extensionHandler"] = dnp.ExtensionHandler
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeProperties struct.
+func (dnp *DscNodeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "lastSeen":
+			if v != nil {
+				var lastSeen date.Time
+				err = json.Unmarshal(*v, &lastSeen)
+				if err != nil {
+					return err
+				}
+				dnp.LastSeen = &lastSeen
+			}
+		case "registrationTime":
+			if v != nil {
+				var registrationTime date.Time
+				err = json.Unmarshal(*v, &registrationTime)
+				if err != nil {
+					return err
+				}
+				dnp.RegistrationTime = &registrationTime
+			}
+		case "ip":
+			if v != nil {
+				var IP string
+				err = json.Unmarshal(*v, &IP)
+				if err != nil {
+					return err
+				}
+				dnp.IP = &IP
+			}
+		case "accountId":
+			if v != nil {
+				var accountID string
+				err = json.Unmarshal(*v, &accountID)
+				if err != nil {
+					return err
+				}
+				dnp.AccountID = &accountID
+			}
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnp.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		case "status":
+			if v != nil {
+				var status string
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				dnp.Status = &status
+			}
+		case "nodeId":
+			if v != nil {
+				var nodeID string
+				err = json.Unmarshal(*v, &nodeID)
+				if err != nil {
+					return err
+				}
+				dnp.NodeID = &nodeID
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				dnp.Etag = &etag
+			}
+		case "totalCount":
+			if v != nil {
+				var totalCount int32
+				err = json.Unmarshal(*v, &totalCount)
+				if err != nil {
+					return err
+				}
+				dnp.TotalCount = &totalCount
+			}
+		case "extensionHandler":
+			if v != nil {
+				var extensionHandler []DscNodeExtensionHandlerAssociationProperty
+				err = json.Unmarshal(*v, &extensionHandler)
+				if err != nil {
+					return err
+				}
+				dnp.ExtensionHandler = &extensionHandler
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeReport definition of the dsc node report type.
@@ -4034,9 +4452,47 @@ func (page DscNodeReportListResultPage) Values() []DscNodeReport {
 // DscNodeUpdateParameters the parameters supplied to the update dsc node operation.
 type DscNodeUpdateParameters struct {
 	// NodeID - Gets or sets the id of the dsc node.
-	NodeID *string `json:"nodeId,omitempty"`
-	// NodeConfiguration - Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	NodeID     *string                            `json:"nodeId,omitempty"`
+	Properties *DscNodeUpdateParametersProperties `json:"properties,omitempty"`
+}
+
+// DscNodeUpdateParametersProperties ...
+type DscNodeUpdateParametersProperties struct {
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeUpdateParametersProperties.
+func (dnup DscNodeUpdateParametersProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnup.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnup.DscNodeConfigurationAssociationProperty
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeUpdateParametersProperties struct.
+func (dnup *DscNodeUpdateParametersProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnup.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscReportError definition of the dsc node report error type.
@@ -5628,6 +6084,28 @@ func (mup *ModuleUpdateParameters) UnmarshalJSON(body []byte) error {
 type ModuleUpdateProperties struct {
 	// ContentLink - Gets or sets the module content link.
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
+}
+
+// NodeCount number of nodes based on the Filter
+type NodeCount struct {
+	// Name - Gets the name of a count type
+	Name       *string              `json:"name,omitempty"`
+	Properties *NodeCountProperties `json:"properties,omitempty"`
+}
+
+// NodeCountProperties ...
+type NodeCountProperties struct {
+	// Count - Gets the count for the name
+	Count *int32 `json:"count,omitempty"`
+}
+
+// NodeCounts gets the count of nodes by count type
+type NodeCounts struct {
+	autorest.Response `json:"-"`
+	// Value - Gets an array of counts
+	Value *[]NodeCount `json:"value,omitempty"`
+	// TotalCount - Gets the total number of records matching countType criteria.
+	TotalCount *int32 `json:"totalCount,omitempty"`
 }
 
 // Operation automation REST API operation
@@ -8584,6 +9062,346 @@ type VariableUpdateProperties struct {
 	Value *string `json:"value,omitempty"`
 	// Description - Gets or sets the description of the variable.
 	Description *string `json:"description,omitempty"`
+}
+
+// Watcher definition of the watcher type.
+type Watcher struct {
+	autorest.Response `json:"-"`
+	// WatcherProperties - Gets or sets the watcher properties.
+	*WatcherProperties `json:"properties,omitempty"`
+	// Etag - Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Watcher.
+func (w Watcher) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if w.WatcherProperties != nil {
+		objectMap["properties"] = w.WatcherProperties
+	}
+	if w.Etag != nil {
+		objectMap["etag"] = w.Etag
+	}
+	if w.Tags != nil {
+		objectMap["tags"] = w.Tags
+	}
+	if w.Location != nil {
+		objectMap["location"] = w.Location
+	}
+	if w.ID != nil {
+		objectMap["id"] = w.ID
+	}
+	if w.Name != nil {
+		objectMap["name"] = w.Name
+	}
+	if w.Type != nil {
+		objectMap["type"] = w.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Watcher struct.
+func (w *Watcher) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watcherProperties WatcherProperties
+				err = json.Unmarshal(*v, &watcherProperties)
+				if err != nil {
+					return err
+				}
+				w.WatcherProperties = &watcherProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				w.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				w.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				w.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				w.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				w.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				w.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatcherListResult the response model for the list watcher operation.
+type WatcherListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of watchers.
+	Value *[]Watcher `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WatcherListResultIterator provides access to a complete listing of Watcher values.
+type WatcherListResultIterator struct {
+	i    int
+	page WatcherListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WatcherListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WatcherListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WatcherListResultIterator) Response() WatcherListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WatcherListResultIterator) Value() Watcher {
+	if !iter.page.NotDone() {
+		return Watcher{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wlr WatcherListResult) IsEmpty() bool {
+	return wlr.Value == nil || len(*wlr.Value) == 0
+}
+
+// watcherListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wlr WatcherListResult) watcherListResultPreparer() (*http.Request, error) {
+	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wlr.NextLink)))
+}
+
+// WatcherListResultPage contains a page of Watcher values.
+type WatcherListResultPage struct {
+	fn  func(WatcherListResult) (WatcherListResult, error)
+	wlr WatcherListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WatcherListResultPage) Next() error {
+	next, err := page.fn(page.wlr)
+	if err != nil {
+		return err
+	}
+	page.wlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WatcherListResultPage) NotDone() bool {
+	return !page.wlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WatcherListResultPage) Response() WatcherListResult {
+	return page.wlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WatcherListResultPage) Values() []Watcher {
+	if page.wlr.IsEmpty() {
+		return nil
+	}
+	return *page.wlr.Value
+}
+
+// WatcherProperties definition of the watcher properties
+type WatcherProperties struct {
+	// ExecutionFrequencyInSeconds - Gets or sets the frequency at which the watcher is invoked.
+	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
+	// ScriptName - Gets or sets the name of the script the watcher is attached to, i.e. the name of an existing runbook.
+	ScriptName *string `json:"scriptName,omitempty"`
+	// ScriptParameters - Gets or sets the parameters of the script.
+	ScriptParameters map[string]*string `json:"scriptParameters"`
+	// ScriptRunOn - Gets or sets the name of the hybrid worker group the watcher will run on.
+	ScriptRunOn *string `json:"scriptRunOn,omitempty"`
+	// Status - Gets the current status of the watcher.
+	Status *string `json:"status,omitempty"`
+	// CreationTime - Gets or sets the creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// LastModifiedBy - Details of the user who last modified the watcher.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// Description - Gets or sets the description.
+	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatcherProperties.
+func (wp WatcherProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.ExecutionFrequencyInSeconds != nil {
+		objectMap["executionFrequencyInSeconds"] = wp.ExecutionFrequencyInSeconds
+	}
+	if wp.ScriptName != nil {
+		objectMap["scriptName"] = wp.ScriptName
+	}
+	if wp.ScriptParameters != nil {
+		objectMap["scriptParameters"] = wp.ScriptParameters
+	}
+	if wp.ScriptRunOn != nil {
+		objectMap["scriptRunOn"] = wp.ScriptRunOn
+	}
+	if wp.Status != nil {
+		objectMap["status"] = wp.Status
+	}
+	if wp.CreationTime != nil {
+		objectMap["creationTime"] = wp.CreationTime
+	}
+	if wp.LastModifiedTime != nil {
+		objectMap["lastModifiedTime"] = wp.LastModifiedTime
+	}
+	if wp.LastModifiedBy != nil {
+		objectMap["lastModifiedBy"] = wp.LastModifiedBy
+	}
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
+// WatcherUpdateParameters ...
+type WatcherUpdateParameters struct {
+	// WatcherUpdateProperties - Gets or sets the watcher update properties.
+	*WatcherUpdateProperties `json:"properties,omitempty"`
+	// Name - Gets or sets the name of the resource.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatcherUpdateParameters.
+func (wup WatcherUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wup.WatcherUpdateProperties != nil {
+		objectMap["properties"] = wup.WatcherUpdateProperties
+	}
+	if wup.Name != nil {
+		objectMap["name"] = wup.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WatcherUpdateParameters struct.
+func (wup *WatcherUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watcherUpdateProperties WatcherUpdateProperties
+				err = json.Unmarshal(*v, &watcherUpdateProperties)
+				if err != nil {
+					return err
+				}
+				wup.WatcherUpdateProperties = &watcherUpdateProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wup.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatcherUpdateProperties the properties of the update watcher operation.
+type WatcherUpdateProperties struct {
+	// ExecutionFrequencyInSeconds - Gets or sets the frequency at which the watcher is invoked.
+	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
 }
 
 // Webhook definition of the webhook type.

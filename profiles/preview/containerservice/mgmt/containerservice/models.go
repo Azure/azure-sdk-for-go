@@ -28,6 +28,13 @@ const (
 type BaseClient = original.BaseClient
 type ContainerServicesClient = original.ContainerServicesClient
 type ManagedClustersClient = original.ManagedClustersClient
+type Kind = original.Kind
+
+const (
+	KindAADIdentityProvider                         Kind = original.KindAADIdentityProvider
+	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
+)
+
 type NetworkPlugin = original.NetworkPlugin
 
 const (
@@ -294,14 +301,16 @@ type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
 type NetworkProfileType = original.NetworkProfileType
 type OpenShiftManagedCluster = original.OpenShiftManagedCluster
+type OpenShiftManagedClusterAADIdentityProvider = original.OpenShiftManagedClusterAADIdentityProvider
 type OpenShiftManagedClusterAgentPoolProfile = original.OpenShiftManagedClusterAgentPoolProfile
 type OpenShiftManagedClusterAuthProfile = original.OpenShiftManagedClusterAuthProfile
-type OpenShiftManagedClusterIdentityProviders = original.OpenShiftManagedClusterIdentityProviders
+type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
+type OpenShiftManagedClusterBaseIdentityProvider = original.OpenShiftManagedClusterBaseIdentityProvider
+type OpenShiftManagedClusterIdentityProvider = original.OpenShiftManagedClusterIdentityProvider
 type OpenShiftManagedClusterMasterPoolProfile = original.OpenShiftManagedClusterMasterPoolProfile
 type OpenShiftManagedClusterProperties = original.OpenShiftManagedClusterProperties
 type OpenShiftManagedClustersCreateOrUpdateFuture = original.OpenShiftManagedClustersCreateOrUpdateFuture
 type OpenShiftManagedClustersDeleteFuture = original.OpenShiftManagedClustersDeleteFuture
-type OpenShiftManagedClusterServiceAADIdentityProvider = original.OpenShiftManagedClusterServiceAADIdentityProvider
 type OpenShiftManagedClustersUpdateTagsFuture = original.OpenShiftManagedClustersUpdateTagsFuture
 type OpenShiftRouterProfile = original.OpenShiftRouterProfile
 type OperationListResult = original.OperationListResult
@@ -341,6 +350,9 @@ func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 }
 func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
 }
 func PossibleNetworkPluginValues() []NetworkPlugin {
 	return original.PossibleNetworkPluginValues()

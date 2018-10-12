@@ -25,6 +25,21 @@ import (
 	"net/http"
 )
 
+// Kind enumerates the values for kind.
+type Kind string
+
+const (
+	// KindAADIdentityProvider ...
+	KindAADIdentityProvider Kind = "AADIdentityProvider"
+	// KindOpenShiftManagedClusterBaseIdentityProvider ...
+	KindOpenShiftManagedClusterBaseIdentityProvider Kind = "OpenShiftManagedClusterBaseIdentityProvider"
+)
+
+// PossibleKindValues returns an array of possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{KindAADIdentityProvider, KindOpenShiftManagedClusterBaseIdentityProvider}
+}
+
 // NetworkPlugin enumerates the values for network plugin.
 type NetworkPlugin string
 
@@ -1652,6 +1667,52 @@ func (osmc *OpenShiftManagedCluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// OpenShiftManagedClusterAADIdentityProvider defines the Identity provider for MS AAD.
+type OpenShiftManagedClusterAADIdentityProvider struct {
+	// ClientID - The clientId password associated with the provider.
+	ClientID *string `json:"clientId,omitempty"`
+	// Secret - The secret password associated with the provider.
+	Secret *string `json:"secret,omitempty"`
+	// TenantID - The tenantId associated with the provider.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider', 'KindAADIdentityProvider'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) MarshalJSON() ([]byte, error) {
+	osmcaip.Kind = KindAADIdentityProvider
+	objectMap := make(map[string]interface{})
+	if osmcaip.ClientID != nil {
+		objectMap["clientId"] = osmcaip.ClientID
+	}
+	if osmcaip.Secret != nil {
+		objectMap["secret"] = osmcaip.Secret
+	}
+	if osmcaip.TenantID != nil {
+		objectMap["tenantId"] = osmcaip.TenantID
+	}
+	if osmcaip.Kind != "" {
+		objectMap["kind"] = osmcaip.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOpenShiftManagedClusterAADIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool) {
+	return &osmcaip, true
+}
+
+// AsOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsOpenShiftManagedClusterBaseIdentityProvider() (*OpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return nil, false
+}
+
+// AsBasicOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterAADIdentityProvider.
+func (osmcaip OpenShiftManagedClusterAADIdentityProvider) AsBasicOpenShiftManagedClusterBaseIdentityProvider() (BasicOpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return &osmcaip, true
+}
+
 // OpenShiftManagedClusterAgentPoolProfile defines the configuration of the OpenShift cluster VMs.
 type OpenShiftManagedClusterAgentPoolProfile struct {
 	// Name - Unique name of the pool profile in the context of the subscription and resource group.
@@ -1671,16 +1732,122 @@ type OpenShiftManagedClusterAgentPoolProfile struct {
 // OpenShiftManagedClusterAuthProfile defines all possible authentication profiles for the OpenShift cluster.
 type OpenShiftManagedClusterAuthProfile struct {
 	// IdentityProviders - Type of authentication profile to use.
-	IdentityProviders *[]OpenShiftManagedClusterIdentityProviders `json:"identityProviders,omitempty"`
+	IdentityProviders *[]OpenShiftManagedClusterIdentityProvider `json:"identityProviders,omitempty"`
 }
 
-// OpenShiftManagedClusterIdentityProviders defines the configuration of the identity providers to be used in the
+// BasicOpenShiftManagedClusterBaseIdentityProvider structure for any Identity provider.
+type BasicOpenShiftManagedClusterBaseIdentityProvider interface {
+	AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool)
+	AsOpenShiftManagedClusterBaseIdentityProvider() (*OpenShiftManagedClusterBaseIdentityProvider, bool)
+}
+
+// OpenShiftManagedClusterBaseIdentityProvider structure for any Identity provider.
+type OpenShiftManagedClusterBaseIdentityProvider struct {
+	// Kind - Possible values include: 'KindOpenShiftManagedClusterBaseIdentityProvider', 'KindAADIdentityProvider'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+func unmarshalBasicOpenShiftManagedClusterBaseIdentityProvider(body []byte) (BasicOpenShiftManagedClusterBaseIdentityProvider, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindAADIdentityProvider):
+		var osmcaip OpenShiftManagedClusterAADIdentityProvider
+		err := json.Unmarshal(body, &osmcaip)
+		return osmcaip, err
+	default:
+		var osmcbip OpenShiftManagedClusterBaseIdentityProvider
+		err := json.Unmarshal(body, &osmcbip)
+		return osmcbip, err
+	}
+}
+func unmarshalBasicOpenShiftManagedClusterBaseIdentityProviderArray(body []byte) ([]BasicOpenShiftManagedClusterBaseIdentityProvider, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	osmcbipArray := make([]BasicOpenShiftManagedClusterBaseIdentityProvider, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		osmcbip, err := unmarshalBasicOpenShiftManagedClusterBaseIdentityProvider(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		osmcbipArray[index] = osmcbip
+	}
+	return osmcbipArray, nil
+}
+
+// MarshalJSON is the custom marshaler for OpenShiftManagedClusterBaseIdentityProvider.
+func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) MarshalJSON() ([]byte, error) {
+	osmcbip.Kind = KindOpenShiftManagedClusterBaseIdentityProvider
+	objectMap := make(map[string]interface{})
+	if osmcbip.Kind != "" {
+		objectMap["kind"] = osmcbip.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOpenShiftManagedClusterAADIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterBaseIdentityProvider.
+func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) AsOpenShiftManagedClusterAADIdentityProvider() (*OpenShiftManagedClusterAADIdentityProvider, bool) {
+	return nil, false
+}
+
+// AsOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterBaseIdentityProvider.
+func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) AsOpenShiftManagedClusterBaseIdentityProvider() (*OpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return &osmcbip, true
+}
+
+// AsBasicOpenShiftManagedClusterBaseIdentityProvider is the BasicOpenShiftManagedClusterBaseIdentityProvider implementation for OpenShiftManagedClusterBaseIdentityProvider.
+func (osmcbip OpenShiftManagedClusterBaseIdentityProvider) AsBasicOpenShiftManagedClusterBaseIdentityProvider() (BasicOpenShiftManagedClusterBaseIdentityProvider, bool) {
+	return &osmcbip, true
+}
+
+// OpenShiftManagedClusterIdentityProvider defines the configuration of the identity providers to be used in the
 // OpenShift cluster.
-type OpenShiftManagedClusterIdentityProviders struct {
+type OpenShiftManagedClusterIdentityProvider struct {
 	// Name - Name of the provider.
 	Name *string `json:"name,omitempty"`
 	// Provider - Configuration of the provider.
-	Provider interface{} `json:"provider,omitempty"`
+	Provider BasicOpenShiftManagedClusterBaseIdentityProvider `json:"provider,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for OpenShiftManagedClusterIdentityProvider struct.
+func (osmcip *OpenShiftManagedClusterIdentityProvider) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				osmcip.Name = &name
+			}
+		case "provider":
+			if v != nil {
+				provider, err := unmarshalBasicOpenShiftManagedClusterBaseIdentityProvider(*v)
+				if err != nil {
+					return err
+				}
+				osmcip.Provider = provider
+			}
+		}
+	}
+
+	return nil
 }
 
 // OpenShiftManagedClusterMasterPoolProfile openShiftManagedClusterMaterPoolProfile contains configuration for
@@ -1770,18 +1937,6 @@ func (future *OpenShiftManagedClustersDeleteFuture) Result(client OpenShiftManag
 	}
 	ar.Response = future.Response()
 	return
-}
-
-// OpenShiftManagedClusterServiceAADIdentityProvider aADIdentityProvider defines Identity provider for MS AAD.
-type OpenShiftManagedClusterServiceAADIdentityProvider struct {
-	// Kind - The kind of the provider.
-	Kind *string `json:"kind,omitempty"`
-	// ClientID - The clientId password associated with the provider.
-	ClientID *string `json:"clientId,omitempty"`
-	// Secret - The secret password associated with the provider.
-	Secret *string `json:"secret,omitempty"`
-	// TenantID - The tenantId associated with the provider.
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // OpenShiftManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a

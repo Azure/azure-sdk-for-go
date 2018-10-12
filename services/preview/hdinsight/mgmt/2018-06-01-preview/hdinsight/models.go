@@ -91,6 +91,25 @@ func PossibleOSTypeValues() []OSType {
 	return []OSType{Linux, Windows}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// None ...
+	None ResourceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	// UserAssigned ...
+	UserAssigned ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
+}
+
 // Tier enumerates the values for tier.
 type Tier string
 
@@ -443,6 +462,8 @@ type Cluster struct {
 	Etag *string `json:"etag,omitempty"`
 	// Properties - The properties of the cluster.
 	Properties *ClusterGetProperties `json:"properties,omitempty"`
+	// Identity - The identity of the cluster, if configured.
+	Identity *ClusterIdentity `json:"identity,omitempty"`
 	// Location - The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
@@ -463,6 +484,9 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	}
 	if c.Properties != nil {
 		objectMap["properties"] = c.Properties
+	}
+	if c.Identity != nil {
+		objectMap["identity"] = c.Identity
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
@@ -490,6 +514,8 @@ type ClusterCreateParametersExtended struct {
 	Tags map[string]*string `json:"tags"`
 	// Properties - The cluster create parameters.
 	Properties *ClusterCreateProperties `json:"properties,omitempty"`
+	// Identity - The identity of the cluster, if configured.
+	Identity *ClusterIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterCreateParametersExtended.
@@ -503,6 +529,9 @@ func (ccpe ClusterCreateParametersExtended) MarshalJSON() ([]byte, error) {
 	}
 	if ccpe.Properties != nil {
 		objectMap["properties"] = ccpe.Properties
+	}
+	if ccpe.Identity != nil {
+		objectMap["identity"] = ccpe.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -579,6 +608,44 @@ type ClusterGetProperties struct {
 	Errors *[]Errors `json:"errors,omitempty"`
 	// ConnectivityEndpoints - The list of connectivity endpoints.
 	ConnectivityEndpoints *[]ConnectivityEndpoint `json:"connectivityEndpoints,omitempty"`
+}
+
+// ClusterIdentity identity for the cluster.
+type ClusterIdentity struct {
+	// PrincipalID - The principal id of cluster identity. This property will only be provided for a system assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant id associated with the cluster. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
+	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*ClusterIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterIdentity.
+func (ci ClusterIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ci.PrincipalID != nil {
+		objectMap["principalId"] = ci.PrincipalID
+	}
+	if ci.TenantID != nil {
+		objectMap["tenantId"] = ci.TenantID
+	}
+	if ci.Type != "" {
+		objectMap["type"] = ci.Type
+	}
+	if ci.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = ci.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
+// ClusterIdentityUserAssignedIdentitiesValue ...
+type ClusterIdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // ClusterListPersistedScriptActionsResult the ListPersistedScriptActions operation response.

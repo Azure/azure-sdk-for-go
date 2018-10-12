@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// LoadBalancingSettingsClient is the frontdoor Client
+// LoadBalancingSettingsClient is the frontDoor Client
 type LoadBalancingSettingsClient struct {
 	BaseClient
 }

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// HealthProbeSettingsClient is the frontdoor Client
+// HealthProbeSettingsClient is the frontDoor Client
 type HealthProbeSettingsClient struct {
 	BaseClient
 }

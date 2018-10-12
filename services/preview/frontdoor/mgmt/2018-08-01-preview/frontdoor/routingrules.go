@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// RoutingRulesClient is the frontdoor Client
+// RoutingRulesClient is the frontDoor Client
 type RoutingRulesClient struct {
 	BaseClient
 }

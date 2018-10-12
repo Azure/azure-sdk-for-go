@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// FrontDoorsClient is the frontdoor Client
+// FrontDoorsClient is the frontDoor Client
 type FrontDoorsClient struct {
 	BaseClient
 }

@@ -1,6 +1,6 @@
 // Package frontdoor implements the Azure ARM Frontdoor service API version .
 //
-// Frontdoor Client
+// FrontDoor Client
 package frontdoor
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

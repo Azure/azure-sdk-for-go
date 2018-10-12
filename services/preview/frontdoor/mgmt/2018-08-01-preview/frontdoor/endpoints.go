@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// EndpointsClient is the frontdoor Client
+// EndpointsClient is the frontDoor Client
 type EndpointsClient struct {
 	BaseClient
 }

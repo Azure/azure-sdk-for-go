@@ -99,6 +99,13 @@ const (
 	ConditionOperatorLessThanOrEqual    ConditionOperator = original.ConditionOperatorLessThanOrEqual
 )
 
+type CriterionType = original.CriterionType
+
+const (
+	CriterionTypeMultiMetricCriteria      CriterionType = original.CriterionTypeMultiMetricCriteria
+	CriterionTypeStaticThresholdCriterion CriterionType = original.CriterionTypeStaticThresholdCriterion
+)
+
 type Enabled = original.Enabled
 
 const (
@@ -143,15 +150,17 @@ const (
 type OdataTypeBasicAction = original.OdataTypeBasicAction
 
 const (
-	OdataTypeAction                                                                                                                                OdataTypeBasicAction = original.OdataTypeAction
-	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
+	OdataTypeAction                                                                                                                                   OdataTypeBasicAction = original.OdataTypeAction
+	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction    OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
+	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction
 )
 
 type OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteria
 
 const (
-	OdataTypeMetricAlertCriteria                                       OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
-	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
+	OdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
+	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
+	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
 )
 
 type OdataTypeBasicRuleAction = original.OdataTypeBasicRuleAction
@@ -311,12 +320,14 @@ type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
 type BaselineResponse = original.BaselineResponse
 type CalculateBaselineResponse = original.CalculateBaselineResponse
+type Criteria = original.Criteria
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
 type DiagnosticSettingsCategoryResource = original.DiagnosticSettingsCategoryResource
 type DiagnosticSettingsCategoryResourceCollection = original.DiagnosticSettingsCategoryResourceCollection
 type DiagnosticSettingsResource = original.DiagnosticSettingsResource
 type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceCollection
+type Dimension = original.Dimension
 type EmailNotification = original.EmailNotification
 type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
@@ -344,6 +355,7 @@ type LogSearchRuleResource = original.LogSearchRuleResource
 type LogSearchRuleResourceCollection = original.LogSearchRuleResourceCollection
 type LogSearchRuleResourcePatch = original.LogSearchRuleResourcePatch
 type LogSettings = original.LogSettings
+type LogToMetricAction = original.LogToMetricAction
 type ManagementEventAggregationCondition = original.ManagementEventAggregationCondition
 type ManagementEventRuleCondition = original.ManagementEventRuleCondition
 type MetadataValue = original.MetadataValue
@@ -351,6 +363,7 @@ type Metric = original.Metric
 type MetricAlertAction = original.MetricAlertAction
 type BasicMetricAlertCriteria = original.BasicMetricAlertCriteria
 type MetricAlertCriteria = original.MetricAlertCriteria
+type MetricAlertMultipleResourceMultipleMetricCriteria = original.MetricAlertMultipleResourceMultipleMetricCriteria
 type MetricAlertProperties = original.MetricAlertProperties
 type MetricAlertResource = original.MetricAlertResource
 type MetricAlertResourceCollection = original.MetricAlertResourceCollection
@@ -370,6 +383,8 @@ type MetricNamespaceName = original.MetricNamespaceName
 type MetricSettings = original.MetricSettings
 type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
+type BasicMultiMetricCriteria = original.BasicMultiMetricCriteria
+type MultiMetricCriteria = original.MultiMetricCriteria
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -528,6 +543,9 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 }
 func PossibleConditionOperatorValues() []ConditionOperator {
 	return original.PossibleConditionOperatorValues()
+}
+func PossibleCriterionTypeValues() []CriterionType {
+	return original.PossibleCriterionTypeValues()
 }
 func PossibleEnabledValues() []Enabled {
 	return original.PossibleEnabledValues()

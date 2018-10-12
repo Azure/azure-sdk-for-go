@@ -1474,13 +1474,23 @@ type ImportImageParameters struct {
 type ImportSource struct {
 	// ResourceID - The resource identifier of the source Azure Container Registry.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// RegistryURI - The address of the source registry.
+	// RegistryURI - The address of the source registry (e.g. 'mcr.microsoft.com').
 	RegistryURI *string `json:"registryUri,omitempty"`
+	// Credentials - Credentials used when importing from a registry uri.
+	Credentials *ImportSourceCredentials `json:"credentials,omitempty"`
 	// SourceImage - Repository name of the source image.
 	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
 	// Specify an image by tag ('hello-world:latest').
 	// Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
 	SourceImage *string `json:"sourceImage,omitempty"`
+}
+
+// ImportSourceCredentials ...
+type ImportSourceCredentials struct {
+	// Username - The username to authenticate with the source registry.
+	Username *string `json:"username,omitempty"`
+	// Password - The password used to authenticate with the source registry.
+	Password *string `json:"password,omitempty"`
 }
 
 // OperationDefinition the definition of a container registry operation.

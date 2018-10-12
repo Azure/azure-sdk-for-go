@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"io"
 	"net/http"
 )
 
@@ -199,7 +200,7 @@ func (client RunbookDraftClient) GetContentResponder(resp *http.Response) (resul
 // automationAccountName - the name of the automation account.
 // runbookName - the runbook name.
 // runbookContent - the runbook draft content.
-func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string) (result RunbookDraftReplaceContentFuture, err error) {
+func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent io.ReadCloser) (result RunbookDraftReplaceContentFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -224,7 +225,7 @@ func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGro
 }
 
 // ReplaceContentPreparer prepares the ReplaceContent request.
-func (client RunbookDraftClient) ReplaceContentPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string) (*http.Request, error) {
+func (client RunbookDraftClient) ReplaceContentPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent io.ReadCloser) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -242,7 +243,7 @@ func (client RunbookDraftClient) ReplaceContentPreparer(ctx context.Context, res
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content", pathParameters),
-		autorest.WithJSON(runbookContent),
+		autorest.WithFile(runbookContent),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -266,7 +267,7 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 
 // ReplaceContentResponder handles the response to the ReplaceContent request. The method always
 // closes the http.Response Body.
-func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result String, err error) {
+func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result ReadCloser, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

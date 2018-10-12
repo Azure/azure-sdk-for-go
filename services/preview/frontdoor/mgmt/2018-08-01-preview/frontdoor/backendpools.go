@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// BackendPoolsClient is the frontdoor Client
+// BackendPoolsClient is the frontDoor Client
 type BackendPoolsClient struct {
 	BaseClient
 }

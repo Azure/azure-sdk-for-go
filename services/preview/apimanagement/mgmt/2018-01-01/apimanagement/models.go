@@ -118,6 +118,22 @@ func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 	return []BearerTokenSendingMethod{AuthorizationHeader, Query}
 }
 
+// BearerTokenSendingMethods enumerates the values for bearer token sending methods.
+type BearerTokenSendingMethods string
+
+const (
+	// BearerTokenSendingMethodsAuthorizationHeader Access token will be transmitted in the Authorization
+	// header using Bearer schema
+	BearerTokenSendingMethodsAuthorizationHeader BearerTokenSendingMethods = "authorizationHeader"
+	// BearerTokenSendingMethodsQuery Access token will be transmitted as query parameters.
+	BearerTokenSendingMethodsQuery BearerTokenSendingMethods = "query"
+)
+
+// PossibleBearerTokenSendingMethodsValues returns an array of possible values for the BearerTokenSendingMethods const type.
+func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
+	return []BearerTokenSendingMethods{BearerTokenSendingMethodsAuthorizationHeader, BearerTokenSendingMethodsQuery}
+}
+
 // ClientAuthenticationMethod enumerates the values for client authentication method.
 type ClientAuthenticationMethod string
 
@@ -1767,6 +1783,10 @@ type APIVersionSetUpdateParametersProperties struct {
 type AuthenticationSettingsContract struct {
 	// OAuth2 - OAuth2 Authentication settings
 	OAuth2 *OAuth2AuthenticationSettingsContract `json:"oAuth2,omitempty"`
+	// Openid - OpenID Connect Authentication Settings
+	Openid *OpenIDAuthenticationSettingsContract `json:"openid,omitempty"`
+	// SubscriptionKeyRequired - Specifies whether subscription key is required during call to this API, true - API is included into closed products only, false - API is included into open products alone, null - there is a mix of products.
+	SubscriptionKeyRequired *bool `json:"subscriptionKeyRequired,omitempty"`
 }
 
 // AuthorizationServerCollection paged OAuth2 Authorization Servers list representation.
@@ -5098,6 +5118,14 @@ type OAuth2AuthenticationSettingsContract struct {
 	AuthorizationServerID *string `json:"authorizationServerId,omitempty"`
 	// Scope - operations scope.
 	Scope *string `json:"scope,omitempty"`
+}
+
+// OpenIDAuthenticationSettingsContract API OAuth2 Authentication settings details.
+type OpenIDAuthenticationSettingsContract struct {
+	// OpenidProviderID - OAuth authorization server identifier.
+	OpenidProviderID *string `json:"openidProviderId,omitempty"`
+	// BearerTokenSendingMethods - How to send token to the server.
+	BearerTokenSendingMethods *[]BearerTokenSendingMethods `json:"bearerTokenSendingMethods,omitempty"`
 }
 
 // OpenIDConnectProviderCollection paged OpenIdProviders list representation.

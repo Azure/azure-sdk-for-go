@@ -19,20 +19,20 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption"
+import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
 
-type AggregatedCostClient = original.AggregatedCostClient
-type BalancesClient = original.BalancesClient
-type BudgetsClient = original.BudgetsClient
-type ChargesClient = original.ChargesClient
+type AggregatedCostGroupClient = original.AggregatedCostGroupClient
+type BalancesGroupClient = original.BalancesGroupClient
+type BudgetsGroupClient = original.BudgetsGroupClient
+type ChargesGroupClient = original.ChargesGroupClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ForecastsClient = original.ForecastsClient
-type MarketplacesClient = original.MarketplacesClient
+type ForecastsGroupClient = original.ForecastsGroupClient
+type MarketplacesGroupClient = original.MarketplacesGroupClient
 type BillingFrequency = original.BillingFrequency
 
 const (
@@ -157,37 +157,37 @@ type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
-type OperationsClient = original.OperationsClient
-type PriceSheetClient = original.PriceSheetClient
-type ReservationRecommendationsClient = original.ReservationRecommendationsClient
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-type TagsClient = original.TagsClient
-type UsageDetailsClient = original.UsageDetailsClient
+type OperationsGroupClient = original.OperationsGroupClient
+type PriceSheetGroupClient = original.PriceSheetGroupClient
+type ReservationRecommendationsGroupClient = original.ReservationRecommendationsGroupClient
+type ReservationsDetailsGroupClient = original.ReservationsDetailsGroupClient
+type ReservationsSummariesGroupClient = original.ReservationsSummariesGroupClient
+type TagsGroupClient = original.TagsGroupClient
+type UsageDetailsGroupClient = original.UsageDetailsGroupClient
 
-func NewAggregatedCostClient(subscriptionID string) AggregatedCostClient {
-	return original.NewAggregatedCostClient(subscriptionID)
+func NewAggregatedCostGroupClient(subscriptionID string) AggregatedCostGroupClient {
+	return original.NewAggregatedCostGroupClient(subscriptionID)
 }
-func NewAggregatedCostClientWithBaseURI(baseURI string, subscriptionID string) AggregatedCostClient {
-	return original.NewAggregatedCostClientWithBaseURI(baseURI, subscriptionID)
+func NewAggregatedCostGroupClientWithBaseURI(baseURI string, subscriptionID string) AggregatedCostGroupClient {
+	return original.NewAggregatedCostGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBalancesClient(subscriptionID string) BalancesClient {
-	return original.NewBalancesClient(subscriptionID)
+func NewBalancesGroupClient(subscriptionID string) BalancesGroupClient {
+	return original.NewBalancesGroupClient(subscriptionID)
 }
-func NewBalancesClientWithBaseURI(baseURI string, subscriptionID string) BalancesClient {
-	return original.NewBalancesClientWithBaseURI(baseURI, subscriptionID)
+func NewBalancesGroupClientWithBaseURI(baseURI string, subscriptionID string) BalancesGroupClient {
+	return original.NewBalancesGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBudgetsClient(subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClient(subscriptionID)
+func NewBudgetsGroupClient(subscriptionID string) BudgetsGroupClient {
+	return original.NewBudgetsGroupClient(subscriptionID)
 }
-func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
+func NewBudgetsGroupClientWithBaseURI(baseURI string, subscriptionID string) BudgetsGroupClient {
+	return original.NewBudgetsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewChargesClient(subscriptionID string) ChargesClient {
-	return original.NewChargesClient(subscriptionID)
+func NewChargesGroupClient(subscriptionID string) ChargesGroupClient {
+	return original.NewChargesGroupClient(subscriptionID)
 }
-func NewChargesClientWithBaseURI(baseURI string, subscriptionID string) ChargesClient {
-	return original.NewChargesClientWithBaseURI(baseURI, subscriptionID)
+func NewChargesGroupClientWithBaseURI(baseURI string, subscriptionID string) ChargesGroupClient {
+	return original.NewChargesGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -195,17 +195,17 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewForecastsClient(subscriptionID string) ForecastsClient {
-	return original.NewForecastsClient(subscriptionID)
+func NewForecastsGroupClient(subscriptionID string) ForecastsGroupClient {
+	return original.NewForecastsGroupClient(subscriptionID)
 }
-func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
-	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID)
+func NewForecastsGroupClientWithBaseURI(baseURI string, subscriptionID string) ForecastsGroupClient {
+	return original.NewForecastsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClient(subscriptionID)
+func NewMarketplacesGroupClient(subscriptionID string) MarketplacesGroupClient {
+	return original.NewMarketplacesGroupClient(subscriptionID)
 }
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
+func NewMarketplacesGroupClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesGroupClient {
+	return original.NewMarketplacesGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleBillingFrequencyValues() []BillingFrequency {
 	return original.PossibleBillingFrequencyValues()
@@ -231,47 +231,47 @@ func PossibleOperatorTypeValues() []OperatorType {
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
+	return original.NewOperationsGroupClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
+	return original.NewOperationsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClient(subscriptionID)
+func NewPriceSheetGroupClient(subscriptionID string) PriceSheetGroupClient {
+	return original.NewPriceSheetGroupClient(subscriptionID)
 }
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+func NewPriceSheetGroupClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetGroupClient {
+	return original.NewPriceSheetGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClient(subscriptionID)
+func NewReservationRecommendationsGroupClient(subscriptionID string) ReservationRecommendationsGroupClient {
+	return original.NewReservationRecommendationsGroupClient(subscriptionID)
 }
-func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationRecommendationsGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsGroupClient {
+	return original.NewReservationRecommendationsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID)
+func NewReservationsDetailsGroupClient(subscriptionID string) ReservationsDetailsGroupClient {
+	return original.NewReservationsDetailsGroupClient(subscriptionID)
 }
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationsDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsGroupClient {
+	return original.NewReservationsDetailsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(subscriptionID)
+func NewReservationsSummariesGroupClient(subscriptionID string) ReservationsSummariesGroupClient {
+	return original.NewReservationsSummariesGroupClient(subscriptionID)
 }
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationsSummariesGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesGroupClient {
+	return original.NewReservationsSummariesGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTagsClient(subscriptionID string) TagsClient {
-	return original.NewTagsClient(subscriptionID)
+func NewTagsGroupClient(subscriptionID string) TagsGroupClient {
+	return original.NewTagsGroupClient(subscriptionID)
 }
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
+func NewTagsGroupClientWithBaseURI(baseURI string, subscriptionID string) TagsGroupClient {
+	return original.NewTagsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClient(subscriptionID)
+func NewUsageDetailsGroupClient(subscriptionID string) UsageDetailsGroupClient {
+	return original.NewUsageDetailsGroupClient(subscriptionID)
 }
-func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+func NewUsageDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsGroupClient {
+	return original.NewUsageDetailsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

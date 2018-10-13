@@ -22,6 +22,7 @@ package consumption
 import original "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption"
 
 type BudgetsClient = original.BudgetsClient
+type BudgetsGroupClient = original.BudgetsGroupClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -59,12 +60,19 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type ProxyResource = original.ProxyResource
 type OperationsClient = original.OperationsClient
+type OperationsGroupClient = original.OperationsGroupClient
 
 func NewBudgetsClient(subscriptionID string, name string) BudgetsClient {
 	return original.NewBudgetsClient(subscriptionID, name)
 }
 func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, name string) BudgetsClient {
 	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID, name)
+}
+func NewBudgetsGroupClient(subscriptionID string, name string) BudgetsGroupClient {
+	return original.NewBudgetsGroupClient(subscriptionID, name)
+}
+func NewBudgetsGroupClientWithBaseURI(baseURI string, subscriptionID string, name string) BudgetsGroupClient {
+	return original.NewBudgetsGroupClientWithBaseURI(baseURI, subscriptionID, name)
 }
 func New(subscriptionID string, name string) BaseClient {
 	return original.New(subscriptionID, name)
@@ -83,6 +91,12 @@ func NewOperationsClient(subscriptionID string, name string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, name string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, name)
+}
+func NewOperationsGroupClient(subscriptionID string, name string) OperationsGroupClient {
+	return original.NewOperationsGroupClient(subscriptionID, name)
+}
+func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string, name string) OperationsGroupClient {
+	return original.NewOperationsGroupClientWithBaseURI(baseURI, subscriptionID, name)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

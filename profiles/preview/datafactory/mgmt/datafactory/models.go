@@ -854,12 +854,13 @@ const (
 type TypeBasicTrigger = original.TypeBasicTrigger
 
 const (
-	TypeBlobEventsTrigger       TypeBasicTrigger = original.TypeBlobEventsTrigger
-	TypeBlobTrigger             TypeBasicTrigger = original.TypeBlobTrigger
-	TypeMultiplePipelineTrigger TypeBasicTrigger = original.TypeMultiplePipelineTrigger
-	TypeScheduleTrigger         TypeBasicTrigger = original.TypeScheduleTrigger
-	TypeTrigger                 TypeBasicTrigger = original.TypeTrigger
-	TypeTumblingWindowTrigger   TypeBasicTrigger = original.TypeTumblingWindowTrigger
+	TypeBlobEventsTrigger          TypeBasicTrigger = original.TypeBlobEventsTrigger
+	TypeBlobTrigger                TypeBasicTrigger = original.TypeBlobTrigger
+	TypeMultiplePipelineTrigger    TypeBasicTrigger = original.TypeMultiplePipelineTrigger
+	TypeRerunTumblingWindowTrigger TypeBasicTrigger = original.TypeRerunTumblingWindowTrigger
+	TypeScheduleTrigger            TypeBasicTrigger = original.TypeScheduleTrigger
+	TypeTrigger                    TypeBasicTrigger = original.TypeTrigger
+	TypeTumblingWindowTrigger      TypeBasicTrigger = original.TypeTumblingWindowTrigger
 )
 
 type VariableType = original.VariableType
@@ -1264,6 +1265,16 @@ type RedshiftUnloadSettings = original.RedshiftUnloadSettings
 type RelationalSource = original.RelationalSource
 type RelationalTableDataset = original.RelationalTableDataset
 type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeProperties
+type RerunTriggerListResponse = original.RerunTriggerListResponse
+type RerunTriggerListResponseIterator = original.RerunTriggerListResponseIterator
+type RerunTriggerListResponsePage = original.RerunTriggerListResponsePage
+type RerunTriggerResource = original.RerunTriggerResource
+type RerunTriggersCancelFuture = original.RerunTriggersCancelFuture
+type RerunTriggersStartFuture = original.RerunTriggersStartFuture
+type RerunTriggersStopFuture = original.RerunTriggersStopFuture
+type RerunTumblingWindowTrigger = original.RerunTumblingWindowTrigger
+type RerunTumblingWindowTriggerActionParameters = original.RerunTumblingWindowTriggerActionParameters
+type RerunTumblingWindowTriggerTypeProperties = original.RerunTumblingWindowTriggerTypeProperties
 type Resource = original.Resource
 type ResponsysLinkedService = original.ResponsysLinkedService
 type ResponsysLinkedServiceTypeProperties = original.ResponsysLinkedServiceTypeProperties
@@ -1405,6 +1416,7 @@ type ZohoSource = original.ZohoSource
 type OperationsClient = original.OperationsClient
 type PipelineRunsClient = original.PipelineRunsClient
 type PipelinesClient = original.PipelinesClient
+type RerunTriggersClient = original.RerunTriggersClient
 type TriggerRunsClient = original.TriggerRunsClient
 type TriggersClient = original.TriggersClient
 
@@ -1692,6 +1704,12 @@ func NewPipelinesClient(subscriptionID string) PipelinesClient {
 }
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRerunTriggersClient(subscriptionID string) RerunTriggersClient {
+	return original.NewRerunTriggersClient(subscriptionID)
+}
+func NewRerunTriggersClientWithBaseURI(baseURI string, subscriptionID string) RerunTriggersClient {
+	return original.NewRerunTriggersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTriggerRunsClient(subscriptionID string) TriggerRunsClient {
 	return original.NewTriggerRunsClient(subscriptionID)

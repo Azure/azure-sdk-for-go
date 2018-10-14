@@ -5,7 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-sdk-for-go)](https://goreportcard.com/report/github.com/Azure/azure-sdk-for-go)
 
 azure-sdk-for-go provides Go packages for managing and using Azure services.
-It is continuously tested with Go 1.8, 1.9, 1.10 and master.
+It is continuously tested with Go 1.8, 1.9, 1.10, 1.11 and master.
 
 To be notified about updates and changes, subscribe to the [Azure update
 feed](https://azure.microsoft.com/updates/).

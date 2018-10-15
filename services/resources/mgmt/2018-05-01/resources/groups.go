@@ -418,7 +418,8 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err 
 
 // List gets all the resource groups for a subscription.
 // Parameters:
-// filter - the filter to apply on the operation.
+// filter - the filter to apply on the operation.<br><br>You can filter by tag names and values. For example,
+// to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'
 // top - the number of results to return. If null is passed, returns all resource groups.
 func (client GroupsClient) List(ctx context.Context, filter string, top *int32) (result GroupListResultPage, err error) {
 	result.fn = client.listNextResults

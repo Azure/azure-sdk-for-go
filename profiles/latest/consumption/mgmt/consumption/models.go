@@ -54,9 +54,13 @@ type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
+type OperationsGroupClient = original.OperationsGroupClient
 type ReservationsDetailsClient = original.ReservationsDetailsClient
+type ReservationsDetailsGroupClient = original.ReservationsDetailsGroupClient
 type ReservationsSummariesClient = original.ReservationsSummariesClient
+type ReservationsSummariesGroupClient = original.ReservationsSummariesGroupClient
 type UsageDetailsClient = original.UsageDetailsClient
+type UsageDetailsGroupClient = original.UsageDetailsGroupClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -73,11 +77,23 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
+	return original.NewOperationsGroupClient(subscriptionID)
+}
+func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
+	return original.NewOperationsGroupClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClient(subscriptionID)
 }
 func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReservationsDetailsGroupClient(subscriptionID string) ReservationsDetailsGroupClient {
+	return original.NewReservationsDetailsGroupClient(subscriptionID)
+}
+func NewReservationsDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsGroupClient {
+	return original.NewReservationsDetailsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClient(subscriptionID)
@@ -85,11 +101,23 @@ func NewReservationsSummariesClient(subscriptionID string) ReservationsSummaries
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewReservationsSummariesGroupClient(subscriptionID string) ReservationsSummariesGroupClient {
+	return original.NewReservationsSummariesGroupClient(subscriptionID)
+}
+func NewReservationsSummariesGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesGroupClient {
+	return original.NewReservationsSummariesGroupClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)
 }
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsGroupClient(subscriptionID string) UsageDetailsGroupClient {
+	return original.NewUsageDetailsGroupClient(subscriptionID)
+}
+func NewUsageDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsGroupClient {
+	return original.NewUsageDetailsGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

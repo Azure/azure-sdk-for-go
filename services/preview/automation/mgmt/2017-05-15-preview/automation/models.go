@@ -1367,13 +1367,13 @@ func (arrkp AgentRegistrationRegenerateKeyParameter) MarshalJSON() ([]byte, erro
 	return json.Marshal(objectMap)
 }
 
-// AzureQueryProperties azure query specific to the group of machines for update configuration.
+// AzureQueryProperties azure query for the update configuration.
 type AzureQueryProperties struct {
-	// Scope - List of Subscription or Resource Group ARM Id.
+	// Scope - List of Subscription or Resource Group ARM Ids.
 	Scope *[]string `json:"scope,omitempty"`
-	// Location - list of locations for the VM filter .
+	// Location - List of locations for the VM.
 	Location *[]string `json:"location,omitempty"`
-	// TagSettings - tag filter information of the Vm.
+	// TagSettings - Tag settings for the VM.
 	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
 }
 
@@ -8013,11 +8013,11 @@ type String struct {
 	Value             *string `json:"value,omitempty"`
 }
 
-// TagSettingsProperties tag filter information of the VM.
+// TagSettingsProperties tag filter information for the VM.
 type TagSettingsProperties struct {
-	// Tags - dictionary of tags with its list of value
+	// Tags - Dictionary of tags with its list of values
 	Tags map[string][]string `json:"tags"`
-	// FilterOperator - Possible values include: 'TagOperatorsAll', 'TagOperatorsAny'
+	// FilterOperator - Filter VMs by Any or All specified tags. Possible values include: 'TagOperatorsAll', 'TagOperatorsAny'
 	FilterOperator TagOperators `json:"filterOperator,omitempty"`
 }
 
@@ -8033,7 +8033,7 @@ func (tsp TagSettingsProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TargetProperties group specific of update configuration.
+// TargetProperties group specific to the update configuration.
 type TargetProperties struct {
 	// AzureQueries - List of Azure queries in software update configuration.
 	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
@@ -8189,7 +8189,7 @@ type UpdateConfiguration struct {
 	AzureVirtualMachines *[]string `json:"azureVirtualMachines,omitempty"`
 	// NonAzureComputerNames - List of names of non-azure machines targeted by the software update configuration.
 	NonAzureComputerNames *[]string `json:"nonAzureComputerNames,omitempty"`
-	// Targets - group informations that will be patched during run time.
+	// Targets - Group information that will be patched during run time.
 	Targets *TargetProperties `json:"targets,omitempty"`
 }
 

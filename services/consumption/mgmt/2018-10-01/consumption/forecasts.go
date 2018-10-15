@@ -24,20 +24,20 @@ import (
 	"net/http"
 )
 
-// ForecastsGroupClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type ForecastsGroupClient struct {
+// ForecastsClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type ForecastsClient struct {
 	BaseClient
 }
 
-// NewForecastsGroupClient creates an instance of the ForecastsGroupClient client.
-func NewForecastsGroupClient(subscriptionID string) ForecastsGroupClient {
-	return NewForecastsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewForecastsClient creates an instance of the ForecastsClient client.
+func NewForecastsClient(subscriptionID string) ForecastsClient {
+	return NewForecastsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewForecastsGroupClientWithBaseURI creates an instance of the ForecastsGroupClient client.
-func NewForecastsGroupClientWithBaseURI(baseURI string, subscriptionID string) ForecastsGroupClient {
-	return ForecastsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewForecastsClientWithBaseURI creates an instance of the ForecastsClient client.
+func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
+	return ForecastsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the forecast charges by subscriptionId.
@@ -45,35 +45,35 @@ func NewForecastsGroupClientWithBaseURI(baseURI string, subscriptionID string) F
 // filter - may be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
 // properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
 // 'ne', 'or', or 'not'.
-func (client ForecastsGroupClient) List(ctx context.Context, filter string) (result ForecastsListResult, err error) {
+func (client ForecastsClient) List(ctx context.Context, filter string) (result ForecastsListResult, err error) {
 	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ForecastsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.ForecastsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ForecastsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ForecastsGroupClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+func (client ForecastsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -91,14 +91,14 @@ func (client ForecastsGroupClient) ListPreparer(ctx context.Context, filter stri
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ForecastsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ForecastsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ForecastsGroupClient) ListResponder(resp *http.Response) (result ForecastsListResult, err error) {
+func (client ForecastsClient) ListResponder(resp *http.Response) (result ForecastsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -24,20 +24,20 @@ import (
 	"net/http"
 )
 
-// ReservationsSummariesGroupClient is the consumption management client provides access to consumption resources for
-// Azure Enterprise Subscriptions.
-type ReservationsSummariesGroupClient struct {
+// ReservationsSummariesClient is the consumption management client provides access to consumption resources for Azure
+// Enterprise Subscriptions.
+type ReservationsSummariesClient struct {
 	BaseClient
 }
 
-// NewReservationsSummariesGroupClient creates an instance of the ReservationsSummariesGroupClient client.
-func NewReservationsSummariesGroupClient(subscriptionID string) ReservationsSummariesGroupClient {
-	return NewReservationsSummariesGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewReservationsSummariesClient creates an instance of the ReservationsSummariesClient client.
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationsSummariesGroupClientWithBaseURI creates an instance of the ReservationsSummariesGroupClient client.
-func NewReservationsSummariesGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesGroupClient {
-	return ReservationsSummariesGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client.
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByReservationOrder lists the reservations summaries for daily or monthly grain.
@@ -46,36 +46,36 @@ func NewReservationsSummariesGroupClientWithBaseURI(baseURI string, subscription
 // grain - can be daily or monthly
 // filter - required only for daily grain. The properties/UsageDate for start date and end date. The filter
 // supports 'le' and  'ge'
-func (client ReservationsSummariesGroupClient) ListByReservationOrder(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrder(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
 	result.fn = client.listByReservationOrderNextResults
 	req, err := client.ListByReservationOrderPreparer(ctx, reservationOrderID, grain, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrder", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrder", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByReservationOrderSender(req)
 	if err != nil {
 		result.rslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrder", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrder", resp, "Failure sending request")
 		return
 	}
 
 	result.rslr, err = client.ListByReservationOrderResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrder", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrder", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByReservationOrderPreparer prepares the ListByReservationOrder request.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderPreparer(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (*http.Request, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderPreparer(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"grain":       autorest.Encode("query", grain),
@@ -94,14 +94,14 @@ func (client ReservationsSummariesGroupClient) ListByReservationOrderPreparer(ct
 
 // ListByReservationOrderSender sends the ListByReservationOrder request. The method will close the
 // http.Response Body if it receives an error.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderSender(req *http.Request) (*http.Response, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByReservationOrderResponder handles the response to the ListByReservationOrder request. The method always
 // closes the http.Response Body.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrderResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -113,10 +113,10 @@ func (client ReservationsSummariesGroupClient) ListByReservationOrderResponder(r
 }
 
 // listByReservationOrderNextResults retrieves the next set of results, if any.
-func (client ReservationsSummariesGroupClient) listByReservationOrderNextResults(lastResults ReservationSummariesListResult) (result ReservationSummariesListResult, err error) {
+func (client ReservationsSummariesClient) listByReservationOrderNextResults(lastResults ReservationSummariesListResult) (result ReservationSummariesListResult, err error) {
 	req, err := lastResults.reservationSummariesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -124,17 +124,17 @@ func (client ReservationsSummariesGroupClient) listByReservationOrderNextResults
 	resp, err := client.ListByReservationOrderSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByReservationOrderResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByReservationOrderComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
 	result.page, err = client.ListByReservationOrder(ctx, reservationOrderID, grain, filter)
 	return
 }
@@ -146,37 +146,37 @@ func (client ReservationsSummariesGroupClient) ListByReservationOrderComplete(ct
 // grain - can be daily or monthly
 // filter - required only for daily grain. The properties/UsageDate for start date and end date. The filter
 // supports 'le' and  'ge'
-func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
 	result.fn = client.listByReservationOrderAndReservationNextResults
 	req, err := client.ListByReservationOrderAndReservationPreparer(ctx, reservationOrderID, reservationID, grain, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrderAndReservation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrderAndReservation", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByReservationOrderAndReservationSender(req)
 	if err != nil {
 		result.rslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrderAndReservation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrderAndReservation", resp, "Failure sending request")
 		return
 	}
 
 	result.rslr, err = client.ListByReservationOrderAndReservationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "ListByReservationOrderAndReservation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrderAndReservation", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByReservationOrderAndReservationPreparer prepares the ListByReservationOrderAndReservation request.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservationPreparer(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (*http.Request, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationPreparer(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationId":      autorest.Encode("path", reservationID),
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"grain":       autorest.Encode("query", grain),
@@ -195,14 +195,14 @@ func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservat
 
 // ListByReservationOrderAndReservationSender sends the ListByReservationOrderAndReservation request. The method will close the
 // http.Response Body if it receives an error.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservationSender(req *http.Request) (*http.Response, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByReservationOrderAndReservationResponder handles the response to the ListByReservationOrderAndReservation request. The method always
 // closes the http.Response Body.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservationResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationResponder(resp *http.Response) (result ReservationSummariesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -214,10 +214,10 @@ func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservat
 }
 
 // listByReservationOrderAndReservationNextResults retrieves the next set of results, if any.
-func (client ReservationsSummariesGroupClient) listByReservationOrderAndReservationNextResults(lastResults ReservationSummariesListResult) (result ReservationSummariesListResult, err error) {
+func (client ReservationsSummariesClient) listByReservationOrderAndReservationNextResults(lastResults ReservationSummariesListResult) (result ReservationSummariesListResult, err error) {
 	req, err := lastResults.reservationSummariesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderAndReservationNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderAndReservationNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -225,17 +225,17 @@ func (client ReservationsSummariesGroupClient) listByReservationOrderAndReservat
 	resp, err := client.ListByReservationOrderAndReservationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderAndReservationNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderAndReservationNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByReservationOrderAndReservationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesGroupClient", "listByReservationOrderAndReservationNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "listByReservationOrderAndReservationNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByReservationOrderAndReservationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationsSummariesGroupClient) ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
 	result.page, err = client.ListByReservationOrderAndReservation(ctx, reservationOrderID, reservationID, grain, filter)
 	return
 }

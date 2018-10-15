@@ -24,49 +24,49 @@ import (
 	"net/http"
 )
 
-// OperationsGroupClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type OperationsGroupClient struct {
+// OperationsClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type OperationsClient struct {
 	BaseClient
 }
 
-// NewOperationsGroupClient creates an instance of the OperationsGroupClient client.
-func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
-	return NewOperationsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOperationsClient creates an instance of the OperationsClient client.
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationsGroupClientWithBaseURI creates an instance of the OperationsGroupClient client.
-func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
-	return OperationsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available consumption REST API operations.
-func (client OperationsGroupClient) List(ctx context.Context) (result OperationListResultPage, err error) {
+func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.olr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.olr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-08-31"
+func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -81,14 +81,14 @@ func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Req
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsGroupClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -100,10 +100,10 @@ func (client OperationsGroupClient) ListResponder(resp *http.Response) (result O
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client OperationsGroupClient) listNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
+func (client OperationsClient) listNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
 	req, err := lastResults.operationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -111,17 +111,17 @@ func (client OperationsGroupClient) listNextResults(lastResults OperationListRes
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.OperationsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.OperationsGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsGroupClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
+func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
 	result.page, err = client.List(ctx)
 	return
 }

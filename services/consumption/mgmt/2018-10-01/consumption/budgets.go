@@ -25,20 +25,20 @@ import (
 	"net/http"
 )
 
-// BudgetsGroupClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type BudgetsGroupClient struct {
+// BudgetsClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type BudgetsClient struct {
 	BaseClient
 }
 
-// NewBudgetsGroupClient creates an instance of the BudgetsGroupClient client.
-func NewBudgetsGroupClient(subscriptionID string) BudgetsGroupClient {
-	return NewBudgetsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBudgetsClient creates an instance of the BudgetsClient client.
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBudgetsGroupClientWithBaseURI creates an instance of the BudgetsGroupClient client.
-func NewBudgetsGroupClientWithBaseURI(baseURI string, subscriptionID string) BudgetsGroupClient {
-	return BudgetsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client.
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update a budget. Update operation requires latest eTag to be set in the
@@ -47,7 +47,7 @@ func NewBudgetsGroupClientWithBaseURI(baseURI string, subscriptionID string) Bud
 // Parameters:
 // budgetName - budget Name.
 // parameters - parameters supplied to the Create Budget operation.
-func (client BudgetsGroupClient) CreateOrUpdate(ctx context.Context, budgetName string, parameters Budget) (result Budget, err error) {
+func (client BudgetsClient) CreateOrUpdate(ctx context.Context, budgetName string, parameters Budget) (result Budget, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.BudgetProperties", Name: validation.Null, Rule: false,
@@ -69,38 +69,38 @@ func (client BudgetsGroupClient) CreateOrUpdate(ctx context.Context, budgetName 
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.BudgetsGroupClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("consumption.BudgetsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, budgetName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BudgetsGroupClient) CreateOrUpdatePreparer(ctx context.Context, budgetName string, parameters Budget) (*http.Request, error) {
+func (client BudgetsClient) CreateOrUpdatePreparer(ctx context.Context, budgetName string, parameters Budget) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":     autorest.Encode("path", budgetName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -117,14 +117,14 @@ func (client BudgetsGroupClient) CreateOrUpdatePreparer(ctx context.Context, bud
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) CreateOrUpdateResponder(resp *http.Response) (result Budget, err error) {
+func (client BudgetsClient) CreateOrUpdateResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -142,7 +142,7 @@ func (client BudgetsGroupClient) CreateOrUpdateResponder(resp *http.Response) (r
 // resourceGroupName - azure Resource Group Name.
 // budgetName - budget Name.
 // parameters - parameters supplied to the Create Budget operation.
-func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string, parameters Budget) (result Budget, err error) {
+func (client BudgetsClient) CreateOrUpdateByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string, parameters Budget) (result Budget, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.BudgetProperties", Name: validation.Null, Rule: false,
@@ -164,39 +164,39 @@ func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupName(ctx context.C
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.BudgetsGroupClient", "CreateOrUpdateByResourceGroupName", err.Error())
+		return result, validation.NewError("consumption.BudgetsClient", "CreateOrUpdateByResourceGroupName", err.Error())
 	}
 
 	req, err := client.CreateOrUpdateByResourceGroupNamePreparer(ctx, resourceGroupName, budgetName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdateByResourceGroupName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdateByResourceGroupName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateByResourceGroupNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdateByResourceGroupName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdateByResourceGroupName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateByResourceGroupNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "CreateOrUpdateByResourceGroupName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "CreateOrUpdateByResourceGroupName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdateByResourceGroupNamePreparer prepares the CreateOrUpdateByResourceGroupName request.
-func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string, parameters Budget) (*http.Request, error) {
+func (client BudgetsClient) CreateOrUpdateByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string, parameters Budget) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":        autorest.Encode("path", budgetName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -213,14 +213,14 @@ func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupNamePreparer(ctx c
 
 // CreateOrUpdateByResourceGroupNameSender sends the CreateOrUpdateByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) CreateOrUpdateByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateByResourceGroupNameResponder handles the response to the CreateOrUpdateByResourceGroupName request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
+func (client BudgetsClient) CreateOrUpdateByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -234,36 +234,36 @@ func (client BudgetsGroupClient) CreateOrUpdateByResourceGroupNameResponder(resp
 // Delete the operation to delete a budget.
 // Parameters:
 // budgetName - budget Name.
-func (client BudgetsGroupClient) Delete(ctx context.Context, budgetName string) (result autorest.Response, err error) {
+func (client BudgetsClient) Delete(ctx context.Context, budgetName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, budgetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client BudgetsGroupClient) DeletePreparer(ctx context.Context, budgetName string) (*http.Request, error) {
+func (client BudgetsClient) DeletePreparer(ctx context.Context, budgetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":     autorest.Encode("path", budgetName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -278,14 +278,14 @@ func (client BudgetsGroupClient) DeletePreparer(ctx context.Context, budgetName 
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BudgetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -299,37 +299,37 @@ func (client BudgetsGroupClient) DeleteResponder(resp *http.Response) (result au
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
 // budgetName - budget Name.
-func (client BudgetsGroupClient) DeleteByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string) (result autorest.Response, err error) {
+func (client BudgetsClient) DeleteByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string) (result autorest.Response, err error) {
 	req, err := client.DeleteByResourceGroupNamePreparer(ctx, resourceGroupName, budgetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "DeleteByResourceGroupName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "DeleteByResourceGroupName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteByResourceGroupNameSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "DeleteByResourceGroupName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "DeleteByResourceGroupName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteByResourceGroupNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "DeleteByResourceGroupName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "DeleteByResourceGroupName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeleteByResourceGroupNamePreparer prepares the DeleteByResourceGroupName request.
-func (client BudgetsGroupClient) DeleteByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string) (*http.Request, error) {
+func (client BudgetsClient) DeleteByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":        autorest.Encode("path", budgetName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -344,14 +344,14 @@ func (client BudgetsGroupClient) DeleteByResourceGroupNamePreparer(ctx context.C
 
 // DeleteByResourceGroupNameSender sends the DeleteByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) DeleteByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) DeleteByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteByResourceGroupNameResponder handles the response to the DeleteByResourceGroupName request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) DeleteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BudgetsClient) DeleteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -364,36 +364,36 @@ func (client BudgetsGroupClient) DeleteByResourceGroupNameResponder(resp *http.R
 // Get gets the budget for a subscription by budget name.
 // Parameters:
 // budgetName - budget Name.
-func (client BudgetsGroupClient) Get(ctx context.Context, budgetName string) (result Budget, err error) {
+func (client BudgetsClient) Get(ctx context.Context, budgetName string) (result Budget, err error) {
 	req, err := client.GetPreparer(ctx, budgetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client BudgetsGroupClient) GetPreparer(ctx context.Context, budgetName string) (*http.Request, error) {
+func (client BudgetsClient) GetPreparer(ctx context.Context, budgetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":     autorest.Encode("path", budgetName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,14 +408,14 @@ func (client BudgetsGroupClient) GetPreparer(ctx context.Context, budgetName str
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) GetResponder(resp *http.Response) (result Budget, err error) {
+func (client BudgetsClient) GetResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -430,37 +430,37 @@ func (client BudgetsGroupClient) GetResponder(resp *http.Response) (result Budge
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
 // budgetName - budget Name.
-func (client BudgetsGroupClient) GetByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string) (result Budget, err error) {
+func (client BudgetsClient) GetByResourceGroupName(ctx context.Context, resourceGroupName string, budgetName string) (result Budget, err error) {
 	req, err := client.GetByResourceGroupNamePreparer(ctx, resourceGroupName, budgetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "GetByResourceGroupName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "GetByResourceGroupName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByResourceGroupNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "GetByResourceGroupName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "GetByResourceGroupName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByResourceGroupNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "GetByResourceGroupName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "GetByResourceGroupName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByResourceGroupNamePreparer prepares the GetByResourceGroupName request.
-func (client BudgetsGroupClient) GetByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string) (*http.Request, error) {
+func (client BudgetsClient) GetByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string, budgetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"budgetName":        autorest.Encode("path", budgetName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -475,14 +475,14 @@ func (client BudgetsGroupClient) GetByResourceGroupNamePreparer(ctx context.Cont
 
 // GetByResourceGroupNameSender sends the GetByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) GetByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) GetByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByResourceGroupNameResponder handles the response to the GetByResourceGroupName request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) GetByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
+func (client BudgetsClient) GetByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -494,36 +494,36 @@ func (client BudgetsGroupClient) GetByResourceGroupNameResponder(resp *http.Resp
 }
 
 // List lists all budgets for a subscription.
-func (client BudgetsGroupClient) List(ctx context.Context) (result BudgetsListResultPage, err error) {
+func (client BudgetsClient) List(ctx context.Context) (result BudgetsListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.blr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.blr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client BudgetsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client BudgetsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -538,14 +538,14 @@ func (client BudgetsGroupClient) ListPreparer(ctx context.Context) (*http.Reques
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) ListResponder(resp *http.Response) (result BudgetsListResult, err error) {
+func (client BudgetsClient) ListResponder(resp *http.Response) (result BudgetsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -557,10 +557,10 @@ func (client BudgetsGroupClient) ListResponder(resp *http.Response) (result Budg
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client BudgetsGroupClient) listNextResults(lastResults BudgetsListResult) (result BudgetsListResult, err error) {
+func (client BudgetsClient) listNextResults(lastResults BudgetsListResult) (result BudgetsListResult, err error) {
 	req, err := lastResults.budgetsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -568,17 +568,17 @@ func (client BudgetsGroupClient) listNextResults(lastResults BudgetsListResult) 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BudgetsGroupClient) ListComplete(ctx context.Context) (result BudgetsListResultIterator, err error) {
+func (client BudgetsClient) ListComplete(ctx context.Context) (result BudgetsListResultIterator, err error) {
 	result.page, err = client.List(ctx)
 	return
 }
@@ -586,37 +586,37 @@ func (client BudgetsGroupClient) ListComplete(ctx context.Context) (result Budge
 // ListByResourceGroupName lists all budgets for a resource group under a subscription.
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
-func (client BudgetsGroupClient) ListByResourceGroupName(ctx context.Context, resourceGroupName string) (result BudgetsListResultPage, err error) {
+func (client BudgetsClient) ListByResourceGroupName(ctx context.Context, resourceGroupName string) (result BudgetsListResultPage, err error) {
 	result.fn = client.listByResourceGroupNameNextResults
 	req, err := client.ListByResourceGroupNamePreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "ListByResourceGroupName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "ListByResourceGroupName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupNameSender(req)
 	if err != nil {
 		result.blr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "ListByResourceGroupName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "ListByResourceGroupName", resp, "Failure sending request")
 		return
 	}
 
 	result.blr, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "ListByResourceGroupName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "ListByResourceGroupName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupNamePreparer prepares the ListByResourceGroupName request.
-func (client BudgetsGroupClient) ListByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client BudgetsClient) ListByResourceGroupNamePreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -631,14 +631,14 @@ func (client BudgetsGroupClient) ListByResourceGroupNamePreparer(ctx context.Con
 
 // ListByResourceGroupNameSender sends the ListByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
-func (client BudgetsGroupClient) ListByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
+func (client BudgetsClient) ListByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupNameResponder handles the response to the ListByResourceGroupName request. The method always
 // closes the http.Response Body.
-func (client BudgetsGroupClient) ListByResourceGroupNameResponder(resp *http.Response) (result BudgetsListResult, err error) {
+func (client BudgetsClient) ListByResourceGroupNameResponder(resp *http.Response) (result BudgetsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -650,10 +650,10 @@ func (client BudgetsGroupClient) ListByResourceGroupNameResponder(resp *http.Res
 }
 
 // listByResourceGroupNameNextResults retrieves the next set of results, if any.
-func (client BudgetsGroupClient) listByResourceGroupNameNextResults(lastResults BudgetsListResult) (result BudgetsListResult, err error) {
+func (client BudgetsClient) listByResourceGroupNameNextResults(lastResults BudgetsListResult) (result BudgetsListResult, err error) {
 	req, err := lastResults.budgetsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listByResourceGroupNameNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listByResourceGroupNameNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -661,17 +661,17 @@ func (client BudgetsGroupClient) listByResourceGroupNameNextResults(lastResults 
 	resp, err := client.ListByResourceGroupNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listByResourceGroupNameNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listByResourceGroupNameNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BudgetsGroupClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "listByResourceGroupNameNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupNameComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BudgetsGroupClient) ListByResourceGroupNameComplete(ctx context.Context, resourceGroupName string) (result BudgetsListResultIterator, err error) {
+func (client BudgetsClient) ListByResourceGroupNameComplete(ctx context.Context, resourceGroupName string) (result BudgetsListResultIterator, err error) {
 	result.page, err = client.ListByResourceGroupName(ctx, resourceGroupName)
 	return
 }

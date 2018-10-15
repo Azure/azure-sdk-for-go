@@ -24,56 +24,55 @@ import (
 	"net/http"
 )
 
-// ReservationRecommendationsGroupClient is the consumption management client provides access to consumption resources
-// for Azure Enterprise Subscriptions.
-type ReservationRecommendationsGroupClient struct {
+// ReservationRecommendationsClient is the consumption management client provides access to consumption resources for
+// Azure Enterprise Subscriptions.
+type ReservationRecommendationsClient struct {
 	BaseClient
 }
 
-// NewReservationRecommendationsGroupClient creates an instance of the ReservationRecommendationsGroupClient client.
-func NewReservationRecommendationsGroupClient(subscriptionID string) ReservationRecommendationsGroupClient {
-	return NewReservationRecommendationsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewReservationRecommendationsClient creates an instance of the ReservationRecommendationsClient client.
+func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
+	return NewReservationRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewReservationRecommendationsGroupClientWithBaseURI creates an instance of the ReservationRecommendationsGroupClient
-// client.
-func NewReservationRecommendationsGroupClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsGroupClient {
-	return ReservationRecommendationsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client.
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
+	return ReservationRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List list of recomendations for purchasing reserved instances.
 // Parameters:
 // filter - may be used to filter reservationRecommendations by properties/scope and properties/lookBackPeriod.
-func (client ReservationRecommendationsGroupClient) List(ctx context.Context, filter string) (result ReservationRecommendationsListResultPage, err error) {
+func (client ReservationRecommendationsClient) List(ctx context.Context, filter string) (result ReservationRecommendationsListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.rrlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.rrlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ReservationRecommendationsGroupClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+func (client ReservationRecommendationsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -91,14 +90,14 @@ func (client ReservationRecommendationsGroupClient) ListPreparer(ctx context.Con
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ReservationRecommendationsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ReservationRecommendationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ReservationRecommendationsGroupClient) ListResponder(resp *http.Response) (result ReservationRecommendationsListResult, err error) {
+func (client ReservationRecommendationsClient) ListResponder(resp *http.Response) (result ReservationRecommendationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -110,10 +109,10 @@ func (client ReservationRecommendationsGroupClient) ListResponder(resp *http.Res
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ReservationRecommendationsGroupClient) listNextResults(lastResults ReservationRecommendationsListResult) (result ReservationRecommendationsListResult, err error) {
+func (client ReservationRecommendationsClient) listNextResults(lastResults ReservationRecommendationsListResult) (result ReservationRecommendationsListResult, err error) {
 	req, err := lastResults.reservationRecommendationsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -121,17 +120,17 @@ func (client ReservationRecommendationsGroupClient) listNextResults(lastResults 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationRecommendationsGroupClient) ListComplete(ctx context.Context, filter string) (result ReservationRecommendationsListResultIterator, err error) {
+func (client ReservationRecommendationsClient) ListComplete(ctx context.Context, filter string) (result ReservationRecommendationsListResultIterator, err error) {
 	result.page, err = client.List(ctx, filter)
 	return
 }

@@ -25,20 +25,20 @@ import (
 	"net/http"
 )
 
-// PriceSheetGroupClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type PriceSheetGroupClient struct {
+// PriceSheetClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type PriceSheetClient struct {
 	BaseClient
 }
 
-// NewPriceSheetGroupClient creates an instance of the PriceSheetGroupClient client.
-func NewPriceSheetGroupClient(subscriptionID string) PriceSheetGroupClient {
-	return NewPriceSheetGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPriceSheetClient creates an instance of the PriceSheetClient client.
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPriceSheetGroupClientWithBaseURI creates an instance of the PriceSheetGroupClient client.
-func NewPriceSheetGroupClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetGroupClient {
-	return PriceSheetGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014
@@ -50,44 +50,44 @@ func NewPriceSheetGroupClientWithBaseURI(baseURI string, subscriptionID string) 
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the top N results.
-func (client PriceSheetGroupClient) Get(ctx context.Context, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
+func (client PriceSheetClient) Get(ctx context.Context, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.PriceSheetGroupClient", "Get", err.Error())
+		return result, validation.NewError("consumption.PriceSheetClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, expand, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client PriceSheetGroupClient) GetPreparer(ctx context.Context, expand string, skiptoken string, top *int32) (*http.Request, error) {
+func (client PriceSheetClient) GetPreparer(ctx context.Context, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -111,14 +111,14 @@ func (client PriceSheetGroupClient) GetPreparer(ctx context.Context, expand stri
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client PriceSheetGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client PriceSheetClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PriceSheetGroupClient) GetResponder(resp *http.Response) (result PriceSheetResult, err error) {
+func (client PriceSheetClient) GetResponder(resp *http.Response) (result PriceSheetResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -139,45 +139,45 @@ func (client PriceSheetGroupClient) GetResponder(resp *http.Response) (result Pr
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the top N results.
-func (client PriceSheetGroupClient) GetByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
+func (client PriceSheetClient) GetByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.PriceSheetGroupClient", "GetByBillingPeriod", err.Error())
+		return result, validation.NewError("consumption.PriceSheetClient", "GetByBillingPeriod", err.Error())
 	}
 
 	req, err := client.GetByBillingPeriodPreparer(ctx, billingPeriodName, expand, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "GetByBillingPeriod", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "GetByBillingPeriod", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetByBillingPeriodSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "GetByBillingPeriod", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "GetByBillingPeriod", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetByBillingPeriodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.PriceSheetGroupClient", "GetByBillingPeriod", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.PriceSheetClient", "GetByBillingPeriod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetByBillingPeriodPreparer prepares the GetByBillingPeriod request.
-func (client PriceSheetGroupClient) GetByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, skiptoken string, top *int32) (*http.Request, error) {
+func (client PriceSheetClient) GetByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,14 +201,14 @@ func (client PriceSheetGroupClient) GetByBillingPeriodPreparer(ctx context.Conte
 
 // GetByBillingPeriodSender sends the GetByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
-func (client PriceSheetGroupClient) GetByBillingPeriodSender(req *http.Request) (*http.Response, error) {
+func (client PriceSheetClient) GetByBillingPeriodSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByBillingPeriodResponder handles the response to the GetByBillingPeriod request. The method always
 // closes the http.Response Body.
-func (client PriceSheetGroupClient) GetByBillingPeriodResponder(resp *http.Response) (result PriceSheetResult, err error) {
+func (client PriceSheetClient) GetByBillingPeriodResponder(resp *http.Response) (result PriceSheetResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

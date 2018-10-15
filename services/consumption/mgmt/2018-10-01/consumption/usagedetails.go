@@ -25,20 +25,20 @@ import (
 	"net/http"
 )
 
-// UsageDetailsGroupClient is the consumption management client provides access to consumption resources for Azure
+// UsageDetailsClient is the consumption management client provides access to consumption resources for Azure
 // Enterprise Subscriptions.
-type UsageDetailsGroupClient struct {
+type UsageDetailsClient struct {
 	BaseClient
 }
 
-// NewUsageDetailsGroupClient creates an instance of the UsageDetailsGroupClient client.
-func NewUsageDetailsGroupClient(subscriptionID string) UsageDetailsGroupClient {
-	return NewUsageDetailsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsageDetailsClient creates an instance of the UsageDetailsClient client.
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageDetailsGroupClientWithBaseURI creates an instance of the UsageDetailsGroupClient client.
-func NewUsageDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsGroupClient {
-	return UsageDetailsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client.
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the usage details for a scope by current billing period. Usage details are available via this API only
@@ -55,45 +55,45 @@ func NewUsageDetailsGroupClientWithBaseURI(baseURI string, subscriptionID string
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsGroupClient) List(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) List(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "List", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, expand, filter, skiptoken, top, apply)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsageDetailsGroupClient) ListPreparer(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListPreparer(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -123,14 +123,14 @@ func (client UsageDetailsGroupClient) ListPreparer(ctx context.Context, expand s
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -142,10 +142,10 @@ func (client UsageDetailsGroupClient) ListResponder(resp *http.Response) (result
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -153,17 +153,17 @@ func (client UsageDetailsGroupClient) listNextResults(lastResults UsageDetailsLi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.List(ctx, expand, filter, skiptoken, top, apply)
 	return
 }
@@ -183,45 +183,45 @@ func (client UsageDetailsGroupClient) ListComplete(ctx context.Context, expand s
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsGroupClient) ListByBillingAccount(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListByBillingAccount(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListByBillingAccount", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListByBillingAccount", err.Error())
 	}
 
 	result.fn = client.listByBillingAccountNextResults
 	req, err := client.ListByBillingAccountPreparer(ctx, billingAccountID, expand, filter, skiptoken, top, apply)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingAccount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingAccountSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingAccount", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingAccountPreparer prepares the ListByBillingAccount request.
-func (client UsageDetailsGroupClient) ListByBillingAccountPreparer(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListByBillingAccountPreparer(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -251,14 +251,14 @@ func (client UsageDetailsGroupClient) ListByBillingAccountPreparer(ctx context.C
 
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -270,10 +270,10 @@ func (client UsageDetailsGroupClient) ListByBillingAccountResponder(resp *http.R
 }
 
 // listByBillingAccountNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listByBillingAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listByBillingAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingAccountNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -281,17 +281,17 @@ func (client UsageDetailsGroupClient) listByBillingAccountNextResults(lastResult
 	resp, err := client.ListByBillingAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingAccountNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingAccountNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByBillingAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListByBillingAccountComplete(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListByBillingAccountComplete(ctx context.Context, billingAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListByBillingAccount(ctx, billingAccountID, expand, filter, skiptoken, top, apply)
 	return
 }
@@ -312,46 +312,46 @@ func (client UsageDetailsGroupClient) ListByBillingAccountComplete(ctx context.C
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
-func (client UsageDetailsGroupClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListByBillingPeriod", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListByBillingPeriod", err.Error())
 	}
 
 	result.fn = client.listByBillingPeriodNextResults
 	req, err := client.ListByBillingPeriodPreparer(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingPeriod", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingPeriod", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingPeriodSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingPeriod", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingPeriod", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByBillingPeriod", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingPeriod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingPeriodPreparer prepares the ListByBillingPeriod request.
-func (client UsageDetailsGroupClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -381,14 +381,14 @@ func (client UsageDetailsGroupClient) ListByBillingPeriodPreparer(ctx context.Co
 
 // ListByBillingPeriodSender sends the ListByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByBillingPeriodResponder handles the response to the ListByBillingPeriod request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListByBillingPeriodResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListByBillingPeriodResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -400,10 +400,10 @@ func (client UsageDetailsGroupClient) ListByBillingPeriodResponder(resp *http.Re
 }
 
 // listByBillingPeriodNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listByBillingPeriodNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listByBillingPeriodNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingPeriodNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingPeriodNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -411,17 +411,17 @@ func (client UsageDetailsGroupClient) listByBillingPeriodNextResults(lastResults
 	resp, err := client.ListByBillingPeriodSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingPeriodNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingPeriodNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByBillingPeriodComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListByBillingPeriod(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }
@@ -441,45 +441,45 @@ func (client UsageDetailsGroupClient) ListByBillingPeriodComplete(ctx context.Co
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsGroupClient) ListByDepartment(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListByDepartment(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListByDepartment", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListByDepartment", err.Error())
 	}
 
 	result.fn = client.listByDepartmentNextResults
 	req, err := client.ListByDepartmentPreparer(ctx, departmentID, expand, filter, skiptoken, top, apply)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByDepartment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByDepartment", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByDepartmentSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByDepartment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByDepartment", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByDepartment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByDepartment", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByDepartmentPreparer prepares the ListByDepartment request.
-func (client UsageDetailsGroupClient) ListByDepartmentPreparer(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListByDepartmentPreparer(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"departmentId": autorest.Encode("path", departmentID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -509,14 +509,14 @@ func (client UsageDetailsGroupClient) ListByDepartmentPreparer(ctx context.Conte
 
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -528,10 +528,10 @@ func (client UsageDetailsGroupClient) ListByDepartmentResponder(resp *http.Respo
 }
 
 // listByDepartmentNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listByDepartmentNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listByDepartmentNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByDepartmentNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByDepartmentNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -539,17 +539,17 @@ func (client UsageDetailsGroupClient) listByDepartmentNextResults(lastResults Us
 	resp, err := client.ListByDepartmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByDepartmentNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByDepartmentNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByDepartmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByDepartmentNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByDepartmentNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByDepartmentComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListByDepartmentComplete(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListByDepartmentComplete(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListByDepartment(ctx, departmentID, expand, filter, skiptoken, top, apply)
 	return
 }
@@ -569,45 +569,45 @@ func (client UsageDetailsGroupClient) ListByDepartmentComplete(ctx context.Conte
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsGroupClient) ListByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListByEnrollmentAccount", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListByEnrollmentAccount", err.Error())
 	}
 
 	result.fn = client.listByEnrollmentAccountNextResults
 	req, err := client.ListByEnrollmentAccountPreparer(ctx, enrollmentAccountID, expand, filter, skiptoken, top, apply)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByEnrollmentAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByEnrollmentAccount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByEnrollmentAccountSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByEnrollmentAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByEnrollmentAccount", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByEnrollmentAccountPreparer prepares the ListByEnrollmentAccount request.
-func (client UsageDetailsGroupClient) ListByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -637,14 +637,14 @@ func (client UsageDetailsGroupClient) ListByEnrollmentAccountPreparer(ctx contex
 
 // ListByEnrollmentAccountSender sends the ListByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByEnrollmentAccountResponder handles the response to the ListByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -656,10 +656,10 @@ func (client UsageDetailsGroupClient) ListByEnrollmentAccountResponder(resp *htt
 }
 
 // listByEnrollmentAccountNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listByEnrollmentAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listByEnrollmentAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -667,17 +667,17 @@ func (client UsageDetailsGroupClient) listByEnrollmentAccountNextResults(lastRes
 	resp, err := client.ListByEnrollmentAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByEnrollmentAccountNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByEnrollmentAccountNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByEnrollmentAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListByEnrollmentAccount(ctx, enrollmentAccountID, expand, filter, skiptoken, top, apply)
 	return
 }
@@ -697,45 +697,45 @@ func (client UsageDetailsGroupClient) ListByEnrollmentAccountComplete(ctx contex
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsGroupClient) ListByManagementGroup(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListByManagementGroup(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListByManagementGroup", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListByManagementGroup", err.Error())
 	}
 
 	result.fn = client.listByManagementGroupNextResults
 	req, err := client.ListByManagementGroupPreparer(ctx, managementGroupID, expand, filter, skiptoken, top, apply)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByManagementGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByManagementGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByManagementGroupSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByManagementGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByManagementGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListByManagementGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByManagementGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByManagementGroupPreparer prepares the ListByManagementGroup request.
-func (client UsageDetailsGroupClient) ListByManagementGroupPreparer(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListByManagementGroupPreparer(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"managementGroupId": autorest.Encode("path", managementGroupID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -765,14 +765,14 @@ func (client UsageDetailsGroupClient) ListByManagementGroupPreparer(ctx context.
 
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -784,10 +784,10 @@ func (client UsageDetailsGroupClient) ListByManagementGroupResponder(resp *http.
 }
 
 // listByManagementGroupNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listByManagementGroupNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listByManagementGroupNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByManagementGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByManagementGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -795,17 +795,17 @@ func (client UsageDetailsGroupClient) listByManagementGroupNextResults(lastResul
 	resp, err := client.ListByManagementGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByManagementGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByManagementGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listByManagementGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listByManagementGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListByManagementGroupComplete(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListByManagementGroupComplete(ctx context.Context, managementGroupID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListByManagementGroup(ctx, managementGroupID, expand, filter, skiptoken, top, apply)
 	return
 }
@@ -827,46 +827,46 @@ func (client UsageDetailsGroupClient) ListByManagementGroupComplete(ctx context.
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccount(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByBillingAccount(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListForBillingPeriodByBillingAccount", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", err.Error())
 	}
 
 	result.fn = client.listForBillingPeriodByBillingAccountNextResults
 	req, err := client.ListForBillingPeriodByBillingAccountPreparer(ctx, billingAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByBillingAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListForBillingPeriodByBillingAccountSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByBillingAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListForBillingPeriodByBillingAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByBillingAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListForBillingPeriodByBillingAccountPreparer prepares the ListForBillingPeriodByBillingAccount request.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountPreparer(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountPreparer(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId":  autorest.Encode("path", billingAccountID),
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -896,14 +896,14 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountPrepar
 
 // ListForBillingPeriodByBillingAccountSender sends the ListForBillingPeriodByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByBillingAccountResponder handles the response to the ListForBillingPeriodByBillingAccount request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -915,10 +915,10 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountRespon
 }
 
 // listForBillingPeriodByBillingAccountNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listForBillingPeriodByBillingAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listForBillingPeriodByBillingAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByBillingAccountNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByBillingAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -926,17 +926,17 @@ func (client UsageDetailsGroupClient) listForBillingPeriodByBillingAccountNextRe
 	resp, err := client.ListForBillingPeriodByBillingAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByBillingAccountNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByBillingAccountNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListForBillingPeriodByBillingAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByBillingAccountNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByBillingAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListForBillingPeriodByBillingAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountComplete(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByBillingAccountComplete(ctx context.Context, billingAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListForBillingPeriodByBillingAccount(ctx, billingAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }
@@ -958,46 +958,46 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByBillingAccountComple
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartment(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByDepartment(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListForBillingPeriodByDepartment", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", err.Error())
 	}
 
 	result.fn = client.listForBillingPeriodByDepartmentNextResults
 	req, err := client.ListForBillingPeriodByDepartmentPreparer(ctx, departmentID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByDepartment", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListForBillingPeriodByDepartmentSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByDepartment", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListForBillingPeriodByDepartmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByDepartment", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListForBillingPeriodByDepartmentPreparer prepares the ListForBillingPeriodByDepartment request.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentPreparer(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByDepartmentPreparer(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 		"departmentId":      autorest.Encode("path", departmentID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1027,14 +1027,14 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentPreparer(c
 
 // ListForBillingPeriodByDepartmentSender sends the ListForBillingPeriodByDepartment request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByDepartmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByDepartmentResponder handles the response to the ListForBillingPeriodByDepartment request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByDepartmentResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1046,10 +1046,10 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentResponder(
 }
 
 // listForBillingPeriodByDepartmentNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listForBillingPeriodByDepartmentNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listForBillingPeriodByDepartmentNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByDepartmentNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByDepartmentNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1057,17 +1057,17 @@ func (client UsageDetailsGroupClient) listForBillingPeriodByDepartmentNextResult
 	resp, err := client.ListForBillingPeriodByDepartmentSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByDepartmentNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByDepartmentNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListForBillingPeriodByDepartmentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByDepartmentNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByDepartmentNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListForBillingPeriodByDepartmentComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentComplete(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByDepartmentComplete(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListForBillingPeriodByDepartment(ctx, departmentID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }
@@ -1089,46 +1089,46 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByDepartmentComplete(c
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccount(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListForBillingPeriodByEnrollmentAccount", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", err.Error())
 	}
 
 	result.fn = client.listForBillingPeriodByEnrollmentAccountNextResults
 	req, err := client.ListForBillingPeriodByEnrollmentAccountPreparer(ctx, enrollmentAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByEnrollmentAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListForBillingPeriodByEnrollmentAccountSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListForBillingPeriodByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListForBillingPeriodByEnrollmentAccountPreparer prepares the ListForBillingPeriodByEnrollmentAccount request.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName":   autorest.Encode("path", billingPeriodName),
 		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1158,14 +1158,14 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountPre
 
 // ListForBillingPeriodByEnrollmentAccountSender sends the ListForBillingPeriodByEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByEnrollmentAccountResponder handles the response to the ListForBillingPeriodByEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1177,10 +1177,10 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountRes
 }
 
 // listForBillingPeriodByEnrollmentAccountNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listForBillingPeriodByEnrollmentAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listForBillingPeriodByEnrollmentAccountNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByEnrollmentAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1188,17 +1188,17 @@ func (client UsageDetailsGroupClient) listForBillingPeriodByEnrollmentAccountNex
 	resp, err := client.ListForBillingPeriodByEnrollmentAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListForBillingPeriodByEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByEnrollmentAccountNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListForBillingPeriodByEnrollmentAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListForBillingPeriodByEnrollmentAccount(ctx, enrollmentAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }
@@ -1220,46 +1220,46 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByEnrollmentAccountCom
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroup(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByManagementGroup(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.UsageDetailsGroupClient", "ListForBillingPeriodByManagementGroup", err.Error())
+		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByManagementGroup", err.Error())
 	}
 
 	result.fn = client.listForBillingPeriodByManagementGroupNextResults
 	req, err := client.ListForBillingPeriodByManagementGroupPreparer(ctx, managementGroupID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByManagementGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByManagementGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListForBillingPeriodByManagementGroupSender(req)
 	if err != nil {
 		result.udlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByManagementGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByManagementGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.udlr, err = client.ListForBillingPeriodByManagementGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "ListForBillingPeriodByManagementGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByManagementGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListForBillingPeriodByManagementGroupPreparer prepares the ListForBillingPeriodByManagementGroup request.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupPreparer(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupPreparer(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 		"managementGroupId": autorest.Encode("path", managementGroupID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1289,14 +1289,14 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupPrepa
 
 // ListForBillingPeriodByManagementGroupSender sends the ListForBillingPeriodByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
+func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListForBillingPeriodByManagementGroupResponder handles the response to the ListForBillingPeriodByManagementGroup request. The method always
 // closes the http.Response Body.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1308,10 +1308,10 @@ func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupRespo
 }
 
 // listForBillingPeriodByManagementGroupNextResults retrieves the next set of results, if any.
-func (client UsageDetailsGroupClient) listForBillingPeriodByManagementGroupNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
+func (client UsageDetailsClient) listForBillingPeriodByManagementGroupNextResults(lastResults UsageDetailsListResult) (result UsageDetailsListResult, err error) {
 	req, err := lastResults.usageDetailsListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByManagementGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByManagementGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1319,17 +1319,17 @@ func (client UsageDetailsGroupClient) listForBillingPeriodByManagementGroupNextR
 	resp, err := client.ListForBillingPeriodByManagementGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListForBillingPeriodByManagementGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsGroupClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListForBillingPeriodByManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsGroupClient) ListForBillingPeriodByManagementGroupComplete(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListForBillingPeriodByManagementGroupComplete(ctx context.Context, managementGroupID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
 	result.page, err = client.ListForBillingPeriodByManagementGroup(ctx, managementGroupID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }

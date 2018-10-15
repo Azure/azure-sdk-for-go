@@ -24,54 +24,54 @@ import (
 	"net/http"
 )
 
-// TagsGroupClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// TagsClient is the consumption management client provides access to consumption resources for Azure Enterprise
 // Subscriptions.
-type TagsGroupClient struct {
+type TagsClient struct {
 	BaseClient
 }
 
-// NewTagsGroupClient creates an instance of the TagsGroupClient client.
-func NewTagsGroupClient(subscriptionID string) TagsGroupClient {
-	return NewTagsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewTagsClient creates an instance of the TagsClient client.
+func NewTagsClient(subscriptionID string) TagsClient {
+	return NewTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewTagsGroupClientWithBaseURI creates an instance of the TagsGroupClient client.
-func NewTagsGroupClientWithBaseURI(baseURI string, subscriptionID string) TagsGroupClient {
-	return TagsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewTagsClientWithBaseURI creates an instance of the TagsClient client.
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get all available tag keys for a billing account.
 // Parameters:
 // billingAccountID - billingAccount ID
-func (client TagsGroupClient) Get(ctx context.Context, billingAccountID string) (result TagsResult, err error) {
+func (client TagsClient) Get(ctx context.Context, billingAccountID string) (result TagsResult, err error) {
 	req, err := client.GetPreparer(ctx, billingAccountID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.TagsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.TagsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.TagsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client TagsGroupClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client TagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
 
-	const APIVersion = "2018-08-31"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -86,14 +86,14 @@ func (client TagsGroupClient) GetPreparer(ctx context.Context, billingAccountID 
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client TagsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client TagsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TagsGroupClient) GetResponder(resp *http.Response) (result TagsResult, err error) {
+func (client TagsClient) GetResponder(resp *http.Response) (result TagsResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

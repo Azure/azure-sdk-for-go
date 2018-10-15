@@ -868,9 +868,9 @@ type ManagementGroupAggregatedCostProperties struct {
 	Currency *string `json:"currency,omitempty"`
 	// Children - Children of a management group
 	Children *[]ManagementGroupAggregatedCostResult `json:"children,omitempty"`
-	// IncludedSubscriptions - List of subscriptionGuids included in the calculation of aggregated cost
+	// IncludedSubscriptions - List of subscription Guids included in the calculation of aggregated cost
 	IncludedSubscriptions *[]string `json:"includedSubscriptions,omitempty"`
-	// ExcludedSubscriptions - List of subscriptionGuids excluded from the calculation of aggregated cost
+	// ExcludedSubscriptions - List of subscription Guids excluded from the calculation of aggregated cost
 	ExcludedSubscriptions *[]string `json:"excludedSubscriptions,omitempty"`
 }
 

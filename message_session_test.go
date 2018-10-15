@@ -32,7 +32,7 @@ func (suite *serviceBusSuite) TestMessageSession() {
 				ns,
 				queueName,
 				QueueEntityWithRequiredSessions(),
-				QueueEntityWithPartitioning(),
+				//QueueEntityWithPartitioning(),
 				QueueEntityWithDuplicateDetection(&window))
 			defer cleanup()
 

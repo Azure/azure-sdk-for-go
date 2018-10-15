@@ -49,17 +49,17 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 		return err
 	}
 
-	//reqID, err := uuid.NewV4()
-	//if err != nil {
-	//	return err
-	//}
-
-	msg := amqp.NewMessage([]byte{})
-	msg.ApplicationProperties = make(map[string]interface{}, 1)
-	msg.ApplicationProperties["operation"] = "com.microsoft:renew-session-lock"
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:renew-session-lock",
+		},
+		Value: map[string]interface{}{
+			"session-id": ms.SessionID(),
+		},
+	}
 
 	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["com.microsoft:server-timeout"] = durationTo8601Seconds(time.Until(deadline))
+		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
 	resp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
@@ -67,13 +67,17 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 		return err
 	}
 
-	if rawUpdatedLockExpiration, ok := resp.Message.ApplicationProperties["expiration"]; ok {
-		ms.lockExpiration = rawUpdatedLockExpiration.(time.Time)
-	} else {
-		return errors.New("lock expiration property not present")
-	}
+	if rawMessageValue, ok := resp.Message.Value.(map[string]interface{}); ok {
+		if rawExpiration, ok := rawMessageValue["expiration"]; ok {
+			if ms.lockExpiration, ok = rawExpiration.(time.Time); ok {
+				return nil
+			}
+			return errors.New("\"expiration\" not of expected type time.Time")
+		}
+		return errors.New("missing expected property \"expiration\" in \"Value\"")
 
-	return nil
+	}
+	return errors.New("value not of expected type map[string]interface{}")
 
 }
 

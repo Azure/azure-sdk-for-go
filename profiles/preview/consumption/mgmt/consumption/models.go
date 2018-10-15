@@ -19,7 +19,7 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption"
+import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
 
 type AggregatedCostClient = original.AggregatedCostClient
 type BalancesClient = original.BalancesClient

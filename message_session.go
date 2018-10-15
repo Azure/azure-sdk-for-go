@@ -84,7 +84,6 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
-	//link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}

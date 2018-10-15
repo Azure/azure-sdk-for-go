@@ -37,7 +37,9 @@ func (suite *serviceBusSuite) TestMessageSession() {
 			defer cleanup()
 
 			q, err := ns.NewQueue(queueName)
-			defer q.Close(context.Background())
+			defer func() {
+				q.Close(context.Background())
+			}()
 			suite.NoError(err)
 
 			var sessionID string

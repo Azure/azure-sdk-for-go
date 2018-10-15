@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## `v21.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| blueprint | 2017-11-11-preview |
+| containerinstance | 2018-10-01 |
+| policyinsights | 2018-07-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| auth | keyvault |
+| automation | 2018-06-preview |
+| containerregistry | 2017-10-01<br/>2018-02-01<br/>2018-09-01 |
+| costmanagement | 2018-05-31 |
+| datafactory | 2018-06-01 |
+| documentdb | 2015-04-08 |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2015-05-01<br/>2018-03-01<br/>2018-09-01 |
+| job | 2017-09-01-preview |
+| mysql | 2017-12-01 |
+| operationalinsights | 2015-03-20 |
+| security | 2017-08-01-preview |
+| sql | 2017-10-01-preview |
+
 ## `v21.1.0`
 
 ### New Packages

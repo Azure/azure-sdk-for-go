@@ -119,6 +119,8 @@ const (
 	StateCompiling State = "Compiling"
 	// StateEnded ...
 	StateEnded State = "Ended"
+	// StateFinalizing ...
+	StateFinalizing State = "Finalizing"
 	// StateNew ...
 	StateNew State = "New"
 	// StatePaused ...
@@ -133,11 +135,13 @@ const (
 	StateStarting State = "Starting"
 	// StateWaitingForCapacity ...
 	StateWaitingForCapacity State = "WaitingForCapacity"
+	// StateYielded ...
+	StateYielded State = "Yielded"
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
-	return []State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
+	return []State{StateAccepted, StateCompiling, StateEnded, StateFinalizing, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity, StateYielded}
 }
 
 // Type enumerates the values for type.
@@ -1024,7 +1028,7 @@ type Information struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The completion time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
+	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity', 'StateYielded', 'StateFinalizing'
 	State State `json:"state,omitempty"`
 	// Result - The result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
 	Result Result `json:"result,omitempty"`
@@ -1320,7 +1324,7 @@ type InformationBasic struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The completion time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
+	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity', 'StateYielded', 'StateFinalizing'
 	State State `json:"state,omitempty"`
 	// Result - The result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
 	Result Result `json:"result,omitempty"`

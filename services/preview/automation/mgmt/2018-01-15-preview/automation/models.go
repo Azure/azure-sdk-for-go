@@ -8493,7 +8493,7 @@ type String struct {
 
 // TagSettingsProperties tag filter information for the VM.
 type TagSettingsProperties struct {
-	// Tags - Dictionary of tags with its list of values
+	// Tags - Dictionary of tags with its list of values.
 	Tags map[string][]string `json:"tags"`
 	// FilterOperator - Filter VMs by Any or All specified tags. Possible values include: 'TagOperatorsAll', 'TagOperatorsAny'
 	FilterOperator TagOperators `json:"filterOperator,omitempty"`
@@ -8513,7 +8513,7 @@ func (tsp TagSettingsProperties) MarshalJSON() ([]byte, error) {
 
 // TargetProperties group specific to the update configuration.
 type TargetProperties struct {
-	// AzureQueries - List of Azure queries in software update configuration.
+	// AzureQueries - List of Azure queries in the software update configuration.
 	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
 }
 
@@ -8667,7 +8667,7 @@ type UpdateConfiguration struct {
 	AzureVirtualMachines *[]string `json:"azureVirtualMachines,omitempty"`
 	// NonAzureComputerNames - List of names of non-azure machines targeted by the software update configuration.
 	NonAzureComputerNames *[]string `json:"nonAzureComputerNames,omitempty"`
-	// Targets - Group information that will be patched during run time.
+	// Targets - Group targets for the software update configuration.
 	Targets *TargetProperties `json:"targets,omitempty"`
 }
 

@@ -100,6 +100,13 @@ const (
 	Query               BearerTokenSendingMethod = original.Query
 )
 
+type BearerTokenSendingMethods = original.BearerTokenSendingMethods
+
+const (
+	BearerTokenSendingMethodsAuthorizationHeader BearerTokenSendingMethods = original.BearerTokenSendingMethodsAuthorizationHeader
+	BearerTokenSendingMethodsQuery               BearerTokenSendingMethods = original.BearerTokenSendingMethodsQuery
+)
+
 type ClientAuthenticationMethod = original.ClientAuthenticationMethod
 
 const (
@@ -488,6 +495,7 @@ type NotificationCollectionPage = original.NotificationCollectionPage
 type NotificationContract = original.NotificationContract
 type NotificationContractProperties = original.NotificationContractProperties
 type OAuth2AuthenticationSettingsContract = original.OAuth2AuthenticationSettingsContract
+type OpenIDAuthenticationSettingsContract = original.OpenIDAuthenticationSettingsContract
 type OpenIDConnectProviderCollection = original.OpenIDConnectProviderCollection
 type OpenIDConnectProviderCollectionIterator = original.OpenIDConnectProviderCollectionIterator
 type OpenIDConnectProviderCollectionPage = original.OpenIDConnectProviderCollectionPage
@@ -852,6 +860,9 @@ func PossibleBackendProtocolValues() []BackendProtocol {
 }
 func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 	return original.PossibleBearerTokenSendingMethodValues()
+}
+func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
+	return original.PossibleBearerTokenSendingMethodsValues()
 }
 func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	return original.PossibleClientAuthenticationMethodValues()

@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:4255cd7fce34b261f2f0a10425878848419c8cabf2b3f87aeb0b330ada623c59"
+  digest = "1:31d238ff84ac0173735a615900fcbe106084dfcf33307f357b276819a55487fd"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -17,8 +17,8 @@
     "uuid",
   ]
   pruneopts = "UT"
-  revision = "dead23a10516c64bf754a2aabc7063304adcf736"
-  version = "v1.0.2"
+  revision = "1b596336a6a312412941a90cfa65716072de9cb7"
+  version = "v1.1.0"
 
 [[projects]]
   digest = "1:e0cd7a155f27aa2eb4dfaeb68087b5e8b7cd87aa6bbd4096d7954ef5ab19d10c"

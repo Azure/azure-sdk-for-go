@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/rpc"
-	"github.com/Azure/azure-amqp-common-go/uuid"
 	"pack.ag/amqp"
 )
 
@@ -45,19 +44,19 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
 
-	link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
 
-	reqID, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
+	//reqID, err := uuid.NewV4()
+	//if err != nil {
+	//	return err
+	//}
 
 	msg := amqp.NewMessage([]byte{})
+	msg.ApplicationProperties = make(map[string]interface{}, 1)
 	msg.ApplicationProperties["operation"] = "com.microsoft:renew-session-lock"
-	msg.ApplicationProperties["com.microsoft:tracking-id"] = reqID.String()
 
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = durationTo8601Seconds(time.Until(deadline))
@@ -80,25 +79,24 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
-	link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
+	//link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
 
-	reqID, err := uuid.NewV4()
-	if err != nil {
-		return err
-	}
-
-	msg := amqp.NewMessage([]byte{})
-	msg.ApplicationProperties = map[string]interface{}{
-		"operation":                 "com.microsoft:set-session-state",
-		"com.microsoft:tracking-id": reqID.String(),
-	}
-
-	msg.Value = map[string]interface{}{
-		"session-id":    ms.SessionID(),
-		"session-state": state,
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:set-session-state",
+			"type":      "entity-mgmt",
+		},
+		Properties: &amqp.MessageProperties{
+			GroupID: ms.SessionID(),
+		},
+		Value: map[string]interface{}{
+			"session-id":    ms.SessionID(),
+			"session-state": state,
+		},
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
@@ -115,25 +113,19 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 // State retrieves the current State associated with this Session.
 // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-request-response#get-session-state
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
-	link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
+	//link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
 	}
 
-	reqID, err := uuid.NewV4()
-	if err != nil {
-		return []byte{}, err
-	}
-
-	msg := amqp.NewMessage([]byte{})
-
-	msg.ApplicationProperties = map[string]interface{}{
-		"operation":                     "com.microsoft:get-session-state",
-		"com.microsoft.com:tracking-id": reqID.String(),
-	}
-
-	msg.Value = map[string]interface{}{
-		"session-id": ms.SessionID(),
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-session-state",
+		},
+		Value: map[string]interface{}{
+			"session-id": ms.SessionID(),
+		},
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)

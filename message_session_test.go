@@ -10,9 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func (suite *serviceBusSuite) TestMessageSessionState() {
+func (suite *serviceBusSuite) TestMessageSession() {
 	tests := map[string]func(context.Context, *testing.T, *MessageSession){
 		"TestStateRoundTrip": testStateRoundTrip,
+		"TestRenewLock":      testRenewLock,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -79,4 +80,8 @@ func testStateRoundTrip(ctx context.Context, t *testing.T, ms *MessageSession) {
 		t.Logf("\ngot:\n\t%qwant:\n\t%q", string(got), want)
 		t.Fail()
 	}
+}
+
+func testRenewLock(ctx context.Context, t *testing.T, ms *MessageSession) {
+	require.NoError(t, ms.Renew(ctx))
 }

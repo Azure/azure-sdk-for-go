@@ -11,16 +11,16 @@ import (
 	"pack.ag/amqp"
 )
 
-// MessageSession represents and allows for interaction with a Service Bus Session. Service Bus Sessions
+// MessageSession represents and allows for interaction with a Service Bus Session.
 type MessageSession struct {
 	mu sync.RWMutex
 	*entity
 	*receiver
-	sessionID      string
+	sessionID      *string
 	lockExpiration time.Time
 }
 
-func newMessageSession(r *receiver, e *entity, sessionID string) (retval *MessageSession, _ error) {
+func newMessageSession(r *receiver, e *entity, sessionID *string) (retval *MessageSession, _ error) {
 	retval = &MessageSession{
 		receiver:       r,
 		entity:         e,
@@ -40,7 +40,7 @@ func (ms *MessageSession) LockedUntil() time.Time {
 }
 
 // Renew requests that the Service Bus Server renews this client's lock on an existing Session.
-func (ms *MessageSession) Renew(ctx context.Context) error {
+func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
 
@@ -78,7 +78,6 @@ func (ms *MessageSession) Renew(ctx context.Context) error {
 
 	}
 	return errors.New("value not of expected type map[string]interface{}")
-
 }
 
 // SetState updates the current State associated with this Session.
@@ -94,7 +93,7 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 			"type":      "entity-mgmt",
 		},
 		Properties: &amqp.MessageProperties{
-			GroupID: ms.SessionID(),
+			GroupID: *ms.SessionID(),
 		},
 		Value: map[string]interface{}{
 			"session-id":    ms.SessionID(),
@@ -153,6 +152,6 @@ func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 }
 
 // SessionID gets the unique identifier of the session being interacted with by this MessageSession.
-func (ms *MessageSession) SessionID() string {
+func (ms *MessageSession) SessionID() *string {
 	return ms.sessionID
 }

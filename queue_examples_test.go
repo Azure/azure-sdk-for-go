@@ -83,51 +83,56 @@ func ExampleQueue_sessionsRoundTrip() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Publish five session's worth of data.                                                                          //
+	//                                                                                                                //
+	// The sessions are deliberately interleaved to demonstrate consumption semantics.                                //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	const numSessions = 5
+	const numSessions, nameComponents = 5, 3
 	adjectives := []string{"Doltish", "Foolish", "Juvenile"}
 	nouns := []string{"Automaton", "Luddite", "Monkey", "Neanderthal"}
 
 	// seed chosen arbitrarily, see https://en.wikipedia.org/wiki/Taxicab_number
 	generator := rand.New(rand.NewSource(1729))
 
+	sessionIDs := make([]string, numSessions)
+
+	// Establish a set of sessions
 	for i := 0; i < numSessions; i++ {
-		var sessionID string
-		if id, err := uuid.NewV4(); err == nil {
-			sessionID = id.String()
+		if rawSessionID, err := uuid.NewV4(); err == nil {
+			sessionIDs[i] = rawSessionID.String()
 		} else {
 			fmt.Println("FATAL: ", err)
 			return
 		}
+	}
 
-		if err != nil {
-			fmt.Println("FATAL: ", err)
-			return
-		}
-
-		prepareMessage := func(payload string) (retval *servicebus.Message) {
-			retval = servicebus.NewMessageFromString(payload)
-			retval.GroupID = &sessionID
-			return retval
-		}
-
+	// Publish an adjective for each session
+	for i := 0; i < numSessions; i++ {
 		adj := adjectives[generator.Intn(len(adjectives))]
-		err = client.Send(ctx, prepareMessage(adj))
-		if err != nil {
+		msg := servicebus.NewMessageFromString(adj)
+		msg.GroupID = &sessionIDs[i]
+		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
 		}
+	}
 
+	// Publish a noun for each session
+	for i := 0; i < numSessions; i++ {
 		noun := nouns[generator.Intn(len(nouns))]
-		err = client.Send(ctx, prepareMessage(noun))
-		if err != nil {
+		msg := servicebus.NewMessageFromString(noun)
+		msg.GroupID = &sessionIDs[i]
+		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
 		}
+	}
 
-		num := fmt.Sprintf("%02d", generator.Intn(100))
-		client.Send(ctx, prepareMessage(num))
-		if err != nil {
+	// Publish a numeric suffix for each session
+	for i := 0; i < numSessions; i++ {
+		suffix := fmt.Sprintf("%02d", generator.Intn(100))
+		msg := servicebus.NewMessageFromString(suffix)
+		msg.GroupID = &sessionIDs[i]
+		if err := client.Send(ctx, msg); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
 		}
@@ -150,7 +155,7 @@ func ExampleQueue_sessionsRoundTrip() {
 
 			// The following clause is needed to quit receiving after 5 messages are received.
 			messagesReceived++
-			if messagesReceived >= numSessions {
+			if messagesReceived >= 3 {
 				innerCancel()
 			}
 

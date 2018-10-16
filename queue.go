@@ -177,13 +177,17 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 }
 
 // ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
-func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID string, handler SessionHandler) error {
+func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOneSession")
 	defer span.Finish()
 
 	// Establish a receiver that reads a particular session.
-	q.requiredSessionID = &sessionID
-	if err := q.ensureReceiver(ctx, receiverWithSession(sessionID)); err != nil {
+	options := make([]receiverOption, 0, 1)
+	if sessionID != nil {
+		options = append(options, receiverWithSession(*sessionID))
+	}
+	q.requiredSessionID = sessionID
+	if err := q.ensureReceiver(ctx, options...); err != nil {
 		return err
 	}
 
@@ -217,7 +221,7 @@ func (q *Queue) ReceiveSessions(ctx context.Context, handler SessionHandler) err
 	defer span.Finish()
 
 	for {
-		if err := q.ReceiveOneSession(ctx, "", handler); err != nil {
+		if err := q.ReceiveOneSession(ctx, nil, handler); err != nil {
 			return err
 		}
 	}

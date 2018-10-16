@@ -57,7 +57,7 @@ func (suite *serviceBusSuite) TestMessageSession() {
 
 			q.Send(ctx, msg)
 
-			q.ReceiveOneSession(ctx, sessionID, NewSessionHandler(
+			q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
 				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
 					defer cancel()
 					assert.Equal(t, string(msg.Data), want)
@@ -87,7 +87,7 @@ func testStateRoundTrip(ctx context.Context, t *testing.T, ms *MessageSession) {
 
 func testRenewLock(ctx context.Context, t *testing.T, ms *MessageSession) {
 	original := ms.LockedUntil()
-	require.NoError(t, ms.Renew(ctx))
+	require.NoError(t, ms.RenewLock(ctx))
 	modified := ms.LockedUntil()
 
 	if testing.Verbose() {

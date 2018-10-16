@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgm
 
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AlertsClient = original.AlertsClient
+type AllowedConnectionsClient = original.AllowedConnectionsClient
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 
 const (
@@ -64,6 +65,13 @@ type AutoProvision = original.AutoProvision
 const (
 	AutoProvisionOff AutoProvision = original.AutoProvisionOff
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+)
+
+type ConnectionType = original.ConnectionType
+
+const (
+	External ConnectionType = original.External
+	Internal ConnectionType = original.Internal
 )
 
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
@@ -147,6 +155,11 @@ type AlertList = original.AlertList
 type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
+type AllowedConnectionsList = original.AllowedConnectionsList
+type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
+type AllowedConnectionsListPage = original.AllowedConnectionsListPage
+type AllowedConnectionsResource = original.AllowedConnectionsResource
+type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -168,6 +181,8 @@ type ComplianceListIterator = original.ComplianceListIterator
 type ComplianceListPage = original.ComplianceListPage
 type ComplianceProperties = original.ComplianceProperties
 type ComplianceSegment = original.ComplianceSegment
+type ConnectableResource = original.ConnectableResource
+type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
 type Contact = original.Contact
 type ContactList = original.ContactList
@@ -236,14 +251,6 @@ type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
-type TopologyList = original.TopologyList
-type TopologyListIterator = original.TopologyListIterator
-type TopologyListPage = original.TopologyListPage
-type TopologyResource = original.TopologyResource
-type TopologyResourceProperties = original.TopologyResourceProperties
-type TopologySingleResource = original.TopologySingleResource
-type TopologySingleResourceChild = original.TopologySingleResourceChild
-type TopologySingleResourceParent = original.TopologySingleResourceParent
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -253,7 +260,6 @@ type OperationsClient = original.OperationsClient
 type PricingsClient = original.PricingsClient
 type SettingsClient = original.SettingsClient
 type TasksClient = original.TasksClient
-type TopologyClient = original.TopologyClient
 type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
@@ -267,6 +273,12 @@ func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 }
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
+}
+func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)
@@ -334,6 +346,9 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
+func PossibleConnectionTypeValues() []ConnectionType {
+	return original.PossibleConnectionTypeValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -384,12 +399,6 @@ func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
 }
 func NewTasksClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TasksClient {
 	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewTopologyClient(subscriptionID string, ascLocation string) TopologyClient {
-	return original.NewTopologyClient(subscriptionID, ascLocation)
-}
-func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TopologyClient {
-	return original.NewTopologyClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

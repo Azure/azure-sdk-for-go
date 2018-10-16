@@ -35,6 +35,12 @@ const (
 	S1 AppSku = original.S1
 )
 
+type Type = original.Type
+
+const (
+	IoTApps Type = original.IoTApps
+)
+
 type App = original.App
 type AppAvailabilityInfo = original.AppAvailabilityInfo
 type AppListResult = original.AppListResult
@@ -71,6 +77,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

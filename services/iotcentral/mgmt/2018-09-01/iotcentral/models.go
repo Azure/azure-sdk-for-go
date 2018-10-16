@@ -40,6 +40,19 @@ func PossibleAppSkuValues() []AppSku {
 	return []AppSku{F1, S1}
 }
 
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// IoTApps ...
+	IoTApps Type = "IoTApps"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{IoTApps}
+}
+
 // App the IoT Central application.
 type App struct {
 	autorest.Response `json:"-"`
@@ -501,8 +514,8 @@ type OperationDisplay struct {
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the IoT Central resource to query.
-	Type *string `json:"type,omitempty"`
+	// Type - The type of the IoT Central resource to query. Possible values include: 'IoTApps'
+	Type Type `json:"type,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the

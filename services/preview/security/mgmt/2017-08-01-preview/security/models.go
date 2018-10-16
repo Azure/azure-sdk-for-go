@@ -88,6 +88,21 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
 }
 
+// ConnectionType enumerates the values for connection type.
+type ConnectionType string
+
+const (
+	// External ...
+	External ConnectionType = "External"
+	// Internal ...
+	Internal ConnectionType = "Internal"
+)
+
+// PossibleConnectionTypeValues returns an array of possible values for the ConnectionType const type.
+func PossibleConnectionTypeValues() []ConnectionType {
+	return []ConnectionType{External, Internal}
+}
+
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
 type ExternalSecuritySolutionKind string
 
@@ -760,6 +775,210 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 		objectMap["workspaceArmId"] = ap.WorkspaceArmID
 	}
 	return json.Marshal(objectMap)
+}
+
+// AllowedConnectionsList list of allowed connections
+type AllowedConnectionsList struct {
+	autorest.Response `json:"-"`
+	Value             *[]AllowedConnectionsResource `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AllowedConnectionsListIterator provides access to a complete listing of AllowedConnectionsResource values.
+type AllowedConnectionsListIterator struct {
+	i    int
+	page AllowedConnectionsListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AllowedConnectionsListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AllowedConnectionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AllowedConnectionsListIterator) Response() AllowedConnectionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AllowedConnectionsListIterator) Value() AllowedConnectionsResource {
+	if !iter.page.NotDone() {
+		return AllowedConnectionsResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ACL AllowedConnectionsList) IsEmpty() bool {
+	return ACL.Value == nil || len(*ACL.Value) == 0
+}
+
+// allowedConnectionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ACL AllowedConnectionsList) allowedConnectionsListPreparer() (*http.Request, error) {
+	if ACL.NextLink == nil || len(to.String(ACL.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ACL.NextLink)))
+}
+
+// AllowedConnectionsListPage contains a page of AllowedConnectionsResource values.
+type AllowedConnectionsListPage struct {
+	fn  func(AllowedConnectionsList) (AllowedConnectionsList, error)
+	ACL AllowedConnectionsList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AllowedConnectionsListPage) Next() error {
+	next, err := page.fn(page.ACL)
+	if err != nil {
+		return err
+	}
+	page.ACL = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AllowedConnectionsListPage) NotDone() bool {
+	return !page.ACL.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AllowedConnectionsListPage) Response() AllowedConnectionsList {
+	return page.ACL
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AllowedConnectionsListPage) Values() []AllowedConnectionsResource {
+	if page.ACL.IsEmpty() {
+		return nil
+	}
+	return *page.ACL.Value
+}
+
+// AllowedConnectionsResource describes an allowed connections resource
+type AllowedConnectionsResource struct {
+	autorest.Response `json:"-"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location                              *string `json:"location,omitempty"`
+	*AllowedConnectionsResourceProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AllowedConnectionsResource.
+func (acr AllowedConnectionsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acr.ID != nil {
+		objectMap["id"] = acr.ID
+	}
+	if acr.Name != nil {
+		objectMap["name"] = acr.Name
+	}
+	if acr.Type != nil {
+		objectMap["type"] = acr.Type
+	}
+	if acr.Location != nil {
+		objectMap["location"] = acr.Location
+	}
+	if acr.AllowedConnectionsResourceProperties != nil {
+		objectMap["properties"] = acr.AllowedConnectionsResourceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AllowedConnectionsResource struct.
+func (acr *AllowedConnectionsResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				acr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				acr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				acr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				acr.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var allowedConnectionsResourceProperties AllowedConnectionsResourceProperties
+				err = json.Unmarshal(*v, &allowedConnectionsResourceProperties)
+				if err != nil {
+					return err
+				}
+				acr.AllowedConnectionsResourceProperties = &allowedConnectionsResourceProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AllowedConnectionsResourceProperties describes properties of an allowed connections resource
+type AllowedConnectionsResourceProperties struct {
+	// CalculatedDateTime - The UTC time on which the allowed connections resource was calculated
+	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
+	// ConnectableResources - List of connectable resources
+	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field
@@ -1658,6 +1877,26 @@ type ComplianceSegment struct {
 	SegmentType *string `json:"segmentType,omitempty"`
 	// Percentage - The size (%) of the segment.
 	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+// ConnectableResource describes properties of a connectable resource
+type ConnectableResource struct {
+	// ID - The Azure resource id
+	ID *string `json:"id,omitempty"`
+	// InboundConnectedResources - The list of Azure resources that the resource has inbound allowed connection from
+	InboundConnectedResources *[]ConnectedResource `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - The list of Azure resources that the resource has outbound allowed connection to
+	OutboundConnectedResources *[]ConnectedResource `json:"outboundConnectedResources,omitempty"`
+}
+
+// ConnectedResource describes properties of a connected resource
+type ConnectedResource struct {
+	// ConnectedResourceID - The Azure resource id of the connected resource
+	ConnectedResourceID *string `json:"connectedResourceId,omitempty"`
+	// TCPPorts - The allowed tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - The allowed udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
 // ConnectedWorkspace ...
@@ -3917,242 +4156,6 @@ type TaskProperties struct {
 	LastStateChangeTimeUtc *date.Time `json:"lastStateChangeTimeUtc,omitempty"`
 	// SubState - Additional data on the state of the task
 	SubState *string `json:"subState,omitempty"`
-}
-
-// TopologyList ...
-type TopologyList struct {
-	autorest.Response `json:"-"`
-	Value             *[]TopologyResource `json:"value,omitempty"`
-	// NextLink - The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// TopologyListIterator provides access to a complete listing of TopologyResource values.
-type TopologyListIterator struct {
-	i    int
-	page TopologyListPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *TopologyListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter TopologyListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter TopologyListIterator) Response() TopologyList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter TopologyListIterator) Value() TopologyResource {
-	if !iter.page.NotDone() {
-		return TopologyResource{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (tl TopologyList) IsEmpty() bool {
-	return tl.Value == nil || len(*tl.Value) == 0
-}
-
-// topologyListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (tl TopologyList) topologyListPreparer() (*http.Request, error) {
-	if tl.NextLink == nil || len(to.String(tl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(tl.NextLink)))
-}
-
-// TopologyListPage contains a page of TopologyResource values.
-type TopologyListPage struct {
-	fn func(TopologyList) (TopologyList, error)
-	tl TopologyList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *TopologyListPage) Next() error {
-	next, err := page.fn(page.tl)
-	if err != nil {
-		return err
-	}
-	page.tl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page TopologyListPage) NotDone() bool {
-	return !page.tl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page TopologyListPage) Response() TopologyList {
-	return page.tl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page TopologyListPage) Values() []TopologyResource {
-	if page.tl.IsEmpty() {
-		return nil
-	}
-	return *page.tl.Value
-}
-
-// TopologyResource ...
-type TopologyResource struct {
-	autorest.Response `json:"-"`
-	// ID - Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Location where the resource is stored
-	Location                    *string `json:"location,omitempty"`
-	*TopologyResourceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TopologyResource.
-func (tr TopologyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
-	if tr.Location != nil {
-		objectMap["location"] = tr.Location
-	}
-	if tr.TopologyResourceProperties != nil {
-		objectMap["properties"] = tr.TopologyResourceProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for TopologyResource struct.
-func (tr *TopologyResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				tr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				tr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				tr.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				tr.Location = &location
-			}
-		case "properties":
-			if v != nil {
-				var topologyResourceProperties TopologyResourceProperties
-				err = json.Unmarshal(*v, &topologyResourceProperties)
-				if err != nil {
-					return err
-				}
-				tr.TopologyResourceProperties = &topologyResourceProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// TopologyResourceProperties ...
-type TopologyResourceProperties struct {
-	// CalculatedDateTime - The UTC time on which the topology was calculated
-	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
-	// TopologyResources - Azure resources which are part of this topology resource
-	TopologyResources *[]TopologySingleResource `json:"topologyResources,omitempty"`
-}
-
-// TopologySingleResource ...
-type TopologySingleResource struct {
-	// ResourceID - Azure resource id
-	ResourceID *string `json:"resourceId,omitempty"`
-	// Severity - The security severity of the resource
-	Severity *string `json:"severity,omitempty"`
-	// RecommendationsExist - Indicates if the resource has security recommendations
-	RecommendationsExist *bool `json:"recommendationsExist,omitempty"`
-	// NetworkZones - Indicates the resource connectivity level to the Internet (InternetFacing, Internal ,etc.)
-	NetworkZones *string `json:"networkZones,omitempty"`
-	// TopologyScore - Score of the resource based on its security severity
-	TopologyScore *int32 `json:"topologyScore,omitempty"`
-	// Location - The location of this resource
-	Location *string `json:"location,omitempty"`
-	// Parents - Azure resources connected to this resource which are in higher level in the topology view
-	Parents *[]TopologySingleResourceParent `json:"parents,omitempty"`
-	// Children - Azure resources connected to this resource which are in lower level in the topology view
-	Children *[]TopologySingleResourceChild `json:"children,omitempty"`
-}
-
-// TopologySingleResourceChild ...
-type TopologySingleResourceChild struct {
-	// ResourceID - Azure resource id which serves as child resource in topology view
-	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// TopologySingleResourceParent ...
-type TopologySingleResourceParent struct {
-	// ResourceID - Azure resource id which serves as parent resource in topology view
-	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

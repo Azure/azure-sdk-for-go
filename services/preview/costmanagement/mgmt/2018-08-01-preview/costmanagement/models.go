@@ -44,21 +44,23 @@ func PossibleAlertCategoryValues() []AlertCategory {
 	return []AlertCategory{Billing, Compliance, Cost, Usage}
 }
 
-// AlertCostEntity enumerates the values for alert cost entity.
-type AlertCostEntity string
+// AlertCriteria enumerates the values for alert criteria.
+type AlertCriteria string
 
 const (
-	// Budget ...
-	Budget AlertCostEntity = "Budget"
-	// Invoice ...
-	Invoice AlertCostEntity = "Invoice"
-	// MonetaryCommitment ...
-	MonetaryCommitment AlertCostEntity = "MonetaryCommitment"
+	// CostThresholdExceeded ...
+	CostThresholdExceeded AlertCriteria = "CostThresholdExceeded"
+	// MonetaryCommitmentThresholdApproaching ...
+	MonetaryCommitmentThresholdApproaching AlertCriteria = "MonetaryCommitmentThresholdApproaching"
+	// MonetaryCommitmentThresholdReached ...
+	MonetaryCommitmentThresholdReached AlertCriteria = "MonetaryCommitmentThresholdReached"
+	// UsageThresholdExceeded ...
+	UsageThresholdExceeded AlertCriteria = "UsageThresholdExceeded"
 )
 
-// PossibleAlertCostEntityValues returns an array of possible values for the AlertCostEntity const type.
-func PossibleAlertCostEntityValues() []AlertCostEntity {
-	return []AlertCostEntity{Budget, Invoice, MonetaryCommitment}
+// PossibleAlertCriteriaValues returns an array of possible values for the AlertCriteria const type.
+func PossibleAlertCriteriaValues() []AlertCriteria {
+	return []AlertCriteria{CostThresholdExceeded, MonetaryCommitmentThresholdApproaching, MonetaryCommitmentThresholdReached, UsageThresholdExceeded}
 }
 
 // AlertSource enumerates the values for alert source.
@@ -80,10 +82,10 @@ func PossibleAlertSourceValues() []AlertSource {
 type AlertStatus string
 
 const (
-	// Acknowledged ...
-	Acknowledged AlertStatus = "Acknowledged"
 	// Active ...
 	Active AlertStatus = "Active"
+	// Dismissed ...
+	Dismissed AlertStatus = "Dismissed"
 	// Overridden ...
 	Overridden AlertStatus = "Overridden"
 	// Resolved ...
@@ -92,38 +94,24 @@ const (
 
 // PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
 func PossibleAlertStatusValues() []AlertStatus {
-	return []AlertStatus{Acknowledged, Active, Overridden, Resolved}
+	return []AlertStatus{Active, Dismissed, Overridden, Resolved}
 }
 
 // AlertType enumerates the values for alert type.
 type AlertType string
 
 const (
-	// BudgetExceeded ...
-	BudgetExceeded AlertType = "BudgetExceeded"
-	// CostThresholdExceeded ...
-	CostThresholdExceeded AlertType = "CostThresholdExceeded"
-	// NewInvoiceReceived ...
-	NewInvoiceReceived AlertType = "NewInvoiceReceived"
-	// ReservationEnd ...
-	ReservationEnd AlertType = "ReservationEnd"
-	// ThresholdExceeded ...
-	ThresholdExceeded AlertType = "ThresholdExceeded"
-	// UnpaidInvoice ...
-	UnpaidInvoice AlertType = "UnpaidInvoice"
-	// UntaggedInstances ...
-	UntaggedInstances AlertType = "UntaggedInstances"
-	// UsageThresholdExceededHours ...
-	UsageThresholdExceededHours AlertType = "UsageThresholdExceeded_Hours"
-	// UsageThresholdExceededNetwork ...
-	UsageThresholdExceededNetwork AlertType = "UsageThresholdExceeded_Network"
-	// UsageThresholdExceededStorage ...
-	UsageThresholdExceededStorage AlertType = "UsageThresholdExceeded_Storage"
+	// Budget ...
+	Budget AlertType = "Budget"
+	// Credit ...
+	Credit AlertType = "Credit"
+	// Invoice ...
+	Invoice AlertType = "Invoice"
 )
 
 // PossibleAlertTypeValues returns an array of possible values for the AlertType const type.
 func PossibleAlertTypeValues() []AlertType {
-	return []AlertType{BudgetExceeded, CostThresholdExceeded, NewInvoiceReceived, ReservationEnd, ThresholdExceeded, UnpaidInvoice, UntaggedInstances, UsageThresholdExceededHours, UsageThresholdExceededNetwork, UsageThresholdExceededStorage}
+	return []AlertType{Budget, Credit, Invoice}
 }
 
 // ConnectorStatus enumerates the values for connector status.
@@ -357,10 +345,10 @@ func (a *Alert) UnmarshalJSON(body []byte) error {
 type AlertDefinition struct {
 	// Category - Category of the alert. Possible values include: 'Cost', 'Usage', 'Billing', 'Compliance'
 	Category AlertCategory `json:"category,omitempty"`
-	// CostEntity - Monitored entity of the alert. Possible values include: 'Budget', 'Invoice', 'MonetaryCommitment'
-	CostEntity AlertCostEntity `json:"costEntity,omitempty"`
-	// AlertType - Type of the alert. Possible values include: 'CostThresholdExceeded', 'ThresholdExceeded', 'BudgetExceeded', 'UsageThresholdExceededHours', 'UsageThresholdExceededStorage', 'UsageThresholdExceededNetwork', 'NewInvoiceReceived', 'UnpaidInvoice', 'ReservationEnd', 'UntaggedInstances'
+	// AlertType - The type of entity the alert is defined on. Possible values include: 'Budget', 'Invoice', 'Credit'
 	AlertType AlertType `json:"alertType,omitempty"`
+	// AlertCriteria - Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'MonetaryCommitmentThresholdApproaching', 'MonetaryCommitmentThresholdReached'
+	AlertCriteria AlertCriteria `json:"alertCriteria,omitempty"`
 }
 
 // AlertListResult result of listing alerts. It contains a list of available alerts in the scope provided.
@@ -467,9 +455,9 @@ func (page AlertListResultPage) Values() []Alert {
 
 // AlertProperties the properties of an Alert.
 type AlertProperties struct {
-	// CostEntityID - The id of the creating cost-entity (budget, invoice, etc.).
+	// CostEntityID - The id of the creating cost-entity (budget, invoice, credit).
 	CostEntityID *string `json:"costEntityId,omitempty"`
-	// Definition - The definition (type) of an Alert
+	// Definition - The definition (rule) of an Alert
 	Definition *AlertDefinition `json:"definition,omitempty"`
 	// Description - Description of an alert.
 	Description *string `json:"description,omitempty"`
@@ -480,10 +468,10 @@ type AlertProperties struct {
 	// Details - Specific details of an alert - key-value dictionary.
 	Details map[string]*string `json:"details"`
 	// CreationTime - The time when the alert was created.
-	CreationTime *string `json:"creationTime,omitempty"`
-	// CloseTime - The time when the alert was closed (resolved / acknowledged).
-	CloseTime *string `json:"closeTime,omitempty"`
-	// Status - The current status of the alert. Possible values include: 'Active', 'Acknowledged', 'Overridden', 'Resolved'
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// CloseTime - The time when the alert was closed (resolved / overriden).
+	CloseTime *date.Time `json:"closeTime,omitempty"`
+	// Status - The current status of the alert. Possible values include: 'Active', 'Overridden', 'Resolved', 'Dismissed'
 	Status AlertStatus `json:"status,omitempty"`
 }
 

@@ -39,12 +39,13 @@ const (
 	Usage      AlertCategory = original.Usage
 )
 
-type AlertCostEntity = original.AlertCostEntity
+type AlertCriteria = original.AlertCriteria
 
 const (
-	Budget             AlertCostEntity = original.Budget
-	Invoice            AlertCostEntity = original.Invoice
-	MonetaryCommitment AlertCostEntity = original.MonetaryCommitment
+	CostThresholdExceeded                  AlertCriteria = original.CostThresholdExceeded
+	MonetaryCommitmentThresholdApproaching AlertCriteria = original.MonetaryCommitmentThresholdApproaching
+	MonetaryCommitmentThresholdReached     AlertCriteria = original.MonetaryCommitmentThresholdReached
+	UsageThresholdExceeded                 AlertCriteria = original.UsageThresholdExceeded
 )
 
 type AlertSource = original.AlertSource
@@ -57,25 +58,18 @@ const (
 type AlertStatus = original.AlertStatus
 
 const (
-	Acknowledged AlertStatus = original.Acknowledged
-	Active       AlertStatus = original.Active
-	Overridden   AlertStatus = original.Overridden
-	Resolved     AlertStatus = original.Resolved
+	Active     AlertStatus = original.Active
+	Dismissed  AlertStatus = original.Dismissed
+	Overridden AlertStatus = original.Overridden
+	Resolved   AlertStatus = original.Resolved
 )
 
 type AlertType = original.AlertType
 
 const (
-	BudgetExceeded                AlertType = original.BudgetExceeded
-	CostThresholdExceeded         AlertType = original.CostThresholdExceeded
-	NewInvoiceReceived            AlertType = original.NewInvoiceReceived
-	ReservationEnd                AlertType = original.ReservationEnd
-	ThresholdExceeded             AlertType = original.ThresholdExceeded
-	UnpaidInvoice                 AlertType = original.UnpaidInvoice
-	UntaggedInstances             AlertType = original.UntaggedInstances
-	UsageThresholdExceededHours   AlertType = original.UsageThresholdExceededHours
-	UsageThresholdExceededNetwork AlertType = original.UsageThresholdExceededNetwork
-	UsageThresholdExceededStorage AlertType = original.UsageThresholdExceededStorage
+	Budget  AlertType = original.Budget
+	Credit  AlertType = original.Credit
+	Invoice AlertType = original.Invoice
 )
 
 type ConnectorStatus = original.ConnectorStatus
@@ -218,8 +212,8 @@ func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) Connec
 func PossibleAlertCategoryValues() []AlertCategory {
 	return original.PossibleAlertCategoryValues()
 }
-func PossibleAlertCostEntityValues() []AlertCostEntity {
-	return original.PossibleAlertCostEntityValues()
+func PossibleAlertCriteriaValues() []AlertCriteria {
+	return original.PossibleAlertCriteriaValues()
 }
 func PossibleAlertSourceValues() []AlertSource {
 	return original.PossibleAlertSourceValues()

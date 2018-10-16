@@ -174,8 +174,8 @@ func (client AlertsClient) GetBySubscriptionResponder(resp *http.Response) (resu
 
 // List list all alerts for a subscription.
 // Parameters:
-// filter - may be used to filter alerts by properties/definition/costEntity, properties/definition/category,
-// properties/definition/alertType, properties/creationTime, properties/closeTime, properties/status,
+// filter - may be used to filter alerts by properties/definition/alertType, properties/definition/category,
+// properties/definition/alertCriteria, properties/creationTime, properties/closeTime, properties/status,
 // properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
@@ -291,8 +291,8 @@ func (client AlertsClient) ListComplete(ctx context.Context, filter string, skip
 // ListByResourceGroupName list all alerts for a resource group under a subscription.
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
-// filter - may be used to filter alerts by properties/definition/costEntity, properties/definition/category,
-// properties/definition/alertType, properties/creationTime, properties/closeTime, properties/status,
+// filter - may be used to filter alerts by properties/definition/alertType, properties/definition/category,
+// properties/definition/alertCriteria, properties/creationTime, properties/closeTime, properties/status,
 // properties/source. Supported operators are 'eq','lt', 'gt', 'le', 'ge'.
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that

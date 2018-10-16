@@ -597,13 +597,13 @@ type SyncType string
 const (
 	// FullSync ...
 	FullSync SyncType = "FullSync"
-	// PartialSync ...
-	PartialSync SyncType = "PartialSync"
+	// IncrementalSync ...
+	IncrementalSync SyncType = "IncrementalSync"
 )
 
 // PossibleSyncTypeValues returns an array of possible values for the SyncType const type.
 func PossibleSyncTypeValues() []SyncType {
-	return []SyncType{FullSync, PartialSync}
+	return []SyncType{FullSync, IncrementalSync}
 }
 
 // TagOperators enumerates the values for tag operators.
@@ -8051,7 +8051,7 @@ type SourceControlSyncJobByIDProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
 	// Exception - The exceptions that occured while running the sync job.
 	Exception *string `json:"exception,omitempty"`
@@ -8216,7 +8216,7 @@ type SourceControlSyncJobProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
 }
 

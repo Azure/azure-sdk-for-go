@@ -322,6 +322,13 @@ const (
 	PartialSync SyncType = original.PartialSync
 )
 
+type TagOperators = original.TagOperators
+
+const (
+	TagOperatorsAll TagOperators = original.TagOperatorsAll
+	TagOperatorsAny TagOperators = original.TagOperatorsAny
+)
+
 type TokenType = original.TokenType
 
 const (
@@ -366,6 +373,7 @@ type AdvancedScheduleMonthlyOccurrence = original.AdvancedScheduleMonthlyOccurre
 type AgentRegistration = original.AgentRegistration
 type AgentRegistrationKeys = original.AgentRegistrationKeys
 type AgentRegistrationRegenerateKeyParameter = original.AgentRegistrationRegenerateKeyParameter
+type AzureQueryProperties = original.AzureQueryProperties
 type Certificate = original.Certificate
 type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
@@ -573,6 +581,8 @@ type SourceControlUpdateProperties = original.SourceControlUpdateProperties
 type Statistics = original.Statistics
 type StatisticsListResult = original.StatisticsListResult
 type String = original.String
+type TagSettingsProperties = original.TagSettingsProperties
+type TargetProperties = original.TargetProperties
 type TestJob = original.TestJob
 type TestJobCreateParameters = original.TestJobCreateParameters
 type TrackedResource = original.TrackedResource
@@ -830,6 +840,9 @@ func PossibleStreamTypeValues() []StreamType {
 }
 func PossibleSyncTypeValues() []SyncType {
 	return original.PossibleSyncTypeValues()
+}
+func PossibleTagOperatorsValues() []TagOperators {
+	return original.PossibleTagOperatorsValues()
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()

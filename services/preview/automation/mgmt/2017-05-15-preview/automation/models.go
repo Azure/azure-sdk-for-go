@@ -591,6 +591,21 @@ func PossibleSyncTypeValues() []SyncType {
 	return []SyncType{FullSync, PartialSync}
 }
 
+// TagOperators enumerates the values for tag operators.
+type TagOperators string
+
+const (
+	// TagOperatorsAll ...
+	TagOperatorsAll TagOperators = "All"
+	// TagOperatorsAny ...
+	TagOperatorsAny TagOperators = "Any"
+)
+
+// PossibleTagOperatorsValues returns an array of possible values for the TagOperators const type.
+func PossibleTagOperatorsValues() []TagOperators {
+	return []TagOperators{TagOperatorsAll, TagOperatorsAny}
+}
+
 // TokenType enumerates the values for token type.
 type TokenType string
 
@@ -1350,6 +1365,16 @@ func (arrkp AgentRegistrationRegenerateKeyParameter) MarshalJSON() ([]byte, erro
 		objectMap["tags"] = arrkp.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// AzureQueryProperties azure query for the update configuration.
+type AzureQueryProperties struct {
+	// Scope - List of Subscription or Resource Group ARM Ids.
+	Scope *[]string `json:"scope,omitempty"`
+	// Location - List of locations to scope the query to.
+	Location *[]string `json:"location,omitempty"`
+	// TagSettings - Tag settings for the VM.
+	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
 }
 
 // Certificate definition of the certificate.
@@ -7988,6 +8013,32 @@ type String struct {
 	Value             *string `json:"value,omitempty"`
 }
 
+// TagSettingsProperties tag filter information for the VM.
+type TagSettingsProperties struct {
+	// Tags - Dictionary of tags with its list of values.
+	Tags map[string][]string `json:"tags"`
+	// FilterOperator - Filter VMs by Any or All specified tags. Possible values include: 'TagOperatorsAll', 'TagOperatorsAny'
+	FilterOperator TagOperators `json:"filterOperator,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagSettingsProperties.
+func (tsp TagSettingsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tsp.Tags != nil {
+		objectMap["tags"] = tsp.Tags
+	}
+	if tsp.FilterOperator != "" {
+		objectMap["filterOperator"] = tsp.FilterOperator
+	}
+	return json.Marshal(objectMap)
+}
+
+// TargetProperties group specific to the update configuration.
+type TargetProperties struct {
+	// AzureQueries - List of Azure queries in the software update configuration.
+	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
+}
+
 // TestJob definition of the test job.
 type TestJob struct {
 	autorest.Response `json:"-"`
@@ -8138,6 +8189,8 @@ type UpdateConfiguration struct {
 	AzureVirtualMachines *[]string `json:"azureVirtualMachines,omitempty"`
 	// NonAzureComputerNames - List of names of non-azure machines targeted by the software update configuration.
 	NonAzureComputerNames *[]string `json:"nonAzureComputerNames,omitempty"`
+	// Targets - Group targets for the software update configuration.
+	Targets *TargetProperties `json:"targets,omitempty"`
 }
 
 // UpdateConfigurationMachineRunProperties software update configuration machine run properties.

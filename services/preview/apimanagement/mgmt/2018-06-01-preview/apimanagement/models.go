@@ -3128,6 +3128,8 @@ type DiagnosticContractProperties struct {
 	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
 	// Backend - Diagnostic settings for incoming/outcoming HTTP messages to the Backend
 	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
+	// EnableHTTPCorrelationHeaders - Whether to include Correlation Headers into requests to downstream services and to responses from Api Management Gateway. Default is true.
+	EnableHTTPCorrelationHeaders *bool `json:"enableHttpCorrelationHeaders,omitempty"`
 }
 
 // EmailTemplateCollection paged email template list representation.

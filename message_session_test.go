@@ -13,6 +13,7 @@ import (
 func (suite *serviceBusSuite) TestMessageSession() {
 	tests := map[string]func(context.Context, *testing.T, *MessageSession){
 		"TestStateRoundTrip": testStateRoundTrip,
+		"TestEmptyState":     testEmptyLock,
 		"TestRenewLock":      testRenewLock,
 	}
 
@@ -85,5 +86,28 @@ func testStateRoundTrip(ctx context.Context, t *testing.T, ms *MessageSession) {
 }
 
 func testRenewLock(ctx context.Context, t *testing.T, ms *MessageSession) {
+	original := ms.LockedUntil()
 	require.NoError(t, ms.Renew(ctx))
+	modified := ms.LockedUntil()
+
+	if testing.Verbose() {
+		t.Logf("\n\tnow:              \t%v\n\tupdated expiration:\t%v", time.Now().UTC(), modified)
+	}
+
+	if modified.Before(original) {
+		t.Logf("\n\toriginal: %v\n\tmodified: %v\n\texpected a value greater than the original", original, modified)
+		t.Fail()
+	} else if modified == original {
+		t.Logf("\n\toriginal: %v\n\tmodified: %v\n\tvalue didn't change", original, modified)
+		t.Fail()
+	} else if modified.After(time.Now().Add(3 * 24 * time.Hour)) {
+		t.Logf("\n\toriginal: %v\n\tmodified: %v\n\tvalue is too far in the future.", original, modified)
+		t.Fail()
+	}
+}
+
+func testEmptyLock(ctx context.Context, t *testing.T, ms *MessageSession) {
+	currentState, err := ms.State(ctx)
+	require.NoError(t, err)
+	assert.Nil(t, currentState)
 }

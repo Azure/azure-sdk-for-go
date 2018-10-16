@@ -142,7 +142,7 @@ func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 
 	if val, ok := rsp.Message.Value.(map[string]interface{}); ok {
 		if rawState, ok := val["session-state"]; ok {
-			if state, ok := rawState.([]byte); ok {
+			if state, ok := rawState.([]byte); ok || rawState == nil {
 				return state, nil
 			}
 			return []byte{}, errors.New("server error: response value \"session-state\" is not a byte array")

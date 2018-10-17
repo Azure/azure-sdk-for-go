@@ -87,12 +87,6 @@ const (
 	Succeeded ProvisioningStateDR = original.Succeeded
 )
 
-type ReplicationType = original.ReplicationType
-
-const (
-	MetadataReplication ReplicationType = original.MetadataReplication
-)
-
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
@@ -268,9 +262,6 @@ func PossibleKeyTypeValues() []KeyType {
 }
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()
-}
-func PossibleReplicationTypeValues() []ReplicationType {
-	return original.PossibleReplicationTypeValues()
 }
 func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	return original.PossibleRoleDisasterRecoveryValues()

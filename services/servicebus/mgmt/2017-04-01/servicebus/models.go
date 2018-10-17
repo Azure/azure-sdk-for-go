@@ -149,19 +149,6 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return []ProvisioningStateDR{Accepted, Failed, Succeeded}
 }
 
-// ReplicationType enumerates the values for replication type.
-type ReplicationType string
-
-const (
-	// MetadataReplication ...
-	MetadataReplication ReplicationType = "MetadataReplication"
-)
-
-// PossibleReplicationTypeValues returns an array of possible values for the ReplicationType const type.
-func PossibleReplicationTypeValues() []ReplicationType {
-	return []ReplicationType{MetadataReplication}
-}
-
 // RoleDisasterRecovery enumerates the values for role disaster recovery.
 type RoleDisasterRecovery string
 
@@ -463,8 +450,6 @@ type ArmDisasterRecoveryProperties struct {
 	AlternateName *string `json:"alternateName,omitempty"`
 	// Role - role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'. Possible values include: 'Primary', 'PrimaryNotReplicating', 'Secondary'
 	Role RoleDisasterRecovery `json:"role,omitempty"`
-	// Type - Replication Type on the Alias(Disaster Recovery configurations). Possible values include: 'MetadataReplication'
-	Type ReplicationType `json:"type,omitempty"`
 }
 
 // AuthorizationRuleProperties authorizationRule properties.

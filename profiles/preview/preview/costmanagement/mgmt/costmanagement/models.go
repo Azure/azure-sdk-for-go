@@ -41,10 +41,9 @@ const (
 type AlertCriteria = original.AlertCriteria
 
 const (
-	CostThresholdExceeded                  AlertCriteria = original.CostThresholdExceeded
-	MonetaryCommitmentThresholdApproaching AlertCriteria = original.MonetaryCommitmentThresholdApproaching
-	MonetaryCommitmentThresholdReached     AlertCriteria = original.MonetaryCommitmentThresholdReached
-	UsageThresholdExceeded                 AlertCriteria = original.UsageThresholdExceeded
+	CostThresholdExceeded  AlertCriteria = original.CostThresholdExceeded
+	CreditThresholdReached AlertCriteria = original.CreditThresholdReached
+	UsageThresholdExceeded AlertCriteria = original.UsageThresholdExceeded
 )
 
 type AlertSource = original.AlertSource

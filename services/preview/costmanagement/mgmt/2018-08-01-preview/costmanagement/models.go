@@ -48,17 +48,15 @@ type AlertCriteria string
 const (
 	// CostThresholdExceeded ...
 	CostThresholdExceeded AlertCriteria = "CostThresholdExceeded"
-	// MonetaryCommitmentThresholdApproaching ...
-	MonetaryCommitmentThresholdApproaching AlertCriteria = "MonetaryCommitmentThresholdApproaching"
-	// MonetaryCommitmentThresholdReached ...
-	MonetaryCommitmentThresholdReached AlertCriteria = "MonetaryCommitmentThresholdReached"
+	// CreditThresholdReached ...
+	CreditThresholdReached AlertCriteria = "CreditThresholdReached"
 	// UsageThresholdExceeded ...
 	UsageThresholdExceeded AlertCriteria = "UsageThresholdExceeded"
 )
 
 // PossibleAlertCriteriaValues returns an array of possible values for the AlertCriteria const type.
 func PossibleAlertCriteriaValues() []AlertCriteria {
-	return []AlertCriteria{CostThresholdExceeded, MonetaryCommitmentThresholdApproaching, MonetaryCommitmentThresholdReached, UsageThresholdExceeded}
+	return []AlertCriteria{CostThresholdExceeded, CreditThresholdReached, UsageThresholdExceeded}
 }
 
 // AlertSource enumerates the values for alert source.
@@ -345,7 +343,7 @@ type AlertDefinition struct {
 	Category AlertCategory `json:"category,omitempty"`
 	// Type - The type of cost-entity the alert is defined on. Possible values include: 'Budget', 'Invoice', 'Credit'
 	Type AlertType `json:"type,omitempty"`
-	// Criteria - Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'MonetaryCommitmentThresholdApproaching', 'MonetaryCommitmentThresholdReached'
+	// Criteria - Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'CreditThresholdReached'
 	Criteria AlertCriteria `json:"criteria,omitempty"`
 }
 

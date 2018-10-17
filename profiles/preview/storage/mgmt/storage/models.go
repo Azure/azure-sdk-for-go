@@ -179,6 +179,14 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
+type ReplicationStatus = original.ReplicationStatus
+
+const (
+	ReplicationStatusBootstrap   ReplicationStatus = original.ReplicationStatusBootstrap
+	ReplicationStatusLive        ReplicationStatus = original.ReplicationStatusLive
+	ReplicationStatusUnavailable ReplicationStatus = original.ReplicationStatusUnavailable
+)
+
 type Services = original.Services
 
 const (
@@ -258,6 +266,7 @@ type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParamet
 type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
 type AccountsCreateFuture = original.AccountsCreateFuture
+type AccountsFailoverFuture = original.AccountsFailoverFuture
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AzureEntityResource = original.AzureEntityResource
 type BlobContainer = original.BlobContainer
@@ -269,6 +278,7 @@ type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
+type GetLastSyncTimeResult = original.GetLastSyncTimeResult
 type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
@@ -388,6 +398,9 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
+}
+func PossibleReplicationStatusValues() []ReplicationStatus {
+	return original.PossibleReplicationStatusValues()
 }
 func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()

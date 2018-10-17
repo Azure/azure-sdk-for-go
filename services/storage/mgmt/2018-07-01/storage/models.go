@@ -342,6 +342,23 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
+// ReplicationStatus enumerates the values for replication status.
+type ReplicationStatus string
+
+const (
+	// ReplicationStatusBootstrap ...
+	ReplicationStatusBootstrap ReplicationStatus = "Bootstrap"
+	// ReplicationStatusLive ...
+	ReplicationStatusLive ReplicationStatus = "Live"
+	// ReplicationStatusUnavailable ...
+	ReplicationStatusUnavailable ReplicationStatus = "Unavailable"
+)
+
+// PossibleReplicationStatusValues returns an array of possible values for the ReplicationStatus const type.
+func PossibleReplicationStatusValues() []ReplicationStatus {
+	return []ReplicationStatus{ReplicationStatusBootstrap, ReplicationStatusLive, ReplicationStatusUnavailable}
+}
+
 // Services enumerates the values for services.
 type Services string
 
@@ -896,6 +913,8 @@ type AccountProperties struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
+	// FailoverInProgress - If the failover is in progress, the value will be true, otherwise, it will be null.
+	FailoverInProgress *bool `json:"failoverInProgress,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -983,6 +1002,28 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type AccountsFailoverFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1320,6 +1361,15 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+}
+
+// GetLastSyncTimeResult the response from the get last synctime operation.
+type GetLastSyncTimeResult struct {
+	autorest.Response `json:"-"`
+	// Status - The status of the secondary location of the Storage Account. Live: Indicates that the secondary location is active and operational; Bootstrap: Indicates initial synchronization from the primary location to the secondary location is in progress, this typically occurs when replication is first enabled; Unavailable: Indicates that the secondary location is temporarily unavailable. Possible values include: 'ReplicationStatusLive', 'ReplicationStatusBootstrap', 'ReplicationStatusUnavailable'
+	Status ReplicationStatus `json:"status,omitempty"`
+	// LastSyncTime - All primary writes preceding this value are guaranteed to be replicated to secondary. Primary writes after this point in time may or may not be replicated. It is the minimum last sync time of the account’s Blob/Table/Queue/File endpoints. The value may be account’s creation time if LastSyncTime is not available. This can happen if the replication status is bootstrap or unavailable.
+	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
 }
 
 // Identity identity for the resource.

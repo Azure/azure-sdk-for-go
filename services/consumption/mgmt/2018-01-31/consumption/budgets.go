@@ -25,8 +25,8 @@ import (
 	"net/http"
 )
 
-// BudgetsClient is the consumption management client provides access to consumption resources for Azure Enterprise
-// Subscriptions.
+// BudgetsClient is the update - Consumption management client provides access to consumption resources for Azure
+// Enterprise Subscriptions.
 type BudgetsClient struct {
 	BaseClient
 }

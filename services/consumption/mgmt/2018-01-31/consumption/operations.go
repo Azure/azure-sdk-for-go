@@ -24,8 +24,8 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the consumption management client provides access to consumption resources for Azure Enterprise
-// Subscriptions.
+// OperationsClient is the update - Consumption management client provides access to consumption resources for Azure
+// Enterprise Subscriptions.
 type OperationsClient struct {
 	BaseClient
 }

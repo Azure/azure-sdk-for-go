@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// MarketplacesClient is the consumption management client provides access to consumption resources for Azure
+// MarketplacesClient is the update - Consumption management client provides access to consumption resources for Azure
 // Enterprise Subscriptions.
 type MarketplacesClient struct {
 	BaseClient

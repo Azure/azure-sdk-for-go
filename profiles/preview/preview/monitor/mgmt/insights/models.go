@@ -303,6 +303,7 @@ type AlertRule = original.AlertRule
 type AlertRuleResource = original.AlertRuleResource
 type AlertRuleResourceCollection = original.AlertRuleResourceCollection
 type AlertRuleResourcePatch = original.AlertRuleResourcePatch
+type ArmRoleReceiver = original.ArmRoleReceiver
 type AutomationRunbookReceiver = original.AutomationRunbookReceiver
 type AutoscaleNotification = original.AutoscaleNotification
 type AutoscaleProfile = original.AutoscaleProfile

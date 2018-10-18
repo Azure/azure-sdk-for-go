@@ -79,6 +79,16 @@ const (
 	SecondaryKey KeyType = original.SecondaryKey
 )
 
+type NameSpaceType = original.NameSpaceType
+
+const (
+	EventHub        NameSpaceType = original.EventHub
+	Messaging       NameSpaceType = original.Messaging
+	Mixed           NameSpaceType = original.Mixed
+	NotificationHub NameSpaceType = original.NotificationHub
+	Relay           NameSpaceType = original.Relay
+)
+
 type ProvisioningStateDR = original.ProvisioningStateDR
 
 const (
@@ -183,6 +193,7 @@ type SBNamespace = original.SBNamespace
 type SBNamespaceListResult = original.SBNamespaceListResult
 type SBNamespaceListResultIterator = original.SBNamespaceListResultIterator
 type SBNamespaceListResultPage = original.SBNamespaceListResultPage
+type SBNamespaceMigrate = original.SBNamespaceMigrate
 type SBNamespaceProperties = original.SBNamespaceProperties
 type SBNamespaceUpdateParameters = original.SBNamespaceUpdateParameters
 type SBQueue = original.SBQueue
@@ -259,6 +270,9 @@ func PossibleIPActionValues() []IPAction {
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
+}
+func PossibleNameSpaceTypeValues() []NameSpaceType {
+	return original.PossibleNameSpaceTypeValues()
 }
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()

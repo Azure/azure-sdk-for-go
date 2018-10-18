@@ -178,16 +178,15 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 
 // ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
 func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOneSession")
 	defer span.Finish()
 
 	// Establish a receiver that reads a particular session.
-	options := make([]receiverOption, 0, 1)
-	if sessionID != nil {
-		options = append(options, receiverWithSession(*sessionID))
-	}
 	q.requiredSessionID = sessionID
-	if err := q.ensureReceiver(ctx, options...); err != nil {
+	if err := q.ensureReceiver(ctx, receiverWithSession(sessionID)); err != nil {
 		return err
 	}
 
@@ -203,15 +202,13 @@ func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handle
 
 	defer handler.End()
 	handle := q.receiver.Listen(ctx, handler)
-	<-handle.Done()
-	err = handle.Err()
-	if err != nil {
-		return err
+
+	select {
+	case <-handle.Done():
+		return handle.Err()
+	case <-ms.done:
+		return nil
 	}
-
-	handler.End()
-
-	return nil
 }
 
 // ReceiveSessions is the session-based counterpart of `Receive`. It subscribes to a Queue and waits for new sessions to

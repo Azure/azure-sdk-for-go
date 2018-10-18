@@ -86,7 +86,7 @@ func ExampleQueue_sessionsRoundTrip() {
 	//                                                                                                                //
 	// The sessions are deliberately interleaved to demonstrate consumption semantics.                                //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	const numSessions, nameComponents = 5, 3
+	const numSessions = 5
 	adjectives := []string{"Doltish", "Foolish", "Juvenile"}
 	nouns := []string{"Automaton", "Luddite", "Monkey", "Neanderthal"}
 
@@ -143,44 +143,51 @@ func ExampleQueue_sessionsRoundTrip() {
 	//                                                                                                                //
 	// The order the sessions are received in is not guaranteed, so the expected output must be "Unordered output".   //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	inner, innerCancel := context.WithCancel(ctx)
-
-	builder := &strings.Builder{}
-	messagesReceived := 0
-
-	handler := servicebus.NewSessionHandler(
-		// The action to take when an individual message in the locked session is received.
-		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
-			builder.Write(msg.Data)
-
-			// The following clause is needed to quit receiving after 5 messages are received.
-			messagesReceived++
-			if messagesReceived >= 3 {
-				innerCancel()
-			}
-
-			return msg.Complete()
-		}),
-		// The action to take when a new session lock is acquired.
-		func(_ *servicebus.MessageSession) error {
-			builder.Reset()
-			return nil
-		},
-		// The action to take when a session lock is ended.
-		func() {
-			fmt.Println(builder.String())
-		})
-
-	err = client.ReceiveSessions(inner, handler)
-	if err != context.Canceled {
-		fmt.Println("FATAL: ", err)
-		return
+	handler := &SessionPrinter{}
+	for i := 0; i < numSessions; i++ {
+		if err := client.ReceiveOneSession(ctx, nil, handler); err != nil {
+			fmt.Println("FATAL: ", err)
+			return
+		}
 	}
 
 	// Unordered output:
-	// FoolishMonkey10
-	// JuvenileNeanderthal50
-	// FoolishMonkey37
-	// JuvenileNeanderthal05
-	// JuvenileAutomaton68
+	// FoolishMonkey63
+	// FoolishLuddite05
+	// JuvenileMonkey80
+	// JuvenileLuddite84
+	// FoolishLuddite68
+}
+
+type SessionPrinter struct {
+	builder          *strings.Builder
+	messageSession   *servicebus.MessageSession
+	messagesReceived uint
+}
+
+func (sp *SessionPrinter) Start(ms *servicebus.MessageSession) error {
+	if sp.builder == nil {
+		sp.builder = &strings.Builder{}
+	} else {
+		sp.builder.Reset()
+	}
+	sp.messagesReceived = 0
+	sp.messageSession = ms
+	return nil
+}
+
+func (sp *SessionPrinter) Handle(_ context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+	sp.builder.Write(msg.Data)
+
+	sp.messagesReceived++
+
+	if sp.messagesReceived >= 3 {
+		defer sp.messageSession.Close()
+	}
+
+	return msg.Complete()
+}
+
+func (sp *SessionPrinter) End() {
+	fmt.Println(sp.builder.String())
 }

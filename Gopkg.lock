@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:31d238ff84ac0173735a615900fcbe106084dfcf33307f357b276819a55487fd"
+  digest = "1:b39e9db10d2a581ec45b29b2f54ebd9e4443e18ba079be3efcd69962d15017b1"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -17,8 +17,8 @@
     "uuid",
   ]
   pruneopts = "UT"
-  revision = "1b596336a6a312412941a90cfa65716072de9cb7"
-  version = "v1.1.0"
+  revision = "f1753e2acc01a1f3fb4938b7f31ac2d3d2181c80"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:e0cd7a155f27aa2eb4dfaeb68087b5e8b7cd87aa6bbd4096d7954ef5ab19d10c"
@@ -185,15 +185,15 @@
   revision = "f9ce57c11b242f0f1599cf25c89d8cb02c45295a"
 
 [[projects]]
-  digest = "1:efd7f4a2c3339485190142d3b83052207aaadf6e4e724fdbac79a5de0a8120c5"
+  digest = "1:d25380126f5de7992f16c4cc53a01890f993611771f06a255ab2aa0eef36f4b0"
   name = "pack.ag/amqp"
   packages = [
     ".",
     "internal/testconn",
   ]
   pruneopts = "UT"
-  revision = "f04efab52fd05cbd1b25280ae54423fc7b12e267"
-  version = "v0.7.3"
+  revision = "8df994bd739903aa707ec927ce6d1dc4badbdc26"
+  version = "v0.8.0"
 
 [solve-meta]
   analyzer-name = "dep"

@@ -18,6 +18,8 @@ type MessageSession struct {
 	*receiver
 	sessionID      *string
 	lockExpiration time.Time
+	done           chan struct{}
+	cancel         sync.Once
 }
 
 func newMessageSession(r *receiver, e *entity, sessionID *string) (retval *MessageSession, _ error) {
@@ -26,12 +28,23 @@ func newMessageSession(r *receiver, e *entity, sessionID *string) (retval *Messa
 		entity:         e,
 		sessionID:      sessionID,
 		lockExpiration: time.Now(),
+		done:           make(chan struct{}),
 	}
 
 	return
 }
 
-// LockedUntil fetches the moment in time when the Session lock held by this receiver
+// Close communicates that Handler receiving messages should no longer continue to be executed. This can happen when:
+// - A Handler recognizes that no further messages will come to this session.
+// - A Handler has given up on receiving more messages before a session. Future messages should be delegated to the next
+//   available session client.
+func (ms *MessageSession) Close() {
+	ms.cancel.Do(func() {
+		close(ms.done)
+	})
+}
+
+// LockedUntil fetches the moment in time when the Session lock held by this receiver will expire.
 func (ms *MessageSession) LockedUntil() time.Time {
 	ms.mu.RLock()
 	defer ms.mu.RUnlock()
@@ -39,7 +52,7 @@ func (ms *MessageSession) LockedUntil() time.Time {
 	return ms.lockExpiration
 }
 
-// Renew requests that the Service Bus Server renews this client's lock on an existing Session.
+// RenewLock requests that the Service Bus Server renews this client's lock on an existing Session.
 func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()

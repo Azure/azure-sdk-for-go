@@ -36,17 +36,18 @@ import (
 // receiver provides session and link handling for a receiving entity path
 type (
 	receiver struct {
-		namespace         *Namespace
-		connection        *amqp.Client
-		session           *session
-		receiver          *amqp.Receiver
-		entityPath        string
-		done              func()
-		Name              string
-		requiredSessionID *string
-		lastError         error
-		mode              ReceiveMode
-		prefetch          uint32
+		namespace   *Namespace
+		connection  *amqp.Client
+		session     *session
+		receiver    *amqp.Receiver
+		entityPath  string
+		done        func()
+		Name        string
+		useSessions bool
+		sessionID   *string
+		lastError   error
+		mode        ReceiveMode
+		prefetch    uint32
 	}
 
 	// receiverOption provides a structure for configuring receivers
@@ -288,9 +289,9 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 		amqp.LinkCredit(r.prefetch),
 	}
 
-	if r.requiredSessionID != nil {
-		opts = append(opts, amqp.LinkSessionFilter(*r.requiredSessionID))
-		r.session.SessionID = *r.requiredSessionID
+	if r.useSessions {
+		opts = append(opts, amqp.LinkSessionFilter(r.sessionID))
+		//r.session.SessionID = *r.sessionID
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
@@ -303,9 +304,10 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 }
 
 // receiverWithSession configures a receiver to use a session
-func receiverWithSession(sessionID string) receiverOption {
+func receiverWithSession(sessionID *string) receiverOption {
 	return func(r *receiver) error {
-		r.requiredSessionID = &sessionID
+		r.sessionID = sessionID
+		r.useSessions = true
 		return nil
 	}
 }

@@ -2993,9 +2993,13 @@ func (jnap *JitNetworkAccessPolicy) UnmarshalJSON(body []byte) error {
 // JitNetworkAccessPolicyInitiatePort ...
 type JitNetworkAccessPolicyInitiatePort struct {
 	Number *int32 `json:"number,omitempty"`
-	// AllowedSourceAddressPrefix - Source of the allowed traffic. If omitted, the request will be for the source IP address of the initiate request.
+	// AllowedSourceAddressPrefix - Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16". If both are omitted, the request will be for the source IP address of the initiate request.
 	AllowedSourceAddressPrefix *string `json:"allowedSourceAddressPrefix,omitempty"`
-	// EndTimeUtc - The time to close the request in UTC
+	// AllowedSourceAddressPrefixes - Mutually exclusive with the "allowedSourceAddressPrefix" parameter. If both are omitted, the request will be for the source IP address of the initiate request.
+	AllowedSourceAddressPrefixes *[]string `json:"allowedSourceAddressPrefixes,omitempty"`
+	// Duration - The request's duration. In ISO 8601 duration format. Minimum 5 minutes, maximum 1 day
+	Duration *string `json:"duration,omitempty"`
+	// EndTimeUtc - Mutually exclusive with "duration". The time to close the request in UTC
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
 }
 

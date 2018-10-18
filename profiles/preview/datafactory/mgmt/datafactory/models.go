@@ -140,11 +140,18 @@ const (
 	FtpAuthenticationTypeBasic     FtpAuthenticationType = original.FtpAuthenticationTypeBasic
 )
 
+type GoogleAdWordsAuthenticationType = original.GoogleAdWordsAuthenticationType
+
+const (
+	ServiceAuthentication GoogleAdWordsAuthenticationType = original.ServiceAuthentication
+	UserAuthentication    GoogleAdWordsAuthenticationType = original.UserAuthentication
+)
+
 type GoogleBigQueryAuthenticationType = original.GoogleBigQueryAuthenticationType
 
 const (
-	ServiceAuthentication GoogleBigQueryAuthenticationType = original.ServiceAuthentication
-	UserAuthentication    GoogleBigQueryAuthenticationType = original.UserAuthentication
+	GoogleBigQueryAuthenticationTypeServiceAuthentication GoogleBigQueryAuthenticationType = original.GoogleBigQueryAuthenticationTypeServiceAuthentication
+	GoogleBigQueryAuthenticationTypeUserAuthentication    GoogleBigQueryAuthenticationType = original.GoogleBigQueryAuthenticationTypeUserAuthentication
 )
 
 type HBaseAuthenticationType = original.HBaseAuthenticationType
@@ -303,11 +310,21 @@ const (
 	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
 )
 
+type ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialType
+
+const (
+	ServicePrincipalCert ODataAadServicePrincipalCredentialType = original.ServicePrincipalCert
+	ServicePrincipalKey  ODataAadServicePrincipalCredentialType = original.ServicePrincipalKey
+)
+
 type ODataAuthenticationType = original.ODataAuthenticationType
 
 const (
-	ODataAuthenticationTypeAnonymous ODataAuthenticationType = original.ODataAuthenticationTypeAnonymous
-	ODataAuthenticationTypeBasic     ODataAuthenticationType = original.ODataAuthenticationTypeBasic
+	ODataAuthenticationTypeAadServicePrincipal    ODataAuthenticationType = original.ODataAuthenticationTypeAadServicePrincipal
+	ODataAuthenticationTypeAnonymous              ODataAuthenticationType = original.ODataAuthenticationTypeAnonymous
+	ODataAuthenticationTypeBasic                  ODataAuthenticationType = original.ODataAuthenticationTypeBasic
+	ODataAuthenticationTypeManagedServiceIdentity ODataAuthenticationType = original.ODataAuthenticationTypeManagedServiceIdentity
+	ODataAuthenticationTypeWindows                ODataAuthenticationType = original.ODataAuthenticationTypeWindows
 )
 
 type ParameterType = original.ParameterType
@@ -354,6 +371,15 @@ const (
 	NotSpecified RecurrenceFrequency = original.NotSpecified
 	Week         RecurrenceFrequency = original.Week
 	Year         RecurrenceFrequency = original.Year
+)
+
+type RestServiceAuthenticationType = original.RestServiceAuthenticationType
+
+const (
+	RestServiceAuthenticationTypeAadServicePrincial     RestServiceAuthenticationType = original.RestServiceAuthenticationTypeAadServicePrincial
+	RestServiceAuthenticationTypeAnonymous              RestServiceAuthenticationType = original.RestServiceAuthenticationTypeAnonymous
+	RestServiceAuthenticationTypeBasic                  RestServiceAuthenticationType = original.RestServiceAuthenticationTypeBasic
+	RestServiceAuthenticationTypeManagedServiceIdentity RestServiceAuthenticationType = original.RestServiceAuthenticationTypeManagedServiceIdentity
 )
 
 type RunQueryFilterOperand = original.RunQueryFilterOperand
@@ -613,9 +639,11 @@ const (
 	TypeCouchbaseSource                TypeBasicCopySource = original.TypeCouchbaseSource
 	TypeDocumentDbCollectionSource     TypeBasicCopySource = original.TypeDocumentDbCollectionSource
 	TypeDrillSource                    TypeBasicCopySource = original.TypeDrillSource
+	TypeDynamicsAXSource               TypeBasicCopySource = original.TypeDynamicsAXSource
 	TypeDynamicsSource                 TypeBasicCopySource = original.TypeDynamicsSource
 	TypeEloquaSource                   TypeBasicCopySource = original.TypeEloquaSource
 	TypeFileSystemSource               TypeBasicCopySource = original.TypeFileSystemSource
+	TypeGoogleAdWordsSource            TypeBasicCopySource = original.TypeGoogleAdWordsSource
 	TypeGoogleBigQuerySource           TypeBasicCopySource = original.TypeGoogleBigQuerySource
 	TypeGreenplumSource                TypeBasicCopySource = original.TypeGreenplumSource
 	TypeHBaseSource                    TypeBasicCopySource = original.TypeHBaseSource
@@ -630,6 +658,7 @@ const (
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
 	TypeMongoDbSource                  TypeBasicCopySource = original.TypeMongoDbSource
 	TypeNetezzaSource                  TypeBasicCopySource = original.TypeNetezzaSource
+	TypeOracleServiceCloudSource       TypeBasicCopySource = original.TypeOracleServiceCloudSource
 	TypeOracleSource                   TypeBasicCopySource = original.TypeOracleSource
 	TypePaypalSource                   TypeBasicCopySource = original.TypePaypalSource
 	TypePhoenixSource                  TypeBasicCopySource = original.TypePhoenixSource
@@ -637,6 +666,7 @@ const (
 	TypeQuickBooksSource               TypeBasicCopySource = original.TypeQuickBooksSource
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
 	TypeResponsysSource                TypeBasicCopySource = original.TypeResponsysSource
+	TypeRestServiceSource              TypeBasicCopySource = original.TypeRestServiceSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
@@ -680,9 +710,11 @@ const (
 	TypeDataset                        TypeBasicDataset = original.TypeDataset
 	TypeDocumentDbCollection           TypeBasicDataset = original.TypeDocumentDbCollection
 	TypeDrillTable                     TypeBasicDataset = original.TypeDrillTable
+	TypeDynamicsAXResource             TypeBasicDataset = original.TypeDynamicsAXResource
 	TypeDynamicsEntity                 TypeBasicDataset = original.TypeDynamicsEntity
 	TypeEloquaObject                   TypeBasicDataset = original.TypeEloquaObject
 	TypeFileShare                      TypeBasicDataset = original.TypeFileShare
+	TypeGoogleAdWordsObject            TypeBasicDataset = original.TypeGoogleAdWordsObject
 	TypeGoogleBigQueryObject           TypeBasicDataset = original.TypeGoogleBigQueryObject
 	TypeGreenplumTable                 TypeBasicDataset = original.TypeGreenplumTable
 	TypeHBaseObject                    TypeBasicDataset = original.TypeHBaseObject
@@ -697,6 +729,7 @@ const (
 	TypeMongoDbCollection              TypeBasicDataset = original.TypeMongoDbCollection
 	TypeNetezzaTable                   TypeBasicDataset = original.TypeNetezzaTable
 	TypeODataResource                  TypeBasicDataset = original.TypeODataResource
+	TypeOracleServiceCloudObject       TypeBasicDataset = original.TypeOracleServiceCloudObject
 	TypeOracleTable                    TypeBasicDataset = original.TypeOracleTable
 	TypePaypalObject                   TypeBasicDataset = original.TypePaypalObject
 	TypePhoenixObject                  TypeBasicDataset = original.TypePhoenixObject
@@ -704,6 +737,7 @@ const (
 	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
 	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
 	TypeResponsysObject                TypeBasicDataset = original.TypeResponsysObject
+	TypeRestResource                   TypeBasicDataset = original.TypeRestResource
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
@@ -801,9 +835,11 @@ const (
 	TypeDb2                      TypeBasicLinkedService = original.TypeDb2
 	TypeDrill                    TypeBasicLinkedService = original.TypeDrill
 	TypeDynamics                 TypeBasicLinkedService = original.TypeDynamics
+	TypeDynamicsAX               TypeBasicLinkedService = original.TypeDynamicsAX
 	TypeEloqua                   TypeBasicLinkedService = original.TypeEloqua
 	TypeFileServer               TypeBasicLinkedService = original.TypeFileServer
 	TypeFtpServer                TypeBasicLinkedService = original.TypeFtpServer
+	TypeGoogleAdWords            TypeBasicLinkedService = original.TypeGoogleAdWords
 	TypeGoogleBigQuery           TypeBasicLinkedService = original.TypeGoogleBigQuery
 	TypeGreenplum                TypeBasicLinkedService = original.TypeGreenplum
 	TypeHBase                    TypeBasicLinkedService = original.TypeHBase
@@ -825,12 +861,14 @@ const (
 	TypeOData                    TypeBasicLinkedService = original.TypeOData
 	TypeOdbc                     TypeBasicLinkedService = original.TypeOdbc
 	TypeOracle                   TypeBasicLinkedService = original.TypeOracle
+	TypeOracleServiceCloud       TypeBasicLinkedService = original.TypeOracleServiceCloud
 	TypePaypal                   TypeBasicLinkedService = original.TypePaypal
 	TypePhoenix                  TypeBasicLinkedService = original.TypePhoenix
 	TypePostgreSQL               TypeBasicLinkedService = original.TypePostgreSQL
 	TypePresto                   TypeBasicLinkedService = original.TypePresto
 	TypeQuickBooks               TypeBasicLinkedService = original.TypeQuickBooks
 	TypeResponsys                TypeBasicLinkedService = original.TypeResponsys
+	TypeRestService              TypeBasicLinkedService = original.TypeRestService
 	TypeSalesforce               TypeBasicLinkedService = original.TypeSalesforce
 	TypeSalesforceMarketingCloud TypeBasicLinkedService = original.TypeSalesforceMarketingCloud
 	TypeSapBW                    TypeBasicLinkedService = original.TypeSapBW
@@ -1033,6 +1071,11 @@ type DrillLinkedService = original.DrillLinkedService
 type DrillLinkedServiceTypeProperties = original.DrillLinkedServiceTypeProperties
 type DrillSource = original.DrillSource
 type DrillTableDataset = original.DrillTableDataset
+type DynamicsAXLinkedService = original.DynamicsAXLinkedService
+type DynamicsAXLinkedServiceTypeProperties = original.DynamicsAXLinkedServiceTypeProperties
+type DynamicsAXResourceDataset = original.DynamicsAXResourceDataset
+type DynamicsAXResourceDatasetTypeProperties = original.DynamicsAXResourceDatasetTypeProperties
+type DynamicsAXSource = original.DynamicsAXSource
 type DynamicsEntityDataset = original.DynamicsEntityDataset
 type DynamicsEntityDatasetTypeProperties = original.DynamicsEntityDatasetTypeProperties
 type DynamicsLinkedService = original.DynamicsLinkedService
@@ -1078,6 +1121,10 @@ type GetMetadataActivity = original.GetMetadataActivity
 type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypeProperties
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
 type GitHubAccessTokenResponse = original.GitHubAccessTokenResponse
+type GoogleAdWordsLinkedService = original.GoogleAdWordsLinkedService
+type GoogleAdWordsLinkedServiceTypeProperties = original.GoogleAdWordsLinkedServiceTypeProperties
+type GoogleAdWordsObjectDataset = original.GoogleAdWordsObjectDataset
+type GoogleAdWordsSource = original.GoogleAdWordsSource
 type GoogleBigQueryLinkedService = original.GoogleBigQueryLinkedService
 type GoogleBigQueryLinkedServiceTypeProperties = original.GoogleBigQueryLinkedServiceTypeProperties
 type GoogleBigQueryObjectDataset = original.GoogleBigQueryObjectDataset
@@ -1222,6 +1269,10 @@ type OperationProperties = original.OperationProperties
 type OperationServiceSpecification = original.OperationServiceSpecification
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
+type OracleServiceCloudLinkedService = original.OracleServiceCloudLinkedService
+type OracleServiceCloudLinkedServiceTypeProperties = original.OracleServiceCloudLinkedServiceTypeProperties
+type OracleServiceCloudObjectDataset = original.OracleServiceCloudObjectDataset
+type OracleServiceCloudSource = original.OracleServiceCloudSource
 type OracleSink = original.OracleSink
 type OracleSource = original.OracleSource
 type OracleTableDataset = original.OracleTableDataset
@@ -1280,6 +1331,11 @@ type ResponsysLinkedService = original.ResponsysLinkedService
 type ResponsysLinkedServiceTypeProperties = original.ResponsysLinkedServiceTypeProperties
 type ResponsysObjectDataset = original.ResponsysObjectDataset
 type ResponsysSource = original.ResponsysSource
+type RestServiceDataset = original.RestServiceDataset
+type RestServiceDatasetTypeProperties = original.RestServiceDatasetTypeProperties
+type RestServiceLinkedService = original.RestServiceLinkedService
+type RestServiceLinkedServiceTypeProperties = original.RestServiceLinkedServiceTypeProperties
+type RestServiceSource = original.RestServiceSource
 type RetryPolicy = original.RetryPolicy
 type RunFilterParameters = original.RunFilterParameters
 type RunQueryFilter = original.RunQueryFilter
@@ -1498,6 +1554,9 @@ func PossibleDependencyConditionValues() []DependencyCondition {
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()
 }
+func PossibleGoogleAdWordsAuthenticationTypeValues() []GoogleAdWordsAuthenticationType {
+	return original.PossibleGoogleAdWordsAuthenticationTypeValues()
+}
 func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthenticationType {
 	return original.PossibleGoogleBigQueryAuthenticationTypeValues()
 }
@@ -1558,6 +1617,9 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return original.PossibleMongoDbAuthenticationTypeValues()
 }
+func PossibleODataAadServicePrincipalCredentialTypeValues() []ODataAadServicePrincipalCredentialType {
+	return original.PossibleODataAadServicePrincipalCredentialTypeValues()
+}
 func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 	return original.PossibleODataAuthenticationTypeValues()
 }
@@ -1575,6 +1637,9 @@ func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
 }
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
+}
+func PossibleRestServiceAuthenticationTypeValues() []RestServiceAuthenticationType {
+	return original.PossibleRestServiceAuthenticationTypeValues()
 }
 func PossibleRunQueryFilterOperandValues() []RunQueryFilterOperand {
 	return original.PossibleRunQueryFilterOperandValues()

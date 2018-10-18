@@ -19,7 +19,7 @@
 
 package storagesync
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-07-01/storagesync"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-10-01/storagesync"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -27,11 +27,32 @@ const (
 
 type BaseClient = original.BaseClient
 type CloudEndpointsClient = original.CloudEndpointsClient
+type CloudSeededData = original.CloudSeededData
+
+const (
+	Off CloudSeededData = original.Off
+	On  CloudSeededData = original.On
+)
+
+type CloudSeededData1 = original.CloudSeededData1
+
+const (
+	CloudSeededData1Off CloudSeededData1 = original.CloudSeededData1Off
+	CloudSeededData1On  CloudSeededData1 = original.CloudSeededData1On
+)
+
+type CloudSeededData2 = original.CloudSeededData2
+
+const (
+	CloudSeededData2Off CloudSeededData2 = original.CloudSeededData2Off
+	CloudSeededData2On  CloudSeededData2 = original.CloudSeededData2On
+)
+
 type CloudTiering = original.CloudTiering
 
 const (
-	Off CloudTiering = original.Off
-	On  CloudTiering = original.On
+	CloudTieringOff CloudTiering = original.CloudTieringOff
+	CloudTieringOn  CloudTiering = original.CloudTieringOn
 )
 
 type CloudTiering1 = original.CloudTiering1
@@ -39,6 +60,13 @@ type CloudTiering1 = original.CloudTiering1
 const (
 	CloudTiering1Off CloudTiering1 = original.CloudTiering1Off
 	CloudTiering1On  CloudTiering1 = original.CloudTiering1On
+)
+
+type CloudTiering2 = original.CloudTiering2
+
+const (
+	CloudTiering2Off CloudTiering2 = original.CloudTiering2Off
+	CloudTiering2On  CloudTiering2 = original.CloudTiering2On
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
@@ -76,12 +104,15 @@ const (
 	Succeeded Status = original.Succeeded
 )
 
+type APIError = original.APIError
 type AzureEntityResource = original.AzureEntityResource
 type BackupRequest = original.BackupRequest
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudEndpoint = original.CloudEndpoint
 type CloudEndpointArray = original.CloudEndpointArray
+type CloudEndpointCreateParameters = original.CloudEndpointCreateParameters
+type CloudEndpointCreateParametersProperties = original.CloudEndpointCreateParametersProperties
 type CloudEndpointProperties = original.CloudEndpointProperties
 type CloudEndpointsCreateFuture = original.CloudEndpointsCreateFuture
 type CloudEndpointsDeleteFuture = original.CloudEndpointsDeleteFuture
@@ -102,16 +133,22 @@ type PostBackupResponseProperties = original.PostBackupResponseProperties
 type PostRestoreRequest = original.PostRestoreRequest
 type PreRestoreRequest = original.PreRestoreRequest
 type ProxyResource = original.ProxyResource
+type RecallActionParameters = original.RecallActionParameters
 type RegisteredServer = original.RegisteredServer
 type RegisteredServerArray = original.RegisteredServerArray
+type RegisteredServerCreateParameters = original.RegisteredServerCreateParameters
+type RegisteredServerCreateParametersProperties = original.RegisteredServerCreateParametersProperties
 type RegisteredServerProperties = original.RegisteredServerProperties
 type RegisteredServersCreateFuture = original.RegisteredServersCreateFuture
 type RegisteredServersDeleteFuture = original.RegisteredServersDeleteFuture
+type RegisteredServersTriggerRolloverFuture = original.RegisteredServersTriggerRolloverFuture
 type Resource = original.Resource
 type ResourcesMoveInfo = original.ResourcesMoveInfo
 type RestoreFileSpec = original.RestoreFileSpec
 type ServerEndpoint = original.ServerEndpoint
 type ServerEndpointArray = original.ServerEndpointArray
+type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
+type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
 type ServerEndpointProperties = original.ServerEndpointProperties
 type ServerEndpointsCreateFuture = original.ServerEndpointsCreateFuture
 type ServerEndpointsDeleteFuture = original.ServerEndpointsDeleteFuture
@@ -121,13 +158,16 @@ type ServerEndpointUpdateParameters = original.ServerEndpointUpdateParameters
 type ServerEndpointUpdateProperties = original.ServerEndpointUpdateProperties
 type Service = original.Service
 type ServiceArray = original.ServiceArray
+type ServiceCreateParameters = original.ServiceCreateParameters
 type ServiceProperties = original.ServiceProperties
 type ServiceUpdateParameters = original.ServiceUpdateParameters
 type SubscriptionState = original.SubscriptionState
 type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
+type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
 type TrackedResource = original.TrackedResource
+type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
 type WorkflowArray = original.WorkflowArray
 type WorkflowProperties = original.WorkflowProperties
@@ -150,11 +190,23 @@ func NewCloudEndpointsClient(subscriptionID string) CloudEndpointsClient {
 func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsClient {
 	return original.NewCloudEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCloudSeededDataValues() []CloudSeededData {
+	return original.PossibleCloudSeededDataValues()
+}
+func PossibleCloudSeededData1Values() []CloudSeededData1 {
+	return original.PossibleCloudSeededData1Values()
+}
+func PossibleCloudSeededData2Values() []CloudSeededData2 {
+	return original.PossibleCloudSeededData2Values()
+}
 func PossibleCloudTieringValues() []CloudTiering {
 	return original.PossibleCloudTieringValues()
 }
 func PossibleCloudTiering1Values() []CloudTiering1 {
 	return original.PossibleCloudTiering1Values()
+}
+func PossibleCloudTiering2Values() []CloudTiering2 {
+	return original.PossibleCloudTiering2Values()
 }
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()

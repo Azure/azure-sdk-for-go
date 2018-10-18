@@ -1146,11 +1146,11 @@ type ManagedClusterAgentPoolProfile struct {
 	MaxPods *int32 `json:"maxPods,omitempty"`
 	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
 	OsType OSType `json:"osType,omitempty"`
-	// MaxCount - Maximun number of nodes for auto-scaling
+	// MaxCount - Maximum number of nodes for auto-scaling
 	MaxCount *int32 `json:"maxCount,omitempty"`
-	// MinCount - Minimun number of nodes for auto-scaling
+	// MinCount - Minimum number of nodes for auto-scaling
 	MinCount *int32 `json:"minCount,omitempty"`
-	// EnableAutoScaling - Wheter to enable auto-scaler
+	// EnableAutoScaling - Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
 	// Type - AgentPoolType represents types of agentpool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`

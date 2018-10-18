@@ -24,8 +24,8 @@ import (
 	"net/http"
 )
 
-// ReservationsSummariesClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
+// ReservationsSummariesClient is the update - Consumption management client provides access to consumption resources
+// for Azure Enterprise Subscriptions.
 type ReservationsSummariesClient struct {
 	BaseClient
 }

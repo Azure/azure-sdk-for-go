@@ -25,8 +25,8 @@ import (
 	"net/http"
 )
 
-// PriceSheetClient is the consumption management client provides access to consumption resources for Azure Enterprise
-// Subscriptions.
+// PriceSheetClient is the update - Consumption management client provides access to consumption resources for Azure
+// Enterprise Subscriptions.
 type PriceSheetClient struct {
 	BaseClient
 }

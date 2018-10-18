@@ -1524,8 +1524,6 @@ type UsageDetailsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of usage details.
 	Value *[]UsageDetail `json:"value,omitempty"`
-	// NextLink - The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.

@@ -98,10 +98,6 @@ func (client ManagedInstanceEncryptionProtectorsClient) CreateOrUpdateSender(req
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }

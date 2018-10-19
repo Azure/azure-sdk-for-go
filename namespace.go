@@ -135,7 +135,3 @@ func (ns *Namespace) getHTTPSHostURI() string {
 func (ns *Namespace) getEntityAudience(entityPath string) string {
 	return ns.getAMQPHostURI() + entityPath
 }
-
-func (ns *Namespace) getEntityManagementPath(entityPath string) string {
-	return entityPath + "/$management"
-}

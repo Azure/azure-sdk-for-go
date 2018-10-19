@@ -7,7 +7,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/rpc"
-	otlogger "github.com/opentracing/opentracing-go/log"
+	"go.opencensus.io/trace"
 	"pack.ag/amqp"
 )
 
@@ -19,7 +19,7 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 	lockTokens := make([]amqp.UUID, 0, len(messages))
 	for _, m := range messages {
 		if m.LockToken == nil {
-			log.For(ctx).Error(fmt.Errorf("failed: message has nil lock token, cannot renew lock"), otlogger.Object("messageId", m))
+			log.For(ctx).Error(fmt.Errorf("failed: message has nil lock token, cannot renew lock"), trace.StringAttribute("messageId", m.ID))
 			continue
 		}
 
@@ -44,7 +44,7 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 		},
 	}
 
-	entityManagementAddress := e.namespace.getEntityManagementPath(e.Name)
+	entityManagementAddress := e.ManagementPath()
 	conn, err := e.namespace.newConnection()
 	if err != nil {
 		return err

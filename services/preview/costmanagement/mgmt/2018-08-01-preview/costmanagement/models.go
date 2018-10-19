@@ -21,23 +21,110 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
+
+// AlertCategory enumerates the values for alert category.
+type AlertCategory string
+
+const (
+	// Billing ...
+	Billing AlertCategory = "Billing"
+	// Cost ...
+	Cost AlertCategory = "Cost"
+	// Usage ...
+	Usage AlertCategory = "Usage"
+)
+
+// PossibleAlertCategoryValues returns an array of possible values for the AlertCategory const type.
+func PossibleAlertCategoryValues() []AlertCategory {
+	return []AlertCategory{Billing, Cost, Usage}
+}
+
+// AlertCriteria enumerates the values for alert criteria.
+type AlertCriteria string
+
+const (
+	// CostThresholdExceeded ...
+	CostThresholdExceeded AlertCriteria = "CostThresholdExceeded"
+	// CreditThresholdReached ...
+	CreditThresholdReached AlertCriteria = "CreditThresholdReached"
+	// UsageThresholdExceeded ...
+	UsageThresholdExceeded AlertCriteria = "UsageThresholdExceeded"
+)
+
+// PossibleAlertCriteriaValues returns an array of possible values for the AlertCriteria const type.
+func PossibleAlertCriteriaValues() []AlertCriteria {
+	return []AlertCriteria{CostThresholdExceeded, CreditThresholdReached, UsageThresholdExceeded}
+}
+
+// AlertSource enumerates the values for alert source.
+type AlertSource string
+
+const (
+	// Preset ...
+	Preset AlertSource = "Preset"
+	// User ...
+	User AlertSource = "User"
+)
+
+// PossibleAlertSourceValues returns an array of possible values for the AlertSource const type.
+func PossibleAlertSourceValues() []AlertSource {
+	return []AlertSource{Preset, User}
+}
+
+// AlertStatus enumerates the values for alert status.
+type AlertStatus string
+
+const (
+	// Active ...
+	Active AlertStatus = "Active"
+	// Dismissed ...
+	Dismissed AlertStatus = "Dismissed"
+	// Overridden ...
+	Overridden AlertStatus = "Overridden"
+	// Resolved ...
+	Resolved AlertStatus = "Resolved"
+)
+
+// PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
+func PossibleAlertStatusValues() []AlertStatus {
+	return []AlertStatus{Active, Dismissed, Overridden, Resolved}
+}
+
+// AlertType enumerates the values for alert type.
+type AlertType string
+
+const (
+	// Budget ...
+	Budget AlertType = "Budget"
+	// Credit ...
+	Credit AlertType = "Credit"
+	// Invoice ...
+	Invoice AlertType = "Invoice"
+)
+
+// PossibleAlertTypeValues returns an array of possible values for the AlertType const type.
+func PossibleAlertTypeValues() []AlertType {
+	return []AlertType{Budget, Credit, Invoice}
+}
 
 // ConnectorStatus enumerates the values for connector status.
 type ConnectorStatus string
 
 const (
-	// Active ...
-	Active ConnectorStatus = "active"
-	// Error ...
-	Error ConnectorStatus = "error"
-	// Suspended ...
-	Suspended ConnectorStatus = "suspended"
+	// ConnectorStatusActive ...
+	ConnectorStatusActive ConnectorStatus = "active"
+	// ConnectorStatusError ...
+	ConnectorStatusError ConnectorStatus = "error"
+	// ConnectorStatusSuspended ...
+	ConnectorStatusSuspended ConnectorStatus = "suspended"
 )
 
 // PossibleConnectorStatusValues returns an array of possible values for the ConnectorStatus const type.
 func PossibleConnectorStatusValues() []ConnectorStatus {
-	return []ConnectorStatus{Active, Error, Suspended}
+	return []ConnectorStatus{ConnectorStatusActive, ConnectorStatusError, ConnectorStatusSuspended}
 }
 
 // ExecutionStatus enumerates the values for execution status.
@@ -166,6 +253,255 @@ const (
 // PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return []TimeframeType{Custom, MonthToDate, WeekToDate}
+}
+
+// Alert the Alert model definition
+type Alert struct {
+	autorest.Response `json:"-"`
+	// ID - Alert id
+	ID *string `json:"id,omitempty"`
+	// Name - Alert name
+	Name *string `json:"name,omitempty"`
+	// Type - Alert type
+	Type *string `json:"type,omitempty"`
+	// AlertProperties - Alert properties
+	*AlertProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Alert.
+func (a Alert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.AlertProperties != nil {
+		objectMap["properties"] = a.AlertProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Alert struct.
+func (a *Alert) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var alertProperties AlertProperties
+				err = json.Unmarshal(*v, &alertProperties)
+				if err != nil {
+					return err
+				}
+				a.AlertProperties = &alertProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AlertDefinition the definition (rule) of an Alert
+type AlertDefinition struct {
+	// Category - Category of the alert. Possible values include: 'Cost', 'Usage', 'Billing'
+	Category AlertCategory `json:"category,omitempty"`
+	// Type - The type of cost-entity the alert is defined on. Possible values include: 'Budget', 'Invoice', 'Credit'
+	Type AlertType `json:"type,omitempty"`
+	// Criteria - Criteria (condition) of the alert. Possible values include: 'CostThresholdExceeded', 'UsageThresholdExceeded', 'CreditThresholdReached'
+	Criteria AlertCriteria `json:"criteria,omitempty"`
+}
+
+// AlertListResult result of listing alerts. It contains a list of available alerts in the scope provided.
+type AlertListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of alerts.
+	Value *[]Alert `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page of Alerts.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AlertListResultIterator provides access to a complete listing of Alert values.
+type AlertListResultIterator struct {
+	i    int
+	page AlertListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertListResultIterator) Response() AlertListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertListResultIterator) Value() Alert {
+	if !iter.page.NotDone() {
+		return Alert{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (alr AlertListResult) IsEmpty() bool {
+	return alr.Value == nil || len(*alr.Value) == 0
+}
+
+// alertListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (alr AlertListResult) alertListResultPreparer() (*http.Request, error) {
+	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(alr.NextLink)))
+}
+
+// AlertListResultPage contains a page of Alert values.
+type AlertListResultPage struct {
+	fn  func(AlertListResult) (AlertListResult, error)
+	alr AlertListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertListResultPage) Next() error {
+	next, err := page.fn(page.alr)
+	if err != nil {
+		return err
+	}
+	page.alr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertListResultPage) NotDone() bool {
+	return !page.alr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertListResultPage) Response() AlertListResult {
+	return page.alr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertListResultPage) Values() []Alert {
+	if page.alr.IsEmpty() {
+		return nil
+	}
+	return *page.alr.Value
+}
+
+// AlertProperties the properties of an Alert.
+type AlertProperties struct {
+	// CostEntityID - The id of the creating cost-entity (budget, invoice, credit).
+	CostEntityID *string `json:"costEntityId,omitempty"`
+	// Definition - The definition (rule) of an Alert
+	Definition *AlertDefinition `json:"definition,omitempty"`
+	// Description - Description of an alert.
+	Description *string `json:"description,omitempty"`
+	// Scope - The scope of an alert.
+	Scope *string `json:"scope,omitempty"`
+	// Source - The source of an Alert. Possible values include: 'Preset', 'User'
+	Source AlertSource `json:"source,omitempty"`
+	// Details - Specific details of an alert - key-value dictionary.
+	Details map[string]*string `json:"details"`
+	// CreationTime - The time when the alert was created.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// CloseTime - The time when the alert was closed (resolved / overriden).
+	CloseTime *date.Time `json:"closeTime,omitempty"`
+	// Status - The current status of the alert. Possible values include: 'Active', 'Overridden', 'Resolved', 'Dismissed'
+	Status AlertStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertProperties.
+func (ap AlertProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.CostEntityID != nil {
+		objectMap["costEntityId"] = ap.CostEntityID
+	}
+	if ap.Definition != nil {
+		objectMap["definition"] = ap.Definition
+	}
+	if ap.Description != nil {
+		objectMap["description"] = ap.Description
+	}
+	if ap.Scope != nil {
+		objectMap["scope"] = ap.Scope
+	}
+	if ap.Source != "" {
+		objectMap["source"] = ap.Source
+	}
+	if ap.Details != nil {
+		objectMap["details"] = ap.Details
+	}
+	if ap.CreationTime != nil {
+		objectMap["creationTime"] = ap.CreationTime
+	}
+	if ap.CloseTime != nil {
+		objectMap["closeTime"] = ap.CloseTime
+	}
+	if ap.Status != "" {
+		objectMap["status"] = ap.Status
+	}
+	return json.Marshal(objectMap)
 }
 
 // CommonReportProperties the common properties of the report.
@@ -348,7 +684,7 @@ type ConnectorProperties struct {
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
 	// ModifiedOn - Connector last modified datetime
 	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
-	// Status - Connector status. Possible values include: 'Active', 'Error', 'Suspended'
+	// Status - Connector status. Possible values include: 'ConnectorStatusActive', 'ConnectorStatusError', 'ConnectorStatusSuspended'
 	Status ConnectorStatus `json:"status,omitempty"`
 	// Collection - Collection information
 	Collection *ConnectorCollectionInfo `json:"collection,omitempty"`

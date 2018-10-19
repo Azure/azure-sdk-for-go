@@ -25,21 +25,6 @@ import (
 	"net/http"
 )
 
-// AppNameUnavailabilityReason enumerates the values for app name unavailability reason.
-type AppNameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists AppNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid AppNameUnavailabilityReason = "Invalid"
-)
-
-// PossibleAppNameUnavailabilityReasonValues returns an array of possible values for the AppNameUnavailabilityReason const type.
-func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
-	return []AppNameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
 // AppSku enumerates the values for app sku.
 type AppSku string
 
@@ -179,6 +164,18 @@ func (a *App) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AppAvailabilityInfo the properties indicating whether a given IoT Central application name or subdomain is
+// available.
+type AppAvailabilityInfo struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - The value which indicates whether the provided name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason for unavailability.
+	Reason *string `json:"reason,omitempty"`
+	// Message - The detailed reason message.
+	Message *string `json:"message,omitempty"`
+}
+
 // AppListResult a list of IoT Central Applications with a next link.
 type AppListResult struct {
 	autorest.Response `json:"-"`
@@ -279,17 +276,6 @@ func (page AppListResultPage) Values() []App {
 		return nil
 	}
 	return *page.alr.Value
-}
-
-// AppNameAvailabilityInfo the properties indicating whether a given IoT Central application name is available.
-type AppNameAvailabilityInfo struct {
-	autorest.Response `json:"-"`
-	// NameAvailable - The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason AppNameUnavailabilityReason `json:"reason,omitempty"`
-	// Message - The detailed reason message.
-	Message *string `json:"message,omitempty"`
 }
 
 // AppPatch the description of the IoT Central application.
@@ -443,12 +429,52 @@ func (future *AppsUpdateFuture) Result(client AppsClient) (a App, err error) {
 
 // ErrorDetails error details.
 type ErrorDetails struct {
+	*ErrorResponseBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ed.ErrorResponseBody != nil {
+		objectMap["error"] = ed.ErrorResponseBody
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ErrorDetails struct.
+func (ed *ErrorDetails) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "error":
+			if v != nil {
+				var errorResponseBody ErrorResponseBody
+				err = json.Unmarshal(*v, &errorResponseBody)
+				if err != nil {
+					return err
+				}
+				ed.ErrorResponseBody = &errorResponseBody
+			}
+		}
+	}
+
+	return nil
+}
+
+// ErrorResponseBody details of error response.
+type ErrorResponseBody struct {
 	// Code - The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - The error message.
 	Message *string `json:"message,omitempty"`
 	// Target - The target of the particular error.
 	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]ErrorResponseBody `json:"details,omitempty"`
 }
 
 // Operation ioT Central REST API operation
@@ -475,6 +501,8 @@ type OperationDisplay struct {
 type OperationInputs struct {
 	// Name - The name of the IoT Central application instance to check.
 	Name *string `json:"name,omitempty"`
+	// Type - The type of the IoT Central resource to query.
+	Type *string `json:"type,omitempty"`
 }
 
 // OperationListResult a list of IoT Central operations. It contains a list of operations and a URL link to get the

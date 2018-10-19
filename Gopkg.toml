@@ -5,4 +5,4 @@
 
 [[constraint]]
     name = "github.com/Azure/azure-amqp-common-go"
-    version = "0.7"
+    version = "1.1.1"

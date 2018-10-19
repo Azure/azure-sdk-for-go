@@ -34,8 +34,9 @@ import (
 
 type (
 	entity struct {
-		Name      string
-		namespace *Namespace
+		Name                  string
+		namespace             *Namespace
+		renewMessageLockMutex sync.Mutex
 	}
 
 	// Queue represents a Service Bus Queue entity, which offers First In, First Out (FIFO) message delivery to one or

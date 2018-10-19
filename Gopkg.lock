@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:b12a6ebf761476b20cf4369e1d114c50d4d78657347bb21cdfbf1a8996e725bf"
+  digest = "1:b39e9db10d2a581ec45b29b2f54ebd9e4443e18ba079be3efcd69962d15017b1"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -17,11 +17,11 @@
     "uuid",
   ]
   pruneopts = "UT"
-  revision = "1fa44b828b6a39462b3d0e6248c69103b02272b2"
-  version = "v0.7.0"
+  revision = "f1753e2acc01a1f3fb4938b7f31ac2d3d2181c80"
+  version = "v1.1.1"
 
 [[projects]]
-  digest = "1:e0cd7a155f27aa2eb4dfaeb68087b5e8b7cd87aa6bbd4096d7954ef5ab19d10c"
+  digest = "1:38003269fdda2bd96566444ddb1bc6042cc2bdc89b76bb0e4ca05238c8f07529"
   name = "github.com/Azure/azure-sdk-for-go"
   packages = [
     "services/resources/mgmt/2017-05-10/resources",
@@ -30,11 +30,11 @@
     "version",
   ]
   pruneopts = "UT"
-  revision = "4e8cbbfb1aeab140cd0fa97fd16b64ee18c3ca6a"
-  version = "v19.1.0"
+  revision = "da91af54816b4cf72949c225a2d0980f51fab01b"
+  version = "v21.3.0"
 
 [[projects]]
-  digest = "1:e37f563b93009102b29dc79fda0d58f87c99caa90555c3d0cac9c234bab46714"
+  digest = "1:abd173c5fa0fd85d8db837afc4c873552d40ae27d856d3a7bc24a8b272fb362a"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -47,8 +47,8 @@
     "version",
   ]
   pruneopts = "UT"
-  revision = "22deab8fa353631a78351bd7808fcb5002024b67"
-  version = "v10.15.1"
+  revision = "4b7f49dc5db2e1e6d528524d269b4181981a7ebf"
+  version = "v11.1.1"
 
 [[projects]]
   branch = "master"
@@ -59,12 +59,12 @@
   revision = "3a0bb77429bd3a61596f5e8a3172445844342120"
 
 [[projects]]
-  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   pruneopts = "UT"
-  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
-  version = "v1.1.0"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -83,12 +83,12 @@
   version = "v1.3.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:5ab79470a1d0fb19b041a624415612f8236b3c06070161a910562f2b2d064355"
+  digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   pruneopts = "UT"
-  revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
+  revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
+  version = "v1.1.2"
 
 [[projects]]
   digest = "1:450b7623b185031f3a456801155c8320209f75d0d4c4e633c6b1e59d44d6e392"
@@ -131,7 +131,7 @@
   version = "v1.2.2"
 
 [[projects]]
-  digest = "1:104a2d7446f4628e4663d7c029b18da1aad4313735de775f37b6e7720b1d0aa7"
+  digest = "1:ac6f26e917fd2fb3194a7ebe2baf6fb32de2f2fbfed130c18aac0e758a6e1d22"
   name = "github.com/uber/jaeger-client-go"
   packages = [
     ".",
@@ -149,11 +149,12 @@
     "thrift-gen/jaeger",
     "thrift-gen/sampling",
     "thrift-gen/zipkincore",
+    "transport",
     "utils",
   ]
   pruneopts = "UT"
-  revision = "b043381d944715b469fd6b37addfd30145ca1758"
-  version = "v2.14.0"
+  revision = "1a782e2da844727691fef1757c72eb190c2909f0"
+  version = "v2.15.0"
 
 [[projects]]
   digest = "1:0f09db8429e19d57c8346ad76fbbc679341fa86073d3b8fb5ac919f0357d8f4c"
@@ -164,23 +165,36 @@
   version = "v1.5.0"
 
 [[projects]]
+  digest = "1:77a7a73aa27e254e202b0329945cdae2dc8e4df24ea787d7ed0b960fd3b9eb3c"
+  name = "go.opencensus.io"
+  packages = [
+    ".",
+    "internal",
+    "trace",
+    "trace/internal",
+  ]
+  pruneopts = "UT"
+  revision = "7b558058b7cc960667590e5413ef55157b06652e"
+  version = "v0.15.0"
+
+[[projects]]
   branch = "master"
   digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
   name = "golang.org/x/net"
   packages = ["context"]
   pruneopts = "UT"
-  revision = "f9ce57c11b242f0f1599cf25c89d8cb02c45295a"
+  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
 
 [[projects]]
-  digest = "1:efd7f4a2c3339485190142d3b83052207aaadf6e4e724fdbac79a5de0a8120c5"
+  digest = "1:4739800ec9c08baa4abefa388a31ff74d9e3b3a9cf112fe312332c6e6c3d119d"
   name = "pack.ag/amqp"
   packages = [
     ".",
     "internal/testconn",
   ]
   pruneopts = "UT"
-  revision = "f04efab52fd05cbd1b25280ae54423fc7b12e267"
-  version = "v0.7.3"
+  revision = "271d6282f59cd10184fef147de589cce8ad69c93"
+  version = "v0.7.4"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -191,6 +205,7 @@
     "github.com/Azure/azure-amqp-common-go/cbs",
     "github.com/Azure/azure-amqp-common-go/conn",
     "github.com/Azure/azure-amqp-common-go/log",
+    "github.com/Azure/azure-amqp-common-go/rpc",
     "github.com/Azure/azure-amqp-common-go/sas",
     "github.com/Azure/azure-amqp-common-go/uuid",
     "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources",
@@ -205,6 +220,7 @@
     "github.com/mitchellh/mapstructure",
     "github.com/opentracing/opentracing-go",
     "github.com/opentracing/opentracing-go/ext",
+    "github.com/opentracing/opentracing-go/log",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/suite",
     "github.com/uber/jaeger-client-go",

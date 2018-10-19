@@ -129,7 +129,6 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-request-response#get-session-state
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
-	//link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
 	}

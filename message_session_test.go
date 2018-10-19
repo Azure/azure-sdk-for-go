@@ -33,7 +33,6 @@ func (suite *serviceBusSuite) TestMessageSession() {
 				ns,
 				queueName,
 				QueueEntityWithRequiredSessions(),
-				//QueueEntityWithPartitioning(),
 				QueueEntityWithDuplicateDetection(&window))
 			defer cleanup()
 
@@ -55,7 +54,7 @@ func (suite *serviceBusSuite) TestMessageSession() {
 			msg := NewMessageFromString(want)
 			msg.GroupID = &sessionID
 
-			q.Send(ctx, msg)
+			suite.NoError(q.Send(ctx, msg))
 
 			q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
 				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {

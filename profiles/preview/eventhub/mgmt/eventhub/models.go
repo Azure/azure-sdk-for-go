@@ -58,6 +58,13 @@ const (
 	Unknown         EntityStatus = original.Unknown
 )
 
+type IPAction = original.IPAction
+
+const (
+	Accept IPAction = original.Accept
+	Reject IPAction = original.Reject
+)
+
 type KeyType = original.KeyType
 
 const (
@@ -133,6 +140,11 @@ type EHNamespaceListResultIterator = original.EHNamespaceListResultIterator
 type EHNamespaceListResultPage = original.EHNamespaceListResultPage
 type EHNamespaceProperties = original.EHNamespaceProperties
 type ErrorResponse = original.ErrorResponse
+type IPFilterRule = original.IPFilterRule
+type IPFilterRuleListResult = original.IPFilterRuleListResult
+type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
+type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
+type IPFilterRuleProperties = original.IPFilterRuleProperties
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -156,6 +168,11 @@ type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
+type VirtualNetworkRule = original.VirtualNetworkRule
+type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
+type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResultIterator
+type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPage
+type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
 type RegionsClient = original.RegionsClient
@@ -192,6 +209,9 @@ func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 }
 func PossibleEntityStatusValues() []EntityStatus {
 	return original.PossibleEntityStatusValues()
+}
+func PossibleIPActionValues() []IPAction {
+	return original.PossibleIPActionValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()

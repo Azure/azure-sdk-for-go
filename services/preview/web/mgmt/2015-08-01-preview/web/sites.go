@@ -827,10 +827,6 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future Si
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1352,10 +1348,6 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (futur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -8879,10 +8871,6 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -8949,10 +8937,6 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -9305,10 +9289,6 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesReco
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9379,10 +9359,6 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future Sites
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
 	if err != nil {
 		return
 	}
@@ -9748,10 +9724,6 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRest
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9823,10 +9795,6 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future Sites
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -10174,10 +10142,6 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSw
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -10245,10 +10209,6 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (futur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

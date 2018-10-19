@@ -928,10 +928,6 @@ func (client AppsClient) CreateFunctionSender(req *http.Request) (future AppsCre
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1015,10 +1011,6 @@ func (client AppsClient) CreateInstanceFunctionSlotSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1096,10 +1088,6 @@ func (client AppsClient) CreateInstanceMSDeployOperationSender(req *http.Request
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1185,10 +1173,6 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotSender(req *http.Req
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1264,10 +1248,6 @@ func (client AppsClient) CreateMSDeployOperationSender(req *http.Request) (futur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1348,10 +1328,6 @@ func (client AppsClient) CreateMSDeployOperationSlotSender(req *http.Request) (f
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1446,10 +1422,6 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -2555,10 +2527,6 @@ func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (future App
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -2634,10 +2602,6 @@ func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (f
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -2719,10 +2683,6 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -10286,6 +10246,83 @@ func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) 
 	return
 }
 
+// GetNetworkTraceOperation1 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// operationID - GUID of the operation.
+func (client AppsClient) GetNetworkTraceOperation1(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetNetworkTraceOperation1", err.Error())
+	}
+
+	req, err := client.GetNetworkTraceOperation1Preparer(ctx, resourceGroupName, name, operationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperation1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetNetworkTraceOperation1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperation1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetNetworkTraceOperation1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperation1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetNetworkTraceOperation1Preparer prepares the GetNetworkTraceOperation1 request.
+func (client AppsClient) GetNetworkTraceOperation1Preparer(ctx context.Context, resourceGroupName string, name string, operationID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"operationId":       autorest.Encode("path", operationID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetNetworkTraceOperation1Sender sends the GetNetworkTraceOperation1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetNetworkTraceOperation1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetNetworkTraceOperation1Responder handles the response to the GetNetworkTraceOperation1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetNetworkTraceOperation1Responder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetNetworkTraceOperationSlot gets a named operation for a network trace capturing (or deployment slot, if
 // specified).
 // Parameters:
@@ -10357,6 +10394,87 @@ func (client AppsClient) GetNetworkTraceOperationSlotSender(req *http.Request) (
 // GetNetworkTraceOperationSlotResponder handles the response to the GetNetworkTraceOperationSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetNetworkTraceOperationSlot1 gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// operationID - GUID of the operation.
+// slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
+// production slot.
+func (client AppsClient) GetNetworkTraceOperationSlot1(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetNetworkTraceOperationSlot1", err.Error())
+	}
+
+	req, err := client.GetNetworkTraceOperationSlot1Preparer(ctx, resourceGroupName, name, operationID, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperationSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetNetworkTraceOperationSlot1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperationSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetNetworkTraceOperationSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraceOperationSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetNetworkTraceOperationSlot1Preparer prepares the GetNetworkTraceOperationSlot1 request.
+func (client AppsClient) GetNetworkTraceOperationSlot1Preparer(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"operationId":       autorest.Encode("path", operationID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/current/operationresults/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetNetworkTraceOperationSlot1Sender sends the GetNetworkTraceOperationSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetNetworkTraceOperationSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetNetworkTraceOperationSlot1Responder handles the response to the GetNetworkTraceOperationSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetNetworkTraceOperationSlot1Responder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -10444,6 +10562,83 @@ func (client AppsClient) GetNetworkTracesResponder(resp *http.Response) (result 
 	return
 }
 
+// GetNetworkTraces1 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// operationID - GUID of the operation.
+func (client AppsClient) GetNetworkTraces1(ctx context.Context, resourceGroupName string, name string, operationID string) (result ListNetworkTrace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetNetworkTraces1", err.Error())
+	}
+
+	req, err := client.GetNetworkTraces1Preparer(ctx, resourceGroupName, name, operationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraces1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetNetworkTraces1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraces1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetNetworkTraces1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTraces1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetNetworkTraces1Preparer prepares the GetNetworkTraces1 request.
+func (client AppsClient) GetNetworkTraces1Preparer(ctx context.Context, resourceGroupName string, name string, operationID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"operationId":       autorest.Encode("path", operationID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetNetworkTraces1Sender sends the GetNetworkTraces1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetNetworkTraces1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetNetworkTraces1Responder handles the response to the GetNetworkTraces1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetNetworkTraces1Responder(resp *http.Response) (result ListNetworkTrace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetNetworkTracesSlot gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -10514,6 +10709,86 @@ func (client AppsClient) GetNetworkTracesSlotSender(req *http.Request) (*http.Re
 // GetNetworkTracesSlotResponder handles the response to the GetNetworkTracesSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetNetworkTracesSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetNetworkTracesSlot1 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// operationID - GUID of the operation.
+// slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
+// production slot.
+func (client AppsClient) GetNetworkTracesSlot1(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result ListNetworkTrace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetNetworkTracesSlot1", err.Error())
+	}
+
+	req, err := client.GetNetworkTracesSlot1Preparer(ctx, resourceGroupName, name, operationID, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTracesSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetNetworkTracesSlot1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTracesSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetNetworkTracesSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetNetworkTracesSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetNetworkTracesSlot1Preparer prepares the GetNetworkTracesSlot1 request.
+func (client AppsClient) GetNetworkTracesSlot1Preparer(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"operationId":       autorest.Encode("path", operationID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetNetworkTracesSlot1Sender sends the GetNetworkTracesSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetNetworkTracesSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetNetworkTracesSlot1Responder handles the response to the GetNetworkTracesSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetNetworkTracesSlot1Responder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -13480,10 +13755,6 @@ func (client AppsClient) InstallSiteExtensionSender(req *http.Request) (future A
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusTooManyRequests))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -13561,10 +13832,6 @@ func (client AppsClient) InstallSiteExtensionSlotSender(req *http.Request) (futu
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusTooManyRequests))
 	if err != nil {
 		return
 	}
@@ -19770,10 +20037,6 @@ func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -19849,10 +20112,6 @@ func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -22375,10 +22634,6 @@ func (client AppsClient) MigrateMySQLSender(req *http.Request) (future AppsMigra
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -22461,10 +22716,6 @@ func (client AppsClient) MigrateStorageSender(req *http.Request) (future AppsMig
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -23191,10 +23442,6 @@ func (client AppsClient) RestoreSender(req *http.Request) (future AppsRestoreFut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23274,10 +23521,6 @@ func (client AppsClient) RestoreFromBackupBlobSender(req *http.Request) (future 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23366,10 +23609,6 @@ func (client AppsClient) RestoreFromBackupBlobSlotSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23444,10 +23683,6 @@ func (client AppsClient) RestoreFromDeletedAppSender(req *http.Request) (future 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23527,10 +23762,6 @@ func (client AppsClient) RestoreFromDeletedAppSlotSender(req *http.Request) (fut
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23621,10 +23852,6 @@ func (client AppsClient) RestoreSlotSender(req *http.Request) (future AppsRestor
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23703,10 +23930,6 @@ func (client AppsClient) RestoreSnapshotSender(req *http.Request) (future AppsRe
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23790,10 +24013,6 @@ func (client AppsClient) RestoreSnapshotSlotSender(req *http.Request) (future Ap
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -24197,6 +24416,182 @@ func (client AppsClient) StartContinuousWebJobSlotResponder(resp *http.Response)
 	return
 }
 
+// StartNetworkTrace start capturing network packets for the site.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - the name of the web app.
+// durationInSeconds - the duration to keep capturing in seconds.
+// maxFrameLength - the maximum frame length in bytes (Optional).
+// sasURL - the Blob URL to store capture file.
+func (client AppsClient) StartNetworkTrace(ctx context.Context, resourceGroupName string, name string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (result AppsStartNetworkTraceFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "StartNetworkTrace", err.Error())
+	}
+
+	req, err := client.StartNetworkTracePreparer(ctx, resourceGroupName, name, durationInSeconds, maxFrameLength, sasURL)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTrace", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.StartNetworkTraceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTrace", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// StartNetworkTracePreparer prepares the StartNetworkTrace request.
+func (client AppsClient) StartNetworkTracePreparer(ctx context.Context, resourceGroupName string, name string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if durationInSeconds != nil {
+		queryParameters["durationInSeconds"] = autorest.Encode("query", *durationInSeconds)
+	}
+	if maxFrameLength != nil {
+		queryParameters["maxFrameLength"] = autorest.Encode("query", *maxFrameLength)
+	}
+	if len(sasURL) > 0 {
+		queryParameters["sasUrl"] = autorest.Encode("query", sasURL)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/startNetworkTrace", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartNetworkTraceSender sends the StartNetworkTrace request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) StartNetworkTraceSender(req *http.Request) (future AppsStartNetworkTraceFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// StartNetworkTraceResponder handles the response to the StartNetworkTrace request. The method always
+// closes the http.Response Body.
+func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// StartNetworkTraceSlot start capturing network packets for the site.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - the name of the web app.
+// slot - the name of the slot for this web app.
+// durationInSeconds - the duration to keep capturing in seconds.
+// maxFrameLength - the maximum frame length in bytes (Optional).
+// sasURL - the Blob URL to store capture file.
+func (client AppsClient) StartNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (result AppsStartNetworkTraceSlotFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "StartNetworkTraceSlot", err.Error())
+	}
+
+	req, err := client.StartNetworkTraceSlotPreparer(ctx, resourceGroupName, name, slot, durationInSeconds, maxFrameLength, sasURL)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTraceSlot", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.StartNetworkTraceSlotSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTraceSlot", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// StartNetworkTraceSlotPreparer prepares the StartNetworkTraceSlot request.
+func (client AppsClient) StartNetworkTraceSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string, durationInSeconds *int32, maxFrameLength *int32, sasURL string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if durationInSeconds != nil {
+		queryParameters["durationInSeconds"] = autorest.Encode("query", *durationInSeconds)
+	}
+	if maxFrameLength != nil {
+		queryParameters["maxFrameLength"] = autorest.Encode("query", *maxFrameLength)
+	}
+	if len(sasURL) > 0 {
+		queryParameters["sasUrl"] = autorest.Encode("query", sasURL)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/startNetworkTrace", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartNetworkTraceSlotSender sends the StartNetworkTraceSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) StartNetworkTraceSlotSender(req *http.Request) (future AppsStartNetworkTraceSlotFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// StartNetworkTraceSlotResponder handles the response to the StartNetworkTraceSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // StartSlot starts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -24430,10 +24825,6 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSender(req *http.Reque
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -24520,10 +24911,6 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotSender(req *http.R
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -24862,6 +25249,156 @@ func (client AppsClient) StopContinuousWebJobSlotResponder(resp *http.Response) 
 	return
 }
 
+// StopNetworkTrace stop ongoing capturing network packets for the site.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - the name of the web app.
+func (client AppsClient) StopNetworkTrace(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "StopNetworkTrace", err.Error())
+	}
+
+	req, err := client.StopNetworkTracePreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTrace", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StopNetworkTraceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTrace", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StopNetworkTraceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTrace", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StopNetworkTracePreparer prepares the StopNetworkTrace request.
+func (client AppsClient) StopNetworkTracePreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stopNetworkTrace", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StopNetworkTraceSender sends the StopNetworkTrace request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) StopNetworkTraceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// StopNetworkTraceResponder handles the response to the StopNetworkTrace request. The method always
+// closes the http.Response Body.
+func (client AppsClient) StopNetworkTraceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// StopNetworkTraceSlot stop ongoing capturing network packets for the site.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - the name of the web app.
+// slot - the name of the slot for this web app.
+func (client AppsClient) StopNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "StopNetworkTraceSlot", err.Error())
+	}
+
+	req, err := client.StopNetworkTraceSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTraceSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StopNetworkTraceSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTraceSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StopNetworkTraceSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopNetworkTraceSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StopNetworkTraceSlotPreparer prepares the StopNetworkTraceSlot request.
+func (client AppsClient) StopNetworkTraceSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/stopNetworkTrace", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StopNetworkTraceSlotSender sends the StopNetworkTraceSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) StopNetworkTraceSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// StopNetworkTraceSlotResponder handles the response to the StopNetworkTraceSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) StopNetworkTraceSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // StopSlot stops an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -25154,10 +25691,6 @@ func (client AppsClient) SwapSlotSlotSender(req *http.Request) (future AppsSwapS
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -25235,10 +25768,6 @@ func (client AppsClient) SwapSlotWithProductionSender(req *http.Request) (future
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

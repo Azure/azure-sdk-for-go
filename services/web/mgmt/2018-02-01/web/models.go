@@ -4490,6 +4490,64 @@ func (future *AppsRestoreSnapshotSlotFuture) Result(client AppsClient) (ar autor
 	return
 }
 
+// AppsStartNetworkTraceFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsStartNetworkTraceFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsStartNetworkTraceFuture) Result(client AppsClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsStartNetworkTraceFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.StartNetworkTraceResponder(so.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceFuture", "Result", so.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AppsStartNetworkTraceSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsStartNetworkTraceSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsStartNetworkTraceSlotFuture) Result(client AppsClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsStartNetworkTraceSlotFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.StartNetworkTraceSlotResponder(so.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceSlotFuture", "Result", so.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AppsStartWebSiteNetworkTraceOperationFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppsStartWebSiteNetworkTraceOperationFuture struct {

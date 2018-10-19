@@ -177,17 +177,62 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
-func (q *Queue) ensureReceiver(ctx context.Context) error {
+// ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
+func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOneSession")
+	defer span.Finish()
+
+	// Establish a receiver that reads a particular session.
+	q.requiredSessionID = sessionID
+	if err := q.ensureReceiver(ctx, receiverWithSession(sessionID)); err != nil {
+		return err
+	}
+
+	ms, err := newMessageSession(q.receiver, q.entity, sessionID)
+	if err != nil {
+		return err
+	}
+
+	err = handler.Start(ms)
+	if err != nil {
+		return err
+	}
+
+	defer handler.End()
+	handle := q.receiver.Listen(ctx, handler)
+
+	select {
+	case <-handle.Done():
+		return handle.Err()
+	case <-ms.done:
+		return nil
+	}
+}
+
+// ReceiveSessions is the session-based counterpart of `Receive`. It subscribes to a Queue and waits for new sessions to
+// become available.
+func (q *Queue) ReceiveSessions(ctx context.Context, handler SessionHandler) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveSessions")
+	defer span.Finish()
+
+	for {
+		if err := q.ReceiveOneSession(ctx, nil, handler); err != nil {
+			return err
+		}
+	}
+}
+
+func (q *Queue) ensureReceiver(ctx context.Context, opts ...receiverOption) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
 	defer span.Finish()
 
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
 
-	opts := []receiverOption{receiverWithReceiveMode(q.receiveMode)}
-	if q.requiredSessionID != nil {
-		opts = append(opts, receiverWithSession(*q.requiredSessionID))
-	}
+	opts = append(opts, receiverWithReceiveMode(q.receiveMode))
 
 	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)
 	if err != nil {

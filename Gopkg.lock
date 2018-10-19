@@ -186,15 +186,15 @@
   revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
 
 [[projects]]
-  digest = "1:4739800ec9c08baa4abefa388a31ff74d9e3b3a9cf112fe312332c6e6c3d119d"
+  digest = "1:d25380126f5de7992f16c4cc53a01890f993611771f06a255ab2aa0eef36f4b0"
   name = "pack.ag/amqp"
   packages = [
     ".",
     "internal/testconn",
   ]
   pruneopts = "UT"
-  revision = "271d6282f59cd10184fef147de589cce8ad69c93"
-  version = "v0.7.4"
+  revision = "8df994bd739903aa707ec927ce6d1dc4badbdc26"
+  version = "v0.8.0"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -220,12 +220,13 @@
     "github.com/mitchellh/mapstructure",
     "github.com/opentracing/opentracing-go",
     "github.com/opentracing/opentracing-go/ext",
-    "github.com/opentracing/opentracing-go/log",
     "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/require",
     "github.com/stretchr/testify/suite",
     "github.com/uber/jaeger-client-go",
     "github.com/uber/jaeger-client-go/config",
     "github.com/uber/jaeger-client-go/log",
+    "go.opencensus.io/trace",
     "pack.ag/amqp",
   ]
   solver-name = "gps-cdcl"

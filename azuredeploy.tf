@@ -52,6 +52,14 @@ resource "azurerm_servicebus_queue" "helloworld" {
   namespace_name = "${azurerm_servicebus_namespace.test.name}"
 }
 
+resource "azurerm_servicebus_queue" "receiveSession" {
+  name = "receivesession"
+  resource_group_name = "${azurerm_resource_group.test.name}"
+  namespace_name = "${azurerm_servicebus_namespace.test.name}"
+  default_message_ttl = "PT300S"
+  requires_session = true
+}
+
 # Data resources used to get SubID and Tennant Info
 data "azurerm_client_config" "current" {}
 
@@ -74,5 +82,3 @@ output "TEST_SERVICEBUS_LOCATION" {
 output "AZURE_TENANT_ID" {
   value = "${data.azurerm_client_config.current.tenant_id}"
 }
-
-

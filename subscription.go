@@ -120,19 +120,54 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
-func (s *Subscription) ensureReceiver(ctx context.Context) error {
+// ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
+func (s *Subscription) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOneSession")
+	defer span.Finish()
+
+	options := make([]receiverOption, 0, 1)
+	if sessionID != nil {
+		options = append(options, receiverWithSession(sessionID))
+	}
+	s.requiredSessionID = sessionID
+	if err := s.ensureReceiver(ctx, options...); err != nil {
+		return err
+	}
+
+	ms, err := newMessageSession(s.receiver, s.entity, sessionID)
+	if err != nil {
+		return err
+	}
+
+	err = handler.Start(ms)
+	if err != nil {
+		return err
+	}
+
+	defer handler.End()
+	handle := s.receiver.Listen(ctx, handler)
+
+	select {
+	case <-handle.Done():
+		return handle.Err()
+	case <-ms.done:
+		return nil
+	}
+}
+
+func (s *Subscription) ensureReceiver(ctx context.Context, options ...receiverOption) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
 	defer span.Finish()
 
 	s.receiverMu.Lock()
 	defer s.receiverMu.Unlock()
 
-	opts := []receiverOption{receiverWithReceiveMode(s.receiveMode)}
-	if s.requiredSessionID != nil {
-		opts = append(opts, receiverWithSession(*s.requiredSessionID))
-	}
+	options = append(options, receiverWithReceiveMode(s.receiveMode))
 
-	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, opts...)
+	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, options...)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err

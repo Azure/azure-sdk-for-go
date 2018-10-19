@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v21.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| consumption | 2018-10-01 |
+| containerservice | 2018-09-30-preview |
+| textanalytics | v2.1 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| servicebus | 2017-04-01 |
+
 ## `v21.2.0`
 
 ### New Packages

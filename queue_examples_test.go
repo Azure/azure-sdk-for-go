@@ -1,11 +1,11 @@
 package servicebus_test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"math/rand"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
@@ -160,14 +160,14 @@ func ExampleQueue_sessionsRoundTrip() {
 }
 
 type SessionPrinter struct {
-	builder          *strings.Builder
+	builder          *bytes.Buffer
 	messageSession   *servicebus.MessageSession
 	messagesReceived uint
 }
 
 func (sp *SessionPrinter) Start(ms *servicebus.MessageSession) error {
 	if sp.builder == nil {
-		sp.builder = &strings.Builder{}
+		sp.builder = &bytes.Buffer{}
 	} else {
 		sp.builder.Reset()
 	}

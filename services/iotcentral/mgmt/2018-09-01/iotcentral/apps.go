@@ -44,10 +44,11 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 // Parameters:
 // operationInputs - set the name parameter in the OperationInputs structure to the name of the IoT Central
 // application to check.
-func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppNameAvailabilityInfo, err error) {
+func (client AppsClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
-			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("iotcentral.AppsClient", "CheckNameAvailability", err.Error())
 	}
 
@@ -102,7 +103,81 @@ func (client AppsClient) CheckNameAvailabilitySender(req *http.Request) (*http.R
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (result AppNameAvailabilityInfo, err error) {
+func (client AppsClient) CheckNameAvailabilityResponder(resp *http.Response) (result AppAvailabilityInfo, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CheckSubdomainAvailability check if an IoT Central application subdomain is available.
+// Parameters:
+// operationInputs - set the name parameter in the OperationInputs structure to the subdomain of the IoT
+// Central application to check.
+func (client AppsClient) CheckSubdomainAvailability(ctx context.Context, operationInputs OperationInputs) (result AppAvailabilityInfo, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: operationInputs,
+			Constraints: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "operationInputs.Name", Name: validation.Pattern, Rule: `^[a-z0-9-]{1,63}$`, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("iotcentral.AppsClient", "CheckSubdomainAvailability", err.Error())
+	}
+
+	req, err := client.CheckSubdomainAvailabilityPreparer(ctx, operationInputs)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CheckSubdomainAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckSubdomainAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CheckSubdomainAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckSubdomainAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iotcentral.AppsClient", "CheckSubdomainAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckSubdomainAvailabilityPreparer prepares the CheckSubdomainAvailability request.
+func (client AppsClient) CheckSubdomainAvailabilityPreparer(ctx context.Context, operationInputs OperationInputs) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability", pathParameters),
+		autorest.WithJSON(operationInputs),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckSubdomainAvailabilitySender sends the CheckSubdomainAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CheckSubdomainAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CheckSubdomainAvailabilityResponder handles the response to the CheckSubdomainAvailability request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CheckSubdomainAvailabilityResponder(resp *http.Response) (result AppAvailabilityInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -180,10 +255,6 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -248,10 +319,6 @@ func (client AppsClient) DeleteSender(req *http.Request) (future AppsDeleteFutur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
 	if err != nil {
 		return
 	}
@@ -571,10 +638,6 @@ func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFutur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

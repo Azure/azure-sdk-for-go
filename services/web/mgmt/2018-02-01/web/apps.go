@@ -928,10 +928,6 @@ func (client AppsClient) CreateFunctionSender(req *http.Request) (future AppsCre
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1015,10 +1011,6 @@ func (client AppsClient) CreateInstanceFunctionSlotSender(req *http.Request) (fu
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1096,10 +1088,6 @@ func (client AppsClient) CreateInstanceMSDeployOperationSender(req *http.Request
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1185,10 +1173,6 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotSender(req *http.Req
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1264,10 +1248,6 @@ func (client AppsClient) CreateMSDeployOperationSender(req *http.Request) (futur
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1348,10 +1328,6 @@ func (client AppsClient) CreateMSDeployOperationSlotSender(req *http.Request) (f
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict))
 	if err != nil {
 		return
 	}
@@ -1446,10 +1422,6 @@ func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCre
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -2555,10 +2527,6 @@ func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (future App
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -2634,10 +2602,6 @@ func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (f
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -2719,10 +2683,6 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -13480,10 +13440,6 @@ func (client AppsClient) InstallSiteExtensionSender(req *http.Request) (future A
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusTooManyRequests))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -13561,10 +13517,6 @@ func (client AppsClient) InstallSiteExtensionSlotSender(req *http.Request) (futu
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusTooManyRequests))
 	if err != nil {
 		return
 	}
@@ -19770,10 +19722,6 @@ func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -19849,10 +19797,6 @@ func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -21045,6 +20989,214 @@ func (client AppsClient) listSnapshotsNextResults(lastResults SnapshotCollection
 // ListSnapshotsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AppsClient) ListSnapshotsComplete(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionIterator, err error) {
 	result.page, err = client.ListSnapshots(ctx, resourceGroupName, name)
+	return
+}
+
+// ListSnapshotsFromDRSecondary returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+func (client AppsClient) ListSnapshotsFromDRSecondary(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondary", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondaryNextResults
+	req, err := client.ListSnapshotsFromDRSecondaryPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondaryPreparer prepares the ListSnapshotsFromDRSecondary request.
+func (client AppsClient) ListSnapshotsFromDRSecondaryPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySender sends the ListSnapshotsFromDRSecondary request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondaryResponder handles the response to the ListSnapshotsFromDRSecondary request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondaryResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondaryNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondaryNextResults(lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondaryComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondaryComplete(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionIterator, err error) {
+	result.page, err = client.ListSnapshotsFromDRSecondary(ctx, resourceGroupName, name)
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlot returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+// slot - website Slot.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondarySlot", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondarySlotNextResults
+	req, err := client.ListSnapshotsFromDRSecondarySlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotPreparer prepares the ListSnapshotsFromDRSecondarySlot request.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySlotSender sends the ListSnapshotsFromDRSecondarySlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondarySlotResponder handles the response to the ListSnapshotsFromDRSecondarySlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondarySlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondarySlotNextResults(lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionIterator, err error) {
+	result.page, err = client.ListSnapshotsFromDRSecondarySlot(ctx, resourceGroupName, name, slot)
 	return
 }
 
@@ -22375,10 +22527,6 @@ func (client AppsClient) MigrateMySQLSender(req *http.Request) (future AppsMigra
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -22461,10 +22609,6 @@ func (client AppsClient) MigrateStorageSender(req *http.Request) (future AppsMig
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
 	if err != nil {
 		return
 	}
@@ -23191,10 +23335,6 @@ func (client AppsClient) RestoreSender(req *http.Request) (future AppsRestoreFut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23274,10 +23414,6 @@ func (client AppsClient) RestoreFromBackupBlobSender(req *http.Request) (future 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23366,10 +23502,6 @@ func (client AppsClient) RestoreFromBackupBlobSlotSender(req *http.Request) (fut
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23444,10 +23576,6 @@ func (client AppsClient) RestoreFromDeletedAppSender(req *http.Request) (future 
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23527,10 +23655,6 @@ func (client AppsClient) RestoreFromDeletedAppSlotSender(req *http.Request) (fut
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23621,10 +23745,6 @@ func (client AppsClient) RestoreSlotSender(req *http.Request) (future AppsRestor
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -23703,10 +23823,6 @@ func (client AppsClient) RestoreSnapshotSender(req *http.Request) (future AppsRe
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -23790,10 +23906,6 @@ func (client AppsClient) RestoreSnapshotSlotSender(req *http.Request) (future Ap
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -24430,10 +24542,6 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSender(req *http.Reque
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -24520,10 +24628,6 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotSender(req *http.R
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}
@@ -25154,10 +25258,6 @@ func (client AppsClient) SwapSlotSlotSender(req *http.Request) (future AppsSwapS
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -25235,10 +25335,6 @@ func (client AppsClient) SwapSlotWithProductionSender(req *http.Request) (future
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

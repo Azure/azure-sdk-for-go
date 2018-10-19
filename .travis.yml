@@ -29,7 +29,6 @@ before_install:
   - curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 install:
-  - go get -u golang.org/x/lint/golint
   - dep ensure
 
 script:

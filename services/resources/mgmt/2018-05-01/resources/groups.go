@@ -114,7 +114,9 @@ func (client GroupsClient) CheckExistenceResponder(resp *http.Response) (result 
 
 // CreateOrUpdate creates or updates a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group to create or update.
+// resourceGroupName - the name of the resource group to create or update. Can include alphanumeric,
+// underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
+// characters.
 // parameters - parameters supplied to the create or update a resource group.
 func (client GroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters Group) (result Group, err error) {
 	if err := validation.Validate([]validation.Validation{

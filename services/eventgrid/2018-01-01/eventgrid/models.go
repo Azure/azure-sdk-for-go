@@ -123,6 +123,21 @@ func PossibleMediaJobStateValues() []MediaJobState {
 	return []MediaJobState{Canceled, Canceling, Error, Finished, Processing, Queued, Scheduled}
 }
 
+// OdataType enumerates the values for odata type.
+type OdataType string
+
+const (
+	// OdataTypeMediaJobOutput ...
+	OdataTypeMediaJobOutput OdataType = "MediaJobOutput"
+	// OdataTypeMicrosoftMediaJobOutputAsset ...
+	OdataTypeMicrosoftMediaJobOutputAsset OdataType = "#Microsoft.Media.JobOutputAsset"
+)
+
+// PossibleOdataTypeValues returns an array of possible values for the OdataType const type.
+func PossibleOdataTypeValues() []OdataType {
+	return []OdataType{OdataTypeMediaJobOutput, OdataTypeMicrosoftMediaJobOutputAsset}
+}
+
 // ContainerRegistryEventActor the agent that initiated the event. For most situations, this could be from the
 // authorization context of the request.
 type ContainerRegistryEventActor struct {
@@ -407,7 +422,7 @@ type IotHubDeviceDisconnectedEventData struct {
 // MediaJobCanceledEventData job canceled event data
 type MediaJobCanceledEventData struct {
 	// Outputs - Gets the Job outputs.
-	Outputs *[]MediaJobOutput `json:"outputs,omitempty"`
+	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
@@ -432,6 +447,56 @@ func (mjced MediaJobCanceledEventData) MarshalJSON() ([]byte, error) {
 		objectMap["correlationData"] = mjced.CorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobCanceledEventData struct.
+func (mjced *MediaJobCanceledEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "outputs":
+			if v != nil {
+				outputs, err := unmarshalBasicMediaJobOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				mjced.Outputs = &outputs
+			}
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjced.PreviousState = previousState
+			}
+		case "state":
+			if v != nil {
+				var state MediaJobState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mjced.State = state
+			}
+		case "correlationData":
+			if v != nil {
+				var correlationData map[string]*string
+				err = json.Unmarshal(*v, &correlationData)
+				if err != nil {
+					return err
+				}
+				mjced.CorrelationData = correlationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobCancelingEventData job canceling event data
@@ -484,7 +549,7 @@ type MediaJobErrorDetail struct {
 // MediaJobErroredEventData job error state event data
 type MediaJobErroredEventData struct {
 	// Outputs - Gets the Job outputs.
-	Outputs *[]MediaJobOutput `json:"outputs,omitempty"`
+	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
@@ -511,10 +576,60 @@ func (mjeed MediaJobErroredEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for MediaJobErroredEventData struct.
+func (mjeed *MediaJobErroredEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "outputs":
+			if v != nil {
+				outputs, err := unmarshalBasicMediaJobOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				mjeed.Outputs = &outputs
+			}
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjeed.PreviousState = previousState
+			}
+		case "state":
+			if v != nil {
+				var state MediaJobState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mjeed.State = state
+			}
+		case "correlationData":
+			if v != nil {
+				var correlationData map[string]*string
+				err = json.Unmarshal(*v, &correlationData)
+				if err != nil {
+					return err
+				}
+				mjeed.CorrelationData = correlationData
+			}
+		}
+	}
+
+	return nil
+}
+
 // MediaJobFinishedEventData job finished event data
 type MediaJobFinishedEventData struct {
 	// Outputs - Gets the Job outputs.
-	Outputs *[]MediaJobOutput `json:"outputs,omitempty"`
+	Outputs *[]BasicMediaJobOutput `json:"outputs,omitempty"`
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
@@ -541,6 +656,62 @@ func (mjfed MediaJobFinishedEventData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for MediaJobFinishedEventData struct.
+func (mjfed *MediaJobFinishedEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "outputs":
+			if v != nil {
+				outputs, err := unmarshalBasicMediaJobOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				mjfed.Outputs = &outputs
+			}
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjfed.PreviousState = previousState
+			}
+		case "state":
+			if v != nil {
+				var state MediaJobState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				mjfed.State = state
+			}
+		case "correlationData":
+			if v != nil {
+				var correlationData map[string]*string
+				err = json.Unmarshal(*v, &correlationData)
+				if err != nil {
+					return err
+				}
+				mjfed.CorrelationData = correlationData
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicMediaJobOutput the event data for a Job output.
+type BasicMediaJobOutput interface {
+	AsMediaJobOutputAsset() (*MediaJobOutputAsset, bool)
+	AsMediaJobOutput() (*MediaJobOutput, bool)
+}
+
 // MediaJobOutput the event data for a Job output.
 type MediaJobOutput struct {
 	// Error - Gets the Job output error.
@@ -551,6 +722,82 @@ type MediaJobOutput struct {
 	Progress *int64 `json:"progress,omitempty"`
 	// State - Gets the Job output state. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
+	// OdataType - Possible values include: 'OdataTypeMediaJobOutput', 'OdataTypeMicrosoftMediaJobOutputAsset'
+	OdataType OdataType `json:"@odata.type,omitempty"`
+}
+
+func unmarshalBasicMediaJobOutput(body []byte) (BasicMediaJobOutput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["@odata.type"] {
+	case string(OdataTypeMicrosoftMediaJobOutputAsset):
+		var mjoa MediaJobOutputAsset
+		err := json.Unmarshal(body, &mjoa)
+		return mjoa, err
+	default:
+		var mjo MediaJobOutput
+		err := json.Unmarshal(body, &mjo)
+		return mjo, err
+	}
+}
+func unmarshalBasicMediaJobOutputArray(body []byte) ([]BasicMediaJobOutput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mjoArray := make([]BasicMediaJobOutput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mjo, err := unmarshalBasicMediaJobOutput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mjoArray[index] = mjo
+	}
+	return mjoArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MediaJobOutput.
+func (mjo MediaJobOutput) MarshalJSON() ([]byte, error) {
+	mjo.OdataType = OdataTypeMediaJobOutput
+	objectMap := make(map[string]interface{})
+	if mjo.Error != nil {
+		objectMap["error"] = mjo.Error
+	}
+	if mjo.Label != nil {
+		objectMap["label"] = mjo.Label
+	}
+	if mjo.Progress != nil {
+		objectMap["progress"] = mjo.Progress
+	}
+	if mjo.State != "" {
+		objectMap["state"] = mjo.State
+	}
+	if mjo.OdataType != "" {
+		objectMap["@odata.type"] = mjo.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMediaJobOutputAsset is the BasicMediaJobOutput implementation for MediaJobOutput.
+func (mjo MediaJobOutput) AsMediaJobOutputAsset() (*MediaJobOutputAsset, bool) {
+	return nil, false
+}
+
+// AsMediaJobOutput is the BasicMediaJobOutput implementation for MediaJobOutput.
+func (mjo MediaJobOutput) AsMediaJobOutput() (*MediaJobOutput, bool) {
+	return &mjo, true
+}
+
+// AsBasicMediaJobOutput is the BasicMediaJobOutput implementation for MediaJobOutput.
+func (mjo MediaJobOutput) AsBasicMediaJobOutput() (BasicMediaJobOutput, bool) {
+	return &mjo, true
 }
 
 // MediaJobOutputAsset the event data for a Job output asset.
@@ -565,6 +812,48 @@ type MediaJobOutputAsset struct {
 	Progress *int64 `json:"progress,omitempty"`
 	// State - Gets the Job output state. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	State MediaJobState `json:"state,omitempty"`
+	// OdataType - Possible values include: 'OdataTypeMediaJobOutput', 'OdataTypeMicrosoftMediaJobOutputAsset'
+	OdataType OdataType `json:"@odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaJobOutputAsset.
+func (mjoa MediaJobOutputAsset) MarshalJSON() ([]byte, error) {
+	mjoa.OdataType = OdataTypeMicrosoftMediaJobOutputAsset
+	objectMap := make(map[string]interface{})
+	if mjoa.AssetName != nil {
+		objectMap["assetName"] = mjoa.AssetName
+	}
+	if mjoa.Error != nil {
+		objectMap["error"] = mjoa.Error
+	}
+	if mjoa.Label != nil {
+		objectMap["label"] = mjoa.Label
+	}
+	if mjoa.Progress != nil {
+		objectMap["progress"] = mjoa.Progress
+	}
+	if mjoa.State != "" {
+		objectMap["state"] = mjoa.State
+	}
+	if mjoa.OdataType != "" {
+		objectMap["@odata.type"] = mjoa.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMediaJobOutputAsset is the BasicMediaJobOutput implementation for MediaJobOutputAsset.
+func (mjoa MediaJobOutputAsset) AsMediaJobOutputAsset() (*MediaJobOutputAsset, bool) {
+	return &mjoa, true
+}
+
+// AsMediaJobOutput is the BasicMediaJobOutput implementation for MediaJobOutputAsset.
+func (mjoa MediaJobOutputAsset) AsMediaJobOutput() (*MediaJobOutput, bool) {
+	return nil, false
+}
+
+// AsBasicMediaJobOutput is the BasicMediaJobOutput implementation for MediaJobOutputAsset.
+func (mjoa MediaJobOutputAsset) AsBasicMediaJobOutput() (BasicMediaJobOutput, bool) {
+	return &mjoa, true
 }
 
 // MediaJobOutputCanceledEventData job output canceled event data
@@ -572,7 +861,7 @@ type MediaJobOutputCanceledEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -583,13 +872,52 @@ func (mjoced MediaJobOutputCanceledEventData) MarshalJSON() ([]byte, error) {
 	if mjoced.PreviousState != "" {
 		objectMap["previousState"] = mjoced.PreviousState
 	}
-	if mjoced.Output != nil {
-		objectMap["output"] = mjoced.Output
-	}
+	objectMap["output"] = mjoced.Output
 	if mjoced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoced.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputCanceledEventData struct.
+func (mjoced *MediaJobOutputCanceledEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjoced.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjoced.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjoced.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputCancelingEventData job output canceling event data
@@ -597,7 +925,7 @@ type MediaJobOutputCancelingEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -608,13 +936,52 @@ func (mjoced MediaJobOutputCancelingEventData) MarshalJSON() ([]byte, error) {
 	if mjoced.PreviousState != "" {
 		objectMap["previousState"] = mjoced.PreviousState
 	}
-	if mjoced.Output != nil {
-		objectMap["output"] = mjoced.Output
-	}
+	objectMap["output"] = mjoced.Output
 	if mjoced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoced.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputCancelingEventData struct.
+func (mjoced *MediaJobOutputCancelingEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjoced.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjoced.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjoced.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputErroredEventData job output error event data
@@ -622,7 +989,7 @@ type MediaJobOutputErroredEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -633,13 +1000,52 @@ func (mjoeed MediaJobOutputErroredEventData) MarshalJSON() ([]byte, error) {
 	if mjoeed.PreviousState != "" {
 		objectMap["previousState"] = mjoeed.PreviousState
 	}
-	if mjoeed.Output != nil {
-		objectMap["output"] = mjoeed.Output
-	}
+	objectMap["output"] = mjoeed.Output
 	if mjoeed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoeed.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputErroredEventData struct.
+func (mjoeed *MediaJobOutputErroredEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjoeed.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjoeed.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjoeed.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputFinishedEventData job output finished event data
@@ -647,7 +1053,7 @@ type MediaJobOutputFinishedEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -658,13 +1064,52 @@ func (mjofed MediaJobOutputFinishedEventData) MarshalJSON() ([]byte, error) {
 	if mjofed.PreviousState != "" {
 		objectMap["previousState"] = mjofed.PreviousState
 	}
-	if mjofed.Output != nil {
-		objectMap["output"] = mjofed.Output
-	}
+	objectMap["output"] = mjofed.Output
 	if mjofed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjofed.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputFinishedEventData struct.
+func (mjofed *MediaJobOutputFinishedEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjofed.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjofed.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjofed.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputProcessingEventData job output processing event data
@@ -672,7 +1117,7 @@ type MediaJobOutputProcessingEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -683,13 +1128,52 @@ func (mjoped MediaJobOutputProcessingEventData) MarshalJSON() ([]byte, error) {
 	if mjoped.PreviousState != "" {
 		objectMap["previousState"] = mjoped.PreviousState
 	}
-	if mjoped.Output != nil {
-		objectMap["output"] = mjoped.Output
-	}
+	objectMap["output"] = mjoped.Output
 	if mjoped.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjoped.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputProcessingEventData struct.
+func (mjoped *MediaJobOutputProcessingEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjoped.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjoped.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjoped.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputScheduledEventData job output scheduled event data
@@ -697,7 +1181,7 @@ type MediaJobOutputScheduledEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -708,13 +1192,52 @@ func (mjosed MediaJobOutputScheduledEventData) MarshalJSON() ([]byte, error) {
 	if mjosed.PreviousState != "" {
 		objectMap["previousState"] = mjosed.PreviousState
 	}
-	if mjosed.Output != nil {
-		objectMap["output"] = mjosed.Output
-	}
+	objectMap["output"] = mjosed.Output
 	if mjosed.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjosed.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputScheduledEventData struct.
+func (mjosed *MediaJobOutputScheduledEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjosed.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjosed.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjosed.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobOutputStateChangeEventData schema of the Data property of an EventGridEvent for a
@@ -723,7 +1246,7 @@ type MediaJobOutputStateChangeEventData struct {
 	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
 	PreviousState MediaJobState `json:"previousState,omitempty"`
 	// Output - Gets the output.
-	Output *MediaJobOutput `json:"output,omitempty"`
+	Output BasicMediaJobOutput `json:"output,omitempty"`
 	// JobCorrelationData - Gets the Job correlation data.
 	JobCorrelationData map[string]*string `json:"jobCorrelationData"`
 }
@@ -734,13 +1257,52 @@ func (mjosced MediaJobOutputStateChangeEventData) MarshalJSON() ([]byte, error) 
 	if mjosced.PreviousState != "" {
 		objectMap["previousState"] = mjosced.PreviousState
 	}
-	if mjosced.Output != nil {
-		objectMap["output"] = mjosced.Output
-	}
+	objectMap["output"] = mjosced.Output
 	if mjosced.JobCorrelationData != nil {
 		objectMap["jobCorrelationData"] = mjosced.JobCorrelationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MediaJobOutputStateChangeEventData struct.
+func (mjosced *MediaJobOutputStateChangeEventData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "previousState":
+			if v != nil {
+				var previousState MediaJobState
+				err = json.Unmarshal(*v, &previousState)
+				if err != nil {
+					return err
+				}
+				mjosced.PreviousState = previousState
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMediaJobOutput(*v)
+				if err != nil {
+					return err
+				}
+				mjosced.Output = output
+			}
+		case "jobCorrelationData":
+			if v != nil {
+				var jobCorrelationData map[string]*string
+				err = json.Unmarshal(*v, &jobCorrelationData)
+				if err != nil {
+					return err
+				}
+				mjosced.JobCorrelationData = jobCorrelationData
+			}
+		}
+	}
+
+	return nil
 }
 
 // MediaJobProcessingEventData job processing event data

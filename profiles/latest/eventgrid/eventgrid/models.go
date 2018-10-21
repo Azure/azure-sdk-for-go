@@ -65,6 +65,13 @@ const (
 	Scheduled  MediaJobState = original.Scheduled
 )
 
+type OdataType = original.OdataType
+
+const (
+	OdataTypeMediaJobOutput               OdataType = original.OdataTypeMediaJobOutput
+	OdataTypeMicrosoftMediaJobOutputAsset OdataType = original.OdataTypeMicrosoftMediaJobOutputAsset
+)
+
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest
@@ -92,6 +99,7 @@ type MediaJobError = original.MediaJobError
 type MediaJobErrorDetail = original.MediaJobErrorDetail
 type MediaJobErroredEventData = original.MediaJobErroredEventData
 type MediaJobFinishedEventData = original.MediaJobFinishedEventData
+type BasicMediaJobOutput = original.BasicMediaJobOutput
 type MediaJobOutput = original.MediaJobOutput
 type MediaJobOutputAsset = original.MediaJobOutputAsset
 type MediaJobOutputCanceledEventData = original.MediaJobOutputCanceledEventData
@@ -147,6 +155,9 @@ func PossibleMediaJobRetryValues() []MediaJobRetry {
 }
 func PossibleMediaJobStateValues() []MediaJobState {
 	return original.PossibleMediaJobStateValues()
+}
+func PossibleOdataTypeValues() []OdataType {
+	return original.PossibleOdataTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

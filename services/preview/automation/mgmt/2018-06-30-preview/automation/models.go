@@ -7264,9 +7264,9 @@ type SoftareUpdateConfigurationRunTaskProperties struct {
 
 // SoftareUpdateConfigurationRunTasks software update configuration run tasks model.
 type SoftareUpdateConfigurationRunTasks struct {
-	// PreTask - Pre task object
+	// PreTask - Pre task object.
 	PreTask *SoftareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task object
+	// PostTask - Post task object.
 	PostTask *SoftareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
 }
 
@@ -7529,17 +7529,17 @@ type SoftwareUpdateConfigurationProperties struct {
 	ScheduleInfo *ScheduleProperties `json:"scheduleInfo,omitempty"`
 	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Error - detailes of provisioning error
+	// Error - Details of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
-	// CreationTime - Creation time of theresource, which only appears in the response.
+	// CreationTime - Creation time of there source, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - createdBy property, which only appears in the response.
+	// CreatedBy - CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// Tasks - Tasks information for the Software update configuration
+	// Tasks - Tasks information for the Software update configuration.
 	Tasks *TasksProperties `json:"tasks,omitempty"`
 }
 
@@ -7626,11 +7626,11 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
 	// Status - Status of the software update configuration run.
 	Status *string `json:"status,omitempty"`
-	// ConfiguredDuration - configured duration for the software update configuration run.
+	// ConfiguredDuration - Configured duration for the software update configuration run.
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
 	// OsType - Operating system target of the software update configuration triggered this run
 	OsType *string `json:"osType,omitempty"`
-	// StartTime - Etart time of the software update configuration run.
+	// StartTime - Start time of the software update configuration run.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - End time of the software update configuration run.
 	EndTime *date.Time `json:"endTime,omitempty"`
@@ -7640,13 +7640,13 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	FailedCount *int32 `json:"failedCount,omitempty"`
 	// CreationTime - Creation time of theresource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - createdBy property, which only appears in the response.
+	// CreatedBy - CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// Tasks - software update configuration tasks triggered in this run
+	// Tasks - Software update configuration tasks triggered in this run
 	Tasks *SoftareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
 }
 
@@ -8635,9 +8635,9 @@ func (tp TaskProperties) MarshalJSON() ([]byte, error) {
 
 // TasksProperties task properties of the software update configuration.
 type TasksProperties struct {
-	// PreTask - Pre task object
+	// PreTask - Pre task object.
 	PreTask *TaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task object
+	// PostTask - Post task object.
 	PostTask *TaskProperties `json:"postTask,omitempty"`
 }
 

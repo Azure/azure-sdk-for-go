@@ -294,6 +294,14 @@ type ActionGroup struct {
 	AzureAppPushReceivers *[]AzureAppPushReceiver `json:"azureAppPushReceivers,omitempty"`
 	// AutomationRunbookReceivers - The list of AutomationRunbook receivers that are part of this action group.
 	AutomationRunbookReceivers *[]AutomationRunbookReceiver `json:"automationRunbookReceivers,omitempty"`
+	// VoiceReceivers - The list of voice receivers that are part of this action group.
+	VoiceReceivers *[]VoiceReceiver `json:"voiceReceivers,omitempty"`
+	// LogicAppReceivers - The list of logic app receivers that are part of this action group.
+	LogicAppReceivers *[]LogicAppReceiver `json:"logicAppReceivers,omitempty"`
+	// AzureFunctionReceivers - The list of azure function receivers that are part of this action group.
+	AzureFunctionReceivers *[]AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
+	// ArmRoleReceivers - The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported.
+	ArmRoleReceivers *[]ArmRoleReceiver `json:"armRoleReceivers,omitempty"`
 }
 
 // ActionGroupList a list of action groups.
@@ -961,6 +969,14 @@ func (arrp *AlertRuleResourcePatch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ArmRoleReceiver an arm role receiver.
+type ArmRoleReceiver struct {
+	// Name - The name of the arm role receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+	// RoleID - The arm role id.
+	RoleID *string `json:"roleId,omitempty"`
+}
+
 // AutomationRunbookReceiver the Azure Automation Runbook notification receiver.
 type AutomationRunbookReceiver struct {
 	// AutomationAccountID - The Azure automation account Id which holds this runbook and authenticate to Azure resource.
@@ -1287,6 +1303,18 @@ type AzureAppPushReceiver struct {
 	Name *string `json:"name,omitempty"`
 	// EmailAddress - The email address registered for the Azure mobile app.
 	EmailAddress *string `json:"emailAddress,omitempty"`
+}
+
+// AzureFunctionReceiver an azure function receiver.
+type AzureFunctionReceiver struct {
+	// Name - The name of the azure function receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+	// FunctionAppResourceID - The azure resource id of the function app.
+	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
+	// FunctionName - The function name in the function app.
+	FunctionName *string `json:"functionName,omitempty"`
+	// HTTPTriggerURL - The http trigger url where http request sent to.
+	HTTPTriggerURL *string `json:"httpTriggerUrl,omitempty"`
 }
 
 // DiagnosticSettings the diagnostic settings.
@@ -1663,6 +1691,16 @@ func (ltrc *LocationThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// LogicAppReceiver a logic app receiver.
+type LogicAppReceiver struct {
+	// Name - The name of the logic app receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+	// ResourceID - The azure resource id of the logic app receiver.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// CallbackURL - The callback url where http request sent to.
+	CallbackURL *string `json:"callbackUrl,omitempty"`
 }
 
 // LogProfileCollection represents a collection of log profiles.
@@ -2813,6 +2851,16 @@ type TimeWindow struct {
 	Start *date.Time `json:"start,omitempty"`
 	// End - the end time for the profile in ISO 8601 format.
 	End *date.Time `json:"end,omitempty"`
+}
+
+// VoiceReceiver a voice receiver.
+type VoiceReceiver struct {
+	// Name - The name of the voice receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+	// CountryCode - The country code of the voice receiver.
+	CountryCode *string `json:"countryCode,omitempty"`
+	// PhoneNumber - The phone number of the voice receiver.
+	PhoneNumber *string `json:"phoneNumber,omitempty"`
 }
 
 // WebhookNotification webhook notification of an autoscale event.

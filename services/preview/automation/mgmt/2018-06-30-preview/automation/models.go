@@ -7264,7 +7264,7 @@ type SoftareUpdateConfigurationRunTaskProperties struct {
 
 // SoftareUpdateConfigurationRunTasks software update configuration run tasks model.
 type SoftareUpdateConfigurationRunTasks struct {
-	// PreTask - Pre task object.
+	// PreTask - Pre task properties.
 	PreTask *SoftareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
 	// PostTask - Post task object.
 	PostTask *SoftareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
@@ -7531,7 +7531,7 @@ type SoftwareUpdateConfigurationProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Error - Details of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
-	// CreationTime - Creation time of there source, which only appears in the response.
+	// CreationTime - Creation time of the resource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// CreatedBy - CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
@@ -7540,7 +7540,7 @@ type SoftwareUpdateConfigurationProperties struct {
 	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Tasks - Tasks information for the Software update configuration.
-	Tasks *TasksProperties `json:"tasks,omitempty"`
+	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
 }
 
 // SoftwareUpdateConfigurationRun software update configuration Run properties.
@@ -7648,6 +7648,14 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// Tasks - Software update configuration tasks triggered in this run
 	Tasks *SoftareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
+}
+
+// SoftwareUpdateConfigurationTasks task properties of the software update configuration.
+type SoftwareUpdateConfigurationTasks struct {
+	// PreTask - Pre task properties.
+	PreTask *TaskProperties `json:"preTask,omitempty"`
+	// PostTask - Post task properties.
+	PostTask *TaskProperties `json:"postTask,omitempty"`
 }
 
 // SourceControl definition of the source control.
@@ -8631,14 +8639,6 @@ func (tp TaskProperties) MarshalJSON() ([]byte, error) {
 		objectMap["source"] = tp.Source
 	}
 	return json.Marshal(objectMap)
-}
-
-// TasksProperties task properties of the software update configuration.
-type TasksProperties struct {
-	// PreTask - Pre task object.
-	PreTask *TaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task object.
-	PostTask *TaskProperties `json:"postTask,omitempty"`
 }
 
 // TestJob definition of the test job.

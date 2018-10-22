@@ -81,7 +81,7 @@ func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resour
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -162,7 +162,7 @@ func (client RegisteredServersClient) DeletePreparer(ctx context.Context, resour
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -246,7 +246,7 @@ func (client RegisteredServersClient) GetPreparer(ctx context.Context, resourceG
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -323,7 +323,7 @@ func (client RegisteredServersClient) ListByStorageSyncServicePreparer(ctx conte
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -353,5 +353,86 @@ func (client RegisteredServersClient) ListByStorageSyncServiceResponder(resp *ht
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// TriggerRollover triggers Server certificate rollover.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// storageSyncServiceName - name of Storage Sync Service resource.
+// serverID - server Id
+// parameters - body of Trigger Rollover request.
+func (client RegisteredServersClient) TriggerRollover(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest) (result RegisteredServersTriggerRolloverFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagesync.RegisteredServersClient", "TriggerRollover", err.Error())
+	}
+
+	req, err := client.TriggerRolloverPreparer(ctx, resourceGroupName, storageSyncServiceName, serverID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "TriggerRollover", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.TriggerRolloverSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "TriggerRollover", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// TriggerRolloverPreparer prepares the TriggerRollover request.
+func (client RegisteredServersClient) TriggerRolloverPreparer(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters TriggerRolloverRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"serverId":               autorest.Encode("path", serverID),
+		"storageSyncServiceName": autorest.Encode("path", storageSyncServiceName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/registeredServers/{serverId}/triggerRollover", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// TriggerRolloverSender sends the TriggerRollover request. The method will close the
+// http.Response Body if it receives an error.
+func (client RegisteredServersClient) TriggerRolloverSender(req *http.Request) (future RegisteredServersTriggerRolloverFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// TriggerRolloverResponder handles the response to the TriggerRollover request. The method always
+// closes the http.Response Body.
+func (client RegisteredServersClient) TriggerRolloverResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

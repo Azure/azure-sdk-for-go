@@ -83,7 +83,7 @@ func (client CloudEndpointsClient) CreatePreparer(ctx context.Context, resourceG
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -166,7 +166,7 @@ func (client CloudEndpointsClient) DeletePreparer(ctx context.Context, resourceG
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -252,7 +252,7 @@ func (client CloudEndpointsClient) GetPreparer(ctx context.Context, resourceGrou
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -331,7 +331,7 @@ func (client CloudEndpointsClient) ListBySyncGroupPreparer(ctx context.Context, 
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -407,7 +407,7 @@ func (client CloudEndpointsClient) PostBackupPreparer(ctx context.Context, resou
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -491,7 +491,7 @@ func (client CloudEndpointsClient) PostRestorePreparer(ctx context.Context, reso
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -574,7 +574,7 @@ func (client CloudEndpointsClient) PreBackupPreparer(ctx context.Context, resour
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -657,7 +657,7 @@ func (client CloudEndpointsClient) PreRestorePreparer(ctx context.Context, resou
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -745,7 +745,7 @@ func (client CloudEndpointsClient) RestoreheartbeatPreparer(ctx context.Context,
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-07-01"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

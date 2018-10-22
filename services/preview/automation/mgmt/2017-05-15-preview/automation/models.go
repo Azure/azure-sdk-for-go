@@ -1371,8 +1371,8 @@ func (arrkp AgentRegistrationRegenerateKeyParameter) MarshalJSON() ([]byte, erro
 type AzureQueryProperties struct {
 	// Scope - List of Subscription or Resource Group ARM Ids.
 	Scope *[]string `json:"scope,omitempty"`
-	// Location - List of locations to scope the query to.
-	Location *[]string `json:"location,omitempty"`
+	// Locations - List of locations to scope the query to.
+	Locations *[]string `json:"locations,omitempty"`
 	// TagSettings - Tag settings for the VM.
 	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
 }

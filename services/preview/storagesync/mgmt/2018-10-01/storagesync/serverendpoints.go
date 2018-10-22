@@ -61,6 +61,10 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 					Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
 						{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
+					{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
+							{Target: "parameters.ServerEndpointCreateParametersProperties.TierFilesOlderThanDays", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Create", err.Error())
 	}
@@ -90,7 +94,7 @@ func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resource
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -173,7 +177,7 @@ func (client ServerEndpointsClient) DeletePreparer(ctx context.Context, resource
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -259,7 +263,7 @@ func (client ServerEndpointsClient) GetPreparer(ctx context.Context, resourceGro
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -338,7 +342,7 @@ func (client ServerEndpointsClient) ListBySyncGroupPreparer(ctx context.Context,
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -414,7 +418,7 @@ func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, re
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -497,7 +501,7 @@ func (client ServerEndpointsClient) UpdatePreparer(ctx context.Context, resource
 		"syncGroupName":          autorest.Encode("path", syncGroupName),
 	}
 
-	const APIVersion = "2018-04-02"
+	const APIVersion = "2018-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -300,7 +300,7 @@ type ActionGroup struct {
 	LogicAppReceivers *[]LogicAppReceiver `json:"logicAppReceivers,omitempty"`
 	// AzureFunctionReceivers - The list of azure function receivers that are part of this action group.
 	AzureFunctionReceivers *[]AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
-	// ArmRoleReceivers - The list of arm role receivers that are part of this action group.
+	// ArmRoleReceivers - The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported.
 	ArmRoleReceivers *[]ArmRoleReceiver `json:"armRoleReceivers,omitempty"`
 }
 

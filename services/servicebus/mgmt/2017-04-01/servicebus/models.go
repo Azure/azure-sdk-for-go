@@ -132,6 +132,27 @@ func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{PrimaryKey, SecondaryKey}
 }
 
+// NameSpaceType enumerates the values for name space type.
+type NameSpaceType string
+
+const (
+	// EventHub ...
+	EventHub NameSpaceType = "EventHub"
+	// Messaging ...
+	Messaging NameSpaceType = "Messaging"
+	// Mixed ...
+	Mixed NameSpaceType = "Mixed"
+	// NotificationHub ...
+	NotificationHub NameSpaceType = "NotificationHub"
+	// Relay ...
+	Relay NameSpaceType = "Relay"
+)
+
+// PossibleNameSpaceTypeValues returns an array of possible values for the NameSpaceType const type.
+func PossibleNameSpaceTypeValues() []NameSpaceType {
+	return []NameSpaceType{EventHub, Messaging, Mixed, NotificationHub, Relay}
+}
+
 // ProvisioningStateDR enumerates the values for provisioning state dr.
 type ProvisioningStateDR string
 
@@ -2244,6 +2265,12 @@ func (page SBNamespaceListResultPage) Values() []SBNamespace {
 		return nil
 	}
 	return *page.snlr.Value
+}
+
+// SBNamespaceMigrate namespace Migrate Object
+type SBNamespaceMigrate struct {
+	// TargetNamespaceType - Type of namespaces. Possible values include: 'Messaging', 'NotificationHub', 'Mixed', 'EventHub', 'Relay'
+	TargetNamespaceType NameSpaceType `json:"targetNamespaceType,omitempty"`
 }
 
 // SBNamespaceProperties properties of the namespace.

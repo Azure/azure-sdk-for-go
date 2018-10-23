@@ -1371,8 +1371,8 @@ func (arrkp AgentRegistrationRegenerateKeyParameter) MarshalJSON() ([]byte, erro
 type AzureQueryProperties struct {
 	// Scope - List of Subscription or Resource Group ARM Ids.
 	Scope *[]string `json:"scope,omitempty"`
-	// Location - List of locations to scope the query to.
-	Location *[]string `json:"location,omitempty"`
+	// Locations - List of locations to scope the query to.
+	Locations *[]string `json:"locations,omitempty"`
 	// TagSettings - Tag settings for the VM.
 	TagSettings *TagSettingsProperties `json:"tagSettings,omitempty"`
 }
@@ -6700,6 +6700,24 @@ type Sku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// SoftareUpdateConfigurationRunTaskProperties task properties of the software update configuration.
+type SoftareUpdateConfigurationRunTaskProperties struct {
+	// Status - The status of the task.
+	Status *string `json:"status,omitempty"`
+	// Source - The name of the source of the task.
+	Source *string `json:"source,omitempty"`
+	// JobID - The job id of the task.
+	JobID *string `json:"jobId,omitempty"`
+}
+
+// SoftareUpdateConfigurationRunTasks software update configuration run tasks model.
+type SoftareUpdateConfigurationRunTasks struct {
+	// PreTask - Pre task properties.
+	PreTask *SoftareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
+	// PostTask - Post task properties.
+	PostTask *SoftareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
+}
+
 // SoftwareUpdateConfiguration software update configuration properties.
 type SoftwareUpdateConfiguration struct {
 	autorest.Response `json:"-"`
@@ -6959,16 +6977,18 @@ type SoftwareUpdateConfigurationProperties struct {
 	ScheduleInfo *ScheduleProperties `json:"scheduleInfo,omitempty"`
 	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Error - detailes of provisioning error
+	// Error - Details of provisioning error
 	Error *ErrorResponse `json:"error,omitempty"`
-	// CreationTime - Creation time of theresource, which only appears in the response.
+	// CreationTime - Creation time of the resource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - createdBy property, which only appears in the response.
+	// CreatedBy - CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// Tasks - Tasks information for the Software update configuration.
+	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
 }
 
 // SoftwareUpdateConfigurationRun software update configuration Run properties.
@@ -7054,11 +7074,11 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
 	// Status - Status of the software update configuration run.
 	Status *string `json:"status,omitempty"`
-	// ConfiguredDuration - configured duration for the software update configuration run.
+	// ConfiguredDuration - Configured duration for the software update configuration run.
 	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
 	// OsType - Operating system target of the software update configuration triggered this run
 	OsType *string `json:"osType,omitempty"`
-	// StartTime - Etart time of the software update configuration run.
+	// StartTime - Start time of the software update configuration run.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - End time of the software update configuration run.
 	EndTime *date.Time `json:"endTime,omitempty"`
@@ -7068,12 +7088,22 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	FailedCount *int32 `json:"failedCount,omitempty"`
 	// CreationTime - Creation time of theresource, which only appears in the response.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// CreatedBy - createdBy property, which only appears in the response.
+	// CreatedBy - CreatedBy property, which only appears in the response.
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// LastModifiedTime - Last time resource was modified, which only appears in the response.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	// LastModifiedBy - LastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// Tasks - Software update configuration tasks triggered in this run
+	Tasks *SoftareUpdateConfigurationRunTasks `json:"tasks,omitempty"`
+}
+
+// SoftwareUpdateConfigurationTasks task properties of the software update configuration.
+type SoftwareUpdateConfigurationTasks struct {
+	// PreTask - Pre task properties.
+	PreTask *TaskProperties `json:"preTask,omitempty"`
+	// PostTask - Post task properties.
+	PostTask *TaskProperties `json:"postTask,omitempty"`
 }
 
 // SourceControl definition of the source control.
@@ -8039,6 +8069,26 @@ type TargetProperties struct {
 	AzureQueries *[]AzureQueryProperties `json:"azureQueries,omitempty"`
 }
 
+// TaskProperties task properties of the software update configuration.
+type TaskProperties struct {
+	// Parameters - Gets or sets the parameters of the task.
+	Parameters map[string]*string `json:"parameters"`
+	// Source - Gets or sets the name of the runbook.
+	Source *string `json:"source,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TaskProperties.
+func (tp TaskProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.Parameters != nil {
+		objectMap["parameters"] = tp.Parameters
+	}
+	if tp.Source != nil {
+		objectMap["source"] = tp.Source
+	}
+	return json.Marshal(objectMap)
+}
+
 // TestJob definition of the test job.
 type TestJob struct {
 	autorest.Response `json:"-"`
@@ -8225,6 +8275,8 @@ type UpdateConfigurationMachineRunProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// Error - detailes of provisioning error
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // UpdateConfigurationNavigation software update configuration Run Navigation model.

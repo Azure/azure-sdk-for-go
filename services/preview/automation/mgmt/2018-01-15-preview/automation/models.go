@@ -597,13 +597,13 @@ type SyncType string
 const (
 	// FullSync ...
 	FullSync SyncType = "FullSync"
-	// IncrementalSync ...
-	IncrementalSync SyncType = "IncrementalSync"
+	// PartialSync ...
+	PartialSync SyncType = "PartialSync"
 )
 
 // PossibleSyncTypeValues returns an array of possible values for the SyncType const type.
 func PossibleSyncTypeValues() []SyncType {
-	return []SyncType{FullSync, IncrementalSync}
+	return []SyncType{FullSync, PartialSync}
 }
 
 // TagOperators enumerates the values for tag operators.
@@ -7192,7 +7192,7 @@ type SoftareUpdateConfigurationRunTaskProperties struct {
 type SoftareUpdateConfigurationRunTasks struct {
 	// PreTask - Pre task properties.
 	PreTask *SoftareUpdateConfigurationRunTaskProperties `json:"preTask,omitempty"`
-	// PostTask - Post task object.
+	// PostTask - Post task properties.
 	PostTask *SoftareUpdateConfigurationRunTaskProperties `json:"postTask,omitempty"`
 }
 
@@ -8007,7 +8007,7 @@ type SourceControlSyncJobByIDProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
 	// Exception - The exceptions that occured while running the sync job.
 	Exception *string `json:"exception,omitempty"`
@@ -8172,7 +8172,7 @@ type SourceControlSyncJobProperties struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// SyncType - The sync type. Possible values include: 'IncrementalSync', 'FullSync'
+	// SyncType - The sync type. Possible values include: 'PartialSync', 'FullSync'
 	SyncType SyncType `json:"syncType,omitempty"`
 }
 

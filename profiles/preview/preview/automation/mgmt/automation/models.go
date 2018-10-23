@@ -318,8 +318,8 @@ const (
 type SyncType = original.SyncType
 
 const (
-	FullSync        SyncType = original.FullSync
-	IncrementalSync SyncType = original.IncrementalSync
+	FullSync    SyncType = original.FullSync
+	PartialSync SyncType = original.PartialSync
 )
 
 type TagOperators = original.TagOperators

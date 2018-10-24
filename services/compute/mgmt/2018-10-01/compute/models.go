@@ -1217,6 +1217,12 @@ type AutomaticOSUpgradePolicy struct {
 	DisableAutomaticRollback *bool `json:"disableAutomaticRollback,omitempty"`
 }
 
+// AutomaticOSUpgradeProperties describes automatic OS upgrade properties on the image.
+type AutomaticOSUpgradeProperties struct {
+	// AutomaticOSUpgradeSupported - Specifies whether automatic OS upgrade is supported on the image.
+	AutomaticOSUpgradeSupported *bool `json:"automaticOSUpgradeSupported,omitempty"`
+}
+
 // AvailabilitySet specifies information about the availability set that the virtual machine should be assigned to.
 // Virtual machines specified in the same availability set are allocated to different nodes to maximize
 // availability. For more information about availability sets, see [Manage the availability of virtual
@@ -1529,9 +1535,8 @@ func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
 }
 
 // BootDiagnostics boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot
-// to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log.
-// <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from
-// the hypervisor.
+// to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables
+// you to see a screenshot of the VM from the hypervisor.
 type BootDiagnostics struct {
 	// Enabled - Whether boot diagnostics should be enabled on the Virtual Machine.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -1545,6 +1550,8 @@ type BootDiagnosticsInstanceView struct {
 	ConsoleScreenshotBlobURI *string `json:"consoleScreenshotBlobUri,omitempty"`
 	// SerialConsoleLogBlobURI - The Linux serial console log blob Uri.
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
+	// Status - The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors encountered in enabling boot diagnostics.
+	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
 // CloudError an error response from the Gallery service.
@@ -1968,7 +1975,7 @@ type DataDiskImage struct {
 
 // DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
 type DiagnosticsProfile struct {
-	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
+	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
 }
 
@@ -3551,7 +3558,7 @@ type ImageDataDisk struct {
 
 // ImageDiskReference the source image used for creating the disk.
 type ImageDiskReference struct {
-	// ID - A relative uri containing either a Platform Imgage Repository or user image reference.
+	// ID - A relative uri containing either a Platform Image Repository or user image reference.
 	ID *string `json:"id,omitempty"`
 	// Lun - If the disk is created from an image's data disk, this is an index that indicates which of the data disks in the image to use. For OS disks, this field is null.
 	Lun *int32 `json:"lun,omitempty"`
@@ -6437,9 +6444,10 @@ func (vmi *VirtualMachineImage) UnmarshalJSON(body []byte) error {
 
 // VirtualMachineImageProperties describes the properties of a Virtual Machine Image.
 type VirtualMachineImageProperties struct {
-	Plan           *PurchasePlan    `json:"plan,omitempty"`
-	OsDiskImage    *OSDiskImage     `json:"osDiskImage,omitempty"`
-	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
+	Plan                         *PurchasePlan                 `json:"plan,omitempty"`
+	OsDiskImage                  *OSDiskImage                  `json:"osDiskImage,omitempty"`
+	DataDiskImages               *[]DataDiskImage              `json:"dataDiskImages,omitempty"`
+	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties `json:"automaticOSUpgradeProperties,omitempty"`
 }
 
 // VirtualMachineImageResource virtual machine image resource information.
@@ -6495,7 +6503,7 @@ type VirtualMachineInstanceView struct {
 	Disks *[]DiskInstanceView `json:"disks,omitempty"`
 	// Extensions - The extensions information.
 	Extensions *[]VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
-	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
+	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView `json:"bootDiagnostics,omitempty"`
 	// Statuses - The resource status information.
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
@@ -8896,7 +8904,7 @@ type VirtualMachineScaleSetVMInstanceView struct {
 	Extensions *[]VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
 	// VMHealth - The health status for the VM.
 	VMHealth *VirtualMachineHealthStatus `json:"vmHealth,omitempty"`
-	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
+	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView `json:"bootDiagnostics,omitempty"`
 	// Statuses - The resource status information.
 	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`

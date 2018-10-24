@@ -24,29 +24,29 @@ package imagesearch
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Imagesearch
-	DefaultBaseURI = "https://api.cognitive.microsoft.com/bing/v7.0"
-)
+// DefaultBaseURI is the default URI used for the service Imagesearch
+DefaultBaseURI = "https://api.cognitive.microsoft.com/bing/v7.0")
 
 // BaseClient is the base client for Imagesearch.
 type BaseClient struct {
-	autorest.Client
-	BaseURI string
+    autorest.Client
+    BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New()BaseClient {
+    return NewWithBaseURI(DefaultBaseURI, )
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
-	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
-	}
+func NewWithBaseURI(baseURI string, ) BaseClient {
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+    }
 }
+

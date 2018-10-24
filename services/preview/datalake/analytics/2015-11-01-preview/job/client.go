@@ -21,29 +21,29 @@ package job
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultAdlaJobDNSSuffix is the default value for adla job dns suffix
-	DefaultAdlaJobDNSSuffix = "azuredatalakeanalytics.net"
-)
+// DefaultAdlaJobDNSSuffix is the default value for adla job dns suffix
+DefaultAdlaJobDNSSuffix = "azuredatalakeanalytics.net")
 
 // BaseClient is the base client for Job.
 type BaseClient struct {
-	autorest.Client
-	AdlaJobDNSSuffix string
+    autorest.Client
+            AdlaJobDNSSuffix string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults(DefaultAdlaJobDNSSuffix)
+func New()BaseClient {
+    return NewWithoutDefaults(DefaultAdlaJobDNSSuffix)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return BaseClient{
-		Client:           autorest.NewClientWithUserAgent(UserAgent()),
-		AdlaJobDNSSuffix: adlaJobDNSSuffix,
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+                AdlaJobDNSSuffix: adlaJobDNSSuffix,
+    }
 }
+

@@ -21,32 +21,32 @@ package iotspaces
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/satori/go.uuid"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Iotspaces
-	DefaultBaseURI = "https://management.azure.com"
-)
+// DefaultBaseURI is the default URI used for the service Iotspaces
+DefaultBaseURI = "https://management.azure.com")
 
 // BaseClient is the base client for Iotspaces.
 type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID uuid.UUID
+    autorest.Client
+    BaseURI string
+            SubscriptionID uuid.UUID
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID uuid.UUID) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID uuid.UUID)BaseClient {
+    return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+                SubscriptionID: subscriptionID,
+    }
 }
+

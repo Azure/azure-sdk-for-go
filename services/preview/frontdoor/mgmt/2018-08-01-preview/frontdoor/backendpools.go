@@ -18,396 +18,439 @@ package frontdoor
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // BackendPoolsClient is the frontDoor Client
 type BackendPoolsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewBackendPoolsClient creates an instance of the BackendPoolsClient client.
 func NewBackendPoolsClient(subscriptionID string) BackendPoolsClient {
-	return NewBackendPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewBackendPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewBackendPoolsClientWithBaseURI creates an instance of the BackendPoolsClient client.
-func NewBackendPoolsClientWithBaseURI(baseURI string, subscriptionID string) BackendPoolsClient {
-	return BackendPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewBackendPoolsClientWithBaseURI(baseURI string, subscriptionID string) BackendPoolsClient {
+        return BackendPoolsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // CreateOrUpdate creates a new Backend Pool with the specified Pool name within the specified Front Door.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// frontDoorName - name of the Front Door which is globally unique.
-// backendPoolName - name of the Backend Pool which is unique within the Front Door.
-// backendPoolParameters - backend Pool properties needed to create a new Pool.
+    // Parameters:
+        // resourceGroupName - name of the Resource group within the Azure subscription.
+        // frontDoorName - name of the Front Door which is globally unique.
+        // backendPoolName - name of the Backend Pool which is unique within the Front Door.
+        // backendPoolParameters - backend Pool properties needed to create a new Pool.
 func (client BackendPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string, backendPoolParameters BackendPool) (result BackendPoolsCreateOrUpdateFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
-		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
-		{TargetValue: backendPoolName,
-			Constraints: []validation.Constraint{{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("frontdoor.BackendPoolsClient", "CreateOrUpdate", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/BackendPoolsClient.CreateOrUpdate")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
+            { TargetValue: frontDoorName,
+             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
+            { TargetValue: backendPoolName,
+             Constraints: []validation.Constraint{	{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("frontdoor.BackendPoolsClient", "CreateOrUpdate", err.Error())
+            }
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, frontDoorName, backendPoolName, backendPoolParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, frontDoorName, backendPoolName, backendPoolParameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.CreateOrUpdateSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.CreateOrUpdateSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BackendPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string, backendPoolParameters BackendPool) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"backendPoolName":   autorest.Encode("path", backendPoolName),
-		"frontDoorName":     autorest.Encode("path", frontDoorName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+    func (client BackendPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string, backendPoolParameters BackendPool) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "backendPoolName": autorest.Encode("path",backendPoolName),
+            "frontDoorName": autorest.Encode("path",frontDoorName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}", pathParameters),
-		autorest.WithJSON(backendPoolParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}",pathParameters),
+    autorest.WithJSON(backendPoolParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client BackendPoolsClient) CreateOrUpdateSender(req *http.Request) (future BackendPoolsCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client BackendPoolsClient) CreateOrUpdateSender(req *http.Request) (future BackendPoolsCreateOrUpdateFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client BackendPoolsClient) CreateOrUpdateResponder(resp *http.Response) (result BackendPool, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Delete deletes an existing Backend Pool with the specified parameters.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// frontDoorName - name of the Front Door which is globally unique.
-// backendPoolName - name of the Backend Pool which is unique within the Front Door.
+    // Parameters:
+        // resourceGroupName - name of the Resource group within the Azure subscription.
+        // frontDoorName - name of the Front Door which is globally unique.
+        // backendPoolName - name of the Backend Pool which is unique within the Front Door.
 func (client BackendPoolsClient) Delete(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (result BackendPoolsDeleteFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
-		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
-		{TargetValue: backendPoolName,
-			Constraints: []validation.Constraint{{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("frontdoor.BackendPoolsClient", "Delete", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/BackendPoolsClient.Delete")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
+            { TargetValue: frontDoorName,
+             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
+            { TargetValue: backendPoolName,
+             Constraints: []validation.Constraint{	{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("frontdoor.BackendPoolsClient", "Delete", err.Error())
+            }
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, frontDoorName, backendPoolName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Delete", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.DeletePreparer(ctx, resourceGroupName, frontDoorName, backendPoolName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Delete", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.DeleteSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Delete", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.DeleteSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Delete", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// DeletePreparer prepares the Delete request.
-func (client BackendPoolsClient) DeletePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"backendPoolName":   autorest.Encode("path", backendPoolName),
-		"frontDoorName":     autorest.Encode("path", frontDoorName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // DeletePreparer prepares the Delete request.
+    func (client BackendPoolsClient) DeletePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "backendPoolName": autorest.Encode("path",backendPoolName),
+            "frontDoorName": autorest.Encode("path",frontDoorName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client BackendPoolsClient) DeleteSender(req *http.Request) (future BackendPoolsDeleteFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // DeleteSender sends the Delete request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client BackendPoolsClient) DeleteSender(req *http.Request) (future BackendPoolsDeleteFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client BackendPoolsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted,http.StatusNoContent),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
 
 // Get gets a Backend Pool with the specified Pool name within the specified Front Door.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// frontDoorName - name of the Front Door which is globally unique.
-// backendPoolName - name of the Backend Pool which is unique within the Front Door.
+    // Parameters:
+        // resourceGroupName - name of the Resource group within the Azure subscription.
+        // frontDoorName - name of the Front Door which is globally unique.
+        // backendPoolName - name of the Backend Pool which is unique within the Front Door.
 func (client BackendPoolsClient) Get(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (result BackendPool, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
-		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
-		{TargetValue: backendPoolName,
-			Constraints: []validation.Constraint{{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("frontdoor.BackendPoolsClient", "Get", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/BackendPoolsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
+            { TargetValue: frontDoorName,
+             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
+            { TargetValue: backendPoolName,
+             Constraints: []validation.Constraint{	{Target: "backendPoolName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "backendPoolName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("frontdoor.BackendPoolsClient", "Get", err.Error())
+            }
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, frontDoorName, backendPoolName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.GetPreparer(ctx, resourceGroupName, frontDoorName, backendPoolName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client BackendPoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"backendPoolName":   autorest.Encode("path", backendPoolName),
-		"frontDoorName":     autorest.Encode("path", frontDoorName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client BackendPoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, backendPoolName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "backendPoolName": autorest.Encode("path",backendPoolName),
+            "frontDoorName": autorest.Encode("path",frontDoorName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools/{backendPoolName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client BackendPoolsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client BackendPoolsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client BackendPoolsClient) GetResponder(resp *http.Response) (result BackendPool, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // ListByFrontDoor lists all of the Backend Pools within a Front Door.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// frontDoorName - name of the Front Door which is globally unique.
+    // Parameters:
+        // resourceGroupName - name of the Resource group within the Azure subscription.
+        // frontDoorName - name of the Front Door which is globally unique.
 func (client BackendPoolsClient) ListByFrontDoor(ctx context.Context, resourceGroupName string, frontDoorName string) (result BackendPoolListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
-		{TargetValue: frontDoorName,
-			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("frontdoor.BackendPoolsClient", "ListByFrontDoor", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/BackendPoolsClient.ListByFrontDoor")
+        defer func() {
+            sc := -1
+            if result.bplr.Response.Response != nil {
+                sc = result.bplr.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
+            { TargetValue: frontDoorName,
+             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
+            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("frontdoor.BackendPoolsClient", "ListByFrontDoor", err.Error())
+            }
 
-	result.fn = client.listByFrontDoorNextResults
-	req, err := client.ListByFrontDoorPreparer(ctx, resourceGroupName, frontDoorName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", nil, "Failure preparing request")
-		return
-	}
+                        result.fn = client.listByFrontDoorNextResults
+    req, err := client.ListByFrontDoorPreparer(ctx, resourceGroupName, frontDoorName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListByFrontDoorSender(req)
-	if err != nil {
-		result.bplr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListByFrontDoorSender(req)
+            if err != nil {
+            result.bplr.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", resp, "Failure sending request")
+            return
+            }
 
-	result.bplr, err = client.ListByFrontDoorResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", resp, "Failure responding to request")
-	}
+            result.bplr, err = client.ListByFrontDoorResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "ListByFrontDoor", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListByFrontDoorPreparer prepares the ListByFrontDoor request.
-func (client BackendPoolsClient) ListByFrontDoorPreparer(ctx context.Context, resourceGroupName string, frontDoorName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"frontDoorName":     autorest.Encode("path", frontDoorName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListByFrontDoorPreparer prepares the ListByFrontDoor request.
+    func (client BackendPoolsClient) ListByFrontDoorPreparer(ctx context.Context, resourceGroupName string, frontDoorName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "frontDoorName": autorest.Encode("path",frontDoorName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/backendPools",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListByFrontDoorSender sends the ListByFrontDoor request. The method will close the
-// http.Response Body if it receives an error.
-func (client BackendPoolsClient) ListByFrontDoorSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListByFrontDoorSender sends the ListByFrontDoor request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client BackendPoolsClient) ListByFrontDoorSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListByFrontDoorResponder handles the response to the ListByFrontDoor request. The method always
 // closes the http.Response Body.
 func (client BackendPoolsClient) ListByFrontDoorResponder(resp *http.Response) (result BackendPoolListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listByFrontDoorNextResults retrieves the next set of results, if any.
-func (client BackendPoolsClient) listByFrontDoorNextResults(lastResults BackendPoolListResult) (result BackendPoolListResult, err error) {
-	req, err := lastResults.backendPoolListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByFrontDoorSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByFrontDoorResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listByFrontDoorNextResults retrieves the next set of results, if any.
+            func (client BackendPoolsClient) listByFrontDoorNextResults(ctx context.Context, lastResults BackendPoolListResult) (result BackendPoolListResult, err error) {
+            req, err := lastResults.backendPoolListResultPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListByFrontDoorSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListByFrontDoorResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "frontdoor.BackendPoolsClient", "listByFrontDoorNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BackendPoolsClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result BackendPoolListResultIterator, err error) {
-	result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
-	return
-}
+    // ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client BackendPoolsClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result BackendPoolListResultIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/BackendPoolsClient.ListByFrontDoor")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
+                return
+        }
+

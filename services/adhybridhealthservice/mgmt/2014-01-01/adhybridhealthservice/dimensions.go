@@ -18,117 +18,138 @@ package adhybridhealthservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // DimensionsClient is the REST APIs for Azure Active Drectory Connect Health
 type DimensionsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewDimensionsClient creates an instance of the DimensionsClient client.
 func NewDimensionsClient() DimensionsClient {
-	return NewDimensionsClientWithBaseURI(DefaultBaseURI)
+    return NewDimensionsClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewDimensionsClientWithBaseURI creates an instance of the DimensionsClient client.
-func NewDimensionsClientWithBaseURI(baseURI string) DimensionsClient {
-	return DimensionsClient{NewWithBaseURI(baseURI)}
-}
+    func NewDimensionsClientWithBaseURI(baseURI string, ) DimensionsClient {
+        return DimensionsClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // ListAddsDimensions gets the dimensions for a given dimension type in a server.
-// Parameters:
-// serviceName - the name of the service.
-// dimension - the dimension type.
+    // Parameters:
+        // serviceName - the name of the service.
+        // dimension - the dimension type.
 func (client DimensionsClient) ListAddsDimensions(ctx context.Context, serviceName string, dimension string) (result DimensionsPage, err error) {
-	result.fn = client.listAddsDimensionsNextResults
-	req, err := client.ListAddsDimensionsPreparer(ctx, serviceName, dimension)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/DimensionsClient.ListAddsDimensions")
+        defer func() {
+            sc := -1
+            if result.d.Response.Response != nil {
+                sc = result.d.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listAddsDimensionsNextResults
+    req, err := client.ListAddsDimensionsPreparer(ctx, serviceName, dimension)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListAddsDimensionsSender(req)
-	if err != nil {
-		result.d.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListAddsDimensionsSender(req)
+            if err != nil {
+            result.d.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure sending request")
+            return
+            }
 
-	result.d, err = client.ListAddsDimensionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure responding to request")
-	}
+            result.d, err = client.ListAddsDimensionsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListAddsDimensionsPreparer prepares the ListAddsDimensions request.
-func (client DimensionsClient) ListAddsDimensionsPreparer(ctx context.Context, serviceName string, dimension string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"dimension":   autorest.Encode("path", dimension),
-		"serviceName": autorest.Encode("path", serviceName),
-	}
+    // ListAddsDimensionsPreparer prepares the ListAddsDimensions request.
+    func (client DimensionsClient) ListAddsDimensionsPreparer(ctx context.Context, serviceName string, dimension string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "dimension": autorest.Encode("path",dimension),
+            "serviceName": autorest.Encode("path",serviceName),
+            }
 
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2014-01-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/dimensions/{dimension}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/dimensions/{dimension}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListAddsDimensionsSender sends the ListAddsDimensions request. The method will close the
-// http.Response Body if it receives an error.
-func (client DimensionsClient) ListAddsDimensionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // ListAddsDimensionsSender sends the ListAddsDimensions request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client DimensionsClient) ListAddsDimensionsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // ListAddsDimensionsResponder handles the response to the ListAddsDimensions request. The method always
 // closes the http.Response Body.
 func (client DimensionsClient) ListAddsDimensionsResponder(resp *http.Response) (result Dimensions, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listAddsDimensionsNextResults retrieves the next set of results, if any.
-func (client DimensionsClient) listAddsDimensionsNextResults(lastResults Dimensions) (result Dimensions, err error) {
-	req, err := lastResults.dimensionsPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListAddsDimensionsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListAddsDimensionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listAddsDimensionsNextResults retrieves the next set of results, if any.
+            func (client DimensionsClient) listAddsDimensionsNextResults(ctx context.Context, lastResults Dimensions) (result Dimensions, err error) {
+            req, err := lastResults.dimensionsPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListAddsDimensionsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListAddsDimensionsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "listAddsDimensionsNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListAddsDimensionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DimensionsClient) ListAddsDimensionsComplete(ctx context.Context, serviceName string, dimension string) (result DimensionsIterator, err error) {
-	result.page, err = client.ListAddsDimensions(ctx, serviceName, dimension)
-	return
-}
+    // ListAddsDimensionsComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client DimensionsClient) ListAddsDimensionsComplete(ctx context.Context, serviceName string, dimension string) (result DimensionsIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/DimensionsClient.ListAddsDimensions")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.ListAddsDimensions(ctx, serviceName, dimension)
+                return
+        }
+

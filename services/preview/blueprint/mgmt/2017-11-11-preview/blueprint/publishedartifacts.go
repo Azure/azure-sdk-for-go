@@ -18,189 +18,220 @@ package blueprint
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // PublishedArtifactsClient is the blueprint Client
 type PublishedArtifactsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewPublishedArtifactsClient creates an instance of the PublishedArtifactsClient client.
 func NewPublishedArtifactsClient() PublishedArtifactsClient {
-	return NewPublishedArtifactsClientWithBaseURI(DefaultBaseURI)
+    return NewPublishedArtifactsClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewPublishedArtifactsClientWithBaseURI creates an instance of the PublishedArtifactsClient client.
-func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsClient {
-	return PublishedArtifactsClient{NewWithBaseURI(baseURI)}
-}
+    func NewPublishedArtifactsClientWithBaseURI(baseURI string, ) PublishedArtifactsClient {
+        return PublishedArtifactsClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // Get get an artifact for a published Blueprint.
-// Parameters:
-// managementGroupName - managementGroup where blueprint stores.
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
-// artifactName - name of the artifact.
+    // Parameters:
+        // managementGroupName - managementGroup where blueprint stores.
+        // blueprintName - name of the blueprint.
+        // versionID - version of the published blueprint.
+        // artifactName - name of the artifact.
 func (client PublishedArtifactsClient) Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string, artifactName string) (result ArtifactModel, err error) {
-	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, versionID, artifactName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/PublishedArtifactsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, versionID, artifactName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client PublishedArtifactsClient) GetPreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string, artifactName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"artifactName":        autorest.Encode("path", artifactName),
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
-		"versionId":           autorest.Encode("path", versionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client PublishedArtifactsClient) GetPreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string, artifactName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "artifactName": autorest.Encode("path",artifactName),
+            "blueprintName": autorest.Encode("path",blueprintName),
+            "managementGroupName": autorest.Encode("path",managementGroupName),
+            "versionId": autorest.Encode("path",versionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts/{artifactName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client PublishedArtifactsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client PublishedArtifactsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client PublishedArtifactsClient) GetResponder(resp *http.Response) (result ArtifactModel, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // List list artifacts for a published Blueprint.
-// Parameters:
-// managementGroupName - managementGroup where blueprint stores.
-// blueprintName - name of the blueprint.
-// versionID - version of the published blueprint.
+    // Parameters:
+        // managementGroupName - managementGroup where blueprint stores.
+        // blueprintName - name of the blueprint.
+        // versionID - version of the published blueprint.
 func (client PublishedArtifactsClient) List(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result ArtifactListPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, managementGroupName, blueprintName, versionID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/PublishedArtifactsClient.List")
+        defer func() {
+            sc := -1
+            if result.al.Response.Response != nil {
+                sc = result.al.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx, managementGroupName, blueprintName, versionID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.al.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.al.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.al, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", resp, "Failure responding to request")
-	}
+            result.al, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client PublishedArtifactsClient) ListPreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"blueprintName":       autorest.Encode("path", blueprintName),
-		"managementGroupName": autorest.Encode("path", managementGroupName),
-		"versionId":           autorest.Encode("path", versionID),
-	}
+    // ListPreparer prepares the List request.
+    func (client PublishedArtifactsClient) ListPreparer(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "blueprintName": autorest.Encode("path",blueprintName),
+            "managementGroupName": autorest.Encode("path",managementGroupName),
+            "versionId": autorest.Encode("path",versionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupName}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}/artifacts",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client PublishedArtifactsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client PublishedArtifactsClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client PublishedArtifactsClient) ListResponder(resp *http.Response) (result ArtifactList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client PublishedArtifactsClient) listNextResults(lastResults ArtifactList) (result ArtifactList, err error) {
-	req, err := lastResults.artifactListPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client PublishedArtifactsClient) listNextResults(ctx context.Context, lastResults ArtifactList) (result ArtifactList, err error) {
+            req, err := lastResults.artifactListPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PublishedArtifactsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result ArtifactListIterator, err error) {
-	result.page, err = client.List(ctx, managementGroupName, blueprintName, versionID)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client PublishedArtifactsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result ArtifactListIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/PublishedArtifactsClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx, managementGroupName, blueprintName, versionID)
+                return
+        }
+

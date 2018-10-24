@@ -18,104 +18,115 @@ package adhybridhealthservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/date"
 )
 
 // AddsServiceClient is the REST APIs for Azure Active Drectory Connect Health
 type AddsServiceClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewAddsServiceClient creates an instance of the AddsServiceClient client.
 func NewAddsServiceClient() AddsServiceClient {
-	return NewAddsServiceClientWithBaseURI(DefaultBaseURI)
+    return NewAddsServiceClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewAddsServiceClientWithBaseURI creates an instance of the AddsServiceClient client.
-func NewAddsServiceClientWithBaseURI(baseURI string) AddsServiceClient {
-	return AddsServiceClient{NewWithBaseURI(baseURI)}
-}
+    func NewAddsServiceClientWithBaseURI(baseURI string, ) AddsServiceClient {
+        return AddsServiceClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // GetMetrics gets the server related metrics for a given metric and group combination.
-// Parameters:
-// serviceName - the name of the service.
-// metricName - the metric name
-// groupName - the group name
-// groupKey - the group key
-// fromDate - the start date.
-// toDate - the end date.
+    // Parameters:
+        // serviceName - the name of the service.
+        // metricName - the metric name
+        // groupName - the group name
+        // groupKey - the group key
+        // fromDate - the start date.
+        // toDate - the end date.
 func (client AddsServiceClient) GetMetrics(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
-	req, err := client.GetMetricsPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AddsServiceClient.GetMetrics")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetMetricsPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetMetricsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetMetricsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetMetricsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure responding to request")
-	}
+            result, err = client.GetMetricsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetMetricsPreparer prepares the GetMetrics request.
-func (client AddsServiceClient) GetMetricsPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":   autorest.Encode("path", groupName),
-		"metricName":  autorest.Encode("path", metricName),
-		"serviceName": autorest.Encode("path", serviceName),
-	}
+    // GetMetricsPreparer prepares the GetMetrics request.
+    func (client AddsServiceClient) GetMetricsPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "groupName": autorest.Encode("path",groupName),
+            "metricName": autorest.Encode("path",metricName),
+            "serviceName": autorest.Encode("path",serviceName),
+            }
 
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(groupKey) > 0 {
-		queryParameters["groupKey"] = autorest.Encode("query", groupKey)
-	}
-	if fromDate != nil {
-		queryParameters["fromDate"] = autorest.Encode("query", *fromDate)
-	}
-	if toDate != nil {
-		queryParameters["toDate"] = autorest.Encode("query", *toDate)
-	}
+                        const APIVersion = "2014-01-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+            if len(groupKey) > 0 {
+            queryParameters["groupKey"] = autorest.Encode("query",groupKey)
+            }
+            if fromDate != nil {
+            queryParameters["fromDate"] = autorest.Encode("query",*fromDate)
+            }
+            if toDate != nil {
+            queryParameters["toDate"] = autorest.Encode("query",*toDate)
+            }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metrics/{metricName}/groups/{groupName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metrics/{metricName}/groups/{groupName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetMetricsSender sends the GetMetrics request. The method will close the
-// http.Response Body if it receives an error.
-func (client AddsServiceClient) GetMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetMetricsSender sends the GetMetrics request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AddsServiceClient) GetMetricsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetMetricsResponder handles the response to the GetMetrics request. The method always
 // closes the http.Response Body.
 func (client AddsServiceClient) GetMetricsResponder(resp *http.Response) (result MetricSets, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

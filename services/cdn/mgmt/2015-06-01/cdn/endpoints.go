@@ -18,780 +18,854 @@ package cdn
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // EndpointsClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
 // make sure that requests made to these resources are secure. For more information, see
 // https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx.
 type EndpointsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewEndpointsClient creates an instance of the EndpointsClient client.
 func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewEndpointsClientWithBaseURI creates an instance of the EndpointsClient client.
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+        return EndpointsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Create sends the create request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// endpointProperties - endpoint properties
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // endpointProperties - endpoint properties
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) Create(ctx context.Context, endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (result EndpointsCreateFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: endpointProperties,
-			Constraints: []validation.Constraint{{Target: "endpointProperties.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "endpointProperties.EndpointPropertiesCreateParameters", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "endpointProperties.EndpointPropertiesCreateParameters.Origins", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsClient", "Create", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.Create")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: endpointProperties,
+             Constraints: []validation.Constraint{	{Target: "endpointProperties.Location", Name: validation.Null, Rule: true, Chain: nil },
+            	{Target: "endpointProperties.EndpointPropertiesCreateParameters", Name: validation.Null, Rule: false ,
+            Chain: []validation.Constraint{	{Target: "endpointProperties.EndpointPropertiesCreateParameters.Origins", Name: validation.Null, Rule: true, Chain: nil },
+            }}}}}); err != nil {
+            return result, validation.NewError("cdn.EndpointsClient", "Create", err.Error())
+            }
 
-	req, err := client.CreatePreparer(ctx, endpointName, endpointProperties, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.CreatePreparer(ctx, endpointName, endpointProperties, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.CreateSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.CreateSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// CreatePreparer prepares the Create request.
-func (client EndpointsClient) CreatePreparer(ctx context.Context, endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // CreatePreparer prepares the Create request.
+    func (client EndpointsClient) CreatePreparer(ctx context.Context, endpointName string, endpointProperties EndpointCreateParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", pathParameters),
-		autorest.WithJSON(endpointProperties),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}",pathParameters),
+    autorest.WithJSON(endpointProperties),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) CreateSender(req *http.Request) (future EndpointsCreateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // CreateSender sends the Create request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) CreateSender(req *http.Request) (future EndpointsCreateFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) CreateResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // DeleteIfExists sends the delete if exists request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) DeleteIfExists(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (result EndpointsDeleteIfExistsFuture, err error) {
-	req, err := client.DeleteIfExistsPreparer(ctx, endpointName, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.DeleteIfExists")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeleteIfExistsPreparer(ctx, endpointName, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.DeleteIfExistsSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.DeleteIfExistsSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "DeleteIfExists", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// DeleteIfExistsPreparer prepares the DeleteIfExists request.
-func (client EndpointsClient) DeleteIfExistsPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // DeleteIfExistsPreparer prepares the DeleteIfExists request.
+    func (client EndpointsClient) DeleteIfExistsPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (future EndpointsDeleteIfExistsFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // DeleteIfExistsSender sends the DeleteIfExists request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) DeleteIfExistsSender(req *http.Request) (future EndpointsDeleteIfExistsFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // DeleteIfExistsResponder handles the response to the DeleteIfExists request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) DeleteIfExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted,http.StatusNoContent),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
 
 // Get sends the get request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) Get(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (result Endpoint, err error) {
-	req, err := client.GetPreparer(ctx, endpointName, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, endpointName, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client EndpointsClient) GetPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client EndpointsClient) GetPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // ListByProfile sends the list by profile request.
-// Parameters:
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) ListByProfile(ctx context.Context, profileName string, resourceGroupName string) (result EndpointListResult, err error) {
-	req, err := client.ListByProfilePreparer(ctx, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.ListByProfile")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.ListByProfilePreparer(ctx, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListByProfileSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListByProfileSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ListByProfileResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
-	}
+            result, err = client.ListByProfileResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListByProfilePreparer prepares the ListByProfile request.
-func (client EndpointsClient) ListByProfilePreparer(ctx context.Context, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListByProfilePreparer prepares the ListByProfile request.
+    func (client EndpointsClient) ListByProfilePreparer(ctx context.Context, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListByProfileSender sends the ListByProfile request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) ListByProfileSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListByProfileSender sends the ListByProfile request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) ListByProfileSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListByProfileResponder handles the response to the ListByProfile request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // LoadContent sends the load content request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// contentFilePaths - the path to the content to be loaded. Path should describe a file.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // contentFilePaths - the path to the content to be loaded. Path should describe a file.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) LoadContent(ctx context.Context, endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (result EndpointsLoadContentFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: contentFilePaths,
-			Constraints: []validation.Constraint{{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsClient", "LoadContent", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.LoadContent")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: contentFilePaths,
+             Constraints: []validation.Constraint{	{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("cdn.EndpointsClient", "LoadContent", err.Error())
+            }
 
-	req, err := client.LoadContentPreparer(ctx, endpointName, contentFilePaths, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.LoadContentPreparer(ctx, endpointName, contentFilePaths, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.LoadContentSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.LoadContentSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// LoadContentPreparer prepares the LoadContent request.
-func (client EndpointsClient) LoadContentPreparer(ctx context.Context, endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // LoadContentPreparer prepares the LoadContent request.
+    func (client EndpointsClient) LoadContentPreparer(ctx context.Context, endpointName string, contentFilePaths LoadParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load", pathParameters),
-		autorest.WithJSON(contentFilePaths),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load",pathParameters),
+    autorest.WithJSON(contentFilePaths),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// LoadContentSender sends the LoadContent request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) LoadContentSender(req *http.Request) (future EndpointsLoadContentFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // LoadContentSender sends the LoadContent request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) LoadContentSender(req *http.Request) (future EndpointsLoadContentFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
 
 // PurgeContent sends the purge content request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// contentFilePaths - the path to the content to be purged. Path can describe a file or directory.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // contentFilePaths - the path to the content to be purged. Path can describe a file or directory.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) PurgeContent(ctx context.Context, endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (result EndpointsPurgeContentFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: contentFilePaths,
-			Constraints: []validation.Constraint{{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsClient", "PurgeContent", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.PurgeContent")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: contentFilePaths,
+             Constraints: []validation.Constraint{	{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("cdn.EndpointsClient", "PurgeContent", err.Error())
+            }
 
-	req, err := client.PurgeContentPreparer(ctx, endpointName, contentFilePaths, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.PurgeContentPreparer(ctx, endpointName, contentFilePaths, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.PurgeContentSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.PurgeContentSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// PurgeContentPreparer prepares the PurgeContent request.
-func (client EndpointsClient) PurgeContentPreparer(ctx context.Context, endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // PurgeContentPreparer prepares the PurgeContent request.
+    func (client EndpointsClient) PurgeContentPreparer(ctx context.Context, endpointName string, contentFilePaths PurgeParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge", pathParameters),
-		autorest.WithJSON(contentFilePaths),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge",pathParameters),
+    autorest.WithJSON(contentFilePaths),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// PurgeContentSender sends the PurgeContent request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) PurgeContentSender(req *http.Request) (future EndpointsPurgeContentFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // PurgeContentSender sends the PurgeContent request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) PurgeContentSender(req *http.Request) (future EndpointsPurgeContentFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
 
 // Start sends the start request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) Start(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (result EndpointsStartFuture, err error) {
-	req, err := client.StartPreparer(ctx, endpointName, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.Start")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.StartPreparer(ctx, endpointName, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.StartSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.StartSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// StartPreparer prepares the Start request.
-func (client EndpointsClient) StartPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // StartPreparer prepares the Start request.
+    func (client EndpointsClient) StartPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// StartSender sends the Start request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) StartSender(req *http.Request) (future EndpointsStartFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // StartSender sends the Start request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) StartSender(req *http.Request) (future EndpointsStartFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) StartResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Stop sends the stop request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) Stop(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (result EndpointsStopFuture, err error) {
-	req, err := client.StopPreparer(ctx, endpointName, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.Stop")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.StopPreparer(ctx, endpointName, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.StopSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.StopSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// StopPreparer prepares the Stop request.
-func (client EndpointsClient) StopPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // StopPreparer prepares the Stop request.
+    func (client EndpointsClient) StopPreparer(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// StopSender sends the Stop request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) StopSender(req *http.Request) (future EndpointsStopFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // StopSender sends the Stop request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) StopSender(req *http.Request) (future EndpointsStopFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) StopResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Update sends the update request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// endpointProperties - endpoint properties
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // endpointProperties - endpoint properties
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) Update(ctx context.Context, endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (result EndpointsUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, endpointName, endpointProperties, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.Update")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.UpdatePreparer(ctx, endpointName, endpointProperties, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.UpdateSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.UpdateSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// UpdatePreparer prepares the Update request.
-func (client EndpointsClient) UpdatePreparer(ctx context.Context, endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // UpdatePreparer prepares the Update request.
+    func (client EndpointsClient) UpdatePreparer(ctx context.Context, endpointName string, endpointProperties EndpointUpdateParameters, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}", pathParameters),
-		autorest.WithJSON(endpointProperties),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPatch(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}",pathParameters),
+    autorest.WithJSON(endpointProperties),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) UpdateSender(req *http.Request) (future EndpointsUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // UpdateSender sends the Update request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) UpdateSender(req *http.Request) (future EndpointsUpdateFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // ValidateCustomDomain sends the validate custom domain request.
-// Parameters:
-// endpointName - name of the endpoint within the CDN profile.
-// customDomainProperties - custom domain to validate.
-// profileName - name of the CDN profile within the resource group.
-// resourceGroupName - name of the resource group within the Azure subscription.
+    // Parameters:
+        // endpointName - name of the endpoint within the CDN profile.
+        // customDomainProperties - custom domain to validate.
+        // profileName - name of the CDN profile within the resource group.
+        // resourceGroupName - name of the resource group within the Azure subscription.
 func (client EndpointsClient) ValidateCustomDomain(ctx context.Context, endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (result ValidateCustomDomainOutput, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: customDomainProperties,
-			Constraints: []validation.Constraint{{Target: "customDomainProperties.HostName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsClient", "ValidateCustomDomain", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/EndpointsClient.ValidateCustomDomain")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: customDomainProperties,
+             Constraints: []validation.Constraint{	{Target: "customDomainProperties.HostName", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("cdn.EndpointsClient", "ValidateCustomDomain", err.Error())
+            }
 
-	req, err := client.ValidateCustomDomainPreparer(ctx, endpointName, customDomainProperties, profileName, resourceGroupName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.ValidateCustomDomainPreparer(ctx, endpointName, customDomainProperties, profileName, resourceGroupName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ValidateCustomDomainSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ValidateCustomDomainSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ValidateCustomDomainResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
-	}
+            result, err = client.ValidateCustomDomainResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ValidateCustomDomainPreparer prepares the ValidateCustomDomain request.
-func (client EndpointsClient) ValidateCustomDomainPreparer(ctx context.Context, endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"endpointName":      autorest.Encode("path", endpointName),
-		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // ValidateCustomDomainPreparer prepares the ValidateCustomDomain request.
+    func (client EndpointsClient) ValidateCustomDomainPreparer(ctx context.Context, endpointName string, customDomainProperties ValidateCustomDomainInput, profileName string, resourceGroupName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "endpointName": autorest.Encode("path",endpointName),
+            "profileName": autorest.Encode("path",profileName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain", pathParameters),
-		autorest.WithJSON(customDomainProperties),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain",pathParameters),
+    autorest.WithJSON(customDomainProperties),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ValidateCustomDomainSender sends the ValidateCustomDomain request. The method will close the
-// http.Response Body if it receives an error.
-func (client EndpointsClient) ValidateCustomDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ValidateCustomDomainSender sends the ValidateCustomDomain request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client EndpointsClient) ValidateCustomDomainSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ValidateCustomDomainResponder handles the response to the ValidateCustomDomain request. The method always
 // closes the http.Response Body.
 func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

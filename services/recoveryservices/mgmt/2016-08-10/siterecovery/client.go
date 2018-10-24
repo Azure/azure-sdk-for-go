@@ -21,35 +21,35 @@ package siterecovery
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Siterecovery
-	DefaultBaseURI = "https://management.azure.com"
-)
+// DefaultBaseURI is the default URI used for the service Siterecovery
+DefaultBaseURI = "https://management.azure.com")
 
 // BaseClient is the base client for Siterecovery.
 type BaseClient struct {
-	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ResourceGroupName string
-	ResourceName      string
+    autorest.Client
+    BaseURI string
+            SubscriptionID string
+            ResourceGroupName string
+            ResourceName string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName)
+func New(subscriptionID string, resourceGroupName string, resourceName string)BaseClient {
+    return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ResourceGroupName: resourceGroupName,
-		ResourceName:      resourceName,
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+                SubscriptionID: subscriptionID,
+                ResourceGroupName: resourceGroupName,
+                ResourceName: resourceName,
+    }
 }
+

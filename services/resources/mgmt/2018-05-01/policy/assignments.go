@@ -18,110 +18,121 @@ package policy
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // AssignmentsClient is the to manage and control access to your resources, you can define customized policies and
 // assign them at a scope.
 type AssignmentsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewAssignmentsClient creates an instance of the AssignmentsClient client.
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return NewAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client.
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return AssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+        return AssignmentsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Create this operation creates or updates a policy assignment with the given scope and name. Policy assignments apply
 // to all resources contained within their scope. For example, when you assign a policy at resource group scope, that
 // policy applies to all resources in the group.
-// Parameters:
-// scope - the scope of the policy assignment. Valid scopes are: management group (format:
-// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'), resource group (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
-// policyAssignmentName - the name of the policy assignment.
-// parameters - parameters for the policy assignment.
+    // Parameters:
+        // scope - the scope of the policy assignment. Valid scopes are: management group (format:
+        // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+        // '/subscriptions/{subscriptionId}'), resource group (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+        // policyAssignmentName - the name of the policy assignment.
+        // parameters - parameters for the policy assignment.
 func (client AssignmentsClient) Create(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("policy.AssignmentsClient", "Create", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.Create")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: parameters,
+             Constraints: []validation.Constraint{	{Target: "parameters.Sku", Name: validation.Null, Rule: false ,
+            Chain: []validation.Constraint{	{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil },
+            }}}}}); err != nil {
+            return result, validation.NewError("policy.AssignmentsClient", "Create", err.Error())
+            }
 
-	req, err := client.CreatePreparer(ctx, scope, policyAssignmentName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.CreatePreparer(ctx, scope, policyAssignmentName, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CreateSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure responding to request")
-	}
+            result, err = client.CreateResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CreatePreparer prepares the Create request.
-func (client AssignmentsClient) CreatePreparer(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
-		"scope":                scope,
-	}
+    // CreatePreparer prepares the Create request.
+    func (client AssignmentsClient) CreatePreparer(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentName": autorest.Encode("path",policyAssignmentName),
+            "scope": scope,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // CreateSender sends the Create request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) CreateSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // CreateByID this operation creates or updates the policy assignment with the given ID. Policy assignments made on a
 // scope apply to all resources contained in that scope. For example, when you assign a policy to a resource group that
@@ -131,151 +142,172 @@ func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Ass
 // '/subscriptions/{subscriptionId}'), resource group (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to create. Use the format
-// '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-// parameters - parameters for policy assignment.
+    // Parameters:
+        // policyAssignmentID - the ID of the policy assignment to create. Use the format
+        // '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+        // parameters - parameters for policy assignment.
 func (client AssignmentsClient) CreateByID(ctx context.Context, policyAssignmentID string, parameters Assignment) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("policy.AssignmentsClient", "CreateByID", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.CreateByID")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: parameters,
+             Constraints: []validation.Constraint{	{Target: "parameters.Sku", Name: validation.Null, Rule: false ,
+            Chain: []validation.Constraint{	{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil },
+            }}}}}); err != nil {
+            return result, validation.NewError("policy.AssignmentsClient", "CreateByID", err.Error())
+            }
 
-	req, err := client.CreateByIDPreparer(ctx, policyAssignmentID, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.CreateByIDPreparer(ctx, policyAssignmentID, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CreateByIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CreateByIDSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CreateByIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure responding to request")
-	}
+            result, err = client.CreateByIDResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CreateByIDPreparer prepares the CreateByID request.
-func (client AssignmentsClient) CreateByIDPreparer(ctx context.Context, policyAssignmentID string, parameters Assignment) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentId": policyAssignmentID,
-	}
+    // CreateByIDPreparer prepares the CreateByID request.
+    func (client AssignmentsClient) CreateByIDPreparer(ctx context.Context, policyAssignmentID string, parameters Assignment) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentId": policyAssignmentID,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policyAssignmentId}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{policyAssignmentId}",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateByIDSender sends the CreateByID request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) CreateByIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // CreateByIDSender sends the CreateByID request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) CreateByIDSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // CreateByIDResponder handles the response to the CreateByID request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) CreateByIDResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Delete this operation deletes a policy assignment, given its name and the scope it was created in. The scope of a
 // policy assignment is the part of its ID preceding
 // '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
-// Parameters:
-// scope - the scope of the policy assignment. Valid scopes are: management group (format:
-// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'), resource group (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
-// policyAssignmentName - the name of the policy assignment to delete.
+    // Parameters:
+        // scope - the scope of the policy assignment. Valid scopes are: management group (format:
+        // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+        // '/subscriptions/{subscriptionId}'), resource group (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+        // policyAssignmentName - the name of the policy assignment to delete.
 func (client AssignmentsClient) Delete(ctx context.Context, scope string, policyAssignmentName string) (result Assignment, err error) {
-	req, err := client.DeletePreparer(ctx, scope, policyAssignmentName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.Delete")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeletePreparer(ctx, scope, policyAssignmentName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.DeleteSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure responding to request")
-	}
+            result, err = client.DeleteResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// DeletePreparer prepares the Delete request.
-func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string, policyAssignmentName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
-		"scope":                scope,
-	}
+    // DeletePreparer prepares the Delete request.
+    func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string, policyAssignmentName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentName": autorest.Encode("path",policyAssignmentName),
+            "scope": scope,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // DeleteSender sends the Delete request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // DeleteByID this operation deletes the policy with the given ID. Policy assignment IDs have this format:
 // '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid formats for {scope} are:
@@ -284,139 +316,159 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' (resource group), or
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 // (resource).
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to delete. Use the format
-// '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+    // Parameters:
+        // policyAssignmentID - the ID of the policy assignment to delete. Use the format
+        // '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 func (client AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string) (result Assignment, err error) {
-	req, err := client.DeleteByIDPreparer(ctx, policyAssignmentID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.DeleteByID")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeleteByIDPreparer(ctx, policyAssignmentID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.DeleteByIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.DeleteByIDSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.DeleteByIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure responding to request")
-	}
+            result, err = client.DeleteByIDResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// DeleteByIDPreparer prepares the DeleteByID request.
-func (client AssignmentsClient) DeleteByIDPreparer(ctx context.Context, policyAssignmentID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentId": policyAssignmentID,
-	}
+    // DeleteByIDPreparer prepares the DeleteByID request.
+    func (client AssignmentsClient) DeleteByIDPreparer(ctx context.Context, policyAssignmentID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentId": policyAssignmentID,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policyAssignmentId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{policyAssignmentId}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteByIDSender sends the DeleteByID request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) DeleteByIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // DeleteByIDSender sends the DeleteByID request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) DeleteByIDSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // DeleteByIDResponder handles the response to the DeleteByID request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) DeleteByIDResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Get this operation retrieves a single policy assignment, given its name and the scope it was created at.
-// Parameters:
-// scope - the scope of the policy assignment. Valid scopes are: management group (format:
-// '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-// '/subscriptions/{subscriptionId}'), resource group (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
-// policyAssignmentName - the name of the policy assignment to get.
+    // Parameters:
+        // scope - the scope of the policy assignment. Valid scopes are: management group (format:
+        // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+        // '/subscriptions/{subscriptionId}'), resource group (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+        // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+        // policyAssignmentName - the name of the policy assignment to get.
 func (client AssignmentsClient) Get(ctx context.Context, scope string, policyAssignmentName string) (result Assignment, err error) {
-	req, err := client.GetPreparer(ctx, scope, policyAssignmentName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, scope, policyAssignmentName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, policyAssignmentName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentName": autorest.Encode("path", policyAssignmentName),
-		"scope":                scope,
-	}
+    // GetPreparer prepares the Get request.
+    func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, policyAssignmentName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentName": autorest.Encode("path",policyAssignmentName),
+            "scope": scope,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // GetByID the operation retrieves the policy assignment with the given ID. Policy assignment IDs have this format:
 // '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are: management
@@ -424,69 +476,79 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // '/subscriptions/{subscriptionId}'), resource group (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to get. Use the format
-// '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+    // Parameters:
+        // policyAssignmentID - the ID of the policy assignment to get. Use the format
+        // '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 func (client AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string) (result Assignment, err error) {
-	req, err := client.GetByIDPreparer(ctx, policyAssignmentID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.GetByID")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetByIDPreparer(ctx, policyAssignmentID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetByIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetByIDSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetByIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure responding to request")
-	}
+            result, err = client.GetByIDResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetByIDPreparer prepares the GetByID request.
-func (client AssignmentsClient) GetByIDPreparer(ctx context.Context, policyAssignmentID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentId": policyAssignmentID,
-	}
+    // GetByIDPreparer prepares the GetByID request.
+    func (client AssignmentsClient) GetByIDPreparer(ctx context.Context, policyAssignmentID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "policyAssignmentId": policyAssignmentID,
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policyAssignmentId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{policyAssignmentId}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetByIDSender sends the GetByID request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetByIDSender sends the GetByID request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // List this operation retrieves the list of all policy assignments associated with the given subscription that match
 // the optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If
@@ -497,100 +559,120 @@ func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result As
 // applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is provided, the
 // returned list includes only policy assignments that apply to the subscription and assign the policy definition whose
 // id is {value}.
-// Parameters:
-// filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-// 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+    // Parameters:
+        // filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+        // 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
 func (client AssignmentsClient) List(ctx context.Context, filter string) (result AssignmentListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.List")
+        defer func() {
+            sc := -1
+            if result.alr.Response.Response != nil {
+                sc = result.alr.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx, filter)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.alr.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.alr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure responding to request")
-	}
+            result.alr, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client AssignmentsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListPreparer prepares the List request.
+    func (client AssignmentsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+            if len(filter) > 0 {
+            queryParameters["$filter"] = autorest.Encode("query",filter)
+            }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) ListResponder(resp *http.Response) (result AssignmentListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client AssignmentsClient) listNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
-	req, err := lastResults.assignmentListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client AssignmentsClient) listNextResults(ctx context.Context, lastResults AssignmentListResult) (result AssignmentListResult, err error) {
+            req, err := lastResults.assignmentListResultPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentsClient) ListComplete(ctx context.Context, filter string) (result AssignmentListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client AssignmentsClient) ListComplete(ctx context.Context, filter string) (result AssignmentListResultIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx, filter)
+                return
+        }
 
 // ListForResource this operation retrieves the list of all policy assignments associated with the specified resource
 // in the given resource group and subscription that match the optional given $filter. Valid values for $filter are:
@@ -610,120 +692,140 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, filter string)
 // namespace and type name separately is to provide both in the {resourceType} parameter, format:
 // ({resourceProviderNamespace} == '', {parentResourcePath} == '', {resourceType} == 'Microsoft.Web/sites',
 // {resourceName} == 'MyWebApp').
-// Parameters:
-// resourceGroupName - the name of the resource group containing the resource.
-// resourceProviderNamespace - the namespace of the resource provider. For example, the namespace of a virtual
-// machine is Microsoft.Compute (from Microsoft.Compute/virtualMachines)
-// parentResourcePath - the parent resource path. Use empty string if there is none.
-// resourceType - the resource type name. For example the type name of a web app is 'sites' (from
-// Microsoft.Web/sites).
-// resourceName - the name of the resource.
-// filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-// 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+    // Parameters:
+        // resourceGroupName - the name of the resource group containing the resource.
+        // resourceProviderNamespace - the namespace of the resource provider. For example, the namespace of a virtual
+        // machine is Microsoft.Compute (from Microsoft.Compute/virtualMachines)
+        // parentResourcePath - the parent resource path. Use empty string if there is none.
+        // resourceType - the resource type name. For example the type name of a web app is 'sites' (from
+        // Microsoft.Web/sites).
+        // resourceName - the name of the resource.
+        // filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+        // 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
 func (client AssignmentsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result AssignmentListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("policy.AssignmentsClient", "ListForResource", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.ListForResource")
+        defer func() {
+            sc := -1
+            if result.alr.Response.Response != nil {
+                sc = result.alr.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("policy.AssignmentsClient", "ListForResource", err.Error())
+            }
 
-	result.fn = client.listForResourceNextResults
-	req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil, "Failure preparing request")
-		return
-	}
+                        result.fn = client.listForResourceNextResults
+    req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListForResourceSender(req)
-	if err != nil {
-		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListForResourceSender(req)
+            if err != nil {
+            result.alr.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure sending request")
+            return
+            }
 
-	result.alr, err = client.ListForResourceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure responding to request")
-	}
+            result.alr, err = client.ListForResourceResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResource", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListForResourcePreparer prepares the ListForResource request.
-func (client AssignmentsClient) ListForResourcePreparer(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"parentResourcePath":        parentResourcePath,
-		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
-		"resourceName":              autorest.Encode("path", resourceName),
-		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
-		"resourceType":              resourceType,
-		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListForResourcePreparer prepares the ListForResource request.
+    func (client AssignmentsClient) ListForResourcePreparer(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "parentResourcePath": parentResourcePath,
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "resourceName": autorest.Encode("path",resourceName),
+            "resourceProviderNamespace": autorest.Encode("path",resourceProviderNamespace),
+            "resourceType": resourceType,
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+            if len(filter) > 0 {
+            queryParameters["$filter"] = autorest.Encode("query",filter)
+            }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyAssignments", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyAssignments",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListForResourceSender sends the ListForResource request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) ListForResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListForResourceSender sends the ListForResource request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) ListForResourceSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListForResourceResponder handles the response to the ListForResource request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) ListForResourceResponder(resp *http.Response) (result AssignmentListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listForResourceNextResults retrieves the next set of results, if any.
-func (client AssignmentsClient) listForResourceNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
-	req, err := lastResults.assignmentListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListForResourceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListForResourceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listForResourceNextResults retrieves the next set of results, if any.
+            func (client AssignmentsClient) listForResourceNextResults(ctx context.Context, lastResults AssignmentListResult) (result AssignmentListResult, err error) {
+            req, err := lastResults.assignmentListResultPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListForResourceSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListForResourceResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListForResourceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentsClient) ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result AssignmentListResultIterator, err error) {
-	result.page, err = client.ListForResource(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-	return
-}
+    // ListForResourceComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client AssignmentsClient) ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result AssignmentListResultIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.ListForResource")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.ListForResource(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+                return
+        }
 
 // ListForResourceGroup this operation retrieves the list of all policy assignments associated with the given resource
 // group in the given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or
@@ -734,107 +836,128 @@ func (client AssignmentsClient) ListForResourceComplete(ctx context.Context, res
 // those applied to resources contained within the resource group. If $filter=policyDefinitionId eq '{value}' is
 // provided, the returned list includes only policy assignments that apply to the resource group and assign the policy
 // definition whose id is {value}.
-// Parameters:
-// resourceGroupName - the name of the resource group that contains policy assignments.
-// filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
-// 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+    // Parameters:
+        // resourceGroupName - the name of the resource group that contains policy assignments.
+        // filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+        // 'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
 func (client AssignmentsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result AssignmentListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("policy.AssignmentsClient", "ListForResourceGroup", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.ListForResourceGroup")
+        defer func() {
+            sc := -1
+            if result.alr.Response.Response != nil {
+                sc = result.alr.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("policy.AssignmentsClient", "ListForResourceGroup", err.Error())
+            }
 
-	result.fn = client.listForResourceGroupNextResults
-	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
-		return
-	}
+                        result.fn = client.listForResourceGroupNextResults
+    req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, filter)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListForResourceGroupSender(req)
-	if err != nil {
-		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListForResourceGroupSender(req)
+            if err != nil {
+            result.alr.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure sending request")
+            return
+            }
 
-	result.alr, err = client.ListForResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure responding to request")
-	}
+            result.alr, err = client.ListForResourceGroupResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "ListForResourceGroup", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListForResourceGroupPreparer prepares the ListForResourceGroup request.
-func (client AssignmentsClient) ListForResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListForResourceGroupPreparer prepares the ListForResourceGroup request.
+    func (client AssignmentsClient) ListForResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = filter
-	}
+                        const APIVersion = "2018-05-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+            if len(filter) > 0 {
+            queryParameters["$filter"] = filter
+            }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListForResourceGroupSender sends the ListForResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) ListForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListForResourceGroupSender sends the ListForResourceGroup request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) ListForResourceGroupSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) ListForResourceGroupResponder(resp *http.Response) (result AssignmentListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listForResourceGroupNextResults retrieves the next set of results, if any.
-func (client AssignmentsClient) listForResourceGroupNextResults(lastResults AssignmentListResult) (result AssignmentListResult, err error) {
-	req, err := lastResults.assignmentListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListForResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListForResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listForResourceGroupNextResults retrieves the next set of results, if any.
+            func (client AssignmentsClient) listForResourceGroupNextResults(ctx context.Context, lastResults AssignmentListResult) (result AssignmentListResult, err error) {
+            req, err := lastResults.assignmentListResultPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListForResourceGroupSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListForResourceGroupResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result AssignmentListResultIterator, err error) {
-	result.page, err = client.ListForResourceGroup(ctx, resourceGroupName, filter)
-	return
-}
+    // ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client AssignmentsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result AssignmentListResultIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.ListForResourceGroup")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.ListForResourceGroup(ctx, resourceGroupName, filter)
+                return
+        }
+

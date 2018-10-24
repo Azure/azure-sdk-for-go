@@ -18,38 +18,42 @@ package prediction
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/date"
+    "github.com/satori/go.uuid"
 )
 
-// BoundingBox ...
-type BoundingBox struct {
-	Left   *float64 `json:"left,omitempty"`
-	Top    *float64 `json:"top,omitempty"`
-	Width  *float64 `json:"width,omitempty"`
-	Height *float64 `json:"height,omitempty"`
-}
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.1/customvision/prediction"
 
-// ImagePrediction ...
-type ImagePrediction struct {
-	autorest.Response `json:"-"`
-	ID                *uuid.UUID `json:"id,omitempty"`
-	Project           *uuid.UUID `json:"project,omitempty"`
-	Iteration         *uuid.UUID `json:"iteration,omitempty"`
-	Created           *date.Time `json:"created,omitempty"`
-	Predictions       *[]Model   `json:"predictions,omitempty"`
-}
+            // BoundingBox ...
+            type BoundingBox struct {
+            Left *float64 `json:"left,omitempty"`
+            Top *float64 `json:"top,omitempty"`
+            Width *float64 `json:"width,omitempty"`
+            Height *float64 `json:"height,omitempty"`
+            }
 
-// ImageURL ...
-type ImageURL struct {
-	URL *string `json:"url,omitempty"`
-}
+            // ImagePrediction ...
+            type ImagePrediction struct {
+            autorest.Response `json:"-"`
+            ID *uuid.UUID `json:"id,omitempty"`
+            Project *uuid.UUID `json:"project,omitempty"`
+            Iteration *uuid.UUID `json:"iteration,omitempty"`
+            Created *date.Time `json:"created,omitempty"`
+            Predictions *[]Model `json:"predictions,omitempty"`
+            }
 
-// Model ...
-type Model struct {
-	Probability *float64     `json:"probability,omitempty"`
-	TagID       *uuid.UUID   `json:"tagId,omitempty"`
-	TagName     *string      `json:"tagName,omitempty"`
-	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
-}
+            // ImageURL ...
+            type ImageURL struct {
+            URL *string `json:"url,omitempty"`
+            }
+
+            // Model ...
+            type Model struct {
+            Probability *float64 `json:"probability,omitempty"`
+            TagID *uuid.UUID `json:"tagId,omitempty"`
+            TagName *string `json:"tagName,omitempty"`
+            BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
+            }
+

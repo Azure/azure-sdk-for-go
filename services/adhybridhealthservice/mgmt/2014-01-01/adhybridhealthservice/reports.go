@@ -18,81 +18,92 @@ package adhybridhealthservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // ReportsClient is the REST APIs for Azure Active Drectory Connect Health
 type ReportsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewReportsClient creates an instance of the ReportsClient client.
 func NewReportsClient() ReportsClient {
-	return NewReportsClientWithBaseURI(DefaultBaseURI)
+    return NewReportsClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewReportsClientWithBaseURI creates an instance of the ReportsClient client.
-func NewReportsClientWithBaseURI(baseURI string) ReportsClient {
-	return ReportsClient{NewWithBaseURI(baseURI)}
-}
+    func NewReportsClientWithBaseURI(baseURI string, ) ReportsClient {
+        return ReportsClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // GetDevOps checks if the user is enabled for Dev Ops access.
 func (client ReportsClient) GetDevOps(ctx context.Context) (result Result, err error) {
-	req, err := client.GetDevOpsPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ReportsClient.GetDevOps")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetDevOpsPreparer(ctx)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetDevOpsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetDevOpsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetDevOpsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", resp, "Failure responding to request")
-	}
+            result, err = client.GetDevOpsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "adhybridhealthservice.ReportsClient", "GetDevOps", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetDevOpsPreparer prepares the GetDevOps request.
-func (client ReportsClient) GetDevOpsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+    // GetDevOpsPreparer prepares the GetDevOps request.
+    func (client ReportsClient) GetDevOpsPreparer(ctx context.Context) (*http.Request, error) {
+                    const APIVersion = "2014-01-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.ADHybridHealthService/reports/DevOps/IsDevOps"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPath("/providers/Microsoft.ADHybridHealthService/reports/DevOps/IsDevOps"),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetDevOpsSender sends the GetDevOps request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReportsClient) GetDevOpsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetDevOpsSender sends the GetDevOps request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client ReportsClient) GetDevOpsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetDevOpsResponder handles the response to the GetDevOps request. The method always
 // closes the http.Response Body.
 func (client ReportsClient) GetDevOpsResponder(resp *http.Response) (result Result, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

@@ -18,327 +18,378 @@ package blueprint
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // AssignmentsClient is the blueprint Client
 type AssignmentsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewAssignmentsClient creates an instance of the AssignmentsClient client.
 func NewAssignmentsClient() AssignmentsClient {
-	return NewAssignmentsClientWithBaseURI(DefaultBaseURI)
+    return NewAssignmentsClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewAssignmentsClientWithBaseURI creates an instance of the AssignmentsClient client.
-func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
-	return AssignmentsClient{NewWithBaseURI(baseURI)}
-}
+    func NewAssignmentsClientWithBaseURI(baseURI string, ) AssignmentsClient {
+        return AssignmentsClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // CreateOrUpdate create or update a Blueprint assignment.
-// Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
-// assignmentName - name of the assignment.
-// assignment - assignment object to save.
+    // Parameters:
+        // subscriptionID - azure subscriptionId, which we assign the blueprint to.
+        // assignmentName - name of the assignment.
+        // assignment - assignment object to save.
 func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: assignment,
-			Constraints: []validation.Constraint{{Target: "assignment.Identity", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "assignment.AssignmentProperties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "assignment.AssignmentProperties.Parameters", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "assignment.AssignmentProperties.ResourceGroups", Name: validation.Null, Rule: true, Chain: nil},
-					}}}}}); err != nil {
-		return result, validation.NewError("blueprint.AssignmentsClient", "CreateOrUpdate", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.CreateOrUpdate")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: assignment,
+             Constraints: []validation.Constraint{	{Target: "assignment.Identity", Name: validation.Null, Rule: true, Chain: nil },
+            	{Target: "assignment.AssignmentProperties", Name: validation.Null, Rule: true ,
+            Chain: []validation.Constraint{	{Target: "assignment.AssignmentProperties.Parameters", Name: validation.Null, Rule: true, Chain: nil },
+            	{Target: "assignment.AssignmentProperties.ResourceGroups", Name: validation.Null, Rule: true, Chain: nil },
+            }}}}}); err != nil {
+            return result, validation.NewError("blueprint.AssignmentsClient", "CreateOrUpdate", err.Error())
+            }
 
-	req, err := client.CreateOrUpdatePreparer(ctx, subscriptionID, assignmentName, assignment)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.CreateOrUpdatePreparer(ctx, subscriptionID, assignmentName, assignment)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CreateOrUpdateSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
+            result, err = client.CreateOrUpdateResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
-	}
+    // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+    func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "assignmentName": autorest.Encode("path",assignmentName),
+            "subscriptionId": autorest.Encode("path",subscriptionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
-		autorest.WithJSON(assignment),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}",pathParameters),
+    autorest.WithJSON(assignment),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Delete delete a Blueprint assignment.
-// Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
-// assignmentName - name of the assignment.
+    // Parameters:
+        // subscriptionID - azure subscriptionId, which we assign the blueprint to.
+        // assignmentName - name of the assignment.
 func (client AssignmentsClient) Delete(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
-	req, err := client.DeletePreparer(ctx, subscriptionID, assignmentName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.Delete")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeletePreparer(ctx, subscriptionID, assignmentName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.DeleteSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", resp, "Failure responding to request")
-	}
+            result, err = client.DeleteResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// DeletePreparer prepares the Delete request.
-func (client AssignmentsClient) DeletePreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
-	}
+    // DeletePreparer prepares the Delete request.
+    func (client AssignmentsClient) DeletePreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "assignmentName": autorest.Encode("path",assignmentName),
+            "subscriptionId": autorest.Encode("path",subscriptionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // DeleteSender sends the Delete request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted,http.StatusNoContent),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Get get a Blueprint assignment.
-// Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
-// assignmentName - name of the assignment.
+    // Parameters:
+        // subscriptionID - azure subscriptionId, which we assign the blueprint to.
+        // assignmentName - name of the assignment.
 func (client AssignmentsClient) Get(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
-	req, err := client.GetPreparer(ctx, subscriptionID, assignmentName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, subscriptionID, assignmentName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client AssignmentsClient) GetPreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"assignmentName": autorest.Encode("path", assignmentName),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client AssignmentsClient) GetPreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "assignmentName": autorest.Encode("path",assignmentName),
+            "subscriptionId": autorest.Encode("path",subscriptionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assignment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // List list Blueprint assignments within a subscription.
-// Parameters:
-// subscriptionID - azure subscriptionId, which we assign the blueprint to.
+    // Parameters:
+        // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 func (client AssignmentsClient) List(ctx context.Context, subscriptionID string) (result AssignmentListPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, subscriptionID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.List")
+        defer func() {
+            sc := -1
+            if result.al.Response.Response != nil {
+                sc = result.al.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx, subscriptionID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.al.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.al.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.al, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", resp, "Failure responding to request")
-	}
+            result.al, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client AssignmentsClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", subscriptionID),
-	}
+    // ListPreparer prepares the List request.
+    func (client AssignmentsClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",subscriptionID),
+            }
 
-	const APIVersion = "2017-11-11-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-11-11-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Blueprint/blueprintAssignments",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client AssignmentsClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client AssignmentsClient) ListResponder(resp *http.Response) (result AssignmentList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client AssignmentsClient) listNextResults(lastResults AssignmentList) (result AssignmentList, err error) {
-	req, err := lastResults.assignmentListPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client AssignmentsClient) listNextResults(ctx context.Context, lastResults AssignmentList) (result AssignmentList, err error) {
+            req, err := lastResults.assignmentListPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentsClient) ListComplete(ctx context.Context, subscriptionID string) (result AssignmentListIterator, err error) {
-	result.page, err = client.List(ctx, subscriptionID)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client AssignmentsClient) ListComplete(ctx context.Context, subscriptionID string) (result AssignmentListIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/AssignmentsClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx, subscriptionID)
+                return
+        }
+

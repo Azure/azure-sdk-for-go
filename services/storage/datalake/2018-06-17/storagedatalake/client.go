@@ -21,33 +21,33 @@ package storagedatalake
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultDNSSuffix is the default value for dns suffix
-	DefaultDNSSuffix = "dfs.core.windows.net"
-)
+// DefaultDNSSuffix is the default value for dns suffix
+DefaultDNSSuffix = "dfs.core.windows.net")
 
 // BaseClient is the base client for Storagedatalake.
 type BaseClient struct {
-	autorest.Client
-	XMsVersion  string
-	AccountName string
-	DNSSuffix   string
+    autorest.Client
+            XMsVersion string
+            AccountName string
+            DNSSuffix string
 }
 
 // New creates an instance of the BaseClient client.
-func New(xMsVersion string, accountName string) BaseClient {
-	return NewWithoutDefaults(xMsVersion, accountName, DefaultDNSSuffix)
+func New(xMsVersion string, accountName string)BaseClient {
+    return NewWithoutDefaults(xMsVersion, accountName, DefaultDNSSuffix)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(xMsVersion string, accountName string, dNSSuffix string) BaseClient {
-	return BaseClient{
-		Client:      autorest.NewClientWithUserAgent(UserAgent()),
-		XMsVersion:  xMsVersion,
-		AccountName: accountName,
-		DNSSuffix:   dNSSuffix,
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+                XMsVersion: xMsVersion,
+                AccountName: accountName,
+                DNSSuffix: dNSSuffix,
+    }
 }
+

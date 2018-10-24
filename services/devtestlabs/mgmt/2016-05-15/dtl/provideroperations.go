@@ -18,109 +18,130 @@ package dtl
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // ProviderOperationsClient is the the DevTest Labs Client.
 type ProviderOperationsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewProviderOperationsClient creates an instance of the ProviderOperationsClient client.
 func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
-	return NewProviderOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewProviderOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProviderOperationsClientWithBaseURI creates an instance of the ProviderOperationsClient client.
-func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsClient {
-	return ProviderOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsClient {
+        return ProviderOperationsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // List result of the request to list REST API operations
 func (client ProviderOperationsClient) List(ctx context.Context) (result ProviderOperationResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ProviderOperationsClient.List")
+        defer func() {
+            sc := -1
+            if result.por.Response.Response != nil {
+                sc = result.por.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.por.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.por.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.por, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", resp, "Failure responding to request")
-	}
+            result.por, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client ProviderOperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2016-05-15"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+    // ListPreparer prepares the List request.
+    func (client ProviderOperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+                    const APIVersion = "2016-05-15"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.DevTestLab/operations"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPath("/providers/Microsoft.DevTestLab/operations"),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client ProviderOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client ProviderOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client ProviderOperationsClient) ListResponder(resp *http.Response) (result ProviderOperationResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client ProviderOperationsClient) listNextResults(lastResults ProviderOperationResult) (result ProviderOperationResult, err error) {
-	req, err := lastResults.providerOperationResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client ProviderOperationsClient) listNextResults(ctx context.Context, lastResults ProviderOperationResult) (result ProviderOperationResult, err error) {
+            req, err := lastResults.providerOperationResultPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "dtl.ProviderOperationsClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderOperationsClient) ListComplete(ctx context.Context) (result ProviderOperationResultIterator, err error) {
-	result.page, err = client.List(ctx)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client ProviderOperationsClient) ListComplete(ctx context.Context) (result ProviderOperationResultIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/ProviderOperationsClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx)
+                return
+        }
+

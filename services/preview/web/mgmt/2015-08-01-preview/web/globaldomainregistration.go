@@ -18,401 +18,472 @@ package web
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // GlobalDomainRegistrationClient is the webSite Management Client
 type GlobalDomainRegistrationClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewGlobalDomainRegistrationClient creates an instance of the GlobalDomainRegistrationClient client.
 func NewGlobalDomainRegistrationClient(subscriptionID string) GlobalDomainRegistrationClient {
-	return NewGlobalDomainRegistrationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewGlobalDomainRegistrationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewGlobalDomainRegistrationClientWithBaseURI creates an instance of the GlobalDomainRegistrationClient client.
-func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID string) GlobalDomainRegistrationClient {
-	return GlobalDomainRegistrationClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID string) GlobalDomainRegistrationClient {
+        return GlobalDomainRegistrationClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // CheckDomainAvailability sends the check domain availability request.
-// Parameters:
-// identifier - name of the domain
+    // Parameters:
+        // identifier - name of the domain
 func (client GlobalDomainRegistrationClient) CheckDomainAvailability(ctx context.Context, identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
-	req, err := client.CheckDomainAvailabilityPreparer(ctx, identifier)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.CheckDomainAvailability")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.CheckDomainAvailabilityPreparer(ctx, identifier)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CheckDomainAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CheckDomainAvailabilitySender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CheckDomainAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
-	}
+            result, err = client.CheckDomainAvailabilityResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CheckDomainAvailabilityPreparer prepares the CheckDomainAvailability request.
-func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ctx context.Context, identifier NameIdentifier) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // CheckDomainAvailabilityPreparer prepares the CheckDomainAvailability request.
+    func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ctx context.Context, identifier NameIdentifier) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability", pathParameters),
-		autorest.WithJSON(identifier),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability",pathParameters),
+    autorest.WithJSON(identifier),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CheckDomainAvailabilitySender sends the CheckDomainAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // CheckDomainAvailabilitySender sends the CheckDomainAvailability request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // CheckDomainAvailabilityResponder handles the response to the CheckDomainAvailability request. The method always
 // closes the http.Response Body.
 func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(resp *http.Response) (result DomainAvailablilityCheckResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // GetAllDomains sends the get all domains request.
 func (client GlobalDomainRegistrationClient) GetAllDomains(ctx context.Context) (result DomainCollectionPage, err error) {
-	result.fn = client.getAllDomainsNextResults
-	req, err := client.GetAllDomainsPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.GetAllDomains")
+        defer func() {
+            sc := -1
+            if result.dc.Response.Response != nil {
+                sc = result.dc.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.getAllDomainsNextResults
+    req, err := client.GetAllDomainsPreparer(ctx)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetAllDomainsSender(req)
-	if err != nil {
-		result.dc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetAllDomainsSender(req)
+            if err != nil {
+            result.dc.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure sending request")
+            return
+            }
 
-	result.dc, err = client.GetAllDomainsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
-	}
+            result.dc, err = client.GetAllDomainsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetAllDomainsPreparer prepares the GetAllDomains request.
-func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetAllDomainsPreparer prepares the GetAllDomains request.
+    func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer(ctx context.Context) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetAllDomainsSender sends the GetAllDomains request. The method will close the
-// http.Response Body if it receives an error.
-func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetAllDomainsSender sends the GetAllDomains request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetAllDomainsResponder handles the response to the GetAllDomains request. The method always
 // closes the http.Response Body.
 func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// getAllDomainsNextResults retrieves the next set of results, if any.
-func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
-	req, err := lastResults.domainCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.GetAllDomainsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.GetAllDomainsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // getAllDomainsNextResults retrieves the next set of results, if any.
+            func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(ctx context.Context, lastResults DomainCollection) (result DomainCollection, err error) {
+            req, err := lastResults.domainCollectionPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.GetAllDomainsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.GetAllDomainsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// GetAllDomainsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GlobalDomainRegistrationClient) GetAllDomainsComplete(ctx context.Context) (result DomainCollectionIterator, err error) {
-	result.page, err = client.GetAllDomains(ctx)
-	return
-}
+    // GetAllDomainsComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client GlobalDomainRegistrationClient) GetAllDomainsComplete(ctx context.Context) (result DomainCollectionIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.GetAllDomains")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.GetAllDomains(ctx)
+                return
+        }
 
 // GetDomainControlCenterSsoRequest sends the get domain control center sso request request.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest(ctx context.Context) (result DomainControlCenterSsoRequest, err error) {
-	req, err := client.GetDomainControlCenterSsoRequestPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.GetDomainControlCenterSsoRequest")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetDomainControlCenterSsoRequestPreparer(ctx)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetDomainControlCenterSsoRequestSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetDomainControlCenterSsoRequestSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetDomainControlCenterSsoRequestResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
-	}
+            result, err = client.GetDomainControlCenterSsoRequestResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetDomainControlCenterSsoRequestPreparer prepares the GetDomainControlCenterSsoRequest request.
-func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetDomainControlCenterSsoRequestPreparer prepares the GetDomainControlCenterSsoRequest request.
+    func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPreparer(ctx context.Context) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetDomainControlCenterSsoRequestSender sends the GetDomainControlCenterSsoRequest request. The method will close the
-// http.Response Body if it receives an error.
-func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetDomainControlCenterSsoRequestSender sends the GetDomainControlCenterSsoRequest request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetDomainControlCenterSsoRequestResponder handles the response to the GetDomainControlCenterSsoRequest request. The method always
 // closes the http.Response Body.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestResponder(resp *http.Response) (result DomainControlCenterSsoRequest, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // ListDomainRecommendations sends the list domain recommendations request.
-// Parameters:
-// parameters - domain recommendation search parameters
+    // Parameters:
+        // parameters - domain recommendation search parameters
 func (client GlobalDomainRegistrationClient) ListDomainRecommendations(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionPage, err error) {
-	result.fn = client.listDomainRecommendationsNextResults
-	req, err := client.ListDomainRecommendationsPreparer(ctx, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.ListDomainRecommendations")
+        defer func() {
+            sc := -1
+            if result.nic.Response.Response != nil {
+                sc = result.nic.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listDomainRecommendationsNextResults
+    req, err := client.ListDomainRecommendationsPreparer(ctx, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListDomainRecommendationsSender(req)
-	if err != nil {
-		result.nic.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListDomainRecommendationsSender(req)
+            if err != nil {
+            result.nic.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure sending request")
+            return
+            }
 
-	result.nic, err = client.ListDomainRecommendationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
-	}
+            result.nic, err = client.ListDomainRecommendationsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListDomainRecommendationsPreparer prepares the ListDomainRecommendations request.
-func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(ctx context.Context, parameters DomainRecommendationSearchParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListDomainRecommendationsPreparer prepares the ListDomainRecommendations request.
+    func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(ctx context.Context, parameters DomainRecommendationSearchParameters) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListDomainRecommendationsSender sends the ListDomainRecommendations request. The method will close the
-// http.Response Body if it receives an error.
-func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListDomainRecommendationsSender sends the ListDomainRecommendations request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListDomainRecommendationsResponder handles the response to the ListDomainRecommendations request. The method always
 // closes the http.Response Body.
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(resp *http.Response) (result NameIdentifierCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listDomainRecommendationsNextResults retrieves the next set of results, if any.
-func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResults(lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
-	req, err := lastResults.nameIdentifierCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListDomainRecommendationsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListDomainRecommendationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listDomainRecommendationsNextResults retrieves the next set of results, if any.
+            func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResults(ctx context.Context, lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
+            req, err := lastResults.nameIdentifierCollectionPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListDomainRecommendationsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListDomainRecommendationsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListDomainRecommendationsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GlobalDomainRegistrationClient) ListDomainRecommendationsComplete(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionIterator, err error) {
-	result.page, err = client.ListDomainRecommendations(ctx, parameters)
-	return
-}
+    // ListDomainRecommendationsComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client GlobalDomainRegistrationClient) ListDomainRecommendationsComplete(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.ListDomainRecommendations")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.ListDomainRecommendations(ctx, parameters)
+                return
+        }
 
 // ValidateDomainPurchaseInformation sends the validate domain purchase information request.
-// Parameters:
-// domainRegistrationInput - domain registration information
+    // Parameters:
+        // domainRegistrationInput - domain registration information
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(ctx context.Context, domainRegistrationInput DomainRegistrationInput) (result SetObject, err error) {
-	req, err := client.ValidateDomainPurchaseInformationPreparer(ctx, domainRegistrationInput)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/GlobalDomainRegistrationClient.ValidateDomainPurchaseInformation")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.ValidateDomainPurchaseInformationPreparer(ctx, domainRegistrationInput)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ValidateDomainPurchaseInformationSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ValidateDomainPurchaseInformationSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ValidateDomainPurchaseInformationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
-	}
+            result, err = client.ValidateDomainPurchaseInformationResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ValidateDomainPurchaseInformationPreparer prepares the ValidateDomainPurchaseInformation request.
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPreparer(ctx context.Context, domainRegistrationInput DomainRegistrationInput) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // ValidateDomainPurchaseInformationPreparer prepares the ValidateDomainPurchaseInformation request.
+    func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPreparer(ctx context.Context, domainRegistrationInput DomainRegistrationInput) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-08-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation", pathParameters),
-		autorest.WithJSON(domainRegistrationInput),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation",pathParameters),
+    autorest.WithJSON(domainRegistrationInput),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ValidateDomainPurchaseInformationSender sends the ValidateDomainPurchaseInformation request. The method will close the
-// http.Response Body if it receives an error.
-func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ValidateDomainPurchaseInformationSender sends the ValidateDomainPurchaseInformation request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always
 // closes the http.Response Body.
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationResponder(resp *http.Response) (result SetObject, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result.Value),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

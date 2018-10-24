@@ -18,118 +18,139 @@ package web
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // BillingMetersClient is the webSite Management Client
 type BillingMetersClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewBillingMetersClient creates an instance of the BillingMetersClient client.
 func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
-	return NewBillingMetersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewBillingMetersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewBillingMetersClientWithBaseURI creates an instance of the BillingMetersClient client.
-func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
-	return BillingMetersClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
+        return BillingMetersClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // List gets a list of meters for a given location.
-// Parameters:
-// billingLocation - azure Location of billable resource
+    // Parameters:
+        // billingLocation - azure Location of billable resource
 func (client BillingMetersClient) List(ctx context.Context, billingLocation string) (result BillingMeterCollectionPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, billingLocation)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/BillingMetersClient.List")
+        defer func() {
+            sc := -1
+            if result.bmc.Response.Response != nil {
+                sc = result.bmc.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+                result.fn = client.listNextResults
+    req, err := client.ListPreparer(ctx, billingLocation)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.bmc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.bmc.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result.bmc, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", resp, "Failure responding to request")
-	}
+            result.bmc, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client BillingMetersClient) ListPreparer(ctx context.Context, billingLocation string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListPreparer prepares the List request.
+    func (client BillingMetersClient) ListPreparer(ctx context.Context, billingLocation string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2016-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(billingLocation) > 0 {
-		queryParameters["billingLocation"] = autorest.Encode("query", billingLocation)
-	}
+                        const APIVersion = "2016-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+            if len(billingLocation) > 0 {
+            queryParameters["billingLocation"] = autorest.Encode("query",billingLocation)
+            }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client BillingMetersClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client BillingMetersClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client BillingMetersClient) ListResponder(resp *http.Response) (result BillingMeterCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
-// listNextResults retrieves the next set of results, if any.
-func (client BillingMetersClient) listNextResults(lastResults BillingMeterCollection) (result BillingMeterCollection, err error) {
-	req, err := lastResults.billingMeterCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
+            // listNextResults retrieves the next set of results, if any.
+            func (client BillingMetersClient) listNextResults(ctx context.Context, lastResults BillingMeterCollection) (result BillingMeterCollection, err error) {
+            req, err := lastResults.billingMeterCollectionPreparer(ctx)
+            if err != nil {
+            return result, autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", nil , "Failure preparing next results request")
+            }
+            if req == nil {
+            return
+            }
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            return result, autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", resp, "Failure sending next results request")
+            }
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "web.BillingMetersClient", "listNextResults", resp, "Failure responding to next results request")
+            }
+            return
+                    }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BillingMetersClient) ListComplete(ctx context.Context, billingLocation string) (result BillingMeterCollectionIterator, err error) {
-	result.page, err = client.List(ctx, billingLocation)
-	return
-}
+    // ListComplete enumerates all values, automatically crossing page boundaries as required.
+    func (client BillingMetersClient) ListComplete(ctx context.Context, billingLocation string) (result BillingMeterCollectionIterator, err error) {
+        if tracing.IsEnabled() {
+            ctx = tracing.StartSpan(ctx, fqdn + "/BillingMetersClient.List")
+            defer func() {
+                sc := -1
+                if result.Response().Response.Response != nil {
+                    sc = result.page.Response().Response.Response.StatusCode
+                }
+                tracing.EndSpan(ctx, sc, err)
+            }()
+     }
+        result.page, err = client.List(ctx, billingLocation)
+                return
+        }
+

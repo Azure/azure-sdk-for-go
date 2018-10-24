@@ -18,88 +18,99 @@ package account
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // LocationsClient is the creates an Azure Data Lake Analytics account management client.
 type LocationsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewLocationsClient creates an instance of the LocationsClient client.
 func NewLocationsClient(subscriptionID string) LocationsClient {
-	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
-	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+        return LocationsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // GetCapability gets subscription-level properties and limits for Data Lake Analytics specified by resource location.
-// Parameters:
-// location - the resource location without whitespace.
+    // Parameters:
+        // location - the resource location without whitespace.
 func (client LocationsClient) GetCapability(ctx context.Context, location string) (result CapabilityInformation, err error) {
-	req, err := client.GetCapabilityPreparer(ctx, location)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/LocationsClient.GetCapability")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetCapabilityPreparer(ctx, location)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetCapabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetCapabilitySender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetCapabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", resp, "Failure responding to request")
-	}
+            result, err = client.GetCapabilityResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "account.LocationsClient", "GetCapability", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetCapabilityPreparer prepares the GetCapability request.
-func (client LocationsClient) GetCapabilityPreparer(ctx context.Context, location string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetCapabilityPreparer prepares the GetCapability request.
+    func (client LocationsClient) GetCapabilityPreparer(ctx context.Context, location string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "location": autorest.Encode("path",location),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2016-11-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2016-11-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/locations/{location}/capability", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/locations/{location}/capability",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetCapabilitySender sends the GetCapability request. The method will close the
-// http.Response Body if it receives an error.
-func (client LocationsClient) GetCapabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetCapabilitySender sends the GetCapability request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client LocationsClient) GetCapabilitySender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetCapabilityResponder handles the response to the GetCapability request. The method always
 // closes the http.Response Body.
 func (client LocationsClient) GetCapabilityResponder(resp *http.Response) (result CapabilityInformation, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNotFound),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

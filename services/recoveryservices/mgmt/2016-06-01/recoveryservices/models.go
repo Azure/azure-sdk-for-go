@@ -18,1173 +18,1229 @@ package recoveryservices
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"encoding/json"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
-	"net/http"
+    "context"
+    "encoding/json"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/date"
+    "github.com/Azure/go-autorest/autorest/to"
+    "github.com/Azure/go-autorest/tracing"
+    "net/http"
 )
 
-// AuthType enumerates the values for auth type.
-type AuthType string
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/recoveryservices/mgmt/2016-06-01/recoveryservices"
 
-const (
-	// AAD ...
-	AAD AuthType = "AAD"
-	// AccessControlService ...
-	AccessControlService AuthType = "AccessControlService"
-	// ACS ...
-	ACS AuthType = "ACS"
-	// AzureActiveDirectory ...
-	AzureActiveDirectory AuthType = "AzureActiveDirectory"
-	// Invalid ...
-	Invalid AuthType = "Invalid"
-)
+        // AuthType enumerates the values for auth type.
+    type AuthType string
 
-// PossibleAuthTypeValues returns an array of possible values for the AuthType const type.
-func PossibleAuthTypeValues() []AuthType {
-	return []AuthType{AAD, AccessControlService, ACS, AzureActiveDirectory, Invalid}
-}
+    const (
+                // AAD ...
+        AAD AuthType = "AAD"
+                // AccessControlService ...
+        AccessControlService AuthType = "AccessControlService"
+                // ACS ...
+        ACS AuthType = "ACS"
+                // AzureActiveDirectory ...
+        AzureActiveDirectory AuthType = "AzureActiveDirectory"
+                // Invalid ...
+        Invalid AuthType = "Invalid"
+            )
+    // PossibleAuthTypeValues returns an array of possible values for the AuthType const type.
+    func PossibleAuthTypeValues() []AuthType {
+        return []AuthType{AAD,AccessControlService,ACS,AzureActiveDirectory,Invalid}
+    }
 
-// AuthTypeBasicResourceCertificateDetails enumerates the values for auth type basic resource certificate
-// details.
-type AuthTypeBasicResourceCertificateDetails string
+        // AuthTypeBasicResourceCertificateDetails enumerates the values for auth type basic resource certificate
+        // details.
+    type AuthTypeBasicResourceCertificateDetails string
 
-const (
-	// AuthTypeAccessControlService ...
-	AuthTypeAccessControlService AuthTypeBasicResourceCertificateDetails = "AccessControlService"
-	// AuthTypeAzureActiveDirectory ...
-	AuthTypeAzureActiveDirectory AuthTypeBasicResourceCertificateDetails = "AzureActiveDirectory"
-	// AuthTypeResourceCertificateDetails ...
-	AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = "ResourceCertificateDetails"
-)
+    const (
+                // AuthTypeAccessControlService ...
+        AuthTypeAccessControlService AuthTypeBasicResourceCertificateDetails = "AccessControlService"
+                // AuthTypeAzureActiveDirectory ...
+        AuthTypeAzureActiveDirectory AuthTypeBasicResourceCertificateDetails = "AzureActiveDirectory"
+                // AuthTypeResourceCertificateDetails ...
+        AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = "ResourceCertificateDetails"
+            )
+    // PossibleAuthTypeBasicResourceCertificateDetailsValues returns an array of possible values for the AuthTypeBasicResourceCertificateDetails const type.
+    func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
+        return []AuthTypeBasicResourceCertificateDetails{AuthTypeAccessControlService,AuthTypeAzureActiveDirectory,AuthTypeResourceCertificateDetails}
+    }
 
-// PossibleAuthTypeBasicResourceCertificateDetailsValues returns an array of possible values for the AuthTypeBasicResourceCertificateDetails const type.
-func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
-	return []AuthTypeBasicResourceCertificateDetails{AuthTypeAccessControlService, AuthTypeAzureActiveDirectory, AuthTypeResourceCertificateDetails}
-}
+        // SkuName enumerates the values for sku name.
+    type SkuName string
 
-// SkuName enumerates the values for sku name.
-type SkuName string
+    const (
+                // RS0 ...
+        RS0 SkuName = "RS0"
+                // Standard ...
+        Standard SkuName = "Standard"
+            )
+    // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+    func PossibleSkuNameValues() []SkuName {
+        return []SkuName{RS0,Standard}
+    }
 
-const (
-	// RS0 ...
-	RS0 SkuName = "RS0"
-	// Standard ...
-	Standard SkuName = "Standard"
-)
+        // TriggerType enumerates the values for trigger type.
+    type TriggerType string
 
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{RS0, Standard}
-}
+    const (
+                // ForcedUpgrade ...
+        ForcedUpgrade TriggerType = "ForcedUpgrade"
+                // UserTriggered ...
+        UserTriggered TriggerType = "UserTriggered"
+            )
+    // PossibleTriggerTypeValues returns an array of possible values for the TriggerType const type.
+    func PossibleTriggerTypeValues() []TriggerType {
+        return []TriggerType{ForcedUpgrade,UserTriggered}
+    }
 
-// TriggerType enumerates the values for trigger type.
-type TriggerType string
+        // UsagesUnit enumerates the values for usages unit.
+    type UsagesUnit string
 
-const (
-	// ForcedUpgrade ...
-	ForcedUpgrade TriggerType = "ForcedUpgrade"
-	// UserTriggered ...
-	UserTriggered TriggerType = "UserTriggered"
-)
+    const (
+                // Bytes ...
+        Bytes UsagesUnit = "Bytes"
+                // BytesPerSecond ...
+        BytesPerSecond UsagesUnit = "BytesPerSecond"
+                // Count ...
+        Count UsagesUnit = "Count"
+                // CountPerSecond ...
+        CountPerSecond UsagesUnit = "CountPerSecond"
+                // Percent ...
+        Percent UsagesUnit = "Percent"
+                // Seconds ...
+        Seconds UsagesUnit = "Seconds"
+            )
+    // PossibleUsagesUnitValues returns an array of possible values for the UsagesUnit const type.
+    func PossibleUsagesUnitValues() []UsagesUnit {
+        return []UsagesUnit{Bytes,BytesPerSecond,Count,CountPerSecond,Percent,Seconds}
+    }
 
-// PossibleTriggerTypeValues returns an array of possible values for the TriggerType const type.
-func PossibleTriggerTypeValues() []TriggerType {
-	return []TriggerType{ForcedUpgrade, UserTriggered}
-}
+        // VaultUpgradeState enumerates the values for vault upgrade state.
+    type VaultUpgradeState string
 
-// UsagesUnit enumerates the values for usages unit.
-type UsagesUnit string
+    const (
+                // Failed ...
+        Failed VaultUpgradeState = "Failed"
+                // InProgress ...
+        InProgress VaultUpgradeState = "InProgress"
+                // Unknown ...
+        Unknown VaultUpgradeState = "Unknown"
+                // Upgraded ...
+        Upgraded VaultUpgradeState = "Upgraded"
+            )
+    // PossibleVaultUpgradeStateValues returns an array of possible values for the VaultUpgradeState const type.
+    func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
+        return []VaultUpgradeState{Failed,InProgress,Unknown,Upgraded}
+    }
 
-const (
-	// Bytes ...
-	Bytes UsagesUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UsagesUnit = "BytesPerSecond"
-	// Count ...
-	Count UsagesUnit = "Count"
-	// CountPerSecond ...
-	CountPerSecond UsagesUnit = "CountPerSecond"
-	// Percent ...
-	Percent UsagesUnit = "Percent"
-	// Seconds ...
-	Seconds UsagesUnit = "Seconds"
-)
+            // CertificateRequest details of the certificate to be uploaded to the vault.
+            type CertificateRequest struct {
+            Properties *RawCertificateData `json:"properties,omitempty"`
+            }
 
-// PossibleUsagesUnitValues returns an array of possible values for the UsagesUnit const type.
-func PossibleUsagesUnitValues() []UsagesUnit {
-	return []UsagesUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
-}
+            // ClientDiscoveryDisplay localized display information of an operation.
+            type ClientDiscoveryDisplay struct {
+            // Provider - Name of the provider for display purposes
+            Provider *string `json:"provider,omitempty"`
+            // Resource - ResourceType for which this Operation can be performed.
+            Resource *string `json:"resource,omitempty"`
+            // Operation - Operations Name itself.
+            Operation *string `json:"operation,omitempty"`
+            // Description - Description of the operation having details of what operation is about.
+            Description *string `json:"description,omitempty"`
+            }
 
-// VaultUpgradeState enumerates the values for vault upgrade state.
-type VaultUpgradeState string
+            // ClientDiscoveryForLogSpecification class to represent shoebox log specification in json client
+            // discovery.
+            type ClientDiscoveryForLogSpecification struct {
+            // Name - Name of the log.
+            Name *string `json:"name,omitempty"`
+            // DisplayName - Localized display name
+            DisplayName *string `json:"displayName,omitempty"`
+            // BlobDuration - Blobs created in customer storage account per hour
+            BlobDuration *string `json:"blobDuration,omitempty"`
+            }
 
-const (
-	// Failed ...
-	Failed VaultUpgradeState = "Failed"
-	// InProgress ...
-	InProgress VaultUpgradeState = "InProgress"
-	// Unknown ...
-	Unknown VaultUpgradeState = "Unknown"
-	// Upgraded ...
-	Upgraded VaultUpgradeState = "Upgraded"
-)
+            // ClientDiscoveryForProperties class to represent shoebox properties in json client discovery.
+            type ClientDiscoveryForProperties struct {
+            // ServiceSpecification - Operation properties.
+            ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
+            }
 
-// PossibleVaultUpgradeStateValues returns an array of possible values for the VaultUpgradeState const type.
-func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
-	return []VaultUpgradeState{Failed, InProgress, Unknown, Upgraded}
-}
+            // ClientDiscoveryForServiceSpecification class to represent shoebox service specification in json client
+            // discovery.
+            type ClientDiscoveryForServiceSpecification struct {
+            // LogSpecifications - List of log specifications of this operation.
+            LogSpecifications *[]ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
+            }
 
-// CertificateRequest details of the certificate to be uploaded to the vault.
-type CertificateRequest struct {
-	Properties *RawCertificateData `json:"properties,omitempty"`
-}
+            // ClientDiscoveryResponse operations List response which contains list of available APIs.
+            type ClientDiscoveryResponse struct {
+            autorest.Response `json:"-"`
+            // Value - List of available operationss.
+            Value *[]ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
+            // NextLink - Link to the next chunk of the response
+            NextLink *string `json:"nextLink,omitempty"`
+            }
 
-// ClientDiscoveryDisplay localized display information of an operation.
-type ClientDiscoveryDisplay struct {
-	// Provider - Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
-	// Resource - ResourceType for which this Operation can be performed.
-	Resource *string `json:"resource,omitempty"`
-	// Operation - Operations Name itself.
-	Operation *string `json:"operation,omitempty"`
-	// Description - Description of the operation having details of what operation is about.
-	Description *string `json:"description,omitempty"`
-}
+            // ClientDiscoveryResponseIterator provides access to a complete listing of
+            // ClientDiscoveryValueForSingleAPI values.
+            type ClientDiscoveryResponseIterator struct {
+                i int
+                page ClientDiscoveryResponsePage
+            }
+        // NextWithContext advances to the next value.  If there was an error making
+        // the request the iterator does not advance and the error is returned.
+        func (iter * ClientDiscoveryResponseIterator) NextWithContext(ctx context.Context) (err error) {
+        if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ClientDiscoveryResponseIterator.NextWithContext")
+        defer func() {
+        sc := -1
+        if iter.Response().Response.Response != nil {
+        sc = iter.Response().Response.Response.StatusCode
+        }
+        tracing.EndSpan(ctx, sc, err)
+        }()
+        }
+        iter.i++
+        if iter.i < len(iter. page.Values()) {
+        return nil
+        }
+        err = iter.page.NextWithContext(ctx)
+        if err != nil {
+        iter. i--
+        return err
+        }
+        iter.i = 0
+        return nil
+        }
+        // Next advances to the next value.  If there was an error making
+        // the request the iterator does not advance and the error is returned.
+        // Deprecated: Use NextWithContext() instead.
+        func (iter * ClientDiscoveryResponseIterator) Next() error {
+        return iter.NextWithContext(context.Background())
+        }
+        // NotDone returns true if the enumeration should be started or is not yet complete.
+        func (iter ClientDiscoveryResponseIterator) NotDone() bool {
+        return iter.page.NotDone() && iter.i < len(iter. page.Values())
+        }
+        // Response returns the raw server response from the last page request.
+        func (iter ClientDiscoveryResponseIterator) Response() ClientDiscoveryResponse {
+        return iter.page.Response()
+        }
+        // Value returns the current value or a zero-initialized value if the
+        // iterator has advanced beyond the end of the collection.
+        func (iter ClientDiscoveryResponseIterator) Value() ClientDiscoveryValueForSingleAPI {
+        if !iter.page.NotDone() {
+        return ClientDiscoveryValueForSingleAPI{}
+        }
+        return iter.page.Values()[iter.i]
+        }
 
-// ClientDiscoveryForLogSpecification class to represent shoebox log specification in json client discovery.
-type ClientDiscoveryForLogSpecification struct {
-	// Name - Name of the log.
-	Name *string `json:"name,omitempty"`
-	// DisplayName - Localized display name
-	DisplayName *string `json:"displayName,omitempty"`
-	// BlobDuration - Blobs created in customer storage account per hour
-	BlobDuration *string `json:"blobDuration,omitempty"`
-}
 
-// ClientDiscoveryForProperties class to represent shoebox properties in json client discovery.
-type ClientDiscoveryForProperties struct {
-	// ServiceSpecification - Operation properties.
-	ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
-}
+                // IsEmpty returns true if the ListResult contains no values.
+                func (cdr ClientDiscoveryResponse) IsEmpty() bool {
+                return cdr.Value == nil || len(*cdr.Value) == 0
+                }
 
-// ClientDiscoveryForServiceSpecification class to represent shoebox service specification in json client
-// discovery.
-type ClientDiscoveryForServiceSpecification struct {
-	// LogSpecifications - List of log specifications of this operation.
-	LogSpecifications *[]ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
-}
+                    // clientDiscoveryResponsePreparer prepares a request to retrieve the next set of results.
+                    // It returns nil if no more results exist.
+                    func (cdr ClientDiscoveryResponse) clientDiscoveryResponsePreparer(ctx context.Context) (*http.Request, error) {
+                    if cdr.NextLink == nil || len(to.String(cdr.NextLink)) < 1 {
+                    return nil, nil
+                    }
+                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
+                    autorest.AsJSON(),
+                    autorest.AsGet(),
+                    autorest.WithBaseURL(to.String( cdr.NextLink)));
+                    }
 
-// ClientDiscoveryResponse operations List response which contains list of available APIs.
-type ClientDiscoveryResponse struct {
-	autorest.Response `json:"-"`
-	// Value - List of available operationss.
-	Value *[]ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
-	// NextLink - Link to the next chunk of the response
-	NextLink *string `json:"nextLink,omitempty"`
-}
+            // ClientDiscoveryResponsePage contains a page of ClientDiscoveryValueForSingleAPI values.
+            type ClientDiscoveryResponsePage struct {
+                fn func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)
+                cdr ClientDiscoveryResponse
+            }
 
-// ClientDiscoveryResponseIterator provides access to a complete listing of ClientDiscoveryValueForSingleAPI
-// values.
-type ClientDiscoveryResponseIterator struct {
-	i    int
-	page ClientDiscoveryResponsePage
-}
+        // NextWithContext advances to the next page of values.  If there was an error making
+        // the request the page does not advance and the error is returned.
+        func (page * ClientDiscoveryResponsePage) NextWithContext(ctx context.Context) (err error) {
+        if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ClientDiscoveryResponsePage.NextWithContext")
+        defer func() {
+        sc := -1
+        if page.Response().Response.Response != nil {
+        sc = page.Response().Response.Response.StatusCode
+        }
+        tracing.EndSpan(ctx, sc, err)
+        }()
+        }
+        next, err := page.fn(ctx, page.cdr)
+        if err != nil {
+        return err
+        }
+        page.cdr = next
+        return nil
+        }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ClientDiscoveryResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
+        // Next advances to the next page of values.  If there was an error making
+        // the request the page does not advance and the error is returned.
+        // Deprecated: Use NextWithContext() instead.
+        func (page * ClientDiscoveryResponsePage) Next() error {
+        return page.NextWithContext(context.Background())
+        }
+        // NotDone returns true if the page enumeration should be started or is not yet complete.
+        func (page ClientDiscoveryResponsePage) NotDone() bool {
+        return !page.cdr.IsEmpty()
+        }
+        // Response returns the raw server response from the last page request.
+        func (page ClientDiscoveryResponsePage) Response() ClientDiscoveryResponse {
+        return page.cdr
+        }
+        // Values returns the slice of values for the current page or nil if there are no values.
+        func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingleAPI {
+        if page.cdr.IsEmpty() {
+        return nil
+        }
+        return *page.cdr.Value
+        }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ClientDiscoveryResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
+            // ClientDiscoveryValueForSingleAPI available operation details.
+            type ClientDiscoveryValueForSingleAPI struct {
+            // Name - Name of the Operation.
+            Name *string `json:"name,omitempty"`
+            // Display - Contains the localized display information for this particular operation
+            Display *ClientDiscoveryDisplay `json:"display,omitempty"`
+            // Origin - The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
+            Origin *string `json:"origin,omitempty"`
+            // Properties - ShoeBox properties for the given operation.
+            Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
+            }
 
-// Response returns the raw server response from the last page request.
-func (iter ClientDiscoveryResponseIterator) Response() ClientDiscoveryResponse {
-	return iter.page.Response()
-}
+            // JobsSummary summary of the replication job data for this vault.
+            type JobsSummary struct {
+            // FailedJobs - Count of failed jobs.
+            FailedJobs *int32 `json:"failedJobs,omitempty"`
+            // SuspendedJobs - Count of suspended jobs.
+            SuspendedJobs *int32 `json:"suspendedJobs,omitempty"`
+            // InProgressJobs - Count of in-progress jobs.
+            InProgressJobs *int32 `json:"inProgressJobs,omitempty"`
+            }
 
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ClientDiscoveryResponseIterator) Value() ClientDiscoveryValueForSingleAPI {
-	if !iter.page.NotDone() {
-		return ClientDiscoveryValueForSingleAPI{}
-	}
-	return iter.page.Values()[iter.i]
-}
+            // MonitoringSummary summary of the replication monitoring data for this vault.
+            type MonitoringSummary struct {
+            // UnHealthyVMCount - Count of unhealthy VMs.
+            UnHealthyVMCount *int32 `json:"unHealthyVmCount,omitempty"`
+            // UnHealthyProviderCount - Count of unhealthy replication providers.
+            UnHealthyProviderCount *int32 `json:"unHealthyProviderCount,omitempty"`
+            // EventsCount - Count of all critical warnings.
+            EventsCount *int32 `json:"eventsCount,omitempty"`
+            // DeprecatedProviderCount - Count of all deprecated recovery service providers.
+            DeprecatedProviderCount *int32 `json:"deprecatedProviderCount,omitempty"`
+            // SupportedProviderCount - Count of all the supported recovery service providers.
+            SupportedProviderCount *int32 `json:"supportedProviderCount,omitempty"`
+            // UnsupportedProviderCount - Count of all the unsupported recovery service providers.
+            UnsupportedProviderCount *int32 `json:"unsupportedProviderCount,omitempty"`
+            }
 
-// IsEmpty returns true if the ListResult contains no values.
-func (cdr ClientDiscoveryResponse) IsEmpty() bool {
-	return cdr.Value == nil || len(*cdr.Value) == 0
-}
+            // NameInfo the name of usage.
+            type NameInfo struct {
+            // Value - Value of usage.
+            Value *string `json:"value,omitempty"`
+            // LocalizedValue - Localized value of usage.
+            LocalizedValue *string `json:"localizedValue,omitempty"`
+            }
 
-// clientDiscoveryResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (cdr ClientDiscoveryResponse) clientDiscoveryResponsePreparer() (*http.Request, error) {
-	if cdr.NextLink == nil || len(to.String(cdr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(cdr.NextLink)))
-}
+            // PatchTrackedResource tracked resource with location.
+            type PatchTrackedResource struct {
+            // Location - Resource location.
+            Location *string `json:"location,omitempty"`
+            // Tags - Resource tags.
+            Tags map[string]*string `json:"tags"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// ClientDiscoveryResponsePage contains a page of ClientDiscoveryValueForSingleAPI values.
-type ClientDiscoveryResponsePage struct {
-	fn  func(ClientDiscoveryResponse) (ClientDiscoveryResponse, error)
-	cdr ClientDiscoveryResponse
-}
+        // MarshalJSON is the custom marshaler for PatchTrackedResource.
+        func (ptr PatchTrackedResource)MarshalJSON() ([]byte, error){
+        objectMap := make(map[string]interface{})
+                if(ptr.Location != nil) {
+                objectMap["location"] = ptr.Location
+                }
+                if(ptr.Tags != nil) {
+                objectMap["tags"] = ptr.Tags
+                }
+                if(ptr.ID != nil) {
+                objectMap["id"] = ptr.ID
+                }
+                if(ptr.Name != nil) {
+                objectMap["name"] = ptr.Name
+                }
+                if(ptr.Type != nil) {
+                objectMap["type"] = ptr.Type
+                }
+                if(ptr.ETag != nil) {
+                objectMap["eTag"] = ptr.ETag
+                }
+                return json.Marshal(objectMap)
+        }
 
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ClientDiscoveryResponsePage) Next() error {
-	next, err := page.fn(page.cdr)
-	if err != nil {
-		return err
-	}
-	page.cdr = next
-	return nil
-}
+            // PatchVault patch Resource information, as returned by the resource provider.
+            type PatchVault struct {
+            Properties *VaultProperties `json:"properties,omitempty"`
+            Sku *Sku `json:"sku,omitempty"`
+            // Location - Resource location.
+            Location *string `json:"location,omitempty"`
+            // Tags - Resource tags.
+            Tags map[string]*string `json:"tags"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ClientDiscoveryResponsePage) NotDone() bool {
-	return !page.cdr.IsEmpty()
-}
+        // MarshalJSON is the custom marshaler for PatchVault.
+        func (pv PatchVault)MarshalJSON() ([]byte, error){
+        objectMap := make(map[string]interface{})
+                if(pv.Properties != nil) {
+                objectMap["properties"] = pv.Properties
+                }
+                if(pv.Sku != nil) {
+                objectMap["sku"] = pv.Sku
+                }
+                if(pv.Location != nil) {
+                objectMap["location"] = pv.Location
+                }
+                if(pv.Tags != nil) {
+                objectMap["tags"] = pv.Tags
+                }
+                if(pv.ID != nil) {
+                objectMap["id"] = pv.ID
+                }
+                if(pv.Name != nil) {
+                objectMap["name"] = pv.Name
+                }
+                if(pv.Type != nil) {
+                objectMap["type"] = pv.Type
+                }
+                if(pv.ETag != nil) {
+                objectMap["eTag"] = pv.ETag
+                }
+                return json.Marshal(objectMap)
+        }
 
-// Response returns the raw server response from the last page request.
-func (page ClientDiscoveryResponsePage) Response() ClientDiscoveryResponse {
-	return page.cdr
-}
+            // RawCertificateData raw certificate data.
+            type RawCertificateData struct {
+            // AuthType - Specifies the authentication type. Possible values include: 'Invalid', 'ACS', 'AAD', 'AccessControlService', 'AzureActiveDirectory'
+            AuthType AuthType `json:"authType,omitempty"`
+            // Certificate - The base64 encoded certificate raw data string
+            Certificate *[]byte `json:"certificate,omitempty"`
+            }
 
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingleAPI {
-	if page.cdr.IsEmpty() {
-		return nil
-	}
-	return *page.cdr.Value
-}
+            // ReplicationUsage replication usages of a vault.
+            type ReplicationUsage struct {
+            // MonitoringSummary - Summary of the replication monitoring data for this vault.
+            MonitoringSummary *MonitoringSummary `json:"monitoringSummary,omitempty"`
+            // JobsSummary - Summary of the replication jobs data for this vault.
+            JobsSummary *JobsSummary `json:"jobsSummary,omitempty"`
+            // ProtectedItemCount - Number of replication protected items for this vault.
+            ProtectedItemCount *int32 `json:"protectedItemCount,omitempty"`
+            // RecoveryPlanCount - Number of replication recovery plans for this vault.
+            RecoveryPlanCount *int32 `json:"recoveryPlanCount,omitempty"`
+            // RegisteredServersCount - Number of servers registered to this vault.
+            RegisteredServersCount *int32 `json:"registeredServersCount,omitempty"`
+            // RecoveryServicesProviderAuthType - The authentication type of recovery service providers in the vault.
+            RecoveryServicesProviderAuthType *int32 `json:"recoveryServicesProviderAuthType,omitempty"`
+            }
 
-// ClientDiscoveryValueForSingleAPI available operation details.
-type ClientDiscoveryValueForSingleAPI struct {
-	// Name - Name of the Operation.
-	Name *string `json:"name,omitempty"`
-	// Display - Contains the localized display information for this particular operation
-	Display *ClientDiscoveryDisplay `json:"display,omitempty"`
-	// Origin - The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
-	Origin *string `json:"origin,omitempty"`
-	// Properties - ShoeBox properties for the given operation.
-	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
-}
+            // ReplicationUsageList replication usages for vault.
+            type ReplicationUsageList struct {
+            autorest.Response `json:"-"`
+            // Value - The list of replication usages for the given vault.
+            Value *[]ReplicationUsage `json:"value,omitempty"`
+            }
 
-// JobsSummary summary of the replication job data for this vault.
-type JobsSummary struct {
-	// FailedJobs - Count of failed jobs.
-	FailedJobs *int32 `json:"failedJobs,omitempty"`
-	// SuspendedJobs - Count of suspended jobs.
-	SuspendedJobs *int32 `json:"suspendedJobs,omitempty"`
-	// InProgressJobs - Count of in-progress jobs.
-	InProgressJobs *int32 `json:"inProgressJobs,omitempty"`
-}
+            // Resource ARM Resource.
+            type Resource struct {
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// MonitoringSummary summary of the replication monitoring data for this vault.
-type MonitoringSummary struct {
-	// UnHealthyVMCount - Count of unhealthy VMs.
-	UnHealthyVMCount *int32 `json:"unHealthyVmCount,omitempty"`
-	// UnHealthyProviderCount - Count of unhealthy replication providers.
-	UnHealthyProviderCount *int32 `json:"unHealthyProviderCount,omitempty"`
-	// EventsCount - Count of all critical warnings.
-	EventsCount *int32 `json:"eventsCount,omitempty"`
-	// DeprecatedProviderCount - Count of all deprecated recovery service providers.
-	DeprecatedProviderCount *int32 `json:"deprecatedProviderCount,omitempty"`
-	// SupportedProviderCount - Count of all the supported recovery service providers.
-	SupportedProviderCount *int32 `json:"supportedProviderCount,omitempty"`
-	// UnsupportedProviderCount - Count of all the unsupported recovery service providers.
-	UnsupportedProviderCount *int32 `json:"unsupportedProviderCount,omitempty"`
-}
+            // ResourceCertificateAndAadDetails certificate details representing the Vault credentials for AAD.
+            type ResourceCertificateAndAadDetails struct {
+            // AadAuthority - AAD tenant authority.
+            AadAuthority *string `json:"aadAuthority,omitempty"`
+            // AadTenantID - AAD tenant Id.
+            AadTenantID *string `json:"aadTenantId,omitempty"`
+            // ServicePrincipalClientID - AAD service principal clientId.
+            ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
+            // ServicePrincipalObjectID - AAD service principal ObjectId.
+            ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
+            // AzureManagementEndpointAudience - Azure Management Endpoint Audience.
+            AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
+            // Certificate - The base64 encoded certificate raw data string.
+            Certificate *[]byte `json:"certificate,omitempty"`
+            // FriendlyName - Certificate friendlyname.
+            FriendlyName *string `json:"friendlyName,omitempty"`
+            // Issuer - Certificate issuer.
+            Issuer *string `json:"issuer,omitempty"`
+            // ResourceID - Resource ID of the vault.
+            ResourceID *int64 `json:"resourceId,omitempty"`
+            // Subject - Certificate Subject Name.
+            Subject *string `json:"subject,omitempty"`
+            // Thumbprint - Certificate thumbprint.
+            Thumbprint *string `json:"thumbprint,omitempty"`
+            // ValidFrom - Certificate Validity start Date time.
+            ValidFrom *date.Time `json:"validFrom,omitempty"`
+            // ValidTo - Certificate Validity End Date time.
+            ValidTo *date.Time `json:"validTo,omitempty"`
+            // AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
+            AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
+            }
 
-// NameInfo the name of usage.
-type NameInfo struct {
-	// Value - Value of usage.
-	Value *string `json:"value,omitempty"`
-	// LocalizedValue - Localized value of usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
-}
+        // MarshalJSON is the custom marshaler for ResourceCertificateAndAadDetails.
+        func (rcaad ResourceCertificateAndAadDetails)MarshalJSON() ([]byte, error){
+            rcaad.AuthType = AuthTypeAzureActiveDirectory
+            objectMap := make(map[string]interface{})
+                if(rcaad.AadAuthority != nil) {
+                objectMap["aadAuthority"] = rcaad.AadAuthority
+                }
+                if(rcaad.AadTenantID != nil) {
+                objectMap["aadTenantId"] = rcaad.AadTenantID
+                }
+                if(rcaad.ServicePrincipalClientID != nil) {
+                objectMap["servicePrincipalClientId"] = rcaad.ServicePrincipalClientID
+                }
+                if(rcaad.ServicePrincipalObjectID != nil) {
+                objectMap["servicePrincipalObjectId"] = rcaad.ServicePrincipalObjectID
+                }
+                if(rcaad.AzureManagementEndpointAudience != nil) {
+                objectMap["azureManagementEndpointAudience"] = rcaad.AzureManagementEndpointAudience
+                }
+                if(rcaad.Certificate != nil) {
+                objectMap["certificate"] = rcaad.Certificate
+                }
+                if(rcaad.FriendlyName != nil) {
+                objectMap["friendlyName"] = rcaad.FriendlyName
+                }
+                if(rcaad.Issuer != nil) {
+                objectMap["issuer"] = rcaad.Issuer
+                }
+                if(rcaad.ResourceID != nil) {
+                objectMap["resourceId"] = rcaad.ResourceID
+                }
+                if(rcaad.Subject != nil) {
+                objectMap["subject"] = rcaad.Subject
+                }
+                if(rcaad.Thumbprint != nil) {
+                objectMap["thumbprint"] = rcaad.Thumbprint
+                }
+                if(rcaad.ValidFrom != nil) {
+                objectMap["validFrom"] = rcaad.ValidFrom
+                }
+                if(rcaad.ValidTo != nil) {
+                objectMap["validTo"] = rcaad.ValidTo
+                }
+                if(rcaad.AuthType != "") {
+                objectMap["authType"] = rcaad.AuthType
+                }
+                return json.Marshal(objectMap)
+        }
 
-// PatchTrackedResource tracked resource with location.
-type PatchTrackedResource struct {
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
+            func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
+                return &rcaad, true
+            }
 
-// MarshalJSON is the custom marshaler for PatchTrackedResource.
-func (ptr PatchTrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ptr.Location != nil {
-		objectMap["location"] = ptr.Location
-	}
-	if ptr.Tags != nil {
-		objectMap["tags"] = ptr.Tags
-	}
-	if ptr.ID != nil {
-		objectMap["id"] = ptr.ID
-	}
-	if ptr.Name != nil {
-		objectMap["name"] = ptr.Name
-	}
-	if ptr.Type != nil {
-		objectMap["type"] = ptr.Type
-	}
-	if ptr.ETag != nil {
-		objectMap["eTag"] = ptr.ETag
-	}
-	return json.Marshal(objectMap)
-}
+            // AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
+            func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
+                return nil, false
+            }
 
-// PatchVault patch Resource information, as returned by the resource provider.
-type PatchVault struct {
-	Properties *VaultProperties `json:"properties,omitempty"`
-	Sku        *Sku             `json:"sku,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
+            func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
+                return nil, false
+            }
 
-// MarshalJSON is the custom marshaler for PatchVault.
-func (pv PatchVault) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pv.Properties != nil {
-		objectMap["properties"] = pv.Properties
-	}
-	if pv.Sku != nil {
-		objectMap["sku"] = pv.Sku
-	}
-	if pv.Location != nil {
-		objectMap["location"] = pv.Location
-	}
-	if pv.Tags != nil {
-		objectMap["tags"] = pv.Tags
-	}
-	if pv.ID != nil {
-		objectMap["id"] = pv.ID
-	}
-	if pv.Name != nil {
-		objectMap["name"] = pv.Name
-	}
-	if pv.Type != nil {
-		objectMap["type"] = pv.Type
-	}
-	if pv.ETag != nil {
-		objectMap["eTag"] = pv.ETag
-	}
-	return json.Marshal(objectMap)
-}
+                // AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
+                func(rcaad ResourceCertificateAndAadDetails) AsBasicResourceCertificateDetails()(BasicResourceCertificateDetails, bool) {
+                    return &rcaad, true
+                }
 
-// RawCertificateData raw certificate data.
-type RawCertificateData struct {
-	// AuthType - Specifies the authentication type. Possible values include: 'Invalid', 'ACS', 'AAD', 'AccessControlService', 'AzureActiveDirectory'
-	AuthType AuthType `json:"authType,omitempty"`
-	// Certificate - The base64 encoded certificate raw data string
-	Certificate *[]byte `json:"certificate,omitempty"`
-}
 
-// ReplicationUsage replication usages of a vault.
-type ReplicationUsage struct {
-	// MonitoringSummary - Summary of the replication monitoring data for this vault.
-	MonitoringSummary *MonitoringSummary `json:"monitoringSummary,omitempty"`
-	// JobsSummary - Summary of the replication jobs data for this vault.
-	JobsSummary *JobsSummary `json:"jobsSummary,omitempty"`
-	// ProtectedItemCount - Number of replication protected items for this vault.
-	ProtectedItemCount *int32 `json:"protectedItemCount,omitempty"`
-	// RecoveryPlanCount - Number of replication recovery plans for this vault.
-	RecoveryPlanCount *int32 `json:"recoveryPlanCount,omitempty"`
-	// RegisteredServersCount - Number of servers registered to this vault.
-	RegisteredServersCount *int32 `json:"registeredServersCount,omitempty"`
-	// RecoveryServicesProviderAuthType - The authentication type of recovery service providers in the vault.
-	RecoveryServicesProviderAuthType *int32 `json:"recoveryServicesProviderAuthType,omitempty"`
-}
+            // ResourceCertificateAndAcsDetails certificate details representing the Vault credentials for ACS.
+            type ResourceCertificateAndAcsDetails struct {
+            // GlobalAcsNamespace - ACS namespace name - tenant for our service.
+            GlobalAcsNamespace *string `json:"globalAcsNamespace,omitempty"`
+            // GlobalAcsHostName - Acs mgmt host name to connect to.
+            GlobalAcsHostName *string `json:"globalAcsHostName,omitempty"`
+            // GlobalAcsRPRealm - Global ACS namespace RP realm.
+            GlobalAcsRPRealm *string `json:"globalAcsRPRealm,omitempty"`
+            // Certificate - The base64 encoded certificate raw data string.
+            Certificate *[]byte `json:"certificate,omitempty"`
+            // FriendlyName - Certificate friendlyname.
+            FriendlyName *string `json:"friendlyName,omitempty"`
+            // Issuer - Certificate issuer.
+            Issuer *string `json:"issuer,omitempty"`
+            // ResourceID - Resource ID of the vault.
+            ResourceID *int64 `json:"resourceId,omitempty"`
+            // Subject - Certificate Subject Name.
+            Subject *string `json:"subject,omitempty"`
+            // Thumbprint - Certificate thumbprint.
+            Thumbprint *string `json:"thumbprint,omitempty"`
+            // ValidFrom - Certificate Validity start Date time.
+            ValidFrom *date.Time `json:"validFrom,omitempty"`
+            // ValidTo - Certificate Validity End Date time.
+            ValidTo *date.Time `json:"validTo,omitempty"`
+            // AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
+            AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
+            }
 
-// ReplicationUsageList replication usages for vault.
-type ReplicationUsageList struct {
-	autorest.Response `json:"-"`
-	// Value - The list of replication usages for the given vault.
-	Value *[]ReplicationUsage `json:"value,omitempty"`
-}
+        // MarshalJSON is the custom marshaler for ResourceCertificateAndAcsDetails.
+        func (rcaad ResourceCertificateAndAcsDetails)MarshalJSON() ([]byte, error){
+            rcaad.AuthType = AuthTypeAccessControlService
+            objectMap := make(map[string]interface{})
+                if(rcaad.GlobalAcsNamespace != nil) {
+                objectMap["globalAcsNamespace"] = rcaad.GlobalAcsNamespace
+                }
+                if(rcaad.GlobalAcsHostName != nil) {
+                objectMap["globalAcsHostName"] = rcaad.GlobalAcsHostName
+                }
+                if(rcaad.GlobalAcsRPRealm != nil) {
+                objectMap["globalAcsRPRealm"] = rcaad.GlobalAcsRPRealm
+                }
+                if(rcaad.Certificate != nil) {
+                objectMap["certificate"] = rcaad.Certificate
+                }
+                if(rcaad.FriendlyName != nil) {
+                objectMap["friendlyName"] = rcaad.FriendlyName
+                }
+                if(rcaad.Issuer != nil) {
+                objectMap["issuer"] = rcaad.Issuer
+                }
+                if(rcaad.ResourceID != nil) {
+                objectMap["resourceId"] = rcaad.ResourceID
+                }
+                if(rcaad.Subject != nil) {
+                objectMap["subject"] = rcaad.Subject
+                }
+                if(rcaad.Thumbprint != nil) {
+                objectMap["thumbprint"] = rcaad.Thumbprint
+                }
+                if(rcaad.ValidFrom != nil) {
+                objectMap["validFrom"] = rcaad.ValidFrom
+                }
+                if(rcaad.ValidTo != nil) {
+                objectMap["validTo"] = rcaad.ValidTo
+                }
+                if(rcaad.AuthType != "") {
+                objectMap["authType"] = rcaad.AuthType
+                }
+                return json.Marshal(objectMap)
+        }
 
-// Resource ARM Resource.
-type Resource struct {
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
+            func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
+                return nil, false
+            }
 
-// ResourceCertificateAndAadDetails certificate details representing the Vault credentials for AAD.
-type ResourceCertificateAndAadDetails struct {
-	// AadAuthority - AAD tenant authority.
-	AadAuthority *string `json:"aadAuthority,omitempty"`
-	// AadTenantID - AAD tenant Id.
-	AadTenantID *string `json:"aadTenantId,omitempty"`
-	// ServicePrincipalClientID - AAD service principal clientId.
-	ServicePrincipalClientID *string `json:"servicePrincipalClientId,omitempty"`
-	// ServicePrincipalObjectID - AAD service principal ObjectId.
-	ServicePrincipalObjectID *string `json:"servicePrincipalObjectId,omitempty"`
-	// AzureManagementEndpointAudience - Azure Management Endpoint Audience.
-	AzureManagementEndpointAudience *string `json:"azureManagementEndpointAudience,omitempty"`
-	// Certificate - The base64 encoded certificate raw data string.
-	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// Issuer - Certificate issuer.
-	Issuer *string `json:"issuer,omitempty"`
-	// ResourceID - Resource ID of the vault.
-	ResourceID *int64 `json:"resourceId,omitempty"`
-	// Subject - Certificate Subject Name.
-	Subject *string `json:"subject,omitempty"`
-	// Thumbprint - Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
-	// ValidFrom - Certificate Validity start Date time.
-	ValidFrom *date.Time `json:"validFrom,omitempty"`
-	// ValidTo - Certificate Validity End Date time.
-	ValidTo *date.Time `json:"validTo,omitempty"`
-	// AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
-	AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
-}
+            // AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
+            func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
+                return &rcaad, true
+            }
 
-// MarshalJSON is the custom marshaler for ResourceCertificateAndAadDetails.
-func (rcaad ResourceCertificateAndAadDetails) MarshalJSON() ([]byte, error) {
-	rcaad.AuthType = AuthTypeAzureActiveDirectory
-	objectMap := make(map[string]interface{})
-	if rcaad.AadAuthority != nil {
-		objectMap["aadAuthority"] = rcaad.AadAuthority
-	}
-	if rcaad.AadTenantID != nil {
-		objectMap["aadTenantId"] = rcaad.AadTenantID
-	}
-	if rcaad.ServicePrincipalClientID != nil {
-		objectMap["servicePrincipalClientId"] = rcaad.ServicePrincipalClientID
-	}
-	if rcaad.ServicePrincipalObjectID != nil {
-		objectMap["servicePrincipalObjectId"] = rcaad.ServicePrincipalObjectID
-	}
-	if rcaad.AzureManagementEndpointAudience != nil {
-		objectMap["azureManagementEndpointAudience"] = rcaad.AzureManagementEndpointAudience
-	}
-	if rcaad.Certificate != nil {
-		objectMap["certificate"] = rcaad.Certificate
-	}
-	if rcaad.FriendlyName != nil {
-		objectMap["friendlyName"] = rcaad.FriendlyName
-	}
-	if rcaad.Issuer != nil {
-		objectMap["issuer"] = rcaad.Issuer
-	}
-	if rcaad.ResourceID != nil {
-		objectMap["resourceId"] = rcaad.ResourceID
-	}
-	if rcaad.Subject != nil {
-		objectMap["subject"] = rcaad.Subject
-	}
-	if rcaad.Thumbprint != nil {
-		objectMap["thumbprint"] = rcaad.Thumbprint
-	}
-	if rcaad.ValidFrom != nil {
-		objectMap["validFrom"] = rcaad.ValidFrom
-	}
-	if rcaad.ValidTo != nil {
-		objectMap["validTo"] = rcaad.ValidTo
-	}
-	if rcaad.AuthType != "" {
-		objectMap["authType"] = rcaad.AuthType
-	}
-	return json.Marshal(objectMap)
-}
+            // AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
+            func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
+                return nil, false
+            }
 
-// AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
-func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
-	return &rcaad, true
-}
+                // AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
+                func(rcaad ResourceCertificateAndAcsDetails) AsBasicResourceCertificateDetails()(BasicResourceCertificateDetails, bool) {
+                    return &rcaad, true
+                }
 
-// AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
-func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
-	return nil, false
-}
-
-// AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
-func (rcaad ResourceCertificateAndAadDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
-	return nil, false
-}
-
-// AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAadDetails.
-func (rcaad ResourceCertificateAndAadDetails) AsBasicResourceCertificateDetails() (BasicResourceCertificateDetails, bool) {
-	return &rcaad, true
-}
-
-// ResourceCertificateAndAcsDetails certificate details representing the Vault credentials for ACS.
-type ResourceCertificateAndAcsDetails struct {
-	// GlobalAcsNamespace - ACS namespace name - tenant for our service.
-	GlobalAcsNamespace *string `json:"globalAcsNamespace,omitempty"`
-	// GlobalAcsHostName - Acs mgmt host name to connect to.
-	GlobalAcsHostName *string `json:"globalAcsHostName,omitempty"`
-	// GlobalAcsRPRealm - Global ACS namespace RP realm.
-	GlobalAcsRPRealm *string `json:"globalAcsRPRealm,omitempty"`
-	// Certificate - The base64 encoded certificate raw data string.
-	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// Issuer - Certificate issuer.
-	Issuer *string `json:"issuer,omitempty"`
-	// ResourceID - Resource ID of the vault.
-	ResourceID *int64 `json:"resourceId,omitempty"`
-	// Subject - Certificate Subject Name.
-	Subject *string `json:"subject,omitempty"`
-	// Thumbprint - Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
-	// ValidFrom - Certificate Validity start Date time.
-	ValidFrom *date.Time `json:"validFrom,omitempty"`
-	// ValidTo - Certificate Validity End Date time.
-	ValidTo *date.Time `json:"validTo,omitempty"`
-	// AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
-	AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceCertificateAndAcsDetails.
-func (rcaad ResourceCertificateAndAcsDetails) MarshalJSON() ([]byte, error) {
-	rcaad.AuthType = AuthTypeAccessControlService
-	objectMap := make(map[string]interface{})
-	if rcaad.GlobalAcsNamespace != nil {
-		objectMap["globalAcsNamespace"] = rcaad.GlobalAcsNamespace
-	}
-	if rcaad.GlobalAcsHostName != nil {
-		objectMap["globalAcsHostName"] = rcaad.GlobalAcsHostName
-	}
-	if rcaad.GlobalAcsRPRealm != nil {
-		objectMap["globalAcsRPRealm"] = rcaad.GlobalAcsRPRealm
-	}
-	if rcaad.Certificate != nil {
-		objectMap["certificate"] = rcaad.Certificate
-	}
-	if rcaad.FriendlyName != nil {
-		objectMap["friendlyName"] = rcaad.FriendlyName
-	}
-	if rcaad.Issuer != nil {
-		objectMap["issuer"] = rcaad.Issuer
-	}
-	if rcaad.ResourceID != nil {
-		objectMap["resourceId"] = rcaad.ResourceID
-	}
-	if rcaad.Subject != nil {
-		objectMap["subject"] = rcaad.Subject
-	}
-	if rcaad.Thumbprint != nil {
-		objectMap["thumbprint"] = rcaad.Thumbprint
-	}
-	if rcaad.ValidFrom != nil {
-		objectMap["validFrom"] = rcaad.ValidFrom
-	}
-	if rcaad.ValidTo != nil {
-		objectMap["validTo"] = rcaad.ValidTo
-	}
-	if rcaad.AuthType != "" {
-		objectMap["authType"] = rcaad.AuthType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
-func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
-	return nil, false
-}
-
-// AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
-func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
-	return &rcaad, true
-}
-
-// AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
-func (rcaad ResourceCertificateAndAcsDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
-	return nil, false
-}
-
-// AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateAndAcsDetails.
-func (rcaad ResourceCertificateAndAcsDetails) AsBasicResourceCertificateDetails() (BasicResourceCertificateDetails, bool) {
-	return &rcaad, true
-}
 
 // BasicResourceCertificateDetails certificate details representing the Vault credentials.
-type BasicResourceCertificateDetails interface {
-	AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool)
-	AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool)
-	AsResourceCertificateDetails() (*ResourceCertificateDetails, bool)
-}
+        type BasicResourceCertificateDetails interface {
+            AsResourceCertificateAndAadDetails () (*ResourceCertificateAndAadDetails, bool)
+            AsResourceCertificateAndAcsDetails () (*ResourceCertificateAndAcsDetails, bool)
+        AsResourceCertificateDetails () (*ResourceCertificateDetails, bool)
+        }
 
-// ResourceCertificateDetails certificate details representing the Vault credentials.
-type ResourceCertificateDetails struct {
-	// Certificate - The base64 encoded certificate raw data string.
-	Certificate *[]byte `json:"certificate,omitempty"`
-	// FriendlyName - Certificate friendlyname.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// Issuer - Certificate issuer.
-	Issuer *string `json:"issuer,omitempty"`
-	// ResourceID - Resource ID of the vault.
-	ResourceID *int64 `json:"resourceId,omitempty"`
-	// Subject - Certificate Subject Name.
-	Subject *string `json:"subject,omitempty"`
-	// Thumbprint - Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
-	// ValidFrom - Certificate Validity start Date time.
-	ValidFrom *date.Time `json:"validFrom,omitempty"`
-	// ValidTo - Certificate Validity End Date time.
-	ValidTo *date.Time `json:"validTo,omitempty"`
-	// AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
-	AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
-}
+        // ResourceCertificateDetails certificate details representing the Vault credentials.
+        type ResourceCertificateDetails struct {
+        // Certificate - The base64 encoded certificate raw data string.
+        Certificate *[]byte `json:"certificate,omitempty"`
+        // FriendlyName - Certificate friendlyname.
+        FriendlyName *string `json:"friendlyName,omitempty"`
+        // Issuer - Certificate issuer.
+        Issuer *string `json:"issuer,omitempty"`
+        // ResourceID - Resource ID of the vault.
+        ResourceID *int64 `json:"resourceId,omitempty"`
+        // Subject - Certificate Subject Name.
+        Subject *string `json:"subject,omitempty"`
+        // Thumbprint - Certificate thumbprint.
+        Thumbprint *string `json:"thumbprint,omitempty"`
+        // ValidFrom - Certificate Validity start Date time.
+        ValidFrom *date.Time `json:"validFrom,omitempty"`
+        // ValidTo - Certificate Validity End Date time.
+        ValidTo *date.Time `json:"validTo,omitempty"`
+        // AuthType - Possible values include: 'AuthTypeResourceCertificateDetails', 'AuthTypeAzureActiveDirectory', 'AuthTypeAccessControlService'
+        AuthType AuthTypeBasicResourceCertificateDetails `json:"authType,omitempty"`
+        }
 
-func unmarshalBasicResourceCertificateDetails(body []byte) (BasicResourceCertificateDetails, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
+        func unmarshalBasicResourceCertificateDetails(body []byte) (BasicResourceCertificateDetails, error){
+        var m map[string]interface{}
+        err := json.Unmarshal(body, &m)
+        if err != nil {
+        return nil, err
+        }
 
-	switch m["authType"] {
-	case string(AuthTypeAzureActiveDirectory):
-		var rcaad ResourceCertificateAndAadDetails
-		err := json.Unmarshal(body, &rcaad)
-		return rcaad, err
-	case string(AuthTypeAccessControlService):
-		var rcaad ResourceCertificateAndAcsDetails
-		err := json.Unmarshal(body, &rcaad)
-		return rcaad, err
-	default:
-		var rcd ResourceCertificateDetails
-		err := json.Unmarshal(body, &rcd)
-		return rcd, err
-	}
-}
-func unmarshalBasicResourceCertificateDetailsArray(body []byte) ([]BasicResourceCertificateDetails, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
+        switch m["authType"] {
+            case string(AuthTypeAzureActiveDirectory):
+            var rcaad ResourceCertificateAndAadDetails
+            err := json.Unmarshal(body, &rcaad)
+            return rcaad, err
+            case string(AuthTypeAccessControlService):
+            var rcaad ResourceCertificateAndAcsDetails
+            err := json.Unmarshal(body, &rcaad)
+            return rcaad, err
+            default:
+        var rcd ResourceCertificateDetails
+        err := json.Unmarshal(body, &rcd)
+        return rcd, err
+        }
+        }
+        func unmarshalBasicResourceCertificateDetailsArray(body []byte) ([]BasicResourceCertificateDetails, error){
+        var rawMessages []*json.RawMessage
+        err := json.Unmarshal(body, &rawMessages)
+        if err != nil {
+        return nil, err
+        }
 
-	rcdArray := make([]BasicResourceCertificateDetails, len(rawMessages))
+        rcdArray := make([]BasicResourceCertificateDetails, len(rawMessages))
 
-	for index, rawMessage := range rawMessages {
-		rcd, err := unmarshalBasicResourceCertificateDetails(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		rcdArray[index] = rcd
-	}
-	return rcdArray, nil
-}
+        for index, rawMessage := range rawMessages {
+        rcd, err := unmarshalBasicResourceCertificateDetails(*rawMessage)
+        if err != nil {
+        return nil, err
+        }
+        rcdArray[index] = rcd
+        }
+        return rcdArray, nil
+        }
 
-// MarshalJSON is the custom marshaler for ResourceCertificateDetails.
-func (rcd ResourceCertificateDetails) MarshalJSON() ([]byte, error) {
-	rcd.AuthType = AuthTypeResourceCertificateDetails
-	objectMap := make(map[string]interface{})
-	if rcd.Certificate != nil {
-		objectMap["certificate"] = rcd.Certificate
-	}
-	if rcd.FriendlyName != nil {
-		objectMap["friendlyName"] = rcd.FriendlyName
-	}
-	if rcd.Issuer != nil {
-		objectMap["issuer"] = rcd.Issuer
-	}
-	if rcd.ResourceID != nil {
-		objectMap["resourceId"] = rcd.ResourceID
-	}
-	if rcd.Subject != nil {
-		objectMap["subject"] = rcd.Subject
-	}
-	if rcd.Thumbprint != nil {
-		objectMap["thumbprint"] = rcd.Thumbprint
-	}
-	if rcd.ValidFrom != nil {
-		objectMap["validFrom"] = rcd.ValidFrom
-	}
-	if rcd.ValidTo != nil {
-		objectMap["validTo"] = rcd.ValidTo
-	}
-	if rcd.AuthType != "" {
-		objectMap["authType"] = rcd.AuthType
-	}
-	return json.Marshal(objectMap)
-}
+        // MarshalJSON is the custom marshaler for ResourceCertificateDetails.
+        func (rcd ResourceCertificateDetails)MarshalJSON() ([]byte, error){
+            rcd.AuthType = AuthTypeResourceCertificateDetails
+            objectMap := make(map[string]interface{})
+                if(rcd.Certificate != nil) {
+                objectMap["certificate"] = rcd.Certificate
+                }
+                if(rcd.FriendlyName != nil) {
+                objectMap["friendlyName"] = rcd.FriendlyName
+                }
+                if(rcd.Issuer != nil) {
+                objectMap["issuer"] = rcd.Issuer
+                }
+                if(rcd.ResourceID != nil) {
+                objectMap["resourceId"] = rcd.ResourceID
+                }
+                if(rcd.Subject != nil) {
+                objectMap["subject"] = rcd.Subject
+                }
+                if(rcd.Thumbprint != nil) {
+                objectMap["thumbprint"] = rcd.Thumbprint
+                }
+                if(rcd.ValidFrom != nil) {
+                objectMap["validFrom"] = rcd.ValidFrom
+                }
+                if(rcd.ValidTo != nil) {
+                objectMap["validTo"] = rcd.ValidTo
+                }
+                if(rcd.AuthType != "") {
+                objectMap["authType"] = rcd.AuthType
+                }
+                return json.Marshal(objectMap)
+        }
 
-// AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
-func (rcd ResourceCertificateDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
-	return nil, false
-}
+            // AsResourceCertificateAndAadDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
+            func (rcd ResourceCertificateDetails) AsResourceCertificateAndAadDetails() (*ResourceCertificateAndAadDetails, bool) {
+                return nil, false
+            }
 
-// AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
-func (rcd ResourceCertificateDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
-	return nil, false
-}
+            // AsResourceCertificateAndAcsDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
+            func (rcd ResourceCertificateDetails) AsResourceCertificateAndAcsDetails() (*ResourceCertificateAndAcsDetails, bool) {
+                return nil, false
+            }
 
-// AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
-func (rcd ResourceCertificateDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
-	return &rcd, true
-}
+            // AsResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
+            func (rcd ResourceCertificateDetails) AsResourceCertificateDetails() (*ResourceCertificateDetails, bool) {
+                return &rcd, true
+            }
 
-// AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
-func (rcd ResourceCertificateDetails) AsBasicResourceCertificateDetails() (BasicResourceCertificateDetails, bool) {
-	return &rcd, true
-}
+                // AsBasicResourceCertificateDetails is the BasicResourceCertificateDetails implementation for ResourceCertificateDetails.
+                func(rcd ResourceCertificateDetails) AsBasicResourceCertificateDetails()(BasicResourceCertificateDetails, bool) {
+                    return &rcd, true
+                }
 
-// Sku identifies the unique system identifier for each Azure resource.
-type Sku struct {
-	// Name - The Sku name. Possible values include: 'Standard', 'RS0'
-	Name SkuName `json:"name,omitempty"`
-}
 
-// TrackedResource tracked resource with location.
-type TrackedResource struct {
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // Sku identifies the unique system identifier for each Azure resource.
+            type Sku struct {
+            // Name - The Sku name. Possible values include: 'Standard', 'RS0'
+            Name SkuName `json:"name,omitempty"`
+            }
 
-// MarshalJSON is the custom marshaler for TrackedResource.
-func (tr TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tr.Location != nil {
-		objectMap["location"] = tr.Location
-	}
-	if tr.Tags != nil {
-		objectMap["tags"] = tr.Tags
-	}
-	if tr.ID != nil {
-		objectMap["id"] = tr.ID
-	}
-	if tr.Name != nil {
-		objectMap["name"] = tr.Name
-	}
-	if tr.Type != nil {
-		objectMap["type"] = tr.Type
-	}
-	if tr.ETag != nil {
-		objectMap["eTag"] = tr.ETag
-	}
-	return json.Marshal(objectMap)
-}
+            // TrackedResource tracked resource with location.
+            type TrackedResource struct {
+            // Location - Resource location.
+            Location *string `json:"location,omitempty"`
+            // Tags - Resource tags.
+            Tags map[string]*string `json:"tags"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// UpgradeDetails details for upgrading vault.
-type UpgradeDetails struct {
-	// OperationID - ID of the vault upgrade operation.
-	OperationID *string `json:"operationId,omitempty"`
-	// StartTimeUtc - UTC time at which the upgrade operation has started.
-	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
-	// LastUpdatedTimeUtc - UTC time at which the upgrade operation status was last updated.
-	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
-	// EndTimeUtc - UTC time at which the upgrade operation has ended.
-	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
-	// Status - Status of the vault upgrade operation. Possible values include: 'Unknown', 'InProgress', 'Upgraded', 'Failed'
-	Status VaultUpgradeState `json:"status,omitempty"`
-	// Message - Message to the user containing information about the upgrade operation.
-	Message *string `json:"message,omitempty"`
-	// TriggerType - The way the vault upgradation was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'
-	TriggerType TriggerType `json:"triggerType,omitempty"`
-	// UpgradedResourceID - Resource ID of the upgraded vault.
-	UpgradedResourceID *string `json:"upgradedResourceId,omitempty"`
-	// PreviousResourceID - Resource ID of the vault before the upgrade.
-	PreviousResourceID *string `json:"previousResourceId,omitempty"`
-}
+        // MarshalJSON is the custom marshaler for TrackedResource.
+        func (tr TrackedResource)MarshalJSON() ([]byte, error){
+        objectMap := make(map[string]interface{})
+                if(tr.Location != nil) {
+                objectMap["location"] = tr.Location
+                }
+                if(tr.Tags != nil) {
+                objectMap["tags"] = tr.Tags
+                }
+                if(tr.ID != nil) {
+                objectMap["id"] = tr.ID
+                }
+                if(tr.Name != nil) {
+                objectMap["name"] = tr.Name
+                }
+                if(tr.Type != nil) {
+                objectMap["type"] = tr.Type
+                }
+                if(tr.ETag != nil) {
+                objectMap["eTag"] = tr.ETag
+                }
+                return json.Marshal(objectMap)
+        }
 
-// Vault resource information, as returned by the resource provider.
-type Vault struct {
-	autorest.Response `json:"-"`
-	Properties        *VaultProperties `json:"properties,omitempty"`
-	Sku               *Sku             `json:"sku,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // UpgradeDetails details for upgrading vault.
+            type UpgradeDetails struct {
+            // OperationID - ID of the vault upgrade operation.
+            OperationID *string `json:"operationId,omitempty"`
+            // StartTimeUtc - UTC time at which the upgrade operation has started.
+            StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
+            // LastUpdatedTimeUtc - UTC time at which the upgrade operation status was last updated.
+            LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+            // EndTimeUtc - UTC time at which the upgrade operation has ended.
+            EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
+            // Status - Status of the vault upgrade operation. Possible values include: 'Unknown', 'InProgress', 'Upgraded', 'Failed'
+            Status VaultUpgradeState `json:"status,omitempty"`
+            // Message - Message to the user containing information about the upgrade operation.
+            Message *string `json:"message,omitempty"`
+            // TriggerType - The way the vault upgradation was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'
+            TriggerType TriggerType `json:"triggerType,omitempty"`
+            // UpgradedResourceID - Resource ID of the upgraded vault.
+            UpgradedResourceID *string `json:"upgradedResourceId,omitempty"`
+            // PreviousResourceID - Resource ID of the vault before the upgrade.
+            PreviousResourceID *string `json:"previousResourceId,omitempty"`
+            }
 
-// MarshalJSON is the custom marshaler for Vault.
-func (vVar Vault) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if vVar.Properties != nil {
-		objectMap["properties"] = vVar.Properties
-	}
-	if vVar.Sku != nil {
-		objectMap["sku"] = vVar.Sku
-	}
-	if vVar.Location != nil {
-		objectMap["location"] = vVar.Location
-	}
-	if vVar.Tags != nil {
-		objectMap["tags"] = vVar.Tags
-	}
-	if vVar.ID != nil {
-		objectMap["id"] = vVar.ID
-	}
-	if vVar.Name != nil {
-		objectMap["name"] = vVar.Name
-	}
-	if vVar.Type != nil {
-		objectMap["type"] = vVar.Type
-	}
-	if vVar.ETag != nil {
-		objectMap["eTag"] = vVar.ETag
-	}
-	return json.Marshal(objectMap)
-}
+            // Vault resource information, as returned by the resource provider.
+            type Vault struct {
+            autorest.Response `json:"-"`
+            Properties *VaultProperties `json:"properties,omitempty"`
+            Sku *Sku `json:"sku,omitempty"`
+            // Location - Resource location.
+            Location *string `json:"location,omitempty"`
+            // Tags - Resource tags.
+            Tags map[string]*string `json:"tags"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// VaultCertificateResponse certificate corresponding to a vault that can be used by clients to register themselves
-// with the vault.
-type VaultCertificateResponse struct {
-	autorest.Response `json:"-"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID         *string                         `json:"id,omitempty"`
-	Properties BasicResourceCertificateDetails `json:"properties,omitempty"`
-}
+        // MarshalJSON is the custom marshaler for Vault.
+        func (vVar Vault)MarshalJSON() ([]byte, error){
+        objectMap := make(map[string]interface{})
+                if(vVar.Properties != nil) {
+                objectMap["properties"] = vVar.Properties
+                }
+                if(vVar.Sku != nil) {
+                objectMap["sku"] = vVar.Sku
+                }
+                if(vVar.Location != nil) {
+                objectMap["location"] = vVar.Location
+                }
+                if(vVar.Tags != nil) {
+                objectMap["tags"] = vVar.Tags
+                }
+                if(vVar.ID != nil) {
+                objectMap["id"] = vVar.ID
+                }
+                if(vVar.Name != nil) {
+                objectMap["name"] = vVar.Name
+                }
+                if(vVar.Type != nil) {
+                objectMap["type"] = vVar.Type
+                }
+                if(vVar.ETag != nil) {
+                objectMap["eTag"] = vVar.ETag
+                }
+                return json.Marshal(objectMap)
+        }
 
-// UnmarshalJSON is the custom unmarshaler for VaultCertificateResponse struct.
-func (vcr *VaultCertificateResponse) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				vcr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				vcr.Type = &typeVar
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				vcr.ID = &ID
-			}
-		case "properties":
-			if v != nil {
-				properties, err := unmarshalBasicResourceCertificateDetails(*v)
-				if err != nil {
-					return err
-				}
-				vcr.Properties = properties
-			}
-		}
-	}
+            // VaultCertificateResponse certificate corresponding to a vault that can be used by clients to register
+            // themselves with the vault.
+            type VaultCertificateResponse struct {
+            autorest.Response `json:"-"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            Properties BasicResourceCertificateDetails `json:"properties,omitempty"`
+            }
+        // UnmarshalJSON is the custom unmarshaler for VaultCertificateResponse struct.
+        func (vcr *VaultCertificateResponse) UnmarshalJSON(body []byte) error {
+        var m map[string]*json.RawMessage
+        err := json.Unmarshal(body, &m)
+        if err != nil {
+        return err
+        }
+        for k, v := range  m {
+        switch k {
+                case "name":
+    if v != nil {
+        var name string
+        err = json.Unmarshal(*v, &name)
+    if err != nil {
+    return err
+    }
+        vcr.Name = &name
+    }
+                case "type":
+    if v != nil {
+        var typeVar string
+        err = json.Unmarshal(*v, &typeVar)
+    if err != nil {
+    return err
+    }
+        vcr.Type = &typeVar
+    }
+                case "id":
+    if v != nil {
+        var ID string
+        err = json.Unmarshal(*v, &ID)
+    if err != nil {
+    return err
+    }
+        vcr.ID = &ID
+    }
+                case "properties":
+    if v != nil {
+        properties, err := unmarshalBasicResourceCertificateDetails(*v)
+    if err != nil {
+    return err
+    }
+        vcr.Properties = properties
+    }
+            }
+        }
 
-	return nil
-}
+        return nil
+        }
 
-// VaultExtendedInfo vault extended information.
-type VaultExtendedInfo struct {
-	// IntegrityKey - Integrity key.
-	IntegrityKey *string `json:"integrityKey,omitempty"`
-	// EncryptionKey - Encryption key.
-	EncryptionKey *string `json:"encryptionKey,omitempty"`
-	// EncryptionKeyThumbprint - Encryption key thumbprint.
-	EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
-	// Algorithm - Algorithm for Vault ExtendedInfo
-	Algorithm *string `json:"algorithm,omitempty"`
-}
+            // VaultExtendedInfo vault extended information.
+            type VaultExtendedInfo struct {
+            // IntegrityKey - Integrity key.
+            IntegrityKey *string `json:"integrityKey,omitempty"`
+            // EncryptionKey - Encryption key.
+            EncryptionKey *string `json:"encryptionKey,omitempty"`
+            // EncryptionKeyThumbprint - Encryption key thumbprint.
+            EncryptionKeyThumbprint *string `json:"encryptionKeyThumbprint,omitempty"`
+            // Algorithm - Algorithm for Vault ExtendedInfo
+            Algorithm *string `json:"algorithm,omitempty"`
+            }
 
-// VaultExtendedInfoResource vault extended information.
-type VaultExtendedInfoResource struct {
-	autorest.Response  `json:"-"`
-	*VaultExtendedInfo `json:"properties,omitempty"`
-	// ID - Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
+            // VaultExtendedInfoResource vault extended information.
+            type VaultExtendedInfoResource struct {
+            autorest.Response `json:"-"`
+            *VaultExtendedInfo `json:"properties,omitempty"`
+            // ID - Resource Id represents the complete path to the resource.
+            ID *string `json:"id,omitempty"`
+            // Name - Resource name associated with the resource.
+            Name *string `json:"name,omitempty"`
+            // Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+            Type *string `json:"type,omitempty"`
+            // ETag - Optional ETag.
+            ETag *string `json:"eTag,omitempty"`
+            }
 
-// MarshalJSON is the custom marshaler for VaultExtendedInfoResource.
-func (veir VaultExtendedInfoResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if veir.VaultExtendedInfo != nil {
-		objectMap["properties"] = veir.VaultExtendedInfo
-	}
-	if veir.ID != nil {
-		objectMap["id"] = veir.ID
-	}
-	if veir.Name != nil {
-		objectMap["name"] = veir.Name
-	}
-	if veir.Type != nil {
-		objectMap["type"] = veir.Type
-	}
-	if veir.ETag != nil {
-		objectMap["eTag"] = veir.ETag
-	}
-	return json.Marshal(objectMap)
-}
+        // MarshalJSON is the custom marshaler for VaultExtendedInfoResource.
+        func (veir VaultExtendedInfoResource)MarshalJSON() ([]byte, error){
+        objectMap := make(map[string]interface{})
+                if(veir.VaultExtendedInfo != nil) {
+                objectMap["properties"] = veir.VaultExtendedInfo
+                }
+                if(veir.ID != nil) {
+                objectMap["id"] = veir.ID
+                }
+                if(veir.Name != nil) {
+                objectMap["name"] = veir.Name
+                }
+                if(veir.Type != nil) {
+                objectMap["type"] = veir.Type
+                }
+                if(veir.ETag != nil) {
+                objectMap["eTag"] = veir.ETag
+                }
+                return json.Marshal(objectMap)
+        }
+        // UnmarshalJSON is the custom unmarshaler for VaultExtendedInfoResource struct.
+        func (veir *VaultExtendedInfoResource) UnmarshalJSON(body []byte) error {
+        var m map[string]*json.RawMessage
+        err := json.Unmarshal(body, &m)
+        if err != nil {
+        return err
+        }
+        for k, v := range  m {
+        switch k {
+                case "properties":
+    if v != nil {
+        var vaultExtendedInfo VaultExtendedInfo
+        err = json.Unmarshal(*v, &vaultExtendedInfo)
+    if err != nil {
+    return err
+    }
+        veir.VaultExtendedInfo = &vaultExtendedInfo
+    }
+                case "id":
+    if v != nil {
+        var ID string
+        err = json.Unmarshal(*v, &ID)
+    if err != nil {
+    return err
+    }
+        veir.ID = &ID
+    }
+                case "name":
+    if v != nil {
+        var name string
+        err = json.Unmarshal(*v, &name)
+    if err != nil {
+    return err
+    }
+        veir.Name = &name
+    }
+                case "type":
+    if v != nil {
+        var typeVar string
+        err = json.Unmarshal(*v, &typeVar)
+    if err != nil {
+    return err
+    }
+        veir.Type = &typeVar
+    }
+                case "eTag":
+    if v != nil {
+        var eTag string
+        err = json.Unmarshal(*v, &eTag)
+    if err != nil {
+    return err
+    }
+        veir.ETag = &eTag
+    }
+            }
+        }
 
-// UnmarshalJSON is the custom unmarshaler for VaultExtendedInfoResource struct.
-func (veir *VaultExtendedInfoResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var vaultExtendedInfo VaultExtendedInfo
-				err = json.Unmarshal(*v, &vaultExtendedInfo)
-				if err != nil {
-					return err
-				}
-				veir.VaultExtendedInfo = &vaultExtendedInfo
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				veir.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				veir.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				veir.Type = &typeVar
-			}
-		case "eTag":
-			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
-				if err != nil {
-					return err
-				}
-				veir.ETag = &eTag
-			}
-		}
-	}
+        return nil
+        }
 
-	return nil
-}
+            // VaultList the response model for a list of Vaults.
+            type VaultList struct {
+            autorest.Response `json:"-"`
+            Value *[]Vault `json:"value,omitempty"`
+            NextLink *string `json:"nextLink,omitempty"`
+            }
 
-// VaultList the response model for a list of Vaults.
-type VaultList struct {
-	autorest.Response `json:"-"`
-	Value             *[]Vault `json:"value,omitempty"`
-	NextLink          *string  `json:"nextLink,omitempty"`
-}
+            // VaultListIterator provides access to a complete listing of Vault values.
+            type VaultListIterator struct {
+                i int
+                page VaultListPage
+            }
+        // NextWithContext advances to the next value.  If there was an error making
+        // the request the iterator does not advance and the error is returned.
+        func (iter * VaultListIterator) NextWithContext(ctx context.Context) (err error) {
+        if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/VaultListIterator.NextWithContext")
+        defer func() {
+        sc := -1
+        if iter.Response().Response.Response != nil {
+        sc = iter.Response().Response.Response.StatusCode
+        }
+        tracing.EndSpan(ctx, sc, err)
+        }()
+        }
+        iter.i++
+        if iter.i < len(iter. page.Values()) {
+        return nil
+        }
+        err = iter.page.NextWithContext(ctx)
+        if err != nil {
+        iter. i--
+        return err
+        }
+        iter.i = 0
+        return nil
+        }
+        // Next advances to the next value.  If there was an error making
+        // the request the iterator does not advance and the error is returned.
+        // Deprecated: Use NextWithContext() instead.
+        func (iter * VaultListIterator) Next() error {
+        return iter.NextWithContext(context.Background())
+        }
+        // NotDone returns true if the enumeration should be started or is not yet complete.
+        func (iter VaultListIterator) NotDone() bool {
+        return iter.page.NotDone() && iter.i < len(iter. page.Values())
+        }
+        // Response returns the raw server response from the last page request.
+        func (iter VaultListIterator) Response() VaultList {
+        return iter.page.Response()
+        }
+        // Value returns the current value or a zero-initialized value if the
+        // iterator has advanced beyond the end of the collection.
+        func (iter VaultListIterator) Value() Vault {
+        if !iter.page.NotDone() {
+        return Vault{}
+        }
+        return iter.page.Values()[iter.i]
+        }
 
-// VaultListIterator provides access to a complete listing of Vault values.
-type VaultListIterator struct {
-	i    int
-	page VaultListPage
-}
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VaultListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
+                // IsEmpty returns true if the ListResult contains no values.
+                func (vl VaultList) IsEmpty() bool {
+                return vl.Value == nil || len(*vl.Value) == 0
+                }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VaultListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
+                    // vaultListPreparer prepares a request to retrieve the next set of results.
+                    // It returns nil if no more results exist.
+                    func (vl VaultList) vaultListPreparer(ctx context.Context) (*http.Request, error) {
+                    if vl.NextLink == nil || len(to.String(vl.NextLink)) < 1 {
+                    return nil, nil
+                    }
+                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
+                    autorest.AsJSON(),
+                    autorest.AsGet(),
+                    autorest.WithBaseURL(to.String( vl.NextLink)));
+                    }
 
-// Response returns the raw server response from the last page request.
-func (iter VaultListIterator) Response() VaultList {
-	return iter.page.Response()
-}
+            // VaultListPage contains a page of Vault values.
+            type VaultListPage struct {
+                fn func(context.Context, VaultList) (VaultList, error)
+                vl VaultList
+            }
 
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VaultListIterator) Value() Vault {
-	if !iter.page.NotDone() {
-		return Vault{}
-	}
-	return iter.page.Values()[iter.i]
-}
+        // NextWithContext advances to the next page of values.  If there was an error making
+        // the request the page does not advance and the error is returned.
+        func (page * VaultListPage) NextWithContext(ctx context.Context) (err error) {
+        if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/VaultListPage.NextWithContext")
+        defer func() {
+        sc := -1
+        if page.Response().Response.Response != nil {
+        sc = page.Response().Response.Response.StatusCode
+        }
+        tracing.EndSpan(ctx, sc, err)
+        }()
+        }
+        next, err := page.fn(ctx, page.vl)
+        if err != nil {
+        return err
+        }
+        page.vl = next
+        return nil
+        }
 
-// IsEmpty returns true if the ListResult contains no values.
-func (vl VaultList) IsEmpty() bool {
-	return vl.Value == nil || len(*vl.Value) == 0
-}
+        // Next advances to the next page of values.  If there was an error making
+        // the request the page does not advance and the error is returned.
+        // Deprecated: Use NextWithContext() instead.
+        func (page * VaultListPage) Next() error {
+        return page.NextWithContext(context.Background())
+        }
+        // NotDone returns true if the page enumeration should be started or is not yet complete.
+        func (page VaultListPage) NotDone() bool {
+        return !page.vl.IsEmpty()
+        }
+        // Response returns the raw server response from the last page request.
+        func (page VaultListPage) Response() VaultList {
+        return page.vl
+        }
+        // Values returns the slice of values for the current page or nil if there are no values.
+        func (page VaultListPage) Values() []Vault {
+        if page.vl.IsEmpty() {
+        return nil
+        }
+        return *page.vl.Value
+        }
 
-// vaultListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vl VaultList) vaultListPreparer() (*http.Request, error) {
-	if vl.NextLink == nil || len(to.String(vl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vl.NextLink)))
-}
+            // VaultProperties properties of the vault.
+            type VaultProperties struct {
+            // ProvisioningState - Provisioning State.
+            ProvisioningState *string `json:"provisioningState,omitempty"`
+            UpgradeDetails *UpgradeDetails `json:"upgradeDetails,omitempty"`
+            }
 
-// VaultListPage contains a page of Vault values.
-type VaultListPage struct {
-	fn func(VaultList) (VaultList, error)
-	vl VaultList
-}
+            // VaultUsage usages of a vault.
+            type VaultUsage struct {
+            // Unit - Unit of the usage. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond'
+            Unit UsagesUnit `json:"unit,omitempty"`
+            // QuotaPeriod - Quota period of usage.
+            QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+            // NextResetTime - Next reset time of usage.
+            NextResetTime *date.Time `json:"nextResetTime,omitempty"`
+            // CurrentValue - Current value of usage.
+            CurrentValue *int64 `json:"currentValue,omitempty"`
+            // Limit - Limit of usage.
+            Limit *int64 `json:"limit,omitempty"`
+            // Name - Name of usage.
+            Name *NameInfo `json:"name,omitempty"`
+            }
 
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VaultListPage) Next() error {
-	next, err := page.fn(page.vl)
-	if err != nil {
-		return err
-	}
-	page.vl = next
-	return nil
-}
+            // VaultUsageList usage for vault.
+            type VaultUsageList struct {
+            autorest.Response `json:"-"`
+            // Value - The list of usages for the given vault.
+            Value *[]VaultUsage `json:"value,omitempty"`
+            }
 
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VaultListPage) NotDone() bool {
-	return !page.vl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VaultListPage) Response() VaultList {
-	return page.vl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VaultListPage) Values() []Vault {
-	if page.vl.IsEmpty() {
-		return nil
-	}
-	return *page.vl.Value
-}
-
-// VaultProperties properties of the vault.
-type VaultProperties struct {
-	// ProvisioningState - Provisioning State.
-	ProvisioningState *string         `json:"provisioningState,omitempty"`
-	UpgradeDetails    *UpgradeDetails `json:"upgradeDetails,omitempty"`
-}
-
-// VaultUsage usages of a vault.
-type VaultUsage struct {
-	// Unit - Unit of the usage. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond'
-	Unit UsagesUnit `json:"unit,omitempty"`
-	// QuotaPeriod - Quota period of usage.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// NextResetTime - Next reset time of usage.
-	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
-	// CurrentValue - Current value of usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
-	// Limit - Limit of usage.
-	Limit *int64 `json:"limit,omitempty"`
-	// Name - Name of usage.
-	Name *NameInfo `json:"name,omitempty"`
-}
-
-// VaultUsageList usage for vault.
-type VaultUsageList struct {
-	autorest.Response `json:"-"`
-	// Value - The list of usages for the given vault.
-	Value *[]VaultUsage `json:"value,omitempty"`
-}

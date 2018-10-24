@@ -18,88 +18,99 @@ package addons
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // CanonicalSupportPlanTypesClient is the the service for managing third party addons.
 type CanonicalSupportPlanTypesClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewCanonicalSupportPlanTypesClient creates an instance of the CanonicalSupportPlanTypesClient client.
 func NewCanonicalSupportPlanTypesClient(subscriptionID string) CanonicalSupportPlanTypesClient {
-	return NewCanonicalSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewCanonicalSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client.
-func NewCanonicalSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) CanonicalSupportPlanTypesClient {
-	return CanonicalSupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewCanonicalSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) CanonicalSupportPlanTypesClient {
+        return CanonicalSupportPlanTypesClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Get returns the Canonical Support Plans as well as whether they are enabled or not for the subscription.
-// Parameters:
-// providerName - the support plan type. For now the only valid type is "canonical".
+    // Parameters:
+        // providerName - the support plan type. For now the only valid type is "canonical".
 func (client CanonicalSupportPlanTypesClient) Get(ctx context.Context, providerName string) (result ListCanonicalSupportPlanStatusItem, err error) {
-	req, err := client.GetPreparer(ctx, providerName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/CanonicalSupportPlanTypesClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, providerName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "addons.CanonicalSupportPlanTypesClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client CanonicalSupportPlanTypesClient) GetPreparer(ctx context.Context, providerName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"providerName":   autorest.Encode("path", providerName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client CanonicalSupportPlanTypesClient) GetPreparer(ctx context.Context, providerName string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "providerName": autorest.Encode("path",providerName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2017-05-15"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-05-15"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Addons/supportProviders/{providerName}/supportPlanTypes", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Addons/supportProviders/{providerName}/supportPlanTypes",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client CanonicalSupportPlanTypesClient) GetResponder(resp *http.Response) (result ListCanonicalSupportPlanStatusItem, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result.Value),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

@@ -18,373 +18,424 @@ package apimanagement
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // IdentityProviderClient is the client for the IdentityProvider methods of the Apimanagement service.
 type IdentityProviderClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewIdentityProviderClient creates an instance of the IdentityProviderClient client.
 func NewIdentityProviderClient() IdentityProviderClient {
-	return IdentityProviderClient{New()}
+    return IdentityProviderClient{ New()}
 }
 
 // CreateOrUpdate creates or Updates the IdentityProvider configuration.
-// Parameters:
-// apimBaseURL - the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net.
-// identityProviderName - identity Provider Type identifier.
-// parameters - create parameters.
+    // Parameters:
+        // apimBaseURL - the management endpoint of the API Management service, for example
+        // https://myapimservice.management.azure-api.net.
+        // identityProviderName - identity Provider Type identifier.
+        // parameters - create parameters.
 func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderContract) (result IdentityProviderContract, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IdentityProviderClient.CreateOrUpdate")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.CreateOrUpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CreateOrUpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CreateOrUpdateSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
+            result, err = client.CreateOrUpdateResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "CreateOrUpdate", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderContract) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"apimBaseUrl": apimBaseURL,
-	}
+    // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+    func (client IdentityProviderClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderContract) (*http.Request, error) {
+            urlParameters := map[string]interface{} {
+            "apimBaseUrl": apimBaseURL,
+            }
 
-	pathParameters := map[string]interface{}{
-		"identityProviderName": autorest.Encode("path", identityProviderName),
-	}
+            pathParameters := map[string]interface{} {
+            "identityProviderName": autorest.Encode("path",identityProviderName),
+            }
 
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
-		autorest.WithPathParameters("/identityProviders/{identityProviderName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
+    autorest.WithPathParameters("/identityProviders/{identityProviderName}",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client IdentityProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IdentityProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client IdentityProviderClient) CreateOrUpdateResponder(resp *http.Response) (result IdentityProviderContract, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Delete deletes the specified identity provider configuration.
-// Parameters:
-// apimBaseURL - the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net.
-// identityProviderName - identity Provider Type identifier.
-// ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
-// to unconditionally apply the operation.
+    // Parameters:
+        // apimBaseURL - the management endpoint of the API Management service, for example
+        // https://myapimservice.management.azure-api.net.
+        // identityProviderName - identity Provider Type identifier.
+        // ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
+        // to unconditionally apply the operation.
 func (client IdentityProviderClient) Delete(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, ifMatch string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, apimBaseURL, identityProviderName, ifMatch)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IdentityProviderClient.Delete")
+        defer func() {
+            sc := -1
+            if result.Response != nil {
+                sc = result.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeletePreparer(ctx, apimBaseURL, identityProviderName, ifMatch)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.DeleteSender(req)
+            if err != nil {
+            result.Response = resp
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure responding to request")
-	}
+            result, err = client.DeleteResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Delete", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// DeletePreparer prepares the Delete request.
-func (client IdentityProviderClient) DeletePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, ifMatch string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"apimBaseUrl": apimBaseURL,
-	}
+    // DeletePreparer prepares the Delete request.
+    func (client IdentityProviderClient) DeletePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, ifMatch string) (*http.Request, error) {
+            urlParameters := map[string]interface{} {
+            "apimBaseUrl": apimBaseURL,
+            }
 
-	pathParameters := map[string]interface{}{
-		"identityProviderName": autorest.Encode("path", identityProviderName),
-	}
+            pathParameters := map[string]interface{} {
+            "identityProviderName": autorest.Encode("path",identityProviderName),
+            }
 
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
-		autorest.WithPathParameters("/identityProviders/{identityProviderName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
+    autorest.WithPathParameters("/identityProviders/{identityProviderName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters),
+    autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client IdentityProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // DeleteSender sends the Delete request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IdentityProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client IdentityProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
 
 // Get gets the configuration details of the identity Provider configured in specified service instance.
-// Parameters:
-// apimBaseURL - the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net.
-// identityProviderName - identity Provider Type identifier.
+    // Parameters:
+        // apimBaseURL - the management endpoint of the API Management service, for example
+        // https://myapimservice.management.azure-api.net.
+        // identityProviderName - identity Provider Type identifier.
 func (client IdentityProviderClient) Get(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType) (result IdentityProviderContract, err error) {
-	req, err := client.GetPreparer(ctx, apimBaseURL, identityProviderName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IdentityProviderClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, apimBaseURL, identityProviderName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client IdentityProviderClient) GetPreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"apimBaseUrl": apimBaseURL,
-	}
+    // GetPreparer prepares the Get request.
+    func (client IdentityProviderClient) GetPreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType) (*http.Request, error) {
+            urlParameters := map[string]interface{} {
+            "apimBaseUrl": apimBaseURL,
+            }
 
-	pathParameters := map[string]interface{}{
-		"identityProviderName": autorest.Encode("path", identityProviderName),
-	}
+            pathParameters := map[string]interface{} {
+            "identityProviderName": autorest.Encode("path",identityProviderName),
+            }
 
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
-		autorest.WithPathParameters("/identityProviders/{identityProviderName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
+    autorest.WithPathParameters("/identityProviders/{identityProviderName}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client IdentityProviderClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IdentityProviderClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client IdentityProviderClient) GetResponder(resp *http.Response) (result IdentityProviderContract, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // List lists a collection of Identity Provider configured in the specified service instance.
-// Parameters:
-// apimBaseURL - the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net.
+    // Parameters:
+        // apimBaseURL - the management endpoint of the API Management service, for example
+        // https://myapimservice.management.azure-api.net.
 func (client IdentityProviderClient) List(ctx context.Context, apimBaseURL string) (result IdentityProviderList, err error) {
-	req, err := client.ListPreparer(ctx, apimBaseURL)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IdentityProviderClient.List")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.ListPreparer(ctx, apimBaseURL)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", resp, "Failure responding to request")
-	}
+            result, err = client.ListResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "List", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListPreparer prepares the List request.
-func (client IdentityProviderClient) ListPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"apimBaseUrl": apimBaseURL,
-	}
+    // ListPreparer prepares the List request.
+    func (client IdentityProviderClient) ListPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
+            urlParameters := map[string]interface{} {
+            "apimBaseUrl": apimBaseURL,
+            }
 
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                            const APIVersion = "2017-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
-		autorest.WithPath("/identityProviders"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
+    autorest.WithPath("/identityProviders"),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client IdentityProviderClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IdentityProviderClient) ListSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client IdentityProviderClient) ListResponder(resp *http.Response) (result IdentityProviderList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Update updates an existing IdentityProvider configuration.
-// Parameters:
-// apimBaseURL - the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net.
-// identityProviderName - identity Provider Type identifier.
-// parameters - update parameters.
-// ifMatch - the entity state (Etag) version of the identity provider configuration to update. A value of "*"
-// can be used for If-Match to unconditionally apply the operation.
+    // Parameters:
+        // apimBaseURL - the management endpoint of the API Management service, for example
+        // https://myapimservice.management.azure-api.net.
+        // identityProviderName - identity Provider Type identifier.
+        // parameters - update parameters.
+        // ifMatch - the entity state (Etag) version of the identity provider configuration to update. A value of "*"
+        // can be used for If-Match to unconditionally apply the operation.
 func (client IdentityProviderClient) Update(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (result autorest.Response, err error) {
-	req, err := client.UpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters, ifMatch)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IdentityProviderClient.Update")
+        defer func() {
+            sc := -1
+            if result.Response != nil {
+                sc = result.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.UpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters, ifMatch)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.UpdateSender(req)
+            if err != nil {
+            result.Response = resp
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure responding to request")
-	}
+            result, err = client.UpdateResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "apimanagement.IdentityProviderClient", "Update", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// UpdatePreparer prepares the Update request.
-func (client IdentityProviderClient) UpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"apimBaseUrl": apimBaseURL,
-	}
+    // UpdatePreparer prepares the Update request.
+    func (client IdentityProviderClient) UpdatePreparer(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (*http.Request, error) {
+            urlParameters := map[string]interface{} {
+            "apimBaseUrl": apimBaseURL,
+            }
 
-	pathParameters := map[string]interface{}{
-		"identityProviderName": autorest.Encode("path", identityProviderName),
-	}
+            pathParameters := map[string]interface{} {
+            "identityProviderName": autorest.Encode("path",identityProviderName),
+            }
 
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-03-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
-		autorest.WithPathParameters("/identityProviders/{identityProviderName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPatch(),
+    autorest.WithCustomBaseURL("{apimBaseUrl}", urlParameters),
+    autorest.WithPathParameters("/identityProviders/{identityProviderName}",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters),
+    autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client IdentityProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // UpdateSender sends the Update request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IdentityProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client IdentityProviderClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
+

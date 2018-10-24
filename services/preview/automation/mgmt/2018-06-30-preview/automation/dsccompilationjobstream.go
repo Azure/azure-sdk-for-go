@@ -18,102 +18,113 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/satori/go.uuid"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
+    "github.com/satori/go.uuid"
 )
 
 // DscCompilationJobStreamClient is the automation Client
 type DscCompilationJobStreamClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewDscCompilationJobStreamClient creates an instance of the DscCompilationJobStreamClient client.
 func NewDscCompilationJobStreamClient(subscriptionID string, countType1 CountType) DscCompilationJobStreamClient {
-	return NewDscCompilationJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+    return NewDscCompilationJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
 }
 
 // NewDscCompilationJobStreamClientWithBaseURI creates an instance of the DscCompilationJobStreamClient client.
-func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscCompilationJobStreamClient {
-	return DscCompilationJobStreamClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
-}
+    func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscCompilationJobStreamClient {
+        return DscCompilationJobStreamClient{ NewWithBaseURI(baseURI, subscriptionID, countType1)}
+    }
 
 // ListByJob retrieve all the job streams for the compilation Job.
-// Parameters:
-// resourceGroupName - name of an Azure Resource group.
-// automationAccountName - the name of the automation account.
-// jobID - the job id.
+    // Parameters:
+        // resourceGroupName - name of an Azure Resource group.
+        // automationAccountName - the name of the automation account.
+        // jobID - the job id.
 func (client DscCompilationJobStreamClient) ListByJob(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result JobStreamListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("automation.DscCompilationJobStreamClient", "ListByJob", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/DscCompilationJobStreamClient.ListByJob")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+            if err := validation.Validate([]validation.Validation{
+            { TargetValue: resourceGroupName,
+             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil }}}}); err != nil {
+            return result, validation.NewError("automation.DscCompilationJobStreamClient", "ListByJob", err.Error())
+            }
 
-	req, err := client.ListByJobPreparer(ctx, resourceGroupName, automationAccountName, jobID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", nil, "Failure preparing request")
-		return
-	}
+                req, err := client.ListByJobPreparer(ctx, resourceGroupName, automationAccountName, jobID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListByJobSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListByJobSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ListByJobResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", resp, "Failure responding to request")
-	}
+            result, err = client.ListByJobResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListByJobPreparer prepares the ListByJob request.
-func (client DscCompilationJobStreamClient) ListByJobPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"jobId":                 autorest.Encode("path", jobID),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-	}
+    // ListByJobPreparer prepares the ListByJob request.
+    func (client DscCompilationJobStreamClient) ListByJobPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "automationAccountName": autorest.Encode("path",automationAccountName),
+            "jobId": autorest.Encode("path",jobID),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2018-01-15"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-01-15"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{jobId}/streams", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{jobId}/streams",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListByJobSender sends the ListByJob request. The method will close the
-// http.Response Body if it receives an error.
-func (client DscCompilationJobStreamClient) ListByJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // ListByJobSender sends the ListByJob request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client DscCompilationJobStreamClient) ListByJobSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // ListByJobResponder handles the response to the ListByJob request. The method always
 // closes the http.Response Body.
 func (client DscCompilationJobStreamClient) ListByJobResponder(resp *http.Response) (result JobStreamListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

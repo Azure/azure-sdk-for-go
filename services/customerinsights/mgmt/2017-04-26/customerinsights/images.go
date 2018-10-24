@@ -18,165 +18,186 @@ package customerinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // ImagesClient is the the Azure Customer Insights management API provides a RESTful set of web services that interact
 // with Azure Customer Insights service to manage your resources. The API has entities that capture the relationship
 // between an end user and the Azure Customer Insights service.
 type ImagesClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewImagesClient creates an instance of the ImagesClient client.
 func NewImagesClient(subscriptionID string) ImagesClient {
-	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
+        return ImagesClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // GetUploadURLForData gets data image upload URL.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// hubName - the name of the hub.
-// parameters - parameters supplied to the GetUploadUrlForData operation.
+    // Parameters:
+        // resourceGroupName - the name of the resource group.
+        // hubName - the name of the hub.
+        // parameters - parameters supplied to the GetUploadUrlForData operation.
 func (client ImagesClient) GetUploadURLForData(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
-	req, err := client.GetUploadURLForDataPreparer(ctx, resourceGroupName, hubName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ImagesClient.GetUploadURLForData")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetUploadURLForDataPreparer(ctx, resourceGroupName, hubName, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetUploadURLForDataSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetUploadURLForDataSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetUploadURLForDataResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure responding to request")
-	}
+            result, err = client.GetUploadURLForDataResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetUploadURLForDataPreparer prepares the GetUploadURLForData request.
-func (client ImagesClient) GetUploadURLForDataPreparer(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"hubName":           autorest.Encode("path", hubName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetUploadURLForDataPreparer prepares the GetUploadURLForData request.
+    func (client ImagesClient) GetUploadURLForDataPreparer(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "hubName": autorest.Encode("path",hubName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2017-04-26"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-04-26"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getDataImageUploadUrl", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getDataImageUploadUrl",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetUploadURLForDataSender sends the GetUploadURLForData request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) GetUploadURLForDataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetUploadURLForDataSender sends the GetUploadURLForData request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client ImagesClient) GetUploadURLForDataSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetUploadURLForDataResponder handles the response to the GetUploadURLForData request. The method always
 // closes the http.Response Body.
 func (client ImagesClient) GetUploadURLForDataResponder(resp *http.Response) (result ImageDefinition, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // GetUploadURLForEntityType gets entity type (profile or interaction) image upload URL.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// hubName - the name of the hub.
-// parameters - parameters supplied to the GetUploadUrlForEntityType operation.
+    // Parameters:
+        // resourceGroupName - the name of the resource group.
+        // hubName - the name of the hub.
+        // parameters - parameters supplied to the GetUploadUrlForEntityType operation.
 func (client ImagesClient) GetUploadURLForEntityType(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
-	req, err := client.GetUploadURLForEntityTypePreparer(ctx, resourceGroupName, hubName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/ImagesClient.GetUploadURLForEntityType")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetUploadURLForEntityTypePreparer(ctx, resourceGroupName, hubName, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetUploadURLForEntityTypeSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetUploadURLForEntityTypeSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetUploadURLForEntityTypeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure responding to request")
-	}
+            result, err = client.GetUploadURLForEntityTypeResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetUploadURLForEntityTypePreparer prepares the GetUploadURLForEntityType request.
-func (client ImagesClient) GetUploadURLForEntityTypePreparer(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"hubName":           autorest.Encode("path", hubName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetUploadURLForEntityTypePreparer prepares the GetUploadURLForEntityType request.
+    func (client ImagesClient) GetUploadURLForEntityTypePreparer(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "hubName": autorest.Encode("path",hubName),
+            "resourceGroupName": autorest.Encode("path",resourceGroupName),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2017-04-26"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2017-04-26"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetUploadURLForEntityTypeSender sends the GetUploadURLForEntityType request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) GetUploadURLForEntityTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetUploadURLForEntityTypeSender sends the GetUploadURLForEntityType request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client ImagesClient) GetUploadURLForEntityTypeSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetUploadURLForEntityTypeResponder handles the response to the GetUploadURLForEntityType request. The method always
 // closes the http.Response Body.
 func (client ImagesClient) GetUploadURLForEntityTypeResponder(resp *http.Response) (result ImageDefinition, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

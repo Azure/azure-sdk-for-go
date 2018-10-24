@@ -21,22 +21,24 @@ package apimanagement
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
+
 
 // BaseClient is the base client for Apimanagement.
 type BaseClient struct {
-	autorest.Client
+    autorest.Client
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults()
+func New()BaseClient {
+    return NewWithoutDefaults()
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults() BaseClient {
-	return BaseClient{
-		Client: autorest.NewClientWithUserAgent(UserAgent()),
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+    }
 }
+

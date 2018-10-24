@@ -22,33 +22,33 @@ package datacatalog
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Datacatalog
-	DefaultBaseURI = "https://management.azure.com"
-)
+// DefaultBaseURI is the default URI used for the service Datacatalog
+DefaultBaseURI = "https://management.azure.com")
 
 // BaseClient is the base client for Datacatalog.
 type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
-	CatalogName    string
+    autorest.Client
+    BaseURI string
+            SubscriptionID string
+            CatalogName string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, catalogName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, catalogName)
+func New(subscriptionID string, catalogName string)BaseClient {
+    return NewWithBaseURI(DefaultBaseURI, subscriptionID, catalogName)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-		CatalogName:    catalogName,
-	}
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+                SubscriptionID: subscriptionID,
+                CatalogName: catalogName,
+    }
 }
+

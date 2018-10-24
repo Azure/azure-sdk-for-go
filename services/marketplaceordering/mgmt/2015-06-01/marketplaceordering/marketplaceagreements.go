@@ -18,166 +18,187 @@ package marketplaceordering
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // MarketplaceAgreementsClient is the REST API for MarketplaceOrdering Agreements.
 type MarketplaceAgreementsClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewMarketplaceAgreementsClient creates an instance of the MarketplaceAgreementsClient client.
 func NewMarketplaceAgreementsClient(subscriptionID string) MarketplaceAgreementsClient {
-	return NewMarketplaceAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewMarketplaceAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMarketplaceAgreementsClientWithBaseURI creates an instance of the MarketplaceAgreementsClient client.
-func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID string) MarketplaceAgreementsClient {
-	return MarketplaceAgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID string) MarketplaceAgreementsClient {
+        return MarketplaceAgreementsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Create save marketplace terms.
-// Parameters:
-// publisherID - publisher identifier string of image being deployed.
-// offerID - offer identifier string of image being deployed.
-// planID - plan identifier string of image being deployed.
-// parameters - parameters supplied to the Create Marketplace Terms operation.
+    // Parameters:
+        // publisherID - publisher identifier string of image being deployed.
+        // offerID - offer identifier string of image being deployed.
+        // planID - plan identifier string of image being deployed.
+        // parameters - parameters supplied to the Create Marketplace Terms operation.
 func (client MarketplaceAgreementsClient) Create(ctx context.Context, publisherID string, offerID string, planID string, parameters AgreementTerms) (result AgreementTerms, err error) {
-	req, err := client.CreatePreparer(ctx, publisherID, offerID, planID, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/MarketplaceAgreementsClient.Create")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.CreatePreparer(ctx, publisherID, offerID, planID, parameters)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.CreateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.CreateSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", resp, "Failure responding to request")
-	}
+            result, err = client.CreateResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// CreatePreparer prepares the Create request.
-func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, publisherID string, offerID string, planID string, parameters AgreementTerms) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"offerId":        autorest.Encode("path", offerID),
-		"offerType":      autorest.Encode("path", "virtualmachine"),
-		"planId":         autorest.Encode("path", planID),
-		"publisherId":    autorest.Encode("path", publisherID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // CreatePreparer prepares the Create request.
+    func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, publisherID string, offerID string, planID string, parameters AgreementTerms) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "offerId": autorest.Encode("path",offerID),
+            "offerType": autorest.Encode("path", "virtualmachine"),
+            "planId": autorest.Encode("path",planID),
+            "publisherId": autorest.Encode("path",publisherID),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPut(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current",pathParameters),
+    autorest.WithJSON(parameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client MarketplaceAgreementsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // CreateSender sends the Create request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client MarketplaceAgreementsClient) CreateSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client MarketplaceAgreementsClient) CreateResponder(resp *http.Response) (result AgreementTerms, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
 
 // Get get marketplace terms.
-// Parameters:
-// publisherID - publisher identifier string of image being deployed.
-// offerID - offer identifier string of image being deployed.
-// planID - plan identifier string of image being deployed.
+    // Parameters:
+        // publisherID - publisher identifier string of image being deployed.
+        // offerID - offer identifier string of image being deployed.
+        // planID - plan identifier string of image being deployed.
 func (client MarketplaceAgreementsClient) Get(ctx context.Context, publisherID string, offerID string, planID string) (result AgreementTerms, err error) {
-	req, err := client.GetPreparer(ctx, publisherID, offerID, planID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/MarketplaceAgreementsClient.Get")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.GetPreparer(ctx, publisherID, offerID, planID)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.GetSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", resp, "Failure responding to request")
-	}
+            result, err = client.GetResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// GetPreparer prepares the Get request.
-func (client MarketplaceAgreementsClient) GetPreparer(ctx context.Context, publisherID string, offerID string, planID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"offerId":        autorest.Encode("path", offerID),
-		"offerType":      autorest.Encode("path", "virtualmachine"),
-		"planId":         autorest.Encode("path", planID),
-		"publisherId":    autorest.Encode("path", publisherID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
+    // GetPreparer prepares the Get request.
+    func (client MarketplaceAgreementsClient) GetPreparer(ctx context.Context, publisherID string, offerID string, planID string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "offerId": autorest.Encode("path",offerID),
+            "offerType": autorest.Encode("path", "virtualmachine"),
+            "planId": autorest.Encode("path",planID),
+            "publisherId": autorest.Encode("path",publisherID),
+            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+            }
 
-	const APIVersion = "2015-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2015-06-01"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client MarketplaceAgreementsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client MarketplaceAgreementsClient) GetSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            azure.DoRetryWithRegistration(client.Client))
+            }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client MarketplaceAgreementsClient) GetResponder(resp *http.Response) (result AgreementTerms, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

@@ -18,10 +18,11 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // MachineLearningComputeClient is the these APIs allow end users to operate on Azure Machine Learning Compute
@@ -30,73 +31,83 @@ import (
 // available for system services in a cluster</li><li>Update system services in a cluster</li><li>Get all clusters in a
 // resource group</li><li>Get all clusters in a subscription</li></ul>
 type MachineLearningComputeClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewMachineLearningComputeClient creates an instance of the MachineLearningComputeClient client.
 func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
-	return NewMachineLearningComputeClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewMachineLearningComputeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMachineLearningComputeClientWithBaseURI creates an instance of the MachineLearningComputeClient client.
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
-	return MachineLearningComputeClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
+        return MachineLearningComputeClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // ListAvailableOperations gets all available operations.
 func (client MachineLearningComputeClient) ListAvailableOperations(ctx context.Context) (result AvailableOperations, err error) {
-	req, err := client.ListAvailableOperationsPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/MachineLearningComputeClient.ListAvailableOperations")
+        defer func() {
+            sc := -1
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.ListAvailableOperationsPreparer(ctx)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.ListAvailableOperationsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", resp, "Failure sending request")
-		return
-	}
+            resp, err := client.ListAvailableOperationsSender(req)
+            if err != nil {
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", resp, "Failure sending request")
+            return
+            }
 
-	result, err = client.ListAvailableOperationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", resp, "Failure responding to request")
-	}
+            result, err = client.ListAvailableOperationsResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "compute.MachineLearningComputeClient", "ListAvailableOperations", resp, "Failure responding to request")
+            }
 
-	return
-}
+    return
+    }
 
-// ListAvailableOperationsPreparer prepares the ListAvailableOperations request.
-func (client MachineLearningComputeClient) ListAvailableOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2017-08-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+    // ListAvailableOperationsPreparer prepares the ListAvailableOperations request.
+    func (client MachineLearningComputeClient) ListAvailableOperationsPreparer(ctx context.Context) (*http.Request, error) {
+                    const APIVersion = "2017-08-01-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.MachineLearningCompute/operations"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsGet(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPath("/providers/Microsoft.MachineLearningCompute/operations"),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// ListAvailableOperationsSender sends the ListAvailableOperations request. The method will close the
-// http.Response Body if it receives an error.
-func (client MachineLearningComputeClient) ListAvailableOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
+    // ListAvailableOperationsSender sends the ListAvailableOperations request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client MachineLearningComputeClient) ListAvailableOperationsSender(req *http.Request) (*http.Response, error) {
+            return autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            }
 
 // ListAvailableOperationsResponder handles the response to the ListAvailableOperations request. The method always
 // closes the http.Response Body.
 func (client MachineLearningComputeClient) ListAvailableOperationsResponder(resp *http.Response) (result AvailableOperations, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

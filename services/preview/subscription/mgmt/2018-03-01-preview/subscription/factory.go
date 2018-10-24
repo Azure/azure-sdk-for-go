@@ -18,94 +18,101 @@ package subscription
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
 )
 
 // FactoryClient is the the subscription client
 type FactoryClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewFactoryClient creates an instance of the FactoryClient client.
 func NewFactoryClient() FactoryClient {
-	return NewFactoryClientWithBaseURI(DefaultBaseURI)
+    return NewFactoryClientWithBaseURI(DefaultBaseURI, )
 }
 
 // NewFactoryClientWithBaseURI creates an instance of the FactoryClient client.
-func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
-	return FactoryClient{NewWithBaseURI(baseURI)}
-}
+    func NewFactoryClientWithBaseURI(baseURI string, ) FactoryClient {
+        return FactoryClient{ NewWithBaseURI(baseURI, )}
+    }
 
 // CreateSubscriptionInEnrollmentAccount creates an Azure subscription
-// Parameters:
-// enrollmentAccountName - the name of the enrollment account to which the subscription will be billed.
-// body - the subscription creation parameters.
+    // Parameters:
+        // enrollmentAccountName - the name of the enrollment account to which the subscription will be billed.
+        // body - the subscription creation parameters.
 func (client FactoryClient) CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body CreationParameters) (result FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
-	req, err := client.CreateSubscriptionInEnrollmentAccountPreparer(ctx, enrollmentAccountName, body)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", nil, "Failure preparing request")
-		return
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/FactoryClient.CreateSubscriptionInEnrollmentAccount")
+        defer func() {
+            sc := -1
+            if result.Response() != nil {
+                sc = result.Response().StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.CreateSubscriptionInEnrollmentAccountPreparer(ctx, enrollmentAccountName, body)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", nil , "Failure preparing request")
+    return
+    }
 
-	result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
-		return
-	}
+            result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
+            return
+            }
 
-	return
-}
+    return
+    }
 
-// CreateSubscriptionInEnrollmentAccountPreparer prepares the CreateSubscriptionInEnrollmentAccount request.
-func (client FactoryClient) CreateSubscriptionInEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountName string, body CreationParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"enrollmentAccountName": autorest.Encode("path", enrollmentAccountName),
-	}
+    // CreateSubscriptionInEnrollmentAccountPreparer prepares the CreateSubscriptionInEnrollmentAccount request.
+    func (client FactoryClient) CreateSubscriptionInEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountName string, body CreationParameters) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "enrollmentAccountName": autorest.Encode("path",enrollmentAccountName),
+            }
 
-	const APIVersion = "2018-03-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+                        const APIVersion = "2018-03-01-preview"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountName}/providers/Microsoft.Subscription/createSubscription", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+    autorest.AsContentType("application/json; charset=utf-8"),
+    autorest.AsPost(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountName}/providers/Microsoft.Subscription/createSubscription",pathParameters),
+    autorest.WithJSON(body),
+    autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// CreateSubscriptionInEnrollmentAccountSender sends the CreateSubscriptionInEnrollmentAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *http.Request) (future FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
+    // CreateSubscriptionInEnrollmentAccountSender sends the CreateSubscriptionInEnrollmentAccount request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *http.Request) (future FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
+            var resp *http.Response
+            resp, err = autorest.SendWithSender(client, req,
+            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
 // CreateSubscriptionInEnrollmentAccountResponder handles the response to the CreateSubscriptionInEnrollmentAccount request. The method always
 // closes the http.Response Body.
 func (client FactoryClient) CreateSubscriptionInEnrollmentAccountResponder(resp *http.Response) (result CreationResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByUnmarshallingJSON(&result),
+    autorest.ByClosing())
+    result.Response = autorest.Response{Response: resp}
+        return
+    }
+

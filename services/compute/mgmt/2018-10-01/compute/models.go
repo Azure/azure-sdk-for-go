@@ -6637,10 +6637,8 @@ type VirtualMachineProperties struct {
 	VMID *string `json:"vmId,omitempty"`
 }
 
-// VirtualMachineReimageParameters paramaters for Reimaging Virtual Machine.
+// VirtualMachineReimageParameters paramaters for Reimaging Virtual Machine. Default value for OSDisk : true.
 type VirtualMachineReimageParameters struct {
-	// OsDisk - Specified whether to reimage os disk. Default value: true.
-	OsDisk *bool `json:"osDisk,omitempty"`
 	// TempDisk - Specified whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
@@ -7883,10 +7881,6 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 type VirtualMachineScaleSetReimageParameters struct {
 	// InstanceIds - The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set.
 	InstanceIds *[]string `json:"instanceIds,omitempty"`
-	// DataDisks - Luns of dataDisks in the virtual machine scale set VM to reimage.
-	DataDisks *[]int32 `json:"dataDisks,omitempty"`
-	// OsDisk - Specified whether to reimage os disk. Default value: true.
-	OsDisk *bool `json:"osDisk,omitempty"`
 	// TempDisk - Specified whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
@@ -9087,10 +9081,6 @@ type VirtualMachineScaleSetVMProperties struct {
 
 // VirtualMachineScaleSetVMReimageParameters describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetVMReimageParameters struct {
-	// DataDisks - Luns of dataDisks in the virtual machine scale set VM to reimage.
-	DataDisks *[]int32 `json:"dataDisks,omitempty"`
-	// OsDisk - Specified whether to reimage os disk. Default value: true.
-	OsDisk *bool `json:"osDisk,omitempty"`
 	// TempDisk - Specified whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }

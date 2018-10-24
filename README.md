@@ -294,7 +294,8 @@ import (
 ```
 
 Occasionally service-side changes require major changes to existing versions.
-These cases are noted in the changelog.
+These cases are noted in the changelog, and for this reason `Service API versions`
+cannot be used alone to ensure backwards compatibility.
 
 All available services and versions are listed under the `services/` path in
 this repo and in [GoDoc][services_godoc].  Run `find ./services -type d
@@ -319,7 +320,7 @@ import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/network/mgmt/netwo
 import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/storage/mgmt/storage"
 ```
 
-The 2017-03-09 profile is the only one currently available and is for use in
+The `2017-03-09` profile is the only one currently available and is for use in
 hybrid Azure and Azure Stack environments. More profiles are under development.
 
 In addition to versioned profiles, we also provide two special profiles
@@ -339,6 +340,38 @@ the following imports:
 ```go
 import "github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 import "github.com/Azure/azure-sdk-for-go/profiles/preview/compute/mgmt/compute"
+```
+
+### Avoiding Breaking Changes
+
+To avoid breaking changes, when specifying imports you should specify a `Service API Version` or `Profile`, as well as lock (using [dep](https://github.com/golang/dep) and soon with [Go Modules](https://github.com/golang/go/wiki/Modules)) to a specific SDK version.
+
+For example, in your source code imports, use a `Service API Version` (`2017-12-01`):
+
+```go
+import "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-12-01/compute"
+```
+
+or `Profile` version (`2017-03-09`):
+
+```go
+import "github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/compute/mgmt/compute"
+```
+
+As well as, for dep, a `Gopkg.toml` file with:
+
+```toml
+[[constraint]]
+  name = "github.com/Azure/azure-sdk-for-go"
+  version = "21.0.0"
+```
+
+Combined, these techniques will ensure that breaking changes should not occur. If you are extra sensitive to changes, adding an additional [version pin](https://golang.github.io/dep/docs/Gopkg.toml.html#version-rules) in your SDK Version should satisfy your needs:
+
+```toml
+[[constraint]]
+  name = "github.com/Azure/azure-sdk-for-go"
+  version = "=21.3.0"
 ```
 
 ## Inspecting and Debugging

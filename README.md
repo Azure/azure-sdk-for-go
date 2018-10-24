@@ -24,11 +24,6 @@ If you run into an issue, please don't hesitate to log a
 ### Installing the library
 To more reliably manage dependencies in your application we recommend [golang/dep](https://github.com/golang/dep).
 
-With dep:
-```
-dep ensure -add github.com/Azure/azure-service-bus-go
-```
-
 With go get:
 ```
 go get -u github.com/Azure/azure-service-bus-go/...

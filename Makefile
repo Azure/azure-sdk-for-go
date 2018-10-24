@@ -3,16 +3,15 @@ DATE    ?= $(shell date +%FT%T%z)
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null || \
 			cat $(CURDIR)/.version 2> /dev/null || echo v0)
 BIN      = $(GOPATH)/bin
-BASE     = $(GOPATH)/src/$(PACKAGE)
-PKGS     = $(or $(PKG),$(shell cd $(BASE) && env GOPATH=$(GOPATH) $(GO) list ./... | grep -vE "^$(PACKAGE)/vendor|templates/"))
+BASE     = $(CURDIR)
+PKGS     = $(or $(PKG),$(shell cd $(BASE) && env GOPATH=$(GOPATH) $(GO) list ./... | grep -vE "^$(PACKAGE)/templates/"))
 TESTPKGS = $(shell env GOPATH=$(GOPATH) $(GO) list -f '{{ if or .TestGoFiles .XTestGoFiles }}{{ .ImportPath }}{{ end }}' $(PKGS))
-GO_FILES = find . -iname '*.go' -type f | grep -v /vendor/
+GO_FILES = find . -iname '*.go' -type f
 
 GO      = go
 GODOC   = godoc
 GOFMT   = gofmt
 GOCYCLO = gocyclo
-DEP   	= dep
 
 V = 0
 Q = $(if $(filter 1,$V),,@)
@@ -20,7 +19,7 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 TIMEOUT = 500
 
 .PHONY: all
-all: fmt vendor lint vet megacheck ; $(info $(M) building library…) @ ## Build program
+all: fmt lint vet ; $(info $(M) building library…) @ ## Build program
 	$Q cd $(BASE) && $(GO) build -tags release
 
 # Tools
@@ -40,26 +39,22 @@ test-race:    ARGS=-race         							## Run tests with race detector
 test-cover:   ARGS=-cover -coverprofile=cover.out -v     	## Run tests in verbose mode with coverage
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
-check test tests: cyclo lint vet vendor megacheck terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+check test tests: cyclo lint vet terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
 
 .PHONY: vet
-vet: vendor | $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet
+vet: $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet
 	$Q cd $(BASE) && $(GO) vet ./...
 
 .PHONY: lint
-lint: vendor | $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
+lint: $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
 	$Q cd $(BASE) && ret=0 && for pkg in $(PKGS); do \
 		test -z "$$($(GOLINT) $$pkg | tee /dev/stderr)" || ret=1 ; \
 	 done ; exit $$ret
 
-.PHONY: megacheck
-megacheck: vendor ; $(info $(M) running megacheck…) @ ## Run megacheck
-	$Q cd $(BASE) && megacheck
-
 .PHONY: fmt
 fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
-	@ret=0 && for d in $$($(GO) list -f '{{.Dir}}' ./... | grep -v /vendor/); do \
+	@ret=0 && for d in $$($(GO) list -f '{{.Dir}}' ./...); do \
 		$(GOFMT) -l -w $$d/*.go || ret=$$? ; \
 	 done ; exit $$ret
 
@@ -78,13 +73,8 @@ terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(in
 	$Q terraform init
 
 # Dependency management
-
-Gopkg.lock: Gopkg.toml | ; $(info $(M) updating dependencies…)
-	$Q cd $(BASE) && $(DEP) ensure
-	@touch $@
-vendor: Gopkg.lock | ; $(info $(M) retrieving dependencies…)
-	$Q cd $(BASE) && $(DEP) ensure
-	@touch $@
+go.sum: go.mod
+	$Q cd $(BASE) && $(GO) mod tidy
 
 # Misc
 

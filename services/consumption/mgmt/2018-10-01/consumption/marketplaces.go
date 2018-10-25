@@ -631,6 +631,124 @@ func (client MarketplacesClient) ListByEnrollmentAccountComplete(ctx context.Con
 	return
 }
 
+// ListByManagementGroup lists the marketplace records for all subscriptions belonging to a management group scope by
+// current billing period. Marketplaces are available via this API only for May 1, 2014 or later.
+// Parameters:
+// managementGroupID - azure Management Group ID.
+// filter - may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
+// time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',
+// 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
+// top - may be used to limit the number of results to the most recent N marketplaces.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+func (client MarketplacesClient) ListByManagementGroup(ctx context.Context, managementGroupID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("consumption.MarketplacesClient", "ListByManagementGroup", err.Error())
+	}
+
+	result.fn = client.listByManagementGroupNextResults
+	req, err := client.ListByManagementGroupPreparer(ctx, managementGroupID, filter, top, skiptoken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByManagementGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByManagementGroupSender(req)
+	if err != nil {
+		result.mlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByManagementGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.mlr, err = client.ListByManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByManagementGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByManagementGroupPreparer prepares the ListByManagementGroup request.
+func (client MarketplacesClient) ListByManagementGroupPreparer(ctx context.Context, managementGroupID string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"managementGroupId": autorest.Encode("path", managementGroupID),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Consumption/marketplaces", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client MarketplacesClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
+// closes the http.Response Body.
+func (client MarketplacesClient) ListByManagementGroupResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByManagementGroupNextResults retrieves the next set of results, if any.
+func (client MarketplacesClient) listByManagementGroupNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+	req, err := lastResults.marketplacesListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByManagementGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByManagementGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByManagementGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByManagementGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MarketplacesClient) ListByManagementGroupComplete(ctx context.Context, managementGroupID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListByManagementGroup(ctx, managementGroupID, filter, top, skiptoken)
+	return
+}
+
 // ListForBillingPeriodByBillingAccount lists the marketplaces for a scope by billing period and billingAccountId.
 // Marketplaces are available via this API only for May 1, 2014 or later.
 // Parameters:
@@ -988,5 +1106,125 @@ func (client MarketplacesClient) listForBillingPeriodByEnrollmentAccountNextResu
 // ListForBillingPeriodByEnrollmentAccountComplete enumerates all values, automatically crossing page boundaries as required.
 func (client MarketplacesClient) ListForBillingPeriodByEnrollmentAccountComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
 	result.page, err = client.ListForBillingPeriodByEnrollmentAccount(ctx, enrollmentAccountID, billingPeriodName, filter, top, skiptoken)
+	return
+}
+
+// ListForBillingPeriodByManagementGroup lists the marketplace records for all subscriptions belonging to a management
+// group scope by specified billing period. Marketplaces are available via this API only for May 1, 2014 or later.
+// Parameters:
+// managementGroupID - azure Management Group ID.
+// billingPeriodName - billing Period Name.
+// filter - may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
+// time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',
+// 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
+// top - may be used to limit the number of results to the most recent N marketplaces.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+func (client MarketplacesClient) ListForBillingPeriodByManagementGroup(ctx context.Context, managementGroupID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("consumption.MarketplacesClient", "ListForBillingPeriodByManagementGroup", err.Error())
+	}
+
+	result.fn = client.listForBillingPeriodByManagementGroupNextResults
+	req, err := client.ListForBillingPeriodByManagementGroupPreparer(ctx, managementGroupID, billingPeriodName, filter, top, skiptoken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByManagementGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListForBillingPeriodByManagementGroupSender(req)
+	if err != nil {
+		result.mlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByManagementGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.mlr, err = client.ListForBillingPeriodByManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListForBillingPeriodByManagementGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListForBillingPeriodByManagementGroupPreparer prepares the ListForBillingPeriodByManagementGroup request.
+func (client MarketplacesClient) ListForBillingPeriodByManagementGroupPreparer(ctx context.Context, managementGroupID string, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingPeriodName": autorest.Encode("path", billingPeriodName),
+		"managementGroupId": autorest.Encode("path", managementGroupID),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/marketplaces", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListForBillingPeriodByManagementGroupSender sends the ListForBillingPeriodByManagementGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client MarketplacesClient) ListForBillingPeriodByManagementGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListForBillingPeriodByManagementGroupResponder handles the response to the ListForBillingPeriodByManagementGroup request. The method always
+// closes the http.Response Body.
+func (client MarketplacesClient) ListForBillingPeriodByManagementGroupResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listForBillingPeriodByManagementGroupNextResults retrieves the next set of results, if any.
+func (client MarketplacesClient) listForBillingPeriodByManagementGroupNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+	req, err := lastResults.marketplacesListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByManagementGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListForBillingPeriodByManagementGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListForBillingPeriodByManagementGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listForBillingPeriodByManagementGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListForBillingPeriodByManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MarketplacesClient) ListForBillingPeriodByManagementGroupComplete(ctx context.Context, managementGroupID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListForBillingPeriodByManagementGroup(ctx, managementGroupID, billingPeriodName, filter, top, skiptoken)
 	return
 }

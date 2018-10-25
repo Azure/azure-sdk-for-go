@@ -18,805 +18,839 @@ package authorization
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/to"
-    "github.com/Azure/go-autorest/tracing"
-    "net/http"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go//services/authorization/mgmt/2015-07-01/authorization"
 
-            // ClassicAdministrator classic Administrators
-            type ClassicAdministrator struct {
-            // ID - The ID of the administrator.
-            ID *string `json:"id,omitempty"`
-            // Name - The name of the administrator.
-            Name *string `json:"name,omitempty"`
-            // Type - The type of the administrator.
-            Type *string `json:"type,omitempty"`
-            // Properties - Properties for the classic administrator.
-            Properties *ClassicAdministratorProperties `json:"properties,omitempty"`
-            }
+// ClassicAdministrator classic Administrators
+type ClassicAdministrator struct {
+	// ID - The ID of the administrator.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the administrator.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the administrator.
+	Type *string `json:"type,omitempty"`
+	// Properties - Properties for the classic administrator.
+	Properties *ClassicAdministratorProperties `json:"properties,omitempty"`
+}
 
-            // ClassicAdministratorListResult classicAdministrator list result information.
-            type ClassicAdministratorListResult struct {
-            autorest.Response `json:"-"`
-            // Value - An array of administrators.
-            Value *[]ClassicAdministrator `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// ClassicAdministratorListResult classicAdministrator list result information.
+type ClassicAdministratorListResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of administrators.
+	Value *[]ClassicAdministrator `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-            // ClassicAdministratorListResultIterator provides access to a complete listing of ClassicAdministrator
-            // values.
-            type ClassicAdministratorListResultIterator struct {
-                i int
-                page ClassicAdministratorListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * ClassicAdministratorListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ClassicAdministratorListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * ClassicAdministratorListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter ClassicAdministratorListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter ClassicAdministratorListResultIterator) Response() ClassicAdministratorListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter ClassicAdministratorListResultIterator) Value() ClassicAdministrator {
-        if !iter.page.NotDone() {
-        return ClassicAdministrator{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// ClassicAdministratorListResultIterator provides access to a complete listing of ClassicAdministrator
+// values.
+type ClassicAdministratorListResultIterator struct {
+	i    int
+	page ClassicAdministratorListResultPage
+}
 
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ClassicAdministratorListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicAdministratorListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (calr ClassicAdministratorListResult) IsEmpty() bool {
-                return calr.Value == nil || len(*calr.Value) == 0
-                }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ClassicAdministratorListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-                    // classicAdministratorListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (calr ClassicAdministratorListResult) classicAdministratorListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if calr.NextLink == nil || len(to.String(calr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( calr.NextLink)));
-                    }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ClassicAdministratorListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
-            // ClassicAdministratorListResultPage contains a page of ClassicAdministrator values.
-            type ClassicAdministratorListResultPage struct {
-                fn func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)
-                calr ClassicAdministratorListResult
-            }
+// Response returns the raw server response from the last page request.
+func (iter ClassicAdministratorListResultIterator) Response() ClassicAdministratorListResult {
+	return iter.page.Response()
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * ClassicAdministratorListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ClassicAdministratorListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.calr)
-        if err != nil {
-        return err
-        }
-        page.calr = next
-        return nil
-        }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ClassicAdministratorListResultIterator) Value() ClassicAdministrator {
+	if !iter.page.NotDone() {
+		return ClassicAdministrator{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * ClassicAdministratorListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page ClassicAdministratorListResultPage) NotDone() bool {
-        return !page.calr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page ClassicAdministratorListResultPage) Response() ClassicAdministratorListResult {
-        return page.calr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page ClassicAdministratorListResultPage) Values() []ClassicAdministrator {
-        if page.calr.IsEmpty() {
-        return nil
-        }
-        return *page.calr.Value
-        }
+// IsEmpty returns true if the ListResult contains no values.
+func (calr ClassicAdministratorListResult) IsEmpty() bool {
+	return calr.Value == nil || len(*calr.Value) == 0
+}
 
-            // ClassicAdministratorProperties classic Administrator properties.
-            type ClassicAdministratorProperties struct {
-            // EmailAddress - The email address of the administrator.
-            EmailAddress *string `json:"emailAddress,omitempty"`
-            // Role - The role of the administrator.
-            Role *string `json:"role,omitempty"`
-            }
+// classicAdministratorListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (calr ClassicAdministratorListResult) classicAdministratorListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if calr.NextLink == nil || len(to.String(calr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(calr.NextLink)))
+}
 
-            // Permission role definition permissions.
-            type Permission struct {
-            // Actions - Allowed actions.
-            Actions *[]string `json:"actions,omitempty"`
-            // NotActions - Denied actions.
-            NotActions *[]string `json:"notActions,omitempty"`
-            }
+// ClassicAdministratorListResultPage contains a page of ClassicAdministrator values.
+type ClassicAdministratorListResultPage struct {
+	fn   func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)
+	calr ClassicAdministratorListResult
+}
 
-            // PermissionGetResult permissions information.
-            type PermissionGetResult struct {
-            autorest.Response `json:"-"`
-            // Value - An array of permissions.
-            Value *[]Permission `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ClassicAdministratorListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicAdministratorListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.calr)
+	if err != nil {
+		return err
+	}
+	page.calr = next
+	return nil
+}
 
-            // PermissionGetResultIterator provides access to a complete listing of Permission values.
-            type PermissionGetResultIterator struct {
-                i int
-                page PermissionGetResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * PermissionGetResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/PermissionGetResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * PermissionGetResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter PermissionGetResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter PermissionGetResultIterator) Response() PermissionGetResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter PermissionGetResultIterator) Value() Permission {
-        if !iter.page.NotDone() {
-        return Permission{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ClassicAdministratorListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
 
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ClassicAdministratorListResultPage) NotDone() bool {
+	return !page.calr.IsEmpty()
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (pgr PermissionGetResult) IsEmpty() bool {
-                return pgr.Value == nil || len(*pgr.Value) == 0
-                }
+// Response returns the raw server response from the last page request.
+func (page ClassicAdministratorListResultPage) Response() ClassicAdministratorListResult {
+	return page.calr
+}
 
-                    // permissionGetResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (pgr PermissionGetResult) permissionGetResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if pgr.NextLink == nil || len(to.String(pgr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( pgr.NextLink)));
-                    }
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ClassicAdministratorListResultPage) Values() []ClassicAdministrator {
+	if page.calr.IsEmpty() {
+		return nil
+	}
+	return *page.calr.Value
+}
 
-            // PermissionGetResultPage contains a page of Permission values.
-            type PermissionGetResultPage struct {
-                fn func(context.Context, PermissionGetResult) (PermissionGetResult, error)
-                pgr PermissionGetResult
-            }
+// ClassicAdministratorProperties classic Administrator properties.
+type ClassicAdministratorProperties struct {
+	// EmailAddress - The email address of the administrator.
+	EmailAddress *string `json:"emailAddress,omitempty"`
+	// Role - The role of the administrator.
+	Role *string `json:"role,omitempty"`
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * PermissionGetResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/PermissionGetResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.pgr)
-        if err != nil {
-        return err
-        }
-        page.pgr = next
-        return nil
-        }
+// Permission role definition permissions.
+type Permission struct {
+	// Actions - Allowed actions.
+	Actions *[]string `json:"actions,omitempty"`
+	// NotActions - Denied actions.
+	NotActions *[]string `json:"notActions,omitempty"`
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * PermissionGetResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page PermissionGetResultPage) NotDone() bool {
-        return !page.pgr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page PermissionGetResultPage) Response() PermissionGetResult {
-        return page.pgr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page PermissionGetResultPage) Values() []Permission {
-        if page.pgr.IsEmpty() {
-        return nil
-        }
-        return *page.pgr.Value
-        }
+// PermissionGetResult permissions information.
+type PermissionGetResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of permissions.
+	Value *[]Permission `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-            // ProviderOperation operation
-            type ProviderOperation struct {
-            // Name - The operation name.
-            Name *string `json:"name,omitempty"`
-            // DisplayName - The operation display name.
-            DisplayName *string `json:"displayName,omitempty"`
-            // Description - The operation description.
-            Description *string `json:"description,omitempty"`
-            // Origin - The operation origin.
-            Origin *string `json:"origin,omitempty"`
-            // Properties - The operation properties.
-            Properties interface{} `json:"properties,omitempty"`
-            }
+// PermissionGetResultIterator provides access to a complete listing of Permission values.
+type PermissionGetResultIterator struct {
+	i    int
+	page PermissionGetResultPage
+}
 
-            // ProviderOperationsMetadata provider Operations metadata
-            type ProviderOperationsMetadata struct {
-            autorest.Response `json:"-"`
-            // ID - The provider id.
-            ID *string `json:"id,omitempty"`
-            // Name - The provider name.
-            Name *string `json:"name,omitempty"`
-            // Type - The provider type.
-            Type *string `json:"type,omitempty"`
-            // DisplayName - The provider display name.
-            DisplayName *string `json:"displayName,omitempty"`
-            // ResourceTypes - The provider resource types
-            ResourceTypes *[]ResourceType `json:"resourceTypes,omitempty"`
-            // Operations - The provider operations.
-            Operations *[]ProviderOperation `json:"operations,omitempty"`
-            }
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PermissionGetResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionGetResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-            // ProviderOperationsMetadataListResult provider operations metadata list
-            type ProviderOperationsMetadataListResult struct {
-            autorest.Response `json:"-"`
-            // Value - The list of providers.
-            Value *[]ProviderOperationsMetadata `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PermissionGetResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-            // ProviderOperationsMetadataListResultIterator provides access to a complete listing of
-            // ProviderOperationsMetadata values.
-            type ProviderOperationsMetadataListResultIterator struct {
-                i int
-                page ProviderOperationsMetadataListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * ProviderOperationsMetadataListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ProviderOperationsMetadataListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * ProviderOperationsMetadataListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter ProviderOperationsMetadataListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter ProviderOperationsMetadataListResultIterator) Response() ProviderOperationsMetadataListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter ProviderOperationsMetadataListResultIterator) Value() ProviderOperationsMetadata {
-        if !iter.page.NotDone() {
-        return ProviderOperationsMetadata{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PermissionGetResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
+// Response returns the raw server response from the last page request.
+func (iter PermissionGetResultIterator) Response() PermissionGetResult {
+	return iter.page.Response()
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (pomlr ProviderOperationsMetadataListResult) IsEmpty() bool {
-                return pomlr.Value == nil || len(*pomlr.Value) == 0
-                }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PermissionGetResultIterator) Value() Permission {
+	if !iter.page.NotDone() {
+		return Permission{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-                    // providerOperationsMetadataListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (pomlr ProviderOperationsMetadataListResult) providerOperationsMetadataListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if pomlr.NextLink == nil || len(to.String(pomlr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( pomlr.NextLink)));
-                    }
+// IsEmpty returns true if the ListResult contains no values.
+func (pgr PermissionGetResult) IsEmpty() bool {
+	return pgr.Value == nil || len(*pgr.Value) == 0
+}
 
-            // ProviderOperationsMetadataListResultPage contains a page of ProviderOperationsMetadata values.
-            type ProviderOperationsMetadataListResultPage struct {
-                fn func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)
-                pomlr ProviderOperationsMetadataListResult
-            }
+// permissionGetResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pgr PermissionGetResult) permissionGetResultPreparer(ctx context.Context) (*http.Request, error) {
+	if pgr.NextLink == nil || len(to.String(pgr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pgr.NextLink)))
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * ProviderOperationsMetadataListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ProviderOperationsMetadataListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.pomlr)
-        if err != nil {
-        return err
-        }
-        page.pomlr = next
-        return nil
-        }
+// PermissionGetResultPage contains a page of Permission values.
+type PermissionGetResultPage struct {
+	fn  func(context.Context, PermissionGetResult) (PermissionGetResult, error)
+	pgr PermissionGetResult
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * ProviderOperationsMetadataListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page ProviderOperationsMetadataListResultPage) NotDone() bool {
-        return !page.pomlr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page ProviderOperationsMetadataListResultPage) Response() ProviderOperationsMetadataListResult {
-        return page.pomlr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page ProviderOperationsMetadataListResultPage) Values() []ProviderOperationsMetadata {
-        if page.pomlr.IsEmpty() {
-        return nil
-        }
-        return *page.pomlr.Value
-        }
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PermissionGetResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PermissionGetResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pgr)
+	if err != nil {
+		return err
+	}
+	page.pgr = next
+	return nil
+}
 
-            // ResourceType resource Type
-            type ResourceType struct {
-            // Name - The resource type name.
-            Name *string `json:"name,omitempty"`
-            // DisplayName - The resource type display name.
-            DisplayName *string `json:"displayName,omitempty"`
-            // Operations - The resource type operations.
-            Operations *[]ProviderOperation `json:"operations,omitempty"`
-            }
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PermissionGetResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
 
-            // RoleAssignment role Assignments
-            type RoleAssignment struct {
-            autorest.Response `json:"-"`
-            // ID - The role assignment ID.
-            ID *string `json:"id,omitempty"`
-            // Name - The role assignment name.
-            Name *string `json:"name,omitempty"`
-            // Type - The role assignment type.
-            Type *string `json:"type,omitempty"`
-            // Properties - Role assignment properties.
-            Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
-            }
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PermissionGetResultPage) NotDone() bool {
+	return !page.pgr.IsEmpty()
+}
 
-            // RoleAssignmentCreateParameters role assignment create parameters.
-            type RoleAssignmentCreateParameters struct {
-            // Properties - Role assignment properties.
-            Properties *RoleAssignmentProperties `json:"properties,omitempty"`
-            }
+// Response returns the raw server response from the last page request.
+func (page PermissionGetResultPage) Response() PermissionGetResult {
+	return page.pgr
+}
 
-            // RoleAssignmentFilter role Assignments filter
-            type RoleAssignmentFilter struct {
-            // PrincipalID - Returns role assignment of the specific principal.
-            PrincipalID *string `json:"principalId,omitempty"`
-            }
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PermissionGetResultPage) Values() []Permission {
+	if page.pgr.IsEmpty() {
+		return nil
+	}
+	return *page.pgr.Value
+}
 
-            // RoleAssignmentListResult role assignment list operation result.
-            type RoleAssignmentListResult struct {
-            autorest.Response `json:"-"`
-            // Value - Role assignment list.
-            Value *[]RoleAssignment `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// ProviderOperation operation
+type ProviderOperation struct {
+	// Name - The operation name.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The operation display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The operation description.
+	Description *string `json:"description,omitempty"`
+	// Origin - The operation origin.
+	Origin *string `json:"origin,omitempty"`
+	// Properties - The operation properties.
+	Properties interface{} `json:"properties,omitempty"`
+}
 
-            // RoleAssignmentListResultIterator provides access to a complete listing of RoleAssignment values.
-            type RoleAssignmentListResultIterator struct {
-                i int
-                page RoleAssignmentListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * RoleAssignmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/RoleAssignmentListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * RoleAssignmentListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter RoleAssignmentListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter RoleAssignmentListResultIterator) Response() RoleAssignmentListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter RoleAssignmentListResultIterator) Value() RoleAssignment {
-        if !iter.page.NotDone() {
-        return RoleAssignment{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// ProviderOperationsMetadata provider Operations metadata
+type ProviderOperationsMetadata struct {
+	autorest.Response `json:"-"`
+	// ID - The provider id.
+	ID *string `json:"id,omitempty"`
+	// Name - The provider name.
+	Name *string `json:"name,omitempty"`
+	// Type - The provider type.
+	Type *string `json:"type,omitempty"`
+	// DisplayName - The provider display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ResourceTypes - The provider resource types
+	ResourceTypes *[]ResourceType `json:"resourceTypes,omitempty"`
+	// Operations - The provider operations.
+	Operations *[]ProviderOperation `json:"operations,omitempty"`
+}
 
+// ProviderOperationsMetadataListResult provider operations metadata list
+type ProviderOperationsMetadataListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of providers.
+	Value *[]ProviderOperationsMetadata `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (ralr RoleAssignmentListResult) IsEmpty() bool {
-                return ralr.Value == nil || len(*ralr.Value) == 0
-                }
+// ProviderOperationsMetadataListResultIterator provides access to a complete listing of
+// ProviderOperationsMetadata values.
+type ProviderOperationsMetadataListResultIterator struct {
+	i    int
+	page ProviderOperationsMetadataListResultPage
+}
 
-                    // roleAssignmentListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if ralr.NextLink == nil || len(to.String(ralr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( ralr.NextLink)));
-                    }
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ProviderOperationsMetadataListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderOperationsMetadataListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-            // RoleAssignmentListResultPage contains a page of RoleAssignment values.
-            type RoleAssignmentListResultPage struct {
-                fn func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)
-                ralr RoleAssignmentListResult
-            }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ProviderOperationsMetadataListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * RoleAssignmentListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/RoleAssignmentListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.ralr)
-        if err != nil {
-        return err
-        }
-        page.ralr = next
-        return nil
-        }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ProviderOperationsMetadataListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * RoleAssignmentListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page RoleAssignmentListResultPage) NotDone() bool {
-        return !page.ralr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page RoleAssignmentListResultPage) Response() RoleAssignmentListResult {
-        return page.ralr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page RoleAssignmentListResultPage) Values() []RoleAssignment {
-        if page.ralr.IsEmpty() {
-        return nil
-        }
-        return *page.ralr.Value
-        }
+// Response returns the raw server response from the last page request.
+func (iter ProviderOperationsMetadataListResultIterator) Response() ProviderOperationsMetadataListResult {
+	return iter.page.Response()
+}
 
-            // RoleAssignmentProperties role assignment properties.
-            type RoleAssignmentProperties struct {
-            // RoleDefinitionID - The role definition ID used in the role assignment.
-            RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-            // PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
-            PrincipalID *string `json:"principalId,omitempty"`
-            }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ProviderOperationsMetadataListResultIterator) Value() ProviderOperationsMetadata {
+	if !iter.page.NotDone() {
+		return ProviderOperationsMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-            // RoleAssignmentPropertiesWithScope role assignment properties with scope.
-            type RoleAssignmentPropertiesWithScope struct {
-            // Scope - The role assignment scope.
-            Scope *string `json:"scope,omitempty"`
-            // RoleDefinitionID - The role definition ID.
-            RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-            // PrincipalID - The principal ID.
-            PrincipalID *string `json:"principalId,omitempty"`
-            }
+// IsEmpty returns true if the ListResult contains no values.
+func (pomlr ProviderOperationsMetadataListResult) IsEmpty() bool {
+	return pomlr.Value == nil || len(*pomlr.Value) == 0
+}
 
-            // RoleDefinition role definition.
-            type RoleDefinition struct {
-            autorest.Response `json:"-"`
-            // ID - The role definition ID.
-            ID *string `json:"id,omitempty"`
-            // Name - The role definition name.
-            Name *string `json:"name,omitempty"`
-            // Type - The role definition type.
-            Type *string `json:"type,omitempty"`
-            // Properties - Role definition properties.
-            Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-            }
+// providerOperationsMetadataListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pomlr ProviderOperationsMetadataListResult) providerOperationsMetadataListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if pomlr.NextLink == nil || len(to.String(pomlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pomlr.NextLink)))
+}
 
-            // RoleDefinitionFilter role Definitions filter
-            type RoleDefinitionFilter struct {
-            // RoleName - Returns role definition with the specific name.
-            RoleName *string `json:"roleName,omitempty"`
-            }
+// ProviderOperationsMetadataListResultPage contains a page of ProviderOperationsMetadata values.
+type ProviderOperationsMetadataListResultPage struct {
+	fn    func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)
+	pomlr ProviderOperationsMetadataListResult
+}
 
-            // RoleDefinitionListResult role definition list operation result.
-            type RoleDefinitionListResult struct {
-            autorest.Response `json:"-"`
-            // Value - Role definition list.
-            Value *[]RoleDefinition `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ProviderOperationsMetadataListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderOperationsMetadataListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pomlr)
+	if err != nil {
+		return err
+	}
+	page.pomlr = next
+	return nil
+}
 
-            // RoleDefinitionListResultIterator provides access to a complete listing of RoleDefinition values.
-            type RoleDefinitionListResultIterator struct {
-                i int
-                page RoleDefinitionListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * RoleDefinitionListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/RoleDefinitionListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * RoleDefinitionListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter RoleDefinitionListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter RoleDefinitionListResultIterator) Response() RoleDefinitionListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter RoleDefinitionListResultIterator) Value() RoleDefinition {
-        if !iter.page.NotDone() {
-        return RoleDefinition{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ProviderOperationsMetadataListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
 
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ProviderOperationsMetadataListResultPage) NotDone() bool {
+	return !page.pomlr.IsEmpty()
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (rdlr RoleDefinitionListResult) IsEmpty() bool {
-                return rdlr.Value == nil || len(*rdlr.Value) == 0
-                }
+// Response returns the raw server response from the last page request.
+func (page ProviderOperationsMetadataListResultPage) Response() ProviderOperationsMetadataListResult {
+	return page.pomlr
+}
 
-                    // roleDefinitionListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (rdlr RoleDefinitionListResult) roleDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if rdlr.NextLink == nil || len(to.String(rdlr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( rdlr.NextLink)));
-                    }
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ProviderOperationsMetadataListResultPage) Values() []ProviderOperationsMetadata {
+	if page.pomlr.IsEmpty() {
+		return nil
+	}
+	return *page.pomlr.Value
+}
 
-            // RoleDefinitionListResultPage contains a page of RoleDefinition values.
-            type RoleDefinitionListResultPage struct {
-                fn func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)
-                rdlr RoleDefinitionListResult
-            }
+// ResourceType resource Type
+type ResourceType struct {
+	// Name - The resource type name.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The resource type display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Operations - The resource type operations.
+	Operations *[]ProviderOperation `json:"operations,omitempty"`
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * RoleDefinitionListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/RoleDefinitionListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.rdlr)
-        if err != nil {
-        return err
-        }
-        page.rdlr = next
-        return nil
-        }
+// RoleAssignment role Assignments
+type RoleAssignment struct {
+	autorest.Response `json:"-"`
+	// ID - The role assignment ID.
+	ID *string `json:"id,omitempty"`
+	// Name - The role assignment name.
+	Name *string `json:"name,omitempty"`
+	// Type - The role assignment type.
+	Type *string `json:"type,omitempty"`
+	// Properties - Role assignment properties.
+	Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * RoleDefinitionListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page RoleDefinitionListResultPage) NotDone() bool {
-        return !page.rdlr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page RoleDefinitionListResultPage) Response() RoleDefinitionListResult {
-        return page.rdlr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page RoleDefinitionListResultPage) Values() []RoleDefinition {
-        if page.rdlr.IsEmpty() {
-        return nil
-        }
-        return *page.rdlr.Value
-        }
+// RoleAssignmentCreateParameters role assignment create parameters.
+type RoleAssignmentCreateParameters struct {
+	// Properties - Role assignment properties.
+	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
+}
 
-            // RoleDefinitionProperties role definition properties.
-            type RoleDefinitionProperties struct {
-            // RoleName - The role name.
-            RoleName *string `json:"roleName,omitempty"`
-            // Description - The role definition description.
-            Description *string `json:"description,omitempty"`
-            // Type - The role type.
-            Type *string `json:"type,omitempty"`
-            // Permissions - Role definition permissions.
-            Permissions *[]Permission `json:"permissions,omitempty"`
-            // AssignableScopes - Role definition assignable scopes.
-            AssignableScopes *[]string `json:"assignableScopes,omitempty"`
-            }
+// RoleAssignmentFilter role Assignments filter
+type RoleAssignmentFilter struct {
+	// PrincipalID - Returns role assignment of the specific principal.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
 
+// RoleAssignmentListResult role assignment list operation result.
+type RoleAssignmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Role assignment list.
+	Value *[]RoleAssignment `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RoleAssignmentListResultIterator provides access to a complete listing of RoleAssignment values.
+type RoleAssignmentListResultIterator struct {
+	i    int
+	page RoleAssignmentListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RoleAssignmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleAssignmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RoleAssignmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RoleAssignmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RoleAssignmentListResultIterator) Response() RoleAssignmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RoleAssignmentListResultIterator) Value() RoleAssignment {
+	if !iter.page.NotDone() {
+		return RoleAssignment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ralr RoleAssignmentListResult) IsEmpty() bool {
+	return ralr.Value == nil || len(*ralr.Value) == 0
+}
+
+// roleAssignmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if ralr.NextLink == nil || len(to.String(ralr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ralr.NextLink)))
+}
+
+// RoleAssignmentListResultPage contains a page of RoleAssignment values.
+type RoleAssignmentListResultPage struct {
+	fn   func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)
+	ralr RoleAssignmentListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RoleAssignmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleAssignmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ralr)
+	if err != nil {
+		return err
+	}
+	page.ralr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RoleAssignmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RoleAssignmentListResultPage) NotDone() bool {
+	return !page.ralr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RoleAssignmentListResultPage) Response() RoleAssignmentListResult {
+	return page.ralr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RoleAssignmentListResultPage) Values() []RoleAssignment {
+	if page.ralr.IsEmpty() {
+		return nil
+	}
+	return *page.ralr.Value
+}
+
+// RoleAssignmentProperties role assignment properties.
+type RoleAssignmentProperties struct {
+	// RoleDefinitionID - The role definition ID used in the role assignment.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	// PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// RoleAssignmentPropertiesWithScope role assignment properties with scope.
+type RoleAssignmentPropertiesWithScope struct {
+	// Scope - The role assignment scope.
+	Scope *string `json:"scope,omitempty"`
+	// RoleDefinitionID - The role definition ID.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	// PrincipalID - The principal ID.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// RoleDefinition role definition.
+type RoleDefinition struct {
+	autorest.Response `json:"-"`
+	// ID - The role definition ID.
+	ID *string `json:"id,omitempty"`
+	// Name - The role definition name.
+	Name *string `json:"name,omitempty"`
+	// Type - The role definition type.
+	Type *string `json:"type,omitempty"`
+	// Properties - Role definition properties.
+	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
+}
+
+// RoleDefinitionFilter role Definitions filter
+type RoleDefinitionFilter struct {
+	// RoleName - Returns role definition with the specific name.
+	RoleName *string `json:"roleName,omitempty"`
+}
+
+// RoleDefinitionListResult role definition list operation result.
+type RoleDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Role definition list.
+	Value *[]RoleDefinition `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RoleDefinitionListResultIterator provides access to a complete listing of RoleDefinition values.
+type RoleDefinitionListResultIterator struct {
+	i    int
+	page RoleDefinitionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RoleDefinitionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RoleDefinitionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RoleDefinitionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RoleDefinitionListResultIterator) Response() RoleDefinitionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RoleDefinitionListResultIterator) Value() RoleDefinition {
+	if !iter.page.NotDone() {
+		return RoleDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rdlr RoleDefinitionListResult) IsEmpty() bool {
+	return rdlr.Value == nil || len(*rdlr.Value) == 0
+}
+
+// roleDefinitionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rdlr RoleDefinitionListResult) roleDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rdlr.NextLink == nil || len(to.String(rdlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rdlr.NextLink)))
+}
+
+// RoleDefinitionListResultPage contains a page of RoleDefinition values.
+type RoleDefinitionListResultPage struct {
+	fn   func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)
+	rdlr RoleDefinitionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RoleDefinitionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleDefinitionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rdlr)
+	if err != nil {
+		return err
+	}
+	page.rdlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RoleDefinitionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RoleDefinitionListResultPage) NotDone() bool {
+	return !page.rdlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RoleDefinitionListResultPage) Response() RoleDefinitionListResult {
+	return page.rdlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RoleDefinitionListResultPage) Values() []RoleDefinition {
+	if page.rdlr.IsEmpty() {
+		return nil
+	}
+	return *page.rdlr.Value
+}
+
+// RoleDefinitionProperties role definition properties.
+type RoleDefinitionProperties struct {
+	// RoleName - The role name.
+	RoleName *string `json:"roleName,omitempty"`
+	// Description - The role definition description.
+	Description *string `json:"description,omitempty"`
+	// Type - The role type.
+	Type *string `json:"type,omitempty"`
+	// Permissions - Role definition permissions.
+	Permissions *[]Permission `json:"permissions,omitempty"`
+	// AssignableScopes - Role definition assignable scopes.
+	AssignableScopes *[]string `json:"assignableScopes,omitempty"`
+}

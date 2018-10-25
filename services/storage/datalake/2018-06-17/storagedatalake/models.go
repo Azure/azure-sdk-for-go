@@ -18,153 +18,158 @@ package storagedatalake
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "io"
+	"github.com/Azure/go-autorest/autorest"
+	"io"
 )
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go//services/storage/datalake/2018-06-17/storagedatalake"
 
-        // PathGetPropertiesAction enumerates the values for path get properties action.
-    type PathGetPropertiesAction string
+// PathGetPropertiesAction enumerates the values for path get properties action.
+type PathGetPropertiesAction string
 
-    const (
-                // GetAccessControl ...
-        GetAccessControl PathGetPropertiesAction = "getAccessControl"
-            )
-    // PossiblePathGetPropertiesActionValues returns an array of possible values for the PathGetPropertiesAction const type.
-    func PossiblePathGetPropertiesActionValues() []PathGetPropertiesAction {
-        return []PathGetPropertiesAction{GetAccessControl}
-    }
+const (
+	// GetAccessControl ...
+	GetAccessControl PathGetPropertiesAction = "getAccessControl"
+)
 
-        // PathLeaseAction enumerates the values for path lease action.
-    type PathLeaseAction string
+// PossiblePathGetPropertiesActionValues returns an array of possible values for the PathGetPropertiesAction const type.
+func PossiblePathGetPropertiesActionValues() []PathGetPropertiesAction {
+	return []PathGetPropertiesAction{GetAccessControl}
+}
 
-    const (
-                // Acquire ...
-        Acquire PathLeaseAction = "acquire"
-                // Break ...
-        Break PathLeaseAction = "break"
-                // Change ...
-        Change PathLeaseAction = "change"
-                // Release ...
-        Release PathLeaseAction = "release"
-                // Renew ...
-        Renew PathLeaseAction = "renew"
-            )
-    // PossiblePathLeaseActionValues returns an array of possible values for the PathLeaseAction const type.
-    func PossiblePathLeaseActionValues() []PathLeaseAction {
-        return []PathLeaseAction{Acquire,Break,Change,Release,Renew}
-    }
+// PathLeaseAction enumerates the values for path lease action.
+type PathLeaseAction string
 
-        // PathRenameMode enumerates the values for path rename mode.
-    type PathRenameMode string
+const (
+	// Acquire ...
+	Acquire PathLeaseAction = "acquire"
+	// Break ...
+	Break PathLeaseAction = "break"
+	// Change ...
+	Change PathLeaseAction = "change"
+	// Release ...
+	Release PathLeaseAction = "release"
+	// Renew ...
+	Renew PathLeaseAction = "renew"
+)
 
-    const (
-                // Legacy ...
-        Legacy PathRenameMode = "legacy"
-                // Posix ...
-        Posix PathRenameMode = "posix"
-            )
-    // PossiblePathRenameModeValues returns an array of possible values for the PathRenameMode const type.
-    func PossiblePathRenameModeValues() []PathRenameMode {
-        return []PathRenameMode{Legacy,Posix}
-    }
+// PossiblePathLeaseActionValues returns an array of possible values for the PathLeaseAction const type.
+func PossiblePathLeaseActionValues() []PathLeaseAction {
+	return []PathLeaseAction{Acquire, Break, Change, Release, Renew}
+}
 
-        // PathResourceType enumerates the values for path resource type.
-    type PathResourceType string
+// PathRenameMode enumerates the values for path rename mode.
+type PathRenameMode string
 
-    const (
-                // Directory ...
-        Directory PathResourceType = "directory"
-                // File ...
-        File PathResourceType = "file"
-            )
-    // PossiblePathResourceTypeValues returns an array of possible values for the PathResourceType const type.
-    func PossiblePathResourceTypeValues() []PathResourceType {
-        return []PathResourceType{Directory,File}
-    }
+const (
+	// Legacy ...
+	Legacy PathRenameMode = "legacy"
+	// Posix ...
+	Posix PathRenameMode = "posix"
+)
 
-        // PathUpdateAction enumerates the values for path update action.
-    type PathUpdateAction string
+// PossiblePathRenameModeValues returns an array of possible values for the PathRenameMode const type.
+func PossiblePathRenameModeValues() []PathRenameMode {
+	return []PathRenameMode{Legacy, Posix}
+}
 
-    const (
-                // Append ...
-        Append PathUpdateAction = "append"
-                // Flush ...
-        Flush PathUpdateAction = "flush"
-                // SetAccessControl ...
-        SetAccessControl PathUpdateAction = "setAccessControl"
-                // SetProperties ...
-        SetProperties PathUpdateAction = "setProperties"
-            )
-    // PossiblePathUpdateActionValues returns an array of possible values for the PathUpdateAction const type.
-    func PossiblePathUpdateActionValues() []PathUpdateAction {
-        return []PathUpdateAction{Append,Flush,SetAccessControl,SetProperties}
-    }
+// PathResourceType enumerates the values for path resource type.
+type PathResourceType string
 
-        // PathUpdateLeaseAction enumerates the values for path update lease action.
-    type PathUpdateLeaseAction string
+const (
+	// Directory ...
+	Directory PathResourceType = "directory"
+	// File ...
+	File PathResourceType = "file"
+)
 
-    const (
-                // PathUpdateLeaseActionRelease ...
-        PathUpdateLeaseActionRelease PathUpdateLeaseAction = "release"
-                // PathUpdateLeaseActionRenew ...
-        PathUpdateLeaseActionRenew PathUpdateLeaseAction = "renew"
-            )
-    // PossiblePathUpdateLeaseActionValues returns an array of possible values for the PathUpdateLeaseAction const type.
-    func PossiblePathUpdateLeaseActionValues() []PathUpdateLeaseAction {
-        return []PathUpdateLeaseAction{PathUpdateLeaseActionRelease,PathUpdateLeaseActionRenew}
-    }
+// PossiblePathResourceTypeValues returns an array of possible values for the PathResourceType const type.
+func PossiblePathResourceTypeValues() []PathResourceType {
+	return []PathResourceType{Directory, File}
+}
 
-            // DataLakeStorageError ...
-            type DataLakeStorageError struct {
-            // Error - The service error response object.
-            Error *DataLakeStorageErrorError `json:"error,omitempty"`
-            }
+// PathUpdateAction enumerates the values for path update action.
+type PathUpdateAction string
 
-            // DataLakeStorageErrorError the service error response object.
-            type DataLakeStorageErrorError struct {
-            // Code - The service error code.
-            Code *string `json:"code,omitempty"`
-            // Message - The service error message.
-            Message *string `json:"message,omitempty"`
-            }
+const (
+	// Append ...
+	Append PathUpdateAction = "append"
+	// Flush ...
+	Flush PathUpdateAction = "flush"
+	// SetAccessControl ...
+	SetAccessControl PathUpdateAction = "setAccessControl"
+	// SetProperties ...
+	SetProperties PathUpdateAction = "setProperties"
+)
 
-            // Filesystem ...
-            type Filesystem struct {
-            Name *string `json:"name,omitempty"`
-            LastModified *string `json:"lastModified,omitempty"`
-            ETag *string `json:"eTag,omitempty"`
-            }
+// PossiblePathUpdateActionValues returns an array of possible values for the PathUpdateAction const type.
+func PossiblePathUpdateActionValues() []PathUpdateAction {
+	return []PathUpdateAction{Append, Flush, SetAccessControl, SetProperties}
+}
 
-            // FilesystemList ...
-            type FilesystemList struct {
-            autorest.Response `json:"-"`
-            Filesystems *[]Filesystem `json:"filesystems,omitempty"`
-            }
+// PathUpdateLeaseAction enumerates the values for path update lease action.
+type PathUpdateLeaseAction string
 
-            // Path ...
-            type Path struct {
-            Name *string `json:"name,omitempty"`
-            IsDirectory *bool `json:"isDirectory,omitempty"`
-            LastModified *string `json:"lastModified,omitempty"`
-            ETag *string `json:"eTag,omitempty"`
-            ContentLength *int64 `json:"contentLength,omitempty"`
-            Owner *string `json:"owner,omitempty"`
-            Group *string `json:"group,omitempty"`
-            Permissions *string `json:"permissions,omitempty"`
-            }
+const (
+	// PathUpdateLeaseActionRelease ...
+	PathUpdateLeaseActionRelease PathUpdateLeaseAction = "release"
+	// PathUpdateLeaseActionRenew ...
+	PathUpdateLeaseActionRenew PathUpdateLeaseAction = "renew"
+)
 
-            // PathList ...
-            type PathList struct {
-            autorest.Response `json:"-"`
-            Paths *[]Path `json:"paths,omitempty"`
-            }
+// PossiblePathUpdateLeaseActionValues returns an array of possible values for the PathUpdateLeaseAction const type.
+func PossiblePathUpdateLeaseActionValues() []PathUpdateLeaseAction {
+	return []PathUpdateLeaseAction{PathUpdateLeaseActionRelease, PathUpdateLeaseActionRenew}
+}
 
-            // ReadCloser ...
-            type ReadCloser struct {
-            autorest.Response `json:"-"`
-            Value *io.ReadCloser `json:"value,omitempty"`
-            }
+// DataLakeStorageError ...
+type DataLakeStorageError struct {
+	// Error - The service error response object.
+	Error *DataLakeStorageErrorError `json:"error,omitempty"`
+}
 
+// DataLakeStorageErrorError the service error response object.
+type DataLakeStorageErrorError struct {
+	// Code - The service error code.
+	Code *string `json:"code,omitempty"`
+	// Message - The service error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// Filesystem ...
+type Filesystem struct {
+	Name         *string `json:"name,omitempty"`
+	LastModified *string `json:"lastModified,omitempty"`
+	ETag         *string `json:"eTag,omitempty"`
+}
+
+// FilesystemList ...
+type FilesystemList struct {
+	autorest.Response `json:"-"`
+	Filesystems       *[]Filesystem `json:"filesystems,omitempty"`
+}
+
+// Path ...
+type Path struct {
+	Name          *string `json:"name,omitempty"`
+	IsDirectory   *bool   `json:"isDirectory,omitempty"`
+	LastModified  *string `json:"lastModified,omitempty"`
+	ETag          *string `json:"eTag,omitempty"`
+	ContentLength *int64  `json:"contentLength,omitempty"`
+	Owner         *string `json:"owner,omitempty"`
+	Group         *string `json:"group,omitempty"`
+	Permissions   *string `json:"permissions,omitempty"`
+}
+
+// PathList ...
+type PathList struct {
+	autorest.Response `json:"-"`
+	Paths             *[]Path `json:"paths,omitempty"`
+}
+
+// ReadCloser ...
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
+}

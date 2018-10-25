@@ -18,101 +18,101 @@ package insights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // WebTestLocationsClient is the composite Swagger for Application Insights Management Client
 type WebTestLocationsClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewWebTestLocationsClient creates an instance of the WebTestLocationsClient client.
 func NewWebTestLocationsClient(subscriptionID string) WebTestLocationsClient {
-    return NewWebTestLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+	return NewWebTestLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWebTestLocationsClientWithBaseURI creates an instance of the WebTestLocationsClient client.
-    func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string) WebTestLocationsClient {
-        return WebTestLocationsClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string) WebTestLocationsClient {
+	return WebTestLocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // List gets a list of web test locations available to this Application Insights component.
-    // Parameters:
-        // resourceGroupName - the name of the resource group.
-        // resourceName - the name of the Application Insights component resource.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
 func (client WebTestLocationsClient) List(ctx context.Context, resourceGroupName string, resourceName string) (result ApplicationInsightsWebTestLocationsListResult, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/WebTestLocationsClient.List")
-        defer func() {
-            sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-        req, err := client.ListPreparer(ctx, resourceGroupName, resourceName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", nil , "Failure preparing request")
-    return
-    }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebTestLocationsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListPreparer(ctx, resourceGroupName, resourceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.ListSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.ListResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", resp, "Failure responding to request")
-            }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.WebTestLocationsClient", "List", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // ListPreparer prepares the List request.
-    func (client WebTestLocationsClient) ListPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "resourceName": autorest.Encode("path",resourceName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// ListPreparer prepares the List request.
+func (client WebTestLocationsClient) ListPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2015-05-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2015-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/syntheticmonitorlocations",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/syntheticmonitorlocations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // ListSender sends the List request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client WebTestLocationsClient) ListSender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            }
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebTestLocationsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client WebTestLocationsClient) ListResponder(resp *http.Response) (result ApplicationInsightsWebTestLocationsListResult, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
-
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

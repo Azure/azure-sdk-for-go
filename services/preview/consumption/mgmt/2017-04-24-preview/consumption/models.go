@@ -18,537 +18,551 @@ package consumption
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "encoding/json"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/to"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/shopspring/decimal"
-    "net/http"
+	"context"
+	"encoding/json"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
+	"github.com/shopspring/decimal"
+	"net/http"
 )
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/consumption/mgmt/2017-04-24-preview/consumption"
 
-            // ErrorDetails the details of the error.
-            type ErrorDetails struct {
-            // Code - Error code.
-            Code *string `json:"code,omitempty"`
-            // Message - Error message indicating why the operation failed.
-            Message *string `json:"message,omitempty"`
-            // Target - The target of the particular error.
-            Target *string `json:"target,omitempty"`
-            }
+// ErrorDetails the details of the error.
+type ErrorDetails struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error.
+	Target *string `json:"target,omitempty"`
+}
 
-            // ErrorResponse error response indicates that the service is not able to process the incoming request. The
-            // reason is provided in the error message.
-            type ErrorResponse struct {
-            // Error - The details of the error.
-            Error *ErrorDetails `json:"error,omitempty"`
-            }
+// ErrorResponse error response indicates that the service is not able to process the incoming request. The
+// reason is provided in the error message.
+type ErrorResponse struct {
+	// Error - The details of the error.
+	Error *ErrorDetails `json:"error,omitempty"`
+}
 
-            // MeterDetails the properties of the meter detail.
-            type MeterDetails struct {
-            // MeterName - The name of the meter, within the given meter category
-            MeterName *string `json:"meterName,omitempty"`
-            // MeterCategory - The category of the meter, for example, 'Cloud services', 'Networking', etc..
-            MeterCategory *string `json:"meterCategory,omitempty"`
-            // MeterSubCategory - The subcategory of the meter, for example, 'A6 Cloud services', 'ExpressRoute (IXP)', etc..
-            MeterSubCategory *string `json:"meterSubCategory,omitempty"`
-            // Unit - The unit in which the meter consumption is charged, for example, 'Hours', 'GB', etc.
-            Unit *string `json:"unit,omitempty"`
-            // MeterLocation - The location in which the Azure service is available.
-            MeterLocation *string `json:"meterLocation,omitempty"`
-            // TotalIncludedQuantity - The total included quantity associated with the offer.
-            TotalIncludedQuantity *decimal.Decimal `json:"totalIncludedQuantity,omitempty"`
-            // PretaxStandardRate - The pretax listing price.
-            PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
-            }
+// MeterDetails the properties of the meter detail.
+type MeterDetails struct {
+	// MeterName - The name of the meter, within the given meter category
+	MeterName *string `json:"meterName,omitempty"`
+	// MeterCategory - The category of the meter, for example, 'Cloud services', 'Networking', etc..
+	MeterCategory *string `json:"meterCategory,omitempty"`
+	// MeterSubCategory - The subcategory of the meter, for example, 'A6 Cloud services', 'ExpressRoute (IXP)', etc..
+	MeterSubCategory *string `json:"meterSubCategory,omitempty"`
+	// Unit - The unit in which the meter consumption is charged, for example, 'Hours', 'GB', etc.
+	Unit *string `json:"unit,omitempty"`
+	// MeterLocation - The location in which the Azure service is available.
+	MeterLocation *string `json:"meterLocation,omitempty"`
+	// TotalIncludedQuantity - The total included quantity associated with the offer.
+	TotalIncludedQuantity *decimal.Decimal `json:"totalIncludedQuantity,omitempty"`
+	// PretaxStandardRate - The pretax listing price.
+	PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
+}
 
-            // Operation a Consumption REST API operation.
-            type Operation struct {
-            // Name - Operation name: {provider}/{resource}/{operation}.
-            Name *string `json:"name,omitempty"`
-            // Display - The object that represents the operation.
-            Display *OperationDisplay `json:"display,omitempty"`
-            }
+// Operation a Consumption REST API operation.
+type Operation struct {
+	// Name - Operation name: {provider}/{resource}/{operation}.
+	Name *string `json:"name,omitempty"`
+	// Display - The object that represents the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+}
 
-            // OperationDisplay the object that represents the operation.
-            type OperationDisplay struct {
-            // Provider - Service provider: Microsoft.Consumption.
-            Provider *string `json:"provider,omitempty"`
-            // Resource - Resource on which the operation is performed: UsageDetail, etc.
-            Resource *string `json:"resource,omitempty"`
-            // Operation - Operation type: Read, write, delete, etc.
-            Operation *string `json:"operation,omitempty"`
-            }
+// OperationDisplay the object that represents the operation.
+type OperationDisplay struct {
+	// Provider - Service provider: Microsoft.Consumption.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - Resource on which the operation is performed: UsageDetail, etc.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - Operation type: Read, write, delete, etc.
+	Operation *string `json:"operation,omitempty"`
+}
 
-            // OperationListResult result of listing consumption operations. It contains a list of operations and a URL
-            // link to get the next set of results.
-            type OperationListResult struct {
-            autorest.Response `json:"-"`
-            // Value - List of consumption operations supported by the Microsoft.Consumption resource provider.
-            Value *[]Operation `json:"value,omitempty"`
-            // NextLink - URL to get the next set of operation list results if there are any.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// OperationListResult result of listing consumption operations. It contains a list of operations and a URL
+// link to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of consumption operations supported by the Microsoft.Consumption resource provider.
+	Value *[]Operation `json:"value,omitempty"`
+	// NextLink - URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-            // OperationListResultIterator provides access to a complete listing of Operation values.
-            type OperationListResultIterator struct {
-                i int
-                page OperationListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/OperationListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * OperationListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter OperationListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter OperationListResultIterator) Response() OperationListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter OperationListResultIterator) Value() Operation {
-        if !iter.page.NotDone() {
-        return Operation{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// OperationListResultIterator provides access to a complete listing of Operation values.
+type OperationListResultIterator struct {
+	i    int
+	page OperationListResultPage
+}
 
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (olr OperationListResult) IsEmpty() bool {
-                return olr.Value == nil || len(*olr.Value) == 0
-                }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-                    // operationListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( olr.NextLink)));
-                    }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OperationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
-            // OperationListResultPage contains a page of Operation values.
-            type OperationListResultPage struct {
-                fn func(context.Context, OperationListResult) (OperationListResult, error)
-                olr OperationListResult
-            }
+// Response returns the raw server response from the last page request.
+func (iter OperationListResultIterator) Response() OperationListResult {
+	return iter.page.Response()
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/OperationListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.olr)
-        if err != nil {
-        return err
-        }
-        page.olr = next
-        return nil
-        }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OperationListResultIterator) Value() Operation {
+	if !iter.page.NotDone() {
+		return Operation{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * OperationListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page OperationListResultPage) NotDone() bool {
-        return !page.olr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page OperationListResultPage) Response() OperationListResult {
-        return page.olr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page OperationListResultPage) Values() []Operation {
-        if page.olr.IsEmpty() {
-        return nil
-        }
-        return *page.olr.Value
-        }
+// IsEmpty returns true if the ListResult contains no values.
+func (olr OperationListResult) IsEmpty() bool {
+	return olr.Value == nil || len(*olr.Value) == 0
+}
 
-            // Resource the Resource model definition.
-            type Resource struct {
-            // ID - Resource Id.
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name.
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type.
-            Type *string `json:"type,omitempty"`
-            // Tags - Resource tags.
-            Tags map[string]*string `json:"tags"`
-            }
+// operationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(olr.NextLink)))
+}
 
-        // MarshalJSON is the custom marshaler for Resource.
-        func (r Resource)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(r.ID != nil) {
-                objectMap["id"] = r.ID
-                }
-                if(r.Name != nil) {
-                objectMap["name"] = r.Name
-                }
-                if(r.Type != nil) {
-                objectMap["type"] = r.Type
-                }
-                if(r.Tags != nil) {
-                objectMap["tags"] = r.Tags
-                }
-                return json.Marshal(objectMap)
-        }
+// OperationListResultPage contains a page of Operation values.
+type OperationListResultPage struct {
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
+	olr OperationListResult
+}
 
-            // UsageDetail an usage detail resource.
-            type UsageDetail struct {
-            *UsageDetailProperties `json:"properties,omitempty"`
-            // ID - Resource Id.
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name.
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type.
-            Type *string `json:"type,omitempty"`
-            // Tags - Resource tags.
-            Tags map[string]*string `json:"tags"`
-            }
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
+	if err != nil {
+		return err
+	}
+	page.olr = next
+	return nil
+}
 
-        // MarshalJSON is the custom marshaler for UsageDetail.
-        func (ud UsageDetail)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(ud.UsageDetailProperties != nil) {
-                objectMap["properties"] = ud.UsageDetailProperties
-                }
-                if(ud.ID != nil) {
-                objectMap["id"] = ud.ID
-                }
-                if(ud.Name != nil) {
-                objectMap["name"] = ud.Name
-                }
-                if(ud.Type != nil) {
-                objectMap["type"] = ud.Type
-                }
-                if(ud.Tags != nil) {
-                objectMap["tags"] = ud.Tags
-                }
-                return json.Marshal(objectMap)
-        }
-        // UnmarshalJSON is the custom unmarshaler for UsageDetail struct.
-        func (ud *UsageDetail) UnmarshalJSON(body []byte) error {
-        var m map[string]*json.RawMessage
-        err := json.Unmarshal(body, &m)
-        if err != nil {
-        return err
-        }
-        for k, v := range  m {
-        switch k {
-                case "properties":
-    if v != nil {
-        var usageDetailProperties UsageDetailProperties
-        err = json.Unmarshal(*v, &usageDetailProperties)
-    if err != nil {
-    return err
-    }
-        ud.UsageDetailProperties = &usageDetailProperties
-    }
-                case "id":
-    if v != nil {
-        var ID string
-        err = json.Unmarshal(*v, &ID)
-    if err != nil {
-    return err
-    }
-        ud.ID = &ID
-    }
-                case "name":
-    if v != nil {
-        var name string
-        err = json.Unmarshal(*v, &name)
-    if err != nil {
-    return err
-    }
-        ud.Name = &name
-    }
-                case "type":
-    if v != nil {
-        var typeVar string
-        err = json.Unmarshal(*v, &typeVar)
-    if err != nil {
-    return err
-    }
-        ud.Type = &typeVar
-    }
-                case "tags":
-    if v != nil {
-        var tags map[string]*string
-        err = json.Unmarshal(*v, &tags)
-    if err != nil {
-    return err
-    }
-        ud.Tags = tags
-    }
-            }
-        }
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
 
-        return nil
-        }
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OperationListResultPage) NotDone() bool {
+	return !page.olr.IsEmpty()
+}
 
-            // UsageDetailProperties the properties of the usage detail.
-            type UsageDetailProperties struct {
-            // BillingPeriodID - The id of the billing period resource that the usage belongs to.
-            BillingPeriodID *string `json:"billingPeriodId,omitempty"`
-            // InvoiceID - The id of the invoice resource that the usage belongs to.
-            InvoiceID *string `json:"invoiceId,omitempty"`
-            // UsageStart - The start of the date time range covered by the usage detail.
-            UsageStart *date.Time `json:"usageStart,omitempty"`
-            // UsageEnd - The end of the date time range covered by the usage detail.
-            UsageEnd *date.Time `json:"usageEnd,omitempty"`
-            // InstanceName - The name of the resource instance that the usage is about.
-            InstanceName *string `json:"instanceName,omitempty"`
-            // InstanceID - The uri of the resource instance that the usage is about.
-            InstanceID *string `json:"instanceId,omitempty"`
-            // InstanceLocation - The location of the resource instance that the usage is about.
-            InstanceLocation *string `json:"instanceLocation,omitempty"`
-            // Currency - The ISO currency in which the meter is charged, for example, USD.
-            Currency *string `json:"currency,omitempty"`
-            // UsageQuantity - The quantity of usage.
-            UsageQuantity *decimal.Decimal `json:"usageQuantity,omitempty"`
-            // BillableQuantity - The billable usage quantity.
-            BillableQuantity *decimal.Decimal `json:"billableQuantity,omitempty"`
-            // PretaxCost - The amount of cost before tax.
-            PretaxCost *decimal.Decimal `json:"pretaxCost,omitempty"`
-            // IsEstimated - The estimated usage is subject to change.
-            IsEstimated *bool `json:"isEstimated,omitempty"`
-            // MeterID - The meter id.
-            MeterID *string `json:"meterId,omitempty"`
-            // MeterDetails - The details about the meter. By default this is not populated, unless it's specified in $expand.
-            MeterDetails *MeterDetails `json:"meterDetails,omitempty"`
-            // AdditionalProperties - The list of key/value pairs for the additional properties, in the format 'key':'value' where key = the field name, and value = the field value. By default this is not populated, unless it's specified in $expand.
-            AdditionalProperties map[string]*string `json:"additionalProperties"`
-            }
+// Response returns the raw server response from the last page request.
+func (page OperationListResultPage) Response() OperationListResult {
+	return page.olr
+}
 
-        // MarshalJSON is the custom marshaler for UsageDetailProperties.
-        func (UDP UsageDetailProperties)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(UDP.BillingPeriodID != nil) {
-                objectMap["billingPeriodId"] = UDP.BillingPeriodID
-                }
-                if(UDP.InvoiceID != nil) {
-                objectMap["invoiceId"] = UDP.InvoiceID
-                }
-                if(UDP.UsageStart != nil) {
-                objectMap["usageStart"] = UDP.UsageStart
-                }
-                if(UDP.UsageEnd != nil) {
-                objectMap["usageEnd"] = UDP.UsageEnd
-                }
-                if(UDP.InstanceName != nil) {
-                objectMap["instanceName"] = UDP.InstanceName
-                }
-                if(UDP.InstanceID != nil) {
-                objectMap["instanceId"] = UDP.InstanceID
-                }
-                if(UDP.InstanceLocation != nil) {
-                objectMap["instanceLocation"] = UDP.InstanceLocation
-                }
-                if(UDP.Currency != nil) {
-                objectMap["currency"] = UDP.Currency
-                }
-                if(UDP.UsageQuantity != nil) {
-                objectMap["usageQuantity"] = UDP.UsageQuantity
-                }
-                if(UDP.BillableQuantity != nil) {
-                objectMap["billableQuantity"] = UDP.BillableQuantity
-                }
-                if(UDP.PretaxCost != nil) {
-                objectMap["pretaxCost"] = UDP.PretaxCost
-                }
-                if(UDP.IsEstimated != nil) {
-                objectMap["isEstimated"] = UDP.IsEstimated
-                }
-                if(UDP.MeterID != nil) {
-                objectMap["meterId"] = UDP.MeterID
-                }
-                if(UDP.MeterDetails != nil) {
-                objectMap["meterDetails"] = UDP.MeterDetails
-                }
-                if(UDP.AdditionalProperties != nil) {
-                objectMap["additionalProperties"] = UDP.AdditionalProperties
-                }
-                return json.Marshal(objectMap)
-        }
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OperationListResultPage) Values() []Operation {
+	if page.olr.IsEmpty() {
+		return nil
+	}
+	return *page.olr.Value
+}
 
-            // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in
-            // reverse chronological order by billing period.
-            type UsageDetailsListResult struct {
-            autorest.Response `json:"-"`
-            // Value - The list of usage details.
-            Value *[]UsageDetail `json:"value,omitempty"`
-            // NextLink - The link (url) to the next page of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// Resource the Resource model definition.
+type Resource struct {
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
 
-            // UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.
-            type UsageDetailsListResultIterator struct {
-                i int
-                page UsageDetailsListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * UsageDetailsListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/UsageDetailsListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * UsageDetailsListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter UsageDetailsListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter UsageDetailsListResultIterator) Response() UsageDetailsListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter UsageDetailsListResultIterator) Value() UsageDetail {
-        if !iter.page.NotDone() {
-        return UsageDetail{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
+}
 
+// UsageDetail an usage detail resource.
+type UsageDetail struct {
+	*UsageDetailProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (udlr UsageDetailsListResult) IsEmpty() bool {
-                return udlr.Value == nil || len(*udlr.Value) == 0
-                }
+// MarshalJSON is the custom marshaler for UsageDetail.
+func (ud UsageDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ud.UsageDetailProperties != nil {
+		objectMap["properties"] = ud.UsageDetailProperties
+	}
+	if ud.ID != nil {
+		objectMap["id"] = ud.ID
+	}
+	if ud.Name != nil {
+		objectMap["name"] = ud.Name
+	}
+	if ud.Type != nil {
+		objectMap["type"] = ud.Type
+	}
+	if ud.Tags != nil {
+		objectMap["tags"] = ud.Tags
+	}
+	return json.Marshal(objectMap)
+}
 
-                    // usageDetailsListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (udlr UsageDetailsListResult) usageDetailsListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if udlr.NextLink == nil || len(to.String(udlr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( udlr.NextLink)));
-                    }
+// UnmarshalJSON is the custom unmarshaler for UsageDetail struct.
+func (ud *UsageDetail) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var usageDetailProperties UsageDetailProperties
+				err = json.Unmarshal(*v, &usageDetailProperties)
+				if err != nil {
+					return err
+				}
+				ud.UsageDetailProperties = &usageDetailProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ud.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ud.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ud.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ud.Tags = tags
+			}
+		}
+	}
 
-            // UsageDetailsListResultPage contains a page of UsageDetail values.
-            type UsageDetailsListResultPage struct {
-                fn func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)
-                udlr UsageDetailsListResult
-            }
+	return nil
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * UsageDetailsListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/UsageDetailsListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.udlr)
-        if err != nil {
-        return err
-        }
-        page.udlr = next
-        return nil
-        }
+// UsageDetailProperties the properties of the usage detail.
+type UsageDetailProperties struct {
+	// BillingPeriodID - The id of the billing period resource that the usage belongs to.
+	BillingPeriodID *string `json:"billingPeriodId,omitempty"`
+	// InvoiceID - The id of the invoice resource that the usage belongs to.
+	InvoiceID *string `json:"invoiceId,omitempty"`
+	// UsageStart - The start of the date time range covered by the usage detail.
+	UsageStart *date.Time `json:"usageStart,omitempty"`
+	// UsageEnd - The end of the date time range covered by the usage detail.
+	UsageEnd *date.Time `json:"usageEnd,omitempty"`
+	// InstanceName - The name of the resource instance that the usage is about.
+	InstanceName *string `json:"instanceName,omitempty"`
+	// InstanceID - The uri of the resource instance that the usage is about.
+	InstanceID *string `json:"instanceId,omitempty"`
+	// InstanceLocation - The location of the resource instance that the usage is about.
+	InstanceLocation *string `json:"instanceLocation,omitempty"`
+	// Currency - The ISO currency in which the meter is charged, for example, USD.
+	Currency *string `json:"currency,omitempty"`
+	// UsageQuantity - The quantity of usage.
+	UsageQuantity *decimal.Decimal `json:"usageQuantity,omitempty"`
+	// BillableQuantity - The billable usage quantity.
+	BillableQuantity *decimal.Decimal `json:"billableQuantity,omitempty"`
+	// PretaxCost - The amount of cost before tax.
+	PretaxCost *decimal.Decimal `json:"pretaxCost,omitempty"`
+	// IsEstimated - The estimated usage is subject to change.
+	IsEstimated *bool `json:"isEstimated,omitempty"`
+	// MeterID - The meter id.
+	MeterID *string `json:"meterId,omitempty"`
+	// MeterDetails - The details about the meter. By default this is not populated, unless it's specified in $expand.
+	MeterDetails *MeterDetails `json:"meterDetails,omitempty"`
+	// AdditionalProperties - The list of key/value pairs for the additional properties, in the format 'key':'value' where key = the field name, and value = the field value. By default this is not populated, unless it's specified in $expand.
+	AdditionalProperties map[string]*string `json:"additionalProperties"`
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * UsageDetailsListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page UsageDetailsListResultPage) NotDone() bool {
-        return !page.udlr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page UsageDetailsListResultPage) Response() UsageDetailsListResult {
-        return page.udlr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page UsageDetailsListResultPage) Values() []UsageDetail {
-        if page.udlr.IsEmpty() {
-        return nil
-        }
-        return *page.udlr.Value
-        }
+// MarshalJSON is the custom marshaler for UsageDetailProperties.
+func (UDP UsageDetailProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if UDP.BillingPeriodID != nil {
+		objectMap["billingPeriodId"] = UDP.BillingPeriodID
+	}
+	if UDP.InvoiceID != nil {
+		objectMap["invoiceId"] = UDP.InvoiceID
+	}
+	if UDP.UsageStart != nil {
+		objectMap["usageStart"] = UDP.UsageStart
+	}
+	if UDP.UsageEnd != nil {
+		objectMap["usageEnd"] = UDP.UsageEnd
+	}
+	if UDP.InstanceName != nil {
+		objectMap["instanceName"] = UDP.InstanceName
+	}
+	if UDP.InstanceID != nil {
+		objectMap["instanceId"] = UDP.InstanceID
+	}
+	if UDP.InstanceLocation != nil {
+		objectMap["instanceLocation"] = UDP.InstanceLocation
+	}
+	if UDP.Currency != nil {
+		objectMap["currency"] = UDP.Currency
+	}
+	if UDP.UsageQuantity != nil {
+		objectMap["usageQuantity"] = UDP.UsageQuantity
+	}
+	if UDP.BillableQuantity != nil {
+		objectMap["billableQuantity"] = UDP.BillableQuantity
+	}
+	if UDP.PretaxCost != nil {
+		objectMap["pretaxCost"] = UDP.PretaxCost
+	}
+	if UDP.IsEstimated != nil {
+		objectMap["isEstimated"] = UDP.IsEstimated
+	}
+	if UDP.MeterID != nil {
+		objectMap["meterId"] = UDP.MeterID
+	}
+	if UDP.MeterDetails != nil {
+		objectMap["meterDetails"] = UDP.MeterDetails
+	}
+	if UDP.AdditionalProperties != nil {
+		objectMap["additionalProperties"] = UDP.AdditionalProperties
+	}
+	return json.Marshal(objectMap)
+}
 
+// UsageDetailsListResult result of listing usage details. It contains a list of available usage details in
+// reverse chronological order by billing period.
+type UsageDetailsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of usage details.
+	Value *[]UsageDetail `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.
+type UsageDetailsListResultIterator struct {
+	i    int
+	page UsageDetailsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *UsageDetailsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsageDetailsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *UsageDetailsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter UsageDetailsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter UsageDetailsListResultIterator) Response() UsageDetailsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter UsageDetailsListResultIterator) Value() UsageDetail {
+	if !iter.page.NotDone() {
+		return UsageDetail{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (udlr UsageDetailsListResult) IsEmpty() bool {
+	return udlr.Value == nil || len(*udlr.Value) == 0
+}
+
+// usageDetailsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (udlr UsageDetailsListResult) usageDetailsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if udlr.NextLink == nil || len(to.String(udlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(udlr.NextLink)))
+}
+
+// UsageDetailsListResultPage contains a page of UsageDetail values.
+type UsageDetailsListResultPage struct {
+	fn   func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)
+	udlr UsageDetailsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *UsageDetailsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsageDetailsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.udlr)
+	if err != nil {
+		return err
+	}
+	page.udlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *UsageDetailsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page UsageDetailsListResultPage) NotDone() bool {
+	return !page.udlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page UsageDetailsListResultPage) Response() UsageDetailsListResult {
+	return page.udlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page UsageDetailsListResultPage) Values() []UsageDetail {
+	if page.udlr.IsEmpty() {
+		return nil
+	}
+	return *page.udlr.Value
+}

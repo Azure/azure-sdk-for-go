@@ -18,106 +18,106 @@ package cdn
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // NameAvailabilityClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You
 // must make sure that requests made to these resources are secure. For more information, see
 // https://msdn.microsoft.com/en-us/library/azure/dn790557.aspx.
 type NameAvailabilityClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewNameAvailabilityClient creates an instance of the NameAvailabilityClient client.
 func NewNameAvailabilityClient(subscriptionID string) NameAvailabilityClient {
-    return NewNameAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID)
+	return NewNameAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewNameAvailabilityClientWithBaseURI creates an instance of the NameAvailabilityClient client.
-    func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) NameAvailabilityClient {
-        return NameAvailabilityClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) NameAvailabilityClient {
+	return NameAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CheckNameAvailability sends the check name availability request.
-    // Parameters:
-        // checkNameAvailabilityInput - input to check.
+// Parameters:
+// checkNameAvailabilityInput - input to check.
 func (client NameAvailabilityClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/NameAvailabilityClient.CheckNameAvailability")
-        defer func() {
-            sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: checkNameAvailabilityInput,
-             Constraints: []validation.Constraint{	{Target: "checkNameAvailabilityInput.Name", Name: validation.Null, Rule: true, Chain: nil },
-            	{Target: "checkNameAvailabilityInput.Type", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("cdn.NameAvailabilityClient", "CheckNameAvailability", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NameAvailabilityClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: checkNameAvailabilityInput,
+			Constraints: []validation.Constraint{{Target: "checkNameAvailabilityInput.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "checkNameAvailabilityInput.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cdn.NameAvailabilityClient", "CheckNameAvailability", err.Error())
+	}
 
-                req, err := client.CheckNameAvailabilityPreparer(ctx, checkNameAvailabilityInput)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.CheckNameAvailabilityPreparer(ctx, checkNameAvailabilityInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.CheckNameAvailabilitySender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.CheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.CheckNameAvailabilityResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
-            }
+	result, err = client.CheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.NameAvailabilityClient", "CheckNameAvailability", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-    func (client NameAvailabilityClient) CheckNameAvailabilityPreparer(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
-                    const APIVersion = "2016-04-02"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client NameAvailabilityClient) CheckNameAvailabilityPreparer(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
+	const APIVersion = "2016-04-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsContentType("application/json; charset=utf-8"),
-    autorest.AsPost(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPath("/providers/Microsoft.Cdn/checkNameAvailability"),
-    autorest.WithJSON(checkNameAvailabilityInput),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.Cdn/checkNameAvailability"),
+		autorest.WithJSON(checkNameAvailabilityInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client NameAvailabilityClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            }
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client NameAvailabilityClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
 func (client NameAvailabilityClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityOutput, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
-
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

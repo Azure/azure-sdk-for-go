@@ -21,33 +21,33 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-// DefaultBaseURI is the default URI used for the service Automation
-DefaultBaseURI = "https://management.azure.com")
+	// DefaultBaseURI is the default URI used for the service Automation
+	DefaultBaseURI = "https://management.azure.com"
+)
 
 // BaseClient is the base client for Automation.
 type BaseClient struct {
-    autorest.Client
-    BaseURI string
-            SubscriptionID string
-            CountType1 CountType
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
+	CountType1     CountType
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, countType1 CountType)BaseClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func New(subscriptionID string, countType1 CountType) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-        BaseURI: baseURI,
-                SubscriptionID: subscriptionID,
-                CountType1: countType1,
-    }
+	return BaseClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
+		CountType1:     countType1,
+	}
 }
-

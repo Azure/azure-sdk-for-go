@@ -21,26 +21,24 @@ package authoring
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
-
 
 // BaseClient is the base client for Authoring.
 type BaseClient struct {
-    autorest.Client
-            Endpoint string
+	autorest.Client
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New(endpoint string)BaseClient {
-    return NewWithoutDefaults(endpoint)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults(endpoint string) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-                Endpoint: endpoint,
-    }
+	return BaseClient{
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
+	}
 }
-

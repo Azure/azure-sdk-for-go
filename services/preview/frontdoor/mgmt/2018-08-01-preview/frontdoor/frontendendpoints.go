@@ -18,630 +18,630 @@ package frontdoor
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // FrontendEndpointsClient is the frontDoor Client
 type FrontendEndpointsClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewFrontendEndpointsClient creates an instance of the FrontendEndpointsClient client.
 func NewFrontendEndpointsClient(subscriptionID string) FrontendEndpointsClient {
-    return NewFrontendEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+	return NewFrontendEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewFrontendEndpointsClientWithBaseURI creates an instance of the FrontendEndpointsClient client.
-    func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string) FrontendEndpointsClient {
-        return FrontendEndpointsClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewFrontendEndpointsClientWithBaseURI(baseURI string, subscriptionID string) FrontendEndpointsClient {
+	return FrontendEndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdate creates a new frontend endpoint with the specified host name within the specified Front Door.
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
-        // frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
-        // frontendEndpointParameters - frontend endpoint properties needed to create a new endpoint.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
+// frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
+// frontendEndpointParameters - frontend endpoint properties needed to create a new endpoint.
 func (client FrontendEndpointsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, frontendEndpointParameters FrontendEndpoint) (result FrontendEndpointsCreateOrUpdateFuture, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.CreateOrUpdate")
-        defer func() {
-            sc := -1
-            if result.Response() != nil {
-                sc = result.Response().StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
-            { TargetValue: frontendEndpointName,
-             Constraints: []validation.Constraint{	{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "CreateOrUpdate", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: frontendEndpointName,
+			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "CreateOrUpdate", err.Error())
+	}
 
-                req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName, frontendEndpointParameters)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "CreateOrUpdate", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName, frontendEndpointParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-            result, err = client.CreateOrUpdateSender(req)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-            return
-            }
+	result, err = client.CreateOrUpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		return
+	}
 
-    return
-    }
+	return
+}
 
-    // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client FrontendEndpointsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, frontendEndpointParameters FrontendEndpoint) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "frontendEndpointName": autorest.Encode("path",frontendEndpointName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client FrontendEndpointsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, frontendEndpointParameters FrontendEndpoint) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":        autorest.Encode("path", frontDoorName),
+		"frontendEndpointName": autorest.Encode("path", frontendEndpointName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsContentType("application/json; charset=utf-8"),
-    autorest.AsPut(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}",pathParameters),
-    autorest.WithJSON(frontendEndpointParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}", pathParameters),
+		autorest.WithJSON(frontendEndpointParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) CreateOrUpdateSender(req *http.Request) (future FrontendEndpointsCreateOrUpdateFuture, err error) {
-            var resp *http.Response
-            resp, err = autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            if err != nil {
-            return
-            }
-            future.Future, err = azure.NewFutureFromResponse(resp)
-            return
-            }
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) CreateOrUpdateSender(req *http.Request) (future FrontendEndpointsCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) CreateOrUpdateResponder(resp *http.Response) (result FrontendEndpoint, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated,http.StatusAccepted),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
 // Delete deletes an existing frontend endpoint with the specified parameters.
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
-        // frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
+// frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
 func (client FrontendEndpointsClient) Delete(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (result FrontendEndpointsDeleteFuture, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.Delete")
-        defer func() {
-            sc := -1
-            if result.Response() != nil {
-                sc = result.Response().StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
-            { TargetValue: frontendEndpointName,
-             Constraints: []validation.Constraint{	{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "Delete", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: frontendEndpointName,
+			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "Delete", err.Error())
+	}
 
-                req, err := client.DeletePreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Delete", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.DeletePreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-            result, err = client.DeleteSender(req)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Delete", result.Response(), "Failure sending request")
-            return
-            }
+	result, err = client.DeleteSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Delete", result.Response(), "Failure sending request")
+		return
+	}
 
-    return
-    }
+	return
+}
 
-    // DeletePreparer prepares the Delete request.
-    func (client FrontendEndpointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "frontendEndpointName": autorest.Encode("path",frontendEndpointName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// DeletePreparer prepares the Delete request.
+func (client FrontendEndpointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":        autorest.Encode("path", frontDoorName),
+		"frontendEndpointName": autorest.Encode("path", frontendEndpointName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsDelete(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // DeleteSender sends the Delete request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) DeleteSender(req *http.Request) (future FrontendEndpointsDeleteFuture, err error) {
-            var resp *http.Response
-            resp, err = autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            if err != nil {
-            return
-            }
-            future.Future, err = azure.NewFutureFromResponse(resp)
-            return
-            }
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) DeleteSender(req *http.Request) (future FrontendEndpointsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted,http.StatusNoContent),
-    autorest.ByClosing())
-    result.Response = resp
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
 
 // DisableHTTPS disables a frontendEndpoint for HTTPS traffic
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
-        // frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
+// frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
 func (client FrontendEndpointsClient) DisableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (result FrontendEndpointsDisableHTTPSFuture, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.DisableHTTPS")
-        defer func() {
-            sc := -1
-            if result.Response() != nil {
-                sc = result.Response().StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
-            { TargetValue: frontendEndpointName,
-             Constraints: []validation.Constraint{	{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "DisableHTTPS", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.DisableHTTPS")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: frontendEndpointName,
+			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "DisableHTTPS", err.Error())
+	}
 
-                req, err := client.DisableHTTPSPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "DisableHTTPS", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.DisableHTTPSPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "DisableHTTPS", nil, "Failure preparing request")
+		return
+	}
 
-            result, err = client.DisableHTTPSSender(req)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "DisableHTTPS", result.Response(), "Failure sending request")
-            return
-            }
+	result, err = client.DisableHTTPSSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "DisableHTTPS", result.Response(), "Failure sending request")
+		return
+	}
 
-    return
-    }
+	return
+}
 
-    // DisableHTTPSPreparer prepares the DisableHTTPS request.
-    func (client FrontendEndpointsClient) DisableHTTPSPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "frontendEndpointName": autorest.Encode("path",frontendEndpointName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// DisableHTTPSPreparer prepares the DisableHTTPS request.
+func (client FrontendEndpointsClient) DisableHTTPSPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":        autorest.Encode("path", frontDoorName),
+		"frontendEndpointName": autorest.Encode("path", frontendEndpointName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsPost(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // DisableHTTPSSender sends the DisableHTTPS request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) DisableHTTPSSender(req *http.Request) (future FrontendEndpointsDisableHTTPSFuture, err error) {
-            var resp *http.Response
-            resp, err = autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            if err != nil {
-            return
-            }
-            future.Future, err = azure.NewFutureFromResponse(resp)
-            return
-            }
+// DisableHTTPSSender sends the DisableHTTPS request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) DisableHTTPSSender(req *http.Request) (future FrontendEndpointsDisableHTTPSFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
 
 // DisableHTTPSResponder handles the response to the DisableHTTPS request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) DisableHTTPSResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-    autorest.ByClosing())
-    result.Response = resp
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
 
 // EnableHTTPS enables a frontendEndpoint for HTTPS traffic
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
-        // frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
-        // customHTTPSConfiguration - the configuration specifying how to enable HTTPS
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
+// frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
+// customHTTPSConfiguration - the configuration specifying how to enable HTTPS
 func (client FrontendEndpointsClient) EnableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration) (result FrontendEndpointsEnableHTTPSFuture, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.EnableHTTPS")
-        defer func() {
-            sc := -1
-            if result.Response() != nil {
-                sc = result.Response().StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
-            { TargetValue: frontendEndpointName,
-             Constraints: []validation.Constraint{	{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "EnableHTTPS", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.EnableHTTPS")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: frontendEndpointName,
+			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "EnableHTTPS", err.Error())
+	}
 
-                req, err := client.EnableHTTPSPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName, customHTTPSConfiguration)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "EnableHTTPS", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.EnableHTTPSPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName, customHTTPSConfiguration)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "EnableHTTPS", nil, "Failure preparing request")
+		return
+	}
 
-            result, err = client.EnableHTTPSSender(req)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "EnableHTTPS", result.Response(), "Failure sending request")
-            return
-            }
+	result, err = client.EnableHTTPSSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "EnableHTTPS", result.Response(), "Failure sending request")
+		return
+	}
 
-    return
-    }
+	return
+}
 
-    // EnableHTTPSPreparer prepares the EnableHTTPS request.
-    func (client FrontendEndpointsClient) EnableHTTPSPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "frontendEndpointName": autorest.Encode("path",frontendEndpointName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// EnableHTTPSPreparer prepares the EnableHTTPS request.
+func (client FrontendEndpointsClient) EnableHTTPSPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":        autorest.Encode("path", frontDoorName),
+		"frontendEndpointName": autorest.Encode("path", frontendEndpointName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsContentType("application/json; charset=utf-8"),
-    autorest.AsPost(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps",pathParameters),
-    autorest.WithJSON(customHTTPSConfiguration),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps", pathParameters),
+		autorest.WithJSON(customHTTPSConfiguration),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // EnableHTTPSSender sends the EnableHTTPS request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) EnableHTTPSSender(req *http.Request) (future FrontendEndpointsEnableHTTPSFuture, err error) {
-            var resp *http.Response
-            resp, err = autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            if err != nil {
-            return
-            }
-            future.Future, err = azure.NewFutureFromResponse(resp)
-            return
-            }
+// EnableHTTPSSender sends the EnableHTTPS request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) EnableHTTPSSender(req *http.Request) (future FrontendEndpointsEnableHTTPSFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
 
 // EnableHTTPSResponder handles the response to the EnableHTTPS request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) EnableHTTPSResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-    autorest.ByClosing())
-    result.Response = resp
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
 
 // Get gets a Frontend endpoint with the specified name within the specified Front Door.
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
-        // frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
+// frontendEndpointName - name of the Frontend endpoint which is unique within the Front Door.
 func (client FrontendEndpointsClient) Get(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (result FrontendEndpoint, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.Get")
-        defer func() {
-            sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}},
-            { TargetValue: frontendEndpointName,
-             Constraints: []validation.Constraint{	{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "Get", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: frontendEndpointName,
+			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "Get", err.Error())
+	}
 
-                req, err := client.GetPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.GetPreparer(ctx, resourceGroupName, frontDoorName, frontendEndpointName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.GetSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.GetResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", resp, "Failure responding to request")
-            }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // GetPreparer prepares the Get request.
-    func (client FrontendEndpointsClient) GetPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "frontendEndpointName": autorest.Encode("path",frontendEndpointName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// GetPreparer prepares the Get request.
+func (client FrontendEndpointsClient) GetPreparer(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":        autorest.Encode("path", frontDoorName),
+		"frontendEndpointName": autorest.Encode("path", frontendEndpointName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/provider/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // GetSender sends the Get request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            }
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) GetResponder(resp *http.Response) (result FrontendEndpoint, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
 // ListByFrontDoor lists all of the frontend endpoints within a Front Door.
-    // Parameters:
-        // resourceGroupName - name of the Resource group within the Azure subscription.
-        // frontDoorName - name of the Front Door which is globally unique.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// frontDoorName - name of the Front Door which is globally unique.
 func (client FrontendEndpointsClient) ListByFrontDoor(ctx context.Context, resourceGroupName string, frontDoorName string) (result FrontendEndpointsListResultPage, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.ListByFrontDoor")
-        defer func() {
-            sc := -1
-            if result.felr.Response.Response != nil {
-                sc = result.felr.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil }}},
-            { TargetValue: frontDoorName,
-             Constraints: []validation.Constraint{	{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil },
-            	{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("frontdoor.FrontendEndpointsClient", "ListByFrontDoor", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.felr.Response.Response != nil {
+				sc = result.felr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9_\-\(\)\.]*[^\.]$`, Chain: nil}}},
+		{TargetValue: frontDoorName,
+			Constraints: []validation.Constraint{{Target: "frontDoorName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "frontDoorName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "frontDoorName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+([-a-zA-Z0-9]?[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "ListByFrontDoor", err.Error())
+	}
 
-                        result.fn = client.listByFrontDoorNextResults
-    req, err := client.ListByFrontDoorPreparer(ctx, resourceGroupName, frontDoorName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", nil , "Failure preparing request")
-    return
-    }
+	result.fn = client.listByFrontDoorNextResults
+	req, err := client.ListByFrontDoorPreparer(ctx, resourceGroupName, frontDoorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.ListByFrontDoorSender(req)
-            if err != nil {
-            result.felr.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.ListByFrontDoorSender(req)
+	if err != nil {
+		result.felr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", resp, "Failure sending request")
+		return
+	}
 
-            result.felr, err = client.ListByFrontDoorResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", resp, "Failure responding to request")
-            }
+	result.felr, err = client.ListByFrontDoorResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // ListByFrontDoorPreparer prepares the ListByFrontDoor request.
-    func (client FrontendEndpointsClient) ListByFrontDoorPreparer(ctx context.Context, resourceGroupName string, frontDoorName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "frontDoorName": autorest.Encode("path",frontDoorName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// ListByFrontDoorPreparer prepares the ListByFrontDoor request.
+func (client FrontendEndpointsClient) ListByFrontDoorPreparer(ctx context.Context, resourceGroupName string, frontDoorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"frontDoorName":     autorest.Encode("path", frontDoorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-08-01"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // ListByFrontDoorSender sends the ListByFrontDoor request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client FrontendEndpointsClient) ListByFrontDoorSender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            }
+// ListByFrontDoorSender sends the ListByFrontDoor request. The method will close the
+// http.Response Body if it receives an error.
+func (client FrontendEndpointsClient) ListByFrontDoorSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
 
 // ListByFrontDoorResponder handles the response to the ListByFrontDoor request. The method always
 // closes the http.Response Body.
 func (client FrontendEndpointsClient) ListByFrontDoorResponder(resp *http.Response) (result FrontendEndpointsListResult, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
 
-            // listByFrontDoorNextResults retrieves the next set of results, if any.
-            func (client FrontendEndpointsClient) listByFrontDoorNextResults(ctx context.Context, lastResults FrontendEndpointsListResult) (result FrontendEndpointsListResult, err error) {
-            req, err := lastResults.frontendEndpointsListResultPreparer(ctx)
-            if err != nil {
-            return result, autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", nil , "Failure preparing next results request")
-            }
-            if req == nil {
-            return
-            }
-            resp, err := client.ListByFrontDoorSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", resp, "Failure sending next results request")
-            }
-            result, err = client.ListByFrontDoorResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", resp, "Failure responding to next results request")
-            }
-            return
-                    }
+// listByFrontDoorNextResults retrieves the next set of results, if any.
+func (client FrontendEndpointsClient) listByFrontDoorNextResults(ctx context.Context, lastResults FrontendEndpointsListResult) (result FrontendEndpointsListResult, err error) {
+	req, err := lastResults.frontendEndpointsListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByFrontDoorSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByFrontDoorResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "listByFrontDoorNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
 
-    // ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
-    func (client FrontendEndpointsClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result FrontendEndpointsListResultIterator, err error) {
-        if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/FrontendEndpointsClient.ListByFrontDoor")
-            defer func() {
-                sc := -1
-                if result.Response().Response.Response != nil {
-                    sc = result.page.Response().Response.Response.StatusCode
-                }
-                tracing.EndSpan(ctx, sc, err)
-            }()
-     }
-        result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
-                return
-        }
-
+// ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
+func (client FrontendEndpointsClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result FrontendEndpointsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FrontendEndpointsClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
+	return
+}

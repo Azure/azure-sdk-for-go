@@ -21,103 +21,103 @@ package powerbiembedded
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "github.com/Azure/go-autorest/tracing"
-    "net/http"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 const (
-// DefaultBaseURI is the default URI used for the service Powerbiembedded
-DefaultBaseURI = "https://management.azure.com")
+	// DefaultBaseURI is the default URI used for the service Powerbiembedded
+	DefaultBaseURI = "https://management.azure.com"
+)
 
 // BaseClient is the base client for Powerbiembedded.
 type BaseClient struct {
-    autorest.Client
-    BaseURI string
-            SubscriptionID string
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string)BaseClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-        BaseURI: baseURI,
-                SubscriptionID: subscriptionID,
-    }
+	return BaseClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
+	}
 }
 
-    // GetAvailableOperations indicates which operations can be performed by the Power BI Resource Provider.
-    func (client BaseClient) GetAvailableOperations(ctx context.Context) (result OperationList, err error) {
-        if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/BaseClient.GetAvailableOperations")
-            defer func() {
-                sc := -1
-                if result.Response.Response != nil {
-                    sc = result.Response.Response.StatusCode
-                }
-                tracing.EndSpan(ctx, sc, err)
-            }()
-        }
-            req, err := client.GetAvailableOperationsPreparer(ctx)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", nil , "Failure preparing request")
-        return
-        }
+// GetAvailableOperations indicates which operations can be performed by the Power BI Resource Provider.
+func (client BaseClient) GetAvailableOperations(ctx context.Context) (result OperationList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAvailableOperations")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetAvailableOperationsPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", nil, "Failure preparing request")
+		return
+	}
 
-                resp, err := client.GetAvailableOperationsSender(req)
-                if err != nil {
-                result.Response = autorest.Response{Response: resp}
-                err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", resp, "Failure sending request")
-                return
-                }
+	resp, err := client.GetAvailableOperationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", resp, "Failure sending request")
+		return
+	}
 
-                result, err = client.GetAvailableOperationsResponder(resp)
-                if err != nil {
-                err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", resp, "Failure responding to request")
-                }
+	result, err = client.GetAvailableOperationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbiembedded.BaseClient", "GetAvailableOperations", resp, "Failure responding to request")
+	}
 
-        return
-        }
+	return
+}
 
-        // GetAvailableOperationsPreparer prepares the GetAvailableOperations request.
-        func (client BaseClient) GetAvailableOperationsPreparer(ctx context.Context) (*http.Request, error) {
-                        const APIVersion = "2016-01-29"
-            queryParameters := map[string]interface{} {
-            "api-version": APIVersion,
-            }
+// GetAvailableOperationsPreparer prepares the GetAvailableOperations request.
+func (client BaseClient) GetAvailableOperationsPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2016-01-29"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-        preparer := autorest.CreatePreparer(
-        autorest.AsGet(),
-        autorest.WithBaseURL(client.BaseURI),
-        autorest.WithPath("/providers/Microsoft.PowerBI/operations"),
-        autorest.WithQueryParameters(queryParameters))
-        return preparer.Prepare((&http.Request{}).WithContext(ctx))
-        }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.PowerBI/operations"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-        // GetAvailableOperationsSender sends the GetAvailableOperations request. The method will close the
-        // http.Response Body if it receives an error.
-        func (client BaseClient) GetAvailableOperationsSender(req *http.Request) (*http.Response, error) {
-                return autorest.SendWithSender(client, req,
-                autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// GetAvailableOperationsSender sends the GetAvailableOperations request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetAvailableOperationsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // GetAvailableOperationsResponder handles the response to the GetAvailableOperations request. The method always
-    // closes the http.Response Body.
-    func (client BaseClient) GetAvailableOperationsResponder(resp *http.Response) (result OperationList, err error) {
-        err = autorest.Respond(
-        resp,
-        client.ByInspecting(),
-        azure.WithErrorUnlessStatusCode(http.StatusOK),
-        autorest.ByUnmarshallingJSON(&result),
-        autorest.ByClosing())
-        result.Response = autorest.Response{Response: resp}
-            return
-        }
-
+// GetAvailableOperationsResponder handles the response to the GetAvailableOperations request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetAvailableOperationsResponder(resp *http.Response) (result OperationList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

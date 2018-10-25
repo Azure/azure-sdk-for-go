@@ -18,1278 +18,1306 @@ package managedapplications
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "encoding/json"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "github.com/Azure/go-autorest/autorest/to"
-    "github.com/Azure/go-autorest/tracing"
-    "net/http"
+	"context"
+	"encoding/json"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2017-09-01/managedapplications"
 
-        // ApplicationArtifactType enumerates the values for application artifact type.
-    type ApplicationArtifactType string
+// ApplicationArtifactType enumerates the values for application artifact type.
+type ApplicationArtifactType string
 
-    const (
-                // Custom ...
-        Custom ApplicationArtifactType = "Custom"
-                // Template ...
-        Template ApplicationArtifactType = "Template"
-            )
-    // PossibleApplicationArtifactTypeValues returns an array of possible values for the ApplicationArtifactType const type.
-    func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
-        return []ApplicationArtifactType{Custom,Template}
-    }
+const (
+	// Custom ...
+	Custom ApplicationArtifactType = "Custom"
+	// Template ...
+	Template ApplicationArtifactType = "Template"
+)
 
-        // ApplicationLockLevel enumerates the values for application lock level.
-    type ApplicationLockLevel string
+// PossibleApplicationArtifactTypeValues returns an array of possible values for the ApplicationArtifactType const type.
+func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
+	return []ApplicationArtifactType{Custom, Template}
+}
 
-    const (
-                // CanNotDelete ...
-        CanNotDelete ApplicationLockLevel = "CanNotDelete"
-                // None ...
-        None ApplicationLockLevel = "None"
-                // ReadOnly ...
-        ReadOnly ApplicationLockLevel = "ReadOnly"
-            )
-    // PossibleApplicationLockLevelValues returns an array of possible values for the ApplicationLockLevel const type.
-    func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
-        return []ApplicationLockLevel{CanNotDelete,None,ReadOnly}
-    }
+// ApplicationLockLevel enumerates the values for application lock level.
+type ApplicationLockLevel string
 
-        // ProvisioningState enumerates the values for provisioning state.
-    type ProvisioningState string
+const (
+	// CanNotDelete ...
+	CanNotDelete ApplicationLockLevel = "CanNotDelete"
+	// None ...
+	None ApplicationLockLevel = "None"
+	// ReadOnly ...
+	ReadOnly ApplicationLockLevel = "ReadOnly"
+)
 
-    const (
-                // Accepted ...
-        Accepted ProvisioningState = "Accepted"
-                // Canceled ...
-        Canceled ProvisioningState = "Canceled"
-                // Created ...
-        Created ProvisioningState = "Created"
-                // Creating ...
-        Creating ProvisioningState = "Creating"
-                // Deleted ...
-        Deleted ProvisioningState = "Deleted"
-                // Deleting ...
-        Deleting ProvisioningState = "Deleting"
-                // Failed ...
-        Failed ProvisioningState = "Failed"
-                // Ready ...
-        Ready ProvisioningState = "Ready"
-                // Running ...
-        Running ProvisioningState = "Running"
-                // Succeeded ...
-        Succeeded ProvisioningState = "Succeeded"
-                // Updating ...
-        Updating ProvisioningState = "Updating"
-            )
-    // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-    func PossibleProvisioningStateValues() []ProvisioningState {
-        return []ProvisioningState{Accepted,Canceled,Created,Creating,Deleted,Deleting,Failed,Ready,Running,Succeeded,Updating}
-    }
+// PossibleApplicationLockLevelValues returns an array of possible values for the ApplicationLockLevel const type.
+func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
+	return []ApplicationLockLevel{CanNotDelete, None, ReadOnly}
+}
 
-        // ResourceIdentityType enumerates the values for resource identity type.
-    type ResourceIdentityType string
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
 
-    const (
-                // SystemAssigned ...
-        SystemAssigned ResourceIdentityType = "SystemAssigned"
-            )
-    // PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-    func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-        return []ResourceIdentityType{SystemAssigned}
-    }
+const (
+	// Accepted ...
+	Accepted ProvisioningState = "Accepted"
+	// Canceled ...
+	Canceled ProvisioningState = "Canceled"
+	// Created ...
+	Created ProvisioningState = "Created"
+	// Creating ...
+	Creating ProvisioningState = "Creating"
+	// Deleted ...
+	Deleted ProvisioningState = "Deleted"
+	// Deleting ...
+	Deleting ProvisioningState = "Deleting"
+	// Failed ...
+	Failed ProvisioningState = "Failed"
+	// Ready ...
+	Ready ProvisioningState = "Ready"
+	// Running ...
+	Running ProvisioningState = "Running"
+	// Succeeded ...
+	Succeeded ProvisioningState = "Succeeded"
+	// Updating ...
+	Updating ProvisioningState = "Updating"
+)
 
-            // Application information about managed application.
-            type Application struct {
-            autorest.Response `json:"-"`
-            // ApplicationProperties - The managed application properties.
-            *ApplicationProperties `json:"properties,omitempty"`
-            // Plan - The plan information.
-            Plan *Plan `json:"plan,omitempty"`
-            // Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
-            Kind *string `json:"kind,omitempty"`
-            // ManagedBy - ID of the resource that manages this resource.
-            ManagedBy *string `json:"managedBy,omitempty"`
-            // Sku - The SKU of the resource.
-            Sku *Sku `json:"sku,omitempty"`
-            // Identity - The identity of the resource.
-            Identity *Identity `json:"identity,omitempty"`
-            // ID - Resource ID
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type
-            Type *string `json:"type,omitempty"`
-            // Location - Resource location
-            Location *string `json:"location,omitempty"`
-            // Tags - Resource tags
-            Tags map[string]*string `json:"tags"`
-            }
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Accepted, Canceled, Created, Creating, Deleted, Deleting, Failed, Ready, Running, Succeeded, Updating}
+}
 
-        // MarshalJSON is the custom marshaler for Application.
-        func (a Application)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(a.ApplicationProperties != nil) {
-                objectMap["properties"] = a.ApplicationProperties
-                }
-                if(a.Plan != nil) {
-                objectMap["plan"] = a.Plan
-                }
-                if(a.Kind != nil) {
-                objectMap["kind"] = a.Kind
-                }
-                if(a.ManagedBy != nil) {
-                objectMap["managedBy"] = a.ManagedBy
-                }
-                if(a.Sku != nil) {
-                objectMap["sku"] = a.Sku
-                }
-                if(a.Identity != nil) {
-                objectMap["identity"] = a.Identity
-                }
-                if(a.ID != nil) {
-                objectMap["id"] = a.ID
-                }
-                if(a.Name != nil) {
-                objectMap["name"] = a.Name
-                }
-                if(a.Type != nil) {
-                objectMap["type"] = a.Type
-                }
-                if(a.Location != nil) {
-                objectMap["location"] = a.Location
-                }
-                if(a.Tags != nil) {
-                objectMap["tags"] = a.Tags
-                }
-                return json.Marshal(objectMap)
-        }
-        // UnmarshalJSON is the custom unmarshaler for Application struct.
-        func (a *Application) UnmarshalJSON(body []byte) error {
-        var m map[string]*json.RawMessage
-        err := json.Unmarshal(body, &m)
-        if err != nil {
-        return err
-        }
-        for k, v := range  m {
-        switch k {
-                case "properties":
-    if v != nil {
-        var applicationProperties ApplicationProperties
-        err = json.Unmarshal(*v, &applicationProperties)
-    if err != nil {
-    return err
-    }
-        a.ApplicationProperties = &applicationProperties
-    }
-                case "plan":
-    if v != nil {
-        var plan Plan
-        err = json.Unmarshal(*v, &plan)
-    if err != nil {
-    return err
-    }
-        a.Plan = &plan
-    }
-                case "kind":
-    if v != nil {
-        var kind string
-        err = json.Unmarshal(*v, &kind)
-    if err != nil {
-    return err
-    }
-        a.Kind = &kind
-    }
-                case "managedBy":
-    if v != nil {
-        var managedBy string
-        err = json.Unmarshal(*v, &managedBy)
-    if err != nil {
-    return err
-    }
-        a.ManagedBy = &managedBy
-    }
-                case "sku":
-    if v != nil {
-        var sku Sku
-        err = json.Unmarshal(*v, &sku)
-    if err != nil {
-    return err
-    }
-        a.Sku = &sku
-    }
-                case "identity":
-    if v != nil {
-        var identity Identity
-        err = json.Unmarshal(*v, &identity)
-    if err != nil {
-    return err
-    }
-        a.Identity = &identity
-    }
-                case "id":
-    if v != nil {
-        var ID string
-        err = json.Unmarshal(*v, &ID)
-    if err != nil {
-    return err
-    }
-        a.ID = &ID
-    }
-                case "name":
-    if v != nil {
-        var name string
-        err = json.Unmarshal(*v, &name)
-    if err != nil {
-    return err
-    }
-        a.Name = &name
-    }
-                case "type":
-    if v != nil {
-        var typeVar string
-        err = json.Unmarshal(*v, &typeVar)
-    if err != nil {
-    return err
-    }
-        a.Type = &typeVar
-    }
-                case "location":
-    if v != nil {
-        var location string
-        err = json.Unmarshal(*v, &location)
-    if err != nil {
-    return err
-    }
-        a.Location = &location
-    }
-                case "tags":
-    if v != nil {
-        var tags map[string]*string
-        err = json.Unmarshal(*v, &tags)
-    if err != nil {
-    return err
-    }
-        a.Tags = tags
-    }
-            }
-        }
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
 
-        return nil
-        }
+const (
+	// SystemAssigned ...
+	SystemAssigned ResourceIdentityType = "SystemAssigned"
+)
 
-            // ApplicationArtifact managed application artifact.
-            type ApplicationArtifact struct {
-            // Name - The managed application artifact name.
-            Name *string `json:"name,omitempty"`
-            // URI - The managed application artifact blob uri.
-            URI *string `json:"uri,omitempty"`
-            // Type - The managed application artifact type. Possible values include: 'Template', 'Custom'
-            Type ApplicationArtifactType `json:"type,omitempty"`
-            }
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{SystemAssigned}
+}
 
-            // ApplicationDefinition information about managed application definition.
-            type ApplicationDefinition struct {
-            autorest.Response `json:"-"`
-            // ApplicationDefinitionProperties - The managed application definition properties.
-            *ApplicationDefinitionProperties `json:"properties,omitempty"`
-            // ManagedBy - ID of the resource that manages this resource.
-            ManagedBy *string `json:"managedBy,omitempty"`
-            // Sku - The SKU of the resource.
-            Sku *Sku `json:"sku,omitempty"`
-            // Identity - The identity of the resource.
-            Identity *Identity `json:"identity,omitempty"`
-            // ID - Resource ID
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type
-            Type *string `json:"type,omitempty"`
-            // Location - Resource location
-            Location *string `json:"location,omitempty"`
-            // Tags - Resource tags
-            Tags map[string]*string `json:"tags"`
-            }
+// Application information about managed application.
+type Application struct {
+	autorest.Response `json:"-"`
+	// ApplicationProperties - The managed application properties.
+	*ApplicationProperties `json:"properties,omitempty"`
+	// Plan - The plan information.
+	Plan *Plan `json:"plan,omitempty"`
+	// Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
+	Kind *string `json:"kind,omitempty"`
+	// ManagedBy - ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Sku - The SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
 
-        // MarshalJSON is the custom marshaler for ApplicationDefinition.
-        func (ad ApplicationDefinition)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(ad.ApplicationDefinitionProperties != nil) {
-                objectMap["properties"] = ad.ApplicationDefinitionProperties
-                }
-                if(ad.ManagedBy != nil) {
-                objectMap["managedBy"] = ad.ManagedBy
-                }
-                if(ad.Sku != nil) {
-                objectMap["sku"] = ad.Sku
-                }
-                if(ad.Identity != nil) {
-                objectMap["identity"] = ad.Identity
-                }
-                if(ad.ID != nil) {
-                objectMap["id"] = ad.ID
-                }
-                if(ad.Name != nil) {
-                objectMap["name"] = ad.Name
-                }
-                if(ad.Type != nil) {
-                objectMap["type"] = ad.Type
-                }
-                if(ad.Location != nil) {
-                objectMap["location"] = ad.Location
-                }
-                if(ad.Tags != nil) {
-                objectMap["tags"] = ad.Tags
-                }
-                return json.Marshal(objectMap)
-        }
-        // UnmarshalJSON is the custom unmarshaler for ApplicationDefinition struct.
-        func (ad *ApplicationDefinition) UnmarshalJSON(body []byte) error {
-        var m map[string]*json.RawMessage
-        err := json.Unmarshal(body, &m)
-        if err != nil {
-        return err
-        }
-        for k, v := range  m {
-        switch k {
-                case "properties":
-    if v != nil {
-        var applicationDefinitionProperties ApplicationDefinitionProperties
-        err = json.Unmarshal(*v, &applicationDefinitionProperties)
-    if err != nil {
-    return err
-    }
-        ad.ApplicationDefinitionProperties = &applicationDefinitionProperties
-    }
-                case "managedBy":
-    if v != nil {
-        var managedBy string
-        err = json.Unmarshal(*v, &managedBy)
-    if err != nil {
-    return err
-    }
-        ad.ManagedBy = &managedBy
-    }
-                case "sku":
-    if v != nil {
-        var sku Sku
-        err = json.Unmarshal(*v, &sku)
-    if err != nil {
-    return err
-    }
-        ad.Sku = &sku
-    }
-                case "identity":
-    if v != nil {
-        var identity Identity
-        err = json.Unmarshal(*v, &identity)
-    if err != nil {
-    return err
-    }
-        ad.Identity = &identity
-    }
-                case "id":
-    if v != nil {
-        var ID string
-        err = json.Unmarshal(*v, &ID)
-    if err != nil {
-    return err
-    }
-        ad.ID = &ID
-    }
-                case "name":
-    if v != nil {
-        var name string
-        err = json.Unmarshal(*v, &name)
-    if err != nil {
-    return err
-    }
-        ad.Name = &name
-    }
-                case "type":
-    if v != nil {
-        var typeVar string
-        err = json.Unmarshal(*v, &typeVar)
-    if err != nil {
-    return err
-    }
-        ad.Type = &typeVar
-    }
-                case "location":
-    if v != nil {
-        var location string
-        err = json.Unmarshal(*v, &location)
-    if err != nil {
-    return err
-    }
-        ad.Location = &location
-    }
-                case "tags":
-    if v != nil {
-        var tags map[string]*string
-        err = json.Unmarshal(*v, &tags)
-    if err != nil {
-    return err
-    }
-        ad.Tags = tags
-    }
-            }
-        }
+// MarshalJSON is the custom marshaler for Application.
+func (a Application) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.ApplicationProperties != nil {
+		objectMap["properties"] = a.ApplicationProperties
+	}
+	if a.Plan != nil {
+		objectMap["plan"] = a.Plan
+	}
+	if a.Kind != nil {
+		objectMap["kind"] = a.Kind
+	}
+	if a.ManagedBy != nil {
+		objectMap["managedBy"] = a.ManagedBy
+	}
+	if a.Sku != nil {
+		objectMap["sku"] = a.Sku
+	}
+	if a.Identity != nil {
+		objectMap["identity"] = a.Identity
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Location != nil {
+		objectMap["location"] = a.Location
+	}
+	if a.Tags != nil {
+		objectMap["tags"] = a.Tags
+	}
+	return json.Marshal(objectMap)
+}
 
-        return nil
-        }
+// UnmarshalJSON is the custom unmarshaler for Application struct.
+func (a *Application) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var applicationProperties ApplicationProperties
+				err = json.Unmarshal(*v, &applicationProperties)
+				if err != nil {
+					return err
+				}
+				a.ApplicationProperties = &applicationProperties
+			}
+		case "plan":
+			if v != nil {
+				var plan Plan
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				a.Plan = &plan
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				a.Kind = &kind
+			}
+		case "managedBy":
+			if v != nil {
+				var managedBy string
+				err = json.Unmarshal(*v, &managedBy)
+				if err != nil {
+					return err
+				}
+				a.ManagedBy = &managedBy
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				a.Sku = &sku
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				a.Identity = &identity
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				a.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				a.Tags = tags
+			}
+		}
+	}
 
-            // ApplicationDefinitionListResult list of managed application definitions.
-            type ApplicationDefinitionListResult struct {
-            autorest.Response `json:"-"`
-            // Value - The array of managed application definitions.
-            Value *[]ApplicationDefinition `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+	return nil
+}
 
-            // ApplicationDefinitionListResultIterator provides access to a complete listing of ApplicationDefinition
-            // values.
-            type ApplicationDefinitionListResultIterator struct {
-                i int
-                page ApplicationDefinitionListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * ApplicationDefinitionListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ApplicationDefinitionListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * ApplicationDefinitionListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter ApplicationDefinitionListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter ApplicationDefinitionListResultIterator) Response() ApplicationDefinitionListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter ApplicationDefinitionListResultIterator) Value() ApplicationDefinition {
-        if !iter.page.NotDone() {
-        return ApplicationDefinition{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// ApplicationArtifact managed application artifact.
+type ApplicationArtifact struct {
+	// Name - The managed application artifact name.
+	Name *string `json:"name,omitempty"`
+	// URI - The managed application artifact blob uri.
+	URI *string `json:"uri,omitempty"`
+	// Type - The managed application artifact type. Possible values include: 'Template', 'Custom'
+	Type ApplicationArtifactType `json:"type,omitempty"`
+}
 
+// ApplicationDefinition information about managed application definition.
+type ApplicationDefinition struct {
+	autorest.Response `json:"-"`
+	// ApplicationDefinitionProperties - The managed application definition properties.
+	*ApplicationDefinitionProperties `json:"properties,omitempty"`
+	// ManagedBy - ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Sku - The SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (adlr ApplicationDefinitionListResult) IsEmpty() bool {
-                return adlr.Value == nil || len(*adlr.Value) == 0
-                }
+// MarshalJSON is the custom marshaler for ApplicationDefinition.
+func (ad ApplicationDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ad.ApplicationDefinitionProperties != nil {
+		objectMap["properties"] = ad.ApplicationDefinitionProperties
+	}
+	if ad.ManagedBy != nil {
+		objectMap["managedBy"] = ad.ManagedBy
+	}
+	if ad.Sku != nil {
+		objectMap["sku"] = ad.Sku
+	}
+	if ad.Identity != nil {
+		objectMap["identity"] = ad.Identity
+	}
+	if ad.ID != nil {
+		objectMap["id"] = ad.ID
+	}
+	if ad.Name != nil {
+		objectMap["name"] = ad.Name
+	}
+	if ad.Type != nil {
+		objectMap["type"] = ad.Type
+	}
+	if ad.Location != nil {
+		objectMap["location"] = ad.Location
+	}
+	if ad.Tags != nil {
+		objectMap["tags"] = ad.Tags
+	}
+	return json.Marshal(objectMap)
+}
 
-                    // applicationDefinitionListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (adlr ApplicationDefinitionListResult) applicationDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if adlr.NextLink == nil || len(to.String(adlr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( adlr.NextLink)));
-                    }
+// UnmarshalJSON is the custom unmarshaler for ApplicationDefinition struct.
+func (ad *ApplicationDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var applicationDefinitionProperties ApplicationDefinitionProperties
+				err = json.Unmarshal(*v, &applicationDefinitionProperties)
+				if err != nil {
+					return err
+				}
+				ad.ApplicationDefinitionProperties = &applicationDefinitionProperties
+			}
+		case "managedBy":
+			if v != nil {
+				var managedBy string
+				err = json.Unmarshal(*v, &managedBy)
+				if err != nil {
+					return err
+				}
+				ad.ManagedBy = &managedBy
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				ad.Sku = &sku
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				ad.Identity = &identity
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ad.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ad.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ad.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ad.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ad.Tags = tags
+			}
+		}
+	}
 
-            // ApplicationDefinitionListResultPage contains a page of ApplicationDefinition values.
-            type ApplicationDefinitionListResultPage struct {
-                fn func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)
-                adlr ApplicationDefinitionListResult
-            }
+	return nil
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * ApplicationDefinitionListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ApplicationDefinitionListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.adlr)
-        if err != nil {
-        return err
-        }
-        page.adlr = next
-        return nil
-        }
+// ApplicationDefinitionListResult list of managed application definitions.
+type ApplicationDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The array of managed application definitions.
+	Value *[]ApplicationDefinition `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * ApplicationDefinitionListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page ApplicationDefinitionListResultPage) NotDone() bool {
-        return !page.adlr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page ApplicationDefinitionListResultPage) Response() ApplicationDefinitionListResult {
-        return page.adlr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page ApplicationDefinitionListResultPage) Values() []ApplicationDefinition {
-        if page.adlr.IsEmpty() {
-        return nil
-        }
-        return *page.adlr.Value
-        }
+// ApplicationDefinitionListResultIterator provides access to a complete listing of ApplicationDefinition
+// values.
+type ApplicationDefinitionListResultIterator struct {
+	i    int
+	page ApplicationDefinitionListResultPage
+}
 
-            // ApplicationDefinitionProperties the managed application definition properties.
-            type ApplicationDefinitionProperties struct {
-            // LockLevel - The managed application lock level. Possible values include: 'CanNotDelete', 'ReadOnly', 'None'
-            LockLevel ApplicationLockLevel `json:"lockLevel,omitempty"`
-            // DisplayName - The managed application definition display name.
-            DisplayName *string `json:"displayName,omitempty"`
-            // IsEnabled - A value indicating whether the package is enabled or not.
-            IsEnabled *string `json:"isEnabled,omitempty"`
-            // Authorizations - The managed application provider authorizations.
-            Authorizations *[]ApplicationProviderAuthorization `json:"authorizations,omitempty"`
-            // Artifacts - The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the user experience of creating a managed application from a managed application definition.
-            Artifacts *[]ApplicationArtifact `json:"artifacts,omitempty"`
-            // Description - The managed application definition description.
-            Description *string `json:"description,omitempty"`
-            // PackageFileURI - The managed application definition package file Uri. Use this element
-            PackageFileURI *string `json:"packageFileUri,omitempty"`
-            // MainTemplate - The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.
-            MainTemplate interface{} `json:"mainTemplate,omitempty"`
-            // CreateUIDefinition - The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
-            CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
-            }
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ApplicationDefinitionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-            // ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results
-            // of a long-running operation.
-            type ApplicationDefinitionsCreateOrUpdateByIDFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationDefinitionsCreateOrUpdateByIDFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture")
-        return
-        }
-            sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
-            ad, err = client.CreateOrUpdateByIDResponder(ad.Response.Response)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture", "Result", ad.Response.Response, "Failure responding to request")
-            }
-            }
-            return
-        }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ApplicationDefinitionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-            // ApplicationDefinitionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-            // long-running operation.
-            type ApplicationDefinitionsCreateOrUpdateFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationDefinitionsCreateOrUpdateFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateFuture")
-        return
-        }
-            sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
-            ad, err = client.CreateOrUpdateResponder(ad.Response.Response)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
-            }
-            }
-            return
-        }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ApplicationDefinitionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
-            // ApplicationDefinitionsDeleteByIDFuture an abstraction for monitoring and retrieving the results of a
-            // long-running operation.
-            type ApplicationDefinitionsDeleteByIDFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationDefinitionsDeleteByIDFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteByIDFuture")
-        return
-        }
-            ar.Response = future.Response()
-        return
-        }
+// Response returns the raw server response from the last page request.
+func (iter ApplicationDefinitionListResultIterator) Response() ApplicationDefinitionListResult {
+	return iter.page.Response()
+}
 
-            // ApplicationDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-            // long-running operation.
-            type ApplicationDefinitionsDeleteFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationDefinitionsDeleteFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteFuture")
-        return
-        }
-            ar.Response = future.Response()
-        return
-        }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ApplicationDefinitionListResultIterator) Value() ApplicationDefinition {
+	if !iter.page.NotDone() {
+		return ApplicationDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-            // ApplicationListResult list of managed applications.
-            type ApplicationListResult struct {
-            autorest.Response `json:"-"`
-            // Value - The array of managed applications.
-            Value *[]Application `json:"value,omitempty"`
-            // NextLink - The URL to use for getting the next set of results.
-            NextLink *string `json:"nextLink,omitempty"`
-            }
+// IsEmpty returns true if the ListResult contains no values.
+func (adlr ApplicationDefinitionListResult) IsEmpty() bool {
+	return adlr.Value == nil || len(*adlr.Value) == 0
+}
 
-            // ApplicationListResultIterator provides access to a complete listing of Application values.
-            type ApplicationListResultIterator struct {
-                i int
-                page ApplicationListResultPage
-            }
-        // NextWithContext advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        func (iter * ApplicationListResultIterator) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ApplicationListResultIterator.NextWithContext")
-        defer func() {
-        sc := -1
-        if iter.Response().Response.Response != nil {
-        sc = iter.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        iter.i++
-        if iter.i < len(iter. page.Values()) {
-        return nil
-        }
-        err = iter.page.NextWithContext(ctx)
-        if err != nil {
-        iter. i--
-        return err
-        }
-        iter.i = 0
-        return nil
-        }
-        // Next advances to the next value.  If there was an error making
-        // the request the iterator does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (iter * ApplicationListResultIterator) Next() error {
-        return iter.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the enumeration should be started or is not yet complete.
-        func (iter ApplicationListResultIterator) NotDone() bool {
-        return iter.page.NotDone() && iter.i < len(iter. page.Values())
-        }
-        // Response returns the raw server response from the last page request.
-        func (iter ApplicationListResultIterator) Response() ApplicationListResult {
-        return iter.page.Response()
-        }
-        // Value returns the current value or a zero-initialized value if the
-        // iterator has advanced beyond the end of the collection.
-        func (iter ApplicationListResultIterator) Value() Application {
-        if !iter.page.NotDone() {
-        return Application{}
-        }
-        return iter.page.Values()[iter.i]
-        }
+// applicationDefinitionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (adlr ApplicationDefinitionListResult) applicationDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if adlr.NextLink == nil || len(to.String(adlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(adlr.NextLink)))
+}
 
+// ApplicationDefinitionListResultPage contains a page of ApplicationDefinition values.
+type ApplicationDefinitionListResultPage struct {
+	fn   func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)
+	adlr ApplicationDefinitionListResult
+}
 
-                // IsEmpty returns true if the ListResult contains no values.
-                func (alr ApplicationListResult) IsEmpty() bool {
-                return alr.Value == nil || len(*alr.Value) == 0
-                }
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ApplicationDefinitionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.adlr)
+	if err != nil {
+		return err
+	}
+	page.adlr = next
+	return nil
+}
 
-                    // applicationListResultPreparer prepares a request to retrieve the next set of results.
-                    // It returns nil if no more results exist.
-                    func (alr ApplicationListResult) applicationListResultPreparer(ctx context.Context) (*http.Request, error) {
-                    if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
-                    return nil, nil
-                    }
-                    return autorest.Prepare((&http.Request{}).WithContext(ctx),
-                    autorest.AsJSON(),
-                    autorest.AsGet(),
-                    autorest.WithBaseURL(to.String( alr.NextLink)));
-                    }
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ApplicationDefinitionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
 
-            // ApplicationListResultPage contains a page of Application values.
-            type ApplicationListResultPage struct {
-                fn func(context.Context, ApplicationListResult) (ApplicationListResult, error)
-                alr ApplicationListResult
-            }
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ApplicationDefinitionListResultPage) NotDone() bool {
+	return !page.adlr.IsEmpty()
+}
 
-        // NextWithContext advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        func (page * ApplicationListResultPage) NextWithContext(ctx context.Context) (err error) {
-        if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/ApplicationListResultPage.NextWithContext")
-        defer func() {
-        sc := -1
-        if page.Response().Response.Response != nil {
-        sc = page.Response().Response.Response.StatusCode
-        }
-        tracing.EndSpan(ctx, sc, err)
-        }()
-        }
-        next, err := page.fn(ctx, page.alr)
-        if err != nil {
-        return err
-        }
-        page.alr = next
-        return nil
-        }
+// Response returns the raw server response from the last page request.
+func (page ApplicationDefinitionListResultPage) Response() ApplicationDefinitionListResult {
+	return page.adlr
+}
 
-        // Next advances to the next page of values.  If there was an error making
-        // the request the page does not advance and the error is returned.
-        // Deprecated: Use NextWithContext() instead.
-        func (page * ApplicationListResultPage) Next() error {
-        return page.NextWithContext(context.Background())
-        }
-        // NotDone returns true if the page enumeration should be started or is not yet complete.
-        func (page ApplicationListResultPage) NotDone() bool {
-        return !page.alr.IsEmpty()
-        }
-        // Response returns the raw server response from the last page request.
-        func (page ApplicationListResultPage) Response() ApplicationListResult {
-        return page.alr
-        }
-        // Values returns the slice of values for the current page or nil if there are no values.
-        func (page ApplicationListResultPage) Values() []Application {
-        if page.alr.IsEmpty() {
-        return nil
-        }
-        return *page.alr.Value
-        }
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ApplicationDefinitionListResultPage) Values() []ApplicationDefinition {
+	if page.adlr.IsEmpty() {
+		return nil
+	}
+	return *page.adlr.Value
+}
 
-            // ApplicationPatchable information about managed application.
-            type ApplicationPatchable struct {
-            // ApplicationPropertiesPatchable - The managed application properties.
-            *ApplicationPropertiesPatchable `json:"properties,omitempty"`
-            // Plan - The plan information.
-            Plan *PlanPatchable `json:"plan,omitempty"`
-            // Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
-            Kind *string `json:"kind,omitempty"`
-            // ManagedBy - ID of the resource that manages this resource.
-            ManagedBy *string `json:"managedBy,omitempty"`
-            // Sku - The SKU of the resource.
-            Sku *Sku `json:"sku,omitempty"`
-            // Identity - The identity of the resource.
-            Identity *Identity `json:"identity,omitempty"`
-            // ID - Resource ID
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type
-            Type *string `json:"type,omitempty"`
-            // Location - Resource location
-            Location *string `json:"location,omitempty"`
-            // Tags - Resource tags
-            Tags map[string]*string `json:"tags"`
-            }
+// ApplicationDefinitionProperties the managed application definition properties.
+type ApplicationDefinitionProperties struct {
+	// LockLevel - The managed application lock level. Possible values include: 'CanNotDelete', 'ReadOnly', 'None'
+	LockLevel ApplicationLockLevel `json:"lockLevel,omitempty"`
+	// DisplayName - The managed application definition display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// IsEnabled - A value indicating whether the package is enabled or not.
+	IsEnabled *string `json:"isEnabled,omitempty"`
+	// Authorizations - The managed application provider authorizations.
+	Authorizations *[]ApplicationProviderAuthorization `json:"authorizations,omitempty"`
+	// Artifacts - The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the user experience of creating a managed application from a managed application definition.
+	Artifacts *[]ApplicationArtifact `json:"artifacts,omitempty"`
+	// Description - The managed application definition description.
+	Description *string `json:"description,omitempty"`
+	// PackageFileURI - The managed application definition package file Uri. Use this element
+	PackageFileURI *string `json:"packageFileUri,omitempty"`
+	// MainTemplate - The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.
+	MainTemplate interface{} `json:"mainTemplate,omitempty"`
+	// CreateUIDefinition - The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
+	CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
+}
 
-        // MarshalJSON is the custom marshaler for ApplicationPatchable.
-        func (ap ApplicationPatchable)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(ap.ApplicationPropertiesPatchable != nil) {
-                objectMap["properties"] = ap.ApplicationPropertiesPatchable
-                }
-                if(ap.Plan != nil) {
-                objectMap["plan"] = ap.Plan
-                }
-                if(ap.Kind != nil) {
-                objectMap["kind"] = ap.Kind
-                }
-                if(ap.ManagedBy != nil) {
-                objectMap["managedBy"] = ap.ManagedBy
-                }
-                if(ap.Sku != nil) {
-                objectMap["sku"] = ap.Sku
-                }
-                if(ap.Identity != nil) {
-                objectMap["identity"] = ap.Identity
-                }
-                if(ap.ID != nil) {
-                objectMap["id"] = ap.ID
-                }
-                if(ap.Name != nil) {
-                objectMap["name"] = ap.Name
-                }
-                if(ap.Type != nil) {
-                objectMap["type"] = ap.Type
-                }
-                if(ap.Location != nil) {
-                objectMap["location"] = ap.Location
-                }
-                if(ap.Tags != nil) {
-                objectMap["tags"] = ap.Tags
-                }
-                return json.Marshal(objectMap)
-        }
-        // UnmarshalJSON is the custom unmarshaler for ApplicationPatchable struct.
-        func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
-        var m map[string]*json.RawMessage
-        err := json.Unmarshal(body, &m)
-        if err != nil {
-        return err
-        }
-        for k, v := range  m {
-        switch k {
-                case "properties":
-    if v != nil {
-        var applicationPropertiesPatchable ApplicationPropertiesPatchable
-        err = json.Unmarshal(*v, &applicationPropertiesPatchable)
-    if err != nil {
-    return err
-    }
-        ap.ApplicationPropertiesPatchable = &applicationPropertiesPatchable
-    }
-                case "plan":
-    if v != nil {
-        var plan PlanPatchable
-        err = json.Unmarshal(*v, &plan)
-    if err != nil {
-    return err
-    }
-        ap.Plan = &plan
-    }
-                case "kind":
-    if v != nil {
-        var kind string
-        err = json.Unmarshal(*v, &kind)
-    if err != nil {
-    return err
-    }
-        ap.Kind = &kind
-    }
-                case "managedBy":
-    if v != nil {
-        var managedBy string
-        err = json.Unmarshal(*v, &managedBy)
-    if err != nil {
-    return err
-    }
-        ap.ManagedBy = &managedBy
-    }
-                case "sku":
-    if v != nil {
-        var sku Sku
-        err = json.Unmarshal(*v, &sku)
-    if err != nil {
-    return err
-    }
-        ap.Sku = &sku
-    }
-                case "identity":
-    if v != nil {
-        var identity Identity
-        err = json.Unmarshal(*v, &identity)
-    if err != nil {
-    return err
-    }
-        ap.Identity = &identity
-    }
-                case "id":
-    if v != nil {
-        var ID string
-        err = json.Unmarshal(*v, &ID)
-    if err != nil {
-    return err
-    }
-        ap.ID = &ID
-    }
-                case "name":
-    if v != nil {
-        var name string
-        err = json.Unmarshal(*v, &name)
-    if err != nil {
-    return err
-    }
-        ap.Name = &name
-    }
-                case "type":
-    if v != nil {
-        var typeVar string
-        err = json.Unmarshal(*v, &typeVar)
-    if err != nil {
-    return err
-    }
-        ap.Type = &typeVar
-    }
-                case "location":
-    if v != nil {
-        var location string
-        err = json.Unmarshal(*v, &location)
-    if err != nil {
-    return err
-    }
-        ap.Location = &location
-    }
-                case "tags":
-    if v != nil {
-        var tags map[string]*string
-        err = json.Unmarshal(*v, &tags)
-    if err != nil {
-    return err
-    }
-        ap.Tags = tags
-    }
-            }
-        }
+// ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type ApplicationDefinitionsCreateOrUpdateByIDFuture struct {
+	azure.Future
+}
 
-        return nil
-        }
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationDefinitionsCreateOrUpdateByIDFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad, err = client.CreateOrUpdateByIDResponder(ad.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture", "Result", ad.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
 
-            // ApplicationProperties the managed application properties.
-            type ApplicationProperties struct {
-            // ManagedResourceGroupID - The managed resource group Id.
-            ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
-            // ApplicationDefinitionID - The fully qualified path of managed application definition Id.
-            ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
-            // Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-            Parameters interface{} `json:"parameters,omitempty"`
-            // Outputs - Name and value pairs that define the managed application outputs.
-            Outputs interface{} `json:"outputs,omitempty"`
-            // ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
-            ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-            // UIDefinitionURI - The blob URI where the UI definition file is located.
-            UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
-            }
+// ApplicationDefinitionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationDefinitionsCreateOrUpdateFuture struct {
+	azure.Future
+}
 
-            // ApplicationPropertiesPatchable the managed application properties.
-            type ApplicationPropertiesPatchable struct {
-            // ManagedResourceGroupID - The managed resource group Id.
-            ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
-            // ApplicationDefinitionID - The fully qualified path of managed application definition Id.
-            ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
-            // Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-            Parameters interface{} `json:"parameters,omitempty"`
-            // Outputs - Name and value pairs that define the managed application outputs.
-            Outputs interface{} `json:"outputs,omitempty"`
-            // ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
-            ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-            // UIDefinitionURI - The blob URI where the UI definition file is located.
-            UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
-            }
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationDefinitionsCreateOrUpdateFuture) Result(client ApplicationDefinitionsClient) (ad ApplicationDefinition, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad, err = client.CreateOrUpdateResponder(ad.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsCreateOrUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
 
-            // ApplicationProviderAuthorization the managed application provider authorization.
-            type ApplicationProviderAuthorization struct {
-            // PrincipalID - The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.
-            PrincipalID *string `json:"principalId,omitempty"`
-            // RoleDefinitionID - The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's container resource group. This role definition cannot have permission to delete the resource group.
-            RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-            }
+// ApplicationDefinitionsDeleteByIDFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationDefinitionsDeleteByIDFuture struct {
+	azure.Future
+}
 
-            // ApplicationsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
-            // long-running operation.
-            type ApplicationsCreateOrUpdateByIDFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationsCreateOrUpdateByIDFuture) Result(client ApplicationsClient) (a Application, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateByIDFuture")
-        return
-        }
-            sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-            a, err = client.CreateOrUpdateByIDResponder(a.Response.Response)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateByIDFuture", "Result", a.Response.Response, "Failure responding to request")
-            }
-            }
-            return
-        }
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationDefinitionsDeleteByIDFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteByIDFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
 
-            // ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-            // long-running operation.
-            type ApplicationsCreateOrUpdateFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationsCreateOrUpdateFuture) Result(client ApplicationsClient) (a Application, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateFuture")
-        return
-        }
-            sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-            if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-            a, err = client.CreateOrUpdateResponder(a.Response.Response)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-            }
-            }
-            return
-        }
+// ApplicationDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationDefinitionsDeleteFuture struct {
+	azure.Future
+}
 
-            // ApplicationsDeleteByIDFuture an abstraction for monitoring and retrieving the results of a long-running
-            // operation.
-            type ApplicationsDeleteByIDFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationsDeleteByIDFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteByIDFuture")
-        return
-        }
-            ar.Response = future.Response()
-        return
-        }
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationDefinitionsDeleteFuture) Result(client ApplicationDefinitionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationDefinitionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
 
-            // ApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-            // operation.
-            type ApplicationsDeleteFuture struct {
-                azure.Future
-            }
-        // Result returns the result of the asynchronous operation.
-        // If the operation has not completed it will return an error.
-        func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
-        var done bool
-        done, err = future.Done(client)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteFuture", "Result", future.Response(), "Polling failure")
-        return
-        }
-        if !done {
-        err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteFuture")
-        return
-        }
-            ar.Response = future.Response()
-        return
-        }
+// ApplicationListResult list of managed applications.
+type ApplicationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The array of managed applications.
+	Value *[]Application `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
 
-            // ErrorResponse error reponse indicates managed application is not able to process the incoming request.
-            // The reason is provided in the error message.
-            type ErrorResponse struct {
-            // HTTPStatus - Http status code.
-            HTTPStatus *string `json:"httpStatus,omitempty"`
-            // ErrorCode - Error code.
-            ErrorCode *string `json:"errorCode,omitempty"`
-            // ErrorMessage - Error message indicating why the operation failed.
-            ErrorMessage *string `json:"errorMessage,omitempty"`
-            }
+// ApplicationListResultIterator provides access to a complete listing of Application values.
+type ApplicationListResultIterator struct {
+	i    int
+	page ApplicationListResultPage
+}
 
-            // GenericResource resource information.
-            type GenericResource struct {
-            // ManagedBy - ID of the resource that manages this resource.
-            ManagedBy *string `json:"managedBy,omitempty"`
-            // Sku - The SKU of the resource.
-            Sku *Sku `json:"sku,omitempty"`
-            // Identity - The identity of the resource.
-            Identity *Identity `json:"identity,omitempty"`
-            // ID - Resource ID
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type
-            Type *string `json:"type,omitempty"`
-            // Location - Resource location
-            Location *string `json:"location,omitempty"`
-            // Tags - Resource tags
-            Tags map[string]*string `json:"tags"`
-            }
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ApplicationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
 
-        // MarshalJSON is the custom marshaler for GenericResource.
-        func (gr GenericResource)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(gr.ManagedBy != nil) {
-                objectMap["managedBy"] = gr.ManagedBy
-                }
-                if(gr.Sku != nil) {
-                objectMap["sku"] = gr.Sku
-                }
-                if(gr.Identity != nil) {
-                objectMap["identity"] = gr.Identity
-                }
-                if(gr.ID != nil) {
-                objectMap["id"] = gr.ID
-                }
-                if(gr.Name != nil) {
-                objectMap["name"] = gr.Name
-                }
-                if(gr.Type != nil) {
-                objectMap["type"] = gr.Type
-                }
-                if(gr.Location != nil) {
-                objectMap["location"] = gr.Location
-                }
-                if(gr.Tags != nil) {
-                objectMap["tags"] = gr.Tags
-                }
-                return json.Marshal(objectMap)
-        }
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ApplicationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
 
-            // Identity identity for the resource.
-            type Identity struct {
-            // PrincipalID - The principal ID of resource identity.
-            PrincipalID *string `json:"principalId,omitempty"`
-            // TenantID - The tenant ID of resource.
-            TenantID *string `json:"tenantId,omitempty"`
-            // Type - The identity type. Possible values include: 'SystemAssigned'
-            Type ResourceIdentityType `json:"type,omitempty"`
-            }
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ApplicationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
 
-            // Plan plan for the managed application.
-            type Plan struct {
-            // Name - The plan name.
-            Name *string `json:"name,omitempty"`
-            // Publisher - The publisher ID.
-            Publisher *string `json:"publisher,omitempty"`
-            // Product - The product code.
-            Product *string `json:"product,omitempty"`
-            // PromotionCode - The promotion code.
-            PromotionCode *string `json:"promotionCode,omitempty"`
-            // Version - The plan's version.
-            Version *string `json:"version,omitempty"`
-            }
+// Response returns the raw server response from the last page request.
+func (iter ApplicationListResultIterator) Response() ApplicationListResult {
+	return iter.page.Response()
+}
 
-            // PlanPatchable plan for the managed application.
-            type PlanPatchable struct {
-            // Name - The plan name.
-            Name *string `json:"name,omitempty"`
-            // Publisher - The publisher ID.
-            Publisher *string `json:"publisher,omitempty"`
-            // Product - The product code.
-            Product *string `json:"product,omitempty"`
-            // PromotionCode - The promotion code.
-            PromotionCode *string `json:"promotionCode,omitempty"`
-            // Version - The plan's version.
-            Version *string `json:"version,omitempty"`
-            }
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ApplicationListResultIterator) Value() Application {
+	if !iter.page.NotDone() {
+		return Application{}
+	}
+	return iter.page.Values()[iter.i]
+}
 
-            // Resource resource information.
-            type Resource struct {
-            // ID - Resource ID
-            ID *string `json:"id,omitempty"`
-            // Name - Resource name
-            Name *string `json:"name,omitempty"`
-            // Type - Resource type
-            Type *string `json:"type,omitempty"`
-            // Location - Resource location
-            Location *string `json:"location,omitempty"`
-            // Tags - Resource tags
-            Tags map[string]*string `json:"tags"`
-            }
+// IsEmpty returns true if the ListResult contains no values.
+func (alr ApplicationListResult) IsEmpty() bool {
+	return alr.Value == nil || len(*alr.Value) == 0
+}
 
-        // MarshalJSON is the custom marshaler for Resource.
-        func (r Resource)MarshalJSON() ([]byte, error){
-        objectMap := make(map[string]interface{})
-                if(r.ID != nil) {
-                objectMap["id"] = r.ID
-                }
-                if(r.Name != nil) {
-                objectMap["name"] = r.Name
-                }
-                if(r.Type != nil) {
-                objectMap["type"] = r.Type
-                }
-                if(r.Location != nil) {
-                objectMap["location"] = r.Location
-                }
-                if(r.Tags != nil) {
-                objectMap["tags"] = r.Tags
-                }
-                return json.Marshal(objectMap)
-        }
+// applicationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (alr ApplicationListResult) applicationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(alr.NextLink)))
+}
 
-            // Sku SKU for the resource.
-            type Sku struct {
-            // Name - The SKU name.
-            Name *string `json:"name,omitempty"`
-            // Tier - The SKU tier.
-            Tier *string `json:"tier,omitempty"`
-            // Size - The SKU size.
-            Size *string `json:"size,omitempty"`
-            // Family - The SKU family.
-            Family *string `json:"family,omitempty"`
-            // Model - The SKU model.
-            Model *string `json:"model,omitempty"`
-            // Capacity - The SKU capacity.
-            Capacity *int32 `json:"capacity,omitempty"`
-            }
+// ApplicationListResultPage contains a page of Application values.
+type ApplicationListResultPage struct {
+	fn  func(context.Context, ApplicationListResult) (ApplicationListResult, error)
+	alr ApplicationListResult
+}
 
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ApplicationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.alr)
+	if err != nil {
+		return err
+	}
+	page.alr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ApplicationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ApplicationListResultPage) NotDone() bool {
+	return !page.alr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ApplicationListResultPage) Response() ApplicationListResult {
+	return page.alr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ApplicationListResultPage) Values() []Application {
+	if page.alr.IsEmpty() {
+		return nil
+	}
+	return *page.alr.Value
+}
+
+// ApplicationPatchable information about managed application.
+type ApplicationPatchable struct {
+	// ApplicationPropertiesPatchable - The managed application properties.
+	*ApplicationPropertiesPatchable `json:"properties,omitempty"`
+	// Plan - The plan information.
+	Plan *PlanPatchable `json:"plan,omitempty"`
+	// Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
+	Kind *string `json:"kind,omitempty"`
+	// ManagedBy - ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Sku - The SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationPatchable.
+func (ap ApplicationPatchable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ApplicationPropertiesPatchable != nil {
+		objectMap["properties"] = ap.ApplicationPropertiesPatchable
+	}
+	if ap.Plan != nil {
+		objectMap["plan"] = ap.Plan
+	}
+	if ap.Kind != nil {
+		objectMap["kind"] = ap.Kind
+	}
+	if ap.ManagedBy != nil {
+		objectMap["managedBy"] = ap.ManagedBy
+	}
+	if ap.Sku != nil {
+		objectMap["sku"] = ap.Sku
+	}
+	if ap.Identity != nil {
+		objectMap["identity"] = ap.Identity
+	}
+	if ap.ID != nil {
+		objectMap["id"] = ap.ID
+	}
+	if ap.Name != nil {
+		objectMap["name"] = ap.Name
+	}
+	if ap.Type != nil {
+		objectMap["type"] = ap.Type
+	}
+	if ap.Location != nil {
+		objectMap["location"] = ap.Location
+	}
+	if ap.Tags != nil {
+		objectMap["tags"] = ap.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationPatchable struct.
+func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var applicationPropertiesPatchable ApplicationPropertiesPatchable
+				err = json.Unmarshal(*v, &applicationPropertiesPatchable)
+				if err != nil {
+					return err
+				}
+				ap.ApplicationPropertiesPatchable = &applicationPropertiesPatchable
+			}
+		case "plan":
+			if v != nil {
+				var plan PlanPatchable
+				err = json.Unmarshal(*v, &plan)
+				if err != nil {
+					return err
+				}
+				ap.Plan = &plan
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ap.Kind = &kind
+			}
+		case "managedBy":
+			if v != nil {
+				var managedBy string
+				err = json.Unmarshal(*v, &managedBy)
+				if err != nil {
+					return err
+				}
+				ap.ManagedBy = &managedBy
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				ap.Sku = &sku
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				ap.Identity = &identity
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ap.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ap.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ap.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ApplicationProperties the managed application properties.
+type ApplicationProperties struct {
+	// ManagedResourceGroupID - The managed resource group Id.
+	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
+	// ApplicationDefinitionID - The fully qualified path of managed application definition Id.
+	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
+	// Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
+	Parameters interface{} `json:"parameters,omitempty"`
+	// Outputs - Name and value pairs that define the managed application outputs.
+	Outputs interface{} `json:"outputs,omitempty"`
+	// ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// UIDefinitionURI - The blob URI where the UI definition file is located.
+	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
+}
+
+// ApplicationPropertiesPatchable the managed application properties.
+type ApplicationPropertiesPatchable struct {
+	// ManagedResourceGroupID - The managed resource group Id.
+	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
+	// ApplicationDefinitionID - The fully qualified path of managed application definition Id.
+	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
+	// Parameters - Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
+	Parameters interface{} `json:"parameters,omitempty"`
+	// Outputs - Name and value pairs that define the managed application outputs.
+	Outputs interface{} `json:"outputs,omitempty"`
+	// ProvisioningState - The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// UIDefinitionURI - The blob URI where the UI definition file is located.
+	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
+}
+
+// ApplicationProviderAuthorization the managed application provider authorization.
+type ApplicationProviderAuthorization struct {
+	// PrincipalID - The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// RoleDefinitionID - The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's container resource group. This role definition cannot have permission to delete the resource group.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+}
+
+// ApplicationsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationsCreateOrUpdateByIDFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationsCreateOrUpdateByIDFuture) Result(client ApplicationsClient) (a Application, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateByIDFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateByIDFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateOrUpdateByIDResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateByIDFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationsCreateOrUpdateFuture) Result(client ApplicationsClient) (a Application, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateOrUpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ApplicationsDeleteByIDFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ApplicationsDeleteByIDFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationsDeleteByIDFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteByIDFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteByIDFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ApplicationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.ApplicationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ErrorResponse error reponse indicates managed application is not able to process the incoming request.
+// The reason is provided in the error message.
+type ErrorResponse struct {
+	// HTTPStatus - Http status code.
+	HTTPStatus *string `json:"httpStatus,omitempty"`
+	// ErrorCode - Error code.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// ErrorMessage - Error message indicating why the operation failed.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// GenericResource resource information.
+type GenericResource struct {
+	// ManagedBy - ID of the resource that manages this resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Sku - The SKU of the resource.
+	Sku *Sku `json:"sku,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GenericResource.
+func (gr GenericResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gr.ManagedBy != nil {
+		objectMap["managedBy"] = gr.ManagedBy
+	}
+	if gr.Sku != nil {
+		objectMap["sku"] = gr.Sku
+	}
+	if gr.Identity != nil {
+		objectMap["identity"] = gr.Identity
+	}
+	if gr.ID != nil {
+		objectMap["id"] = gr.ID
+	}
+	if gr.Name != nil {
+		objectMap["name"] = gr.Name
+	}
+	if gr.Type != nil {
+		objectMap["type"] = gr.Type
+	}
+	if gr.Location != nil {
+		objectMap["location"] = gr.Location
+	}
+	if gr.Tags != nil {
+		objectMap["tags"] = gr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// Identity identity for the resource.
+type Identity struct {
+	// PrincipalID - The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'SystemAssigned'
+	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// Plan plan for the managed application.
+type Plan struct {
+	// Name - The plan name.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher ID.
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The product code.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - The promotion code.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The plan's version.
+	Version *string `json:"version,omitempty"`
+}
+
+// PlanPatchable plan for the managed application.
+type PlanPatchable struct {
+	// Name - The plan name.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher ID.
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The product code.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - The promotion code.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The plan's version.
+	Version *string `json:"version,omitempty"`
+}
+
+// Resource resource information.
+type Resource struct {
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// Sku SKU for the resource.
+type Sku struct {
+	// Name - The SKU name.
+	Name *string `json:"name,omitempty"`
+	// Tier - The SKU tier.
+	Tier *string `json:"tier,omitempty"`
+	// Size - The SKU size.
+	Size *string `json:"size,omitempty"`
+	// Family - The SKU family.
+	Family *string `json:"family,omitempty"`
+	// Model - The SKU model.
+	Model *string `json:"model,omitempty"`
+	// Capacity - The SKU capacity.
+	Capacity *int32 `json:"capacity,omitempty"`
+}

@@ -21,111 +21,109 @@ package eventgrid
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "context"
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "github.com/Azure/go-autorest/autorest/validation"
-    "github.com/Azure/go-autorest/tracing"
-    "net/http"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
-
 
 // BaseClient is the base client for Eventgrid.
 type BaseClient struct {
-    autorest.Client
+	autorest.Client
 }
 
 // New creates an instance of the BaseClient client.
-func New()BaseClient {
-    return NewWithoutDefaults()
+func New() BaseClient {
+	return NewWithoutDefaults()
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
 func NewWithoutDefaults() BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-    }
+	return BaseClient{
+		Client: autorest.NewClientWithUserAgent(UserAgent()),
+	}
 }
 
-    // PublishEvents publishes a batch of events to an Azure Event Grid topic.
-        // Parameters:
-            // topicHostname - the host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net
-            // events - an array of events to be published to Event Grid.
-    func (client BaseClient) PublishEvents(ctx context.Context, topicHostname string, events []Event) (result autorest.Response, err error) {
-        if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/BaseClient.PublishEvents")
-            defer func() {
-                sc := -1
-                if result.Response != nil {
-                    sc = result.Response.StatusCode
-                }
-                tracing.EndSpan(ctx, sc, err)
-            }()
-        }
-                if err := validation.Validate([]validation.Validation{
-                { TargetValue: events,
-                 Constraints: []validation.Constraint{	{Target: "events", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-                return result, validation.NewError("eventgrid.BaseClient", "PublishEvents", err.Error())
-                }
+// PublishEvents publishes a batch of events to an Azure Event Grid topic.
+// Parameters:
+// topicHostname - the host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net
+// events - an array of events to be published to Event Grid.
+func (client BaseClient) PublishEvents(ctx context.Context, topicHostname string, events []Event) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.PublishEvents")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: events,
+			Constraints: []validation.Constraint{{Target: "events", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventgrid.BaseClient", "PublishEvents", err.Error())
+	}
 
-                    req, err := client.PublishEventsPreparer(ctx, topicHostname, events)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", nil , "Failure preparing request")
-        return
-        }
+	req, err := client.PublishEventsPreparer(ctx, topicHostname, events)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", nil, "Failure preparing request")
+		return
+	}
 
-                resp, err := client.PublishEventsSender(req)
-                if err != nil {
-                result.Response = resp
-                err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", resp, "Failure sending request")
-                return
-                }
+	resp, err := client.PublishEventsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", resp, "Failure sending request")
+		return
+	}
 
-                result, err = client.PublishEventsResponder(resp)
-                if err != nil {
-                err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", resp, "Failure responding to request")
-                }
+	result, err = client.PublishEventsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.BaseClient", "PublishEvents", resp, "Failure responding to request")
+	}
 
-        return
-        }
+	return
+}
 
-        // PublishEventsPreparer prepares the PublishEvents request.
-        func (client BaseClient) PublishEventsPreparer(ctx context.Context, topicHostname string, events []Event) (*http.Request, error) {
-                urlParameters := map[string]interface{} {
-                "topicHostname": topicHostname,
-                }
+// PublishEventsPreparer prepares the PublishEvents request.
+func (client BaseClient) PublishEventsPreparer(ctx context.Context, topicHostname string, events []Event) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"topicHostname": topicHostname,
+	}
 
-                                const APIVersion = "2018-01-01"
-            queryParameters := map[string]interface{} {
-            "api-version": APIVersion,
-            }
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-        preparer := autorest.CreatePreparer(
-        autorest.AsContentType("application/json; charset=utf-8"),
-        autorest.AsPost(),
-        autorest.WithCustomBaseURL("https://{topicHostname}", urlParameters),
-        autorest.WithPath("/api/events"),
-        autorest.WithJSON(events),
-        autorest.WithQueryParameters(queryParameters))
-        return preparer.Prepare((&http.Request{}).WithContext(ctx))
-        }
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("https://{topicHostname}", urlParameters),
+		autorest.WithPath("/api/events"),
+		autorest.WithJSON(events),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-        // PublishEventsSender sends the PublishEvents request. The method will close the
-        // http.Response Body if it receives an error.
-        func (client BaseClient) PublishEventsSender(req *http.Request) (*http.Response, error) {
-                return autorest.SendWithSender(client, req,
-                autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-                }
+// PublishEventsSender sends the PublishEvents request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) PublishEventsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
 
-    // PublishEventsResponder handles the response to the PublishEvents request. The method always
-    // closes the http.Response Body.
-    func (client BaseClient) PublishEventsResponder(resp *http.Response) (result autorest.Response, err error) {
-        err = autorest.Respond(
-        resp,
-        client.ByInspecting(),
-        azure.WithErrorUnlessStatusCode(http.StatusOK),
-        autorest.ByClosing())
-        result.Response = resp
-            return
-        }
-
+// PublishEventsResponder handles the response to the PublishEvents request. The method always
+// closes the http.Response Body.
+func (client BaseClient) PublishEventsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

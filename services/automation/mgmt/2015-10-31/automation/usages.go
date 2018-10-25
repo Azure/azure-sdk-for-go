@@ -18,110 +18,110 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // UsagesClient is the automation Client
 type UsagesClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewUsagesClient creates an instance of the UsagesClient client.
 func NewUsagesClient(subscriptionID string) UsagesClient {
-    return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-    func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-        return UsagesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // ListByAutomationAccount retrieve the usage for the account id.
-    // Parameters:
-        // resourceGroupName - name of an Azure Resource group.
-        // automationAccountName - the name of the automation account.
+// Parameters:
+// resourceGroupName - name of an Azure Resource group.
+// automationAccountName - the name of the automation account.
 func (client UsagesClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result UsageListResult, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/UsagesClient.ListByAutomationAccount")
-        defer func() {
-            sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("automation.UsagesClient", "ListByAutomationAccount", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automation.UsagesClient", "ListByAutomationAccount", err.Error())
+	}
 
-                req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.ListByAutomationAccountSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.ListByAutomationAccountSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.ListByAutomationAccountResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure responding to request")
-            }
+	result, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-    func (client UsagesClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "automationAccountName": autorest.Encode("path",automationAccountName),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
+func (client UsagesClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2015-10-31"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/usages",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/usages", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client UsagesClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            }
+// ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client UsagesClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
 
 // ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
 // closes the http.Response Body.
 func (client UsagesClient) ListByAutomationAccountResponder(resp *http.Response) (result UsageListResult, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
-
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

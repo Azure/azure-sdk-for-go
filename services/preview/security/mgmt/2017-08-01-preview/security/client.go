@@ -21,33 +21,33 @@ package security
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-// DefaultBaseURI is the default URI used for the service Security
-DefaultBaseURI = "https://management.azure.com")
+	// DefaultBaseURI is the default URI used for the service Security
+	DefaultBaseURI = "https://management.azure.com"
+)
 
 // BaseClient is the base client for Security.
 type BaseClient struct {
-    autorest.Client
-    BaseURI string
-            SubscriptionID string
-            AscLocation string
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
+	AscLocation    string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, ascLocation string)BaseClient {
-    return NewWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func New(subscriptionID string, ascLocation string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) BaseClient {
-    return BaseClient{
-        Client: autorest.NewClientWithUserAgent(UserAgent()),
-        BaseURI: baseURI,
-                SubscriptionID: subscriptionID,
-                AscLocation: ascLocation,
-    }
+	return BaseClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
+		AscLocation:    ascLocation,
+	}
 }
-

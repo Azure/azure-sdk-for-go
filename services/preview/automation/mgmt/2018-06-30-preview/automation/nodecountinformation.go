@@ -18,111 +18,111 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "context"
-    "github.com/Azure/go-autorest/tracing"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"context"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // NodeCountInformationClient is the automation Client
 type NodeCountInformationClient struct {
-    BaseClient
+	BaseClient
 }
+
 // NewNodeCountInformationClient creates an instance of the NodeCountInformationClient client.
 func NewNodeCountInformationClient(subscriptionID string, countType1 CountType) NodeCountInformationClient {
-    return NewNodeCountInformationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+	return NewNodeCountInformationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
 }
 
 // NewNodeCountInformationClientWithBaseURI creates an instance of the NodeCountInformationClient client.
-    func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeCountInformationClient {
-        return NodeCountInformationClient{ NewWithBaseURI(baseURI, subscriptionID, countType1)}
-    }
+func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeCountInformationClient {
+	return NodeCountInformationClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+}
 
 // Get retrieve counts for Dsc Nodes.
-    // Parameters:
-        // resourceGroupName - name of an Azure Resource group.
-        // automationAccountName - the name of the automation account.
+// Parameters:
+// resourceGroupName - name of an Azure Resource group.
+// automationAccountName - the name of the automation account.
 func (client NodeCountInformationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string) (result NodeCounts, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/NodeCountInformationClient.Get")
-        defer func() {
-            sc := -1
-            if result.Response.Response != nil {
-                sc = result.Response.Response.StatusCode
-            }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-            if err := validation.Validate([]validation.Validation{
-            { TargetValue: resourceGroupName,
-             Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-            	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil }}}}); err != nil {
-            return result, validation.NewError("automation.NodeCountInformationClient", "Get", err.Error())
-            }
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NodeCountInformationClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automation.NodeCountInformationClient", "Get", err.Error())
+	}
 
-                req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", nil , "Failure preparing request")
-    return
-    }
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-            resp, err := client.GetSender(req)
-            if err != nil {
-            result.Response = autorest.Response{Response: resp}
-            err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", resp, "Failure sending request")
-            return
-            }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-            result, err = client.GetResponder(resp)
-            if err != nil {
-            err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", resp, "Failure responding to request")
-            }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.NodeCountInformationClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
-    }
+	return
+}
 
-    // GetPreparer prepares the Get request.
-    func (client NodeCountInformationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
-            pathParameters := map[string]interface{} {
-            "automationAccountName": autorest.Encode("path",automationAccountName),
-            "countType": autorest.Encode("path",client.CountType1),
-            "resourceGroupName": autorest.Encode("path",resourceGroupName),
-            "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-            }
+// GetPreparer prepares the Get request.
+func (client NodeCountInformationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"countType":             autorest.Encode("path", client.CountType1),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+	}
 
-                        const APIVersion = "2018-01-15"
-        queryParameters := map[string]interface{} {
-        "api-version": APIVersion,
-        }
+	const APIVersion = "2018-01-15"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-    autorest.AsGet(),
-    autorest.WithBaseURL(client.BaseURI),
-    autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodecounts/{countType}",pathParameters),
-    autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodecounts/{countType}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
 
-    // GetSender sends the Get request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client NodeCountInformationClient) GetSender(req *http.Request) (*http.Response, error) {
-            return autorest.SendWithSender(client, req,
-            azure.DoRetryWithRegistration(client.Client))
-            }
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client NodeCountInformationClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client NodeCountInformationClient) GetResponder(resp *http.Response) (result NodeCounts, err error) {
-    err = autorest.Respond(
-    resp,
-    client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK),
-    autorest.ByUnmarshallingJSON(&result),
-    autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-        return
-    }
-
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

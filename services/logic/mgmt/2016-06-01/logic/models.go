@@ -3398,6 +3398,81 @@ type RepetitionIndex struct {
 	ItemIndex *int32 `json:"itemIndex,omitempty"`
 }
 
+// Request a request.
+type Request struct {
+	// Headers - A list of all the headers attached to the request.
+	Headers interface{} `json:"headers,omitempty"`
+	// URI - The destination for the request.
+	URI *string `json:"uri,omitempty"`
+	// Method - The HTTP method used for the request.
+	Method *string `json:"method,omitempty"`
+}
+
+// RequestHistory the request history.
+type RequestHistory struct {
+	autorest.Response `json:"-"`
+	// StartTime - The time the request started.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The time the request ended.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Request - The request.
+	Request *Request `json:"request,omitempty"`
+	// Response - The response.
+	Response *Response `json:"response,omitempty"`
+	// ID - The resource id.
+	ID *string `json:"id,omitempty"`
+	// Name - Gets the resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Gets the resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - The resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for RequestHistory.
+func (rh RequestHistory) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rh.StartTime != nil {
+		objectMap["startTime"] = rh.StartTime
+	}
+	if rh.EndTime != nil {
+		objectMap["endTime"] = rh.EndTime
+	}
+	if rh.Request != nil {
+		objectMap["request"] = rh.Request
+	}
+	if rh.Response != nil {
+		objectMap["response"] = rh.Response
+	}
+	if rh.ID != nil {
+		objectMap["id"] = rh.ID
+	}
+	if rh.Name != nil {
+		objectMap["name"] = rh.Name
+	}
+	if rh.Type != nil {
+		objectMap["type"] = rh.Type
+	}
+	if rh.Location != nil {
+		objectMap["location"] = rh.Location
+	}
+	if rh.Tags != nil {
+		objectMap["tags"] = rh.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// RequestHistoryListResult the list of workflow request histories.
+type RequestHistoryListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of workflow request histories.
+	Value *[]RequestHistory `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // Resource the base resource type.
 type Resource struct {
 	// ID - The resource id.
@@ -3441,6 +3516,16 @@ type ResourceReference struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Gets the resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// Response a response.
+type Response struct {
+	// Headers - A list of all the headers attached to the response.
+	Headers interface{} `json:"headers,omitempty"`
+	// StatusCode - The status code of the response.
+	StatusCode *int32 `json:"statusCode,omitempty"`
+	// BodyLink - Details on the location of the body content.
+	BodyLink *ContentLink `json:"bodyLink,omitempty"`
 }
 
 // RetryHistory the retry history.

@@ -497,8 +497,12 @@ type RecurrenceSchedule = original.RecurrenceSchedule
 type RecurrenceScheduleOccurrence = original.RecurrenceScheduleOccurrence
 type RegenerateActionParameter = original.RegenerateActionParameter
 type RepetitionIndex = original.RepetitionIndex
+type Request = original.Request
+type RequestHistory = original.RequestHistory
+type RequestHistoryListResult = original.RequestHistoryListResult
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
+type Response = original.Response
 type RetryHistory = original.RetryHistory
 type RunActionCorrelation = original.RunActionCorrelation
 type RunCorrelation = original.RunCorrelation
@@ -570,6 +574,8 @@ type X12ValidationOverride = original.X12ValidationOverride
 type X12ValidationSettings = original.X12ValidationSettings
 type OperationsClient = original.OperationsClient
 type WorkflowRunActionRepetitionsClient = original.WorkflowRunActionRepetitionsClient
+type WorkflowRunActionRepetitionsRequestHistoriesClient = original.WorkflowRunActionRepetitionsRequestHistoriesClient
+type WorkflowRunActionRequestHistoriesClient = original.WorkflowRunActionRequestHistoriesClient
 type WorkflowRunActionsClient = original.WorkflowRunActionsClient
 type WorkflowRunActionScopeRepetitionsClient = original.WorkflowRunActionScopeRepetitionsClient
 type WorkflowRunOperationsClient = original.WorkflowRunOperationsClient
@@ -747,6 +753,18 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string) WorkflowRunAct
 }
 func NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsClient {
 	return original.NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClient(subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClient(subscriptionID)

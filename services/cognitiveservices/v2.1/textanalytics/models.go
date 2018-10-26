@@ -36,27 +36,27 @@ type DetectedLanguage struct {
 	Score *float64 `json:"score,omitempty"`
 }
 
-// EntitiesBatchResultItemV2dot1 ...
-type EntitiesBatchResultItemV2dot1 struct {
+// EntitiesBatchResult ...
+type EntitiesBatchResult struct {
+	autorest.Response `json:"-"`
+	Documents         *[]EntitiesBatchResultItem `json:"documents,omitempty"`
+	Errors            *[]ErrorRecord             `json:"errors,omitempty"`
+}
+
+// EntitiesBatchResultItem ...
+type EntitiesBatchResultItem struct {
 	// ID - Unique document identifier.
 	ID *string `json:"id,omitempty"`
 	// Entities - Recognized entities in the document.
-	Entities *[]EntityRecordV2dot1 `json:"entities,omitempty"`
+	Entities *[]EntityRecord `json:"entities,omitempty"`
 }
 
-// EntitiesBatchResultV2dot1 ...
-type EntitiesBatchResultV2dot1 struct {
-	autorest.Response `json:"-"`
-	Documents         *[]EntitiesBatchResultItemV2dot1 `json:"documents,omitempty"`
-	Errors            *[]ErrorRecord                   `json:"errors,omitempty"`
-}
-
-// EntityRecordV2dot1 ...
-type EntityRecordV2dot1 struct {
+// EntityRecord ...
+type EntityRecord struct {
 	// Name - Entity formal name.
 	Name *string `json:"name,omitempty"`
 	// Matches - List of instances this entity appears in the text.
-	Matches *[]MatchRecordV2dot1 `json:"matches,omitempty"`
+	Matches *[]MatchRecord `json:"matches,omitempty"`
 	// WikipediaLanguage - Wikipedia language for which the WikipediaId and WikipediaUrl refers to.
 	WikipediaLanguage *string `json:"wikipediaLanguage,omitempty"`
 	// WikipediaID - Wikipedia unique identifier of the recognized entity.
@@ -131,8 +131,8 @@ type LanguageBatchResultItem struct {
 	DetectedLanguages *[]DetectedLanguage `json:"detectedLanguages,omitempty"`
 }
 
-// MatchRecordV2dot1 ...
-type MatchRecordV2dot1 struct {
+// MatchRecord ...
+type MatchRecord struct {
 	// Text - Entity text as appears in the request.
 	Text *string `json:"text,omitempty"`
 	// Offset - Start position (in Unicode characters) for the entity match text.

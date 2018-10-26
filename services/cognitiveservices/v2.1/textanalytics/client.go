@@ -126,7 +126,7 @@ func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result La
 // languages in Text Analytics API</a> for the list of enabled languages.
 // Parameters:
 // input - collection of documents to analyze.
-func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchInput) (result EntitiesBatchResultV2dot1, err error) {
+func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchInput) (result EntitiesBatchResult, err error) {
 	req, err := client.EntitiesPreparer(ctx, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", nil, "Failure preparing request")
@@ -172,7 +172,7 @@ func (client BaseClient) EntitiesSender(req *http.Request) (*http.Response, erro
 
 // EntitiesResponder handles the response to the Entities request. The method always
 // closes the http.Response Body.
-func (client BaseClient) EntitiesResponder(resp *http.Response) (result EntitiesBatchResultV2dot1, err error) {
+func (client BaseClient) EntitiesResponder(resp *http.Response) (result EntitiesBatchResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

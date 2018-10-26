@@ -533,6 +533,13 @@ const (
 	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
 )
 
+type NatGatewaySkuName = original.NatGatewaySkuName
+
+const (
+	NatGatewaySkuNameBasic    NatGatewaySkuName = original.NatGatewaySkuNameBasic
+	NatGatewaySkuNameStandard NatGatewaySkuName = original.NatGatewaySkuNameStandard
+)
+
 type NextHopType = original.NextHopType
 
 const (
@@ -1257,6 +1264,9 @@ type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateT
 type LogSpecification = original.LogSpecification
 type MatchedRule = original.MatchedRule
 type MetricSpecification = original.MetricSpecification
+type NatGateway = original.NatGateway
+type NatGatewayPropertiesFormat = original.NatGatewayPropertiesFormat
+type NatGatewaySku = original.NatGatewaySku
 type NextHopParameters = original.NextHopParameters
 type NextHopResult = original.NextHopResult
 type Operation = original.Operation
@@ -1975,6 +1985,9 @@ func PossibleLoadBalancerSkuNameValues() []LoadBalancerSkuName {
 }
 func PossibleLoadDistributionValues() []LoadDistribution {
 	return original.PossibleLoadDistributionValues()
+}
+func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
+	return original.PossibleNatGatewaySkuNameValues()
 }
 func PossibleNextHopTypeValues() []NextHopType {
 	return original.PossibleNextHopTypeValues()

@@ -1023,6 +1023,21 @@ func PossibleLoadDistributionValues() []LoadDistribution {
 	return []LoadDistribution{Default, SourceIP, SourceIPProtocol}
 }
 
+// NatGatewaySkuName enumerates the values for nat gateway sku name.
+type NatGatewaySkuName string
+
+const (
+	// NatGatewaySkuNameBasic ...
+	NatGatewaySkuNameBasic NatGatewaySkuName = "Basic"
+	// NatGatewaySkuNameStandard ...
+	NatGatewaySkuNameStandard NatGatewaySkuName = "Standard"
+)
+
+// PossibleNatGatewaySkuNameValues returns an array of possible values for the NatGatewaySkuName const type.
+func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
+	return []NatGatewaySkuName{NatGatewaySkuNameBasic, NatGatewaySkuNameStandard}
+}
+
 // NextHopType enumerates the values for next hop type.
 type NextHopType string
 
@@ -15203,6 +15218,165 @@ type MetricSpecification struct {
 	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
 }
 
+// NatGateway nat Gateway resource.
+type NatGateway struct {
+	// Sku - The nat gateway SKU.
+	Sku *NatGatewaySku `json:"sku,omitempty"`
+	// NatGatewayPropertiesFormat - Nat Gateway properties.
+	*NatGatewayPropertiesFormat `json:"properties,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for NatGateway.
+func (ng NatGateway) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ng.Sku != nil {
+		objectMap["sku"] = ng.Sku
+	}
+	if ng.NatGatewayPropertiesFormat != nil {
+		objectMap["properties"] = ng.NatGatewayPropertiesFormat
+	}
+	if ng.Etag != nil {
+		objectMap["etag"] = ng.Etag
+	}
+	if ng.ID != nil {
+		objectMap["id"] = ng.ID
+	}
+	if ng.Name != nil {
+		objectMap["name"] = ng.Name
+	}
+	if ng.Type != nil {
+		objectMap["type"] = ng.Type
+	}
+	if ng.Location != nil {
+		objectMap["location"] = ng.Location
+	}
+	if ng.Tags != nil {
+		objectMap["tags"] = ng.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NatGateway struct.
+func (ng *NatGateway) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku NatGatewaySku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				ng.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var natGatewayPropertiesFormat NatGatewayPropertiesFormat
+				err = json.Unmarshal(*v, &natGatewayPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				ng.NatGatewayPropertiesFormat = &natGatewayPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ng.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ng.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ng.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ng.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ng.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ng.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// NatGatewayPropertiesFormat nat Gateway properties.
+type NatGatewayPropertiesFormat struct {
+	// IdleTimeoutInMinutes - The idle timeout of the nat gateway.
+	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
+	// PublicIPAddresses - An array of public ip addresses associated with the nat gateway resource.
+	PublicIPAddresses *[]PublicIPAddress `json:"publicIpAddresses,omitempty"`
+	// PublicIPPrefixes - An array of public ip prefixes associated with the nat gateway resource.
+	PublicIPPrefixes *[]PublicIPPrefix `json:"publicIpPrefixes,omitempty"`
+	// Subnets - Gets an array of references to the subnets using this nat gateway resource.
+	Subnets *[]Subnet `json:"subnets,omitempty"`
+	// ResourceGUID - The resource GUID property of the nat gateway resource.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
+	// ProvisioningState - The provisioning state of the NatGateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// NatGatewaySku SKU of nat gateway
+type NatGatewaySku struct {
+	// Name - Name of Nat Gateway SKU. Possible values include: 'NatGatewaySkuNameBasic', 'NatGatewaySkuNameStandard'
+	Name NatGatewaySkuName `json:"name,omitempty"`
+}
+
 // NextHopParameters parameters that define the source and destination endpoint.
 type NextHopParameters struct {
 	// TargetResourceID - The resource identifier of the target resource against which the action is to be performed.
@@ -17494,6 +17668,8 @@ type PublicIPAddressPropertiesFormat struct {
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
 	// IPTags - The list of tags associated with the public IP address.
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
+	// NatGateway - Nat gateway associated with this subnet.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
 	// IPAddress - The IP address associated with the public IP address resource.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// PublicIPPrefix - The Public IP Prefix this Public IP Address should be allocated from.
@@ -17853,6 +18029,8 @@ type PublicIPPrefixPropertiesFormat struct {
 	PublicIPAddressVersion IPVersion `json:"publicIPAddressVersion,omitempty"`
 	// IPTags - The list of tags associated with the public IP prefix.
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
+	// NatGateway - Nat gateway associated with this subnet.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
 	// PrefixLength - The Length of the Public IP Prefix.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
 	// IPPrefix - The allocated Prefix
@@ -20721,6 +20899,8 @@ type SubnetPropertiesFormat struct {
 	NetworkSecurityGroup *SecurityGroup `json:"networkSecurityGroup,omitempty"`
 	// RouteTable - The reference of the RouteTable resource.
 	RouteTable *RouteTable `json:"routeTable,omitempty"`
+	// NatGateway - Nat gateway associated with this subnet.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
 	// ServiceEndpoints - An array of service endpoints.
 	ServiceEndpoints *[]ServiceEndpointPropertiesFormat `json:"serviceEndpoints,omitempty"`
 	// ServiceEndpointPolicies - An array of service endpoint policies.

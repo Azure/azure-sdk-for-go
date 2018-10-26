@@ -380,8 +380,9 @@ const (
 type ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTier
 
 const (
-	Premium  ExpressRouteCircuitSkuTier = original.Premium
-	Standard ExpressRouteCircuitSkuTier = original.Standard
+	ExpressRouteCircuitSkuTierBasic    ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierBasic
+	ExpressRouteCircuitSkuTierPremium  ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierPremium
+	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )
 
 type ExpressRouteLinkAdminState = original.ExpressRouteLinkAdminState
@@ -662,7 +663,7 @@ const (
 type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
 
 const (
-	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = original.PublicIPPrefixSkuNameStandard
+	Standard PublicIPPrefixSkuName = original.Standard
 )
 
 type RouteNextHopType = original.RouteNextHopType

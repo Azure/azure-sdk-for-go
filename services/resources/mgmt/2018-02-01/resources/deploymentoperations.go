@@ -54,7 +54,7 @@ func (client DeploymentOperationsClient) Get(ctx context.Context, resourceGroupN
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentOperationsClient", "Get", err.Error())
 	}
 
@@ -135,7 +135,7 @@ func (client DeploymentOperationsClient) List(ctx context.Context, resourceGroup
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentOperationsClient", "List", err.Error())
 	}
 

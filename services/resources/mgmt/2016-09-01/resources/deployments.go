@@ -55,7 +55,7 @@ func (client DeploymentsClient) Cancel(ctx context.Context, resourceGroupName st
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentsClient", "Cancel", err.Error())
 	}
 
@@ -134,7 +134,7 @@ func (client DeploymentsClient) CheckExistence(ctx context.Context, resourceGrou
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentsClient", "CheckExistence", err.Error())
 	}
 
@@ -214,7 +214,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Properties.TemplateLink", Name: validation.Null, Rule: false,
@@ -309,7 +309,7 @@ func (client DeploymentsClient) Delete(ctx context.Context, resourceGroupName st
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentsClient", "Delete", err.Error())
 	}
 
@@ -387,7 +387,7 @@ func (client DeploymentsClient) ExportTemplate(ctx context.Context, resourceGrou
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentsClient", "ExportTemplate", err.Error())
 	}
 
@@ -466,7 +466,7 @@ func (client DeploymentsClient) Get(ctx context.Context, resourceGroupName strin
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.DeploymentsClient", "Get", err.Error())
 	}
 
@@ -659,7 +659,7 @@ func (client DeploymentsClient) Validate(ctx context.Context, resourceGroupName 
 		{TargetValue: deploymentName,
 			Constraints: []validation.Constraint{{Target: "deploymentName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "deploymentName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "deploymentName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Properties.TemplateLink", Name: validation.Null, Rule: false,

@@ -840,7 +840,7 @@ type Operation struct {
 
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Consumption.
+	// Provider - Service provider: Microsoft.CostManagement.
 	Provider *string `json:"provider,omitempty"`
 	// Resource - Resource on which the operation is performed: UsageDetail, etc.
 	Resource *string `json:"resource,omitempty"`
@@ -848,11 +848,11 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing consumption operations. It contains a list of operations and a URL link to
-// get the next set of results.
+// OperationListResult result of listing CostManagement operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of consumption operations supported by the Microsoft.Consumption resource provider.
+	// Value - List of CostManagement operations supported by the Microsoft.CostManagement resource provider.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`

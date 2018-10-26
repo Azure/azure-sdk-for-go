@@ -150,6 +150,11 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 	return q.sender.Send(ctx, event)
 }
 
+func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
+	q.ensureReceiver(ctx)
+	return newPeekIterator(10, q.entity, q.receiver.connection), nil
+}
+
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
 func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")

@@ -37,7 +37,7 @@ func (e *entity) RenewLocks(ctx context.Context, messages []*Message) error {
 
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
-			operationFieldName: serviceBuslockRenewalOperationName,
+			operationFieldName: lockRenewalOperationName,
 		},
 		Value: map[string]interface{}{
 			lockTokensFieldName: lockTokens,

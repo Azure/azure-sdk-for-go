@@ -128,6 +128,8 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 // State retrieves the current State associated with this Session.
 // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-request-response#get-session-state
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
+	const sessionStateField = "session-state"
+
 	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
@@ -152,15 +154,15 @@ func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 	}
 
 	if val, ok := rsp.Message.Value.(map[string]interface{}); ok {
-		if rawState, ok := val["session-state"]; ok {
+		if rawState, ok := val[sessionStateField]; ok {
 			if state, ok := rawState.([]byte); ok || rawState == nil {
 				return state, nil
 			}
-			return []byte{}, errors.New("server error: response value \"session-state\" is not a byte array")
+			return nil, newErrIncorrectType(sessionStateField, []byte{}, rawState)
 		}
-		return []byte{}, errors.New("server error: response did not contain value \"session-state\")")
+		return nil, ErrMissingField(sessionStateField)
 	}
-	return []byte{}, errors.New("server error: response value was not of expected type map[string]interface{}")
+	return nil, newErrIncorrectType("value", map[string]interface{}{}, rsp.Message.Value)
 }
 
 // SessionID gets the unique identifier of the session being interacted with by this MessageSession.

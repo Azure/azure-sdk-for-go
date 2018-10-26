@@ -323,12 +323,13 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 			return msg, err
 		}
 	}
-
-	lockToken, err := lockTokenFromMessageTag(amqpMsg)
-	if err != nil {
-		return msg, err
+	if amqpMsg.DeliveryTag != nil && len(amqpMsg.DeliveryTag) > 0 {
+		lockToken, err := lockTokenFromMessageTag(amqpMsg)
+		if err != nil {
+			return msg, err
+		}
+		msg.LockToken = lockToken
 	}
-	msg.LockToken = lockToken
 
 	return msg, nil
 }

@@ -150,9 +150,22 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 	return q.sender.Send(ctx, event)
 }
 
+// Peek fetches a list of Messages from the Service Bus broker, with-out acquiring a lock or committing to a
+// disposition. The messages are delivered as close to sequence order as possible.
+//
+// The MessageIterator that is returned has the following properties:
+// - Messages are fetches from the server in pages. Page size is configurable with PeekOptions.
+// - The MessageIterator will always return "false" for Done().
+// - When Next() is called, it will return either: a slice of messages and no error, nil with an error related to being
+// unable to complete the operation, or an empty slice of messages and an instance of "ErrNoMessages" signifying that
+// there are currently no messages in the queue with a sequence ID larger than previously viewed ones.
 func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
-	q.ensureReceiver(ctx)
-	return newPeekIterator(10, q.entity, q.receiver.connection), nil
+	err := q.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return newPeekIterator(q.entity, q.receiver.connection, options...)
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.

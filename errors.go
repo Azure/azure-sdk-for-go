@@ -16,6 +16,8 @@ type (
 	}
 
 	ErrAMQP rpc.Response
+
+	ErrNoMessages struct{}
 )
 
 func (e ErrMissingField) Error() string {
@@ -42,4 +44,8 @@ func (e ErrIncorrectType) Error() string {
 
 func (e ErrAMQP) Error() string {
 	return fmt.Sprintf("server says (%d) %s", e.Code, e.Description)
+}
+
+func (e ErrNoMessages) Error() string {
+	return "no messages available"
 }

@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-amqp-common-go/rpc"
 	"pack.ag/amqp"
 	"sort"
@@ -14,6 +15,11 @@ type (
 		Next(context.Context) (*Message, error)
 	}
 
+	MessageSliceIterator struct {
+		Target []*Message
+		Cursor int
+	}
+
 	peekIterator struct {
 		entity             *entity
 		connection         *amqp.Client
@@ -24,11 +30,75 @@ type (
 	PeekOption func(*peekIterator) error
 )
 
-func newPeekIterator(pageSize uint8, entity *entity, connection *amqp.Client) *peekIterator {
-	return &peekIterator{
+const (
+	defaultPeekPageSize = 10
+)
+
+// AsMessageSliceIterator wraps a slice of Message pointers to allow it to be made into a MessageIterator.
+func AsMessageSliceIterator(target []*Message) *MessageSliceIterator {
+	return &MessageSliceIterator{
+		Target: target,
+	}
+}
+
+func (ms MessageSliceIterator) Done() bool {
+	return ms.Cursor >= len(ms.Target)
+}
+
+func (ms *MessageSliceIterator) Next(_ context.Context) (*Message, error) {
+	if ms.Done() {
+		return nil, ErrNoMessages{}
+	}
+
+	retval := ms.Target[ms.Cursor]
+	ms.Cursor++
+	return retval, nil
+}
+
+func newPeekIterator(entity *entity, connection *amqp.Client, options ...PeekOption) (*peekIterator, error) {
+	retval := &peekIterator{
 		entity:     entity,
 		connection: connection,
-		buffer:     make(chan *Message, pageSize),
+	}
+
+	foundPageSize := false
+	for i := range options {
+		options[i](retval)
+
+		if retval.buffer != nil {
+			foundPageSize = true
+		}
+	}
+
+	if !foundPageSize {
+		err := PeekWithPageSize(defaultPeekPageSize)(retval)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return retval, nil
+}
+
+func PeekWithPageSize(pageSize int) PeekOption {
+	return func(pi *peekIterator) error {
+		if pageSize < 0 {
+			return errors.New("page size must not be less than zero")
+		}
+
+		if pi.buffer != nil {
+			return errors.New("cannot modify an existing peekIterator's buffer")
+		}
+
+		pi.buffer = make(chan *Message, pageSize)
+		return nil
+	}
+}
+
+func PeekFromSequenceNumber(seq int64) PeekOption {
+	return func(pi *peekIterator) error {
+		pi.lastSequenceNumber = seq + 1
+		return nil
 	}
 }
 
@@ -76,6 +146,10 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
 		return err
+	}
+
+	if rsp.Code == 204 {
+		return ErrNoMessages{}
 	}
 
 	// Peeked messages come back in a relatively convoluted manner:

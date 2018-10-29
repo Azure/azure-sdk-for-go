@@ -106,33 +106,33 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions
 	return
 }
 
-// Post grants OAuth2 permissions for the relevant resource Ids of an app.
+// Grant grants OAuth2 permissions for the relevant resource Ids of an app.
 // Parameters:
 // body - the relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
-func (client OAuth2Client) Post(ctx context.Context, body *Permissions) (result Permissions, err error) {
-	req, err := client.PostPreparer(ctx, body)
+func (client OAuth2Client) Grant(ctx context.Context, body *Permissions) (result Permissions, err error) {
+	req, err := client.GrantPreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Post", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Grant", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PostSender(req)
+	resp, err := client.GrantSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Post", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Grant", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PostResponder(resp)
+	result, err = client.GrantResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Post", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "graphrbac.OAuth2Client", "Grant", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PostPreparer prepares the Post request.
-func (client OAuth2Client) PostPreparer(ctx context.Context, body *Permissions) (*http.Request, error) {
+// GrantPreparer prepares the Grant request.
+func (client OAuth2Client) GrantPreparer(ctx context.Context, body *Permissions) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"tenantID": autorest.Encode("path", client.TenantID),
 	}
@@ -155,16 +155,16 @@ func (client OAuth2Client) PostPreparer(ctx context.Context, body *Permissions) 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PostSender sends the Post request. The method will close the
+// GrantSender sends the Grant request. The method will close the
 // http.Response Body if it receives an error.
-func (client OAuth2Client) PostSender(req *http.Request) (*http.Response, error) {
+func (client OAuth2Client) GrantSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// PostResponder handles the response to the Post request. The method always
+// GrantResponder handles the response to the Grant request. The method always
 // closes the http.Response Body.
-func (client OAuth2Client) PostResponder(resp *http.Response) (result Permissions, err error) {
+func (client OAuth2Client) GrantResponder(resp *http.Response) (result Permissions, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

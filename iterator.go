@@ -3,18 +3,21 @@ package servicebus
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-amqp-common-go/rpc"
-	"pack.ag/amqp"
 	"sort"
 	"time"
+
+	"github.com/Azure/azure-amqp-common-go/rpc"
+	"pack.ag/amqp"
 )
 
 type (
+	// MessageIterator offers a simple mechanism for iterating over a list of
 	MessageIterator interface {
 		Done() bool
 		Next(context.Context) (*Message, error)
 	}
 
+	// MessageSliceIterator is a wrapper, which lets any slice of Message pointers be used as a MessageIterator.
 	MessageSliceIterator struct {
 		Target []*Message
 		Cursor int
@@ -27,6 +30,8 @@ type (
 		lastSequenceNumber int64
 	}
 
+	// PeekOption allows customization of parameters when querying a Service Bus entity for messages without committing
+	// to processing them.
 	PeekOption func(*peekIterator) error
 )
 
@@ -41,10 +46,12 @@ func AsMessageSliceIterator(target []*Message) *MessageSliceIterator {
 	}
 }
 
+// Done communicates whether there are more messages remaining to be iterated over.
 func (ms MessageSliceIterator) Done() bool {
 	return ms.Cursor >= len(ms.Target)
 }
 
+// Next fetches the Message in the slice at a position one larger than the last one accessed.s
 func (ms *MessageSliceIterator) Next(_ context.Context) (*Message, error) {
 	if ms.Done() {
 		return nil, ErrNoMessages{}
@@ -80,6 +87,7 @@ func newPeekIterator(entity *entity, connection *amqp.Client, options ...PeekOpt
 	return retval, nil
 }
 
+// PeekWithPageSize adjusts how many messages are fetched at once while peeking from the server.
 func PeekWithPageSize(pageSize int) PeekOption {
 	return func(pi *peekIterator) error {
 		if pageSize < 0 {
@@ -95,6 +103,8 @@ func PeekWithPageSize(pageSize int) PeekOption {
 	}
 }
 
+// PeekFromSequenceNumber adds a filter to the Peek operation, so that no messages with a Sequence Number less than
+// 'seq' are returned.
 func PeekFromSequenceNumber(seq int64) PeekOption {
 	return func(pi *peekIterator) error {
 		pi.lastSequenceNumber = seq + 1

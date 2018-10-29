@@ -7,16 +7,23 @@ import (
 )
 
 type (
+	// ErrMissingField indicates that an expected property was missing from an AMQP message. This should only be
+	// encountered when there is an error with this library, or the server has altered its behavior unexpectedly.
 	ErrMissingField string
 
+	// ErrIncorrectType indicates that type assertion failed. This should only be encountered when there is an error
+	// with this library, or the server has altered its behavior unexpectedly.
 	ErrIncorrectType struct {
 		Key          string
 		ExpectedType reflect.Type
 		ActualValue  interface{}
 	}
 
+	// ErrAMQP indicates that the server communicated an AMQP error with a particular
 	ErrAMQP rpc.Response
 
+	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
+	// more messages in the future.
 	ErrNoMessages struct{}
 )
 

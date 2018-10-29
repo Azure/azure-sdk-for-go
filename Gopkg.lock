@@ -157,12 +157,12 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:71a28fe7d86ace8e51192c97eb4fd376c27ae0ed3a6ff46b41a6da76a0785d78"
+  digest = "1:a69ca302e0e9bab6743b40cb720ef02a8abcc2072eb55c0fd8869b3b285be425"
   name = "github.com/marstr/collection"
   packages = ["."]
   pruneopts = ""
-  revision = "871b1cfa2ab97d3d8f54a034280907896190c346"
-  version = "v0.3.3"
+  revision = "43f1d00df9bf332cbf8d26c3eecd6c348e92f7b3"
+  version = "v1.0.1"
 
 [[projects]]
   branch = "master"

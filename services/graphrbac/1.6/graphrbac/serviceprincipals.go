@@ -47,8 +47,7 @@ func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) Serv
 func (client ServicePrincipalsClient) Create(ctx context.Context, parameters ServicePrincipalCreateParameters) (result ServicePrincipal, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.AppID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.AccountEnabled", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.AppID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("graphrbac.ServicePrincipalsClient", "Create", err.Error())
 	}
 
@@ -455,7 +454,8 @@ func (client ServicePrincipalsClient) ListNextResponder(resp *http.Response) (re
 // ListOwners the owners are a set of non-admin users who are allowed to modify this object.
 // Parameters:
 // objectID - the object ID of the service principal for which to get owners.
-func (client ServicePrincipalsClient) ListOwners(ctx context.Context, objectID string) (result DirectoryObjectListResult, err error) {
+func (client ServicePrincipalsClient) ListOwners(ctx context.Context, objectID string) (result DirectoryObjectListResultPage, err error) {
+	result.fn = client.listOwnersNextResults
 	req, err := client.ListOwnersPreparer(ctx, objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListOwners", nil, "Failure preparing request")
@@ -464,12 +464,12 @@ func (client ServicePrincipalsClient) ListOwners(ctx context.Context, objectID s
 
 	resp, err := client.ListOwnersSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dolr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListOwners", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListOwnersResponder(resp)
+	result.dolr, err = client.ListOwnersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListOwners", resp, "Failure responding to request")
 	}
@@ -514,6 +514,33 @@ func (client ServicePrincipalsClient) ListOwnersResponder(resp *http.Response) (
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listOwnersNextResults retrieves the next set of results, if any.
+func (client ServicePrincipalsClient) listOwnersNextResults(lastResults DirectoryObjectListResult) (result DirectoryObjectListResult, err error) {
+	req, err := lastResults.directoryObjectListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listOwnersNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListOwnersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listOwnersNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListOwnersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "listOwnersNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListOwnersComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServicePrincipalsClient) ListOwnersComplete(ctx context.Context, objectID string) (result DirectoryObjectListResultIterator, err error) {
+	result.page, err = client.ListOwners(ctx, objectID)
 	return
 }
 
@@ -579,6 +606,73 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Update updates a service principal in the directory.
+// Parameters:
+// objectID - the object ID of the service principal to delete.
+// parameters - parameters to update a service principal.
+func (client ServicePrincipalsClient) Update(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (result autorest.Response, err error) {
+	req, err := client.UpdatePreparer(ctx, objectID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ServicePrincipalsClient) UpdatePreparer(ctx context.Context, objectID string, parameters ServicePrincipalUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"objectId": autorest.Encode("path", objectID),
+		"tenantID": autorest.Encode("path", client.TenantID),
+	}
+
+	const APIVersion = "1.6"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{tenantID}/servicePrincipals/{objectId}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicePrincipalsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ServicePrincipalsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 

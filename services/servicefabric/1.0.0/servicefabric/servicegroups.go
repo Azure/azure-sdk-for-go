@@ -147,8 +147,8 @@ func (client ServiceGroupsClient) Remove(ctx context.Context, applicationName st
 // RemovePreparer prepares the Remove request.
 func (client ServiceGroupsClient) RemovePreparer(ctx context.Context, applicationName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"serviceName":		serviceName,
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
 	}
 
 	const APIVersion = "1.0.0"
@@ -221,8 +221,8 @@ func (client ServiceGroupsClient) Update(ctx context.Context, applicationName st
 // UpdatePreparer prepares the Update request.
 func (client ServiceGroupsClient) UpdatePreparer(ctx context.Context, applicationName string, serviceName string, updateServiceGroupDescription BasicUpdateServiceGroupDescription) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"serviceName":		serviceName,
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
 	}
 
 	const APIVersion = "1.0.0"

@@ -73,8 +73,8 @@ func (client ServiceGroupDescriptionsClient) Get(ctx context.Context, applicatio
 // GetPreparer prepares the Get request.
 func (client ServiceGroupDescriptionsClient) GetPreparer(ctx context.Context, applicationName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"serviceName":		serviceName,
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
 	}
 
 	const APIVersion = "1.0.0"

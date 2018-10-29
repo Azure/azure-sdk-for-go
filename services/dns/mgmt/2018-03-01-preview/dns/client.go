@@ -33,8 +33,8 @@ const (
 // BaseClient is the base client for Dns.
 type BaseClient struct {
 	autorest.Client
-	BaseURI		string
-	SubscriptionID	string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -47,8 +47,8 @@ func New(subscriptionID string) BaseClient {
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:		autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:	baseURI,
-		SubscriptionID:	subscriptionID,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

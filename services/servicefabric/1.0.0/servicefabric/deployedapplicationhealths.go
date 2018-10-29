@@ -76,8 +76,8 @@ func (client DeployedApplicationHealthsClient) Get(ctx context.Context, nodeName
 // GetPreparer prepares the Get request.
 func (client DeployedApplicationHealthsClient) GetPreparer(ctx context.Context, nodeName string, applicationName string, eventsHealthStateFilter string, deployedServicePackagesHealthStateFilter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationName": applicationName,
+		"nodeName":        autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "1.0.0"
@@ -156,8 +156,8 @@ func (client DeployedApplicationHealthsClient) Send(ctx context.Context, nodeNam
 // SendPreparer prepares the Send request.
 func (client DeployedApplicationHealthsClient) SendPreparer(ctx context.Context, nodeName string, applicationName string, deployedApplicationHealthReport DeployedApplicationHealthReport) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationName": applicationName,
+		"nodeName":        autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "1.0.0"

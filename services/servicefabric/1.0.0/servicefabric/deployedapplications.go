@@ -73,8 +73,8 @@ func (client DeployedApplicationsClient) Get(ctx context.Context, nodeName strin
 // GetPreparer prepares the Get request.
 func (client DeployedApplicationsClient) GetPreparer(ctx context.Context, nodeName string, applicationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	autorest.Encode("path", applicationName),
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationName": autorest.Encode("path", applicationName),
+		"nodeName":        autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "1.0.0"

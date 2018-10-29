@@ -88,10 +88,10 @@ func (client FactoriesClient) CancelPipelineRun(ctx context.Context, resourceGro
 // CancelPipelineRunPreparer prepares the CancelPipelineRun request.
 func (client FactoriesClient) CancelPipelineRunPreparer(ctx context.Context, resourceGroupName string, factoryName string, runID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"runId":		autorest.Encode("path", runID),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"runId":             autorest.Encode("path", runID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -159,8 +159,8 @@ func (client FactoriesClient) ConfigureFactoryRepo(ctx context.Context, location
 // ConfigureFactoryRepoPreparer prepares the ConfigureFactoryRepo request.
 func (client FactoriesClient) ConfigureFactoryRepoPreparer(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"locationId":		autorest.Encode("path", locationID),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"locationId":     autorest.Encode("path", locationID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -218,7 +218,7 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: factory,
 			Constraints: []validation.Constraint{{Target: "factory.Identity", Name: validation.Null, Rule: false,
-				Chain:	[]validation.Constraint{{Target: "factory.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "factory.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("datafactory.FactoriesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -247,9 +247,9 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client FactoriesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, factory Factory) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -332,9 +332,9 @@ func (client FactoriesClient) Delete(ctx context.Context, resourceGroupName stri
 // DeletePreparer prepares the Delete request.
 func (client FactoriesClient) DeletePreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -414,9 +414,9 @@ func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string,
 // GetPreparer prepares the Get request.
 func (client FactoriesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -588,8 +588,8 @@ func (client FactoriesClient) ListByResourceGroup(ctx context.Context, resourceG
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
 func (client FactoriesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -699,9 +699,9 @@ func (client FactoriesClient) Update(ctx context.Context, resourceGroupName stri
 // UpdatePreparer prepares the Update request.
 func (client FactoriesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters FactoryUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"

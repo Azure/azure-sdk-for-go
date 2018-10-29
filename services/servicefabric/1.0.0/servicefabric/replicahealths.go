@@ -74,8 +74,8 @@ func (client ReplicaHealthsClient) Get(ctx context.Context, partitionID string, 
 // GetPreparer prepares the Get request.
 func (client ReplicaHealthsClient) GetPreparer(ctx context.Context, partitionID string, replicaID string, eventsHealthStateFilter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	autorest.Encode("path", partitionID),
-		"replicaId":	autorest.Encode("path", replicaID),
+		"partitionId": autorest.Encode("path", partitionID),
+		"replicaId":   autorest.Encode("path", replicaID),
 	}
 
 	const APIVersion = "1.0.0"
@@ -151,8 +151,8 @@ func (client ReplicaHealthsClient) Send(ctx context.Context, partitionID string,
 // SendPreparer prepares the Send request.
 func (client ReplicaHealthsClient) SendPreparer(ctx context.Context, partitionID string, replicaID string, replicaHealthReport ReplicaHealthReport) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	autorest.Encode("path", partitionID),
-		"replicaId":	autorest.Encode("path", replicaID),
+		"partitionId": autorest.Encode("path", partitionID),
+		"replicaId":   autorest.Encode("path", replicaID),
 	}
 
 	const APIVersion = "1.0.0"

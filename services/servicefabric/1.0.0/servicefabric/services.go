@@ -147,8 +147,8 @@ func (client ServicesClient) Get(ctx context.Context, applicationName string, se
 // GetPreparer prepares the Get request.
 func (client ServicesClient) GetPreparer(ctx context.Context, applicationName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":	applicationName,
-		"serviceName":		serviceName,
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
 	}
 
 	const APIVersion = "1.0.0"

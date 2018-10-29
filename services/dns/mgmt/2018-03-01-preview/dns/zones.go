@@ -76,9 +76,9 @@ func (client ZonesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ZonesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -153,9 +153,9 @@ func (client ZonesClient) Delete(ctx context.Context, resourceGroupName string, 
 // DeletePreparer prepares the Delete request.
 func (client ZonesClient) DeletePreparer(ctx context.Context, resourceGroupName string, zoneName string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -235,9 +235,9 @@ func (client ZonesClient) Get(ctx context.Context, resourceGroupName string, zon
 // GetPreparer prepares the Get request.
 func (client ZonesClient) GetPreparer(ctx context.Context, resourceGroupName string, zoneName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -407,8 +407,8 @@ func (client ZonesClient) ListByResourceGroup(ctx context.Context, resourceGroup
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
 func (client ZonesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -510,9 +510,9 @@ func (client ZonesClient) Update(ctx context.Context, resourceGroupName string, 
 // UpdatePreparer prepares the Update request.
 func (client ZonesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"

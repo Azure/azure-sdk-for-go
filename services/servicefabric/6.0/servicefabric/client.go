@@ -38,7 +38,7 @@ const (
 // BaseClient is the base client for Servicefabric.
 type BaseClient struct {
 	autorest.Client
-	BaseURI	string
+	BaseURI string
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -51,8 +51,8 @@ func New() BaseClient {
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:		autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:	baseURI,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }
 
@@ -121,9 +121,9 @@ func (client BaseClient) CancelOperation(ctx context.Context, operationID uuid.U
 func (client BaseClient) CancelOperationPreparer(ctx context.Context, operationID uuid.UUID, force bool, timeout *int64) (*http.Request, error) {
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"Force":	autorest.Encode("query", force),
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version": APIVersion,
+		"Force":       autorest.Encode("query", force),
+		"OperationId": autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -167,7 +167,7 @@ func (client BaseClient) CancelOperationResponder(resp *http.Response) (result a
 func (client BaseClient) CancelRepairTask(ctx context.Context, repairTaskCancelDescription RepairTaskCancelDescription) (result RepairTaskUpdateInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: repairTaskCancelDescription,
-			Constraints:	[]validation.Constraint{{Target: "repairTaskCancelDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "repairTaskCancelDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("servicefabric.BaseClient", "CancelRepairTask", err.Error())
 	}
 
@@ -333,9 +333,9 @@ func (client BaseClient) CreateApplication(ctx context.Context, applicationDescr
 				{Target: "applicationDescription.TypeVersion", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "applicationDescription.ApplicationCapacity", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "applicationDescription.ApplicationCapacity.MinimumNodes", Name: validation.Null, Rule: false,
-						Chain:	[]validation.Constraint{{Target: "applicationDescription.ApplicationCapacity.MinimumNodes", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
+						Chain: []validation.Constraint{{Target: "applicationDescription.ApplicationCapacity.MinimumNodes", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 						{Target: "applicationDescription.ApplicationCapacity.MaximumNodes", Name: validation.Null, Rule: false,
-							Chain:	[]validation.Constraint{{Target: "applicationDescription.ApplicationCapacity.MaximumNodes", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
+							Chain: []validation.Constraint{{Target: "applicationDescription.ApplicationCapacity.MaximumNodes", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 					}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
@@ -505,7 +505,7 @@ func (client BaseClient) CreateComposeDeploymentResponder(resp *http.Response) (
 func (client BaseClient) CreateName(ctx context.Context, nameDescription NameDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: nameDescription,
-			Constraints:	[]validation.Constraint{{Target: "nameDescription.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "nameDescription.Name", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -1169,8 +1169,8 @@ func (client BaseClient) DeletePropertyPreparer(ctx context.Context, nameID stri
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"PropertyName":	autorest.Encode("query", propertyName),
+		"api-version":  APIVersion,
+		"PropertyName": autorest.Encode("query", propertyName),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -1214,7 +1214,7 @@ func (client BaseClient) DeletePropertyResponder(resp *http.Response) (result au
 func (client BaseClient) DeleteRepairTask(ctx context.Context, repairTaskDeleteDescription RepairTaskDeleteDescription) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: repairTaskDeleteDescription,
-			Constraints:	[]validation.Constraint{{Target: "repairTaskDeleteDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "repairTaskDeleteDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("servicefabric.BaseClient", "DeleteRepairTask", err.Error())
 	}
 
@@ -1654,7 +1654,7 @@ func (client BaseClient) EnableNodeResponder(resp *http.Response) (result autore
 func (client BaseClient) ForceApproveRepairTask(ctx context.Context, repairTaskApproveDescription RepairTaskApproveDescription) (result RepairTaskUpdateInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: repairTaskApproveDescription,
-			Constraints:	[]validation.Constraint{{Target: "repairTaskApproveDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "repairTaskApproveDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("servicefabric.BaseClient", "ForceApproveRepairTask", err.Error())
 	}
 
@@ -2488,8 +2488,8 @@ func (client BaseClient) GetApplicationManifestPreparer(ctx context.Context, app
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ApplicationTypeVersion":	autorest.Encode("query", applicationTypeVersion),
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -2652,7 +2652,7 @@ func (client BaseClient) GetApplicationTypeInfoList(ctx context.Context, applica
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
-				Chain:	[]validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -2776,7 +2776,7 @@ func (client BaseClient) GetApplicationTypeInfoListByName(ctx context.Context, a
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
-				Chain:	[]validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -3110,8 +3110,8 @@ func (client BaseClient) GetClusterConfiguration(ctx context.Context, configurat
 func (client BaseClient) GetClusterConfigurationPreparer(ctx context.Context, configurationAPIVersion string, timeout *int64) (*http.Request, error) {
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ConfigurationApiVersion":	autorest.Encode("query", configurationAPIVersion),
+		"api-version":             APIVersion,
+		"ConfigurationApiVersion": autorest.Encode("query", configurationAPIVersion),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -4055,7 +4055,7 @@ func (client BaseClient) GetComposeDeploymentStatusList(ctx context.Context, con
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
-				Chain:	[]validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -4270,14 +4270,14 @@ func (client BaseClient) GetDataLossProgress(ctx context.Context, serviceID stri
 // GetDataLossProgressPreparer prepares the GetDataLossProgress request.
 func (client BaseClient) GetDataLossProgressPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version": APIVersion,
+		"OperationId": autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -4400,8 +4400,8 @@ func (client BaseClient) GetDeployedApplicationHealth(ctx context.Context, nodeN
 // GetDeployedApplicationHealthPreparer prepares the GetDeployedApplicationHealth request.
 func (client BaseClient) GetDeployedApplicationHealthPreparer(ctx context.Context, nodeName string, applicationID string, eventsHealthStateFilter *int32, deployedServicePackagesHealthStateFilter *int32, excludeHealthStatistics *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -4551,8 +4551,8 @@ func (client BaseClient) GetDeployedApplicationHealthUsingPolicy(ctx context.Con
 // GetDeployedApplicationHealthUsingPolicyPreparer prepares the GetDeployedApplicationHealthUsingPolicy request.
 func (client BaseClient) GetDeployedApplicationHealthUsingPolicyPreparer(ctx context.Context, nodeName string, applicationID string, eventsHealthStateFilter *int32, deployedServicePackagesHealthStateFilter *int32, applicationHealthPolicy *ApplicationHealthPolicy, excludeHealthStatistics *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -4661,8 +4661,8 @@ func (client BaseClient) GetDeployedApplicationInfo(ctx context.Context, nodeNam
 // GetDeployedApplicationInfoPreparer prepares the GetDeployedApplicationInfo request.
 func (client BaseClient) GetDeployedApplicationInfoPreparer(ctx context.Context, nodeName string, applicationID string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -4841,8 +4841,8 @@ func (client BaseClient) GetDeployedCodePackageInfoList(ctx context.Context, nod
 // GetDeployedCodePackageInfoListPreparer prepares the GetDeployedCodePackageInfoList request.
 func (client BaseClient) GetDeployedCodePackageInfoListPreparer(ctx context.Context, nodeName string, applicationID string, serviceManifestName string, codePackageName string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -4955,9 +4955,9 @@ func (client BaseClient) GetDeployedServicePackageHealth(ctx context.Context, no
 // GetDeployedServicePackageHealthPreparer prepares the GetDeployedServicePackageHealth request.
 func (client BaseClient) GetDeployedServicePackageHealthPreparer(ctx context.Context, nodeName string, applicationID string, servicePackageName string, eventsHealthStateFilter *int32, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
-		"servicePackageName":	servicePackageName,
+		"applicationId":      applicationID,
+		"nodeName":           autorest.Encode("path", nodeName),
+		"servicePackageName": servicePackageName,
 	}
 
 	const APIVersion = "6.0"
@@ -5076,9 +5076,9 @@ func (client BaseClient) GetDeployedServicePackageHealthUsingPolicy(ctx context.
 // GetDeployedServicePackageHealthUsingPolicyPreparer prepares the GetDeployedServicePackageHealthUsingPolicy request.
 func (client BaseClient) GetDeployedServicePackageHealthUsingPolicyPreparer(ctx context.Context, nodeName string, applicationID string, servicePackageName string, eventsHealthStateFilter *int32, applicationHealthPolicy *ApplicationHealthPolicy, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
-		"servicePackageName":	servicePackageName,
+		"applicationId":      applicationID,
+		"nodeName":           autorest.Encode("path", nodeName),
+		"servicePackageName": servicePackageName,
 	}
 
 	const APIVersion = "6.0"
@@ -5178,8 +5178,8 @@ func (client BaseClient) GetDeployedServicePackageInfoList(ctx context.Context, 
 // GetDeployedServicePackageInfoListPreparer prepares the GetDeployedServicePackageInfoList request.
 func (client BaseClient) GetDeployedServicePackageInfoListPreparer(ctx context.Context, nodeName string, applicationID string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -5271,9 +5271,9 @@ func (client BaseClient) GetDeployedServicePackageInfoListByName(ctx context.Con
 // GetDeployedServicePackageInfoListByNamePreparer prepares the GetDeployedServicePackageInfoListByName request.
 func (client BaseClient) GetDeployedServicePackageInfoListByNamePreparer(ctx context.Context, nodeName string, applicationID string, servicePackageName string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
-		"servicePackageName":	servicePackageName,
+		"applicationId":      applicationID,
+		"nodeName":           autorest.Encode("path", nodeName),
+		"servicePackageName": servicePackageName,
 	}
 
 	const APIVersion = "6.0"
@@ -5362,9 +5362,9 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfo(ctx context.Context
 // GetDeployedServiceReplicaDetailInfoPreparer prepares the GetDeployedServiceReplicaDetailInfo request.
 func (client BaseClient) GetDeployedServiceReplicaDetailInfoPreparer(ctx context.Context, nodeName string, partitionID uuid.UUID, replicaID string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"nodeName":	autorest.Encode("path", nodeName),
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"nodeName":    autorest.Encode("path", nodeName),
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -5452,8 +5452,8 @@ func (client BaseClient) GetDeployedServiceReplicaDetailInfoByPartitionID(ctx co
 // GetDeployedServiceReplicaDetailInfoByPartitionIDPreparer prepares the GetDeployedServiceReplicaDetailInfoByPartitionID request.
 func (client BaseClient) GetDeployedServiceReplicaDetailInfoByPartitionIDPreparer(ctx context.Context, nodeName string, partitionID uuid.UUID, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"nodeName":	autorest.Encode("path", nodeName),
-		"partitionId":	partitionID,
+		"nodeName":    autorest.Encode("path", nodeName),
+		"partitionId": partitionID,
 	}
 
 	const APIVersion = "6.0"
@@ -5548,8 +5548,8 @@ func (client BaseClient) GetDeployedServiceReplicaInfoList(ctx context.Context, 
 // GetDeployedServiceReplicaInfoListPreparer prepares the GetDeployedServiceReplicaInfoList request.
 func (client BaseClient) GetDeployedServiceReplicaInfoListPreparer(ctx context.Context, nodeName string, applicationID string, partitionID *uuid.UUID, serviceManifestName string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -5651,9 +5651,9 @@ func (client BaseClient) GetDeployedServiceTypeInfoByName(ctx context.Context, n
 // GetDeployedServiceTypeInfoByNamePreparer prepares the GetDeployedServiceTypeInfoByName request.
 func (client BaseClient) GetDeployedServiceTypeInfoByNamePreparer(ctx context.Context, nodeName string, applicationID string, serviceTypeName string, serviceManifestName string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
-		"serviceTypeName":	serviceTypeName,
+		"applicationId":   applicationID,
+		"nodeName":        autorest.Encode("path", nodeName),
+		"serviceTypeName": serviceTypeName,
 	}
 
 	const APIVersion = "6.0"
@@ -5750,8 +5750,8 @@ func (client BaseClient) GetDeployedServiceTypeInfoList(ctx context.Context, nod
 // GetDeployedServiceTypeInfoListPreparer prepares the GetDeployedServiceTypeInfoList request.
 func (client BaseClient) GetDeployedServiceTypeInfoListPreparer(ctx context.Context, nodeName string, applicationID string, serviceManifestName string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -5853,9 +5853,9 @@ func (client BaseClient) GetFaultOperationList(ctx context.Context, typeFilter i
 func (client BaseClient) GetFaultOperationListPreparer(ctx context.Context, typeFilter int32, stateFilter int32, timeout *int64) (*http.Request, error) {
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"StateFilter":	autorest.Encode("query", stateFilter),
-		"TypeFilter":	autorest.Encode("query", typeFilter),
+		"api-version": APIVersion,
+		"StateFilter": autorest.Encode("query", stateFilter),
+		"TypeFilter":  autorest.Encode("query", typeFilter),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -6698,8 +6698,8 @@ func (client BaseClient) GetNodeTransitionProgressPreparer(ctx context.Context, 
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version": APIVersion,
+		"OperationId": autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -7345,14 +7345,14 @@ func (client BaseClient) GetPartitionRestartProgress(ctx context.Context, servic
 // GetPartitionRestartProgressPreparer prepares the GetPartitionRestartProgress request.
 func (client BaseClient) GetPartitionRestartProgressPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version": APIVersion,
+		"OperationId": autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -7439,8 +7439,8 @@ func (client BaseClient) GetPropertyInfoPreparer(ctx context.Context, nameID str
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"PropertyName":	autorest.Encode("query", propertyName),
+		"api-version":  APIVersion,
+		"PropertyName": autorest.Encode("query", propertyName),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -7799,14 +7799,14 @@ func (client BaseClient) GetQuorumLossProgress(ctx context.Context, serviceID st
 // GetQuorumLossProgressPreparer prepares the GetQuorumLossProgress request.
 func (client BaseClient) GetQuorumLossProgressPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version": APIVersion,
+		"OperationId": autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -7987,8 +7987,8 @@ func (client BaseClient) GetReplicaHealth(ctx context.Context, partitionID uuid.
 // GetReplicaHealthPreparer prepares the GetReplicaHealth request.
 func (client BaseClient) GetReplicaHealthPreparer(ctx context.Context, partitionID uuid.UUID, replicaID string, eventsHealthStateFilter *int32, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -8104,8 +8104,8 @@ func (client BaseClient) GetReplicaHealthUsingPolicy(ctx context.Context, partit
 // GetReplicaHealthUsingPolicyPreparer prepares the GetReplicaHealthUsingPolicy request.
 func (client BaseClient) GetReplicaHealthUsingPolicyPreparer(ctx context.Context, partitionID uuid.UUID, replicaID string, eventsHealthStateFilter *int32, applicationHealthPolicy *ApplicationHealthPolicy, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -8207,8 +8207,8 @@ func (client BaseClient) GetReplicaInfo(ctx context.Context, partitionID uuid.UU
 // GetReplicaInfoPreparer prepares the GetReplicaInfo request.
 func (client BaseClient) GetReplicaInfoPreparer(ctx context.Context, partitionID uuid.UUID, replicaID string, continuationToken string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -8783,8 +8783,8 @@ func (client BaseClient) GetServiceInfo(ctx context.Context, applicationID strin
 // GetServiceInfoPreparer prepares the GetServiceInfo request.
 func (client BaseClient) GetServiceInfoPreparer(ctx context.Context, applicationID string, serviceID string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"serviceId":		serviceID,
+		"applicationId": applicationID,
+		"serviceId":     serviceID,
 	}
 
 	const APIVersion = "6.0"
@@ -8979,9 +8979,9 @@ func (client BaseClient) GetServiceManifestPreparer(ctx context.Context, applica
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ApplicationTypeVersion":	autorest.Encode("query", applicationTypeVersion),
-		"ServiceManifestName":		autorest.Encode("query", serviceManifestName),
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
+		"ServiceManifestName":    autorest.Encode("query", serviceManifestName),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -9155,8 +9155,8 @@ func (client BaseClient) GetServiceTypeInfoListPreparer(ctx context.Context, app
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ApplicationTypeVersion":	autorest.Encode("query", applicationTypeVersion),
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -9348,8 +9348,8 @@ func (client BaseClient) InvokeInfrastructureCommand(ctx context.Context, comman
 func (client BaseClient) InvokeInfrastructureCommandPreparer(ctx context.Context, command string, serviceID string, timeout *int64) (*http.Request, error) {
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"Command":	autorest.Encode("query", command),
+		"api-version": APIVersion,
+		"Command":     autorest.Encode("query", command),
 	}
 	if len(serviceID) > 0 {
 		queryParameters["ServiceId"] = autorest.Encode("query", serviceID)
@@ -9443,8 +9443,8 @@ func (client BaseClient) InvokeInfrastructureQuery(ctx context.Context, command 
 func (client BaseClient) InvokeInfrastructureQueryPreparer(ctx context.Context, command string, serviceID string, timeout *int64) (*http.Request, error) {
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"Command":	autorest.Encode("query", command),
+		"api-version": APIVersion,
+		"Command":     autorest.Encode("query", command),
 	}
 	if len(serviceID) > 0 {
 		queryParameters["ServiceId"] = autorest.Encode("query", serviceID)
@@ -9497,7 +9497,7 @@ func (client BaseClient) InvokeInfrastructureQueryResponder(resp *http.Response)
 func (client BaseClient) ProvisionApplicationType(ctx context.Context, applicationTypeImageStorePath ApplicationTypeImageStorePath, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: applicationTypeImageStorePath,
-			Constraints:	[]validation.Constraint{{Target: "applicationTypeImageStorePath.ApplicationTypeBuildPath", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "applicationTypeImageStorePath.ApplicationTypeBuildPath", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -10306,9 +10306,9 @@ func (client BaseClient) RemoveReplica(ctx context.Context, nodeName string, par
 // RemoveReplicaPreparer prepares the RemoveReplica request.
 func (client BaseClient) RemoveReplicaPreparer(ctx context.Context, nodeName string, partitionID uuid.UUID, replicaID string, forceRemove *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"nodeName":	autorest.Encode("path", nodeName),
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"nodeName":    autorest.Encode("path", nodeName),
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -10648,8 +10648,8 @@ func (client BaseClient) ReportDeployedApplicationHealth(ctx context.Context, no
 // ReportDeployedApplicationHealthPreparer prepares the ReportDeployedApplicationHealth request.
 func (client BaseClient) ReportDeployedApplicationHealthPreparer(ctx context.Context, nodeName string, applicationID string, healthInformation HealthInformation, immediate *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -10769,9 +10769,9 @@ func (client BaseClient) ReportDeployedServicePackageHealth(ctx context.Context,
 // ReportDeployedServicePackageHealthPreparer prepares the ReportDeployedServicePackageHealth request.
 func (client BaseClient) ReportDeployedServicePackageHealthPreparer(ctx context.Context, nodeName string, applicationID string, servicePackageName string, healthInformation HealthInformation, immediate *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
-		"servicePackageName":	servicePackageName,
+		"applicationId":      applicationID,
+		"nodeName":           autorest.Encode("path", nodeName),
+		"servicePackageName": servicePackageName,
 	}
 
 	const APIVersion = "6.0"
@@ -11119,14 +11119,14 @@ func (client BaseClient) ReportReplicaHealth(ctx context.Context, partitionID uu
 // ReportReplicaHealthPreparer prepares the ReportReplicaHealth request.
 func (client BaseClient) ReportReplicaHealthPreparer(ctx context.Context, partitionID uuid.UUID, replicaID string, serviceKind string, healthInformation HealthInformation, immediate *bool, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"ServiceKind":	autorest.Encode("query", serviceKind),
+		"api-version": APIVersion,
+		"ServiceKind": autorest.Encode("query", serviceKind),
 	}
 	if immediate != nil {
 		queryParameters["Immediate"] = autorest.Encode("query", *immediate)
@@ -11533,8 +11533,8 @@ func (client BaseClient) RestartDeployedCodePackage(ctx context.Context, nodeNam
 // RestartDeployedCodePackagePreparer prepares the RestartDeployedCodePackage request.
 func (client BaseClient) RestartDeployedCodePackagePreparer(ctx context.Context, nodeName string, applicationID string, restartDeployedCodePackageDescription RestartDeployedCodePackageDescription, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationId":	applicationID,
-		"nodeName":		autorest.Encode("path", nodeName),
+		"applicationId": applicationID,
+		"nodeName":      autorest.Encode("path", nodeName),
 	}
 
 	const APIVersion = "6.0"
@@ -11590,7 +11590,7 @@ func (client BaseClient) RestartDeployedCodePackageResponder(resp *http.Response
 func (client BaseClient) RestartNode(ctx context.Context, nodeName string, restartNodeDescription RestartNodeDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: restartNodeDescription,
-			Constraints:	[]validation.Constraint{{Target: "restartNodeDescription.NodeInstanceID", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "restartNodeDescription.NodeInstanceID", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -11714,9 +11714,9 @@ func (client BaseClient) RestartReplica(ctx context.Context, nodeName string, pa
 // RestartReplicaPreparer prepares the RestartReplica request.
 func (client BaseClient) RestartReplicaPreparer(ctx context.Context, nodeName string, partitionID uuid.UUID, replicaID string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"nodeName":	autorest.Encode("path", nodeName),
-		"partitionId":	partitionID,
-		"replicaId":	replicaID,
+		"nodeName":    autorest.Encode("path", nodeName),
+		"partitionId": partitionID,
+		"replicaId":   replicaID,
 	}
 
 	const APIVersion = "6.0"
@@ -11774,7 +11774,7 @@ func (client BaseClient) RestartReplicaResponder(resp *http.Response) (result au
 func (client BaseClient) ResumeApplicationUpgrade(ctx context.Context, applicationID string, resumeApplicationUpgradeDescription ResumeApplicationUpgradeDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resumeApplicationUpgradeDescription,
-			Constraints:	[]validation.Constraint{{Target: "resumeApplicationUpgradeDescription.UpgradeDomainName", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resumeApplicationUpgradeDescription.UpgradeDomainName", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -11862,7 +11862,7 @@ func (client BaseClient) ResumeApplicationUpgradeResponder(resp *http.Response) 
 func (client BaseClient) ResumeClusterUpgrade(ctx context.Context, resumeClusterUpgradeDescription ResumeClusterUpgradeDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resumeClusterUpgradeDescription,
-			Constraints:	[]validation.Constraint{{Target: "resumeClusterUpgradeDescription.UpgradeDomain", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resumeClusterUpgradeDescription.UpgradeDomain", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -12314,7 +12314,7 @@ func (client BaseClient) StartChaosResponder(resp *http.Response) (result autore
 func (client BaseClient) StartClusterConfigurationUpgrade(ctx context.Context, clusterConfigurationUpgradeDescription ClusterConfigurationUpgradeDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: clusterConfigurationUpgradeDescription,
-			Constraints:	[]validation.Constraint{{Target: "clusterConfigurationUpgradeDescription.ClusterConfig", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "clusterConfigurationUpgradeDescription.ClusterConfig", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -12642,15 +12642,15 @@ func (client BaseClient) StartDataLoss(ctx context.Context, serviceID string, pa
 // StartDataLossPreparer prepares the StartDataLoss request.
 func (client BaseClient) StartDataLossPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, dataLossMode string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"DataLossMode":	autorest.Encode("query", dataLossMode),
-		"OperationId":	autorest.Encode("query", operationID),
+		"api-version":  APIVersion,
+		"DataLossMode": autorest.Encode("query", dataLossMode),
+		"OperationId":  autorest.Encode("query", operationID),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -12711,7 +12711,7 @@ func (client BaseClient) StartDataLossResponder(resp *http.Response) (result aut
 func (client BaseClient) StartNodeTransition(ctx context.Context, nodeName string, operationID uuid.UUID, nodeTransitionType string, nodeInstanceID string, stopDurationInSeconds int32, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: stopDurationInSeconds,
-			Constraints:	[]validation.Constraint{{Target: "stopDurationInSeconds", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "stopDurationInSeconds", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -12750,11 +12750,11 @@ func (client BaseClient) StartNodeTransitionPreparer(ctx context.Context, nodeNa
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"NodeInstanceId":		autorest.Encode("query", nodeInstanceID),
-		"NodeTransitionType":		autorest.Encode("query", nodeTransitionType),
-		"OperationId":			autorest.Encode("query", operationID),
-		"StopDurationInSeconds":	autorest.Encode("query", stopDurationInSeconds),
+		"api-version":           APIVersion,
+		"NodeInstanceId":        autorest.Encode("query", nodeInstanceID),
+		"NodeTransitionType":    autorest.Encode("query", nodeTransitionType),
+		"OperationId":           autorest.Encode("query", operationID),
+		"StopDurationInSeconds": autorest.Encode("query", stopDurationInSeconds),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -12846,15 +12846,15 @@ func (client BaseClient) StartPartitionRestart(ctx context.Context, serviceID st
 // StartPartitionRestartPreparer prepares the StartPartitionRestart request.
 func (client BaseClient) StartPartitionRestartPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, restartPartitionMode string, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":		APIVersion,
-		"OperationId":		autorest.Encode("query", operationID),
-		"RestartPartitionMode":	autorest.Encode("query", restartPartitionMode),
+		"api-version":          APIVersion,
+		"OperationId":          autorest.Encode("query", operationID),
+		"RestartPartitionMode": autorest.Encode("query", restartPartitionMode),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -12955,16 +12955,16 @@ func (client BaseClient) StartQuorumLoss(ctx context.Context, serviceID string, 
 // StartQuorumLossPreparer prepares the StartQuorumLoss request.
 func (client BaseClient) StartQuorumLossPreparer(ctx context.Context, serviceID string, partitionID uuid.UUID, operationID uuid.UUID, quorumLossMode string, quorumLossDuration int32, timeout *int64) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	partitionID,
-		"serviceId":	serviceID,
+		"partitionId": partitionID,
+		"serviceId":   serviceID,
 	}
 
 	const APIVersion = "6.0"
 	queryParameters := map[string]interface{}{
-		"api-version":		APIVersion,
-		"OperationId":		autorest.Encode("query", operationID),
-		"QuorumLossDuration":	autorest.Encode("query", quorumLossDuration),
-		"QuorumLossMode":	autorest.Encode("query", quorumLossMode),
+		"api-version":        APIVersion,
+		"OperationId":        autorest.Encode("query", operationID),
+		"QuorumLossDuration": autorest.Encode("query", quorumLossDuration),
+		"QuorumLossMode":     autorest.Encode("query", quorumLossMode),
 	}
 	if timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *timeout)
@@ -13181,7 +13181,7 @@ func (client BaseClient) SubmitPropertyBatchResponder(resp *http.Response) (resu
 func (client BaseClient) UnprovisionApplicationType(ctx context.Context, applicationTypeName string, applicationTypeImageStoreVersion ApplicationTypeImageStoreVersion, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: applicationTypeImageStoreVersion,
-			Constraints:	[]validation.Constraint{{Target: "applicationTypeImageStoreVersion.ApplicationTypeVersion", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "applicationTypeImageStoreVersion.ApplicationTypeVersion", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -13357,7 +13357,7 @@ func (client BaseClient) UnprovisionClusterResponder(resp *http.Response) (resul
 func (client BaseClient) UpdateApplicationUpgrade(ctx context.Context, applicationID string, applicationUpgradeUpdateDescription ApplicationUpgradeUpdateDescription, timeout *int64) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: applicationUpgradeUpdateDescription,
-			Constraints:	[]validation.Constraint{{Target: "applicationUpgradeUpdateDescription.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "applicationUpgradeUpdateDescription.Name", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
@@ -13610,7 +13610,7 @@ func (client BaseClient) UpdateRepairExecutionStateResponder(resp *http.Response
 func (client BaseClient) UpdateRepairTaskHealthPolicy(ctx context.Context, repairTaskUpdateHealthPolicyDescription RepairTaskUpdateHealthPolicyDescription) (result RepairTaskUpdateInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: repairTaskUpdateHealthPolicyDescription,
-			Constraints:	[]validation.Constraint{{Target: "repairTaskUpdateHealthPolicyDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "repairTaskUpdateHealthPolicyDescription.TaskID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("servicefabric.BaseClient", "UpdateRepairTaskHealthPolicy", err.Error())
 	}
 

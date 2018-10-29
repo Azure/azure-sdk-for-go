@@ -69,7 +69,7 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
 		{TargetValue: trigger,
-			Constraints:	[]validation.Constraint{{Target: "trigger.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "trigger.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.TriggersClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -98,10 +98,10 @@ func (client TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client TriggersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger TriggerResource, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -193,10 +193,10 @@ func (client TriggersClient) Delete(ctx context.Context, resourceGroupName strin
 // DeletePreparer prepares the Delete request.
 func (client TriggersClient) DeletePreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -281,10 +281,10 @@ func (client TriggersClient) Get(ctx context.Context, resourceGroupName string, 
 // GetPreparer prepares the Get request.
 func (client TriggersClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -366,9 +366,9 @@ func (client TriggersClient) ListByFactory(ctx context.Context, resourceGroupNam
 // ListByFactoryPreparer prepares the ListByFactory request.
 func (client TriggersClient) ListByFactoryPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -485,17 +485,17 @@ func (client TriggersClient) ListRuns(ctx context.Context, resourceGroupName str
 // ListRunsPreparer prepares the ListRuns request.
 func (client TriggersClient) ListRunsPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, startTime date.Time, endTime date.Time) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version":	APIVersion,
-		"endTime":	autorest.Encode("query", endTime),
-		"startTime":	autorest.Encode("query", startTime),
+		"api-version": APIVersion,
+		"endTime":     autorest.Encode("query", endTime),
+		"startTime":   autorest.Encode("query", startTime),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -598,10 +598,10 @@ func (client TriggersClient) Start(ctx context.Context, resourceGroupName string
 // StartPreparer prepares the Start request.
 func (client TriggersClient) StartPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -688,10 +688,10 @@ func (client TriggersClient) Stop(ctx context.Context, resourceGroupName string,
 // StopPreparer prepares the Stop request.
 func (client TriggersClient) StopPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"triggerName":		autorest.Encode("path", triggerName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
 	}
 
 	const APIVersion = "2017-09-01-preview"

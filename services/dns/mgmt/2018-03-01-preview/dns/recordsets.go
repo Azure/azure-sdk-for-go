@@ -78,11 +78,11 @@ func (client RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client RecordSetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"recordType":			autorest.Encode("path", recordType),
-		"relativeRecordSetName":	relativeRecordSetName,
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
-		"zoneName":			autorest.Encode("path", zoneName),
+		"recordType":            autorest.Encode("path", recordType),
+		"relativeRecordSetName": relativeRecordSetName,
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -164,11 +164,11 @@ func (client RecordSetsClient) Delete(ctx context.Context, resourceGroupName str
 // DeletePreparer prepares the Delete request.
 func (client RecordSetsClient) DeletePreparer(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"recordType":			autorest.Encode("path", recordType),
-		"relativeRecordSetName":	relativeRecordSetName,
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
-		"zoneName":			autorest.Encode("path", zoneName),
+		"recordType":            autorest.Encode("path", recordType),
+		"relativeRecordSetName": relativeRecordSetName,
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -241,11 +241,11 @@ func (client RecordSetsClient) Get(ctx context.Context, resourceGroupName string
 // GetPreparer prepares the Get request.
 func (client RecordSetsClient) GetPreparer(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"recordType":			autorest.Encode("path", recordType),
-		"relativeRecordSetName":	relativeRecordSetName,
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
-		"zoneName":			autorest.Encode("path", zoneName),
+		"recordType":            autorest.Encode("path", recordType),
+		"relativeRecordSetName": relativeRecordSetName,
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -318,9 +318,9 @@ func (client RecordSetsClient) ListAllByDNSZone(ctx context.Context, resourceGro
 // ListAllByDNSZonePreparer prepares the ListAllByDNSZone request.
 func (client RecordSetsClient) ListAllByDNSZonePreparer(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordSetNameSuffix string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -427,9 +427,9 @@ func (client RecordSetsClient) ListByDNSZone(ctx context.Context, resourceGroupN
 // ListByDNSZonePreparer prepares the ListByDNSZone request.
 func (client RecordSetsClient) ListByDNSZonePreparer(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -536,10 +536,10 @@ func (client RecordSetsClient) ListByType(ctx context.Context, resourceGroupName
 // ListByTypePreparer prepares the ListByType request.
 func (client RecordSetsClient) ListByTypePreparer(ctx context.Context, resourceGroupName string, zoneName string, recordType RecordType, top *int32, recordsetnamesuffix string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"recordType":		autorest.Encode("path", recordType),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
-		"zoneName":		autorest.Encode("path", zoneName),
+		"recordType":        autorest.Encode("path", recordType),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"zoneName":          autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -645,11 +645,11 @@ func (client RecordSetsClient) Update(ctx context.Context, resourceGroupName str
 // UpdatePreparer prepares the Update request.
 func (client RecordSetsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"recordType":			autorest.Encode("path", recordType),
-		"relativeRecordSetName":	relativeRecordSetName,
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
-		"zoneName":			autorest.Encode("path", zoneName),
+		"recordType":            autorest.Encode("path", recordType),
+		"relativeRecordSetName": relativeRecordSetName,
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"zoneName":              autorest.Encode("path", zoneName),
 	}
 
 	const APIVersion = "2018-03-01-preview"

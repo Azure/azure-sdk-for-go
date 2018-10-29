@@ -31,15 +31,15 @@ type AggregatedHealthState string
 
 const (
 	// Error ...
-	Error	AggregatedHealthState	= "Error"
+	Error AggregatedHealthState = "Error"
 	// Invalid ...
-	Invalid	AggregatedHealthState	= "Invalid"
+	Invalid AggregatedHealthState = "Invalid"
 	// Ok ...
-	Ok	AggregatedHealthState	= "Ok"
+	Ok AggregatedHealthState = "Ok"
 	// Unknown ...
-	Unknown	AggregatedHealthState	= "Unknown"
+	Unknown AggregatedHealthState = "Unknown"
 	// Warning ...
-	Warning	AggregatedHealthState	= "Warning"
+	Warning AggregatedHealthState = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -54,15 +54,15 @@ type AggregatedHealthState1 string
 
 const (
 	// AggregatedHealthState1Error ...
-	AggregatedHealthState1Error	AggregatedHealthState1	= "Error"
+	AggregatedHealthState1Error AggregatedHealthState1 = "Error"
 	// AggregatedHealthState1Invalid ...
-	AggregatedHealthState1Invalid	AggregatedHealthState1	= "Invalid"
+	AggregatedHealthState1Invalid AggregatedHealthState1 = "Invalid"
 	// AggregatedHealthState1Ok ...
-	AggregatedHealthState1Ok	AggregatedHealthState1	= "Ok"
+	AggregatedHealthState1Ok AggregatedHealthState1 = "Ok"
 	// AggregatedHealthState1Unknown ...
-	AggregatedHealthState1Unknown	AggregatedHealthState1	= "Unknown"
+	AggregatedHealthState1Unknown AggregatedHealthState1 = "Unknown"
 	// AggregatedHealthState1Warning ...
-	AggregatedHealthState1Warning	AggregatedHealthState1	= "Warning"
+	AggregatedHealthState1Warning AggregatedHealthState1 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -77,15 +77,15 @@ type AggregatedHealthState2 string
 
 const (
 	// AggregatedHealthState2Error ...
-	AggregatedHealthState2Error	AggregatedHealthState2	= "Error"
+	AggregatedHealthState2Error AggregatedHealthState2 = "Error"
 	// AggregatedHealthState2Invalid ...
-	AggregatedHealthState2Invalid	AggregatedHealthState2	= "Invalid"
+	AggregatedHealthState2Invalid AggregatedHealthState2 = "Invalid"
 	// AggregatedHealthState2Ok ...
-	AggregatedHealthState2Ok	AggregatedHealthState2	= "Ok"
+	AggregatedHealthState2Ok AggregatedHealthState2 = "Ok"
 	// AggregatedHealthState2Unknown ...
-	AggregatedHealthState2Unknown	AggregatedHealthState2	= "Unknown"
+	AggregatedHealthState2Unknown AggregatedHealthState2 = "Unknown"
 	// AggregatedHealthState2Warning ...
-	AggregatedHealthState2Warning	AggregatedHealthState2	= "Warning"
+	AggregatedHealthState2Warning AggregatedHealthState2 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -100,137 +100,137 @@ type Code string
 
 const (
 	// EABORT ...
-	EABORT	Code	= "E_ABORT"
+	EABORT Code = "E_ABORT"
 	// FABRICEAPPLICATIONALREADYEXISTS ...
-	FABRICEAPPLICATIONALREADYEXISTS	Code	= "FABRIC_E_APPLICATION_ALREADY_EXISTS"
+	FABRICEAPPLICATIONALREADYEXISTS Code = "FABRIC_E_APPLICATION_ALREADY_EXISTS"
 	// FABRICEAPPLICATIONALREADYINTARGETVERSION ...
-	FABRICEAPPLICATIONALREADYINTARGETVERSION	Code	= "FABRIC_E_APPLICATION_ALREADY_IN_TARGET_VERSION"
+	FABRICEAPPLICATIONALREADYINTARGETVERSION Code = "FABRIC_E_APPLICATION_ALREADY_IN_TARGET_VERSION"
 	// FABRICEAPPLICATIONNOTFOUND ...
-	FABRICEAPPLICATIONNOTFOUND	Code	= "FABRIC_E_APPLICATION_NOT_FOUND"
+	FABRICEAPPLICATIONNOTFOUND Code = "FABRIC_E_APPLICATION_NOT_FOUND"
 	// FABRICEAPPLICATIONNOTUPGRADING ...
-	FABRICEAPPLICATIONNOTUPGRADING	Code	= "FABRIC_E_APPLICATION_NOT_UPGRADING"
+	FABRICEAPPLICATIONNOTUPGRADING Code = "FABRIC_E_APPLICATION_NOT_UPGRADING"
 	// FABRICEAPPLICATIONTYPEALREADYEXISTS ...
-	FABRICEAPPLICATIONTYPEALREADYEXISTS	Code	= "FABRIC_E_APPLICATION_TYPE_ALREADY_EXISTS"
+	FABRICEAPPLICATIONTYPEALREADYEXISTS Code = "FABRIC_E_APPLICATION_TYPE_ALREADY_EXISTS"
 	// FABRICEAPPLICATIONTYPEINUSE ...
-	FABRICEAPPLICATIONTYPEINUSE	Code	= "FABRIC_E_APPLICATION_TYPE_IN_USE"
+	FABRICEAPPLICATIONTYPEINUSE Code = "FABRIC_E_APPLICATION_TYPE_IN_USE"
 	// FABRICEAPPLICATIONTYPENOTFOUND ...
-	FABRICEAPPLICATIONTYPENOTFOUND	Code	= "FABRIC_E_APPLICATION_TYPE_NOT_FOUND"
+	FABRICEAPPLICATIONTYPENOTFOUND Code = "FABRIC_E_APPLICATION_TYPE_NOT_FOUND"
 	// FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS ...
-	FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS	Code	= "FABRIC_E_APPLICATION_TYPE_PROVISION_IN_PROGRESS"
+	FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS Code = "FABRIC_E_APPLICATION_TYPE_PROVISION_IN_PROGRESS"
 	// FABRICEAPPLICATIONUPGRADEINPROGRESS ...
-	FABRICEAPPLICATIONUPGRADEINPROGRESS	Code	= "FABRIC_E_APPLICATION_UPGRADE_IN_PROGRESS"
+	FABRICEAPPLICATIONUPGRADEINPROGRESS Code = "FABRIC_E_APPLICATION_UPGRADE_IN_PROGRESS"
 	// FABRICEAPPLICATIONUPGRADEVALIDATIONERROR ...
-	FABRICEAPPLICATIONUPGRADEVALIDATIONERROR	Code	= "FABRIC_E_APPLICATION_UPGRADE_VALIDATION_ERROR"
+	FABRICEAPPLICATIONUPGRADEVALIDATIONERROR Code = "FABRIC_E_APPLICATION_UPGRADE_VALIDATION_ERROR"
 	// FABRICECOMMUNICATIONERROR ...
-	FABRICECOMMUNICATIONERROR	Code	= "FABRIC_E_COMMUNICATION_ERROR"
+	FABRICECOMMUNICATIONERROR Code = "FABRIC_E_COMMUNICATION_ERROR"
 	// FABRICECONFIGURATIONPARAMETERNOTFOUND ...
-	FABRICECONFIGURATIONPARAMETERNOTFOUND	Code	= "FABRIC_E_CONFIGURATION_PARAMETER_NOT_FOUND"
+	FABRICECONFIGURATIONPARAMETERNOTFOUND Code = "FABRIC_E_CONFIGURATION_PARAMETER_NOT_FOUND"
 	// FABRICECONFIGURATIONSECTIONNOTFOUND ...
-	FABRICECONFIGURATIONSECTIONNOTFOUND	Code	= "FABRIC_E_CONFIGURATION_SECTION_NOT_FOUND"
+	FABRICECONFIGURATIONSECTIONNOTFOUND Code = "FABRIC_E_CONFIGURATION_SECTION_NOT_FOUND"
 	// FABRICEDIRECTORYNOTFOUND ...
-	FABRICEDIRECTORYNOTFOUND	Code	= "FABRIC_E_DIRECTORY_NOT_FOUND"
+	FABRICEDIRECTORYNOTFOUND Code = "FABRIC_E_DIRECTORY_NOT_FOUND"
 	// FABRICEENUMERATIONCOMPLETED ...
-	FABRICEENUMERATIONCOMPLETED	Code	= "FABRIC_E_ENUMERATION_COMPLETED"
+	FABRICEENUMERATIONCOMPLETED Code = "FABRIC_E_ENUMERATION_COMPLETED"
 	// FABRICEFABRICALREADYINTARGETVERSION ...
-	FABRICEFABRICALREADYINTARGETVERSION	Code	= "FABRIC_E_FABRIC_ALREADY_IN_TARGET_VERSION"
+	FABRICEFABRICALREADYINTARGETVERSION Code = "FABRIC_E_FABRIC_ALREADY_IN_TARGET_VERSION"
 	// FABRICEFABRICNOTUPGRADING ...
-	FABRICEFABRICNOTUPGRADING	Code	= "FABRIC_E_FABRIC_NOT_UPGRADING"
+	FABRICEFABRICNOTUPGRADING Code = "FABRIC_E_FABRIC_NOT_UPGRADING"
 	// FABRICEFABRICUPGRADEINPROGRESS ...
-	FABRICEFABRICUPGRADEINPROGRESS	Code	= "FABRIC_E_FABRIC_UPGRADE_IN_PROGRESS"
+	FABRICEFABRICUPGRADEINPROGRESS Code = "FABRIC_E_FABRIC_UPGRADE_IN_PROGRESS"
 	// FABRICEFABRICUPGRADEVALIDATIONERROR ...
-	FABRICEFABRICUPGRADEVALIDATIONERROR	Code	= "FABRIC_E_FABRIC_UPGRADE_VALIDATION_ERROR"
+	FABRICEFABRICUPGRADEVALIDATIONERROR Code = "FABRIC_E_FABRIC_UPGRADE_VALIDATION_ERROR"
 	// FABRICEFABRICVERSIONALREADYEXISTS ...
-	FABRICEFABRICVERSIONALREADYEXISTS	Code	= "FABRIC_E_FABRIC_VERSION_ALREADY_EXISTS"
+	FABRICEFABRICVERSIONALREADYEXISTS Code = "FABRIC_E_FABRIC_VERSION_ALREADY_EXISTS"
 	// FABRICEFABRICVERSIONINUSE ...
-	FABRICEFABRICVERSIONINUSE	Code	= "FABRIC_E_FABRIC_VERSION_IN_USE"
+	FABRICEFABRICVERSIONINUSE Code = "FABRIC_E_FABRIC_VERSION_IN_USE"
 	// FABRICEFABRICVERSIONNOTFOUND ...
-	FABRICEFABRICVERSIONNOTFOUND	Code	= "FABRIC_E_FABRIC_VERSION_NOT_FOUND"
+	FABRICEFABRICVERSIONNOTFOUND Code = "FABRIC_E_FABRIC_VERSION_NOT_FOUND"
 	// FABRICEFILENOTFOUND ...
-	FABRICEFILENOTFOUND	Code	= "FABRIC_E_FILE_NOT_FOUND"
+	FABRICEFILENOTFOUND Code = "FABRIC_E_FILE_NOT_FOUND"
 	// FABRICEHEALTHENTITYNOTFOUND ...
-	FABRICEHEALTHENTITYNOTFOUND	Code	= "FABRIC_E_HEALTH_ENTITY_NOT_FOUND"
+	FABRICEHEALTHENTITYNOTFOUND Code = "FABRIC_E_HEALTH_ENTITY_NOT_FOUND"
 	// FABRICEHEALTHSTALEREPORT ...
-	FABRICEHEALTHSTALEREPORT	Code	= "FABRIC_E_HEALTH_STALE_REPORT"
+	FABRICEHEALTHSTALEREPORT Code = "FABRIC_E_HEALTH_STALE_REPORT"
 	// FABRICEIMAGEBUILDERVALIDATIONERROR ...
-	FABRICEIMAGEBUILDERVALIDATIONERROR	Code	= "FABRIC_E_IMAGEBUILDER_VALIDATION_ERROR"
+	FABRICEIMAGEBUILDERVALIDATIONERROR Code = "FABRIC_E_IMAGEBUILDER_VALIDATION_ERROR"
 	// FABRICEINSTANCEIDMISMATCH ...
-	FABRICEINSTANCEIDMISMATCH	Code	= "FABRIC_E_INSTANCE_ID_MISMATCH"
+	FABRICEINSTANCEIDMISMATCH Code = "FABRIC_E_INSTANCE_ID_MISMATCH"
 	// FABRICEINVALIDADDRESS ...
-	FABRICEINVALIDADDRESS	Code	= "FABRIC_E_INVALID_ADDRESS"
+	FABRICEINVALIDADDRESS Code = "FABRIC_E_INVALID_ADDRESS"
 	// FABRICEINVALIDATOMICGROUP ...
-	FABRICEINVALIDATOMICGROUP	Code	= "FABRIC_E_INVALID_ATOMIC_GROUP"
+	FABRICEINVALIDATOMICGROUP Code = "FABRIC_E_INVALID_ATOMIC_GROUP"
 	// FABRICEINVALIDCONFIGURATION ...
-	FABRICEINVALIDCONFIGURATION	Code	= "FABRIC_E_INVALID_CONFIGURATION"
+	FABRICEINVALIDCONFIGURATION Code = "FABRIC_E_INVALID_CONFIGURATION"
 	// FABRICEINVALIDNAMEURI ...
-	FABRICEINVALIDNAMEURI	Code	= "FABRIC_E_INVALID_NAME_URI"
+	FABRICEINVALIDNAMEURI Code = "FABRIC_E_INVALID_NAME_URI"
 	// FABRICEINVALIDPARTITIONKEY ...
-	FABRICEINVALIDPARTITIONKEY	Code	= "FABRIC_E_INVALID_PARTITION_KEY"
+	FABRICEINVALIDPARTITIONKEY Code = "FABRIC_E_INVALID_PARTITION_KEY"
 	// FABRICEKEYNOTFOUND ...
-	FABRICEKEYNOTFOUND	Code	= "FABRIC_E_KEY_NOT_FOUND"
+	FABRICEKEYNOTFOUND Code = "FABRIC_E_KEY_NOT_FOUND"
 	// FABRICEKEYTOOLARGE ...
-	FABRICEKEYTOOLARGE	Code	= "FABRIC_E_KEY_TOO_LARGE"
+	FABRICEKEYTOOLARGE Code = "FABRIC_E_KEY_TOO_LARGE"
 	// FABRICENAMEALREADYEXISTS ...
-	FABRICENAMEALREADYEXISTS	Code	= "FABRIC_E_NAME_ALREADY_EXISTS"
+	FABRICENAMEALREADYEXISTS Code = "FABRIC_E_NAME_ALREADY_EXISTS"
 	// FABRICENAMEDOESNOTEXIST ...
-	FABRICENAMEDOESNOTEXIST	Code	= "FABRIC_E_NAME_DOES_NOT_EXIST"
+	FABRICENAMEDOESNOTEXIST Code = "FABRIC_E_NAME_DOES_NOT_EXIST"
 	// FABRICENAMENOTEMPTY ...
-	FABRICENAMENOTEMPTY	Code	= "FABRIC_E_NAME_NOT_EMPTY"
+	FABRICENAMENOTEMPTY Code = "FABRIC_E_NAME_NOT_EMPTY"
 	// FABRICENODEHASNOTSTOPPEDYET ...
-	FABRICENODEHASNOTSTOPPEDYET	Code	= "FABRIC_E_NODE_HAS_NOT_STOPPED_YET"
+	FABRICENODEHASNOTSTOPPEDYET Code = "FABRIC_E_NODE_HAS_NOT_STOPPED_YET"
 	// FABRICENODEISUP ...
-	FABRICENODEISUP	Code	= "FABRIC_E_NODE_IS_UP"
+	FABRICENODEISUP Code = "FABRIC_E_NODE_IS_UP"
 	// FABRICENODENOTFOUND ...
-	FABRICENODENOTFOUND	Code	= "FABRIC_E_NODE_NOT_FOUND"
+	FABRICENODENOTFOUND Code = "FABRIC_E_NODE_NOT_FOUND"
 	// FABRICENOTPRIMARY ...
-	FABRICENOTPRIMARY	Code	= "FABRIC_E_NOT_PRIMARY"
+	FABRICENOTPRIMARY Code = "FABRIC_E_NOT_PRIMARY"
 	// FABRICENOTREADY ...
-	FABRICENOTREADY	Code	= "FABRIC_E_NOT_READY"
+	FABRICENOTREADY Code = "FABRIC_E_NOT_READY"
 	// FABRICENOWRITEQUORUM ...
-	FABRICENOWRITEQUORUM	Code	= "FABRIC_E_NO_WRITE_QUORUM"
+	FABRICENOWRITEQUORUM Code = "FABRIC_E_NO_WRITE_QUORUM"
 	// FABRICEOPERATIONNOTCOMPLETE ...
-	FABRICEOPERATIONNOTCOMPLETE	Code	= "FABRIC_E_OPERATION_NOT_COMPLETE"
+	FABRICEOPERATIONNOTCOMPLETE Code = "FABRIC_E_OPERATION_NOT_COMPLETE"
 	// FABRICEPARTITIONNOTFOUND ...
-	FABRICEPARTITIONNOTFOUND	Code	= "FABRIC_E_PARTITION_NOT_FOUND"
+	FABRICEPARTITIONNOTFOUND Code = "FABRIC_E_PARTITION_NOT_FOUND"
 	// FABRICEPATHTOOLONG ...
-	FABRICEPATHTOOLONG	Code	= "FABRIC_E_PATH_TOO_LONG"
+	FABRICEPATHTOOLONG Code = "FABRIC_E_PATH_TOO_LONG"
 	// FABRICEPROPERTYCHECKFAILED ...
-	FABRICEPROPERTYCHECKFAILED	Code	= "FABRIC_E_PROPERTY_CHECK_FAILED"
+	FABRICEPROPERTYCHECKFAILED Code = "FABRIC_E_PROPERTY_CHECK_FAILED"
 	// FABRICEPROPERTYDOESNOTEXIST ...
-	FABRICEPROPERTYDOESNOTEXIST	Code	= "FABRIC_E_PROPERTY_DOES_NOT_EXIST"
+	FABRICEPROPERTYDOESNOTEXIST Code = "FABRIC_E_PROPERTY_DOES_NOT_EXIST"
 	// FABRICERECONFIGURATIONPENDING ...
-	FABRICERECONFIGURATIONPENDING	Code	= "FABRIC_E_RECONFIGURATION_PENDING"
+	FABRICERECONFIGURATIONPENDING Code = "FABRIC_E_RECONFIGURATION_PENDING"
 	// FABRICEREPLICADOESNOTEXIST ...
-	FABRICEREPLICADOESNOTEXIST	Code	= "FABRIC_E_REPLICA_DOES_NOT_EXIST"
+	FABRICEREPLICADOESNOTEXIST Code = "FABRIC_E_REPLICA_DOES_NOT_EXIST"
 	// FABRICESEQUENCENUMBERCHECKFAILED ...
-	FABRICESEQUENCENUMBERCHECKFAILED	Code	= "FABRIC_E_SEQUENCE_NUMBER_CHECK_FAILED"
+	FABRICESEQUENCENUMBERCHECKFAILED Code = "FABRIC_E_SEQUENCE_NUMBER_CHECK_FAILED"
 	// FABRICESERVICEAFFINITYCHAINNOTSUPPORTED ...
-	FABRICESERVICEAFFINITYCHAINNOTSUPPORTED	Code	= "FABRIC_E_SERVICE_AFFINITY_CHAIN_NOT_SUPPORTED"
+	FABRICESERVICEAFFINITYCHAINNOTSUPPORTED Code = "FABRIC_E_SERVICE_AFFINITY_CHAIN_NOT_SUPPORTED"
 	// FABRICESERVICEALREADYEXISTS ...
-	FABRICESERVICEALREADYEXISTS	Code	= "FABRIC_E_SERVICE_ALREADY_EXISTS"
+	FABRICESERVICEALREADYEXISTS Code = "FABRIC_E_SERVICE_ALREADY_EXISTS"
 	// FABRICESERVICEDOESNOTEXIST ...
-	FABRICESERVICEDOESNOTEXIST	Code	= "FABRIC_E_SERVICE_DOES_NOT_EXIST"
+	FABRICESERVICEDOESNOTEXIST Code = "FABRIC_E_SERVICE_DOES_NOT_EXIST"
 	// FABRICESERVICEGROUPALREADYEXISTS ...
-	FABRICESERVICEGROUPALREADYEXISTS	Code	= "FABRIC_E_SERVICE_GROUP_ALREADY_EXISTS"
+	FABRICESERVICEGROUPALREADYEXISTS Code = "FABRIC_E_SERVICE_GROUP_ALREADY_EXISTS"
 	// FABRICESERVICEGROUPDOESNOTEXIST ...
-	FABRICESERVICEGROUPDOESNOTEXIST	Code	= "FABRIC_E_SERVICE_GROUP_DOES_NOT_EXIST"
+	FABRICESERVICEGROUPDOESNOTEXIST Code = "FABRIC_E_SERVICE_GROUP_DOES_NOT_EXIST"
 	// FABRICESERVICEMANIFESTNOTFOUND ...
-	FABRICESERVICEMANIFESTNOTFOUND	Code	= "FABRIC_E_SERVICE_MANIFEST_NOT_FOUND"
+	FABRICESERVICEMANIFESTNOTFOUND Code = "FABRIC_E_SERVICE_MANIFEST_NOT_FOUND"
 	// FABRICESERVICEMETADATAMISMATCH ...
-	FABRICESERVICEMETADATAMISMATCH	Code	= "FABRIC_E_SERVICE_METADATA_MISMATCH"
+	FABRICESERVICEMETADATAMISMATCH Code = "FABRIC_E_SERVICE_METADATA_MISMATCH"
 	// FABRICESERVICEOFFLINE ...
-	FABRICESERVICEOFFLINE	Code	= "FABRIC_E_SERVICE_OFFLINE"
+	FABRICESERVICEOFFLINE Code = "FABRIC_E_SERVICE_OFFLINE"
 	// FABRICESERVICETYPEMISMATCH ...
-	FABRICESERVICETYPEMISMATCH	Code	= "FABRIC_E_SERVICE_TYPE_MISMATCH"
+	FABRICESERVICETYPEMISMATCH Code = "FABRIC_E_SERVICE_TYPE_MISMATCH"
 	// FABRICESERVICETYPENOTFOUND ...
-	FABRICESERVICETYPENOTFOUND	Code	= "FABRIC_E_SERVICE_TYPE_NOT_FOUND"
+	FABRICESERVICETYPENOTFOUND Code = "FABRIC_E_SERVICE_TYPE_NOT_FOUND"
 	// FABRICESERVICETYPETEMPLATENOTFOUND ...
-	FABRICESERVICETYPETEMPLATENOTFOUND	Code	= "FABRIC_E_SERVICE_TYPE_TEMPLATE_NOT_FOUND"
+	FABRICESERVICETYPETEMPLATENOTFOUND Code = "FABRIC_E_SERVICE_TYPE_TEMPLATE_NOT_FOUND"
 	// FABRICETIMEOUT ...
-	FABRICETIMEOUT	Code	= "FABRIC_E_TIMEOUT"
+	FABRICETIMEOUT Code = "FABRIC_E_TIMEOUT"
 	// FABRICEVALUEEMPTY ...
-	FABRICEVALUEEMPTY	Code	= "FABRIC_E_VALUE_EMPTY"
+	FABRICEVALUEEMPTY Code = "FABRIC_E_VALUE_EMPTY"
 	// FABRICEVALUETOOLARGE ...
-	FABRICEVALUETOOLARGE	Code	= "FABRIC_E_VALUE_TOO_LARGE"
+	FABRICEVALUETOOLARGE Code = "FABRIC_E_VALUE_TOO_LARGE"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -245,9 +245,9 @@ type CreateFabricDump string
 
 const (
 	// False ...
-	False	CreateFabricDump	= "False"
+	False CreateFabricDump = "False"
 	// True ...
-	True	CreateFabricDump	= "True"
+	True CreateFabricDump = "True"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -262,25 +262,25 @@ type CurrentReplicatorOperation string
 
 const (
 	// CurrentReplicatorOperationAbort ...
-	CurrentReplicatorOperationAbort	CurrentReplicatorOperation	= "Abort"
+	CurrentReplicatorOperationAbort CurrentReplicatorOperation = "Abort"
 	// CurrentReplicatorOperationBuild ...
-	CurrentReplicatorOperationBuild	CurrentReplicatorOperation	= "Build"
+	CurrentReplicatorOperationBuild CurrentReplicatorOperation = "Build"
 	// CurrentReplicatorOperationChangeRole ...
-	CurrentReplicatorOperationChangeRole	CurrentReplicatorOperation	= "ChangeRole"
+	CurrentReplicatorOperationChangeRole CurrentReplicatorOperation = "ChangeRole"
 	// CurrentReplicatorOperationClose ...
-	CurrentReplicatorOperationClose	CurrentReplicatorOperation	= "Close"
+	CurrentReplicatorOperationClose CurrentReplicatorOperation = "Close"
 	// CurrentReplicatorOperationInvalid ...
-	CurrentReplicatorOperationInvalid	CurrentReplicatorOperation	= "Invalid"
+	CurrentReplicatorOperationInvalid CurrentReplicatorOperation = "Invalid"
 	// CurrentReplicatorOperationNone ...
-	CurrentReplicatorOperationNone	CurrentReplicatorOperation	= "None"
+	CurrentReplicatorOperationNone CurrentReplicatorOperation = "None"
 	// CurrentReplicatorOperationOnDataLoss ...
-	CurrentReplicatorOperationOnDataLoss	CurrentReplicatorOperation	= "OnDataLoss"
+	CurrentReplicatorOperationOnDataLoss CurrentReplicatorOperation = "OnDataLoss"
 	// CurrentReplicatorOperationOpen ...
-	CurrentReplicatorOperationOpen	CurrentReplicatorOperation	= "Open"
+	CurrentReplicatorOperationOpen CurrentReplicatorOperation = "Open"
 	// CurrentReplicatorOperationUpdateEpoch ...
-	CurrentReplicatorOperationUpdateEpoch	CurrentReplicatorOperation	= "UpdateEpoch"
+	CurrentReplicatorOperationUpdateEpoch CurrentReplicatorOperation = "UpdateEpoch"
 	// CurrentReplicatorOperationWaitForCatchup ...
-	CurrentReplicatorOperationWaitForCatchup	CurrentReplicatorOperation	= "WaitForCatchup"
+	CurrentReplicatorOperationWaitForCatchup CurrentReplicatorOperation = "WaitForCatchup"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -295,17 +295,17 @@ type CurrentServiceOperation string
 
 const (
 	// CurrentServiceOperationAbort ...
-	CurrentServiceOperationAbort	CurrentServiceOperation	= "Abort"
+	CurrentServiceOperationAbort CurrentServiceOperation = "Abort"
 	// CurrentServiceOperationChangeRole ...
-	CurrentServiceOperationChangeRole	CurrentServiceOperation	= "ChangeRole"
+	CurrentServiceOperationChangeRole CurrentServiceOperation = "ChangeRole"
 	// CurrentServiceOperationClose ...
-	CurrentServiceOperationClose	CurrentServiceOperation	= "Close"
+	CurrentServiceOperationClose CurrentServiceOperation = "Close"
 	// CurrentServiceOperationNone ...
-	CurrentServiceOperationNone	CurrentServiceOperation	= "None"
+	CurrentServiceOperationNone CurrentServiceOperation = "None"
 	// CurrentServiceOperationOpen ...
-	CurrentServiceOperationOpen	CurrentServiceOperation	= "Open"
+	CurrentServiceOperationOpen CurrentServiceOperation = "Open"
 	// CurrentServiceOperationUnknown ...
-	CurrentServiceOperationUnknown	CurrentServiceOperation	= "Unknown"
+	CurrentServiceOperationUnknown CurrentServiceOperation = "Unknown"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -320,11 +320,11 @@ type DeactivationIntent string
 
 const (
 	// Pause ...
-	Pause	DeactivationIntent	= "Pause"
+	Pause DeactivationIntent = "Pause"
 	// RemoveData ...
-	RemoveData	DeactivationIntent	= "RemoveData"
+	RemoveData DeactivationIntent = "RemoveData"
 	// Restart ...
-	Restart	DeactivationIntent	= "Restart"
+	Restart DeactivationIntent = "Restart"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -339,13 +339,13 @@ type DefaultMoveCost string
 
 const (
 	// High ...
-	High	DefaultMoveCost	= "High"
+	High DefaultMoveCost = "High"
 	// Low ...
-	Low	DefaultMoveCost	= "Low"
+	Low DefaultMoveCost = "Low"
 	// Medium ...
-	Medium	DefaultMoveCost	= "Medium"
+	Medium DefaultMoveCost = "Medium"
 	// Zero ...
-	Zero	DefaultMoveCost	= "Zero"
+	Zero DefaultMoveCost = "Zero"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -360,13 +360,13 @@ type DefaultMoveCost1 string
 
 const (
 	// DefaultMoveCost1High ...
-	DefaultMoveCost1High	DefaultMoveCost1	= "High"
+	DefaultMoveCost1High DefaultMoveCost1 = "High"
 	// DefaultMoveCost1Low ...
-	DefaultMoveCost1Low	DefaultMoveCost1	= "Low"
+	DefaultMoveCost1Low DefaultMoveCost1 = "Low"
 	// DefaultMoveCost1Medium ...
-	DefaultMoveCost1Medium	DefaultMoveCost1	= "Medium"
+	DefaultMoveCost1Medium DefaultMoveCost1 = "Medium"
 	// DefaultMoveCost1Zero ...
-	DefaultMoveCost1Zero	DefaultMoveCost1	= "Zero"
+	DefaultMoveCost1Zero DefaultMoveCost1 = "Zero"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -381,11 +381,11 @@ type FailureAction string
 
 const (
 	// FailureActionInvalid ...
-	FailureActionInvalid	FailureAction	= "Invalid"
+	FailureActionInvalid FailureAction = "Invalid"
 	// FailureActionManual ...
-	FailureActionManual	FailureAction	= "Manual"
+	FailureActionManual FailureAction = "Manual"
 	// FailureActionRollback ...
-	FailureActionRollback	FailureAction	= "Rollback"
+	FailureActionRollback FailureAction = "Rollback"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -400,11 +400,11 @@ type FailureAction1 string
 
 const (
 	// FailureAction1Invalid ...
-	FailureAction1Invalid	FailureAction1	= "Invalid"
+	FailureAction1Invalid FailureAction1 = "Invalid"
 	// FailureAction1Manual ...
-	FailureAction1Manual	FailureAction1	= "Manual"
+	FailureAction1Manual FailureAction1 = "Manual"
 	// FailureAction1Rollback ...
-	FailureAction1Rollback	FailureAction1	= "Rollback"
+	FailureAction1Rollback FailureAction1 = "Rollback"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -419,15 +419,15 @@ type FailureReason string
 
 const (
 	// HealthCheck ...
-	HealthCheck	FailureReason	= "HealthCheck"
+	HealthCheck FailureReason = "HealthCheck"
 	// Interrupted ...
-	Interrupted	FailureReason	= "Interrupted"
+	Interrupted FailureReason = "Interrupted"
 	// None ...
-	None	FailureReason	= "None"
+	None FailureReason = "None"
 	// UpgradeDomainTimeout ...
-	UpgradeDomainTimeout	FailureReason	= "UpgradeDomainTimeout"
+	UpgradeDomainTimeout FailureReason = "UpgradeDomainTimeout"
 	// UpgradeTimeout ...
-	UpgradeTimeout	FailureReason	= "UpgradeTimeout"
+	UpgradeTimeout FailureReason = "UpgradeTimeout"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -442,15 +442,15 @@ type FailureReason1 string
 
 const (
 	// FailureReason1HealthCheck ...
-	FailureReason1HealthCheck	FailureReason1	= "HealthCheck"
+	FailureReason1HealthCheck FailureReason1 = "HealthCheck"
 	// FailureReason1Interrupted ...
-	FailureReason1Interrupted	FailureReason1	= "Interrupted"
+	FailureReason1Interrupted FailureReason1 = "Interrupted"
 	// FailureReason1None ...
-	FailureReason1None	FailureReason1	= "None"
+	FailureReason1None FailureReason1 = "None"
 	// FailureReason1UpgradeDomainTimeout ...
-	FailureReason1UpgradeDomainTimeout	FailureReason1	= "UpgradeDomainTimeout"
+	FailureReason1UpgradeDomainTimeout FailureReason1 = "UpgradeDomainTimeout"
 	// FailureReason1UpgradeTimeout ...
-	FailureReason1UpgradeTimeout	FailureReason1	= "UpgradeTimeout"
+	FailureReason1UpgradeTimeout FailureReason1 = "UpgradeTimeout"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -465,15 +465,15 @@ type HealthState string
 
 const (
 	// HealthStateError ...
-	HealthStateError	HealthState	= "Error"
+	HealthStateError HealthState = "Error"
 	// HealthStateInvalid ...
-	HealthStateInvalid	HealthState	= "Invalid"
+	HealthStateInvalid HealthState = "Invalid"
 	// HealthStateOk ...
-	HealthStateOk	HealthState	= "Ok"
+	HealthStateOk HealthState = "Ok"
 	// HealthStateUnknown ...
-	HealthStateUnknown	HealthState	= "Unknown"
+	HealthStateUnknown HealthState = "Unknown"
 	// HealthStateWarning ...
-	HealthStateWarning	HealthState	= "Warning"
+	HealthStateWarning HealthState = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -488,15 +488,15 @@ type HealthState1 string
 
 const (
 	// HealthState1Error ...
-	HealthState1Error	HealthState1	= "Error"
+	HealthState1Error HealthState1 = "Error"
 	// HealthState1Invalid ...
-	HealthState1Invalid	HealthState1	= "Invalid"
+	HealthState1Invalid HealthState1 = "Invalid"
 	// HealthState1Ok ...
-	HealthState1Ok	HealthState1	= "Ok"
+	HealthState1Ok HealthState1 = "Ok"
 	// HealthState1Unknown ...
-	HealthState1Unknown	HealthState1	= "Unknown"
+	HealthState1Unknown HealthState1 = "Unknown"
 	// HealthState1Warning ...
-	HealthState1Warning	HealthState1	= "Warning"
+	HealthState1Warning HealthState1 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -511,15 +511,15 @@ type HealthState2 string
 
 const (
 	// HealthState2Error ...
-	HealthState2Error	HealthState2	= "Error"
+	HealthState2Error HealthState2 = "Error"
 	// HealthState2Invalid ...
-	HealthState2Invalid	HealthState2	= "Invalid"
+	HealthState2Invalid HealthState2 = "Invalid"
 	// HealthState2Ok ...
-	HealthState2Ok	HealthState2	= "Ok"
+	HealthState2Ok HealthState2 = "Ok"
 	// HealthState2Unknown ...
-	HealthState2Unknown	HealthState2	= "Unknown"
+	HealthState2Unknown HealthState2 = "Unknown"
 	// HealthState2Warning ...
-	HealthState2Warning	HealthState2	= "Warning"
+	HealthState2Warning HealthState2 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -534,15 +534,15 @@ type HealthState3 string
 
 const (
 	// HealthState3Error ...
-	HealthState3Error	HealthState3	= "Error"
+	HealthState3Error HealthState3 = "Error"
 	// HealthState3Invalid ...
-	HealthState3Invalid	HealthState3	= "Invalid"
+	HealthState3Invalid HealthState3 = "Invalid"
 	// HealthState3Ok ...
-	HealthState3Ok	HealthState3	= "Ok"
+	HealthState3Ok HealthState3 = "Ok"
 	// HealthState3Unknown ...
-	HealthState3Unknown	HealthState3	= "Unknown"
+	HealthState3Unknown HealthState3 = "Unknown"
 	// HealthState3Warning ...
-	HealthState3Warning	HealthState3	= "Warning"
+	HealthState3Warning HealthState3 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -557,15 +557,15 @@ type HealthState4 string
 
 const (
 	// HealthState4Error ...
-	HealthState4Error	HealthState4	= "Error"
+	HealthState4Error HealthState4 = "Error"
 	// HealthState4Invalid ...
-	HealthState4Invalid	HealthState4	= "Invalid"
+	HealthState4Invalid HealthState4 = "Invalid"
 	// HealthState4Ok ...
-	HealthState4Ok	HealthState4	= "Ok"
+	HealthState4Ok HealthState4 = "Ok"
 	// HealthState4Unknown ...
-	HealthState4Unknown	HealthState4	= "Unknown"
+	HealthState4Unknown HealthState4 = "Unknown"
 	// HealthState4Warning ...
-	HealthState4Warning	HealthState4	= "Warning"
+	HealthState4Warning HealthState4 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -580,15 +580,15 @@ type HealthState5 string
 
 const (
 	// HealthState5Error ...
-	HealthState5Error	HealthState5	= "Error"
+	HealthState5Error HealthState5 = "Error"
 	// HealthState5Invalid ...
-	HealthState5Invalid	HealthState5	= "Invalid"
+	HealthState5Invalid HealthState5 = "Invalid"
 	// HealthState5Ok ...
-	HealthState5Ok	HealthState5	= "Ok"
+	HealthState5Ok HealthState5 = "Ok"
 	// HealthState5Unknown ...
-	HealthState5Unknown	HealthState5	= "Unknown"
+	HealthState5Unknown HealthState5 = "Unknown"
 	// HealthState5Warning ...
-	HealthState5Warning	HealthState5	= "Warning"
+	HealthState5Warning HealthState5 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -603,15 +603,15 @@ type HealthState6 string
 
 const (
 	// HealthState6Error ...
-	HealthState6Error	HealthState6	= "Error"
+	HealthState6Error HealthState6 = "Error"
 	// HealthState6Invalid ...
-	HealthState6Invalid	HealthState6	= "Invalid"
+	HealthState6Invalid HealthState6 = "Invalid"
 	// HealthState6Ok ...
-	HealthState6Ok	HealthState6	= "Ok"
+	HealthState6Ok HealthState6 = "Ok"
 	// HealthState6Unknown ...
-	HealthState6Unknown	HealthState6	= "Unknown"
+	HealthState6Unknown HealthState6 = "Unknown"
 	// HealthState6Warning ...
-	HealthState6Warning	HealthState6	= "Warning"
+	HealthState6Warning HealthState6 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -626,15 +626,15 @@ type HealthState7 string
 
 const (
 	// HealthState7Error ...
-	HealthState7Error	HealthState7	= "Error"
+	HealthState7Error HealthState7 = "Error"
 	// HealthState7Invalid ...
-	HealthState7Invalid	HealthState7	= "Invalid"
+	HealthState7Invalid HealthState7 = "Invalid"
 	// HealthState7Ok ...
-	HealthState7Ok	HealthState7	= "Ok"
+	HealthState7Ok HealthState7 = "Ok"
 	// HealthState7Unknown ...
-	HealthState7Unknown	HealthState7	= "Unknown"
+	HealthState7Unknown HealthState7 = "Unknown"
 	// HealthState7Warning ...
-	HealthState7Warning	HealthState7	= "Warning"
+	HealthState7Warning HealthState7 = "Warning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -649,11 +649,11 @@ type HostIsolationMode string
 
 const (
 	// HostIsolationModeHyperV ...
-	HostIsolationModeHyperV	HostIsolationMode	= "HyperV"
+	HostIsolationModeHyperV HostIsolationMode = "HyperV"
 	// HostIsolationModeNone ...
-	HostIsolationModeNone	HostIsolationMode	= "None"
+	HostIsolationModeNone HostIsolationMode = "None"
 	// HostIsolationModeProcess ...
-	HostIsolationModeProcess	HostIsolationMode	= "Process"
+	HostIsolationModeProcess HostIsolationMode = "Process"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -668,11 +668,11 @@ type HostType string
 
 const (
 	// HostTypeContainerHost ...
-	HostTypeContainerHost	HostType	= "ContainerHost"
+	HostTypeContainerHost HostType = "ContainerHost"
 	// HostTypeExeHost ...
-	HostTypeExeHost	HostType	= "ExeHost"
+	HostTypeExeHost HostType = "ExeHost"
 	// HostTypeInvalid ...
-	HostTypeInvalid	HostType	= "Invalid"
+	HostTypeInvalid HostType = "Invalid"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -687,13 +687,13 @@ type Kind string
 
 const (
 	// KindInvalid ...
-	KindInvalid	Kind	= "Invalid"
+	KindInvalid Kind = "Invalid"
 	// KindStatefulPrimary ...
-	KindStatefulPrimary	Kind	= "StatefulPrimary"
+	KindStatefulPrimary Kind = "StatefulPrimary"
 	// KindStatefulSecondary ...
-	KindStatefulSecondary	Kind	= "StatefulSecondary"
+	KindStatefulSecondary Kind = "StatefulSecondary"
 	// KindStateless ...
-	KindStateless	Kind	= "Stateless"
+	KindStateless Kind = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -708,19 +708,19 @@ type KindBasicChaosEvent string
 
 const (
 	// KindChaosEvent ...
-	KindChaosEvent	KindBasicChaosEvent	= "ChaosEvent"
+	KindChaosEvent KindBasicChaosEvent = "ChaosEvent"
 	// KindExecutingFaults ...
-	KindExecutingFaults	KindBasicChaosEvent	= "ExecutingFaults"
+	KindExecutingFaults KindBasicChaosEvent = "ExecutingFaults"
 	// KindStarted ...
-	KindStarted	KindBasicChaosEvent	= "Started"
+	KindStarted KindBasicChaosEvent = "Started"
 	// KindStopped ...
-	KindStopped	KindBasicChaosEvent	= "Stopped"
+	KindStopped KindBasicChaosEvent = "Stopped"
 	// KindTestError ...
-	KindTestError	KindBasicChaosEvent	= "TestError"
+	KindTestError KindBasicChaosEvent = "TestError"
 	// KindValidationFailed ...
-	KindValidationFailed	KindBasicChaosEvent	= "ValidationFailed"
+	KindValidationFailed KindBasicChaosEvent = "ValidationFailed"
 	// KindWaiting ...
-	KindWaiting	KindBasicChaosEvent	= "Waiting"
+	KindWaiting KindBasicChaosEvent = "Waiting"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -735,47 +735,47 @@ type KindBasicHealthEvaluation string
 
 const (
 	// KindApplication ...
-	KindApplication	KindBasicHealthEvaluation	= "Application"
+	KindApplication KindBasicHealthEvaluation = "Application"
 	// KindApplications ...
-	KindApplications	KindBasicHealthEvaluation	= "Applications"
+	KindApplications KindBasicHealthEvaluation = "Applications"
 	// KindApplicationTypeApplications ...
-	KindApplicationTypeApplications	KindBasicHealthEvaluation	= "ApplicationTypeApplications"
+	KindApplicationTypeApplications KindBasicHealthEvaluation = "ApplicationTypeApplications"
 	// KindDeltaNodesCheck ...
-	KindDeltaNodesCheck	KindBasicHealthEvaluation	= "DeltaNodesCheck"
+	KindDeltaNodesCheck KindBasicHealthEvaluation = "DeltaNodesCheck"
 	// KindDeployedApplication ...
-	KindDeployedApplication	KindBasicHealthEvaluation	= "DeployedApplication"
+	KindDeployedApplication KindBasicHealthEvaluation = "DeployedApplication"
 	// KindDeployedApplications ...
-	KindDeployedApplications	KindBasicHealthEvaluation	= "DeployedApplications"
+	KindDeployedApplications KindBasicHealthEvaluation = "DeployedApplications"
 	// KindDeployedServicePackage ...
-	KindDeployedServicePackage	KindBasicHealthEvaluation	= "DeployedServicePackage"
+	KindDeployedServicePackage KindBasicHealthEvaluation = "DeployedServicePackage"
 	// KindDeployedServicePackages ...
-	KindDeployedServicePackages	KindBasicHealthEvaluation	= "DeployedServicePackages"
+	KindDeployedServicePackages KindBasicHealthEvaluation = "DeployedServicePackages"
 	// KindEvent ...
-	KindEvent	KindBasicHealthEvaluation	= "Event"
+	KindEvent KindBasicHealthEvaluation = "Event"
 	// KindHealthEvaluation ...
-	KindHealthEvaluation	KindBasicHealthEvaluation	= "HealthEvaluation"
+	KindHealthEvaluation KindBasicHealthEvaluation = "HealthEvaluation"
 	// KindNode ...
-	KindNode	KindBasicHealthEvaluation	= "Node"
+	KindNode KindBasicHealthEvaluation = "Node"
 	// KindNodes ...
-	KindNodes	KindBasicHealthEvaluation	= "Nodes"
+	KindNodes KindBasicHealthEvaluation = "Nodes"
 	// KindPartition ...
-	KindPartition	KindBasicHealthEvaluation	= "Partition"
+	KindPartition KindBasicHealthEvaluation = "Partition"
 	// KindPartitions ...
-	KindPartitions	KindBasicHealthEvaluation	= "Partitions"
+	KindPartitions KindBasicHealthEvaluation = "Partitions"
 	// KindReplica ...
-	KindReplica	KindBasicHealthEvaluation	= "Replica"
+	KindReplica KindBasicHealthEvaluation = "Replica"
 	// KindReplicas ...
-	KindReplicas	KindBasicHealthEvaluation	= "Replicas"
+	KindReplicas KindBasicHealthEvaluation = "Replicas"
 	// KindService ...
-	KindService	KindBasicHealthEvaluation	= "Service"
+	KindService KindBasicHealthEvaluation = "Service"
 	// KindServices ...
-	KindServices	KindBasicHealthEvaluation	= "Services"
+	KindServices KindBasicHealthEvaluation = "Services"
 	// KindSystemApplication ...
-	KindSystemApplication	KindBasicHealthEvaluation	= "SystemApplication"
+	KindSystemApplication KindBasicHealthEvaluation = "SystemApplication"
 	// KindUpgradeDomainDeltaNodesCheck ...
-	KindUpgradeDomainDeltaNodesCheck	KindBasicHealthEvaluation	= "UpgradeDomainDeltaNodesCheck"
+	KindUpgradeDomainDeltaNodesCheck KindBasicHealthEvaluation = "UpgradeDomainDeltaNodesCheck"
 	// KindUpgradeDomainNodes ...
-	KindUpgradeDomainNodes	KindBasicHealthEvaluation	= "UpgradeDomainNodes"
+	KindUpgradeDomainNodes KindBasicHealthEvaluation = "UpgradeDomainNodes"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -790,9 +790,9 @@ type KindBasicReplicaStatusBase string
 
 const (
 	// KindKeyValueStore ...
-	KindKeyValueStore	KindBasicReplicaStatusBase	= "KeyValueStore"
+	KindKeyValueStore KindBasicReplicaStatusBase = "KeyValueStore"
 	// KindReplicaStatusBase ...
-	KindReplicaStatusBase	KindBasicReplicaStatusBase	= "ReplicaStatusBase"
+	KindReplicaStatusBase KindBasicReplicaStatusBase = "ReplicaStatusBase"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -807,15 +807,15 @@ type KindBasicReplicatorStatus string
 
 const (
 	// KindActiveSecondary ...
-	KindActiveSecondary	KindBasicReplicatorStatus	= "ActiveSecondary"
+	KindActiveSecondary KindBasicReplicatorStatus = "ActiveSecondary"
 	// KindIdleSecondary ...
-	KindIdleSecondary	KindBasicReplicatorStatus	= "IdleSecondary"
+	KindIdleSecondary KindBasicReplicatorStatus = "IdleSecondary"
 	// KindPrimary ...
-	KindPrimary	KindBasicReplicatorStatus	= "Primary"
+	KindPrimary KindBasicReplicatorStatus = "Primary"
 	// KindReplicatorStatus ...
-	KindReplicatorStatus	KindBasicReplicatorStatus	= "ReplicatorStatus"
+	KindReplicatorStatus KindBasicReplicatorStatus = "ReplicatorStatus"
 	// KindSecondaryReplicatorStatus ...
-	KindSecondaryReplicatorStatus	KindBasicReplicatorStatus	= "SecondaryReplicatorStatus"
+	KindSecondaryReplicatorStatus KindBasicReplicatorStatus = "SecondaryReplicatorStatus"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -830,23 +830,23 @@ type KindBasicSafetyCheck string
 
 const (
 	// KindEnsureAvailability ...
-	KindEnsureAvailability	KindBasicSafetyCheck	= "EnsureAvailability"
+	KindEnsureAvailability KindBasicSafetyCheck = "EnsureAvailability"
 	// KindEnsurePartitionQuorum ...
-	KindEnsurePartitionQuorum	KindBasicSafetyCheck	= "EnsurePartitionQuorum"
+	KindEnsurePartitionQuorum KindBasicSafetyCheck = "EnsurePartitionQuorum"
 	// KindEnsureSeedNodeQuorum ...
-	KindEnsureSeedNodeQuorum	KindBasicSafetyCheck	= "EnsureSeedNodeQuorum"
+	KindEnsureSeedNodeQuorum KindBasicSafetyCheck = "EnsureSeedNodeQuorum"
 	// KindPartitionSafetyCheck ...
-	KindPartitionSafetyCheck	KindBasicSafetyCheck	= "PartitionSafetyCheck"
+	KindPartitionSafetyCheck KindBasicSafetyCheck = "PartitionSafetyCheck"
 	// KindSafetyCheck ...
-	KindSafetyCheck	KindBasicSafetyCheck	= "SafetyCheck"
+	KindSafetyCheck KindBasicSafetyCheck = "SafetyCheck"
 	// KindWaitForInbuildReplica ...
-	KindWaitForInbuildReplica	KindBasicSafetyCheck	= "WaitForInbuildReplica"
+	KindWaitForInbuildReplica KindBasicSafetyCheck = "WaitForInbuildReplica"
 	// KindWaitForPrimaryPlacement ...
-	KindWaitForPrimaryPlacement	KindBasicSafetyCheck	= "WaitForPrimaryPlacement"
+	KindWaitForPrimaryPlacement KindBasicSafetyCheck = "WaitForPrimaryPlacement"
 	// KindWaitForPrimarySwap ...
-	KindWaitForPrimarySwap	KindBasicSafetyCheck	= "WaitForPrimarySwap"
+	KindWaitForPrimarySwap KindBasicSafetyCheck = "WaitForPrimarySwap"
 	// KindWaitForReconfiguration ...
-	KindWaitForReconfiguration	KindBasicSafetyCheck	= "WaitForReconfiguration"
+	KindWaitForReconfiguration KindBasicSafetyCheck = "WaitForReconfiguration"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -861,11 +861,11 @@ type KindBasicServiceTypeDescription string
 
 const (
 	// KindServiceTypeDescription ...
-	KindServiceTypeDescription	KindBasicServiceTypeDescription	= "ServiceTypeDescription"
+	KindServiceTypeDescription KindBasicServiceTypeDescription = "ServiceTypeDescription"
 	// KindStateful ...
-	KindStateful	KindBasicServiceTypeDescription	= "Stateful"
+	KindStateful KindBasicServiceTypeDescription = "Stateful"
 	// KindStateless1 ...
-	KindStateless1	KindBasicServiceTypeDescription	= "Stateless"
+	KindStateless1 KindBasicServiceTypeDescription = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -880,15 +880,15 @@ type NodeDeactivationIntent string
 
 const (
 	// NodeDeactivationIntentInvalid ...
-	NodeDeactivationIntentInvalid	NodeDeactivationIntent	= "Invalid"
+	NodeDeactivationIntentInvalid NodeDeactivationIntent = "Invalid"
 	// NodeDeactivationIntentPause ...
-	NodeDeactivationIntentPause	NodeDeactivationIntent	= "Pause"
+	NodeDeactivationIntentPause NodeDeactivationIntent = "Pause"
 	// NodeDeactivationIntentRemoveData ...
-	NodeDeactivationIntentRemoveData	NodeDeactivationIntent	= "RemoveData"
+	NodeDeactivationIntentRemoveData NodeDeactivationIntent = "RemoveData"
 	// NodeDeactivationIntentRemoveNode ...
-	NodeDeactivationIntentRemoveNode	NodeDeactivationIntent	= "RemoveNode"
+	NodeDeactivationIntentRemoveNode NodeDeactivationIntent = "RemoveNode"
 	// NodeDeactivationIntentRestart ...
-	NodeDeactivationIntentRestart	NodeDeactivationIntent	= "Restart"
+	NodeDeactivationIntentRestart NodeDeactivationIntent = "Restart"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -903,15 +903,15 @@ type NodeDeactivationIntent1 string
 
 const (
 	// NodeDeactivationIntent1Invalid ...
-	NodeDeactivationIntent1Invalid	NodeDeactivationIntent1	= "Invalid"
+	NodeDeactivationIntent1Invalid NodeDeactivationIntent1 = "Invalid"
 	// NodeDeactivationIntent1Pause ...
-	NodeDeactivationIntent1Pause	NodeDeactivationIntent1	= "Pause"
+	NodeDeactivationIntent1Pause NodeDeactivationIntent1 = "Pause"
 	// NodeDeactivationIntent1RemoveData ...
-	NodeDeactivationIntent1RemoveData	NodeDeactivationIntent1	= "RemoveData"
+	NodeDeactivationIntent1RemoveData NodeDeactivationIntent1 = "RemoveData"
 	// NodeDeactivationIntent1RemoveNode ...
-	NodeDeactivationIntent1RemoveNode	NodeDeactivationIntent1	= "RemoveNode"
+	NodeDeactivationIntent1RemoveNode NodeDeactivationIntent1 = "RemoveNode"
 	// NodeDeactivationIntent1Restart ...
-	NodeDeactivationIntent1Restart	NodeDeactivationIntent1	= "Restart"
+	NodeDeactivationIntent1Restart NodeDeactivationIntent1 = "Restart"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -926,13 +926,13 @@ type NodeDeactivationStatus string
 
 const (
 	// NodeDeactivationStatusCompleted ...
-	NodeDeactivationStatusCompleted	NodeDeactivationStatus	= "Completed"
+	NodeDeactivationStatusCompleted NodeDeactivationStatus = "Completed"
 	// NodeDeactivationStatusNone ...
-	NodeDeactivationStatusNone	NodeDeactivationStatus	= "None"
+	NodeDeactivationStatusNone NodeDeactivationStatus = "None"
 	// NodeDeactivationStatusSafetyCheckComplete ...
-	NodeDeactivationStatusSafetyCheckComplete	NodeDeactivationStatus	= "SafetyCheckComplete"
+	NodeDeactivationStatusSafetyCheckComplete NodeDeactivationStatus = "SafetyCheckComplete"
 	// NodeDeactivationStatusSafetyCheckInProgress ...
-	NodeDeactivationStatusSafetyCheckInProgress	NodeDeactivationStatus	= "SafetyCheckInProgress"
+	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = "SafetyCheckInProgress"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -947,13 +947,13 @@ type NodeDeactivationTaskType string
 
 const (
 	// NodeDeactivationTaskTypeClient ...
-	NodeDeactivationTaskTypeClient	NodeDeactivationTaskType	= "Client"
+	NodeDeactivationTaskTypeClient NodeDeactivationTaskType = "Client"
 	// NodeDeactivationTaskTypeInfrastructure ...
-	NodeDeactivationTaskTypeInfrastructure	NodeDeactivationTaskType	= "Infrastructure"
+	NodeDeactivationTaskTypeInfrastructure NodeDeactivationTaskType = "Infrastructure"
 	// NodeDeactivationTaskTypeInvalid ...
-	NodeDeactivationTaskTypeInvalid	NodeDeactivationTaskType	= "Invalid"
+	NodeDeactivationTaskTypeInvalid NodeDeactivationTaskType = "Invalid"
 	// NodeDeactivationTaskTypeRepair ...
-	NodeDeactivationTaskTypeRepair	NodeDeactivationTaskType	= "Repair"
+	NodeDeactivationTaskTypeRepair NodeDeactivationTaskType = "Repair"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -968,21 +968,21 @@ type NodeStatus string
 
 const (
 	// NodeStatusDisabled ...
-	NodeStatusDisabled	NodeStatus	= "Disabled"
+	NodeStatusDisabled NodeStatus = "Disabled"
 	// NodeStatusDisabling ...
-	NodeStatusDisabling	NodeStatus	= "Disabling"
+	NodeStatusDisabling NodeStatus = "Disabling"
 	// NodeStatusDown ...
-	NodeStatusDown	NodeStatus	= "Down"
+	NodeStatusDown NodeStatus = "Down"
 	// NodeStatusEnabling ...
-	NodeStatusEnabling	NodeStatus	= "Enabling"
+	NodeStatusEnabling NodeStatus = "Enabling"
 	// NodeStatusInvalid ...
-	NodeStatusInvalid	NodeStatus	= "Invalid"
+	NodeStatusInvalid NodeStatus = "Invalid"
 	// NodeStatusRemoved ...
-	NodeStatusRemoved	NodeStatus	= "Removed"
+	NodeStatusRemoved NodeStatus = "Removed"
 	// NodeStatusUnknown ...
-	NodeStatusUnknown	NodeStatus	= "Unknown"
+	NodeStatusUnknown NodeStatus = "Unknown"
 	// NodeStatusUp ...
-	NodeStatusUp	NodeStatus	= "Up"
+	NodeStatusUp NodeStatus = "Up"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -997,15 +997,15 @@ type PackageSharingScope string
 
 const (
 	// PackageSharingScopeAll ...
-	PackageSharingScopeAll	PackageSharingScope	= "All"
+	PackageSharingScopeAll PackageSharingScope = "All"
 	// PackageSharingScopeCode ...
-	PackageSharingScopeCode	PackageSharingScope	= "Code"
+	PackageSharingScopeCode PackageSharingScope = "Code"
 	// PackageSharingScopeConfig ...
-	PackageSharingScopeConfig	PackageSharingScope	= "Config"
+	PackageSharingScopeConfig PackageSharingScope = "Config"
 	// PackageSharingScopeData ...
-	PackageSharingScopeData	PackageSharingScope	= "Data"
+	PackageSharingScopeData PackageSharingScope = "Data"
 	// PackageSharingScopeNone ...
-	PackageSharingScopeNone	PackageSharingScope	= "None"
+	PackageSharingScopeNone PackageSharingScope = "None"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1020,13 +1020,13 @@ type PartitionScheme string
 
 const (
 	// PartitionSchemeNamed ...
-	PartitionSchemeNamed	PartitionScheme	= "Named"
+	PartitionSchemeNamed PartitionScheme = "Named"
 	// PartitionSchemePartitionSchemeDescription ...
-	PartitionSchemePartitionSchemeDescription	PartitionScheme	= "PartitionSchemeDescription"
+	PartitionSchemePartitionSchemeDescription PartitionScheme = "PartitionSchemeDescription"
 	// PartitionSchemeSingleton ...
-	PartitionSchemeSingleton	PartitionScheme	= "Singleton"
+	PartitionSchemeSingleton PartitionScheme = "Singleton"
 	// PartitionSchemeUniformInt64Range ...
-	PartitionSchemeUniformInt64Range	PartitionScheme	= "UniformInt64Range"
+	PartitionSchemeUniformInt64Range PartitionScheme = "UniformInt64Range"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1041,17 +1041,17 @@ type PartitionStatus string
 
 const (
 	// PartitionStatusDeleting ...
-	PartitionStatusDeleting	PartitionStatus	= "Deleting"
+	PartitionStatusDeleting PartitionStatus = "Deleting"
 	// PartitionStatusInQuorumLoss ...
-	PartitionStatusInQuorumLoss	PartitionStatus	= "InQuorumLoss"
+	PartitionStatusInQuorumLoss PartitionStatus = "InQuorumLoss"
 	// PartitionStatusInvalid ...
-	PartitionStatusInvalid	PartitionStatus	= "Invalid"
+	PartitionStatusInvalid PartitionStatus = "Invalid"
 	// PartitionStatusNotReady ...
-	PartitionStatusNotReady	PartitionStatus	= "NotReady"
+	PartitionStatusNotReady PartitionStatus = "NotReady"
 	// PartitionStatusReady ...
-	PartitionStatusReady	PartitionStatus	= "Ready"
+	PartitionStatusReady PartitionStatus = "Ready"
 	// PartitionStatusReconfiguring ...
-	PartitionStatusReconfiguring	PartitionStatus	= "Reconfiguring"
+	PartitionStatusReconfiguring PartitionStatus = "Reconfiguring"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1066,15 +1066,15 @@ type ReadStatus string
 
 const (
 	// ReadStatusGranted ...
-	ReadStatusGranted	ReadStatus	= "Granted"
+	ReadStatusGranted ReadStatus = "Granted"
 	// ReadStatusInvalid ...
-	ReadStatusInvalid	ReadStatus	= "Invalid"
+	ReadStatusInvalid ReadStatus = "Invalid"
 	// ReadStatusNotPrimary ...
-	ReadStatusNotPrimary	ReadStatus	= "NotPrimary"
+	ReadStatusNotPrimary ReadStatus = "NotPrimary"
 	// ReadStatusNoWriteQuorum ...
-	ReadStatusNoWriteQuorum	ReadStatus	= "NoWriteQuorum"
+	ReadStatusNoWriteQuorum ReadStatus = "NoWriteQuorum"
 	// ReadStatusReconfigurationPending ...
-	ReadStatusReconfigurationPending	ReadStatus	= "ReconfigurationPending"
+	ReadStatusReconfigurationPending ReadStatus = "ReconfigurationPending"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1089,15 +1089,15 @@ type ReplicaRole string
 
 const (
 	// ReplicaRoleActiveSecondary ...
-	ReplicaRoleActiveSecondary	ReplicaRole	= "ActiveSecondary"
+	ReplicaRoleActiveSecondary ReplicaRole = "ActiveSecondary"
 	// ReplicaRoleIdleSecondary ...
-	ReplicaRoleIdleSecondary	ReplicaRole	= "IdleSecondary"
+	ReplicaRoleIdleSecondary ReplicaRole = "IdleSecondary"
 	// ReplicaRoleNone ...
-	ReplicaRoleNone	ReplicaRole	= "None"
+	ReplicaRoleNone ReplicaRole = "None"
 	// ReplicaRolePrimary ...
-	ReplicaRolePrimary	ReplicaRole	= "Primary"
+	ReplicaRolePrimary ReplicaRole = "Primary"
 	// ReplicaRoleUnknown ...
-	ReplicaRoleUnknown	ReplicaRole	= "Unknown"
+	ReplicaRoleUnknown ReplicaRole = "Unknown"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1112,15 +1112,15 @@ type ReplicaRole1 string
 
 const (
 	// ReplicaRole1ActiveSecondary ...
-	ReplicaRole1ActiveSecondary	ReplicaRole1	= "ActiveSecondary"
+	ReplicaRole1ActiveSecondary ReplicaRole1 = "ActiveSecondary"
 	// ReplicaRole1IdleSecondary ...
-	ReplicaRole1IdleSecondary	ReplicaRole1	= "IdleSecondary"
+	ReplicaRole1IdleSecondary ReplicaRole1 = "IdleSecondary"
 	// ReplicaRole1None ...
-	ReplicaRole1None	ReplicaRole1	= "None"
+	ReplicaRole1None ReplicaRole1 = "None"
 	// ReplicaRole1Primary ...
-	ReplicaRole1Primary	ReplicaRole1	= "Primary"
+	ReplicaRole1Primary ReplicaRole1 = "Primary"
 	// ReplicaRole1Unknown ...
-	ReplicaRole1Unknown	ReplicaRole1	= "Unknown"
+	ReplicaRole1Unknown ReplicaRole1 = "Unknown"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1135,17 +1135,17 @@ type ReplicaStatus string
 
 const (
 	// ReplicaStatusDown ...
-	ReplicaStatusDown	ReplicaStatus	= "Down"
+	ReplicaStatusDown ReplicaStatus = "Down"
 	// ReplicaStatusDropped ...
-	ReplicaStatusDropped	ReplicaStatus	= "Dropped"
+	ReplicaStatusDropped ReplicaStatus = "Dropped"
 	// ReplicaStatusInBuild ...
-	ReplicaStatusInBuild	ReplicaStatus	= "InBuild"
+	ReplicaStatusInBuild ReplicaStatus = "InBuild"
 	// ReplicaStatusInvalid ...
-	ReplicaStatusInvalid	ReplicaStatus	= "Invalid"
+	ReplicaStatusInvalid ReplicaStatus = "Invalid"
 	// ReplicaStatusReady ...
-	ReplicaStatusReady	ReplicaStatus	= "Ready"
+	ReplicaStatusReady ReplicaStatus = "Ready"
 	// ReplicaStatusStandby ...
-	ReplicaStatusStandby	ReplicaStatus	= "Standby"
+	ReplicaStatusStandby ReplicaStatus = "Standby"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1160,17 +1160,17 @@ type ReplicaStatus1 string
 
 const (
 	// ReplicaStatus1Down ...
-	ReplicaStatus1Down	ReplicaStatus1	= "Down"
+	ReplicaStatus1Down ReplicaStatus1 = "Down"
 	// ReplicaStatus1Dropped ...
-	ReplicaStatus1Dropped	ReplicaStatus1	= "Dropped"
+	ReplicaStatus1Dropped ReplicaStatus1 = "Dropped"
 	// ReplicaStatus1InBuild ...
-	ReplicaStatus1InBuild	ReplicaStatus1	= "InBuild"
+	ReplicaStatus1InBuild ReplicaStatus1 = "InBuild"
 	// ReplicaStatus1Invalid ...
-	ReplicaStatus1Invalid	ReplicaStatus1	= "Invalid"
+	ReplicaStatus1Invalid ReplicaStatus1 = "Invalid"
 	// ReplicaStatus1Ready ...
-	ReplicaStatus1Ready	ReplicaStatus1	= "Ready"
+	ReplicaStatus1Ready ReplicaStatus1 = "Ready"
 	// ReplicaStatus1Standby ...
-	ReplicaStatus1Standby	ReplicaStatus1	= "Standby"
+	ReplicaStatus1Standby ReplicaStatus1 = "Standby"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1185,13 +1185,13 @@ type RollingUpgradeMode string
 
 const (
 	// RollingUpgradeModeInvalid ...
-	RollingUpgradeModeInvalid	RollingUpgradeMode	= "Invalid"
+	RollingUpgradeModeInvalid RollingUpgradeMode = "Invalid"
 	// RollingUpgradeModeMonitored ...
-	RollingUpgradeModeMonitored	RollingUpgradeMode	= "Monitored"
+	RollingUpgradeModeMonitored RollingUpgradeMode = "Monitored"
 	// RollingUpgradeModeUnmonitoredAuto ...
-	RollingUpgradeModeUnmonitoredAuto	RollingUpgradeMode	= "UnmonitoredAuto"
+	RollingUpgradeModeUnmonitoredAuto RollingUpgradeMode = "UnmonitoredAuto"
 	// RollingUpgradeModeUnmonitoredManual ...
-	RollingUpgradeModeUnmonitoredManual	RollingUpgradeMode	= "UnmonitoredManual"
+	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = "UnmonitoredManual"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1206,13 +1206,13 @@ type RollingUpgradeMode1 string
 
 const (
 	// RollingUpgradeMode1Invalid ...
-	RollingUpgradeMode1Invalid	RollingUpgradeMode1	= "Invalid"
+	RollingUpgradeMode1Invalid RollingUpgradeMode1 = "Invalid"
 	// RollingUpgradeMode1Monitored ...
-	RollingUpgradeMode1Monitored	RollingUpgradeMode1	= "Monitored"
+	RollingUpgradeMode1Monitored RollingUpgradeMode1 = "Monitored"
 	// RollingUpgradeMode1UnmonitoredAuto ...
-	RollingUpgradeMode1UnmonitoredAuto	RollingUpgradeMode1	= "UnmonitoredAuto"
+	RollingUpgradeMode1UnmonitoredAuto RollingUpgradeMode1 = "UnmonitoredAuto"
 	// RollingUpgradeMode1UnmonitoredManual ...
-	RollingUpgradeMode1UnmonitoredManual	RollingUpgradeMode1	= "UnmonitoredManual"
+	RollingUpgradeMode1UnmonitoredManual RollingUpgradeMode1 = "UnmonitoredManual"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1227,13 +1227,13 @@ type RollingUpgradeMode2 string
 
 const (
 	// RollingUpgradeMode2Invalid ...
-	RollingUpgradeMode2Invalid	RollingUpgradeMode2	= "Invalid"
+	RollingUpgradeMode2Invalid RollingUpgradeMode2 = "Invalid"
 	// RollingUpgradeMode2Monitored ...
-	RollingUpgradeMode2Monitored	RollingUpgradeMode2	= "Monitored"
+	RollingUpgradeMode2Monitored RollingUpgradeMode2 = "Monitored"
 	// RollingUpgradeMode2UnmonitoredAuto ...
-	RollingUpgradeMode2UnmonitoredAuto	RollingUpgradeMode2	= "UnmonitoredAuto"
+	RollingUpgradeMode2UnmonitoredAuto RollingUpgradeMode2 = "UnmonitoredAuto"
 	// RollingUpgradeMode2UnmonitoredManual ...
-	RollingUpgradeMode2UnmonitoredManual	RollingUpgradeMode2	= "UnmonitoredManual"
+	RollingUpgradeMode2UnmonitoredManual RollingUpgradeMode2 = "UnmonitoredManual"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1248,13 +1248,13 @@ type RollingUpgradeMode3 string
 
 const (
 	// RollingUpgradeMode3Invalid ...
-	RollingUpgradeMode3Invalid	RollingUpgradeMode3	= "Invalid"
+	RollingUpgradeMode3Invalid RollingUpgradeMode3 = "Invalid"
 	// RollingUpgradeMode3Monitored ...
-	RollingUpgradeMode3Monitored	RollingUpgradeMode3	= "Monitored"
+	RollingUpgradeMode3Monitored RollingUpgradeMode3 = "Monitored"
 	// RollingUpgradeMode3UnmonitoredAuto ...
-	RollingUpgradeMode3UnmonitoredAuto	RollingUpgradeMode3	= "UnmonitoredAuto"
+	RollingUpgradeMode3UnmonitoredAuto RollingUpgradeMode3 = "UnmonitoredAuto"
 	// RollingUpgradeMode3UnmonitoredManual ...
-	RollingUpgradeMode3UnmonitoredManual	RollingUpgradeMode3	= "UnmonitoredManual"
+	RollingUpgradeMode3UnmonitoredManual RollingUpgradeMode3 = "UnmonitoredManual"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1269,13 +1269,13 @@ type RollingUpgradeMode4 string
 
 const (
 	// RollingUpgradeMode4Invalid ...
-	RollingUpgradeMode4Invalid	RollingUpgradeMode4	= "Invalid"
+	RollingUpgradeMode4Invalid RollingUpgradeMode4 = "Invalid"
 	// RollingUpgradeMode4Monitored ...
-	RollingUpgradeMode4Monitored	RollingUpgradeMode4	= "Monitored"
+	RollingUpgradeMode4Monitored RollingUpgradeMode4 = "Monitored"
 	// RollingUpgradeMode4UnmonitoredAuto ...
-	RollingUpgradeMode4UnmonitoredAuto	RollingUpgradeMode4	= "UnmonitoredAuto"
+	RollingUpgradeMode4UnmonitoredAuto RollingUpgradeMode4 = "UnmonitoredAuto"
 	// RollingUpgradeMode4UnmonitoredManual ...
-	RollingUpgradeMode4UnmonitoredManual	RollingUpgradeMode4	= "UnmonitoredManual"
+	RollingUpgradeMode4UnmonitoredManual RollingUpgradeMode4 = "UnmonitoredManual"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1290,13 +1290,13 @@ type Scheme string
 
 const (
 	// SchemeAffinity ...
-	SchemeAffinity	Scheme	= "Affinity"
+	SchemeAffinity Scheme = "Affinity"
 	// SchemeAlignedAffinity ...
-	SchemeAlignedAffinity	Scheme	= "AlignedAffinity"
+	SchemeAlignedAffinity Scheme = "AlignedAffinity"
 	// SchemeInvalid ...
-	SchemeInvalid	Scheme	= "Invalid"
+	SchemeInvalid Scheme = "Invalid"
 	// SchemeNonAlignedAffinity ...
-	SchemeNonAlignedAffinity	Scheme	= "NonAlignedAffinity"
+	SchemeNonAlignedAffinity Scheme = "NonAlignedAffinity"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1311,11 +1311,11 @@ type ServiceKind string
 
 const (
 	// ServiceKindDeployedServiceReplicaInfo ...
-	ServiceKindDeployedServiceReplicaInfo	ServiceKind	= "DeployedServiceReplicaInfo"
+	ServiceKindDeployedServiceReplicaInfo ServiceKind = "DeployedServiceReplicaInfo"
 	// ServiceKindStateful ...
-	ServiceKindStateful	ServiceKind	= "Stateful"
+	ServiceKindStateful ServiceKind = "Stateful"
 	// ServiceKindStateless ...
-	ServiceKindStateless	ServiceKind	= "Stateless"
+	ServiceKindStateless ServiceKind = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1331,11 +1331,11 @@ type ServiceKindBasicDeployedServiceReplicaDetailInfo string
 
 const (
 	// ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo ...
-	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo	ServiceKindBasicDeployedServiceReplicaDetailInfo	= "DeployedServiceReplicaDetailInfo"
+	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo ServiceKindBasicDeployedServiceReplicaDetailInfo = "DeployedServiceReplicaDetailInfo"
 	// ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful ...
-	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful	ServiceKindBasicDeployedServiceReplicaDetailInfo	= "Stateful"
+	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful ServiceKindBasicDeployedServiceReplicaDetailInfo = "Stateful"
 	// ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless ...
-	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless	ServiceKindBasicDeployedServiceReplicaDetailInfo	= "Stateless"
+	ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless ServiceKindBasicDeployedServiceReplicaDetailInfo = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1350,11 +1350,11 @@ type ServiceKindBasicReplicaHealth string
 
 const (
 	// ServiceKindBasicReplicaHealthServiceKindReplicaHealth ...
-	ServiceKindBasicReplicaHealthServiceKindReplicaHealth	ServiceKindBasicReplicaHealth	= "ReplicaHealth"
+	ServiceKindBasicReplicaHealthServiceKindReplicaHealth ServiceKindBasicReplicaHealth = "ReplicaHealth"
 	// ServiceKindBasicReplicaHealthServiceKindStateful ...
-	ServiceKindBasicReplicaHealthServiceKindStateful	ServiceKindBasicReplicaHealth	= "Stateful"
+	ServiceKindBasicReplicaHealthServiceKindStateful ServiceKindBasicReplicaHealth = "Stateful"
 	// ServiceKindBasicReplicaHealthServiceKindStateless ...
-	ServiceKindBasicReplicaHealthServiceKindStateless	ServiceKindBasicReplicaHealth	= "Stateless"
+	ServiceKindBasicReplicaHealthServiceKindStateless ServiceKindBasicReplicaHealth = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1369,11 +1369,11 @@ type ServiceKindBasicReplicaHealthState string
 
 const (
 	// ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState ...
-	ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState	ServiceKindBasicReplicaHealthState	= "ReplicaHealthState"
+	ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState ServiceKindBasicReplicaHealthState = "ReplicaHealthState"
 	// ServiceKindBasicReplicaHealthStateServiceKindStateful ...
-	ServiceKindBasicReplicaHealthStateServiceKindStateful	ServiceKindBasicReplicaHealthState	= "Stateful"
+	ServiceKindBasicReplicaHealthStateServiceKindStateful ServiceKindBasicReplicaHealthState = "Stateful"
 	// ServiceKindBasicReplicaHealthStateServiceKindStateless ...
-	ServiceKindBasicReplicaHealthStateServiceKindStateless	ServiceKindBasicReplicaHealthState	= "Stateless"
+	ServiceKindBasicReplicaHealthStateServiceKindStateless ServiceKindBasicReplicaHealthState = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1388,11 +1388,11 @@ type ServiceKindBasicReplicaInfo string
 
 const (
 	// ServiceKindBasicReplicaInfoServiceKindReplicaInfo ...
-	ServiceKindBasicReplicaInfoServiceKindReplicaInfo	ServiceKindBasicReplicaInfo	= "ReplicaInfo"
+	ServiceKindBasicReplicaInfoServiceKindReplicaInfo ServiceKindBasicReplicaInfo = "ReplicaInfo"
 	// ServiceKindBasicReplicaInfoServiceKindStateful ...
-	ServiceKindBasicReplicaInfoServiceKindStateful	ServiceKindBasicReplicaInfo	= "Stateful"
+	ServiceKindBasicReplicaInfoServiceKindStateful ServiceKindBasicReplicaInfo = "Stateful"
 	// ServiceKindBasicReplicaInfoServiceKindStateless ...
-	ServiceKindBasicReplicaInfoServiceKindStateless	ServiceKindBasicReplicaInfo	= "Stateless"
+	ServiceKindBasicReplicaInfoServiceKindStateless ServiceKindBasicReplicaInfo = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1407,11 +1407,11 @@ type ServiceKindBasicServiceDescription string
 
 const (
 	// ServiceKindBasicServiceDescriptionServiceKindServiceDescription ...
-	ServiceKindBasicServiceDescriptionServiceKindServiceDescription	ServiceKindBasicServiceDescription	= "ServiceDescription"
+	ServiceKindBasicServiceDescriptionServiceKindServiceDescription ServiceKindBasicServiceDescription = "ServiceDescription"
 	// ServiceKindBasicServiceDescriptionServiceKindStateful ...
-	ServiceKindBasicServiceDescriptionServiceKindStateful	ServiceKindBasicServiceDescription	= "Stateful"
+	ServiceKindBasicServiceDescriptionServiceKindStateful ServiceKindBasicServiceDescription = "Stateful"
 	// ServiceKindBasicServiceDescriptionServiceKindStateless ...
-	ServiceKindBasicServiceDescriptionServiceKindStateless	ServiceKindBasicServiceDescription	= "Stateless"
+	ServiceKindBasicServiceDescriptionServiceKindStateless ServiceKindBasicServiceDescription = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1426,11 +1426,11 @@ type ServiceKindBasicServiceInfo string
 
 const (
 	// ServiceKindBasicServiceInfoServiceKindServiceInfo ...
-	ServiceKindBasicServiceInfoServiceKindServiceInfo	ServiceKindBasicServiceInfo	= "ServiceInfo"
+	ServiceKindBasicServiceInfoServiceKindServiceInfo ServiceKindBasicServiceInfo = "ServiceInfo"
 	// ServiceKindBasicServiceInfoServiceKindStateful ...
-	ServiceKindBasicServiceInfoServiceKindStateful	ServiceKindBasicServiceInfo	= "Stateful"
+	ServiceKindBasicServiceInfoServiceKindStateful ServiceKindBasicServiceInfo = "Stateful"
 	// ServiceKindBasicServiceInfoServiceKindStateless ...
-	ServiceKindBasicServiceInfoServiceKindStateless	ServiceKindBasicServiceInfo	= "Stateless"
+	ServiceKindBasicServiceInfoServiceKindStateless ServiceKindBasicServiceInfo = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1445,11 +1445,11 @@ type ServiceKindBasicServicePartitionInfo string
 
 const (
 	// ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo ...
-	ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo	ServiceKindBasicServicePartitionInfo	= "ServicePartitionInfo"
+	ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo ServiceKindBasicServicePartitionInfo = "ServicePartitionInfo"
 	// ServiceKindBasicServicePartitionInfoServiceKindStateful ...
-	ServiceKindBasicServicePartitionInfoServiceKindStateful	ServiceKindBasicServicePartitionInfo	= "Stateful"
+	ServiceKindBasicServicePartitionInfoServiceKindStateful ServiceKindBasicServicePartitionInfo = "Stateful"
 	// ServiceKindBasicServicePartitionInfoServiceKindStateless ...
-	ServiceKindBasicServicePartitionInfoServiceKindStateless	ServiceKindBasicServicePartitionInfo	= "Stateless"
+	ServiceKindBasicServicePartitionInfoServiceKindStateless ServiceKindBasicServicePartitionInfo = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1465,11 +1465,11 @@ type ServiceKindBasicServiceUpdateDescription string
 
 const (
 	// ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription	ServiceKindBasicServiceUpdateDescription	= "ServiceUpdateDescription"
+	ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription ServiceKindBasicServiceUpdateDescription = "ServiceUpdateDescription"
 	// ServiceKindBasicServiceUpdateDescriptionServiceKindStateful ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindStateful	ServiceKindBasicServiceUpdateDescription	= "Stateful"
+	ServiceKindBasicServiceUpdateDescriptionServiceKindStateful ServiceKindBasicServiceUpdateDescription = "Stateful"
 	// ServiceKindBasicServiceUpdateDescriptionServiceKindStateless ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindStateless	ServiceKindBasicServiceUpdateDescription	= "Stateless"
+	ServiceKindBasicServiceUpdateDescriptionServiceKindStateless ServiceKindBasicServiceUpdateDescription = "Stateless"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1484,9 +1484,9 @@ type ServicePackageActivationMode string
 
 const (
 	// ExclusiveProcess ...
-	ExclusiveProcess	ServicePackageActivationMode	= "ExclusiveProcess"
+	ExclusiveProcess ServicePackageActivationMode = "ExclusiveProcess"
 	// SharedProcess ...
-	SharedProcess	ServicePackageActivationMode	= "SharedProcess"
+	SharedProcess ServicePackageActivationMode = "SharedProcess"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1501,9 +1501,9 @@ type ServicePackageActivationMode1 string
 
 const (
 	// ServicePackageActivationMode1ExclusiveProcess ...
-	ServicePackageActivationMode1ExclusiveProcess	ServicePackageActivationMode1	= "ExclusiveProcess"
+	ServicePackageActivationMode1ExclusiveProcess ServicePackageActivationMode1 = "ExclusiveProcess"
 	// ServicePackageActivationMode1SharedProcess ...
-	ServicePackageActivationMode1SharedProcess	ServicePackageActivationMode1	= "SharedProcess"
+	ServicePackageActivationMode1SharedProcess ServicePackageActivationMode1 = "SharedProcess"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1518,13 +1518,13 @@ type ServicePartitionKind string
 
 const (
 	// ServicePartitionKindInt64Range ...
-	ServicePartitionKindInt64Range	ServicePartitionKind	= "Int64Range"
+	ServicePartitionKindInt64Range ServicePartitionKind = "Int64Range"
 	// ServicePartitionKindNamed ...
-	ServicePartitionKindNamed	ServicePartitionKind	= "Named"
+	ServicePartitionKindNamed ServicePartitionKind = "Named"
 	// ServicePartitionKindPartitionInformation ...
-	ServicePartitionKindPartitionInformation	ServicePartitionKind	= "PartitionInformation"
+	ServicePartitionKindPartitionInformation ServicePartitionKind = "PartitionInformation"
 	// ServicePartitionKindSingleton ...
-	ServicePartitionKindSingleton	ServicePartitionKind	= "Singleton"
+	ServicePartitionKindSingleton ServicePartitionKind = "Singleton"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1539,17 +1539,17 @@ type ServiceStatus string
 
 const (
 	// ServiceStatusActive ...
-	ServiceStatusActive	ServiceStatus	= "Active"
+	ServiceStatusActive ServiceStatus = "Active"
 	// ServiceStatusCreating ...
-	ServiceStatusCreating	ServiceStatus	= "Creating"
+	ServiceStatusCreating ServiceStatus = "Creating"
 	// ServiceStatusDeleting ...
-	ServiceStatusDeleting	ServiceStatus	= "Deleting"
+	ServiceStatusDeleting ServiceStatus = "Deleting"
 	// ServiceStatusFailed ...
-	ServiceStatusFailed	ServiceStatus	= "Failed"
+	ServiceStatusFailed ServiceStatus = "Failed"
 	// ServiceStatusUnknown ...
-	ServiceStatusUnknown	ServiceStatus	= "Unknown"
+	ServiceStatusUnknown ServiceStatus = "Unknown"
 	// ServiceStatusUpgrading ...
-	ServiceStatusUpgrading	ServiceStatus	= "Upgrading"
+	ServiceStatusUpgrading ServiceStatus = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1564,13 +1564,13 @@ type State string
 
 const (
 	// StateCompleted ...
-	StateCompleted	State	= "Completed"
+	StateCompleted State = "Completed"
 	// StateInProgress ...
-	StateInProgress	State	= "InProgress"
+	StateInProgress State = "InProgress"
 	// StateInvalid ...
-	StateInvalid	State	= "Invalid"
+	StateInvalid State = "Invalid"
 	// StatePending ...
-	StatePending	State	= "Pending"
+	StatePending State = "Pending"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1585,19 +1585,19 @@ type State1 string
 
 const (
 	// State1Cancelled ...
-	State1Cancelled	State1	= "Cancelled"
+	State1Cancelled State1 = "Cancelled"
 	// State1Completed ...
-	State1Completed	State1	= "Completed"
+	State1Completed State1 = "Completed"
 	// State1Faulted ...
-	State1Faulted	State1	= "Faulted"
+	State1Faulted State1 = "Faulted"
 	// State1ForceCancelled ...
-	State1ForceCancelled	State1	= "ForceCancelled"
+	State1ForceCancelled State1 = "ForceCancelled"
 	// State1Invalid ...
-	State1Invalid	State1	= "Invalid"
+	State1Invalid State1 = "Invalid"
 	// State1RollingBack ...
-	State1RollingBack	State1	= "RollingBack"
+	State1RollingBack State1 = "RollingBack"
 	// State1Running ...
-	State1Running	State1	= "Running"
+	State1Running State1 = "Running"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1612,19 +1612,19 @@ type State2 string
 
 const (
 	// State2Cancelled ...
-	State2Cancelled	State2	= "Cancelled"
+	State2Cancelled State2 = "Cancelled"
 	// State2Completed ...
-	State2Completed	State2	= "Completed"
+	State2Completed State2 = "Completed"
 	// State2Faulted ...
-	State2Faulted	State2	= "Faulted"
+	State2Faulted State2 = "Faulted"
 	// State2ForceCancelled ...
-	State2ForceCancelled	State2	= "ForceCancelled"
+	State2ForceCancelled State2 = "ForceCancelled"
 	// State2Invalid ...
-	State2Invalid	State2	= "Invalid"
+	State2Invalid State2 = "Invalid"
 	// State2RollingBack ...
-	State2RollingBack	State2	= "RollingBack"
+	State2RollingBack State2 = "RollingBack"
 	// State2Running ...
-	State2Running	State2	= "Running"
+	State2Running State2 = "Running"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1639,19 +1639,19 @@ type State3 string
 
 const (
 	// State3Cancelled ...
-	State3Cancelled	State3	= "Cancelled"
+	State3Cancelled State3 = "Cancelled"
 	// State3Completed ...
-	State3Completed	State3	= "Completed"
+	State3Completed State3 = "Completed"
 	// State3Faulted ...
-	State3Faulted	State3	= "Faulted"
+	State3Faulted State3 = "Faulted"
 	// State3ForceCancelled ...
-	State3ForceCancelled	State3	= "ForceCancelled"
+	State3ForceCancelled State3 = "ForceCancelled"
 	// State3Invalid ...
-	State3Invalid	State3	= "Invalid"
+	State3Invalid State3 = "Invalid"
 	// State3RollingBack ...
-	State3RollingBack	State3	= "RollingBack"
+	State3RollingBack State3 = "RollingBack"
 	// State3Running ...
-	State3Running	State3	= "Running"
+	State3Running State3 = "Running"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1666,19 +1666,19 @@ type State4 string
 
 const (
 	// State4Cancelled ...
-	State4Cancelled	State4	= "Cancelled"
+	State4Cancelled State4 = "Cancelled"
 	// State4Completed ...
-	State4Completed	State4	= "Completed"
+	State4Completed State4 = "Completed"
 	// State4Faulted ...
-	State4Faulted	State4	= "Faulted"
+	State4Faulted State4 = "Faulted"
 	// State4ForceCancelled ...
-	State4ForceCancelled	State4	= "ForceCancelled"
+	State4ForceCancelled State4 = "ForceCancelled"
 	// State4Invalid ...
-	State4Invalid	State4	= "Invalid"
+	State4Invalid State4 = "Invalid"
 	// State4RollingBack ...
-	State4RollingBack	State4	= "RollingBack"
+	State4RollingBack State4 = "RollingBack"
 	// State4Running ...
-	State4Running	State4	= "Running"
+	State4Running State4 = "Running"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1693,19 +1693,19 @@ type State5 string
 
 const (
 	// State5Cancelled ...
-	State5Cancelled	State5	= "Cancelled"
+	State5Cancelled State5 = "Cancelled"
 	// State5Completed ...
-	State5Completed	State5	= "Completed"
+	State5Completed State5 = "Completed"
 	// State5Faulted ...
-	State5Faulted	State5	= "Faulted"
+	State5Faulted State5 = "Faulted"
 	// State5ForceCancelled ...
-	State5ForceCancelled	State5	= "ForceCancelled"
+	State5ForceCancelled State5 = "ForceCancelled"
 	// State5Invalid ...
-	State5Invalid	State5	= "Invalid"
+	State5Invalid State5 = "Invalid"
 	// State5RollingBack ...
-	State5RollingBack	State5	= "RollingBack"
+	State5RollingBack State5 = "RollingBack"
 	// State5Running ...
-	State5Running	State5	= "Running"
+	State5Running State5 = "Running"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1720,17 +1720,17 @@ type Status string
 
 const (
 	// StatusCreating ...
-	StatusCreating	Status	= "Creating"
+	StatusCreating Status = "Creating"
 	// StatusDeleting ...
-	StatusDeleting	Status	= "Deleting"
+	StatusDeleting Status = "Deleting"
 	// StatusFailed ...
-	StatusFailed	Status	= "Failed"
+	StatusFailed Status = "Failed"
 	// StatusInvalid ...
-	StatusInvalid	Status	= "Invalid"
+	StatusInvalid Status = "Invalid"
 	// StatusReady ...
-	StatusReady	Status	= "Ready"
+	StatusReady Status = "Ready"
 	// StatusUpgrading ...
-	StatusUpgrading	Status	= "Upgrading"
+	StatusUpgrading Status = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1745,15 +1745,15 @@ type Status1 string
 
 const (
 	// Status1Available ...
-	Status1Available	Status1	= "Available"
+	Status1Available Status1 = "Available"
 	// Status1Failed ...
-	Status1Failed	Status1	= "Failed"
+	Status1Failed Status1 = "Failed"
 	// Status1Invalid ...
-	Status1Invalid	Status1	= "Invalid"
+	Status1Invalid Status1 = "Invalid"
 	// Status1Provisioning ...
-	Status1Provisioning	Status1	= "Provisioning"
+	Status1Provisioning Status1 = "Provisioning"
 	// Status1Unprovisioning ...
-	Status1Unprovisioning	Status1	= "Unprovisioning"
+	Status1Unprovisioning Status1 = "Unprovisioning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1768,17 +1768,17 @@ type Status2 string
 
 const (
 	// Status2Activating ...
-	Status2Activating	Status2	= "Activating"
+	Status2Activating Status2 = "Activating"
 	// Status2Active ...
-	Status2Active	Status2	= "Active"
+	Status2Active Status2 = "Active"
 	// Status2Deactivating ...
-	Status2Deactivating	Status2	= "Deactivating"
+	Status2Deactivating Status2 = "Deactivating"
 	// Status2Downloading ...
-	Status2Downloading	Status2	= "Downloading"
+	Status2Downloading Status2 = "Downloading"
 	// Status2Invalid ...
-	Status2Invalid	Status2	= "Invalid"
+	Status2Invalid Status2 = "Invalid"
 	// Status2Upgrading ...
-	Status2Upgrading	Status2	= "Upgrading"
+	Status2Upgrading Status2 = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1793,17 +1793,17 @@ type Status3 string
 
 const (
 	// Status3Invalid ...
-	Status3Invalid	Status3	= "Invalid"
+	Status3Invalid Status3 = "Invalid"
 	// Status3Pending ...
-	Status3Pending	Status3	= "Pending"
+	Status3Pending Status3 = "Pending"
 	// Status3Started ...
-	Status3Started	Status3	= "Started"
+	Status3Started Status3 = "Started"
 	// Status3Starting ...
-	Status3Starting	Status3	= "Starting"
+	Status3Starting Status3 = "Starting"
 	// Status3Stopped ...
-	Status3Stopped	Status3	= "Stopped"
+	Status3Stopped Status3 = "Stopped"
 	// Status3Stopping ...
-	Status3Stopping	Status3	= "Stopping"
+	Status3Stopping Status3 = "Stopping"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1818,17 +1818,17 @@ type Status4 string
 
 const (
 	// Status4Activating ...
-	Status4Activating	Status4	= "Activating"
+	Status4Activating Status4 = "Activating"
 	// Status4Active ...
-	Status4Active	Status4	= "Active"
+	Status4Active Status4 = "Active"
 	// Status4Deactivating ...
-	Status4Deactivating	Status4	= "Deactivating"
+	Status4Deactivating Status4 = "Deactivating"
 	// Status4Downloading ...
-	Status4Downloading	Status4	= "Downloading"
+	Status4Downloading Status4 = "Downloading"
 	// Status4Invalid ...
-	Status4Invalid	Status4	= "Invalid"
+	Status4Invalid Status4 = "Invalid"
 	// Status4Upgrading ...
-	Status4Upgrading	Status4	= "Upgrading"
+	Status4Upgrading Status4 = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1843,11 +1843,11 @@ type Status5 string
 
 const (
 	// Status5Invalid ...
-	Status5Invalid	Status5	= "Invalid"
+	Status5Invalid Status5 = "Invalid"
 	// Status5Running ...
-	Status5Running	Status5	= "Running"
+	Status5Running Status5 = "Running"
 	// Status5Stopped ...
-	Status5Stopped	Status5	= "Stopped"
+	Status5Stopped Status5 = "Stopped"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1862,19 +1862,19 @@ type Status6 string
 
 const (
 	// Status6Created ...
-	Status6Created	Status6	= "Created"
+	Status6Created Status6 = "Created"
 	// Status6Creating ...
-	Status6Creating	Status6	= "Creating"
+	Status6Creating Status6 = "Creating"
 	// Status6Deleting ...
-	Status6Deleting	Status6	= "Deleting"
+	Status6Deleting Status6 = "Deleting"
 	// Status6Failed ...
-	Status6Failed	Status6	= "Failed"
+	Status6Failed Status6 = "Failed"
 	// Status6Invalid ...
-	Status6Invalid	Status6	= "Invalid"
+	Status6Invalid Status6 = "Invalid"
 	// Status6Provisioning ...
-	Status6Provisioning	Status6	= "Provisioning"
+	Status6Provisioning Status6 = "Provisioning"
 	// Status6Unprovisioning ...
-	Status6Unprovisioning	Status6	= "Unprovisioning"
+	Status6Unprovisioning Status6 = "Unprovisioning"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1889,17 +1889,17 @@ type Status7 string
 
 const (
 	// Status7Activating ...
-	Status7Activating	Status7	= "Activating"
+	Status7Activating Status7 = "Activating"
 	// Status7Active ...
-	Status7Active	Status7	= "Active"
+	Status7Active Status7 = "Active"
 	// Status7Deactivating ...
-	Status7Deactivating	Status7	= "Deactivating"
+	Status7Deactivating Status7 = "Deactivating"
 	// Status7Downloading ...
-	Status7Downloading	Status7	= "Downloading"
+	Status7Downloading Status7 = "Downloading"
 	// Status7Invalid ...
-	Status7Invalid	Status7	= "Invalid"
+	Status7Invalid Status7 = "Invalid"
 	// Status7Upgrading ...
-	Status7Upgrading	Status7	= "Upgrading"
+	Status7Upgrading Status7 = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1914,13 +1914,13 @@ type Status8 string
 
 const (
 	// Status8Disabled ...
-	Status8Disabled	Status8	= "Disabled"
+	Status8Disabled Status8 = "Disabled"
 	// Status8Enabled ...
-	Status8Enabled	Status8	= "Enabled"
+	Status8Enabled Status8 = "Enabled"
 	// Status8Invalid ...
-	Status8Invalid	Status8	= "Invalid"
+	Status8Invalid Status8 = "Invalid"
 	// Status8Registered ...
-	Status8Registered	Status8	= "Registered"
+	Status8Registered Status8 = "Registered"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1935,15 +1935,15 @@ type Type string
 
 const (
 	// TypeInvalid ...
-	TypeInvalid	Type	= "Invalid"
+	TypeInvalid Type = "Invalid"
 	// TypeNodeTransition ...
-	TypeNodeTransition	Type	= "NodeTransition"
+	TypeNodeTransition Type = "NodeTransition"
 	// TypePartitionDataLoss ...
-	TypePartitionDataLoss	Type	= "PartitionDataLoss"
+	TypePartitionDataLoss Type = "PartitionDataLoss"
 	// TypePartitionQuorumLoss ...
-	TypePartitionQuorumLoss	Type	= "PartitionQuorumLoss"
+	TypePartitionQuorumLoss Type = "PartitionQuorumLoss"
 	// TypePartitionRestart ...
-	TypePartitionRestart	Type	= "PartitionRestart"
+	TypePartitionRestart Type = "PartitionRestart"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1959,17 +1959,17 @@ type TypeBasicServicePlacementPolicyDescription string
 
 const (
 	// TypeInvalidDomain ...
-	TypeInvalidDomain	TypeBasicServicePlacementPolicyDescription	= "InvalidDomain"
+	TypeInvalidDomain TypeBasicServicePlacementPolicyDescription = "InvalidDomain"
 	// TypeNonPartiallyPlaceService ...
-	TypeNonPartiallyPlaceService	TypeBasicServicePlacementPolicyDescription	= "NonPartiallyPlaceService"
+	TypeNonPartiallyPlaceService TypeBasicServicePlacementPolicyDescription = "NonPartiallyPlaceService"
 	// TypePreferPrimaryDomain ...
-	TypePreferPrimaryDomain	TypeBasicServicePlacementPolicyDescription	= "PreferPrimaryDomain"
+	TypePreferPrimaryDomain TypeBasicServicePlacementPolicyDescription = "PreferPrimaryDomain"
 	// TypeRequireDomain ...
-	TypeRequireDomain	TypeBasicServicePlacementPolicyDescription	= "RequireDomain"
+	TypeRequireDomain TypeBasicServicePlacementPolicyDescription = "RequireDomain"
 	// TypeRequireDomainDistribution ...
-	TypeRequireDomainDistribution	TypeBasicServicePlacementPolicyDescription	= "RequireDomainDistribution"
+	TypeRequireDomainDistribution TypeBasicServicePlacementPolicyDescription = "RequireDomainDistribution"
 	// TypeServicePlacementPolicyDescription ...
-	TypeServicePlacementPolicyDescription	TypeBasicServicePlacementPolicyDescription	= "ServicePlacementPolicyDescription"
+	TypeServicePlacementPolicyDescription TypeBasicServicePlacementPolicyDescription = "ServicePlacementPolicyDescription"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -1984,9 +1984,9 @@ type UpgradeKind string
 
 const (
 	// UpgradeKindInvalid ...
-	UpgradeKindInvalid	UpgradeKind	= "Invalid"
+	UpgradeKindInvalid UpgradeKind = "Invalid"
 	// UpgradeKindRolling ...
-	UpgradeKindRolling	UpgradeKind	= "Rolling"
+	UpgradeKindRolling UpgradeKind = "Rolling"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2001,9 +2001,9 @@ type UpgradeKind1 string
 
 const (
 	// UpgradeKind1Invalid ...
-	UpgradeKind1Invalid	UpgradeKind1	= "Invalid"
+	UpgradeKind1Invalid UpgradeKind1 = "Invalid"
 	// UpgradeKind1Rolling ...
-	UpgradeKind1Rolling	UpgradeKind1	= "Rolling"
+	UpgradeKind1Rolling UpgradeKind1 = "Rolling"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2018,9 +2018,9 @@ type UpgradeKind2 string
 
 const (
 	// UpgradeKind2Invalid ...
-	UpgradeKind2Invalid	UpgradeKind2	= "Invalid"
+	UpgradeKind2Invalid UpgradeKind2 = "Invalid"
 	// UpgradeKind2Rolling ...
-	UpgradeKind2Rolling	UpgradeKind2	= "Rolling"
+	UpgradeKind2Rolling UpgradeKind2 = "Rolling"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2035,13 +2035,13 @@ type UpgradePhase string
 
 const (
 	// UpgradePhaseInvalid ...
-	UpgradePhaseInvalid	UpgradePhase	= "Invalid"
+	UpgradePhaseInvalid UpgradePhase = "Invalid"
 	// UpgradePhasePostUpgradeSafetyCheck ...
-	UpgradePhasePostUpgradeSafetyCheck	UpgradePhase	= "PostUpgradeSafetyCheck"
+	UpgradePhasePostUpgradeSafetyCheck UpgradePhase = "PostUpgradeSafetyCheck"
 	// UpgradePhasePreUpgradeSafetyCheck ...
-	UpgradePhasePreUpgradeSafetyCheck	UpgradePhase	= "PreUpgradeSafetyCheck"
+	UpgradePhasePreUpgradeSafetyCheck UpgradePhase = "PreUpgradeSafetyCheck"
 	// UpgradePhaseUpgrading ...
-	UpgradePhaseUpgrading	UpgradePhase	= "Upgrading"
+	UpgradePhaseUpgrading UpgradePhase = "Upgrading"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2056,19 +2056,19 @@ type UpgradeState string
 
 const (
 	// UpgradeStateFailed ...
-	UpgradeStateFailed	UpgradeState	= "Failed"
+	UpgradeStateFailed UpgradeState = "Failed"
 	// UpgradeStateInvalid ...
-	UpgradeStateInvalid	UpgradeState	= "Invalid"
+	UpgradeStateInvalid UpgradeState = "Invalid"
 	// UpgradeStateRollingBackCompleted ...
-	UpgradeStateRollingBackCompleted	UpgradeState	= "RollingBackCompleted"
+	UpgradeStateRollingBackCompleted UpgradeState = "RollingBackCompleted"
 	// UpgradeStateRollingBackInProgress ...
-	UpgradeStateRollingBackInProgress	UpgradeState	= "RollingBackInProgress"
+	UpgradeStateRollingBackInProgress UpgradeState = "RollingBackInProgress"
 	// UpgradeStateRollingForwardCompleted ...
-	UpgradeStateRollingForwardCompleted	UpgradeState	= "RollingForwardCompleted"
+	UpgradeStateRollingForwardCompleted UpgradeState = "RollingForwardCompleted"
 	// UpgradeStateRollingForwardInProgress ...
-	UpgradeStateRollingForwardInProgress	UpgradeState	= "RollingForwardInProgress"
+	UpgradeStateRollingForwardInProgress UpgradeState = "RollingForwardInProgress"
 	// UpgradeStateRollingForwardPending ...
-	UpgradeStateRollingForwardPending	UpgradeState	= "RollingForwardPending"
+	UpgradeStateRollingForwardPending UpgradeState = "RollingForwardPending"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2083,19 +2083,19 @@ type UpgradeState1 string
 
 const (
 	// UpgradeState1Failed ...
-	UpgradeState1Failed	UpgradeState1	= "Failed"
+	UpgradeState1Failed UpgradeState1 = "Failed"
 	// UpgradeState1Invalid ...
-	UpgradeState1Invalid	UpgradeState1	= "Invalid"
+	UpgradeState1Invalid UpgradeState1 = "Invalid"
 	// UpgradeState1RollingBackCompleted ...
-	UpgradeState1RollingBackCompleted	UpgradeState1	= "RollingBackCompleted"
+	UpgradeState1RollingBackCompleted UpgradeState1 = "RollingBackCompleted"
 	// UpgradeState1RollingBackInProgress ...
-	UpgradeState1RollingBackInProgress	UpgradeState1	= "RollingBackInProgress"
+	UpgradeState1RollingBackInProgress UpgradeState1 = "RollingBackInProgress"
 	// UpgradeState1RollingForwardCompleted ...
-	UpgradeState1RollingForwardCompleted	UpgradeState1	= "RollingForwardCompleted"
+	UpgradeState1RollingForwardCompleted UpgradeState1 = "RollingForwardCompleted"
 	// UpgradeState1RollingForwardInProgress ...
-	UpgradeState1RollingForwardInProgress	UpgradeState1	= "RollingForwardInProgress"
+	UpgradeState1RollingForwardInProgress UpgradeState1 = "RollingForwardInProgress"
 	// UpgradeState1RollingForwardPending ...
-	UpgradeState1RollingForwardPending	UpgradeState1	= "RollingForwardPending"
+	UpgradeState1RollingForwardPending UpgradeState1 = "RollingForwardPending"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2110,13 +2110,13 @@ type Weight string
 
 const (
 	// WeightHigh ...
-	WeightHigh	Weight	= "High"
+	WeightHigh Weight = "High"
 	// WeightLow ...
-	WeightLow	Weight	= "Low"
+	WeightLow Weight = "Low"
 	// WeightMedium ...
-	WeightMedium	Weight	= "Medium"
+	WeightMedium Weight = "Medium"
 	// WeightZero ...
-	WeightZero	Weight	= "Zero"
+	WeightZero Weight = "Zero"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2131,15 +2131,15 @@ type WriteStatus string
 
 const (
 	// WriteStatusGranted ...
-	WriteStatusGranted	WriteStatus	= "Granted"
+	WriteStatusGranted WriteStatus = "Granted"
 	// WriteStatusInvalid ...
-	WriteStatusInvalid	WriteStatus	= "Invalid"
+	WriteStatusInvalid WriteStatus = "Invalid"
 	// WriteStatusNotPrimary ...
-	WriteStatusNotPrimary	WriteStatus	= "NotPrimary"
+	WriteStatusNotPrimary WriteStatus = "NotPrimary"
 	// WriteStatusNoWriteQuorum ...
-	WriteStatusNoWriteQuorum	WriteStatus	= "NoWriteQuorum"
+	WriteStatusNoWriteQuorum WriteStatus = "NoWriteQuorum"
 	// WriteStatusReconfigurationPending ...
-	WriteStatusReconfigurationPending	WriteStatus	= "ReconfigurationPending"
+	WriteStatusReconfigurationPending WriteStatus = "ReconfigurationPending"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2152,26 +2152,26 @@ func PossibleWriteStatusValues() []WriteStatus {
 // AadMetadata azure Active Directory metadata used for secured connection to cluster.
 type AadMetadata struct {
 	// Authority - The AAD authority url.
-	Authority	*string	`json:"authority,omitempty"`
+	Authority *string `json:"authority,omitempty"`
 	// Client - The AAD client application Id.
-	Client	*string	`json:"client,omitempty"`
+	Client *string `json:"client,omitempty"`
 	// Cluster - The AAD cluster application Id.
-	Cluster	*string	`json:"cluster,omitempty"`
+	Cluster *string `json:"cluster,omitempty"`
 	// Login - The AAD login url.
-	Login	*string	`json:"login,omitempty"`
+	Login *string `json:"login,omitempty"`
 	// Redirect - The client application redirect address.
-	Redirect	*string	`json:"redirect,omitempty"`
+	Redirect *string `json:"redirect,omitempty"`
 	// Tenant - The AAD tenant Id.
-	Tenant	*string	`json:"tenant,omitempty"`
+	Tenant *string `json:"tenant,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // AadMetadataObject azure Active Directory metadata object used for secured connection to cluster.
 type AadMetadataObject struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Type - The client authentication method.
-	Type		*string		`json:"type,omitempty"`
-	Metadata	*AadMetadata	`json:"metadata,omitempty"`
+	Type     *string      `json:"type,omitempty"`
+	Metadata *AadMetadata `json:"metadata,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2183,41 +2183,41 @@ type AadMetadataObject struct {
 // application
 type ApplicationCapacityDescription struct {
 	// MinimumNodes - The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes property.
-	MinimumNodes	*int64	`json:"MinimumNodes,omitempty"`
+	MinimumNodes *int64 `json:"MinimumNodes,omitempty"`
 	// MaximumNodes - The maximum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
-	MaximumNodes		*int64				`json:"MaximumNodes,omitempty"`
-	ApplicationMetrics	*[]ApplicationMetricDescription	`json:"ApplicationMetrics,omitempty"`
+	MaximumNodes       *int64                          `json:"MaximumNodes,omitempty"`
+	ApplicationMetrics *[]ApplicationMetricDescription `json:"ApplicationMetrics,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationDescription describes a Service Fabric application.
 type ApplicationDescription struct {
-	Name			*string				`json:"Name,omitempty"`
-	TypeName		*string				`json:"TypeName,omitempty"`
-	TypeVersion		*string				`json:"TypeVersion,omitempty"`
-	ParameterList		*[]ApplicationParameter		`json:"ParameterList,omitempty"`
-	ApplicationCapacity	*ApplicationCapacityDescription	`json:"ApplicationCapacity,omitempty"`
+	Name                *string                         `json:"Name,omitempty"`
+	TypeName            *string                         `json:"TypeName,omitempty"`
+	TypeVersion         *string                         `json:"TypeVersion,omitempty"`
+	ParameterList       *[]ApplicationParameter         `json:"ParameterList,omitempty"`
+	ApplicationCapacity *ApplicationCapacityDescription `json:"ApplicationCapacity,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationHealth represents the health of the application. Contains the application aggregated health state and
 // the service and deployed application health states.
 type ApplicationHealth struct {
-	autorest.Response	`json:"-"`
-	Name			*string	`json:"Name,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"Name,omitempty"`
 	// ServiceHealthStates - Service health states as found in the health store.
-	ServiceHealthStates	*[]ServiceHealthState	`json:"ServiceHealthStates,omitempty"`
+	ServiceHealthStates *[]ServiceHealthState `json:"ServiceHealthStates,omitempty"`
 	// DeployedApplicationHealthStates - Deployed application health states as found in the health store.
-	DeployedApplicationHealthStates	*[]DeployedApplicationHealthState	`json:"DeployedApplicationHealthStates,omitempty"`
+	DeployedApplicationHealthStates *[]DeployedApplicationHealthState `json:"DeployedApplicationHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2225,15 +2225,15 @@ type ApplicationHealth struct {
 // data and the algorithm used by the health store to evaluate health.
 type ApplicationHealthEvaluation struct {
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the application. The types of the unhealthy evaluations can be DeployedApplicationsHealthEvaluation, ServicesHealthEvaluation or EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2404,25 +2404,25 @@ type ApplicationHealthPolicies struct {
 // children entities.
 type ApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
-	ConsiderWarningAsError	*bool	`json:"ConsiderWarningAsError,omitempty"`
+	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
 	// MaxPercentUnhealthyDeployedApplications - The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100.
 	// The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application is considered in error.
 	// This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application is currently deployed on in the cluster.
 	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
-	MaxPercentUnhealthyDeployedApplications	*int32	`json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
+	MaxPercentUnhealthyDeployedApplications *int32 `json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
 	// DefaultServiceTypeHealthPolicy - The health policy used by default to evaluate the health of a service type.
-	DefaultServiceTypeHealthPolicy	*ServiceTypeHealthPolicy	`json:"DefaultServiceTypeHealthPolicy,omitempty"`
+	DefaultServiceTypeHealthPolicy *ServiceTypeHealthPolicy `json:"DefaultServiceTypeHealthPolicy,omitempty"`
 	// ServiceTypeHealthPolicyMap - The map with service type health policy per service type name. The map is empty be default.
-	ServiceTypeHealthPolicyMap	*[]ServiceTypeHealthPolicyMapItem	`json:"ServiceTypeHealthPolicyMap,omitempty"`
+	ServiceTypeHealthPolicyMap *[]ServiceTypeHealthPolicyMapItem `json:"ServiceTypeHealthPolicyMap,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationHealthPolicyMapItem defines an item in ApplicationHealthPolicyMap.
 type ApplicationHealthPolicyMapItem struct {
 	// Key - The key of the application health policy map item. This is the name of the application.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The value of the application health policy map item. This is the ApplicationHealthPolicy for this application.
-	Value	*ApplicationHealthPolicy	`json:"Value,omitempty"`
+	Value *ApplicationHealthPolicy `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2430,9 +2430,9 @@ type ApplicationHealthPolicyMapItem struct {
 // and the aggregated health state.
 type ApplicationHealthState struct {
 	// Name - Full name of the application.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2441,15 +2441,15 @@ type ApplicationHealthState struct {
 // services and deployed applications that respect the filters in cluster health chunk query description.
 type ApplicationHealthStateChunk struct {
 	// ApplicationName - The name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ApplicationTypeName - The application type name for the application.
-	ApplicationTypeName	*string	`json:"ApplicationTypeName,omitempty"`
+	ApplicationTypeName *string `json:"ApplicationTypeName,omitempty"`
 	// ServiceHealthStateChunks - The list of service health state chunks in the cluster that respect the filters in the cluster health chunk query description.
-	ServiceHealthStateChunks	*ServiceHealthStateChunkList	`json:"ServiceHealthStateChunks,omitempty"`
+	ServiceHealthStateChunks *ServiceHealthStateChunkList `json:"ServiceHealthStateChunks,omitempty"`
 	// DeployedApplicationHealthStateChunks - The list of deployed application health state chunks in the cluster that respect the filters in the cluster health chunk query description.
-	DeployedApplicationHealthStateChunks	*DeployedApplicationHealthStateChunkList	`json:"DeployedApplicationHealthStateChunks,omitempty"`
+	DeployedApplicationHealthStateChunks *DeployedApplicationHealthStateChunkList `json:"DeployedApplicationHealthStateChunks,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2457,9 +2457,9 @@ type ApplicationHealthStateChunk struct {
 // input filters in the chunk query. Returned by get cluster health state chunks query.
 type ApplicationHealthStateChunkList struct {
 	// Items - The list of application health state chunks that respect the input filters in the chunk query.
-	Items	*[]ApplicationHealthStateChunk	`json:"Items,omitempty"`
+	Items *[]ApplicationHealthStateChunk `json:"Items,omitempty"`
 	// TotalCount - Total number of entity health state objects that match the specified filters from the cluster health chunk query description.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2471,13 +2471,13 @@ type ApplicationHealthStateFilter struct {
 	// If the application doesn't exist, no application is returned in the cluster health chunk based on this filter.
 	// If the application exists, it is included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all applications are matched against the other filter members, like health state filter.
-	ApplicationNameFilter	*string	`json:"ApplicationNameFilter,omitempty"`
+	ApplicationNameFilter *string `json:"ApplicationNameFilter,omitempty"`
 	// ApplicationTypeNameFilter - The name of the application type that matches the filter.
 	// If specified, the filter is applied only to applications of the selected application type, if any exists.
 	// If no applications of the specified application type exists, no application is returned in the cluster health chunk based on this filter.
 	// Each application of the specified application type is included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all applications are matched against the other filter members, like health state filter.
-	ApplicationTypeNameFilter	*string	`json:"ApplicationTypeNameFilter,omitempty"`
+	ApplicationTypeNameFilter *string `json:"ApplicationTypeNameFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the applications. It allows selecting applications if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only applications that match the filter are returned. All applications are used to evaluate the cluster aggregated health state.
 	// If not specified, default value is None, unless the application name or the application type name are specified. If the filter has default value and application name is specified, the matching application is returned.
@@ -2489,35 +2489,35 @@ type ApplicationHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 	// ServiceFilters - Defines a list of filters that specify which services to be included in the returned cluster health chunk as children of the application. The services are returned only if the parent application matches a filter.
 	// If the list is empty, no services are returned. All the services are used to evaluate the parent application aggregated health state, regardless of the input filters.
 	// The application filter may specify multiple service filters.
 	// For example, it can specify a filter to return all services with health state Error and another filter to always include a service identified by its service name.
-	ServiceFilters	*[]ServiceHealthStateFilter	`json:"ServiceFilters,omitempty"`
+	ServiceFilters *[]ServiceHealthStateFilter `json:"ServiceFilters,omitempty"`
 	// DeployedApplicationFilters - Defines a list of filters that specify which deployed applications to be included in the returned cluster health chunk as children of the application. The deployed applications are returned only if the parent application matches a filter.
 	// If the list is empty, no deployed applications are returned. All the deployed applications are used to evaluate the parent application aggregated health state, regardless of the input filters.
 	// The application filter may specify multiple deployed application filters.
 	// For example, it can specify a filter to return all deployed applications with health state Error and another filter to always include a deployed application on a specified node.
-	DeployedApplicationFilters	*[]DeployedApplicationHealthStateFilter	`json:"DeployedApplicationFilters,omitempty"`
+	DeployedApplicationFilters *[]DeployedApplicationHealthStateFilter `json:"DeployedApplicationFilters,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationInfo information about a Service Fabric application.
 type ApplicationInfo struct {
-	autorest.Response	`json:"-"`
-	ID			*string	`json:"Id,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string `json:"Id,omitempty"`
 	// Name - The Uniform Resource Identifier(URI) of the application.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// TypeName - The Name of the application type as specified in the Application Manifest.
-	TypeName	*string	`json:"TypeName,omitempty"`
+	TypeName *string `json:"TypeName,omitempty"`
 	// TypeVersion - The version of the application type as specified in the Application Manifest.
-	TypeVersion	*string	`json:"TypeVersion,omitempty"`
+	TypeVersion *string `json:"TypeVersion,omitempty"`
 	// Status - Possible values include: 'StatusInvalid', 'StatusReady', 'StatusUpgrading', 'StatusCreating', 'StatusDeleting', 'StatusFailed'
-	Status		Status			`json:"Status,omitempty"`
-	Parameters	*[]ApplicationParameter	`json:"Parameters,omitempty"`
+	Status     Status                  `json:"Status,omitempty"`
+	Parameters *[]ApplicationParameter `json:"Parameters,omitempty"`
 	// HealthState - Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
-	HealthState	HealthState	`json:"HealthState,omitempty"`
+	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2525,31 +2525,31 @@ type ApplicationInfo struct {
 // used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// MaximumCapacity - The maximum node capacity for Service Fabric application.
 	// This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is greater than this value, Service Fabric will limit the total load of services within the application on each node to this value.
 	// If set to zero, capacity for this metric is unlimited on each node.
 	// When creating a new application with application capacity defined, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
 	// When updating existing application with application capacity, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
-	MaximumCapacity	*int64	`json:"MaximumCapacity,omitempty"`
+	MaximumCapacity *int64 `json:"MaximumCapacity,omitempty"`
 	// ReservationCapacity - The node reservation capacity for Service Fabric application.
 	// This is the amount of load which is reserved on nodes which have instances of this application.
 	// If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for the application.
 	// If set to zero, no capacity is reserved for this metric.
 	// When setting application capacity or when updating application capacity; this value must be smaller than or equal to MaximumCapacity for each metric.
-	ReservationCapacity	*int64	`json:"ReservationCapacity,omitempty"`
+	ReservationCapacity *int64 `json:"ReservationCapacity,omitempty"`
 	// TotalApplicationCapacity - The total metric capacity for Service Fabric application.
 	// This is the total metric capacity for this application in the cluster. Service Fabric will try to limit the sum of loads of services within the application to this value.
 	// When creating a new application with application capacity defined, the product of MaximumNodes and MaximumCapacity must always be smaller than or equal to this value.
-	TotalApplicationCapacity	*int64	`json:"TotalApplicationCapacity,omitempty"`
+	TotalApplicationCapacity *int64 `json:"TotalApplicationCapacity,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationNameInfo information about the application name.
 type ApplicationNameInfo struct {
-	autorest.Response	`json:"-"`
-	ID			*string	`json:"Id,omitempty"`
-	Name			*string	`json:"Name,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string `json:"Id,omitempty"`
+	Name              *string `json:"Name,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2557,9 +2557,9 @@ type ApplicationNameInfo struct {
 // application.
 type ApplicationParameter struct {
 	// Key - The name of the parameter.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The value of the parameter.
-	Value	*string	`json:"Value,omitempty"`
+	Value *string `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2567,17 +2567,17 @@ type ApplicationParameter struct {
 // each unhealthy application that impacted current aggregated health state.
 type ApplicationsHealthEvaluation struct {
 	// MaxPercentUnhealthyApplications - Maximum allowed percentage of unhealthy applications from the ClusterHealthPolicy.
-	MaxPercentUnhealthyApplications	*int32	`json:"MaxPercentUnhealthyApplications,omitempty"`
+	MaxPercentUnhealthyApplications *int32 `json:"MaxPercentUnhealthyApplications,omitempty"`
 	// TotalCount - Total number of applications from the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy ApplicationHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2745,19 +2745,19 @@ func (ahe ApplicationsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEv
 // unhealthy application of the included application type that impacted current aggregated health state.
 type ApplicationTypeApplicationsHealthEvaluation struct {
 	// ApplicationTypeName - Name of the application type.
-	ApplicationTypeName	*string	`json:"ApplicationTypeName,omitempty"`
+	ApplicationTypeName *string `json:"ApplicationTypeName,omitempty"`
 	// MaxPercentUnhealthyApplications - Maximum allowed percentage of unhealthy applications for the application type, specified as an entry in ApplicationTypeHealthPolicyMap.
-	MaxPercentUnhealthyApplications	*int32	`json:"MaxPercentUnhealthyApplications,omitempty"`
+	MaxPercentUnhealthyApplications *int32 `json:"MaxPercentUnhealthyApplications,omitempty"`
 	// TotalCount - Total number of applications of the application type found in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy ApplicationHealthEvaluation of this application type that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2925,10 +2925,10 @@ func (atahe ApplicationTypeApplicationsHealthEvaluation) AsBasicHealthEvaluation
 // ApplicationTypeHealthPolicyMapItem defines an item in ApplicationTypeHealthPolicyMap.
 type ApplicationTypeHealthPolicyMapItem struct {
 	// Key - The key of the application type health policy map item. This is the name of the application type.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The value of the application type health policy map item.
 	// The max percent unhealthy applications allowed for the application type. Must be between zero and 100.
-	Value	*int32	`json:"Value,omitempty"`
+	Value *int32 `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2950,21 +2950,21 @@ type ApplicationTypeImageStoreVersion struct {
 // ApplicationTypeInfo information about an application type.
 type ApplicationTypeInfo struct {
 	// Name - The name of the application type.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Version - The version of the application type.
-	Version	*string	`json:"Version,omitempty"`
+	Version *string `json:"Version,omitempty"`
 	// Status - Possible values include: 'Status1Invalid', 'Status1Provisioning', 'Status1Available', 'Status1Unprovisioning', 'Status1Failed'
-	Status			Status1			`json:"Status,omitempty"`
-	DefaultParameterList	*[]ApplicationParameter	`json:"DefaultParameterList,omitempty"`
+	Status               Status1                 `json:"Status,omitempty"`
+	DefaultParameterList *[]ApplicationParameter `json:"DefaultParameterList,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationTypeManifest contains the manifest describing an application type registered in a Service Fabric
 // cluster.
 type ApplicationTypeManifest struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
-	Manifest	*string	`json:"Manifest,omitempty"`
+	Manifest *string `json:"Manifest,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -2975,58 +2975,58 @@ type ApplicationTypeManifest struct {
 // want to change any existing parameter values, please get the application parameters first using the
 // GetApplicationInfo query and then supply those values as Parameters in this ApplicationUpgradeDescription.
 type ApplicationUpgradeDescription struct {
-	Name				*string			`json:"Name,omitempty"`
-	TargetApplicationTypeVersion	*string			`json:"TargetApplicationTypeVersion,omitempty"`
-	Parameters			*[]ApplicationParameter	`json:"Parameters,omitempty"`
+	Name                         *string                 `json:"Name,omitempty"`
+	TargetApplicationTypeVersion *string                 `json:"TargetApplicationTypeVersion,omitempty"`
+	Parameters                   *[]ApplicationParameter `json:"Parameters,omitempty"`
 	// UpgradeKind - Possible values include: 'UpgradeKindInvalid', 'UpgradeKindRolling'
-	UpgradeKind	UpgradeKind	`json:"UpgradeKind,omitempty"`
+	UpgradeKind UpgradeKind `json:"UpgradeKind,omitempty"`
 	// RollingUpgradeMode - Possible values include: 'RollingUpgradeModeInvalid', 'RollingUpgradeModeUnmonitoredAuto', 'RollingUpgradeModeUnmonitoredManual', 'RollingUpgradeModeMonitored'
-	RollingUpgradeMode			RollingUpgradeMode		`json:"RollingUpgradeMode,omitempty"`
-	UpgradeReplicaSetCheckTimeoutInSeconds	*int64				`json:"UpgradeReplicaSetCheckTimeoutInSeconds,omitempty"`
-	ForceRestart				*bool				`json:"ForceRestart,omitempty"`
-	MonitoringPolicy			*MonitoringPolicyDescription	`json:"MonitoringPolicy,omitempty"`
-	ApplicationHealthPolicy			*ApplicationHealthPolicy	`json:"ApplicationHealthPolicy,omitempty"`
+	RollingUpgradeMode                     RollingUpgradeMode           `json:"RollingUpgradeMode,omitempty"`
+	UpgradeReplicaSetCheckTimeoutInSeconds *int64                       `json:"UpgradeReplicaSetCheckTimeoutInSeconds,omitempty"`
+	ForceRestart                           *bool                        `json:"ForceRestart,omitempty"`
+	MonitoringPolicy                       *MonitoringPolicyDescription `json:"MonitoringPolicy,omitempty"`
+	ApplicationHealthPolicy                *ApplicationHealthPolicy     `json:"ApplicationHealthPolicy,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationUpgradeProgressInfo describes the parameters for an application upgrade.
 type ApplicationUpgradeProgressInfo struct {
-	autorest.Response		`json:"-"`
-	Name				*string			`json:"Name,omitempty"`
-	TypeName			*string			`json:"TypeName,omitempty"`
-	TargetApplicationTypeVersion	*string			`json:"TargetApplicationTypeVersion,omitempty"`
-	UpgradeDomains			*[]UpgradeDomainInfo	`json:"UpgradeDomains,omitempty"`
+	autorest.Response            `json:"-"`
+	Name                         *string              `json:"Name,omitempty"`
+	TypeName                     *string              `json:"TypeName,omitempty"`
+	TargetApplicationTypeVersion *string              `json:"TargetApplicationTypeVersion,omitempty"`
+	UpgradeDomains               *[]UpgradeDomainInfo `json:"UpgradeDomains,omitempty"`
 	// UpgradeState - Possible values include: 'UpgradeStateInvalid', 'UpgradeStateRollingBackInProgress', 'UpgradeStateRollingBackCompleted', 'UpgradeStateRollingForwardPending', 'UpgradeStateRollingForwardInProgress', 'UpgradeStateRollingForwardCompleted', 'UpgradeStateFailed'
-	UpgradeState		UpgradeState	`json:"UpgradeState,omitempty"`
-	NextUpgradeDomain	*string		`json:"NextUpgradeDomain,omitempty"`
+	UpgradeState      UpgradeState `json:"UpgradeState,omitempty"`
+	NextUpgradeDomain *string      `json:"NextUpgradeDomain,omitempty"`
 	// RollingUpgradeMode - Possible values include: 'RollingUpgradeMode1Invalid', 'RollingUpgradeMode1UnmonitoredAuto', 'RollingUpgradeMode1UnmonitoredManual', 'RollingUpgradeMode1Monitored'
-	RollingUpgradeMode	RollingUpgradeMode1		`json:"RollingUpgradeMode,omitempty"`
-	UpgradeDescription	*ApplicationUpgradeDescription	`json:"UpgradeDescription,omitempty"`
+	RollingUpgradeMode RollingUpgradeMode1            `json:"RollingUpgradeMode,omitempty"`
+	UpgradeDescription *ApplicationUpgradeDescription `json:"UpgradeDescription,omitempty"`
 	// UpgradeDurationInMilliseconds - The estimated total amount of time spent processing the overall upgrade.
-	UpgradeDurationInMilliseconds	*string	`json:"UpgradeDurationInMilliseconds,omitempty"`
+	UpgradeDurationInMilliseconds *string `json:"UpgradeDurationInMilliseconds,omitempty"`
 	// UpgradeDomainDurationInMilliseconds - The estimated total amount of time spent processing the current upgrade domain.
-	UpgradeDomainDurationInMilliseconds	*string					`json:"UpgradeDomainDurationInMilliseconds,omitempty"`
-	UnhealthyEvaluations			*[]HealthEvaluationWrapper		`json:"UnhealthyEvaluations,omitempty"`
-	CurrentUpgradeDomainProgress		*CurrentUpgradeDomainProgressInfo	`json:"CurrentUpgradeDomainProgress,omitempty"`
+	UpgradeDomainDurationInMilliseconds *string                           `json:"UpgradeDomainDurationInMilliseconds,omitempty"`
+	UnhealthyEvaluations                *[]HealthEvaluationWrapper        `json:"UnhealthyEvaluations,omitempty"`
+	CurrentUpgradeDomainProgress        *CurrentUpgradeDomainProgressInfo `json:"CurrentUpgradeDomainProgress,omitempty"`
 	// StartTimestampUtc - The estimated UTC datetime when the upgrade started.
-	StartTimestampUtc	*string	`json:"StartTimestampUtc,omitempty"`
+	StartTimestampUtc *string `json:"StartTimestampUtc,omitempty"`
 	// FailureTimestampUtc - The estimated UTC datetime when the upgrade failed and FailureAction was executed.
-	FailureTimestampUtc	*string	`json:"FailureTimestampUtc,omitempty"`
+	FailureTimestampUtc *string `json:"FailureTimestampUtc,omitempty"`
 	// FailureReason - Possible values include: 'None', 'Interrupted', 'HealthCheck', 'UpgradeDomainTimeout', 'UpgradeTimeout'
-	FailureReason			FailureReason				`json:"FailureReason,omitempty"`
-	UpgradeDomainProgressAtFailure	*FailureUpgradeDomainProgressInfo	`json:"UpgradeDomainProgressAtFailure,omitempty"`
+	FailureReason                  FailureReason                     `json:"FailureReason,omitempty"`
+	UpgradeDomainProgressAtFailure *FailureUpgradeDomainProgressInfo `json:"UpgradeDomainProgressAtFailure,omitempty"`
 	// UpgradeStatusDetails - Additional detailed information about the status of the pending upgrade.
-	UpgradeStatusDetails	*string	`json:"UpgradeStatusDetails,omitempty"`
+	UpgradeStatusDetails *string `json:"UpgradeStatusDetails,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ApplicationUpgradeUpdateDescription describes the parameters for updating an ongoing application upgrade.
 type ApplicationUpgradeUpdateDescription struct {
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// UpgradeKind - Possible values include: 'UpgradeKind2Invalid', 'UpgradeKind2Rolling'
-	UpgradeKind		UpgradeKind2				`json:"UpgradeKind,omitempty"`
-	ApplicationHealthPolicy	*ApplicationHealthPolicy		`json:"ApplicationHealthPolicy,omitempty"`
-	UpdateDescription	*RollingUpgradeUpdateDescription	`json:"UpdateDescription,omitempty"`
+	UpgradeKind             UpgradeKind2                     `json:"UpgradeKind,omitempty"`
+	ApplicationHealthPolicy *ApplicationHealthPolicy         `json:"ApplicationHealthPolicy,omitempty"`
+	UpdateDescription       *RollingUpgradeUpdateDescription `json:"UpdateDescription,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3043,9 +3043,9 @@ type ChaosContext struct {
 // ChaosContextMapItem describes an item in the ChaosContextMap in ChaosParameters.
 type ChaosContextMapItem struct {
 	// Key - The key for a ChaosContextMapItem.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The value for a ChaosContextMapItem.
-	Value	*string	`json:"Value,omitempty"`
+	Value *string `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3063,9 +3063,9 @@ type BasicChaosEvent interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ChaosEvent represents an event generated during a Chaos run.
 type ChaosEvent struct {
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 func unmarshalBasicChaosEvent(body []byte) (BasicChaosEvent, error) {
@@ -3224,43 +3224,43 @@ type ChaosParameters struct {
 	// Depending on other time settings, the actual running time of Chaos can be larger than the TimeToRunInSeconds.
 	// To be conservative, we should expect Chaos to automatically stop after
 	// (MaxClusterStabilizationTimeoutInSeconds + MaxConcurrentFaults * WaitTimeBetweenFaultsInSeconds + WaitTimeBetweenIterationsInSeconds) seconds.
-	TimeToRunInSeconds	*string	`json:"TimeToRunInSeconds,omitempty"`
+	TimeToRunInSeconds *string `json:"TimeToRunInSeconds,omitempty"`
 	// MaxClusterStabilizationTimeoutInSeconds - The maximum amount of time to wait for all cluster entities to become stable and healthy. Chaos executes in iterations and at the start of each iteration it validates the health of cluster entities.
 	// During validation if a cluster entity is not stable and healthy within MaxClusterStabilizationTimeoutInSeconds, Chaos generates a validation failed event.
-	MaxClusterStabilizationTimeoutInSeconds	*int64	`json:"MaxClusterStabilizationTimeoutInSeconds,omitempty"`
+	MaxClusterStabilizationTimeoutInSeconds *int64 `json:"MaxClusterStabilizationTimeoutInSeconds,omitempty"`
 	// MaxConcurrentFaults - MaxConcurrentFaults is the maximum number of concurrent faults induced per iteration.
 	// Chaos executes in iterations and two consecutive iterations are separated by a validation phase.
 	// The higher the concurrency, the more aggressive the injection of faults -- inducing more complex series of states to uncover bugs.
 	// The recommendation is to start with a value of 2 or 3 and to exercise caution while moving up.
-	MaxConcurrentFaults	*int64	`json:"MaxConcurrentFaults,omitempty"`
+	MaxConcurrentFaults *int64 `json:"MaxConcurrentFaults,omitempty"`
 	// EnableMoveReplicaFaults - Enables or disables the move primary and move secondary faults.
-	EnableMoveReplicaFaults	*bool	`json:"EnableMoveReplicaFaults,omitempty"`
+	EnableMoveReplicaFaults *bool `json:"EnableMoveReplicaFaults,omitempty"`
 	// WaitTimeBetweenFaultsInSeconds - Wait time (in seconds) between consecutive faults within a single iteration.
 	// The larger the value, the lower the overlapping between faults and the simpler the sequence of state transitions that the cluster goes through.
 	// The recommendation is to start with a value between 1 and 5 and exercise caution while moving up.
-	WaitTimeBetweenFaultsInSeconds	*int64	`json:"WaitTimeBetweenFaultsInSeconds,omitempty"`
+	WaitTimeBetweenFaultsInSeconds *int64 `json:"WaitTimeBetweenFaultsInSeconds,omitempty"`
 	// WaitTimeBetweenIterationsInSeconds - Time-separation (in seconds) between two consecutive iterations of Chaos.
 	// The larger the value, the lower the fault injection rate.
-	WaitTimeBetweenIterationsInSeconds	*int64	`json:"WaitTimeBetweenIterationsInSeconds,omitempty"`
+	WaitTimeBetweenIterationsInSeconds *int64 `json:"WaitTimeBetweenIterationsInSeconds,omitempty"`
 	// ClusterHealthPolicy - Passed-in cluster health policy is used to validate health of the cluster in between Chaos iterations. If the cluster health is in error or if an unexpected exception happens during fault execution--to provide the cluster with some time to recuperate--Chaos will wait for 30 minutes before the next health-check.
-	ClusterHealthPolicy	*ClusterHealthPolicy	`json:"ClusterHealthPolicy,omitempty"`
-	Context			*ChaosContext		`json:"Context,omitempty"`
+	ClusterHealthPolicy *ClusterHealthPolicy `json:"ClusterHealthPolicy,omitempty"`
+	Context             *ChaosContext        `json:"Context,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ChaosReport contains detailed Chaos report.
 type ChaosReport struct {
-	autorest.Response	`json:"-"`
-	ChaosParameters		*ChaosParameters	`json:"ChaosParameters,omitempty"`
+	autorest.Response `json:"-"`
+	ChaosParameters   *ChaosParameters `json:"ChaosParameters,omitempty"`
 	// Status - Current status of the Chaos run.
 	// - Invalid - Indicates an invalid Chaos status. All Service Fabric enumerations have the invalid type.
 	//   The valus is zero.
 	// - Running - Indicates that Chaos is not stopped.
 	// - Stopped - Indicates that Chaos is not scheduling futher faults. Possible values include: 'Status5Invalid', 'Status5Running', 'Status5Stopped'
-	Status			Status5	`json:"Status,omitempty"`
-	ContinuationToken	*string	`json:"ContinuationToken,omitempty"`
+	Status            Status5 `json:"Status,omitempty"`
+	ContinuationToken *string `json:"ContinuationToken,omitempty"`
 	// History - List of ChaosEvent's that meet the user-supplied criteria.
-	History	*[]ChaosEventWrapper	`json:"History,omitempty"`
+	History *[]ChaosEventWrapper `json:"History,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3268,36 +3268,36 @@ type ChaosReport struct {
 // Contains the cluster aggregated health state, the cluster application and node health states as well as the
 // health events and the unhealthy evaluations.
 type ClusterHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// NodeHealthStates - Cluster node health states as found in the health store.
-	NodeHealthStates	*[]NodeHealthState	`json:"NodeHealthStates,omitempty"`
+	NodeHealthStates *[]NodeHealthState `json:"NodeHealthStates,omitempty"`
 	// ApplicationHealthStates - Cluster application health states as found in the health store.
-	ApplicationHealthStates	*[]ApplicationHealthState	`json:"ApplicationHealthStates,omitempty"`
+	ApplicationHealthStates *[]ApplicationHealthState `json:"ApplicationHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterHealthChunk represents the health chunk of the cluster.
 // Contains the cluster aggregated health state, and the cluster entities that respect the input filter.
 type ClusterHealthChunk struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// HealthState - The HealthState representing the aggregated health state of the cluster computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired cluster health policy and the application health policies.
 	// . Possible values include: 'HealthState1Invalid', 'HealthState1Ok', 'HealthState1Warning', 'HealthState1Error', 'HealthState1Unknown'
-	HealthState	HealthState1	`json:"HealthState,omitempty"`
+	HealthState HealthState1 `json:"HealthState,omitempty"`
 	// NodeHealthStateChunks - The list of node health state chunks in the cluster that respect the filters in the cluster health chunk query description.
-	NodeHealthStateChunks	*NodeHealthStateChunkList	`json:"NodeHealthStateChunks,omitempty"`
+	NodeHealthStateChunks *NodeHealthStateChunkList `json:"NodeHealthStateChunks,omitempty"`
 	// ApplicationHealthStateChunks - The list of application health state chunks in the cluster that respect the filters in the cluster health chunk query description.
-	ApplicationHealthStateChunks	*ApplicationHealthStateChunkList	`json:"ApplicationHealthStateChunks,omitempty"`
+	ApplicationHealthStateChunks *ApplicationHealthStateChunkList `json:"ApplicationHealthStateChunks,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3309,68 +3309,68 @@ type ClusterHealthChunkQueryDescription struct {
 	// If no filters are specified, no nodes are returned. All the nodes are used to evaluate the cluster's aggregated health state, regardless of the input filters.
 	// The cluster health chunk query may specify multiple node filters.
 	// For example, it can specify a filter to return all nodes with health state Error and another filter to always include a node identified by its NodeName.
-	NodeFilters	*[]NodeHealthStateFilter	`json:"NodeFilters,omitempty"`
+	NodeFilters *[]NodeHealthStateFilter `json:"NodeFilters,omitempty"`
 	// ApplicationFilters - Defines a list of filters that specify which applications to be included in the returned cluster health chunk.
 	// If no filters are specified, no applications are returned. All the applications are used to evaluate the cluster's aggregated health state, regardless of the input filters.
 	// The cluster health chunk query may specify multiple application filters.
 	// For example, it can specify a filter to return all applications with health state Error and another filter to always include applications of a specified application type.
-	ApplicationFilters		*[]ApplicationHealthStateFilter	`json:"ApplicationFilters,omitempty"`
-	ClusterHealthPolicy		*ClusterHealthPolicy		`json:"ClusterHealthPolicy,omitempty"`
-	ApplicationHealthPolicies	*ApplicationHealthPolicies	`json:"ApplicationHealthPolicies,omitempty"`
+	ApplicationFilters        *[]ApplicationHealthStateFilter `json:"ApplicationFilters,omitempty"`
+	ClusterHealthPolicy       *ClusterHealthPolicy            `json:"ClusterHealthPolicy,omitempty"`
+	ApplicationHealthPolicies *ApplicationHealthPolicies      `json:"ApplicationHealthPolicies,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterHealthPolicies health policies to evaluate cluster health.
 type ClusterHealthPolicies struct {
-	ApplicationHealthPolicyMap	*[]ApplicationHealthPolicyMapItem	`json:"ApplicationHealthPolicyMap,omitempty"`
-	ClusterHealthPolicy		*ClusterHealthPolicy			`json:"ClusterHealthPolicy,omitempty"`
+	ApplicationHealthPolicyMap *[]ApplicationHealthPolicyMapItem `json:"ApplicationHealthPolicyMap,omitempty"`
+	ClusterHealthPolicy        *ClusterHealthPolicy              `json:"ClusterHealthPolicy,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
 type ClusterHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
-	ConsiderWarningAsError	*bool	`json:"ConsiderWarningAsError,omitempty"`
+	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	// The percentage represents the maximum tolerated percentage of nodes that can be unhealthy before the cluster is considered in error.
 	// If the percentage is respected but there is at least one unhealthy node, the health is evaluated as Warning.
 	// The percentage is calculated by dividing the number of unhealthy nodes over the total number of nodes in the cluster.
 	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
 	// In large clusters, some nodes will always be down or out for repairs, so this percentage should be configured to tolerate that.
-	MaxPercentUnhealthyNodes	*int32	`json:"MaxPercentUnhealthyNodes,omitempty"`
+	MaxPercentUnhealthyNodes *int32 `json:"MaxPercentUnhealthyNodes,omitempty"`
 	// MaxPercentUnhealthyApplications - The maximum allowed percentage of unhealthy applications before reporting an error. For example, to allow 10% of applications to be unhealthy, this value would be 10.
 	// The percentage represents the maximum tolerated percentage of applications that can be unhealthy before the cluster is considered in error.
 	// If the percentage is respected but there is at least one unhealthy application, the health is evaluated as Warning.
 	// This is calculated by dividing the number of unhealthy applications over the total number of application instances in the cluster, excluding applications of application types that are included in the ApplicationTypeHealthPolicyMap.
 	// The computation rounds up to tolerate one failure on small numbers of applications. Default percentage is zero.
-	MaxPercentUnhealthyApplications	*int32					`json:"MaxPercentUnhealthyApplications,omitempty"`
-	ApplicationTypeHealthPolicyMap	*[]ApplicationTypeHealthPolicyMapItem	`json:"ApplicationTypeHealthPolicyMap,omitempty"`
+	MaxPercentUnhealthyApplications *int32                                `json:"MaxPercentUnhealthyApplications,omitempty"`
+	ApplicationTypeHealthPolicyMap  *[]ApplicationTypeHealthPolicyMapItem `json:"ApplicationTypeHealthPolicyMap,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterManifest information about the cluster manifest.
 type ClusterManifest struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Manifest - The contents of the cluster manifest file.
-	Manifest	*string	`json:"Manifest,omitempty"`
+	Manifest *string `json:"Manifest,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterUpgradeDescriptionObject represents a ServiceFabric cluster upgrade
 type ClusterUpgradeDescriptionObject struct {
-	ConfigVersion	*string	`json:"ConfigVersion,omitempty"`
-	CodeVersion	*string	`json:"CodeVersion,omitempty"`
+	ConfigVersion *string `json:"ConfigVersion,omitempty"`
+	CodeVersion   *string `json:"CodeVersion,omitempty"`
 	// UpgradeKind - Possible values include: 'UpgradeKind1Invalid', 'UpgradeKind1Rolling'
-	UpgradeKind	UpgradeKind1	`json:"UpgradeKind,omitempty"`
+	UpgradeKind UpgradeKind1 `json:"UpgradeKind,omitempty"`
 	// RollingUpgradeMode - Possible values include: 'RollingUpgradeMode2Invalid', 'RollingUpgradeMode2UnmonitoredAuto', 'RollingUpgradeMode2UnmonitoredManual', 'RollingUpgradeMode2Monitored'
-	RollingUpgradeMode			RollingUpgradeMode2			`json:"RollingUpgradeMode,omitempty"`
-	UpgradeReplicaSetCheckTimeoutInSeconds	*int64					`json:"UpgradeReplicaSetCheckTimeoutInSeconds,omitempty"`
-	ForceRestart				*bool					`json:"ForceRestart,omitempty"`
-	EnableDeltaHealthEvaluation		*bool					`json:"EnableDeltaHealthEvaluation,omitempty"`
-	MonitoringPolicy			*MonitoringPolicyDescription		`json:"MonitoringPolicy,omitempty"`
-	ClusterHealthPolicy			*ClusterHealthPolicy			`json:"ClusterHealthPolicy,omitempty"`
-	ClusterUpgradeHealthPolicy		*ClusterUpgradeHealthPolicyObject	`json:"ClusterUpgradeHealthPolicy,omitempty"`
-	ApplicationHealthPolicyMap		*[]ApplicationHealthPolicyMapItem	`json:"ApplicationHealthPolicyMap,omitempty"`
+	RollingUpgradeMode                     RollingUpgradeMode2               `json:"RollingUpgradeMode,omitempty"`
+	UpgradeReplicaSetCheckTimeoutInSeconds *int64                            `json:"UpgradeReplicaSetCheckTimeoutInSeconds,omitempty"`
+	ForceRestart                           *bool                             `json:"ForceRestart,omitempty"`
+	EnableDeltaHealthEvaluation            *bool                             `json:"EnableDeltaHealthEvaluation,omitempty"`
+	MonitoringPolicy                       *MonitoringPolicyDescription      `json:"MonitoringPolicy,omitempty"`
+	ClusterHealthPolicy                    *ClusterHealthPolicy              `json:"ClusterHealthPolicy,omitempty"`
+	ClusterUpgradeHealthPolicy             *ClusterUpgradeHealthPolicyObject `json:"ClusterUpgradeHealthPolicy,omitempty"`
+	ApplicationHealthPolicyMap             *[]ApplicationHealthPolicyMapItem `json:"ApplicationHealthPolicyMap,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3378,33 +3378,33 @@ type ClusterUpgradeDescriptionObject struct {
 // cluster upgrade.
 type ClusterUpgradeHealthPolicyObject struct {
 	// MaxPercentDeltaUnhealthyNodes - The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits. The default value is 10%.
-	MaxPercentDeltaUnhealthyNodes	*int32	`json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
+	MaxPercentDeltaUnhealthyNodes *int32 `json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
 	// MaxPercentUpgradeDomainDeltaUnhealthyNodes - The maximum allowed percentage of upgrade domain nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the upgrade domain nodes at the beginning of upgrade and the state of the upgrade domain nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make sure the state of the upgrade domains is within tolerated limits. The default value is 15%.
-	MaxPercentUpgradeDomainDeltaUnhealthyNodes	*int32	`json:"MaxPercentUpgradeDomainDeltaUnhealthyNodes,omitempty"`
+	MaxPercentUpgradeDomainDeltaUnhealthyNodes *int32 `json:"MaxPercentUpgradeDomainDeltaUnhealthyNodes,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ClusterUpgradeProgressObject information about a cluster upgrade.
 type ClusterUpgradeProgressObject struct {
-	autorest.Response	`json:"-"`
-	CodeVersion		*string			`json:"CodeVersion,omitempty"`
-	ConfigVersion		*string			`json:"ConfigVersion,omitempty"`
-	UpgradeDomains		*[]UpgradeDomainInfo	`json:"UpgradeDomains,omitempty"`
+	autorest.Response `json:"-"`
+	CodeVersion       *string              `json:"CodeVersion,omitempty"`
+	ConfigVersion     *string              `json:"ConfigVersion,omitempty"`
+	UpgradeDomains    *[]UpgradeDomainInfo `json:"UpgradeDomains,omitempty"`
 	// UpgradeState - Possible values include: 'UpgradeState1Invalid', 'UpgradeState1RollingBackInProgress', 'UpgradeState1RollingBackCompleted', 'UpgradeState1RollingForwardPending', 'UpgradeState1RollingForwardInProgress', 'UpgradeState1RollingForwardCompleted', 'UpgradeState1Failed'
-	UpgradeState		UpgradeState1	`json:"UpgradeState,omitempty"`
-	NextUpgradeDomain	*string		`json:"NextUpgradeDomain,omitempty"`
+	UpgradeState      UpgradeState1 `json:"UpgradeState,omitempty"`
+	NextUpgradeDomain *string       `json:"NextUpgradeDomain,omitempty"`
 	// RollingUpgradeMode - Possible values include: 'RollingUpgradeMode3Invalid', 'RollingUpgradeMode3UnmonitoredAuto', 'RollingUpgradeMode3UnmonitoredManual', 'RollingUpgradeMode3Monitored'
-	RollingUpgradeMode			RollingUpgradeMode3			`json:"RollingUpgradeMode,omitempty"`
-	UpgradeDescription			*ClusterUpgradeDescriptionObject	`json:"UpgradeDescription,omitempty"`
-	UpgradeDurationInMilliseconds		*string					`json:"UpgradeDurationInMilliseconds,omitempty"`
-	UpgradeDomainDurationInMilliseconds	*string					`json:"UpgradeDomainDurationInMilliseconds,omitempty"`
-	UnhealthyEvaluations			*[]HealthEvaluationWrapper		`json:"UnhealthyEvaluations,omitempty"`
-	CurrentUpgradeDomainProgress		*CurrentUpgradeDomainProgressInfo	`json:"CurrentUpgradeDomainProgress,omitempty"`
-	StartTimestampUtc			*string					`json:"StartTimestampUtc,omitempty"`
-	FailureTimestampUtc			*string					`json:"FailureTimestampUtc,omitempty"`
+	RollingUpgradeMode                  RollingUpgradeMode3               `json:"RollingUpgradeMode,omitempty"`
+	UpgradeDescription                  *ClusterUpgradeDescriptionObject  `json:"UpgradeDescription,omitempty"`
+	UpgradeDurationInMilliseconds       *string                           `json:"UpgradeDurationInMilliseconds,omitempty"`
+	UpgradeDomainDurationInMilliseconds *string                           `json:"UpgradeDomainDurationInMilliseconds,omitempty"`
+	UnhealthyEvaluations                *[]HealthEvaluationWrapper        `json:"UnhealthyEvaluations,omitempty"`
+	CurrentUpgradeDomainProgress        *CurrentUpgradeDomainProgressInfo `json:"CurrentUpgradeDomainProgress,omitempty"`
+	StartTimestampUtc                   *string                           `json:"StartTimestampUtc,omitempty"`
+	FailureTimestampUtc                 *string                           `json:"FailureTimestampUtc,omitempty"`
 	// FailureReason - Possible values include: 'FailureReason1None', 'FailureReason1Interrupted', 'FailureReason1HealthCheck', 'FailureReason1UpgradeDomainTimeout', 'FailureReason1UpgradeTimeout'
-	FailureReason			FailureReason1				`json:"FailureReason,omitempty"`
-	UpgradeDomainProgressAtFailure	*FailedUpgradeDomainProgressObject	`json:"UpgradeDomainProgressAtFailure,omitempty"`
+	FailureReason                  FailureReason1                     `json:"FailureReason,omitempty"`
+	UpgradeDomainProgressAtFailure *FailedUpgradeDomainProgressObject `json:"UpgradeDomainProgressAtFailure,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3412,17 +3412,17 @@ type ClusterUpgradeProgressObject struct {
 // node.
 type CodePackageEntryPoint struct {
 	// EntryPointLocation - The location of entry point executable on the node.
-	EntryPointLocation	*string	`json:"EntryPointLocation,omitempty"`
+	EntryPointLocation *string `json:"EntryPointLocation,omitempty"`
 	// ProcessID - The process id of the entry point.
-	ProcessID	*string	`json:"ProcessId,omitempty"`
+	ProcessID *string `json:"ProcessId,omitempty"`
 	// RunAsUserName - The user name under which entry point executable is run on the node.
-	RunAsUserName			*string					`json:"RunAsUserName,omitempty"`
-	CodePackageEntryPointStatistics	*CodePackageEntryPointStatistics	`json:"CodePackageEntryPointStatistics,omitempty"`
+	RunAsUserName                   *string                          `json:"RunAsUserName,omitempty"`
+	CodePackageEntryPointStatistics *CodePackageEntryPointStatistics `json:"CodePackageEntryPointStatistics,omitempty"`
 	// Status - Possible values include: 'Status3Invalid', 'Status3Pending', 'Status3Starting', 'Status3Started', 'Status3Stopping', 'Status3Stopped'
-	Status	Status3	`json:"Status,omitempty"`
+	Status Status3 `json:"Status,omitempty"`
 	// NextActivationTime - The time (in UTC) when the entry point executable will be run next.
-	NextActivationTime	*date.Time	`json:"NextActivationTime,omitempty"`
-	InstanceID		*string		`json:"InstanceId,omitempty"`
+	NextActivationTime *date.Time `json:"NextActivationTime,omitempty"`
+	InstanceID         *string    `json:"InstanceId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3430,54 +3430,54 @@ type CodePackageEntryPoint struct {
 // Service Fabric node.
 type CodePackageEntryPointStatistics struct {
 	// LastExitCode - The last exit code of the entry point.
-	LastExitCode	*string	`json:"LastExitCode,omitempty"`
+	LastExitCode *string `json:"LastExitCode,omitempty"`
 	// LastActivationTime - The last time (in UTC) when Service Fabric attempted to run the entry point.
-	LastActivationTime	*date.Time	`json:"LastActivationTime,omitempty"`
+	LastActivationTime *date.Time `json:"LastActivationTime,omitempty"`
 	// LastExitTime - The last time (in UTC) when the entry point finished running.
-	LastExitTime	*date.Time	`json:"LastExitTime,omitempty"`
+	LastExitTime *date.Time `json:"LastExitTime,omitempty"`
 	// LastSuccessfulActivationTime - The last time (in UTC) when the entry point ran successfully.
-	LastSuccessfulActivationTime	*date.Time	`json:"LastSuccessfulActivationTime,omitempty"`
+	LastSuccessfulActivationTime *date.Time `json:"LastSuccessfulActivationTime,omitempty"`
 	// LastSuccessfulExitTime - The last time (in UTC) when the entry point finished running gracefully.
-	LastSuccessfulExitTime	*date.Time	`json:"LastSuccessfulExitTime,omitempty"`
+	LastSuccessfulExitTime *date.Time `json:"LastSuccessfulExitTime,omitempty"`
 	// ActivationCount - Number of times the entry point has run.
-	ActivationCount	*string	`json:"ActivationCount,omitempty"`
+	ActivationCount *string `json:"ActivationCount,omitempty"`
 	// ActivationFailureCount - Number of times the entry point failed to run.
-	ActivationFailureCount	*string	`json:"ActivationFailureCount,omitempty"`
+	ActivationFailureCount *string `json:"ActivationFailureCount,omitempty"`
 	// ContinuousActivationFailureCount - Number of times the entry point continuously failed to run.
-	ContinuousActivationFailureCount	*string	`json:"ContinuousActivationFailureCount,omitempty"`
+	ContinuousActivationFailureCount *string `json:"ContinuousActivationFailureCount,omitempty"`
 	// ExitCount - Number of times the entry point finished running.
-	ExitCount	*string	`json:"ExitCount,omitempty"`
+	ExitCount *string `json:"ExitCount,omitempty"`
 	// ExitFailureCount - Number of times the entry point failed to exit gracefully.
-	ExitFailureCount	*string	`json:"ExitFailureCount,omitempty"`
+	ExitFailureCount *string `json:"ExitFailureCount,omitempty"`
 	// ContinuousExitFailureCount - Number of times the entry point continuously failed to exit gracefully.
-	ContinuousExitFailureCount	*string	`json:"ContinuousExitFailureCount,omitempty"`
+	ContinuousExitFailureCount *string `json:"ContinuousExitFailureCount,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ComposeApplicationStatusInfo information about a Service Fabric compose application.
 type ComposeApplicationStatusInfo struct {
-	autorest.Response	`json:"-"`
-	Name			*string	`json:"Name,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"Name,omitempty"`
 	// Status - Possible values include: 'Status6Invalid', 'Status6Provisioning', 'Status6Creating', 'Status6Created', 'Status6Unprovisioning', 'Status6Deleting', 'Status6Failed'
-	Status	Status6	`json:"Status,omitempty"`
+	Status Status6 `json:"Status,omitempty"`
 	// StatusDetails - The status details of compose application including failure message.
-	StatusDetails	*string	`json:"StatusDetails,omitempty"`
+	StatusDetails *string `json:"StatusDetails,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // CreateComposeApplicationDescription defines description for creating a Service Fabric compose application.
 type CreateComposeApplicationDescription struct {
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ComposeFileContent - The content of the compose file that describes application to create.
-	ComposeFileContent	*string			`json:"ComposeFileContent,omitempty"`
-	RepositoryCredential	*RepositoryCredential	`json:"RepositoryCredential,omitempty"`
+	ComposeFileContent   *string               `json:"ComposeFileContent,omitempty"`
+	RepositoryCredential *RepositoryCredential `json:"RepositoryCredential,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // CurrentUpgradeDomainProgressInfo information about the current in-progress upgrade domain.
 type CurrentUpgradeDomainProgressInfo struct {
-	DomainName		*string				`json:"DomainName,omitempty"`
-	NodeUpgradeProgressList	*[]NodeUpgradeProgressInfo	`json:"NodeUpgradeProgressList,omitempty"`
+	DomainName              *string                    `json:"DomainName,omitempty"`
+	NodeUpgradeProgressList *[]NodeUpgradeProgressInfo `json:"NodeUpgradeProgressList,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3497,22 +3497,22 @@ type DeactivationIntentDescription struct {
 // Can be returned during cluster upgrade when the aggregated health state of the cluster is Warning or Error.
 type DeltaNodesCheckHealthEvaluation struct {
 	// BaselineErrorCount - Number of nodes with aggregated heath state Error in the health store at the beginning of the cluster upgrade.
-	BaselineErrorCount	*int64	`json:"BaselineErrorCount,omitempty"`
+	BaselineErrorCount *int64 `json:"BaselineErrorCount,omitempty"`
 	// BaselineTotalCount - Total number of nodes in the health store at the beginning of the cluster upgrade.
-	BaselineTotalCount	*int64	`json:"BaselineTotalCount,omitempty"`
+	BaselineTotalCount *int64 `json:"BaselineTotalCount,omitempty"`
 	// MaxPercentDeltaUnhealthyNodes - Maximum allowed percentage of delta unhealthy nodes from the ClusterUpgradeHealthPolicy.
-	MaxPercentDeltaUnhealthyNodes	*int32	`json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
+	MaxPercentDeltaUnhealthyNodes *int32 `json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
 	// TotalCount - Total number of nodes in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state.
 	// Includes all the unhealthy NodeHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3682,22 +3682,22 @@ func (dnche DeltaNodesCheckHealthEvaluation) AsBasicHealthEvaluation() (BasicHea
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedApplicationHealth information about the health of an application deployed on a Service Fabric node.
 type DeployedApplicationHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Name - Name of the application deployed on the node whose health information is described by this object.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// NodeName - Name of the node where this application is deployed.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// DeployedServicePackageHealthStates - Deployed service package health states for the current deployed application as found in the health store.
-	DeployedServicePackageHealthStates	*[]DeployedServicePackageHealthState	`json:"DeployedServicePackageHealthStates,omitempty"`
+	DeployedServicePackageHealthStates *[]DeployedServicePackageHealthState `json:"DeployedServicePackageHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3705,18 +3705,18 @@ type DeployedApplicationHealth struct {
 // information about the data and the algorithm used by the health store to evaluate health.
 type DeployedApplicationHealthEvaluation struct {
 	// NodeName - Name of the node where the application is deployed to.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// UnhealthyEvaluations - List of  unhealthy evaluations that led to the current aggregated health state of the deployed application.
 	// The types of the unhealthy evaluations can be DeployedServicePackagesHealthEvaluation or EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3882,11 +3882,11 @@ func (dahe DeployedApplicationHealthEvaluation) AsBasicHealthEvaluation() (Basic
 // identifier and the aggregated health state.
 type DeployedApplicationHealthState struct {
 	// NodeName - Name of the node on which the service package is deployed.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3895,11 +3895,11 @@ type DeployedApplicationHealthState struct {
 // respect the chunk query description filters.
 type DeployedApplicationHealthStateChunk struct {
 	// NodeName - The name of node where the application is deployed.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// DeployedServicePackageHealthStateChunks - The list of deployed service oackage health state chunks belonging to the deployed application that respect the filters in the cluster health chunk query description.
-	DeployedServicePackageHealthStateChunks	*DeployedServicePackageHealthStateChunkList	`json:"DeployedServicePackageHealthStateChunks,omitempty"`
+	DeployedServicePackageHealthStateChunks *DeployedServicePackageHealthStateChunkList `json:"DeployedServicePackageHealthStateChunks,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3922,7 +3922,7 @@ type DeployedApplicationHealthStateFilter struct {
 	// If the application is not deployed on the node with the specified name, no deployed application is returned in the cluster health chunk based on this filter.
 	// Otherwise, the deployed application is included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all deployed applications that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	NodeNameFilter	*string	`json:"NodeNameFilter,omitempty"`
+	NodeNameFilter *string `json:"NodeNameFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the deployed applications. It allows selecting deployed applications if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only deployed applications that match the filter are returned. All deployed applications are used to evaluate the cluster aggregated health state.
 	// If not specified, default value is None, unless the node name is specified. If the filter has default value and node name is specified, the matching deployed application is returned.
@@ -3934,31 +3934,31 @@ type DeployedApplicationHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 	// DeployedServicePackageFilters - Defines a list of filters that specify which deployed service packages to be included in the returned cluster health chunk as children of the parent deployed application. The deployed service packages are returned only if the parent deployed application matches a filter.
 	// If the list is empty, no deployed service packages are returned. All the deployed service packages are used to evaluate the parent deployed application aggregated health state, regardless of the input filters.
 	// The deployed application filter may specify multiple deployed service package filters.
 	// For example, it can specify a filter to return all deployed service packages with health state Error and another filter to always include a deployed service package on a node.
-	DeployedServicePackageFilters	*[]DeployedServicePackageHealthStateFilter	`json:"DeployedServicePackageFilters,omitempty"`
+	DeployedServicePackageFilters *[]DeployedServicePackageHealthStateFilter `json:"DeployedServicePackageFilters,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedApplicationInfo information about application deployed on the node.
 type DeployedApplicationInfo struct {
-	autorest.Response	`json:"-"`
-	ID			*string	`json:"Id,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string `json:"Id,omitempty"`
 	// Name - The name of the application.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// TypeName - The name of the application type.
-	TypeName	*string	`json:"TypeName,omitempty"`
+	TypeName *string `json:"TypeName,omitempty"`
 	// Status - Possible values include: 'Status2Invalid', 'Status2Downloading', 'Status2Activating', 'Status2Active', 'Status2Upgrading', 'Status2Deactivating'
-	Status	Status2	`json:"Status,omitempty"`
+	Status Status2 `json:"Status,omitempty"`
 	// WorkDirectory - The work directory of the application on the node. The work directory can be used to store application data.
-	WorkDirectory	*string	`json:"WorkDirectory,omitempty"`
+	WorkDirectory *string `json:"WorkDirectory,omitempty"`
 	// LogDirectory - The log directory of the application on the node. The log directory can be used to store application logs.
-	LogDirectory	*string	`json:"LogDirectory,omitempty"`
+	LogDirectory *string `json:"LogDirectory,omitempty"`
 	// TempDirectory - The temp directory of the application on the node. The code packages belonging to the application are forked with this directory set as their temporary directory.
-	TempDirectory	*string	`json:"TempDirectory,omitempty"`
+	TempDirectory *string `json:"TempDirectory,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -3967,17 +3967,17 @@ type DeployedApplicationInfo struct {
 // Can be returned when evaluating application health and the aggregated health state is either Error or Warning.
 type DeployedApplicationsHealthEvaluation struct {
 	// MaxPercentUnhealthyDeployedApplications - Maximum allowed percentage of unhealthy deployed applications from the ApplicationHealthPolicy.
-	MaxPercentUnhealthyDeployedApplications	*int32	`json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
+	MaxPercentUnhealthyDeployedApplications *int32 `json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
 	// TotalCount - Total number of deployed applications of the application in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy DeployedApplicationHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4142,44 +4142,44 @@ func (dahe DeployedApplicationsHealthEvaluation) AsBasicHealthEvaluation() (Basi
 // DeployedCodePackageInfo information about code package deployed on a Service Fabric node.
 type DeployedCodePackageInfo struct {
 	// Name - The name of the code package.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Version - The version of the code package specified in service manifest.
-	Version	*string	`json:"Version,omitempty"`
+	Version *string `json:"Version,omitempty"`
 	// ServiceManifestName - The name of service manifest that specified this code package.
-	ServiceManifestName		*string	`json:"ServiceManifestName,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	ServiceManifestName        *string `json:"ServiceManifestName,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// HostType - Possible values include: 'HostTypeInvalid', 'HostTypeExeHost', 'HostTypeContainerHost'
-	HostType	HostType	`json:"HostType,omitempty"`
+	HostType HostType `json:"HostType,omitempty"`
 	// HostIsolationMode - Possible values include: 'HostIsolationModeNone', 'HostIsolationModeProcess', 'HostIsolationModeHyperV'
-	HostIsolationMode	HostIsolationMode	`json:"HostIsolationMode,omitempty"`
+	HostIsolationMode HostIsolationMode `json:"HostIsolationMode,omitempty"`
 	// Status - Possible values include: 'Status4Invalid', 'Status4Downloading', 'Status4Activating', 'Status4Active', 'Status4Upgrading', 'Status4Deactivating'
-	Status	Status4	`json:"Status,omitempty"`
+	Status Status4 `json:"Status,omitempty"`
 	// RunFrequencyInterval - The interval at which code package is run. This is used for periodic code package.
-	RunFrequencyInterval	*string			`json:"RunFrequencyInterval,omitempty"`
-	SetupEntryPoint		*CodePackageEntryPoint	`json:"SetupEntryPoint,omitempty"`
-	MainEntryPoint		*CodePackageEntryPoint	`json:"MainEntryPoint,omitempty"`
+	RunFrequencyInterval *string                `json:"RunFrequencyInterval,omitempty"`
+	SetupEntryPoint      *CodePackageEntryPoint `json:"SetupEntryPoint,omitempty"`
+	MainEntryPoint       *CodePackageEntryPoint `json:"MainEntryPoint,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedServicePackageHealth information about the health of a service package for a specific application
 // deployed on a Service Fabric node.
 type DeployedServicePackageHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ApplicationName - Name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceManifestName - Name of the service manifest.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// NodeName - Name of the node where this service package is deployed.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4188,19 +4188,19 @@ type DeployedServicePackageHealth struct {
 // only when the aggregated health state is either Error or Warning.
 type DeployedServicePackageHealthEvaluation struct {
 	// NodeName - Name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceManifestName - Name of the service manifest.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state. The type of the unhealthy evaluations can be EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4369,14 +4369,14 @@ func (dsphe DeployedServicePackageHealthEvaluation) AsBasicHealthEvaluation() (B
 // entity identifier and the aggregated health state.
 type DeployedServicePackageHealthState struct {
 	// NodeName - Name of the node on which the service package is deployed.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceManifestName - Name of the manifest describing the service package.
-	ServiceManifestName		*string	`json:"ServiceManifestName,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	ServiceManifestName        *string `json:"ServiceManifestName,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4384,10 +4384,10 @@ type DeployedServicePackageHealthState struct {
 // contains the service manifest name and the service package aggregated health state.
 type DeployedServicePackageHealthStateChunk struct {
 	// ServiceManifestName - The name of the service manifest.
-	ServiceManifestName		*string	`json:"ServiceManifestName,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	ServiceManifestName        *string `json:"ServiceManifestName,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4411,11 +4411,11 @@ type DeployedServicePackageHealthStateFilter struct {
 	// If no deployed service packages with specified manifest name exist, nothing is returned in the cluster health chunk based on this filter.
 	// If any deployed service package exists, they are included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all deployed service packages that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	ServiceManifestNameFilter	*string	`json:"ServiceManifestNameFilter,omitempty"`
+	ServiceManifestNameFilter *string `json:"ServiceManifestNameFilter,omitempty"`
 	// ServicePackageActivationIDFilter - The activation ID of a deployed service package that matches the filter.
 	// If not specified, the filter applies to all deployed service packages that match the other parameters.
 	// If specified, the filter matches only the deployed service package with the specified activation ID.
-	ServicePackageActivationIDFilter	*string	`json:"ServicePackageActivationIdFilter,omitempty"`
+	ServicePackageActivationIDFilter *string `json:"ServicePackageActivationIdFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the deployed service packages. It allows selecting deployed service packages if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only deployed service packages that match the filter are returned. All deployed service packages are used to evaluate the parent deployed application aggregated health state.
 	// If not specified, default value is None, unless the deployed service package id is specified. If the filter has default value and deployed service package id is specified, the matching deployed service package is returned.
@@ -4427,19 +4427,19 @@ type DeployedServicePackageHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedServicePackageInfo information about service package deployed on a Service Fabric node.
 type DeployedServicePackageInfo struct {
 	// Name - The name of the service package.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Version - The version of the service package specified in service manifest.
-	Version	*string	`json:"Version,omitempty"`
+	Version *string `json:"Version,omitempty"`
 	// Status - Possible values include: 'Status7Invalid', 'Status7Downloading', 'Status7Activating', 'Status7Active', 'Status7Upgrading', 'Status7Deactivating'
-	Status				Status7	`json:"Status,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	Status                     Status7 `json:"Status,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4449,15 +4449,15 @@ type DeployedServicePackageInfo struct {
 // Warning.
 type DeployedServicePackagesHealthEvaluation struct {
 	// TotalCount - Total number of deployed service packages of the deployed application in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy DeployedServicePackageHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4626,17 +4626,17 @@ type BasicDeployedServiceReplicaDetailInfo interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedServiceReplicaDetailInfo information about a Service Fabric service replica deployed on a node.
 type DeployedServiceReplicaDetailInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string		`json:"ServiceName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	ServiceName *string    `json:"ServiceName,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// CurrentServiceOperation - Possible values include: 'CurrentServiceOperationUnknown', 'CurrentServiceOperationNone', 'CurrentServiceOperationOpen', 'CurrentServiceOperationChangeRole', 'CurrentServiceOperationClose', 'CurrentServiceOperationAbort'
-	CurrentServiceOperation	CurrentServiceOperation	`json:"CurrentServiceOperation,omitempty"`
+	CurrentServiceOperation CurrentServiceOperation `json:"CurrentServiceOperation,omitempty"`
 	// CurrentServiceOperationStartTimeUtc - The start time of the current service operation in UTC format.
-	CurrentServiceOperationStartTimeUtc	*date.Time		`json:"CurrentServiceOperationStartTimeUtc,omitempty"`
-	ReportedLoad				*[]LoadMetricReportInfo	`json:"ReportedLoad,omitempty"`
+	CurrentServiceOperationStartTimeUtc *date.Time              `json:"CurrentServiceOperationStartTimeUtc,omitempty"`
+	ReportedLoad                        *[]LoadMetricReportInfo `json:"ReportedLoad,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicDeployedServiceReplicaDetailInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicDeployedServiceReplicaDetailInfo `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicDeployedServiceReplicaDetailInfo(body []byte) (BasicDeployedServiceReplicaDetailInfo, error) {
@@ -4733,8 +4733,8 @@ func (dsrdi DeployedServiceReplicaDetailInfo) AsBasicDeployedServiceReplicaDetai
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedServiceReplicaDetailInfoModel ...
 type DeployedServiceReplicaDetailInfoModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicDeployedServiceReplicaDetailInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicDeployedServiceReplicaDetailInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -4761,21 +4761,21 @@ type BasicDeployedServiceReplicaInfo interface {
 // DeployedServiceReplicaInfo information about a Service Fabric service replica deployed on a node.
 type DeployedServiceReplicaInfo struct {
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - Name of the service type as specified in the service manifest.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// ServiceManifestName - The name of the service manifest in which this service type is defined.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// CodePackageName - The name of the code package that hosts this replica.
-	CodePackageName	*string		`json:"CodePackageName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionID,omitempty"`
+	CodePackageName *string    `json:"CodePackageName,omitempty"`
+	PartitionID     *uuid.UUID `json:"PartitionID,omitempty"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatusInvalid', 'ReplicaStatusInBuild', 'ReplicaStatusStandby', 'ReplicaStatusReady', 'ReplicaStatusDown', 'ReplicaStatusDropped'
-	ReplicaStatus	ReplicaStatus	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus `json:"ReplicaStatus,omitempty"`
 	// Address - The last address returned by the replica in Open or ChangeRole.
-	Address				*string	`json:"Address,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	Address                    *string `json:"Address,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindDeployedServiceReplicaInfo', 'ServiceKindStateful', 'ServiceKindStateless'
-	ServiceKind	ServiceKind	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKind `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicDeployedServiceReplicaInfo(body []byte) (BasicDeployedServiceReplicaInfo, error) {
@@ -4882,41 +4882,41 @@ func (dsri DeployedServiceReplicaInfo) AsBasicDeployedServiceReplicaInfo() (Basi
 // DeployedServiceTypeInfo information about service type deployed on a node, information such as the status of the
 // service type registration on a node.
 type DeployedServiceTypeInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ServiceTypeName - The name of the service type defined in the service manifest.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// ServiceManifestName - The name of the service manifest in which this service type is defined.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// CodePackageName - The name of the code package that registered the service type.
-	CodePackageName	*string	`json:"CodePackageName,omitempty"`
+	CodePackageName *string `json:"CodePackageName,omitempty"`
 	// Status - Possible values include: 'Status8Invalid', 'Status8Disabled', 'Status8Enabled', 'Status8Registered'
-	Status				Status8	`json:"Status,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	Status                     Status8 `json:"Status,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // DeployedStatefulServiceReplicaDetailInfo information about a stateful replica running in a code package.
 type DeployedStatefulServiceReplicaDetailInfo struct {
 	// ReplicaID - Id of the stateful service replica.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// CurrentReplicatorOperation - Possible values include: 'CurrentReplicatorOperationInvalid', 'CurrentReplicatorOperationNone', 'CurrentReplicatorOperationOpen', 'CurrentReplicatorOperationChangeRole', 'CurrentReplicatorOperationUpdateEpoch', 'CurrentReplicatorOperationClose', 'CurrentReplicatorOperationAbort', 'CurrentReplicatorOperationOnDataLoss', 'CurrentReplicatorOperationWaitForCatchup', 'CurrentReplicatorOperationBuild'
-	CurrentReplicatorOperation	CurrentReplicatorOperation	`json:"CurrentReplicatorOperation,omitempty"`
+	CurrentReplicatorOperation CurrentReplicatorOperation `json:"CurrentReplicatorOperation,omitempty"`
 	// ReadStatus - Possible values include: 'ReadStatusInvalid', 'ReadStatusGranted', 'ReadStatusReconfigurationPending', 'ReadStatusNotPrimary', 'ReadStatusNoWriteQuorum'
-	ReadStatus	ReadStatus	`json:"ReadStatus,omitempty"`
+	ReadStatus ReadStatus `json:"ReadStatus,omitempty"`
 	// WriteStatus - Possible values include: 'WriteStatusInvalid', 'WriteStatusGranted', 'WriteStatusReconfigurationPending', 'WriteStatusNotPrimary', 'WriteStatusNoWriteQuorum'
-	WriteStatus		WriteStatus			`json:"WriteStatus,omitempty"`
-	ReplicatorStatus	BasicReplicatorStatus		`json:"ReplicatorStatus,omitempty"`
-	ReplicaStatus		*KeyValueStoreReplicaStatus	`json:"ReplicaStatus,omitempty"`
+	WriteStatus      WriteStatus                 `json:"WriteStatus,omitempty"`
+	ReplicatorStatus BasicReplicatorStatus       `json:"ReplicatorStatus,omitempty"`
+	ReplicaStatus    *KeyValueStoreReplicaStatus `json:"ReplicaStatus,omitempty"`
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string		`json:"ServiceName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	ServiceName *string    `json:"ServiceName,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// CurrentServiceOperation - Possible values include: 'CurrentServiceOperationUnknown', 'CurrentServiceOperationNone', 'CurrentServiceOperationOpen', 'CurrentServiceOperationChangeRole', 'CurrentServiceOperationClose', 'CurrentServiceOperationAbort'
-	CurrentServiceOperation	CurrentServiceOperation	`json:"CurrentServiceOperation,omitempty"`
+	CurrentServiceOperation CurrentServiceOperation `json:"CurrentServiceOperation,omitempty"`
 	// CurrentServiceOperationStartTimeUtc - The start time of the current service operation in UTC format.
-	CurrentServiceOperationStartTimeUtc	*date.Time		`json:"CurrentServiceOperationStartTimeUtc,omitempty"`
-	ReportedLoad				*[]LoadMetricReportInfo	`json:"ReportedLoad,omitempty"`
+	CurrentServiceOperationStartTimeUtc *date.Time              `json:"CurrentServiceOperationStartTimeUtc,omitempty"`
+	ReportedLoad                        *[]LoadMetricReportInfo `json:"ReportedLoad,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicDeployedServiceReplicaDetailInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicDeployedServiceReplicaDetailInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5112,25 +5112,25 @@ func (dssrdi *DeployedStatefulServiceReplicaDetailInfo) UnmarshalJSON(body []byt
 // DeployedStatefulServiceReplicaInfo information about a stateful service replica deployed on a node.
 type DeployedStatefulServiceReplicaInfo struct {
 	// ReplicaID - Id of the stateful service replica.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// ReplicaRole - Possible values include: 'ReplicaRoleUnknown', 'ReplicaRoleNone', 'ReplicaRolePrimary', 'ReplicaRoleIdleSecondary', 'ReplicaRoleActiveSecondary'
-	ReplicaRole	ReplicaRole	`json:"ReplicaRole,omitempty"`
+	ReplicaRole ReplicaRole `json:"ReplicaRole,omitempty"`
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - Name of the service type as specified in the service manifest.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// ServiceManifestName - The name of the service manifest in which this service type is defined.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// CodePackageName - The name of the code package that hosts this replica.
-	CodePackageName	*string		`json:"CodePackageName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionID,omitempty"`
+	CodePackageName *string    `json:"CodePackageName,omitempty"`
+	PartitionID     *uuid.UUID `json:"PartitionID,omitempty"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatusInvalid', 'ReplicaStatusInBuild', 'ReplicaStatusStandby', 'ReplicaStatusReady', 'ReplicaStatusDown', 'ReplicaStatusDropped'
-	ReplicaStatus	ReplicaStatus	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus `json:"ReplicaStatus,omitempty"`
 	// Address - The last address returned by the replica in Open or ChangeRole.
-	Address				*string	`json:"Address,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	Address                    *string `json:"Address,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindDeployedServiceReplicaInfo', 'ServiceKindStateful', 'ServiceKindStateless'
-	ServiceKind	ServiceKind	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKind `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5202,17 +5202,17 @@ func (dssri DeployedStatefulServiceReplicaInfo) AsBasicDeployedServiceReplicaInf
 // DeployedStatelessServiceInstanceDetailInfo information about a stateless instance running in a code package.
 type DeployedStatelessServiceInstanceDetailInfo struct {
 	// InstanceID - Id of the stateless service instance.
-	InstanceID	*string	`json:"InstanceId,omitempty"`
+	InstanceID *string `json:"InstanceId,omitempty"`
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string		`json:"ServiceName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	ServiceName *string    `json:"ServiceName,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// CurrentServiceOperation - Possible values include: 'CurrentServiceOperationUnknown', 'CurrentServiceOperationNone', 'CurrentServiceOperationOpen', 'CurrentServiceOperationChangeRole', 'CurrentServiceOperationClose', 'CurrentServiceOperationAbort'
-	CurrentServiceOperation	CurrentServiceOperation	`json:"CurrentServiceOperation,omitempty"`
+	CurrentServiceOperation CurrentServiceOperation `json:"CurrentServiceOperation,omitempty"`
 	// CurrentServiceOperationStartTimeUtc - The start time of the current service operation in UTC format.
-	CurrentServiceOperationStartTimeUtc	*date.Time		`json:"CurrentServiceOperationStartTimeUtc,omitempty"`
-	ReportedLoad				*[]LoadMetricReportInfo	`json:"ReportedLoad,omitempty"`
+	CurrentServiceOperationStartTimeUtc *date.Time              `json:"CurrentServiceOperationStartTimeUtc,omitempty"`
+	ReportedLoad                        *[]LoadMetricReportInfo `json:"ReportedLoad,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindDeployedServiceReplicaDetailInfo', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateful', 'ServiceKindBasicDeployedServiceReplicaDetailInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicDeployedServiceReplicaDetailInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicDeployedServiceReplicaDetailInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5272,23 +5272,23 @@ func (dssidi DeployedStatelessServiceInstanceDetailInfo) AsBasicDeployedServiceR
 // DeployedStatelessServiceInstanceInfo information about a stateless service instance deployed on a node.
 type DeployedStatelessServiceInstanceInfo struct {
 	// InstanceID - Id of the stateless service instance.
-	InstanceID	*string	`json:"InstanceId,omitempty"`
+	InstanceID *string `json:"InstanceId,omitempty"`
 	// ServiceName - Full hierarchical name of the service in URI format starting with `fabric:`.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - Name of the service type as specified in the service manifest.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// ServiceManifestName - The name of the service manifest in which this service type is defined.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// CodePackageName - The name of the code package that hosts this replica.
-	CodePackageName	*string		`json:"CodePackageName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionID,omitempty"`
+	CodePackageName *string    `json:"CodePackageName,omitempty"`
+	PartitionID     *uuid.UUID `json:"PartitionID,omitempty"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatusInvalid', 'ReplicaStatusInBuild', 'ReplicaStatusStandby', 'ReplicaStatusReady', 'ReplicaStatusDown', 'ReplicaStatusDropped'
-	ReplicaStatus	ReplicaStatus	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus `json:"ReplicaStatus,omitempty"`
 	// Address - The last address returned by the replica in Open or ChangeRole.
-	Address				*string	`json:"Address,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	Address                    *string `json:"Address,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindDeployedServiceReplicaInfo', 'ServiceKindStateful', 'ServiceKindStateless'
-	ServiceKind	ServiceKind	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKind `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5358,11 +5358,11 @@ func (dssii DeployedStatelessServiceInstanceInfo) AsBasicDeployedServiceReplicaI
 // manifest to image cache on a Service Fabric node.
 type DeployServicePackageToNodeDescription struct {
 	// ServiceManifestName - The name of service manifest whose packages need to be downloaded.
-	ServiceManifestName	*string				`json:"ServiceManifestName,omitempty"`
-	ApplicationTypeName	*string				`json:"ApplicationTypeName,omitempty"`
-	ApplicationTypeVersion	*string				`json:"ApplicationTypeVersion,omitempty"`
-	NodeName		*string				`json:"NodeName,omitempty"`
-	PackageSharingPolicy	*[]PackageSharingPolicyInfo	`json:"PackageSharingPolicy,omitempty"`
+	ServiceManifestName    *string                     `json:"ServiceManifestName,omitempty"`
+	ApplicationTypeName    *string                     `json:"ApplicationTypeName,omitempty"`
+	ApplicationTypeVersion *string                     `json:"ApplicationTypeVersion,omitempty"`
+	NodeName               *string                     `json:"NodeName,omitempty"`
+	PackageSharingPolicy   *[]PackageSharingPolicyInfo `json:"PackageSharingPolicy,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5371,9 +5371,9 @@ type DeployServicePackageToNodeDescription struct {
 // partition.
 type EnsureAvailabilitySafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5461,9 +5461,9 @@ func (easc EnsureAvailabilitySafetyCheck) AsBasicSafetyCheck() (BasicSafetyCheck
 // partition.
 type EnsurePartitionQurumSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5554,11 +5554,11 @@ type EntityHealth struct {
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5591,9 +5591,9 @@ type EntityHealthStateChunkList struct {
 // replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
 type Epoch struct {
 	// ConfigurationVersion - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
-	ConfigurationVersion	*string	`json:"ConfigurationVersion,omitempty"`
+	ConfigurationVersion *string `json:"ConfigurationVersion,omitempty"`
 	// DataLossVersion - The current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
-	DataLossVersion	*string	`json:"DataLossVersion,omitempty"`
+	DataLossVersion *string `json:"DataLossVersion,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5601,14 +5601,14 @@ type Epoch struct {
 // The health evaluation is returned when evaluating health of an entity results in Error or Warning.
 type EventHealthEvaluation struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors. The field is specified in the health policy used to evaluate the entity.
-	ConsiderWarningAsError	*bool		`json:"ConsiderWarningAsError,omitempty"`
-	UnhealthyEvent		*HealthEvent	`json:"UnhealthyEvent,omitempty"`
+	ConsiderWarningAsError *bool        `json:"ConsiderWarningAsError,omitempty"`
+	UnhealthyEvent         *HealthEvent `json:"UnhealthyEvent,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5770,10 +5770,10 @@ func (ehe EventHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 // ExecutingFaultsChaosEvent describes a Chaos event that gets generated when Chaos has decided on the faults for
 // an iteration. This Chaos event contains the details of the faults as a list of strings.
 type ExecutingFaultsChaosEvent struct {
-	Faults		*[]string	`json:"Faults,omitempty"`
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	Faults       *[]string  `json:"Faults,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5866,54 +5866,54 @@ type FabricError struct {
 // FabricErrorError error object containing error code and error message.
 type FabricErrorError struct {
 	// Code - Possible values include: 'FABRICEINVALIDPARTITIONKEY', 'FABRICEIMAGEBUILDERVALIDATIONERROR', 'FABRICEINVALIDADDRESS', 'FABRICEAPPLICATIONNOTUPGRADING', 'FABRICEAPPLICATIONUPGRADEVALIDATIONERROR', 'FABRICEFABRICNOTUPGRADING', 'FABRICEFABRICUPGRADEVALIDATIONERROR', 'FABRICEINVALIDCONFIGURATION', 'FABRICEINVALIDNAMEURI', 'FABRICEPATHTOOLONG', 'FABRICEKEYTOOLARGE', 'FABRICESERVICEAFFINITYCHAINNOTSUPPORTED', 'FABRICEINVALIDATOMICGROUP', 'FABRICEVALUEEMPTY', 'FABRICENODENOTFOUND', 'FABRICEAPPLICATIONTYPENOTFOUND', 'FABRICEAPPLICATIONNOTFOUND', 'FABRICESERVICETYPENOTFOUND', 'FABRICESERVICEDOESNOTEXIST', 'FABRICESERVICETYPETEMPLATENOTFOUND', 'FABRICECONFIGURATIONSECTIONNOTFOUND', 'FABRICEPARTITIONNOTFOUND', 'FABRICEREPLICADOESNOTEXIST', 'FABRICESERVICEGROUPDOESNOTEXIST', 'FABRICECONFIGURATIONPARAMETERNOTFOUND', 'FABRICEDIRECTORYNOTFOUND', 'FABRICEFABRICVERSIONNOTFOUND', 'FABRICEFILENOTFOUND', 'FABRICENAMEDOESNOTEXIST', 'FABRICEPROPERTYDOESNOTEXIST', 'FABRICEENUMERATIONCOMPLETED', 'FABRICESERVICEMANIFESTNOTFOUND', 'FABRICEKEYNOTFOUND', 'FABRICEHEALTHENTITYNOTFOUND', 'FABRICEAPPLICATIONTYPEALREADYEXISTS', 'FABRICEAPPLICATIONALREADYEXISTS', 'FABRICEAPPLICATIONALREADYINTARGETVERSION', 'FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS', 'FABRICEAPPLICATIONUPGRADEINPROGRESS', 'FABRICESERVICEALREADYEXISTS', 'FABRICESERVICEGROUPALREADYEXISTS', 'FABRICEAPPLICATIONTYPEINUSE', 'FABRICEFABRICALREADYINTARGETVERSION', 'FABRICEFABRICVERSIONALREADYEXISTS', 'FABRICEFABRICVERSIONINUSE', 'FABRICEFABRICUPGRADEINPROGRESS', 'FABRICENAMEALREADYEXISTS', 'FABRICENAMENOTEMPTY', 'FABRICEPROPERTYCHECKFAILED', 'FABRICESERVICEMETADATAMISMATCH', 'FABRICESERVICETYPEMISMATCH', 'FABRICEHEALTHSTALEREPORT', 'FABRICESEQUENCENUMBERCHECKFAILED', 'FABRICENODEHASNOTSTOPPEDYET', 'FABRICEINSTANCEIDMISMATCH', 'FABRICEVALUETOOLARGE', 'FABRICENOWRITEQUORUM', 'FABRICENOTPRIMARY', 'FABRICENOTREADY', 'FABRICERECONFIGURATIONPENDING', 'FABRICESERVICEOFFLINE', 'EABORT', 'FABRICECOMMUNICATIONERROR', 'FABRICEOPERATIONNOTCOMPLETE', 'FABRICETIMEOUT', 'FABRICENODEISUP'
-	Code	Code	`json:"Code,omitempty"`
+	Code Code `json:"Code,omitempty"`
 	// Message - Error message.
-	Message	*string	`json:"Message,omitempty"`
+	Message *string `json:"Message,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // FailedUpgradeDomainProgressObject the detailed upgrade progress for nodes in the current upgrade domain at the
 // point of failure.
 type FailedUpgradeDomainProgressObject struct {
-	DomainName		*string				`json:"DomainName,omitempty"`
-	NodeUpgradeProgressList	*[]NodeUpgradeProgressInfo	`json:"NodeUpgradeProgressList,omitempty"`
+	DomainName              *string                    `json:"DomainName,omitempty"`
+	NodeUpgradeProgressList *[]NodeUpgradeProgressInfo `json:"NodeUpgradeProgressList,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // FailureUpgradeDomainProgressInfo information about the upgrade domain progress at the time of upgrade failure.
 type FailureUpgradeDomainProgressInfo struct {
-	DomainName		*string				`json:"DomainName,omitempty"`
-	NodeUpgradeProgressList	*[]NodeUpgradeProgressInfo	`json:"NodeUpgradeProgressList,omitempty"`
+	DomainName              *string                    `json:"DomainName,omitempty"`
+	NodeUpgradeProgressList *[]NodeUpgradeProgressInfo `json:"NodeUpgradeProgressList,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // FileInfo information about a image store file.
 type FileInfo struct {
 	// FileSize - The size of file in bytes.
-	FileSize	*string		`json:"FileSize,omitempty"`
-	FileVersion	*FileVersion	`json:"FileVersion,omitempty"`
+	FileSize    *string      `json:"FileSize,omitempty"`
+	FileVersion *FileVersion `json:"FileVersion,omitempty"`
 	// ModifiedDate - The date and time when the image store file was last modified.
-	ModifiedDate	*date.Time	`json:"ModifiedDate,omitempty"`
+	ModifiedDate *date.Time `json:"ModifiedDate,omitempty"`
 	// StoreRelativePath - The file path relative to the image store root path.
-	StoreRelativePath	*string	`json:"StoreRelativePath,omitempty"`
+	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // FileVersion information about the version of image store file.
 type FileVersion struct {
 	// VersionNumber - The current iamge store version number for the file is used in image store for checking whether it need to be updated.
-	VersionNumber	*string	`json:"VersionNumber,omitempty"`
+	VersionNumber *string `json:"VersionNumber,omitempty"`
 	// EpochDataLossNumber - The epoch data loss number of image store file is used to indicate the status of data loss.
-	EpochDataLossNumber	*string	`json:"EpochDataLossNumber,omitempty"`
+	EpochDataLossNumber *string `json:"EpochDataLossNumber,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // FolderInfo information about a image store folder. It inclues how many files this folder contains and its image
 // store relative path.
 type FolderInfo struct {
-	StoreRelativePath	*string	`json:"StoreRelativePath,omitempty"`
+	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
 	// FileCount - The number of files from within the image store folder.
-	FileCount	*uuid.UUID	`json:"FileCount,omitempty"`
+	FileCount *uuid.UUID `json:"FileCount,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -5948,11 +5948,11 @@ type BasicHealthEvaluation interface {
 // manager to evaluate the health of an entity.
 type HealthEvaluation struct {
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 func unmarshalBasicHealthEvaluation(body []byte) (BasicHealthEvaluation, error) {
@@ -6252,27 +6252,27 @@ func (hew *HealthEvaluationWrapper) UnmarshalJSON(body []byte) error {
 // with additional metadata added by the Health Manager.
 type HealthEvent struct {
 	// IsExpired - Returns true if the health event is expired, otherwise false.
-	IsExpired	*bool	`json:"IsExpired,omitempty"`
+	IsExpired *bool `json:"IsExpired,omitempty"`
 	// SourceUtcTimestamp - The date and time when the health report was sent by the source.
-	SourceUtcTimestamp	*date.Time	`json:"SourceUtcTimestamp,omitempty"`
+	SourceUtcTimestamp *date.Time `json:"SourceUtcTimestamp,omitempty"`
 	// LastModifiedUtcTimestamp - The date and time when the health report was last modified by the health store.
-	LastModifiedUtcTimestamp	*date.Time	`json:"LastModifiedUtcTimestamp,omitempty"`
+	LastModifiedUtcTimestamp *date.Time `json:"LastModifiedUtcTimestamp,omitempty"`
 	// LastOkTransitionAt - If the current health state is 'Ok', this property returns the time at which the health report was first reported with 'Ok'.
 	// For periodic reporting, many reports with the same state may have been generated.
 	// This property returns the date and time when the first 'Ok' health report was received.
 	// If the current health state is 'Error' or 'Warning', returns the date and time at which the health state was last in 'Ok', before transitioning to a different state.
 	// If the health state was never 'Ok', the value will be zero date-time.
-	LastOkTransitionAt	*date.Time	`json:"LastOkTransitionAt,omitempty"`
+	LastOkTransitionAt *date.Time `json:"LastOkTransitionAt,omitempty"`
 	// LastWarningTransitionAt - If the current health state is 'Warning', this property returns the time at which the health report was first reported with 'Warning'. For periodic reporting, many reports with the same state may have been generated however, this property returns only the date and time at the first 'Warning' health report was received.
 	// If the current health state is 'Ok' or 'Error', returns the date and time at which the health state was last in 'Warning', before transitioning to a different state.
 	// If the health state was never 'Warning', the value will be zero date-time.
-	LastWarningTransitionAt	*date.Time	`json:"LastWarningTransitionAt,omitempty"`
+	LastWarningTransitionAt *date.Time `json:"LastWarningTransitionAt,omitempty"`
 	// LastErrorTransitionAt - If the current health state is 'Error', this property returns the time at which the health report was first reported with 'Error'. For periodic reporting, many reports with the same state may have been generated however, this property returns only the date and time at the first 'Error' health report was received.
 	// If the current health state is 'Ok' or 'Warning', returns the date and time at which the health state was last in 'Error', before transitioning to a different state.
 	// If the health state was never 'Error', the value will be zero date-time.
-	LastErrorTransitionAt	*date.Time	`json:"LastErrorTransitionAt,omitempty"`
+	LastErrorTransitionAt *date.Time `json:"LastErrorTransitionAt,omitempty"`
 	// SourceID - The source name which identifies the client/watchdog/system component which generated the health information.
-	SourceID	*string	`json:"SourceId,omitempty"`
+	SourceID *string `json:"SourceId,omitempty"`
 	// Property - The property of the health information. An entity can have health reports for different properties.
 	// The property is a string and not a fixed enumeration to allow the reporter flexibility to categorize the state condition that triggers the report.
 	// For example, a reporter with SourceId "LocalWatchdog" can monitor the state of the available disk on a node,
@@ -6280,34 +6280,34 @@ type HealthEvent struct {
 	// The same reporter can monitor the node connectivity, so it can report a property "Connectivity" on the same node.
 	// In the health store, these reports are treated as separate health events for the specified node.
 	// Together with the SourceId, the property uniquely identifies the health information.
-	Property	*string	`json:"Property,omitempty"`
+	Property *string `json:"Property,omitempty"`
 	// HealthState - Possible values include: 'HealthState3Invalid', 'HealthState3Ok', 'HealthState3Warning', 'HealthState3Error', 'HealthState3Unknown'
-	HealthState	HealthState3	`json:"HealthState,omitempty"`
+	HealthState HealthState3 `json:"HealthState,omitempty"`
 	// TimeToLiveInMilliSeconds - The duration for which this health report is valid. This field is using ISO8601 format for specifying the duration.
 	// When clients report periodically, they should send reports with higher frequency than time to live.
 	// If clients report on transition, they can set the time to live to infinite.
 	// When time to live expires, the health event that contains the health information
 	// is either removed from health store, if RemoveWhenExpired is true, or evaluated at error, if RemoveWhenExpired false.
 	// If not specified, time to live defaults to infinite value.
-	TimeToLiveInMilliSeconds	*string	`json:"TimeToLiveInMilliSeconds,omitempty"`
+	TimeToLiveInMilliSeconds *string `json:"TimeToLiveInMilliSeconds,omitempty"`
 	// Description - The description of the health information. It represents free text used to add human readable information about the report.
 	// The maximum string length for the description is 4096 characters.
 	// If the provided string is longer, it will be automatically truncated.
 	// When truncated, the last characters of the description contain a marker "[Truncated]", and total string size is 4096 characters.
 	// The presence of the marker indicates to users that truncation occurred.
 	// Note that when truncated, the description has less than 4096 characters from the original string.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// SequenceNumber - The sequence number for this health report as a numeric string.
 	// The report sequence number is used by the health store to detect stale reports.
 	// If not specified, a sequence number is auto-generated by the health client when a report is added.
-	SequenceNumber	*string	`json:"SequenceNumber,omitempty"`
+	SequenceNumber *string `json:"SequenceNumber,omitempty"`
 	// RemoveWhenExpired - Value that indicates whether the report is removed from health store when it expires.
 	// If set to true, the report is remopved from the health store after it expires.
 	// If set to false, the report is treated as an error when expired. The value of this property is false by default.
 	// When clients report periodically, they should set RemoveWhenExpired false (default).
 	// This way, is the reporter has issues (eg. deadlock) and can't report, the entity is evaluated at error when the health report expires.
 	// This flags the entity as being in Error health state.
-	RemoveWhenExpired	*bool	`json:"RemoveWhenExpired,omitempty"`
+	RemoveWhenExpired *bool `json:"RemoveWhenExpired,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6315,7 +6315,7 @@ type HealthEvent struct {
 // health store and in all health events returned by health queries.
 type HealthInformation struct {
 	// SourceID - The source name which identifies the client/watchdog/system component which generated the health information.
-	SourceID	*string	`json:"SourceId,omitempty"`
+	SourceID *string `json:"SourceId,omitempty"`
 	// Property - The property of the health information. An entity can have health reports for different properties.
 	// The property is a string and not a fixed enumeration to allow the reporter flexibility to categorize the state condition that triggers the report.
 	// For example, a reporter with SourceId "LocalWatchdog" can monitor the state of the available disk on a node,
@@ -6323,44 +6323,44 @@ type HealthInformation struct {
 	// The same reporter can monitor the node connectivity, so it can report a property "Connectivity" on the same node.
 	// In the health store, these reports are treated as separate health events for the specified node.
 	// Together with the SourceId, the property uniquely identifies the health information.
-	Property	*string	`json:"Property,omitempty"`
+	Property *string `json:"Property,omitempty"`
 	// HealthState - Possible values include: 'HealthState3Invalid', 'HealthState3Ok', 'HealthState3Warning', 'HealthState3Error', 'HealthState3Unknown'
-	HealthState	HealthState3	`json:"HealthState,omitempty"`
+	HealthState HealthState3 `json:"HealthState,omitempty"`
 	// TimeToLiveInMilliSeconds - The duration for which this health report is valid. This field is using ISO8601 format for specifying the duration.
 	// When clients report periodically, they should send reports with higher frequency than time to live.
 	// If clients report on transition, they can set the time to live to infinite.
 	// When time to live expires, the health event that contains the health information
 	// is either removed from health store, if RemoveWhenExpired is true, or evaluated at error, if RemoveWhenExpired false.
 	// If not specified, time to live defaults to infinite value.
-	TimeToLiveInMilliSeconds	*string	`json:"TimeToLiveInMilliSeconds,omitempty"`
+	TimeToLiveInMilliSeconds *string `json:"TimeToLiveInMilliSeconds,omitempty"`
 	// Description - The description of the health information. It represents free text used to add human readable information about the report.
 	// The maximum string length for the description is 4096 characters.
 	// If the provided string is longer, it will be automatically truncated.
 	// When truncated, the last characters of the description contain a marker "[Truncated]", and total string size is 4096 characters.
 	// The presence of the marker indicates to users that truncation occurred.
 	// Note that when truncated, the description has less than 4096 characters from the original string.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// SequenceNumber - The sequence number for this health report as a numeric string.
 	// The report sequence number is used by the health store to detect stale reports.
 	// If not specified, a sequence number is auto-generated by the health client when a report is added.
-	SequenceNumber	*string	`json:"SequenceNumber,omitempty"`
+	SequenceNumber *string `json:"SequenceNumber,omitempty"`
 	// RemoveWhenExpired - Value that indicates whether the report is removed from health store when it expires.
 	// If set to true, the report is remopved from the health store after it expires.
 	// If set to false, the report is treated as an error when expired. The value of this property is false by default.
 	// When clients report periodically, they should set RemoveWhenExpired false (default).
 	// This way, is the reporter has issues (eg. deadlock) and can't report, the entity is evaluated at error when the health report expires.
 	// This flags the entity as being in Error health state.
-	RemoveWhenExpired	*bool	`json:"RemoveWhenExpired,omitempty"`
+	RemoveWhenExpired *bool `json:"RemoveWhenExpired,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ImageStoreContent information about the image store content.
 type ImageStoreContent struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// StoreFiles - The list of image store file info objects represents files found under the given image store relative path.
-	StoreFiles	*[]FileInfo	`json:"StoreFiles,omitempty"`
+	StoreFiles *[]FileInfo `json:"StoreFiles,omitempty"`
 	// StoreFolders - The list of image store folder info objectes represents subfolders found under the given image store relative path.
-	StoreFolders	*[]FolderInfo	`json:"StoreFolders,omitempty"`
+	StoreFolders *[]FolderInfo `json:"StoreFolders,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6368,13 +6368,13 @@ type ImageStoreContent struct {
 // to another image store relative path.
 type ImageStoreCopyDescription struct {
 	// RemoteSource - The relative path of source image store content to be copied from.
-	RemoteSource	*string	`json:"RemoteSource,omitempty"`
+	RemoteSource *string `json:"RemoteSource,omitempty"`
 	// RemoteDestination - The relative path of destination image store content to be copied to.
-	RemoteDestination	*string	`json:"RemoteDestination,omitempty"`
+	RemoteDestination *string `json:"RemoteDestination,omitempty"`
 	// SkipFiles - The list of the file names to be skipped for copying.
-	SkipFiles	*[]string	`json:"SkipFiles,omitempty"`
+	SkipFiles *[]string `json:"SkipFiles,omitempty"`
 	// CheckMarkFile - Indicates whether to check mark file during copying. The property is true if checking mark file is required, false otherwise. The mark file is used to check whether the folder is well constructed. If the property is true and mark file does not exist, the copy is skipped.
-	CheckMarkFile	*bool	`json:"CheckMarkFile,omitempty"`
+	CheckMarkFile *bool `json:"CheckMarkFile,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6382,12 +6382,12 @@ type ImageStoreCopyDescription struct {
 // partition schemes.
 type Int64RangePartitionInformation struct {
 	// LowKey - Specifies the minimum key value handled by this partition.
-	LowKey	*string	`json:"LowKey,omitempty"`
+	LowKey *string `json:"LowKey,omitempty"`
 	// HighKey - Specifies the maximum key value handled by this partition.
-	HighKey	*string		`json:"HighKey,omitempty"`
-	ID	*uuid.UUID	`json:"Id,omitempty"`
+	HighKey *string    `json:"HighKey,omitempty"`
+	ID      *uuid.UUID `json:"Id,omitempty"`
 	// ServicePartitionKind - Possible values include: 'ServicePartitionKindPartitionInformation', 'ServicePartitionKindInt64Range', 'ServicePartitionKindNamed', 'ServicePartitionKindSingleton'
-	ServicePartitionKind	ServicePartitionKind	`json:"ServicePartitionKind,omitempty"`
+	ServicePartitionKind ServicePartitionKind `json:"ServicePartitionKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6444,33 +6444,33 @@ func (i6rpi Int64RangePartitionInformation) AsBasicPartitionInformation() (Basic
 // InvokeDataLossResult represents information about an operation in a terminal state (Completed or Faulted).
 type InvokeDataLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
-	ErrorCode		*int32			`json:"ErrorCode,omitempty"`
-	SelectedPartition	*SelectedPartition	`json:"SelectedPartition,omitempty"`
+	ErrorCode         *int32             `json:"ErrorCode,omitempty"`
+	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // InvokeQuorumLossResult represents information about an operation in a terminal state (Completed or Faulted).
 type InvokeQuorumLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
-	ErrorCode		*int32			`json:"ErrorCode,omitempty"`
-	SelectedPartition	*SelectedPartition	`json:"SelectedPartition,omitempty"`
+	ErrorCode         *int32             `json:"ErrorCode,omitempty"`
+	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // KeyValueStoreReplicaStatus key value store related information for the replica.
 type KeyValueStoreReplicaStatus struct {
 	// DatabaseRowCountEstimate - Value indicating the estimated number of rows in the underlying database.
-	DatabaseRowCountEstimate	*string	`json:"DatabaseRowCountEstimate,omitempty"`
+	DatabaseRowCountEstimate *string `json:"DatabaseRowCountEstimate,omitempty"`
 	// DatabaseLogicalSizeEstimate - Value indicating the estimated size of the underlying database.
-	DatabaseLogicalSizeEstimate	*string	`json:"DatabaseLogicalSizeEstimate,omitempty"`
+	DatabaseLogicalSizeEstimate *string `json:"DatabaseLogicalSizeEstimate,omitempty"`
 	// CopyNotificationCurrentKeyFilter - Value indicating the latest key-prefix filter applied to enumeration during the callback. Null if there is no pending callback.
-	CopyNotificationCurrentKeyFilter	*string	`json:"CopyNotificationCurrentKeyFilter,omitempty"`
+	CopyNotificationCurrentKeyFilter *string `json:"CopyNotificationCurrentKeyFilter,omitempty"`
 	// CopyNotificationCurrentProgress - Value indicating the latest number of keys enumerated during the callback. 0 if there is no pending callback.
-	CopyNotificationCurrentProgress	*string	`json:"CopyNotificationCurrentProgress,omitempty"`
+	CopyNotificationCurrentProgress *string `json:"CopyNotificationCurrentProgress,omitempty"`
 	// StatusDetails - Value indicating the current status details of the replica.
-	StatusDetails	*string	`json:"StatusDetails,omitempty"`
+	StatusDetails *string `json:"StatusDetails,omitempty"`
 	// Kind - Possible values include: 'KindReplicaStatusBase', 'KindKeyValueStore'
-	Kind	KindBasicReplicaStatusBase	`json:"Kind,omitempty"`
+	Kind KindBasicReplicaStatusBase `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6520,29 +6520,29 @@ func (kvsrs KeyValueStoreReplicaStatus) AsBasicReplicaStatusBase() (BasicReplica
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListDeployedApplicationInfo ...
 type ListDeployedApplicationInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]DeployedApplicationInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]DeployedApplicationInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListDeployedCodePackageInfo ...
 type ListDeployedCodePackageInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]DeployedCodePackageInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]DeployedCodePackageInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListDeployedServicePackageInfo ...
 type ListDeployedServicePackageInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]DeployedServicePackageInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]DeployedServicePackageInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListDeployedServiceReplicaInfo ...
 type ListDeployedServiceReplicaInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]BasicDeployedServiceReplicaInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]BasicDeployedServiceReplicaInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6560,36 +6560,36 @@ func (ldsri *ListDeployedServiceReplicaInfo) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListDeployedServiceTypeInfo ...
 type ListDeployedServiceTypeInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]DeployedServiceTypeInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]DeployedServiceTypeInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListFabricCodeVersionInfo ...
 type ListFabricCodeVersionInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]FabricCodeVersionInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]FabricCodeVersionInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListFabricConfigVersionInfo ...
 type ListFabricConfigVersionInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]FabricConfigVersionInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]FabricConfigVersionInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListOperationStatus ...
 type ListOperationStatus struct {
-	autorest.Response	`json:"-"`
-	Value			*[]OperationStatus	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]OperationStatus `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ListServiceTypeInfo ...
 type ListServiceTypeInfo struct {
-	autorest.Response	`json:"-"`
-	Value			*[]ServiceTypeInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]ServiceTypeInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6597,34 +6597,34 @@ type ListServiceTypeInfo struct {
 // value.
 type LoadMetricReport struct {
 	// LastReportedUtc - Gets the UTC time when the load was reported.
-	LastReportedUtc	*date.Time	`json:"LastReportedUtc,omitempty"`
+	LastReportedUtc *date.Time `json:"LastReportedUtc,omitempty"`
 	// Name - The name of the load metric.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Value - The value of the load metric.
-	Value	*string	`json:"Value,omitempty"`
+	Value *string `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // LoadMetricReportInfo information about load reported by replica.
 type LoadMetricReportInfo struct {
 	// Name - The name of the metric.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Value - The value of the load for the metric..
-	Value	*int32	`json:"Value,omitempty"`
+	Value *int32 `json:"Value,omitempty"`
 	// LastReportedUtc - The UTC time when the load is reported.
-	LastReportedUtc	*date.Time	`json:"LastReportedUtc,omitempty"`
+	LastReportedUtc *date.Time `json:"LastReportedUtc,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // MonitoringPolicyDescription describes the parameters for monitoring an upgrade in Monitored mode.
 type MonitoringPolicyDescription struct {
 	// FailureAction - Possible values include: 'FailureActionInvalid', 'FailureActionRollback', 'FailureActionManual'
-	FailureAction				FailureAction	`json:"FailureAction,omitempty"`
-	HealthCheckWaitDurationInMilliseconds	*string		`json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
-	HealthCheckStableDurationInMilliseconds	*string		`json:"HealthCheckStableDurationInMilliseconds,omitempty"`
-	HealthCheckRetryTimeoutInMilliseconds	*string		`json:"HealthCheckRetryTimeoutInMilliseconds,omitempty"`
-	UpgradeTimeoutInMilliseconds		*string		`json:"UpgradeTimeoutInMilliseconds,omitempty"`
-	UpgradeDomainTimeoutInMilliseconds	*string		`json:"UpgradeDomainTimeoutInMilliseconds,omitempty"`
+	FailureAction                           FailureAction `json:"FailureAction,omitempty"`
+	HealthCheckWaitDurationInMilliseconds   *string       `json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
+	HealthCheckStableDurationInMilliseconds *string       `json:"HealthCheckStableDurationInMilliseconds,omitempty"`
+	HealthCheckRetryTimeoutInMilliseconds   *string       `json:"HealthCheckRetryTimeoutInMilliseconds,omitempty"`
+	UpgradeTimeoutInMilliseconds            *string       `json:"UpgradeTimeoutInMilliseconds,omitempty"`
+	UpgradeDomainTimeoutInMilliseconds      *string       `json:"UpgradeDomainTimeoutInMilliseconds,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6632,10 +6632,10 @@ type MonitoringPolicyDescription struct {
 // partition schemes.
 type NamedPartitionInformation struct {
 	// Name - Name of the partition.
-	Name	*string		`json:"Name,omitempty"`
-	ID	*uuid.UUID	`json:"Id,omitempty"`
+	Name *string    `json:"Name,omitempty"`
+	ID   *uuid.UUID `json:"Id,omitempty"`
 	// ServicePartitionKind - Possible values include: 'ServicePartitionKindPartitionInformation', 'ServicePartitionKindInt64Range', 'ServicePartitionKindNamed', 'ServicePartitionKindSingleton'
-	ServicePartitionKind	ServicePartitionKind	`json:"ServicePartitionKind,omitempty"`
+	ServicePartitionKind ServicePartitionKind `json:"ServicePartitionKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6689,11 +6689,11 @@ func (npi NamedPartitionInformation) AsBasicPartitionInformation() (BasicPartiti
 // NamedPartitionSchemeDescription describes the named partition scheme of the service.
 type NamedPartitionSchemeDescription struct {
 	// Count - The number of partitions.
-	Count	*int32	`json:"Count,omitempty"`
+	Count *int32 `json:"Count,omitempty"`
 	// Names - Array of size specified by the ‘Count’ parameter, for the names of the partitions.
-	Names	*[]string	`json:"Names,omitempty"`
+	Names *[]string `json:"Names,omitempty"`
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme	PartitionScheme	`json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionScheme `json:"PartitionScheme,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6748,45 +6748,45 @@ func (npsd NamedPartitionSchemeDescription) AsBasicPartitionSchemeDescription() 
 // undergoing deactivation or has already been deactivated.
 type NodeDeactivationInfo struct {
 	// NodeDeactivationIntent - Possible values include: 'NodeDeactivationIntent1Invalid', 'NodeDeactivationIntent1Pause', 'NodeDeactivationIntent1Restart', 'NodeDeactivationIntent1RemoveData', 'NodeDeactivationIntent1RemoveNode'
-	NodeDeactivationIntent	NodeDeactivationIntent1	`json:"NodeDeactivationIntent,omitempty"`
+	NodeDeactivationIntent NodeDeactivationIntent1 `json:"NodeDeactivationIntent,omitempty"`
 	// NodeDeactivationStatus - Possible values include: 'NodeDeactivationStatusNone', 'NodeDeactivationStatusSafetyCheckInProgress', 'NodeDeactivationStatusSafetyCheckComplete', 'NodeDeactivationStatusCompleted'
-	NodeDeactivationStatus	NodeDeactivationStatus	`json:"NodeDeactivationStatus,omitempty"`
-	NodeDeactivationTask	*[]NodeDeactivationTask	`json:"NodeDeactivationTask,omitempty"`
-	PendingSafetyChecks	*[]SafetyCheckWrapper	`json:"PendingSafetyChecks,omitempty"`
+	NodeDeactivationStatus NodeDeactivationStatus  `json:"NodeDeactivationStatus,omitempty"`
+	NodeDeactivationTask   *[]NodeDeactivationTask `json:"NodeDeactivationTask,omitempty"`
+	PendingSafetyChecks    *[]SafetyCheckWrapper   `json:"PendingSafetyChecks,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeDeactivationTask the task representing the deactivation operation on the node.
 type NodeDeactivationTask struct {
-	NodeDeactivationTaskID	*NodeDeactivationTaskID	`json:"NodeDeactivationTaskId,omitempty"`
+	NodeDeactivationTaskID *NodeDeactivationTaskID `json:"NodeDeactivationTaskId,omitempty"`
 	// NodeDeactivationIntent - Possible values include: 'NodeDeactivationIntentInvalid', 'NodeDeactivationIntentPause', 'NodeDeactivationIntentRestart', 'NodeDeactivationIntentRemoveData', 'NodeDeactivationIntentRemoveNode'
-	NodeDeactivationIntent	NodeDeactivationIntent	`json:"NodeDeactivationIntent,omitempty"`
+	NodeDeactivationIntent NodeDeactivationIntent `json:"NodeDeactivationIntent,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeDeactivationTaskID identity of the task related to deactivation operation on the node.
 type NodeDeactivationTaskID struct {
 	// ID - Value of the task id.
-	ID	*string	`json:"Id,omitempty"`
+	ID *string `json:"Id,omitempty"`
 	// NodeDeactivationTaskType - Possible values include: 'NodeDeactivationTaskTypeInvalid', 'NodeDeactivationTaskTypeInfrastructure', 'NodeDeactivationTaskTypeRepair', 'NodeDeactivationTaskTypeClient'
-	NodeDeactivationTaskType	NodeDeactivationTaskType	`json:"NodeDeactivationTaskType,omitempty"`
+	NodeDeactivationTaskType NodeDeactivationTaskType `json:"NodeDeactivationTaskType,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeHealth information about the health of a Service Fabric node.
 type NodeHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Name - Name of the node whose health information is described by this object.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6795,15 +6795,15 @@ type NodeHealth struct {
 // state is either Error or Warning.
 type NodeHealthEvaluation struct {
 	// NodeName - Name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the node. The types of the unhealthy evaluations can be EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6966,10 +6966,10 @@ func (nhe NodeHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluation
 // health state.
 type NodeHealthState struct {
 	// Name - The name of the node.
-	Name	*string	`json:"Name,omitempty"`
-	ID	*NodeID	`json:"Id,omitempty"`
+	Name *string `json:"Name,omitempty"`
+	ID   *NodeID `json:"Id,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6977,9 +6977,9 @@ type NodeHealthState struct {
 // aggregated health state.
 type NodeHealthStateChunk struct {
 	// NodeName - The name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -6987,9 +6987,9 @@ type NodeHealthStateChunk struct {
 // the chunk query. Returned by get cluster health state chunks query.
 type NodeHealthStateChunkList struct {
 	// Items - The list of node health state chunks that respect the input filters in the chunk query.
-	Items	*[]NodeHealthStateChunk	`json:"Items,omitempty"`
+	Items *[]NodeHealthStateChunk `json:"Items,omitempty"`
 	// TotalCount - Total number of entity health state objects that match the specified filters from the cluster health chunk query description.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7002,7 +7002,7 @@ type NodeHealthStateFilter struct {
 	// If the node doesn't exist, no node is returned in the cluster health chunk based on this filter.
 	// If the node exists, it is included in the cluster health chunk if the health state matches the other filter properties.
 	// If not specified, all nodes that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	NodeNameFilter	*string	`json:"NodeNameFilter,omitempty"`
+	NodeNameFilter *string `json:"NodeNameFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the nodes. It allows selecting nodes if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only nodes that match the filter are returned. All nodes are used to evaluate the cluster aggregated health state.
 	// If not specified, default value is None, unless the node name is specified. If the filter has default value and node name is specified, the matching node is returned.
@@ -7015,7 +7015,7 @@ type NodeHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7029,48 +7029,48 @@ type NodeID struct {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeInfo information about a node in Service Fabric cluster.
 type NodeInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Name - The name of the node.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// IPAddressOrFQDN - The IP address or fully qualified domain name of the node.
-	IPAddressOrFQDN	*string	`json:"IpAddressOrFQDN,omitempty"`
+	IPAddressOrFQDN *string `json:"IpAddressOrFQDN,omitempty"`
 	// Type - The type of the node.
-	Type	*string	`json:"Type,omitempty"`
+	Type *string `json:"Type,omitempty"`
 	// CodeVersion - The version of Service Fabric binaries that the node is running.
-	CodeVersion	*string	`json:"CodeVersion,omitempty"`
+	CodeVersion *string `json:"CodeVersion,omitempty"`
 	// ConfigVersion - The version of Service Fabric cluster manifest that the node is using.
-	ConfigVersion	*string	`json:"ConfigVersion,omitempty"`
+	ConfigVersion *string `json:"ConfigVersion,omitempty"`
 	// NodeStatus - Possible values include: 'NodeStatusInvalid', 'NodeStatusUp', 'NodeStatusDown', 'NodeStatusEnabling', 'NodeStatusDisabling', 'NodeStatusDisabled', 'NodeStatusUnknown', 'NodeStatusRemoved'
-	NodeStatus	NodeStatus	`json:"NodeStatus,omitempty"`
+	NodeStatus NodeStatus `json:"NodeStatus,omitempty"`
 	// NodeUpTimeInSeconds - Time in seconds since the node has been in NodeStatus Up. Value ero indicates that the node is not Up.
-	NodeUpTimeInSeconds	*string	`json:"NodeUpTimeInSeconds,omitempty"`
+	NodeUpTimeInSeconds *string `json:"NodeUpTimeInSeconds,omitempty"`
 	// HealthState - Possible values include: 'HealthState4Invalid', 'HealthState4Ok', 'HealthState4Warning', 'HealthState4Error', 'HealthState4Unknown'
-	HealthState	HealthState4	`json:"HealthState,omitempty"`
+	HealthState HealthState4 `json:"HealthState,omitempty"`
 	// IsSeedNode - Indicates if the node is a seed node or not. Returns true if the node is a seed node, otherwise false. A quorum of seed nodes are required for proper operation of Service Fabric cluster.
-	IsSeedNode	*bool	`json:"IsSeedNode,omitempty"`
+	IsSeedNode *bool `json:"IsSeedNode,omitempty"`
 	// UpgradeDomain - The upgrade domain of the node.
-	UpgradeDomain	*string	`json:"UpgradeDomain,omitempty"`
+	UpgradeDomain *string `json:"UpgradeDomain,omitempty"`
 	// FaultDomain - The fault domain of the node.
-	FaultDomain	*string	`json:"FaultDomain,omitempty"`
-	ID		*NodeID	`json:"Id,omitempty"`
+	FaultDomain *string `json:"FaultDomain,omitempty"`
+	ID          *NodeID `json:"Id,omitempty"`
 	// InstanceID - The id representing the node instance. While the Id of the node is deterministically generated from the node name and remains same across restarts, the InstanceId changes every time node restarts.
-	InstanceID		*string			`json:"InstanceId,omitempty"`
-	NodeDeactivationInfo	*NodeDeactivationInfo	`json:"NodeDeactivationInfo,omitempty"`
+	InstanceID           *string               `json:"InstanceId,omitempty"`
+	NodeDeactivationInfo *NodeDeactivationInfo `json:"NodeDeactivationInfo,omitempty"`
 	// IsStopped - Indicates if the node is stopped by calling stop node API or not. Returns true if the node is stopped, otherwise false.
-	IsStopped	*bool	`json:"IsStopped,omitempty"`
+	IsStopped *bool `json:"IsStopped,omitempty"`
 	// NodeDownTimeInSeconds - Time in seconds since the node has been in NodeStatus Down. Value zero indicates node is not NodeStatus Down.
-	NodeDownTimeInSeconds	*string	`json:"NodeDownTimeInSeconds,omitempty"`
+	NodeDownTimeInSeconds *string `json:"NodeDownTimeInSeconds,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeLoadInfo information about load on a Service Fabric node. It holds a summary of all metrics and their load
 // on a node.
 type NodeLoadInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// NodeName - Name of the node for which the load information is provided by this object.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// NodeLoadMetricInformation - List that contains metrics and their load information on this node.
-	NodeLoadMetricInformation	*[]NodeLoadMetricInformation	`json:"NodeLoadMetricInformation,omitempty"`
+	NodeLoadMetricInformation *[]NodeLoadMetricInformation `json:"NodeLoadMetricInformation,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7078,28 +7078,28 @@ type NodeLoadInfo struct {
 // node.
 type NodeLoadMetricInformation struct {
 	// Name - Name of the metric for which this load information is provided.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// NodeCapacity - Total capacity on the node for this metric.
-	NodeCapacity	*string	`json:"NodeCapacity,omitempty"`
+	NodeCapacity *string `json:"NodeCapacity,omitempty"`
 	// NodeLoad - Current load on the node for this metric.
-	NodeLoad	*string	`json:"NodeLoad,omitempty"`
+	NodeLoad *string `json:"NodeLoad,omitempty"`
 	// NodeRemainingCapacity - The remaining capacity on the node for this metric.
-	NodeRemainingCapacity	*string	`json:"NodeRemainingCapacity,omitempty"`
+	NodeRemainingCapacity *string `json:"NodeRemainingCapacity,omitempty"`
 	// IsCapacityViolation - Indicates if there is a capacity violation for this metric on the node.
-	IsCapacityViolation	*bool	`json:"IsCapacityViolation,omitempty"`
+	IsCapacityViolation *bool `json:"IsCapacityViolation,omitempty"`
 	// NodeBufferedCapacity - The value that indicates the reserved capacity for this metric on the node.
-	NodeBufferedCapacity	*string	`json:"NodeBufferedCapacity,omitempty"`
+	NodeBufferedCapacity *string `json:"NodeBufferedCapacity,omitempty"`
 	// NodeRemainingBufferedCapacity - The remaining reserved capacity for this metric on the node.
-	NodeRemainingBufferedCapacity	*string	`json:"NodeRemainingBufferedCapacity,omitempty"`
+	NodeRemainingBufferedCapacity *string `json:"NodeRemainingBufferedCapacity,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeResult contains information about a node that was targeted by a user-induced operation.
 type NodeResult struct {
 	// NodeName - The node name
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// NodeInstanceID - The node instance id.
-	NodeInstanceID	*string	`json:"NodeInstanceId,omitempty"`
+	NodeInstanceID *string `json:"NodeInstanceId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7108,17 +7108,17 @@ type NodeResult struct {
 // aggregated health state is either Error or Warning.
 type NodesHealthEvaluation struct {
 	// MaxPercentUnhealthyNodes - Maximum allowed percentage of unhealthy nodes from the ClusterHealthPolicy.
-	MaxPercentUnhealthyNodes	*int32	`json:"MaxPercentUnhealthyNodes,omitempty"`
+	MaxPercentUnhealthyNodes *int32 `json:"MaxPercentUnhealthyNodes,omitempty"`
 	// TotalCount - Total number of nodes found in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy NodeHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7284,46 +7284,46 @@ func (nhe NodesHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 // a NodeTransitionResult.  The NodeTransitionResult is not valid until OperationState
 // is Completed or Faulted.
 type NodeTransitionProgress struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// State - Possible values include: 'State1Invalid', 'State1Running', 'State1RollingBack', 'State1Completed', 'State1Faulted', 'State1Cancelled', 'State1ForceCancelled'
-	State			State1			`json:"State,omitempty"`
-	NodeTransitionResult	*NodeTransitionResult	`json:"NodeTransitionResult,omitempty"`
+	State                State1                `json:"State,omitempty"`
+	NodeTransitionResult *NodeTransitionResult `json:"NodeTransitionResult,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeTransitionResult represents information about an operation in a terminal state (Completed or Faulted).
 type NodeTransitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
-	ErrorCode	*int32		`json:"ErrorCode,omitempty"`
-	NodeResult	*NodeResult	`json:"NodeResult,omitempty"`
+	ErrorCode  *int32      `json:"ErrorCode,omitempty"`
+	NodeResult *NodeResult `json:"NodeResult,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NodeUpgradeProgressInfo information about the upgrading node and its status
 type NodeUpgradeProgressInfo struct {
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// UpgradePhase - Possible values include: 'UpgradePhaseInvalid', 'UpgradePhasePreUpgradeSafetyCheck', 'UpgradePhaseUpgrading', 'UpgradePhasePostUpgradeSafetyCheck'
-	UpgradePhase		UpgradePhase		`json:"UpgradePhase,omitempty"`
-	PendingSafetyChecks	*[]SafetyCheckWrapper	`json:"PendingSafetyChecks,omitempty"`
+	UpgradePhase        UpgradePhase          `json:"UpgradePhase,omitempty"`
+	PendingSafetyChecks *[]SafetyCheckWrapper `json:"PendingSafetyChecks,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // OperationStatus contains the OperationId, OperationState, and OperationType for user-induced operations.
 type OperationStatus struct {
-	OperationID	*uuid.UUID	`json:"OperationId,omitempty"`
+	OperationID *uuid.UUID `json:"OperationId,omitempty"`
 	// State - Possible values include: 'State2Invalid', 'State2Running', 'State2RollingBack', 'State2Completed', 'State2Faulted', 'State2Cancelled', 'State2ForceCancelled'
-	State	State2	`json:"State,omitempty"`
+	State State2 `json:"State,omitempty"`
 	// Type - Possible values include: 'TypeInvalid', 'TypePartitionDataLoss', 'TypePartitionQuorumLoss', 'TypePartitionRestart', 'TypeNodeTransition'
-	Type	Type	`json:"Type,omitempty"`
+	Type Type `json:"Type,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PackageSharingPolicyInfo represents a policy for the package sharing.
 type PackageSharingPolicyInfo struct {
 	// SharedPackageName - The name of code, configuration or data package that should be shared.
-	SharedPackageName	*string	`json:"SharedPackageName,omitempty"`
+	SharedPackageName *string `json:"SharedPackageName,omitempty"`
 	// PackageSharingScope - Possible values include: 'PackageSharingScopeNone', 'PackageSharingScopeAll', 'PackageSharingScopeCode', 'PackageSharingScopeConfig', 'PackageSharingScopeData'
-	PackageSharingScope	PackageSharingScope	`json:"PackageSharingScope,omitempty"`
+	PackageSharingScope PackageSharingScope `json:"PackageSharingScope,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7331,9 +7331,9 @@ type PackageSharingPolicyInfo struct {
 // cannot fit in a single message. The next set of results can be obtained by executing the same query with the
 // continuation token provided in this list.
 type PagedApplicationInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string			`json:"ContinuationToken,omitempty"`
-	Items			*[]ApplicationInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string            `json:"ContinuationToken,omitempty"`
+	Items             *[]ApplicationInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7341,9 +7341,9 @@ type PagedApplicationInfoList struct {
 // cluster. The list is paged when all of the results cannot fit in a single message. The next set of results can
 // be obtained by executing the same query with the continuation token provided in this list.
 type PagedApplicationTypeInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string			`json:"ContinuationToken,omitempty"`
-	Items			*[]ApplicationTypeInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string                `json:"ContinuationToken,omitempty"`
+	Items             *[]ApplicationTypeInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7351,9 +7351,9 @@ type PagedApplicationTypeInfoList struct {
 // all of the results cannot fit in a single message. The next set of results can be obtained by executing the same
 // query with the continuation token provided in this list.
 type PagedComposeApplicationStatusInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string				`json:"ContinuationToken,omitempty"`
-	Items			*[]ComposeApplicationStatusInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string                         `json:"ContinuationToken,omitempty"`
+	Items             *[]ComposeApplicationStatusInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7361,9 +7361,9 @@ type PagedComposeApplicationStatusInfoList struct {
 // single message. The next set of results can be obtained by executing the same query with the continuation token
 // provided in this list.
 type PagedNodeInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string		`json:"ContinuationToken,omitempty"`
-	Items			*[]NodeInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string     `json:"ContinuationToken,omitempty"`
+	Items             *[]NodeInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7371,9 +7371,9 @@ type PagedNodeInfoList struct {
 // the results cannot fit in a single message. The next set of results can be obtained by executing the same query
 // with the continuation token provided in this list.
 type PagedReplicaInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string			`json:"ContinuationToken,omitempty"`
-	Items			*[]BasicReplicaInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string             `json:"ContinuationToken,omitempty"`
+	Items             *[]BasicReplicaInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7414,9 +7414,9 @@ func (pril *PagedReplicaInfoList) UnmarshalJSON(body []byte) error {
 // results cannot fit in a single message. The next set of results can be obtained by executing the same query with
 // the continuation token provided in this list.
 type PagedServiceInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string			`json:"ContinuationToken,omitempty"`
-	Items			*[]BasicServiceInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string             `json:"ContinuationToken,omitempty"`
+	Items             *[]BasicServiceInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7457,9 +7457,9 @@ func (psil *PagedServiceInfoList) UnmarshalJSON(body []byte) error {
 // the results cannot fit in a single message. The next set of results can be obtained by executing the same query
 // with the continuation token provided in this list.
 type PagedServicePartitionInfoList struct {
-	autorest.Response	`json:"-"`
-	ContinuationToken	*string				`json:"ContinuationToken,omitempty"`
-	Items			*[]BasicServicePartitionInfo	`json:"Items,omitempty"`
+	autorest.Response `json:"-"`
+	ContinuationToken *string                      `json:"ContinuationToken,omitempty"`
+	Items             *[]BasicServicePartitionInfo `json:"Items,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7498,29 +7498,29 @@ func (pspil *PagedServicePartitionInfoList) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PartitionDataLossProgress information about a partition data loss user-induced operation.
 type PartitionDataLossProgress struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// State - Possible values include: 'State3Invalid', 'State3Running', 'State3RollingBack', 'State3Completed', 'State3Faulted', 'State3Cancelled', 'State3ForceCancelled'
-	State			State3			`json:"State,omitempty"`
-	InvokeDataLossResult	*InvokeDataLossResult	`json:"InvokeDataLossResult,omitempty"`
+	State                State3                `json:"State,omitempty"`
+	InvokeDataLossResult *InvokeDataLossResult `json:"InvokeDataLossResult,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PartitionHealth information about the health of a Service Fabric partition.
 type PartitionHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// PartitionID - ID of the partition whose health information is described by this object.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ReplicaHealthStates - The list of replica health states associated with the partition.
-	ReplicaHealthStates	*[]BasicReplicaHealthState	`json:"ReplicaHealthStates,omitempty"`
+	ReplicaHealthStates *[]BasicReplicaHealthState `json:"ReplicaHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7589,15 +7589,15 @@ func (ph *PartitionHealth) UnmarshalJSON(body []byte) error {
 // health state is either Error or Warning.
 type PartitionHealthEvaluation struct {
 	// PartitionID - Id of the partition.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the partition. The types of the unhealthy evaluations can be ReplicasHealthEvaluation or EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7760,9 +7760,9 @@ func (phe PartitionHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvalu
 // aggregated health state.
 type PartitionHealthState struct {
 	// PartitionID - The ID of the partition.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7770,11 +7770,11 @@ type PartitionHealthState struct {
 // aggregated health state and any replicas that respect the filters in the cluster health chunk query description.
 type PartitionHealthStateChunk struct {
 	// PartitionID - The ID of the partition.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ReplicaHealthStateChunks - The list of replica health state chunks belonging to the partition that respect the filters in the cluster health chunk query description.
-	ReplicaHealthStateChunks	*ReplicaHealthStateChunkList	`json:"ReplicaHealthStateChunks,omitempty"`
+	ReplicaHealthStateChunks *ReplicaHealthStateChunkList `json:"ReplicaHealthStateChunks,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7797,7 +7797,7 @@ type PartitionHealthStateFilter struct {
 	// If the partition doesn't exist, no partition is returned in the cluster health chunk based on this filter.
 	// If the partition exists, it is included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all partitions that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	PartitionIDFilter	*uuid.UUID	`json:"PartitionIdFilter,omitempty"`
+	PartitionIDFilter *uuid.UUID `json:"PartitionIdFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the partitions. It allows selecting partitions if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only partitions that match the filter are returned. All partitions are used to evaluate the cluster aggregated health state.
 	// If not specified, default value is None, unless the partition id is specified. If the filter has default value and partition id is specified, the matching partition is returned.
@@ -7809,12 +7809,12 @@ type PartitionHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 	// ReplicaFilters - Defines a list of filters that specify which replicas to be included in the returned cluster health chunk as children of the parent partition. The replicas are returned only if the parent partition matches a filter.
 	// If the list is empty, no replicas are returned. All the replicas are used to evaluate the parent partition aggregated health state, regardless of the input filters.
 	// The partition filter may specify multiple replica filters.
 	// For example, it can specify a filter to return all replicas with health state Error and another filter to always include a replica identified by its replica id.
-	ReplicaFilters	*[]ReplicaHealthStateFilter	`json:"ReplicaFilters,omitempty"`
+	ReplicaFilters *[]ReplicaHealthStateFilter `json:"ReplicaFilters,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7829,9 +7829,9 @@ type BasicPartitionInformation interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PartitionInformation information about the partition identity, partitioning scheme and keys supported by it.
 type PartitionInformation struct {
-	ID	*uuid.UUID	`json:"Id,omitempty"`
+	ID *uuid.UUID `json:"Id,omitempty"`
 	// ServicePartitionKind - Possible values include: 'ServicePartitionKindPartitionInformation', 'ServicePartitionKindInt64Range', 'ServicePartitionKindNamed', 'ServicePartitionKindSingleton'
-	ServicePartitionKind	ServicePartitionKind	`json:"ServicePartitionKind,omitempty"`
+	ServicePartitionKind ServicePartitionKind `json:"ServicePartitionKind,omitempty"`
 }
 
 func unmarshalBasicPartitionInformation(body []byte) (BasicPartitionInformation, error) {
@@ -7930,32 +7930,32 @@ func (pi PartitionInformation) AsBasicPartitionInformation() (BasicPartitionInfo
 // partition.
 // For default loads, LoadMetricReport's LastReportedUtc is set to 0.
 type PartitionLoadInformation struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// PartitionID - Id of the partition.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// PrimaryLoadMetricReports - Array of load reports from the primary replica for this partition.
-	PrimaryLoadMetricReports	*[]LoadMetricReport	`json:"PrimaryLoadMetricReports,omitempty"`
+	PrimaryLoadMetricReports *[]LoadMetricReport `json:"PrimaryLoadMetricReports,omitempty"`
 	// SecondaryLoadMetricReports - Array of aggregated load reports from all secondary replicas for this partition.
 	// Array only contains the latest reported load for each metric.
-	SecondaryLoadMetricReports	*[]LoadMetricReport	`json:"SecondaryLoadMetricReports,omitempty"`
+	SecondaryLoadMetricReports *[]LoadMetricReport `json:"SecondaryLoadMetricReports,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PartitionQuorumLossProgress information about a partition quorum loss user-induced operation.
 type PartitionQuorumLossProgress struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// State - Possible values include: 'State4Invalid', 'State4Running', 'State4RollingBack', 'State4Completed', 'State4Faulted', 'State4Cancelled', 'State4ForceCancelled'
-	State			State4			`json:"State,omitempty"`
-	InvokeQuorumLossResult	*InvokeQuorumLossResult	`json:"InvokeQuorumLossResult,omitempty"`
+	State                  State4                  `json:"State,omitempty"`
+	InvokeQuorumLossResult *InvokeQuorumLossResult `json:"InvokeQuorumLossResult,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // PartitionRestartProgress information about a partition restart user-induced operation.
 type PartitionRestartProgress struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// State - Possible values include: 'State5Invalid', 'State5Running', 'State5RollingBack', 'State5Completed', 'State5Faulted', 'State5Cancelled', 'State5ForceCancelled'
-	State			State5			`json:"State,omitempty"`
-	RestartPartitionResult	*RestartPartitionResult	`json:"RestartPartitionResult,omitempty"`
+	State                  State5                  `json:"State,omitempty"`
+	RestartPartitionResult *RestartPartitionResult `json:"RestartPartitionResult,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -7976,9 +7976,9 @@ type BasicPartitionSafetyCheck interface {
 // before continuing with operations.
 type PartitionSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 func unmarshalBasicPartitionSafetyCheck(body []byte) (BasicPartitionSafetyCheck, error) {
@@ -8226,17 +8226,17 @@ func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (Basic
 // evaluating service health and the aggregated health state is either Error or Warning.
 type PartitionsHealthEvaluation struct {
 	// MaxPercentUnhealthyPartitionsPerService - Maximum allowed percentage of unhealthy partitions per service from the ServiceTypeHealthPolicy.
-	MaxPercentUnhealthyPartitionsPerService	*int32	`json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
+	MaxPercentUnhealthyPartitionsPerService *int32 `json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
 	// TotalCount - Total number of partitions of the service from the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy PartitionHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8401,11 +8401,11 @@ func (phe PartitionsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEval
 // PrimaryReplicatorStatus ...
 type PrimaryReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the primary replicator.
-	ReplicationQueueStatus	*ReplicatorQueueStatus	`json:"ReplicationQueueStatus,omitempty"`
+	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
 	// RemoteReplicators - The status of all the active and idle secondary replicators that the primary is aware of.
-	RemoteReplicators	*[]RemoteReplicatorStatus	`json:"RemoteReplicators,omitempty"`
+	RemoteReplicators *[]RemoteReplicatorStatus `json:"RemoteReplicators,omitempty"`
 	// Kind - Possible values include: 'KindReplicatorStatus', 'KindPrimary', 'KindSecondaryReplicatorStatus', 'KindActiveSecondary', 'KindIdleSecondary'
-	Kind	KindBasicReplicatorStatus	`json:"Kind,omitempty"`
+	Kind KindBasicReplicatorStatus `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8470,8 +8470,8 @@ func (prs PrimaryReplicatorStatus) AsBasicReplicatorStatus() (BasicReplicatorSta
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ReadCloser ...
 type ReadCloser struct {
-	autorest.Response	`json:"-"`
-	Value			*io.ReadCloser	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8479,13 +8479,13 @@ type ReadCloser struct {
 // received from the remote replicator.
 type RemoteReplicatorAcknowledgementDetail struct {
 	// AverageReceiveDuration - Represents the average duration it takes for the remote replicator to receive an operation.
-	AverageReceiveDuration	*string	`json:"AverageReceiveDuration,omitempty"`
+	AverageReceiveDuration *string `json:"AverageReceiveDuration,omitempty"`
 	// AverageApplyDuration - Represents the average duration it takes for the remote replicator to apply an operation. This usually entails writing the operation to disk.
-	AverageApplyDuration	*string	`json:"AverageApplyDuration,omitempty"`
+	AverageApplyDuration *string `json:"AverageApplyDuration,omitempty"`
 	// NotReceivedCount - Represents the number of operations not yet received by a remote replicator.
-	NotReceivedCount	*string	`json:"NotReceivedCount,omitempty"`
+	NotReceivedCount *string `json:"NotReceivedCount,omitempty"`
 	// ReceivedAndNotAppliedCount - Represents the number of operations received and not yet applied by a remote replicator.
-	ReceivedAndNotAppliedCount	*string	`json:"ReceivedAndNotAppliedCount,omitempty"`
+	ReceivedAndNotAppliedCount *string `json:"ReceivedAndNotAppliedCount,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8493,9 +8493,9 @@ type RemoteReplicatorAcknowledgementDetail struct {
 // replicator's point of view.
 type RemoteReplicatorAcknowledgementStatus struct {
 	// ReplicationStreamAcknowledgementDetail - Details about the acknowledgements for operations that are part of the replication stream data.
-	ReplicationStreamAcknowledgementDetail	*RemoteReplicatorAcknowledgementDetail	`json:"ReplicationStreamAcknowledgementDetail,omitempty"`
+	ReplicationStreamAcknowledgementDetail *RemoteReplicatorAcknowledgementDetail `json:"ReplicationStreamAcknowledgementDetail,omitempty"`
 	// CopyStreamAcknowledgementDetail - Details about the acknowledgements for operations that are part of the copy stream data.
-	CopyStreamAcknowledgementDetail	*RemoteReplicatorAcknowledgementDetail	`json:"CopyStreamAcknowledgementDetail,omitempty"`
+	CopyStreamAcknowledgementDetail *RemoteReplicatorAcknowledgementDetail `json:"CopyStreamAcknowledgementDetail,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8503,24 +8503,24 @@ type RemoteReplicatorAcknowledgementStatus struct {
 // view.
 type RemoteReplicatorStatus struct {
 	// ReplicaID - Represents the replica id of the remote secondary replicator.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// LastAcknowledgementProcessedTimeUtc - The last timestamp (in UTC) when an acknowledgement from the secondary replicator was processed on the primary.
 	// UTC 0 represents an invalid value, indicating that no acknowledgement messages were ever processed.
-	LastAcknowledgementProcessedTimeUtc	*date.Time	`json:"LastAcknowledgementProcessedTimeUtc,omitempty"`
+	LastAcknowledgementProcessedTimeUtc *date.Time `json:"LastAcknowledgementProcessedTimeUtc,omitempty"`
 	// LastReceivedReplicationSequenceNumber - The highest replication operation sequence number that the secondary has received from the primary.
-	LastReceivedReplicationSequenceNumber	*string	`json:"LastReceivedReplicationSequenceNumber,omitempty"`
+	LastReceivedReplicationSequenceNumber *string `json:"LastReceivedReplicationSequenceNumber,omitempty"`
 	// LastAppliedReplicationSequenceNumber - The highest replication operation sequence number that the secondary has applied to its state.
-	LastAppliedReplicationSequenceNumber	*string	`json:"LastAppliedReplicationSequenceNumber,omitempty"`
+	LastAppliedReplicationSequenceNumber *string `json:"LastAppliedReplicationSequenceNumber,omitempty"`
 	// IsInBuild - A value that indicates whether the secondary replica is in the process of being built.
-	IsInBuild	*bool	`json:"IsInBuild,omitempty"`
+	IsInBuild *bool `json:"IsInBuild,omitempty"`
 	// LastReceivedCopySequenceNumber - The highest copy operation sequence number that the secondary has received from the primary.
 	// A value of -1 implies that the secondary has received all copy operations.
-	LastReceivedCopySequenceNumber	*string	`json:"LastReceivedCopySequenceNumber,omitempty"`
+	LastReceivedCopySequenceNumber *string `json:"LastReceivedCopySequenceNumber,omitempty"`
 	// LastAppliedCopySequenceNumber - The highest copy operation sequence number that the secondary has applied to its state.
 	// A value of -1 implies that the secondary has applied all copy operations and the copy process is complete.
-	LastAppliedCopySequenceNumber	*string	`json:"LastAppliedCopySequenceNumber,omitempty"`
+	LastAppliedCopySequenceNumber *string `json:"LastAppliedCopySequenceNumber,omitempty"`
 	// RemoteReplicatorAcknowledgementStatus - Represents the acknowledgement status for the remote secondary replicator.
-	RemoteReplicatorAcknowledgementStatus	*RemoteReplicatorAcknowledgementStatus	`json:"RemoteReplicatorAcknowledgementStatus,omitempty"`
+	RemoteReplicatorAcknowledgementStatus *RemoteReplicatorAcknowledgementStatus `json:"RemoteReplicatorAcknowledgementStatus,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8536,20 +8536,20 @@ type BasicReplicaHealth interface {
 // ReplicaHealth represents a base class for stateful service replica or stateless service instance health.
 // Contains the replica aggregated health state, the health events and the unhealthy evaluations.
 type ReplicaHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// PartitionID - Id of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthServiceKindReplicaHealth', 'ServiceKindBasicReplicaHealthServiceKindStateful', 'ServiceKindBasicReplicaHealthServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealth	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 func unmarshalBasicReplicaHealth(body []byte) (BasicReplicaHealth, error) {
@@ -8646,17 +8646,17 @@ func (rh ReplicaHealth) AsBasicReplicaHealth() (BasicReplicaHealth, bool) {
 // health state is either Error or Warning.
 type ReplicaHealthEvaluation struct {
 	// PartitionID - Id of the partition to which the replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ReplicaOrInstanceID - Id of the stateful service replica or the stateless service instance.
-	ReplicaOrInstanceID	*string	`json:"ReplicaOrInstanceId,omitempty"`
+	ReplicaOrInstanceID *string `json:"ReplicaOrInstanceId,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the replica. The types of the unhealthy evaluations can be EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8820,8 +8820,8 @@ func (rhe ReplicaHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluat
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ReplicaHealthModel ...
 type ReplicaHealthModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicReplicaHealth	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicReplicaHealth `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8850,11 +8850,11 @@ type BasicReplicaHealthState interface {
 // state.
 type ReplicaHealthState struct {
 	// PartitionID - The ID of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState', 'ServiceKindBasicReplicaHealthStateServiceKindStateful', 'ServiceKindBasicReplicaHealthStateServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealthState	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealthState `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 func unmarshalBasicReplicaHealthState(body []byte) (BasicReplicaHealthState, error) {
@@ -8945,9 +8945,9 @@ func (RHS ReplicaHealthState) AsBasicReplicaHealthState() (BasicReplicaHealthSta
 // The replica health state contains the replica ID and its aggregated health state.
 type ReplicaHealthStateChunk struct {
 	// ReplicaOrInstanceID - The ID of the stateful service replica or the stateless service instance.
-	ReplicaOrInstanceID	*string	`json:"ReplicaOrInstanceId,omitempty"`
+	ReplicaOrInstanceID *string `json:"ReplicaOrInstanceId,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8969,7 +8969,7 @@ type ReplicaHealthStateFilter struct {
 	// If the replica doesn't exist, no replica is returned in the cluster health chunk based on this filter.
 	// If the replica exists, it is included in the cluster health chunk if it respects the other filter properties.
 	// If not specified, all replicas that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	ReplicaOrInstanceIDFilter	*string	`json:"ReplicaOrInstanceIdFilter,omitempty"`
+	ReplicaOrInstanceIDFilter *string `json:"ReplicaOrInstanceIdFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the replicas. It allows selecting replicas if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only replicas that match the filter are returned. All replicas are used to evaluate the parent partition aggregated health state.
 	// If not specified, default value is None, unless the replica id is specified. If the filter has default value and replica id is specified, the matching replica is returned.
@@ -8981,7 +8981,7 @@ type ReplicaHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -8997,19 +8997,19 @@ type BasicReplicaInfo interface {
 // ReplicaInfo information about the identity, status, health, node name, uptime, and other details about the
 // replica.
 type ReplicaInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatus1Invalid', 'ReplicaStatus1InBuild', 'ReplicaStatus1Standby', 'ReplicaStatus1Ready', 'ReplicaStatus1Down', 'ReplicaStatus1Dropped'
-	ReplicaStatus	ReplicaStatus1	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus1 `json:"ReplicaStatus,omitempty"`
 	// HealthState - Possible values include: 'HealthState6Invalid', 'HealthState6Ok', 'HealthState6Warning', 'HealthState6Error', 'HealthState6Unknown'
-	HealthState	HealthState6	`json:"HealthState,omitempty"`
+	HealthState HealthState6 `json:"HealthState,omitempty"`
 	// NodeName - The name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// Address - The address the replica is listening on.
-	Address	*string	`json:"Address,omitempty"`
+	Address *string `json:"Address,omitempty"`
 	// LastInBuildDurationInSeconds - The last in build duration of the replica in seconds.
-	LastInBuildDurationInSeconds	*string	`json:"LastInBuildDurationInSeconds,omitempty"`
+	LastInBuildDurationInSeconds *string `json:"LastInBuildDurationInSeconds,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaInfoServiceKindReplicaInfo', 'ServiceKindBasicReplicaInfoServiceKindStateful', 'ServiceKindBasicReplicaInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaInfo `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicReplicaInfo(body []byte) (BasicReplicaInfo, error) {
@@ -9106,8 +9106,8 @@ func (ri ReplicaInfo) AsBasicReplicaInfo() (BasicReplicaInfo, bool) {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ReplicaInfoModel ...
 type ReplicaInfoModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicReplicaInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicReplicaInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9128,17 +9128,17 @@ func (rim *ReplicaInfoModel) UnmarshalJSON(body []byte) error {
 // health and the aggregated health state is either Error or Warning.
 type ReplicasHealthEvaluation struct {
 	// MaxPercentUnhealthyReplicasPerPartition - Maximum allowed percentage of unhealthy replicas per partition from the ApplicationHealthPolicy.
-	MaxPercentUnhealthyReplicasPerPartition	*int32	`json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
+	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
 	// TotalCount - Total number of replicas in the partition from the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy ReplicaHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9386,20 +9386,20 @@ func (rsb ReplicaStatusBase) AsBasicReplicaStatusBase() (BasicReplicaStatusBase,
 // Depending on the role of the replicator, the properties in this type imply different meanings.
 type ReplicatorQueueStatus struct {
 	// QueueUtilizationPercentage - Represents the utilization of the queue. A value of 0 indicates that the queue is empty and a value of 100 indicates the queue is full.
-	QueueUtilizationPercentage	*int32	`json:"QueueUtilizationPercentage,omitempty"`
+	QueueUtilizationPercentage *int32 `json:"QueueUtilizationPercentage,omitempty"`
 	// QueueMemorySize - Represents the virtual memory consumed by the queue in bytes.
-	QueueMemorySize	*string	`json:"QueueMemorySize,omitempty"`
+	QueueMemorySize *string `json:"QueueMemorySize,omitempty"`
 	// FirstSequenceNumber - On a primary replicator, this is semantically the sequence number of the operation for which all the secondary replicas have sent an acknowledgement.
 	// On a secondary replicator, this is the smallest sequence number of the operation that is present in the queue.
-	FirstSequenceNumber	*string	`json:"FirstSequenceNumber,omitempty"`
+	FirstSequenceNumber *string `json:"FirstSequenceNumber,omitempty"`
 	// CompletedSequenceNumber - On a primary replicator, this is semantically the highest sequence number of the operation for which all the secondary replicas have sent an acknowledgement.
 	// On a secondary replicator, this is semantically the highest sequence number that has been applied to the persistent state.
-	CompletedSequenceNumber	*string	`json:"CompletedSequenceNumber,omitempty"`
+	CompletedSequenceNumber *string `json:"CompletedSequenceNumber,omitempty"`
 	// CommittedSequenceNumber - On a primary replicator, this is semantically the highest sequence number of the operation for which a write quorum of the secondary replicas have sent an acknowledgement.
 	// On a secondary replicator, this is semantically the highest sequence number of the in-order operation received from the primary.
-	CommittedSequenceNumber	*string	`json:"CommittedSequenceNumber,omitempty"`
+	CommittedSequenceNumber *string `json:"CommittedSequenceNumber,omitempty"`
 	// LastSequenceNumber - Represents the latest sequence number of the operation that is available in the queue.
-	LastSequenceNumber	*string	`json:"LastSequenceNumber,omitempty"`
+	LastSequenceNumber *string `json:"LastSequenceNumber,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9530,32 +9530,32 @@ func (rs ReplicatorStatus) AsBasicReplicatorStatus() (BasicReplicatorStatus, boo
 // RepositoryCredential credential information to connect to container repository.
 type RepositoryCredential struct {
 	// RepositoryUserName - The user name to connect to container repository.
-	RepositoryUserName	*string	`json:"RepositoryUserName,omitempty"`
+	RepositoryUserName *string `json:"RepositoryUserName,omitempty"`
 	// RepositoryPassword - The password for supplied username to connect to container repository.
-	RepositoryPassword	*string	`json:"RepositoryPassword,omitempty"`
+	RepositoryPassword *string `json:"RepositoryPassword,omitempty"`
 	// PasswordEncrypted - Indicates that supplied container repository password is encrypted.
-	PasswordEncrypted	*bool	`json:"PasswordEncrypted,omitempty"`
+	PasswordEncrypted *bool `json:"PasswordEncrypted,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ResolvedServiceEndpoint endpoint of a resolved service partition.
 type ResolvedServiceEndpoint struct {
 	// Kind - Possible values include: 'KindInvalid', 'KindStateless', 'KindStatefulPrimary', 'KindStatefulSecondary'
-	Kind	Kind	`json:"Kind,omitempty"`
+	Kind Kind `json:"Kind,omitempty"`
 	// Address - The address of the endpoint. If the endpoint has multiple listeners the address is a JSON object with one property per listener with the value as the address of that listener.
-	Address	*string	`json:"Address,omitempty"`
+	Address *string `json:"Address,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ResolvedServicePartition information about a service partition and its associated endpoints.
 type ResolvedServicePartition struct {
-	autorest.Response	`json:"-"`
-	Name			*string	`json:"Name,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"Name,omitempty"`
 	// PartitionInformation - A representation of the resolved partition.
-	PartitionInformation	BasicPartitionInformation	`json:"PartitionInformation,omitempty"`
-	Endpoints		*[]ResolvedServiceEndpoint	`json:"Endpoints,omitempty"`
+	PartitionInformation BasicPartitionInformation  `json:"PartitionInformation,omitempty"`
+	Endpoints            *[]ResolvedServiceEndpoint `json:"Endpoints,omitempty"`
 	// Version - The version of this resolved service partition result. This version should be passed in the next time the ResolveService call is made via the PreviousRspVersion query parameter.
-	Version	*string	`json:"Version,omitempty"`
+	Version *string `json:"Version,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9614,28 +9614,28 @@ func (rsp *ResolvedServicePartition) UnmarshalJSON(body []byte) error {
 // Fabric node.
 type RestartDeployedCodePackageDescription struct {
 	// ServiceManifestName - The name of service manifest that specified this code package.
-	ServiceManifestName		*string	`json:"ServiceManifestName,omitempty"`
-	ServicePackageActivationID	*string	`json:"ServicePackageActivationId,omitempty"`
+	ServiceManifestName        *string `json:"ServiceManifestName,omitempty"`
+	ServicePackageActivationID *string `json:"ServicePackageActivationId,omitempty"`
 	// CodePackageName - The name of the code package.
-	CodePackageName		*string	`json:"CodePackageName,omitempty"`
-	CodePackageInstanceID	*string	`json:"CodePackageInstanceId,omitempty"`
+	CodePackageName       *string `json:"CodePackageName,omitempty"`
+	CodePackageInstanceID *string `json:"CodePackageInstanceId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // RestartNodeDescription describes the parameters to restart a Service Fabric node.
 type RestartNodeDescription struct {
 	// NodeInstanceID - The instance id of the target node. If instance id is specified the node is restarted only if it matches with the current instance of the node. A default value of "0" would match any instance id. The instance id can be obtained using get node query.
-	NodeInstanceID	*string	`json:"NodeInstanceId,omitempty"`
+	NodeInstanceID *string `json:"NodeInstanceId,omitempty"`
 	// CreateFabricDump - Specify True to create a dump of the fabric node process. This is case sensitive. Possible values include: 'False', 'True'
-	CreateFabricDump	CreateFabricDump	`json:"CreateFabricDump,omitempty"`
+	CreateFabricDump CreateFabricDump `json:"CreateFabricDump,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // RestartPartitionResult represents information about an operation in a terminal state (Completed or Faulted).
 type RestartPartitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
-	ErrorCode		*int32			`json:"ErrorCode,omitempty"`
-	SelectedPartition	*SelectedPartition	`json:"SelectedPartition,omitempty"`
+	ErrorCode         *int32             `json:"ErrorCode,omitempty"`
+	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9651,16 +9651,16 @@ type ResumeApplicationUpgradeDescription struct {
 // cluster.
 type RollingUpgradeUpdateDescription struct {
 	// RollingUpgradeMode - Possible values include: 'RollingUpgradeMode4Invalid', 'RollingUpgradeMode4UnmonitoredAuto', 'RollingUpgradeMode4UnmonitoredManual', 'RollingUpgradeMode4Monitored'
-	RollingUpgradeMode			RollingUpgradeMode4	`json:"RollingUpgradeMode,omitempty"`
-	ForceRestart				*bool			`json:"ForceRestart,omitempty"`
-	ReplicaSetCheckTimeoutInMilliseconds	*int64			`json:"ReplicaSetCheckTimeoutInMilliseconds,omitempty"`
+	RollingUpgradeMode                   RollingUpgradeMode4 `json:"RollingUpgradeMode,omitempty"`
+	ForceRestart                         *bool               `json:"ForceRestart,omitempty"`
+	ReplicaSetCheckTimeoutInMilliseconds *int64              `json:"ReplicaSetCheckTimeoutInMilliseconds,omitempty"`
 	// FailureAction - Possible values include: 'FailureAction1Invalid', 'FailureAction1Rollback', 'FailureAction1Manual'
-	FailureAction				FailureAction1	`json:"FailureAction,omitempty"`
-	HealthCheckWaitDurationInMilliseconds	*string		`json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
-	HealthCheckStableDurationInMilliseconds	*string		`json:"HealthCheckStableDurationInMilliseconds,omitempty"`
-	HealthCheckRetryTimeoutInMilliseconds	*string		`json:"HealthCheckRetryTimeoutInMilliseconds,omitempty"`
-	UpgradeTimeoutInMilliseconds		*string		`json:"UpgradeTimeoutInMilliseconds,omitempty"`
-	UpgradeDomainTimeoutInMilliseconds	*string		`json:"UpgradeDomainTimeoutInMilliseconds,omitempty"`
+	FailureAction                           FailureAction1 `json:"FailureAction,omitempty"`
+	HealthCheckWaitDurationInMilliseconds   *string        `json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
+	HealthCheckStableDurationInMilliseconds *string        `json:"HealthCheckStableDurationInMilliseconds,omitempty"`
+	HealthCheckRetryTimeoutInMilliseconds   *string        `json:"HealthCheckRetryTimeoutInMilliseconds,omitempty"`
+	UpgradeTimeoutInMilliseconds            *string        `json:"UpgradeTimeoutInMilliseconds,omitempty"`
+	UpgradeDomainTimeoutInMilliseconds      *string        `json:"UpgradeDomainTimeoutInMilliseconds,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9866,22 +9866,22 @@ func (scw *SafetyCheckWrapper) UnmarshalJSON(body []byte) error {
 // replica set.
 type SecondaryActiveReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
-	ReplicationQueueStatus	*ReplicatorQueueStatus	`json:"ReplicationQueueStatus,omitempty"`
+	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
 	// LastReplicationOperationReceivedTimeUtc - The last time-stamp (UTC) at which a replication operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a replication operation message was never received.
-	LastReplicationOperationReceivedTimeUtc	*date.Time	`json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
+	LastReplicationOperationReceivedTimeUtc *date.Time `json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
 	// IsInBuild - Value that indicates whether the replica is currently being built.
-	IsInBuild	*bool	`json:"IsInBuild,omitempty"`
+	IsInBuild *bool `json:"IsInBuild,omitempty"`
 	// CopyQueueStatus - Details about the copy queue on the secondary replicator.
-	CopyQueueStatus	*ReplicatorQueueStatus	`json:"CopyQueueStatus,omitempty"`
+	CopyQueueStatus *ReplicatorQueueStatus `json:"CopyQueueStatus,omitempty"`
 	// LastCopyOperationReceivedTimeUtc - The last time-stamp (UTC) at which a copy operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a copy operation message was never received.
-	LastCopyOperationReceivedTimeUtc	*date.Time	`json:"LastCopyOperationReceivedTimeUtc,omitempty"`
+	LastCopyOperationReceivedTimeUtc *date.Time `json:"LastCopyOperationReceivedTimeUtc,omitempty"`
 	// LastAcknowledgementSentTimeUtc - The last time-stamp (UTC) at which an acknowledgment was sent to the primary replicator.
 	// UTC 0 represents an invalid value, indicating that an acknowledgment message was never sent.
-	LastAcknowledgementSentTimeUtc	*date.Time	`json:"LastAcknowledgementSentTimeUtc,omitempty"`
+	LastAcknowledgementSentTimeUtc *date.Time `json:"LastAcknowledgementSentTimeUtc,omitempty"`
 	// Kind - Possible values include: 'KindReplicatorStatus', 'KindPrimary', 'KindSecondaryReplicatorStatus', 'KindActiveSecondary', 'KindIdleSecondary'
-	Kind	KindBasicReplicatorStatus	`json:"Kind,omitempty"`
+	Kind KindBasicReplicatorStatus `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -9960,22 +9960,22 @@ func (sars SecondaryActiveReplicatorStatus) AsBasicReplicatorStatus() (BasicRepl
 // the primary.
 type SecondaryIdleReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
-	ReplicationQueueStatus	*ReplicatorQueueStatus	`json:"ReplicationQueueStatus,omitempty"`
+	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
 	// LastReplicationOperationReceivedTimeUtc - The last time-stamp (UTC) at which a replication operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a replication operation message was never received.
-	LastReplicationOperationReceivedTimeUtc	*date.Time	`json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
+	LastReplicationOperationReceivedTimeUtc *date.Time `json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
 	// IsInBuild - Value that indicates whether the replica is currently being built.
-	IsInBuild	*bool	`json:"IsInBuild,omitempty"`
+	IsInBuild *bool `json:"IsInBuild,omitempty"`
 	// CopyQueueStatus - Details about the copy queue on the secondary replicator.
-	CopyQueueStatus	*ReplicatorQueueStatus	`json:"CopyQueueStatus,omitempty"`
+	CopyQueueStatus *ReplicatorQueueStatus `json:"CopyQueueStatus,omitempty"`
 	// LastCopyOperationReceivedTimeUtc - The last time-stamp (UTC) at which a copy operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a copy operation message was never received.
-	LastCopyOperationReceivedTimeUtc	*date.Time	`json:"LastCopyOperationReceivedTimeUtc,omitempty"`
+	LastCopyOperationReceivedTimeUtc *date.Time `json:"LastCopyOperationReceivedTimeUtc,omitempty"`
 	// LastAcknowledgementSentTimeUtc - The last time-stamp (UTC) at which an acknowledgment was sent to the primary replicator.
 	// UTC 0 represents an invalid value, indicating that an acknowledgment message was never sent.
-	LastAcknowledgementSentTimeUtc	*date.Time	`json:"LastAcknowledgementSentTimeUtc,omitempty"`
+	LastAcknowledgementSentTimeUtc *date.Time `json:"LastAcknowledgementSentTimeUtc,omitempty"`
 	// Kind - Possible values include: 'KindReplicatorStatus', 'KindPrimary', 'KindSecondaryReplicatorStatus', 'KindActiveSecondary', 'KindIdleSecondary'
-	Kind	KindBasicReplicatorStatus	`json:"Kind,omitempty"`
+	Kind KindBasicReplicatorStatus `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10061,22 +10061,22 @@ type BasicSecondaryReplicatorStatus interface {
 // SecondaryReplicatorStatus ...
 type SecondaryReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
-	ReplicationQueueStatus	*ReplicatorQueueStatus	`json:"ReplicationQueueStatus,omitempty"`
+	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
 	// LastReplicationOperationReceivedTimeUtc - The last time-stamp (UTC) at which a replication operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a replication operation message was never received.
-	LastReplicationOperationReceivedTimeUtc	*date.Time	`json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
+	LastReplicationOperationReceivedTimeUtc *date.Time `json:"LastReplicationOperationReceivedTimeUtc,omitempty"`
 	// IsInBuild - Value that indicates whether the replica is currently being built.
-	IsInBuild	*bool	`json:"IsInBuild,omitempty"`
+	IsInBuild *bool `json:"IsInBuild,omitempty"`
 	// CopyQueueStatus - Details about the copy queue on the secondary replicator.
-	CopyQueueStatus	*ReplicatorQueueStatus	`json:"CopyQueueStatus,omitempty"`
+	CopyQueueStatus *ReplicatorQueueStatus `json:"CopyQueueStatus,omitempty"`
 	// LastCopyOperationReceivedTimeUtc - The last time-stamp (UTC) at which a copy operation was received from the primary.
 	// UTC 0 represents an invalid value, indicating that a copy operation message was never received.
-	LastCopyOperationReceivedTimeUtc	*date.Time	`json:"LastCopyOperationReceivedTimeUtc,omitempty"`
+	LastCopyOperationReceivedTimeUtc *date.Time `json:"LastCopyOperationReceivedTimeUtc,omitempty"`
 	// LastAcknowledgementSentTimeUtc - The last time-stamp (UTC) at which an acknowledgment was sent to the primary replicator.
 	// UTC 0 represents an invalid value, indicating that an acknowledgment message was never sent.
-	LastAcknowledgementSentTimeUtc	*date.Time	`json:"LastAcknowledgementSentTimeUtc,omitempty"`
+	LastAcknowledgementSentTimeUtc *date.Time `json:"LastAcknowledgementSentTimeUtc,omitempty"`
 	// Kind - Possible values include: 'KindReplicatorStatus', 'KindPrimary', 'KindSecondaryReplicatorStatus', 'KindActiveSecondary', 'KindIdleSecondary'
-	Kind	KindBasicReplicatorStatus	`json:"Kind,omitempty"`
+	Kind KindBasicReplicatorStatus `json:"Kind,omitempty"`
 }
 
 func unmarshalBasicSecondaryReplicatorStatus(body []byte) (BasicSecondaryReplicatorStatus, error) {
@@ -10280,17 +10280,17 @@ func (snsc SeedNodeSafetyCheck) AsBasicSafetyCheck() (BasicSafetyCheck, bool) {
 // SelectedPartition this class returns information about the partition that the user-induced operation acted upon.
 type SelectedPartition struct {
 	// ServiceName - The name of the service the partition belongs to.
-	ServiceName	*string		`json:"ServiceName,omitempty"`
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	ServiceName *string    `json:"ServiceName,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceCorrelationDescription creates a particular correlation between services.
 type ServiceCorrelationDescription struct {
 	// Scheme - The ServiceCorrelationScheme which describes the relationship between this service and the service specified via ServiceName. Possible values include: 'SchemeInvalid', 'SchemeAffinity', 'SchemeAlignedAffinity', 'SchemeNonAlignedAffinity'
-	Scheme	Scheme	`json:"Scheme,omitempty"`
+	Scheme Scheme `json:"Scheme,omitempty"`
 	// ServiceName - The name of the service that the correlation relationship is established with.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10304,35 +10304,35 @@ type BasicServiceDescription interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceDescription a ServiceDescription contains all of the information necessary to create a service.
 type ServiceDescription struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ApplicationName - The application name.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceName - The service name.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - The service type name.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// InitializationData - The initialization data as an array of bytes. Initialization data is passed to service instances or replicas when they are created.
-	InitializationData	*[]int32	`json:"InitializationData,omitempty"`
+	InitializationData *[]int32 `json:"InitializationData,omitempty"`
 	// PartitionDescription - The partition description as an object.
-	PartitionDescription	BasicPartitionSchemeDescription	`json:"PartitionDescription,omitempty"`
+	PartitionDescription BasicPartitionSchemeDescription `json:"PartitionDescription,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// ServiceLoadMetrics - The service load metrics.
-	ServiceLoadMetrics	*[]ServiceLoadMetricDescription	`json:"ServiceLoadMetrics,omitempty"`
+	ServiceLoadMetrics *[]ServiceLoadMetricDescription `json:"ServiceLoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'Zero', 'Low', 'Medium', 'High'
-	DefaultMoveCost	DefaultMoveCost	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost `json:"DefaultMoveCost,omitempty"`
 	// IsDefaultMoveCostSpecified - Indicates if the DefaultMoveCost property is specified.
-	IsDefaultMoveCostSpecified	*bool	`json:"IsDefaultMoveCostSpecified,omitempty"`
+	IsDefaultMoveCostSpecified *bool `json:"IsDefaultMoveCostSpecified,omitempty"`
 	// ServicePackageActivationMode - The activation mode of service package to be used for a service. Possible values include: 'ServicePackageActivationMode1SharedProcess', 'ServicePackageActivationMode1ExclusiveProcess'
-	ServicePackageActivationMode	ServicePackageActivationMode1	`json:"ServicePackageActivationMode,omitempty"`
+	ServicePackageActivationMode ServicePackageActivationMode1 `json:"ServicePackageActivationMode,omitempty"`
 	// ServiceDNSName - The DNS name of the service. It requires the DNS system service to be enabled in Service Fabric cluster.
-	ServiceDNSName	*string	`json:"ServiceDnsName,omitempty"`
+	ServiceDNSName *string `json:"ServiceDnsName,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceDescriptionServiceKindServiceDescription', 'ServiceKindBasicServiceDescriptionServiceKindStateful', 'ServiceKindBasicServiceDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceDescription `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicServiceDescription(body []byte) (BasicServiceDescription, error) {
@@ -10591,8 +10591,8 @@ func (sd *ServiceDescription) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceDescriptionModel ...
 type ServiceDescriptionModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicServiceDescription	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicServiceDescription `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10612,36 +10612,36 @@ func (sdm *ServiceDescriptionModel) UnmarshalJSON(body []byte) error {
 // in the application manifest.
 type ServiceFromTemplateDescription struct {
 	// ApplicationName - Full name of the application.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceName - Full name of the service.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - The name of the Service Fabric service type.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// InitializationData - The initialization data for the newly created service instance.
-	InitializationData	*[]int32	`json:"InitializationData,omitempty"`
+	InitializationData *[]int32 `json:"InitializationData,omitempty"`
 	// ServicePackageActivationMode - The activation mode of service package to be used for a service. Possible values include: 'SharedProcess', 'ExclusiveProcess'
-	ServicePackageActivationMode	ServicePackageActivationMode	`json:"ServicePackageActivationMode,omitempty"`
+	ServicePackageActivationMode ServicePackageActivationMode `json:"ServicePackageActivationMode,omitempty"`
 	// ServiceDNSName - The DNS name of the service. It requires the DNS system service to be enabled in Service Fabric cluster.
-	ServiceDNSName	*string	`json:"ServiceDnsName,omitempty"`
+	ServiceDNSName *string `json:"ServiceDnsName,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceHealth information about the health of a Service Fabric service.
 type ServiceHealth struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Name - The name of the service whose health information is described by this object.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// PartitionHealthStates - The list of partition health states associated with the service.
-	PartitionHealthStates	*[]PartitionHealthState	`json:"PartitionHealthStates,omitempty"`
+	PartitionHealthStates *[]PartitionHealthState `json:"PartitionHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10650,15 +10650,15 @@ type ServiceHealth struct {
 // health state is either Error or Warning.
 type ServiceHealthEvaluation struct {
 	// ServiceName - Full name of the service.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the service. The types of the unhealthy evaluations can be PartitionsHealthEvaluation or EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10821,9 +10821,9 @@ func (she ServiceHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluat
 // aggregated health state.
 type ServiceHealthState struct {
 	// ServiceName - Full name of the service.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10832,11 +10832,11 @@ type ServiceHealthState struct {
 // description.
 type ServiceHealthStateChunk struct {
 	// ServiceName - The name of the service.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// PartitionHealthStateChunks - The list of partition health state chunks belonging to the service that respect the filters in the cluster health chunk query description.
-	PartitionHealthStateChunks	*PartitionHealthStateChunkList	`json:"PartitionHealthStateChunks,omitempty"`
+	PartitionHealthStateChunks *PartitionHealthStateChunkList `json:"PartitionHealthStateChunks,omitempty"`
 	// HealthState - Possible values include: 'HealthState2Invalid', 'HealthState2Ok', 'HealthState2Warning', 'HealthState2Error', 'HealthState2Unknown'
-	HealthState	HealthState2	`json:"HealthState,omitempty"`
+	HealthState HealthState2 `json:"HealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10858,7 +10858,7 @@ type ServiceHealthStateFilter struct {
 	// If the service doesn't exist, no service is returned in the cluster health chunk based on this filter.
 	// If the service exists, it is included as the application's child if the health state matches the other filter properties.
 	// If not specified, all services that match the parent filters (if any) are taken into consideration and matched against the other filter members, like health state filter.
-	ServiceNameFilter	*string	`json:"ServiceNameFilter,omitempty"`
+	ServiceNameFilter *string `json:"ServiceNameFilter,omitempty"`
 	// HealthStateFilter - The filter for the health state of the services. It allows selecting services if they match the desired health states.
 	// The possible values are integer value of one of the following health states. Only services that match the filter are returned. All services are used to evaluate the cluster aggregated health state.
 	// If not specified, default value is None, unless the service name is specified. If the filter has default value and service name is specified, the matching service is returned.
@@ -10870,12 +10870,12 @@ type ServiceHealthStateFilter struct {
 	// - Warning - Filter that matches input with HealthState value Warning. The value is 4.
 	// - Error - Filter that matches input with HealthState value Error. The value is 8.
 	// - All - Filter that matches input with any HealthState value. The value is 65535.
-	HealthStateFilter	*int32	`json:"HealthStateFilter,omitempty"`
+	HealthStateFilter *int32 `json:"HealthStateFilter,omitempty"`
 	// PartitionFilters - Defines a list of filters that specify which partitions to be included in the returned cluster health chunk as children of the service. The partitions are returned only if the parent service matches a filter.
 	// If the list is empty, no partitions are returned. All the partitions are used to evaluate the parent service aggregated health state, regardless of the input filters.
 	// The service filter may specify multiple partition filters.
 	// For example, it can specify a filter to return all partitions with health state Error and another filter to always include a partition identified by its partition id.
-	PartitionFilters	*[]PartitionHealthStateFilter	`json:"PartitionFilters,omitempty"`
+	PartitionFilters *[]PartitionHealthStateFilter `json:"PartitionFilters,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -10889,22 +10889,22 @@ type BasicServiceInfo interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceInfo information about a Service Fabric service.
 type ServiceInfo struct {
-	autorest.Response	`json:"-"`
-	ID			*string	`json:"Id,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string `json:"Id,omitempty"`
 	// Name - Full hierarchical name of the service in URI format starting with `fabric:`.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// TypeName - The name of the service type as specified in the service manifest.
-	TypeName	*string	`json:"TypeName,omitempty"`
+	TypeName *string `json:"TypeName,omitempty"`
 	// ManifestVersion - The version of the service manifest.
-	ManifestVersion	*string	`json:"ManifestVersion,omitempty"`
+	ManifestVersion *string `json:"ManifestVersion,omitempty"`
 	// HealthState - Possible values include: 'HealthState7Invalid', 'HealthState7Ok', 'HealthState7Warning', 'HealthState7Error', 'HealthState7Unknown'
-	HealthState	HealthState7	`json:"HealthState,omitempty"`
+	HealthState HealthState7 `json:"HealthState,omitempty"`
 	// ServiceStatus - Possible values include: 'ServiceStatusUnknown', 'ServiceStatusActive', 'ServiceStatusUpgrading', 'ServiceStatusDeleting', 'ServiceStatusCreating', 'ServiceStatusFailed'
-	ServiceStatus	ServiceStatus	`json:"ServiceStatus,omitempty"`
+	ServiceStatus ServiceStatus `json:"ServiceStatus,omitempty"`
 	// IsServiceGroup - Whether the service is in a service group.
-	IsServiceGroup	*bool	`json:"IsServiceGroup,omitempty"`
+	IsServiceGroup *bool `json:"IsServiceGroup,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceInfoServiceKindServiceInfo', 'ServiceKindBasicServiceInfoServiceKindStateful', 'ServiceKindBasicServiceInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceInfo `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicServiceInfo(body []byte) (BasicServiceInfo, error) {
@@ -11007,8 +11007,8 @@ func (si ServiceInfo) AsBasicServiceInfo() (BasicServiceInfo, bool) {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceInfoModel ...
 type ServiceInfoModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicServiceInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicServiceInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11027,24 +11027,24 @@ func (sim *ServiceInfoModel) UnmarshalJSON(body []byte) error {
 // ServiceLoadMetricDescription specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
 	// Name - The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// Weight - The service load metric relative weight, compared to other metrics configured for this service, as a number. Possible values include: 'WeightZero', 'WeightLow', 'WeightMedium', 'WeightHigh'
-	Weight	Weight	`json:"Weight,omitempty"`
+	Weight Weight `json:"Weight,omitempty"`
 	// PrimaryDefaultLoad - Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Primary replica.
-	PrimaryDefaultLoad	*int32	`json:"PrimaryDefaultLoad,omitempty"`
+	PrimaryDefaultLoad *int32 `json:"PrimaryDefaultLoad,omitempty"`
 	// SecondaryDefaultLoad - Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Secondary replica.
-	SecondaryDefaultLoad	*int32	`json:"SecondaryDefaultLoad,omitempty"`
+	SecondaryDefaultLoad *int32 `json:"SecondaryDefaultLoad,omitempty"`
 	// DefaultLoad - Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric.
-	DefaultLoad	*int32	`json:"DefaultLoad,omitempty"`
+	DefaultLoad *int32 `json:"DefaultLoad,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceNameInfo information about the service name.
 type ServiceNameInfo struct {
-	autorest.Response	`json:"-"`
-	ID			*string	`json:"Id,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string `json:"Id,omitempty"`
 	// Name - The name of the service.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11058,14 +11058,14 @@ type BasicServicePartitionInfo interface {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServicePartitionInfo information about a partition of a Service Fabric service.
 type ServicePartitionInfo struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// HealthState - Possible values include: 'HealthState5Invalid', 'HealthState5Ok', 'HealthState5Warning', 'HealthState5Error', 'HealthState5Unknown'
-	HealthState	HealthState5	`json:"HealthState,omitempty"`
+	HealthState HealthState5 `json:"HealthState,omitempty"`
 	// PartitionStatus - Possible values include: 'PartitionStatusInvalid', 'PartitionStatusReady', 'PartitionStatusNotReady', 'PartitionStatusInQuorumLoss', 'PartitionStatusReconfiguring', 'PartitionStatusDeleting'
-	PartitionStatus		PartitionStatus			`json:"PartitionStatus,omitempty"`
-	PartitionInformation	BasicPartitionInformation	`json:"PartitionInformation,omitempty"`
+	PartitionStatus      PartitionStatus           `json:"PartitionStatus,omitempty"`
+	PartitionInformation BasicPartitionInformation `json:"PartitionInformation,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo', 'ServiceKindBasicServicePartitionInfoServiceKindStateful', 'ServiceKindBasicServicePartitionInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServicePartitionInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServicePartitionInfo `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicServicePartitionInfo(body []byte) (BasicServicePartitionInfo, error) {
@@ -11205,8 +11205,8 @@ func (spi *ServicePartitionInfo) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServicePartitionInfoModel ...
 type ServicePartitionInfoModel struct {
-	autorest.Response	`json:"-"`
-	Value			BasicServicePartitionInfo	`json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             BasicServicePartitionInfo `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11227,9 +11227,9 @@ func (spim *ServicePartitionInfoModel) UnmarshalJSON(body []byte) error {
 // of that service.
 type ServicePlacementInvalidDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should not be used for placement.
-	DomainName	*string	`json:"DomainName,omitempty"`
+	DomainName *string `json:"DomainName,omitempty"`
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferPrimaryDomain', 'TypeRequireDomain', 'TypeRequireDomainDistribution'
-	Type	TypeBasicServicePlacementPolicyDescription	`json:"Type,omitempty"`
+	Type TypeBasicServicePlacementPolicyDescription `json:"Type,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11484,9 +11484,9 @@ func (sppd ServicePlacementPolicyDescription) AsBasicServicePlacementPolicyDescr
 // located in this domain due to failures, capacity limits, or other constraints.
 type ServicePlacementPreferPrimaryDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
-	DomainName	*string	`json:"DomainName,omitempty"`
+	DomainName *string `json:"DomainName,omitempty"`
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferPrimaryDomain', 'TypeRequireDomain', 'TypeRequireDomainDistribution'
-	Type	TypeBasicServicePlacementPolicyDescription	`json:"Type,omitempty"`
+	Type TypeBasicServicePlacementPolicyDescription `json:"Type,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11550,9 +11550,9 @@ func (spppdpd ServicePlacementPreferPrimaryDomainPolicyDescription) AsBasicServi
 // Fabric service where the instances or replicas of that service must be placed in a particular domain
 type ServicePlacementRequiredDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
-	DomainName	*string	`json:"DomainName,omitempty"`
+	DomainName *string `json:"DomainName,omitempty"`
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferPrimaryDomain', 'TypeRequireDomain', 'TypeRequireDomainDistribution'
-	Type	TypeBasicServicePlacementPolicyDescription	`json:"Type,omitempty"`
+	Type TypeBasicServicePlacementPolicyDescription `json:"Type,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11623,9 +11623,9 @@ func (sprdpd ServicePlacementRequiredDomainPolicyDescription) AsBasicServicePlac
 // datacenters. If this is not desirable then this policy should be set.
 type ServicePlacementRequireDomainDistributionPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
-	DomainName	*string	`json:"DomainName,omitempty"`
+	DomainName *string `json:"DomainName,omitempty"`
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferPrimaryDomain', 'TypeRequireDomain', 'TypeRequireDomainDistribution'
-	Type	TypeBasicServicePlacementPolicyDescription	`json:"Type,omitempty"`
+	Type TypeBasicServicePlacementPolicyDescription `json:"Type,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11691,19 +11691,19 @@ func (sprddpd ServicePlacementRequireDomainDistributionPolicyDescription) AsBasi
 // Warning.
 type ServicesHealthEvaluation struct {
 	// ServiceTypeName - Name of the service type of the services.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// MaxPercentUnhealthyServices - Maximum allowed percentage of unhealthy services from the ServiceTypeHealthPolicy.
-	MaxPercentUnhealthyServices	*int32	`json:"MaxPercentUnhealthyServices,omitempty"`
+	MaxPercentUnhealthyServices *int32 `json:"MaxPercentUnhealthyServices,omitempty"`
 	// TotalCount - Total number of services of the current service type in the application from the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy ServiceHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -11881,15 +11881,15 @@ type BasicServiceTypeDescription interface {
 // type. The properties the the ones defined in the service manifest.
 type ServiceTypeDescription struct {
 	// IsStateful - Indicates whether the service type is a stateful service type or a stateless service type. This property is true if the service type is a stateful service type, false otherwise.
-	IsStateful	*bool	`json:"IsStateful,omitempty"`
+	IsStateful *bool `json:"IsStateful,omitempty"`
 	// ServiceTypeName - Name of the service type.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// PlacementConstraints - The placement constraint to be used when instantiating this service in a Service Fabric cluster.
-	PlacementConstraints		*string						`json:"PlacementConstraints,omitempty"`
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
-	Extensions			*[]ServiceTypeExtensionDescription		`json:"Extensions,omitempty"`
+	PlacementConstraints     *string                                   `json:"PlacementConstraints,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
+	Extensions               *[]ServiceTypeExtensionDescription        `json:"Extensions,omitempty"`
 	// Kind - Possible values include: 'KindServiceTypeDescription', 'KindStateful', 'KindStateless1'
-	Kind	KindBasicServiceTypeDescription	`json:"Kind,omitempty"`
+	Kind KindBasicServiceTypeDescription `json:"Kind,omitempty"`
 }
 
 func unmarshalBasicServiceTypeDescription(body []byte) (BasicServiceTypeDescription, error) {
@@ -12056,9 +12056,9 @@ func (std *ServiceTypeDescription) UnmarshalJSON(body []byte) error {
 // ServiceTypeExtensionDescription describes extension of a service type defined in the service manifest.
 type ServiceTypeExtensionDescription struct {
 	// Key - The name of the extension.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The extension value.
-	Value	*string	`json:"Value,omitempty"`
+	Value *string `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12070,41 +12070,41 @@ type ServiceTypeHealthPolicy struct {
 	// If the percentage is respected but there is at least one unhealthy partition, the health is evaluated as Warning.
 	// The percentage is calculated by dividing the number of unhealthy partitions over the total number of partitions in the service.
 	// The computation rounds up to tolerate one failure on small numbers of partitions. Default percentage is zero.
-	MaxPercentUnhealthyPartitionsPerService	*int32	`json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
+	MaxPercentUnhealthyPartitionsPerService *int32 `json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
 	// MaxPercentUnhealthyReplicasPerPartition - The maximum allowed percentage of unhealthy replicas per partition. Allowed values are Byte values from zero to 100.
 	// The percentage represents the maximum tolerated percentage of replicas that can be unhealthy before the partition is considered in error.
 	// If the percentage is respected but there is at least one unhealthy replica, the health is evaluated as Warning.
 	// The percentage is calculated by dividing the number of unhealthy replicas over the total number of replicas in the partition.
 	// The computation rounds up to tolerate one failure on small numbers of replicas. Default percentage is zero.
-	MaxPercentUnhealthyReplicasPerPartition	*int32	`json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
+	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
 	// MaxPercentUnhealthyServices - The maximum maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
 	// The percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is considered in error.
 	// If the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.
 	// This is calculated by dividing the number of unhealthy services of the specific service type over the total number of services of the specific service type.
 	// The computation rounds up to tolerate one failure on small numbers of services. Default percentage is zero.
-	MaxPercentUnhealthyServices	*int32	`json:"MaxPercentUnhealthyServices,omitempty"`
+	MaxPercentUnhealthyServices *int32 `json:"MaxPercentUnhealthyServices,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceTypeHealthPolicyMapItem defines an item in ServiceTypeHealthPolicyMap.
 type ServiceTypeHealthPolicyMapItem struct {
 	// Key - The key of the service type health policy map item. This is the name of the service type.
-	Key	*string	`json:"Key,omitempty"`
+	Key *string `json:"Key,omitempty"`
 	// Value - The value of the service type health policy map item. This is the ServiceTypeHealthPolicy for this service type.
-	Value	*ServiceTypeHealthPolicy	`json:"Value,omitempty"`
+	Value *ServiceTypeHealthPolicy `json:"Value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ServiceTypeInfo information about a service type that is defined in a service manifest of a provisioned
 // application type.
 type ServiceTypeInfo struct {
-	ServiceTypeDescription	BasicServiceTypeDescription	`json:"ServiceTypeDescription,omitempty"`
+	ServiceTypeDescription BasicServiceTypeDescription `json:"ServiceTypeDescription,omitempty"`
 	// ServiceManifestName - The name of the service manifest in which this service type is defined.
-	ServiceManifestName	*string	`json:"ServiceManifestName,omitempty"`
+	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
 	// ServiceManifestVersion - The version of the service manifest in which this service type is defined.
-	ServiceManifestVersion	*string	`json:"ServiceManifestVersion,omitempty"`
+	ServiceManifestVersion *string `json:"ServiceManifestVersion,omitempty"`
 	// IsServiceGroup - Indicates whether the service is a service group. If it is, the property value is true otherwise false.
-	IsServiceGroup	*bool	`json:"IsServiceGroup,omitempty"`
+	IsServiceGroup *bool `json:"IsServiceGroup,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12162,9 +12162,9 @@ func (sti *ServiceTypeInfo) UnmarshalJSON(body []byte) error {
 // ServiceTypeManifest contains the manifest describing a service type registered as part of an application in a
 // Service Fabric cluster.
 type ServiceTypeManifest struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
-	Manifest	*string	`json:"Manifest,omitempty"`
+	Manifest *string `json:"Manifest,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12194,19 +12194,19 @@ type ServiceUpdateDescription struct {
 	// - Correlation - Indicates the CorrelationScheme property is set. The value is 128.
 	// - Metrics - Indicates the ServiceLoadMetrics property is set. The value is 256.
 	// - DefaultMoveCost - Indicates the DefaultMoveCost property is set. The value is 512.
-	Flags	*string	`json:"Flags,omitempty"`
+	Flags *string `json:"Flags,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// LoadMetrics - The service load metrics.
-	LoadMetrics	*[]ServiceLoadMetricDescription	`json:"LoadMetrics,omitempty"`
+	LoadMetrics *[]ServiceLoadMetricDescription `json:"LoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'DefaultMoveCost1Zero', 'DefaultMoveCost1Low', 'DefaultMoveCost1Medium', 'DefaultMoveCost1High'
-	DefaultMoveCost	DefaultMoveCost1	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost1 `json:"DefaultMoveCost,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateful', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceUpdateDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceUpdateDescription `json:"ServiceKind,omitempty"`
 }
 
 func unmarshalBasicServiceUpdateDescription(body []byte) (BasicServiceUpdateDescription, error) {
@@ -12385,9 +12385,9 @@ func (sud *ServiceUpdateDescription) UnmarshalJSON(body []byte) error {
 // SingletonPartitionInformation information about a partition that is singleton. The services with singletone
 // partitioning scheme are effectively non-partitioned. They only have one partition.
 type SingletonPartitionInformation struct {
-	ID	*uuid.UUID	`json:"Id,omitempty"`
+	ID *uuid.UUID `json:"Id,omitempty"`
 	// ServicePartitionKind - Possible values include: 'ServicePartitionKindPartitionInformation', 'ServicePartitionKindInt64Range', 'ServicePartitionKindNamed', 'ServicePartitionKindSingleton'
-	ServicePartitionKind	ServicePartitionKind	`json:"ServicePartitionKind,omitempty"`
+	ServicePartitionKind ServicePartitionKind `json:"ServicePartitionKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12486,10 +12486,10 @@ func (spsd SingletonPartitionSchemeDescription) AsBasicPartitionSchemeDescriptio
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // StartedChaosEvent describes a Chaos event that gets generated when Chaos is started.
 type StartedChaosEvent struct {
-	ChaosParameters	*ChaosParameters	`json:"ChaosParameters,omitempty"`
-	TimeStampUtc	*date.Time		`json:"TimeStampUtc,omitempty"`
+	ChaosParameters *ChaosParameters `json:"ChaosParameters,omitempty"`
+	TimeStampUtc    *date.Time       `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12568,11 +12568,11 @@ type StartNodeDescription struct {
 // StatefulServiceDescription describes a stateful service.
 type StatefulServiceDescription struct {
 	// TargetReplicaSetSize - The target replica set size as a number.
-	TargetReplicaSetSize	*int32	`json:"TargetReplicaSetSize,omitempty"`
+	TargetReplicaSetSize *int32 `json:"TargetReplicaSetSize,omitempty"`
 	// MinReplicaSetSize - The minimum replica set size as a number.
-	MinReplicaSetSize	*int32	`json:"MinReplicaSetSize,omitempty"`
+	MinReplicaSetSize *int32 `json:"MinReplicaSetSize,omitempty"`
 	// HasPersistedState - A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of this property is true, if not it is false.
-	HasPersistedState	*bool	`json:"HasPersistedState,omitempty"`
+	HasPersistedState *bool `json:"HasPersistedState,omitempty"`
 	// Flags - Flags indicating whether other properties are set. Each of the associated properties corresponds to a flag, specified below, which, if set, indicate that the property is specified.
 	// This property can be a combination of those flags obtained using bitwise 'OR' operator.
 	// For example, if the provided value is 6 then the flags for QuorumLossWaitDuration (2) and StandByReplicaKeepDuration(4) are set.
@@ -12580,41 +12580,41 @@ type StatefulServiceDescription struct {
 	// - ReplicaRestartWaitDuration - Indicates the ReplicaRestartWaitDuration property is set. The value is 1.
 	// - QuorumLossWaitDuration - Indicates the QuorumLossWaitDuration property is set. The value is 2.
 	// - StandByReplicaKeepDuration - Indicates the StandByReplicaKeepDuration property is set. The value is 4.
-	Flags	*int32	`json:"Flags,omitempty"`
+	Flags *int32 `json:"Flags,omitempty"`
 	// ReplicaRestartWaitDurationSeconds - The duration, in seconds, between when a replica goes down and when a new replica is created.
-	ReplicaRestartWaitDurationSeconds	*int64	`json:"ReplicaRestartWaitDurationSeconds,omitempty"`
+	ReplicaRestartWaitDurationSeconds *int64 `json:"ReplicaRestartWaitDurationSeconds,omitempty"`
 	// QuorumLossWaitDurationSeconds - The maximum duration, in seconds, for which a partition is allowed to be in a state of quorum loss.
-	QuorumLossWaitDurationSeconds	*int64	`json:"QuorumLossWaitDurationSeconds,omitempty"`
+	QuorumLossWaitDurationSeconds *int64 `json:"QuorumLossWaitDurationSeconds,omitempty"`
 	// StandByReplicaKeepDurationSeconds - The definition on how long StandBy replicas should be maintained before being removed.
-	StandByReplicaKeepDurationSeconds	*int64	`json:"StandByReplicaKeepDurationSeconds,omitempty"`
+	StandByReplicaKeepDurationSeconds *int64 `json:"StandByReplicaKeepDurationSeconds,omitempty"`
 	// ApplicationName - The application name.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceName - The service name.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - The service type name.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// InitializationData - The initialization data as an array of bytes. Initialization data is passed to service instances or replicas when they are created.
-	InitializationData	*[]int32	`json:"InitializationData,omitempty"`
+	InitializationData *[]int32 `json:"InitializationData,omitempty"`
 	// PartitionDescription - The partition description as an object.
-	PartitionDescription	BasicPartitionSchemeDescription	`json:"PartitionDescription,omitempty"`
+	PartitionDescription BasicPartitionSchemeDescription `json:"PartitionDescription,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// ServiceLoadMetrics - The service load metrics.
-	ServiceLoadMetrics	*[]ServiceLoadMetricDescription	`json:"ServiceLoadMetrics,omitempty"`
+	ServiceLoadMetrics *[]ServiceLoadMetricDescription `json:"ServiceLoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'Zero', 'Low', 'Medium', 'High'
-	DefaultMoveCost	DefaultMoveCost	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost `json:"DefaultMoveCost,omitempty"`
 	// IsDefaultMoveCostSpecified - Indicates if the DefaultMoveCost property is specified.
-	IsDefaultMoveCostSpecified	*bool	`json:"IsDefaultMoveCostSpecified,omitempty"`
+	IsDefaultMoveCostSpecified *bool `json:"IsDefaultMoveCostSpecified,omitempty"`
 	// ServicePackageActivationMode - The activation mode of service package to be used for a service. Possible values include: 'ServicePackageActivationMode1SharedProcess', 'ServicePackageActivationMode1ExclusiveProcess'
-	ServicePackageActivationMode	ServicePackageActivationMode1	`json:"ServicePackageActivationMode,omitempty"`
+	ServicePackageActivationMode ServicePackageActivationMode1 `json:"ServicePackageActivationMode,omitempty"`
 	// ServiceDNSName - The DNS name of the service. It requires the DNS system service to be enabled in Service Fabric cluster.
-	ServiceDNSName	*string	`json:"ServiceDnsName,omitempty"`
+	ServiceDNSName *string `json:"ServiceDnsName,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceDescriptionServiceKindServiceDescription', 'ServiceKindBasicServiceDescriptionServiceKindStateful', 'ServiceKindBasicServiceDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceDescription `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12917,22 +12917,22 @@ func (ssd *StatefulServiceDescription) UnmarshalJSON(body []byte) error {
 // StatefulServiceInfo information about a stateful Service Fabric service.
 type StatefulServiceInfo struct {
 	// HasPersistedState - Whether the service has persisted state.
-	HasPersistedState	*bool	`json:"HasPersistedState,omitempty"`
-	ID			*string	`json:"Id,omitempty"`
+	HasPersistedState *bool   `json:"HasPersistedState,omitempty"`
+	ID                *string `json:"Id,omitempty"`
 	// Name - Full hierarchical name of the service in URI format starting with `fabric:`.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// TypeName - The name of the service type as specified in the service manifest.
-	TypeName	*string	`json:"TypeName,omitempty"`
+	TypeName *string `json:"TypeName,omitempty"`
 	// ManifestVersion - The version of the service manifest.
-	ManifestVersion	*string	`json:"ManifestVersion,omitempty"`
+	ManifestVersion *string `json:"ManifestVersion,omitempty"`
 	// HealthState - Possible values include: 'HealthState7Invalid', 'HealthState7Ok', 'HealthState7Warning', 'HealthState7Error', 'HealthState7Unknown'
-	HealthState	HealthState7	`json:"HealthState,omitempty"`
+	HealthState HealthState7 `json:"HealthState,omitempty"`
 	// ServiceStatus - Possible values include: 'ServiceStatusUnknown', 'ServiceStatusActive', 'ServiceStatusUpgrading', 'ServiceStatusDeleting', 'ServiceStatusCreating', 'ServiceStatusFailed'
-	ServiceStatus	ServiceStatus	`json:"ServiceStatus,omitempty"`
+	ServiceStatus ServiceStatus `json:"ServiceStatus,omitempty"`
 	// IsServiceGroup - Whether the service is in a service group.
-	IsServiceGroup	*bool	`json:"IsServiceGroup,omitempty"`
+	IsServiceGroup *bool `json:"IsServiceGroup,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceInfoServiceKindServiceInfo', 'ServiceKindBasicServiceInfoServiceKindStateful', 'ServiceKindBasicServiceInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -12998,19 +12998,19 @@ func (ssi StatefulServiceInfo) AsBasicServiceInfo() (BasicServiceInfo, bool) {
 // StatefulServicePartitionInfo information about a partition of a stateful Service Fabric service..
 type StatefulServicePartitionInfo struct {
 	// TargetReplicaSetSize - The target replica set size as a number.
-	TargetReplicaSetSize	*int64	`json:"TargetReplicaSetSize,omitempty"`
+	TargetReplicaSetSize *int64 `json:"TargetReplicaSetSize,omitempty"`
 	// MinReplicaSetSize - The minimum replica set size as a number.
-	MinReplicaSetSize	*int64	`json:"MinReplicaSetSize,omitempty"`
+	MinReplicaSetSize *int64 `json:"MinReplicaSetSize,omitempty"`
 	// LastQuorumLossDuration - The duration for which this partition was in quorum loss. If the partition is currently in quorum loss, it returns the duration since it has been in that state. This field is using ISO8601 format for specifying the duration.
-	LastQuorumLossDuration		*string	`json:"LastQuorumLossDuration,omitempty"`
-	CurrentConfigurationEpoch	*Epoch	`json:"CurrentConfigurationEpoch,omitempty"`
+	LastQuorumLossDuration    *string `json:"LastQuorumLossDuration,omitempty"`
+	CurrentConfigurationEpoch *Epoch  `json:"CurrentConfigurationEpoch,omitempty"`
 	// HealthState - Possible values include: 'HealthState5Invalid', 'HealthState5Ok', 'HealthState5Warning', 'HealthState5Error', 'HealthState5Unknown'
-	HealthState	HealthState5	`json:"HealthState,omitempty"`
+	HealthState HealthState5 `json:"HealthState,omitempty"`
 	// PartitionStatus - Possible values include: 'PartitionStatusInvalid', 'PartitionStatusReady', 'PartitionStatusNotReady', 'PartitionStatusInQuorumLoss', 'PartitionStatusReconfiguring', 'PartitionStatusDeleting'
-	PartitionStatus		PartitionStatus			`json:"PartitionStatus,omitempty"`
-	PartitionInformation	BasicPartitionInformation	`json:"PartitionInformation,omitempty"`
+	PartitionStatus      PartitionStatus           `json:"PartitionStatus,omitempty"`
+	PartitionInformation BasicPartitionInformation `json:"PartitionInformation,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo', 'ServiceKindBasicServicePartitionInfoServiceKindStateful', 'ServiceKindBasicServicePartitionInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServicePartitionInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServicePartitionInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13159,20 +13159,20 @@ func (sspi *StatefulServicePartitionInfo) UnmarshalJSON(body []byte) error {
 // Contains the replica aggregated health state, the health events and the unhealthy evaluations.
 type StatefulServiceReplicaHealth struct {
 	// ReplicaID - Id of the stateful service replica.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// PartitionID - Id of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthServiceKindReplicaHealth', 'ServiceKindBasicReplicaHealthServiceKindStateful', 'ServiceKindBasicReplicaHealthServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealth	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13230,13 +13230,13 @@ func (ssrh StatefulServiceReplicaHealth) AsBasicReplicaHealth() (BasicReplicaHea
 // the replica id and the aggregated health state.
 type StatefulServiceReplicaHealthState struct {
 	// ReplicaID - The ID of the stateful service replica.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// PartitionID - The ID of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState', 'ServiceKindBasicReplicaHealthStateServiceKindStateful', 'ServiceKindBasicReplicaHealthStateServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealthState	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealthState `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13288,20 +13288,20 @@ func (ssrhs StatefulServiceReplicaHealthState) AsBasicReplicaHealthState() (Basi
 // role, status, health, node name, uptime, and other details about the replica.
 type StatefulServiceReplicaInfo struct {
 	// ReplicaRole - Possible values include: 'ReplicaRole1Unknown', 'ReplicaRole1None', 'ReplicaRole1Primary', 'ReplicaRole1IdleSecondary', 'ReplicaRole1ActiveSecondary'
-	ReplicaRole	ReplicaRole1	`json:"ReplicaRole,omitempty"`
-	ReplicaID	*string		`json:"ReplicaId,omitempty"`
+	ReplicaRole ReplicaRole1 `json:"ReplicaRole,omitempty"`
+	ReplicaID   *string      `json:"ReplicaId,omitempty"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatus1Invalid', 'ReplicaStatus1InBuild', 'ReplicaStatus1Standby', 'ReplicaStatus1Ready', 'ReplicaStatus1Down', 'ReplicaStatus1Dropped'
-	ReplicaStatus	ReplicaStatus1	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus1 `json:"ReplicaStatus,omitempty"`
 	// HealthState - Possible values include: 'HealthState6Invalid', 'HealthState6Ok', 'HealthState6Warning', 'HealthState6Error', 'HealthState6Unknown'
-	HealthState	HealthState6	`json:"HealthState,omitempty"`
+	HealthState HealthState6 `json:"HealthState,omitempty"`
 	// NodeName - The name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// Address - The address the replica is listening on.
-	Address	*string	`json:"Address,omitempty"`
+	Address *string `json:"Address,omitempty"`
 	// LastInBuildDurationInSeconds - The last in build duration of the replica in seconds.
-	LastInBuildDurationInSeconds	*string	`json:"LastInBuildDurationInSeconds,omitempty"`
+	LastInBuildDurationInSeconds *string `json:"LastInBuildDurationInSeconds,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaInfoServiceKindReplicaInfo', 'ServiceKindBasicReplicaInfoServiceKindStateful', 'ServiceKindBasicReplicaInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13365,17 +13365,17 @@ func (ssri StatefulServiceReplicaInfo) AsBasicReplicaInfo() (BasicReplicaInfo, b
 // provisioned application type.
 type StatefulServiceTypeDescription struct {
 	// HasPersistedState - A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of this property is true, if not it is false.
-	HasPersistedState	*bool	`json:"HasPersistedState,omitempty"`
+	HasPersistedState *bool `json:"HasPersistedState,omitempty"`
 	// IsStateful - Indicates whether the service type is a stateful service type or a stateless service type. This property is true if the service type is a stateful service type, false otherwise.
-	IsStateful	*bool	`json:"IsStateful,omitempty"`
+	IsStateful *bool `json:"IsStateful,omitempty"`
 	// ServiceTypeName - Name of the service type.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// PlacementConstraints - The placement constraint to be used when instantiating this service in a Service Fabric cluster.
-	PlacementConstraints		*string						`json:"PlacementConstraints,omitempty"`
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
-	Extensions			*[]ServiceTypeExtensionDescription		`json:"Extensions,omitempty"`
+	PlacementConstraints     *string                                   `json:"PlacementConstraints,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
+	Extensions               *[]ServiceTypeExtensionDescription        `json:"Extensions,omitempty"`
 	// Kind - Possible values include: 'KindServiceTypeDescription', 'KindStateful', 'KindStateless1'
-	Kind	KindBasicServiceTypeDescription	`json:"Kind,omitempty"`
+	Kind KindBasicServiceTypeDescription `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13513,15 +13513,15 @@ func (sstd *StatefulServiceTypeDescription) UnmarshalJSON(body []byte) error {
 // StatefulServiceUpdateDescription describes an update for a stateful service.
 type StatefulServiceUpdateDescription struct {
 	// TargetReplicaSetSize - The target replica set size as a number.
-	TargetReplicaSetSize	*int32	`json:"TargetReplicaSetSize,omitempty"`
+	TargetReplicaSetSize *int32 `json:"TargetReplicaSetSize,omitempty"`
 	// MinReplicaSetSize - The minimum replica set size as a number.
-	MinReplicaSetSize	*int32	`json:"MinReplicaSetSize,omitempty"`
+	MinReplicaSetSize *int32 `json:"MinReplicaSetSize,omitempty"`
 	// ReplicaRestartWaitDurationSeconds - The duration, in seconds, between when a replica goes down and when a new replica is created.
-	ReplicaRestartWaitDurationSeconds	*string	`json:"ReplicaRestartWaitDurationSeconds,omitempty"`
+	ReplicaRestartWaitDurationSeconds *string `json:"ReplicaRestartWaitDurationSeconds,omitempty"`
 	// QuorumLossWaitDurationSeconds - The maximum duration, in seconds, for which a partition is allowed to be in a state of quorum loss.
-	QuorumLossWaitDurationSeconds	*string	`json:"QuorumLossWaitDurationSeconds,omitempty"`
+	QuorumLossWaitDurationSeconds *string `json:"QuorumLossWaitDurationSeconds,omitempty"`
 	// StandByReplicaKeepDurationSeconds - The definition on how long StandBy replicas should be maintained before being removed.
-	StandByReplicaKeepDurationSeconds	*string	`json:"StandByReplicaKeepDurationSeconds,omitempty"`
+	StandByReplicaKeepDurationSeconds *string `json:"StandByReplicaKeepDurationSeconds,omitempty"`
 	// Flags - Flags indicating whether other properties are set. Each of the associated properties corresponds to a flag, specified below, which, if set, indicate that the property is specified.
 	// This property can be a combination of those flags obtained using bitwise 'OR' operator.
 	// For example, if the provided value is 6 then the flags for ReplicaRestartWaitDuration (2) and QuorumLossWaitDuration (4) are set.
@@ -13536,19 +13536,19 @@ type StatefulServiceUpdateDescription struct {
 	// - Correlation - Indicates the CorrelationScheme property is set. The value is 128.
 	// - Metrics - Indicates the ServiceLoadMetrics property is set. The value is 256.
 	// - DefaultMoveCost - Indicates the DefaultMoveCost property is set. The value is 512.
-	Flags	*string	`json:"Flags,omitempty"`
+	Flags *string `json:"Flags,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// LoadMetrics - The service load metrics.
-	LoadMetrics	*[]ServiceLoadMetricDescription	`json:"LoadMetrics,omitempty"`
+	LoadMetrics *[]ServiceLoadMetricDescription `json:"LoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'DefaultMoveCost1Zero', 'DefaultMoveCost1Low', 'DefaultMoveCost1Medium', 'DefaultMoveCost1High'
-	DefaultMoveCost	DefaultMoveCost1	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost1 `json:"DefaultMoveCost,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateful', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceUpdateDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceUpdateDescription `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -13746,35 +13746,35 @@ func (ssud *StatefulServiceUpdateDescription) UnmarshalJSON(body []byte) error {
 // StatelessServiceDescription describes a stateless service.
 type StatelessServiceDescription struct {
 	// InstanceCount - The instance count.
-	InstanceCount	*int32	`json:"InstanceCount,omitempty"`
+	InstanceCount *int32 `json:"InstanceCount,omitempty"`
 	// ApplicationName - The application name.
-	ApplicationName	*string	`json:"ApplicationName,omitempty"`
+	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// ServiceName - The service name.
-	ServiceName	*string	`json:"ServiceName,omitempty"`
+	ServiceName *string `json:"ServiceName,omitempty"`
 	// ServiceTypeName - The service type name.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// InitializationData - The initialization data as an array of bytes. Initialization data is passed to service instances or replicas when they are created.
-	InitializationData	*[]int32	`json:"InitializationData,omitempty"`
+	InitializationData *[]int32 `json:"InitializationData,omitempty"`
 	// PartitionDescription - The partition description as an object.
-	PartitionDescription	BasicPartitionSchemeDescription	`json:"PartitionDescription,omitempty"`
+	PartitionDescription BasicPartitionSchemeDescription `json:"PartitionDescription,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// ServiceLoadMetrics - The service load metrics.
-	ServiceLoadMetrics	*[]ServiceLoadMetricDescription	`json:"ServiceLoadMetrics,omitempty"`
+	ServiceLoadMetrics *[]ServiceLoadMetricDescription `json:"ServiceLoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'Zero', 'Low', 'Medium', 'High'
-	DefaultMoveCost	DefaultMoveCost	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost `json:"DefaultMoveCost,omitempty"`
 	// IsDefaultMoveCostSpecified - Indicates if the DefaultMoveCost property is specified.
-	IsDefaultMoveCostSpecified	*bool	`json:"IsDefaultMoveCostSpecified,omitempty"`
+	IsDefaultMoveCostSpecified *bool `json:"IsDefaultMoveCostSpecified,omitempty"`
 	// ServicePackageActivationMode - The activation mode of service package to be used for a service. Possible values include: 'ServicePackageActivationMode1SharedProcess', 'ServicePackageActivationMode1ExclusiveProcess'
-	ServicePackageActivationMode	ServicePackageActivationMode1	`json:"ServicePackageActivationMode,omitempty"`
+	ServicePackageActivationMode ServicePackageActivationMode1 `json:"ServicePackageActivationMode,omitempty"`
 	// ServiceDNSName - The DNS name of the service. It requires the DNS system service to be enabled in Service Fabric cluster.
-	ServiceDNSName	*string	`json:"ServiceDnsName,omitempty"`
+	ServiceDNSName *string `json:"ServiceDnsName,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceDescriptionServiceKindServiceDescription', 'ServiceKindBasicServiceDescriptionServiceKindStateful', 'ServiceKindBasicServiceDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceDescription `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14004,21 +14004,21 @@ func (ssd *StatelessServiceDescription) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // StatelessServiceInfo information about a stateless Service Fabric service.
 type StatelessServiceInfo struct {
-	ID	*string	`json:"Id,omitempty"`
+	ID *string `json:"Id,omitempty"`
 	// Name - Full hierarchical name of the service in URI format starting with `fabric:`.
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// TypeName - The name of the service type as specified in the service manifest.
-	TypeName	*string	`json:"TypeName,omitempty"`
+	TypeName *string `json:"TypeName,omitempty"`
 	// ManifestVersion - The version of the service manifest.
-	ManifestVersion	*string	`json:"ManifestVersion,omitempty"`
+	ManifestVersion *string `json:"ManifestVersion,omitempty"`
 	// HealthState - Possible values include: 'HealthState7Invalid', 'HealthState7Ok', 'HealthState7Warning', 'HealthState7Error', 'HealthState7Unknown'
-	HealthState	HealthState7	`json:"HealthState,omitempty"`
+	HealthState HealthState7 `json:"HealthState,omitempty"`
 	// ServiceStatus - Possible values include: 'ServiceStatusUnknown', 'ServiceStatusActive', 'ServiceStatusUpgrading', 'ServiceStatusDeleting', 'ServiceStatusCreating', 'ServiceStatusFailed'
-	ServiceStatus	ServiceStatus	`json:"ServiceStatus,omitempty"`
+	ServiceStatus ServiceStatus `json:"ServiceStatus,omitempty"`
 	// IsServiceGroup - Whether the service is in a service group.
-	IsServiceGroup	*bool	`json:"IsServiceGroup,omitempty"`
+	IsServiceGroup *bool `json:"IsServiceGroup,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceInfoServiceKindServiceInfo', 'ServiceKindBasicServiceInfoServiceKindStateful', 'ServiceKindBasicServiceInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14082,20 +14082,20 @@ func (ssi StatelessServiceInfo) AsBasicServiceInfo() (BasicServiceInfo, bool) {
 // Contains the instance aggregated health state, the health events and the unhealthy evaluations.
 type StatelessServiceInstanceHealth struct {
 	// InstanceID - Id of the stateless service instance.
-	InstanceID	*string	`json:"InstanceId,omitempty"`
+	InstanceID *string `json:"InstanceId,omitempty"`
 	// PartitionID - Id of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthServiceKindReplicaHealth', 'ServiceKindBasicReplicaHealthServiceKindStateful', 'ServiceKindBasicReplicaHealthServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealth	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
 	// The aggregation is done by applying the desired health policy.
 	// . Possible values include: 'AggregatedHealthState1Invalid', 'AggregatedHealthState1Ok', 'AggregatedHealthState1Warning', 'AggregatedHealthState1Error', 'AggregatedHealthState1Unknown'
-	AggregatedHealthState	AggregatedHealthState1	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState1 `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
-	HealthEvents	*[]HealthEvent	`json:"HealthEvents,omitempty"`
+	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
 	// UnhealthyEvaluations - The unhealthy evaluations that show why the current aggregated health state was returned by Health Manager.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14153,13 +14153,13 @@ func (ssih StatelessServiceInstanceHealth) AsBasicReplicaHealth() (BasicReplicaH
 // contains the instance id and the aggregated health state.
 type StatelessServiceInstanceHealthState struct {
 	// ReplicaID - Id of the stateless service instance on the wire this field is called ReplicaId.
-	ReplicaID	*string	`json:"ReplicaId,omitempty"`
+	ReplicaID *string `json:"ReplicaId,omitempty"`
 	// PartitionID - The ID of the partition to which this replica belongs.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState', 'ServiceKindBasicReplicaHealthStateServiceKindStateful', 'ServiceKindBasicReplicaHealthStateServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaHealthState	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaHealthState `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - Possible values include: 'AggregatedHealthState2Invalid', 'AggregatedHealthState2Ok', 'AggregatedHealthState2Warning', 'AggregatedHealthState2Error', 'AggregatedHealthState2Unknown'
-	AggregatedHealthState	AggregatedHealthState2	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState2 `json:"AggregatedHealthState,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14211,19 +14211,19 @@ func (ssihs StatelessServiceInstanceHealthState) AsBasicReplicaHealthState() (Ba
 // identity, status, health, node name, uptime, and other details about the instance.
 type StatelessServiceInstanceInfo struct {
 	// InstanceID - Id of the stateless service instance.
-	InstanceID	*string	`json:"InstanceId,omitempty"`
+	InstanceID *string `json:"InstanceId,omitempty"`
 	// ReplicaStatus - Possible values include: 'ReplicaStatus1Invalid', 'ReplicaStatus1InBuild', 'ReplicaStatus1Standby', 'ReplicaStatus1Ready', 'ReplicaStatus1Down', 'ReplicaStatus1Dropped'
-	ReplicaStatus	ReplicaStatus1	`json:"ReplicaStatus,omitempty"`
+	ReplicaStatus ReplicaStatus1 `json:"ReplicaStatus,omitempty"`
 	// HealthState - Possible values include: 'HealthState6Invalid', 'HealthState6Ok', 'HealthState6Warning', 'HealthState6Error', 'HealthState6Unknown'
-	HealthState	HealthState6	`json:"HealthState,omitempty"`
+	HealthState HealthState6 `json:"HealthState,omitempty"`
 	// NodeName - The name of the node.
-	NodeName	*string	`json:"NodeName,omitempty"`
+	NodeName *string `json:"NodeName,omitempty"`
 	// Address - The address the replica is listening on.
-	Address	*string	`json:"Address,omitempty"`
+	Address *string `json:"Address,omitempty"`
 	// LastInBuildDurationInSeconds - The last in build duration of the replica in seconds.
-	LastInBuildDurationInSeconds	*string	`json:"LastInBuildDurationInSeconds,omitempty"`
+	LastInBuildDurationInSeconds *string `json:"LastInBuildDurationInSeconds,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicReplicaInfoServiceKindReplicaInfo', 'ServiceKindBasicReplicaInfoServiceKindStateful', 'ServiceKindBasicReplicaInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicReplicaInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicReplicaInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14283,14 +14283,14 @@ func (ssii StatelessServiceInstanceInfo) AsBasicReplicaInfo() (BasicReplicaInfo,
 // StatelessServicePartitionInfo information about a partition of a stateless Service Fabric service.
 type StatelessServicePartitionInfo struct {
 	// InstanceCount - Number of instances of this partition.
-	InstanceCount	*int64	`json:"InstanceCount,omitempty"`
+	InstanceCount *int64 `json:"InstanceCount,omitempty"`
 	// HealthState - Possible values include: 'HealthState5Invalid', 'HealthState5Ok', 'HealthState5Warning', 'HealthState5Error', 'HealthState5Unknown'
-	HealthState	HealthState5	`json:"HealthState,omitempty"`
+	HealthState HealthState5 `json:"HealthState,omitempty"`
 	// PartitionStatus - Possible values include: 'PartitionStatusInvalid', 'PartitionStatusReady', 'PartitionStatusNotReady', 'PartitionStatusInQuorumLoss', 'PartitionStatusReconfiguring', 'PartitionStatusDeleting'
-	PartitionStatus		PartitionStatus			`json:"PartitionStatus,omitempty"`
-	PartitionInformation	BasicPartitionInformation	`json:"PartitionInformation,omitempty"`
+	PartitionStatus      PartitionStatus           `json:"PartitionStatus,omitempty"`
+	PartitionInformation BasicPartitionInformation `json:"PartitionInformation,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo', 'ServiceKindBasicServicePartitionInfoServiceKindStateful', 'ServiceKindBasicServicePartitionInfoServiceKindStateless'
-	ServiceKind	ServiceKindBasicServicePartitionInfo	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServicePartitionInfo `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14403,17 +14403,17 @@ func (sspi *StatelessServicePartitionInfo) UnmarshalJSON(body []byte) error {
 // provisioned application type.
 type StatelessServiceTypeDescription struct {
 	// UseImplicitHost - A flag indicating if this type is not implemented and hosted by a user service process, but is implicitly hosted by a system created process. This value is true for services using the guest executable services, false otherwise.
-	UseImplicitHost	*bool	`json:"UseImplicitHost,omitempty"`
+	UseImplicitHost *bool `json:"UseImplicitHost,omitempty"`
 	// IsStateful - Indicates whether the service type is a stateful service type or a stateless service type. This property is true if the service type is a stateful service type, false otherwise.
-	IsStateful	*bool	`json:"IsStateful,omitempty"`
+	IsStateful *bool `json:"IsStateful,omitempty"`
 	// ServiceTypeName - Name of the service type.
-	ServiceTypeName	*string	`json:"ServiceTypeName,omitempty"`
+	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
 	// PlacementConstraints - The placement constraint to be used when instantiating this service in a Service Fabric cluster.
-	PlacementConstraints		*string						`json:"PlacementConstraints,omitempty"`
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
-	Extensions			*[]ServiceTypeExtensionDescription		`json:"Extensions,omitempty"`
+	PlacementConstraints     *string                                   `json:"PlacementConstraints,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
+	Extensions               *[]ServiceTypeExtensionDescription        `json:"Extensions,omitempty"`
 	// Kind - Possible values include: 'KindServiceTypeDescription', 'KindStateful', 'KindStateless1'
-	Kind	KindBasicServiceTypeDescription	`json:"Kind,omitempty"`
+	Kind KindBasicServiceTypeDescription `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14551,7 +14551,7 @@ func (sstd *StatelessServiceTypeDescription) UnmarshalJSON(body []byte) error {
 // StatelessServiceUpdateDescription describes an update for a stateless service.
 type StatelessServiceUpdateDescription struct {
 	// InstanceCount - The instance count.
-	InstanceCount	*int32	`json:"InstanceCount,omitempty"`
+	InstanceCount *int32 `json:"InstanceCount,omitempty"`
 	// Flags - Flags indicating whether other properties are set. Each of the associated properties corresponds to a flag, specified below, which, if set, indicate that the property is specified.
 	// This property can be a combination of those flags obtained using bitwise 'OR' operator.
 	// For example, if the provided value is 6 then the flags for ReplicaRestartWaitDuration (2) and QuorumLossWaitDuration (4) are set.
@@ -14566,19 +14566,19 @@ type StatelessServiceUpdateDescription struct {
 	// - Correlation - Indicates the CorrelationScheme property is set. The value is 128.
 	// - Metrics - Indicates the ServiceLoadMetrics property is set. The value is 256.
 	// - DefaultMoveCost - Indicates the DefaultMoveCost property is set. The value is 512.
-	Flags	*string	`json:"Flags,omitempty"`
+	Flags *string `json:"Flags,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
-	PlacementConstraints	*string	`json:"PlacementConstraints,omitempty"`
+	PlacementConstraints *string `json:"PlacementConstraints,omitempty"`
 	// CorrelationScheme - The correlation scheme.
-	CorrelationScheme	*[]ServiceCorrelationDescription	`json:"CorrelationScheme,omitempty"`
+	CorrelationScheme *[]ServiceCorrelationDescription `json:"CorrelationScheme,omitempty"`
 	// LoadMetrics - The service load metrics.
-	LoadMetrics	*[]ServiceLoadMetricDescription	`json:"LoadMetrics,omitempty"`
+	LoadMetrics *[]ServiceLoadMetricDescription `json:"LoadMetrics,omitempty"`
 	// ServicePlacementPolicies - The service placement policies.
-	ServicePlacementPolicies	*[]BasicServicePlacementPolicyDescription	`json:"ServicePlacementPolicies,omitempty"`
+	ServicePlacementPolicies *[]BasicServicePlacementPolicyDescription `json:"ServicePlacementPolicies,omitempty"`
 	// DefaultMoveCost - The move cost for the service. Possible values include: 'DefaultMoveCost1Zero', 'DefaultMoveCost1Low', 'DefaultMoveCost1Medium', 'DefaultMoveCost1High'
-	DefaultMoveCost	DefaultMoveCost1	`json:"DefaultMoveCost,omitempty"`
+	DefaultMoveCost DefaultMoveCost1 `json:"DefaultMoveCost,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateful', 'ServiceKindBasicServiceUpdateDescriptionServiceKindStateless'
-	ServiceKind	ServiceKindBasicServiceUpdateDescription	`json:"ServiceKind,omitempty"`
+	ServiceKind ServiceKindBasicServiceUpdateDescription `json:"ServiceKind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14735,10 +14735,10 @@ type StopNodeDescription struct {
 // StoppedChaosEvent describes a Chaos event that gets generated when Chaos stops because either the user issued a
 // stop or the time to run was up.
 type StoppedChaosEvent struct {
-	Reason		*string		`json:"Reason,omitempty"`
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	Reason       *string    `json:"Reason,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14812,13 +14812,13 @@ func (sce StoppedChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, bool) {
 // only when the aggregated health state of the cluster is either Error or Warning.
 type SystemApplicationHealthEvaluation struct {
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the current aggregated health state of the system application. The types of the unhealthy evaluations can be DeployedApplicationsHealthEvaluation, ServicesHealthEvaluation or EventHealthEvaluation.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -14979,10 +14979,10 @@ func (sahe SystemApplicationHealthEvaluation) AsBasicHealthEvaluation() (BasicHe
 // For example, due to the cluster snapshot being inconsistent, while faulting a faultable entity, Chaos found that
 // the entity was alreay faulted -- which would be an unexpected event.
 type TestErrorChaosEvent struct {
-	Reason		*string		`json:"Reason,omitempty"`
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	Reason       *string    `json:"Reason,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15055,15 +15055,15 @@ func (tece TestErrorChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, bool) {
 // evenly across a number of partitions.
 type UniformInt64RangePartitionSchemeDescription struct {
 	// Count - The number of partitions.
-	Count	*int32	`json:"Count,omitempty"`
+	Count *int32 `json:"Count,omitempty"`
 	// LowKey - String indicating the lower bound of the partition key range that
 	// should be split between the partition ‘Count’
-	LowKey	*string	`json:"LowKey,omitempty"`
+	LowKey *string `json:"LowKey,omitempty"`
 	// HighKey - String indicating the upper bound of the partition key range that
 	// should be split between the partition ‘Count’
-	HighKey	*string	`json:"HighKey,omitempty"`
+	HighKey *string `json:"HighKey,omitempty"`
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme	PartitionScheme	`json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionScheme `json:"PartitionScheme,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15123,23 +15123,23 @@ func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsBasicPartitionSchem
 // Can be returned during cluster upgrade when cluster aggregated health state is Warning or Error.
 type UpgradeDomainDeltaNodesCheckHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
-	UpgradeDomainName	*string	`json:"UpgradeDomainName,omitempty"`
+	UpgradeDomainName *string `json:"UpgradeDomainName,omitempty"`
 	// BaselineErrorCount - Number of upgrade domain nodes with aggregated heath state Error in the health store at the beginning of the cluster upgrade.
-	BaselineErrorCount	*int64	`json:"BaselineErrorCount,omitempty"`
+	BaselineErrorCount *int64 `json:"BaselineErrorCount,omitempty"`
 	// BaselineTotalCount - Total number of upgrade domain nodes in the health store at the beginning of the cluster upgrade.
-	BaselineTotalCount	*int64	`json:"BaselineTotalCount,omitempty"`
+	BaselineTotalCount *int64 `json:"BaselineTotalCount,omitempty"`
 	// MaxPercentDeltaUnhealthyNodes - Maximum allowed percentage of upgrade domain delta unhealthy nodes from the ClusterUpgradeHealthPolicy.
-	MaxPercentDeltaUnhealthyNodes	*int32	`json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
+	MaxPercentDeltaUnhealthyNodes *int32 `json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
 	// TotalCount - Total number of upgrade domain nodes in the health store.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy NodeHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15312,9 +15312,9 @@ func (uddnche UpgradeDomainDeltaNodesCheckHealthEvaluation) AsBasicHealthEvaluat
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // UpgradeDomainInfo information about an upgrade domain.
 type UpgradeDomainInfo struct {
-	Name	*string	`json:"Name,omitempty"`
+	Name *string `json:"Name,omitempty"`
 	// State - Possible values include: 'StateInvalid', 'StatePending', 'StateInProgress', 'StateCompleted'
-	State	State	`json:"State,omitempty"`
+	State State `json:"State,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15324,19 +15324,19 @@ type UpgradeDomainInfo struct {
 // or Warning.
 type UpgradeDomainNodesHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
-	UpgradeDomainName	*string	`json:"UpgradeDomainName,omitempty"`
+	UpgradeDomainName *string `json:"UpgradeDomainName,omitempty"`
 	// MaxPercentUnhealthyNodes - Maximum allowed percentage of unhealthy nodes from the ClusterHealthPolicy.
-	MaxPercentUnhealthyNodes	*int32	`json:"MaxPercentUnhealthyNodes,omitempty"`
+	MaxPercentUnhealthyNodes *int32 `json:"MaxPercentUnhealthyNodes,omitempty"`
 	// TotalCount - Total number of nodes in the current upgrade domain.
-	TotalCount	*int64	`json:"TotalCount,omitempty"`
+	TotalCount *int64 `json:"TotalCount,omitempty"`
 	// UnhealthyEvaluations - List of unhealthy evaluations that led to the aggregated health state. Includes all the unhealthy NodeHealthEvaluation that impacted the aggregated health.
-	UnhealthyEvaluations	*[]HealthEvaluationWrapper	`json:"UnhealthyEvaluations,omitempty"`
+	UnhealthyEvaluations *[]HealthEvaluationWrapper `json:"UnhealthyEvaluations,omitempty"`
 	// AggregatedHealthState - Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'
-	AggregatedHealthState	AggregatedHealthState	`json:"AggregatedHealthState,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 	// Description - Description of the health evaluation, which represents a summary of the evaluation process.
-	Description	*string	`json:"Description,omitempty"`
+	Description *string `json:"Description,omitempty"`
 	// Kind - Possible values include: 'KindHealthEvaluation', 'KindApplication', 'KindApplications', 'KindApplicationTypeApplications', 'KindDeltaNodesCheck', 'KindDeployedApplication', 'KindDeployedApplications', 'KindDeployedServicePackage', 'KindDeployedServicePackages', 'KindEvent', 'KindNode', 'KindNodes', 'KindPartition', 'KindPartitions', 'KindReplica', 'KindReplicas', 'KindService', 'KindServices', 'KindSystemApplication', 'KindUpgradeDomainDeltaNodesCheck', 'KindUpgradeDomainNodes'
-	Kind	KindBasicHealthEvaluation	`json:"Kind,omitempty"`
+	Kind KindBasicHealthEvaluation `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15503,10 +15503,10 @@ func (udnhe UpgradeDomainNodesHealthEvaluation) AsBasicHealthEvaluation() (Basic
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // ValidationFailedChaosEvent chaos event corresponding to a failure during validation.
 type ValidationFailedChaosEvent struct {
-	Reason		*string		`json:"Reason,omitempty"`
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	Reason       *string    `json:"Reason,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15581,9 +15581,9 @@ func (vfce ValidationFailedChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, boo
 // movements.
 type WaitForInbuildReplicaSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15671,9 +15671,9 @@ func (wfirsc WaitForInbuildReplicaSafetyCheck) AsBasicSafetyCheck() (BasicSafety
 // node due to upgrade to be placed back again on that node.
 type WaitForPrimaryPlacementSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15761,9 +15761,9 @@ func (wfppsc WaitForPrimaryPlacementSafetyCheck) AsBasicSafetyCheck() (BasicSafe
 // starting an upgrade to ensure the avaiability of the primary replica for the partition.
 type WaitForPrimarySwapSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15851,9 +15851,9 @@ func (wfpssc WaitForPrimarySwapSafetyCheck) AsBasicSafetyCheck() (BasicSafetyChe
 // completed before starting an upgrade.
 type WaitForReconfigurationSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
-	PartitionID	*uuid.UUID	`json:"PartitionId,omitempty"`
+	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
-	Kind	KindBasicSafetyCheck	`json:"Kind,omitempty"`
+	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
@@ -15940,10 +15940,10 @@ func (wfrsc WaitForReconfigurationSafetyCheck) AsBasicSafetyCheck() (BasicSafety
 // WaitingChaosEvent describes a Chaos event that gets generated when Chaos is waiting for the cluster to become
 // ready for faulting, for example, Chaos may be waiting for the on-going upgrade to finish.
 type WaitingChaosEvent struct {
-	Reason		*string		`json:"Reason,omitempty"`
-	TimeStampUtc	*date.Time	`json:"TimeStampUtc,omitempty"`
+	Reason       *string    `json:"Reason,omitempty"`
+	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
 	// Kind - Possible values include: 'KindChaosEvent', 'KindExecutingFaults', 'KindStarted', 'KindStopped', 'KindTestError', 'KindValidationFailed', 'KindWaiting'
-	Kind	KindBasicChaosEvent	`json:"Kind,omitempty"`
+	Kind KindBasicChaosEvent `json:"Kind,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead

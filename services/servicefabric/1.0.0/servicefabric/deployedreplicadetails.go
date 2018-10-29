@@ -74,9 +74,9 @@ func (client DeployedReplicaDetailsClient) Get(ctx context.Context, nodeName str
 // GetPreparer prepares the Get request.
 func (client DeployedReplicaDetailsClient) GetPreparer(ctx context.Context, nodeName string, partitionName string, replicaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"nodeName":		autorest.Encode("path", nodeName),
-		"partitionName":	partitionName,
-		"replicaId":		autorest.Encode("path", replicaID),
+		"nodeName":      autorest.Encode("path", nodeName),
+		"partitionName": partitionName,
+		"replicaId":     autorest.Encode("path", replicaID),
 	}
 
 	const APIVersion = "1.0.0"

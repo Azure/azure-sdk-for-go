@@ -79,9 +79,9 @@ func (client ServiceManifestsClient) GetPreparer(ctx context.Context, applicatio
 
 	const APIVersion = "1.0.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ApplicationTypeVersion":	autorest.Encode("query", applicationTypeVersion),
-		"ServiceManifestName":		autorest.Encode("query", serviceManifestName),
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
+		"ServiceManifestName":    autorest.Encode("query", serviceManifestName),
 	}
 	if client.Timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)

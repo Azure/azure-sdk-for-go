@@ -78,8 +78,8 @@ func (client ApplicationManifestsClient) GetPreparer(ctx context.Context, applic
 
 	const APIVersion = "1.0.0"
 	queryParameters := map[string]interface{}{
-		"api-version":			APIVersion,
-		"ApplicationTypeVersion":	autorest.Encode("query", applicationTypeVersion),
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
 	}
 	if client.Timeout != nil {
 		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)

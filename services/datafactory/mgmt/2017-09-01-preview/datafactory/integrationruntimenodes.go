@@ -97,11 +97,11 @@ func (client IntegrationRuntimeNodesClient) Delete(ctx context.Context, resource
 // DeletePreparer prepares the Delete request.
 func (client IntegrationRuntimeNodesClient) DeletePreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":			autorest.Encode("path", factoryName),
-		"integrationRuntimeName":	autorest.Encode("path", integrationRuntimeName),
-		"nodeName":			autorest.Encode("path", nodeName),
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"nodeName":               autorest.Encode("path", nodeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -191,11 +191,11 @@ func (client IntegrationRuntimeNodesClient) GetIPAddress(ctx context.Context, re
 // GetIPAddressPreparer prepares the GetIPAddress request.
 func (client IntegrationRuntimeNodesClient) GetIPAddressPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":			autorest.Encode("path", factoryName),
-		"integrationRuntimeName":	autorest.Encode("path", integrationRuntimeName),
-		"nodeName":			autorest.Encode("path", nodeName),
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"nodeName":               autorest.Encode("path", nodeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -287,11 +287,11 @@ func (client IntegrationRuntimeNodesClient) Update(ctx context.Context, resource
 // UpdatePreparer prepares the Update request.
 func (client IntegrationRuntimeNodesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, updateIntegrationRuntimeNodeRequest UpdateIntegrationRuntimeNodeRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":			autorest.Encode("path", factoryName),
-		"integrationRuntimeName":	autorest.Encode("path", integrationRuntimeName),
-		"nodeName":			autorest.Encode("path", nodeName),
-		"resourceGroupName":		autorest.Encode("path", resourceGroupName),
-		"subscriptionId":		autorest.Encode("path", client.SubscriptionID),
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"nodeName":               autorest.Encode("path", nodeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"

@@ -73,8 +73,8 @@ func (client ReplicasClient) Get(ctx context.Context, partitionID string, replic
 // GetPreparer prepares the Get request.
 func (client ReplicasClient) GetPreparer(ctx context.Context, partitionID string, replicaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	autorest.Encode("path", partitionID),
-		"replicaId":	autorest.Encode("path", replicaID),
+		"partitionId": autorest.Encode("path", partitionID),
+		"replicaId":   autorest.Encode("path", replicaID),
 	}
 
 	const APIVersion = "1.0.0"

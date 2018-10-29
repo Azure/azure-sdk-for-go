@@ -31,25 +31,25 @@ type RecordType string
 
 const (
 	// A ...
-	A	RecordType	= "A"
+	A RecordType = "A"
 	// AAAA ...
-	AAAA	RecordType	= "AAAA"
+	AAAA RecordType = "AAAA"
 	// CAA ...
-	CAA	RecordType	= "CAA"
+	CAA RecordType = "CAA"
 	// CNAME ...
-	CNAME	RecordType	= "CNAME"
+	CNAME RecordType = "CNAME"
 	// MX ...
-	MX	RecordType	= "MX"
+	MX RecordType = "MX"
 	// NS ...
-	NS	RecordType	= "NS"
+	NS RecordType = "NS"
 	// PTR ...
-	PTR	RecordType	= "PTR"
+	PTR RecordType = "PTR"
 	// SOA ...
-	SOA	RecordType	= "SOA"
+	SOA RecordType = "SOA"
 	// SRV ...
-	SRV	RecordType	= "SRV"
+	SRV RecordType = "SRV"
 	// TXT ...
-	TXT	RecordType	= "TXT"
+	TXT RecordType = "TXT"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -64,9 +64,9 @@ type ZoneType string
 
 const (
 	// Private ...
-	Private	ZoneType	= "Private"
+	Private ZoneType = "Private"
 	// Public ...
-	Public	ZoneType	= "Public"
+	Public ZoneType = "Public"
 )
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -93,11 +93,11 @@ type ARecord struct {
 // CaaRecord a CAA record.
 type CaaRecord struct {
 	// Flags - The flags for this CAA record as an integer between 0 and 255.
-	Flags	*int32	`json:"flags,omitempty"`
+	Flags *int32 `json:"flags,omitempty"`
 	// Tag - The tag for this CAA record.
-	Tag	*string	`json:"tag,omitempty"`
+	Tag *string `json:"tag,omitempty"`
 	// Value - The value for this CAA record.
-	Value	*string	`json:"value,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -111,13 +111,13 @@ type CloudError struct {
 // CloudErrorBody the body of an error message
 type CloudErrorBody struct {
 	// Code - The error code
-	Code	*string	`json:"code,omitempty"`
+	Code *string `json:"code,omitempty"`
 	// Message - A description of what caused the error
-	Message	*string	`json:"message,omitempty"`
+	Message *string `json:"message,omitempty"`
 	// Target - The target resource of the error message
-	Target	*string	`json:"target,omitempty"`
+	Target *string `json:"target,omitempty"`
 	// Details - Extra error information
-	Details	*[]CloudErrorBody	`json:"details,omitempty"`
+	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -131,9 +131,9 @@ type CnameRecord struct {
 // MxRecord an MX record.
 type MxRecord struct {
 	// Preference - The preference value for this MX record.
-	Preference	*int32	`json:"preference,omitempty"`
+	Preference *int32 `json:"preference,omitempty"`
 	// Exchange - The domain name of the mail host for this MX record.
-	Exchange	*string	`json:"exchange,omitempty"`
+	Exchange *string `json:"exchange,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -153,17 +153,17 @@ type PtrRecord struct {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // RecordSet describes a DNS record set (a collection of DNS records with the same name and type).
 type RecordSet struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// ID - The ID of the record set.
-	ID	*string	`json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 	// Name - The name of the record set.
-	Name	*string	`json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Type - The type of the record set.
-	Type	*string	`json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// Etag - The etag of the record set.
-	Etag	*string	`json:"etag,omitempty"`
+	Etag *string `json:"etag,omitempty"`
 	// RecordSetProperties - The properties of the record set.
-	*RecordSetProperties	`json:"properties,omitempty"`
+	*RecordSetProperties `json:"properties,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -252,18 +252,18 @@ func (rs *RecordSet) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // RecordSetListResult the response to a record set List operation.
 type RecordSetListResult struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Value - Information about the record sets in the response.
-	Value	*[]RecordSet	`json:"value,omitempty"`
+	Value *[]RecordSet `json:"value,omitempty"`
 	// NextLink - The continuation token for the next page of results.
-	NextLink	*string	`json:"nextLink,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // RecordSetListResultIterator provides access to a complete listing of RecordSet values.
 type RecordSetListResultIterator struct {
-	i	int
-	page	RecordSetListResultPage
+	i    int
+	page RecordSetListResultPage
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -326,8 +326,8 @@ func (rslr RecordSetListResult) recordSetListResultPreparer() (*http.Request, er
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // RecordSetListResultPage contains a page of RecordSet values.
 type RecordSetListResultPage struct {
-	fn	func(RecordSetListResult) (RecordSetListResult, error)
-	rslr	RecordSetListResult
+	fn   func(RecordSetListResult) (RecordSetListResult, error)
+	rslr RecordSetListResult
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -367,31 +367,31 @@ func (page RecordSetListResultPage) Values() []RecordSet {
 // RecordSetProperties represents the properties of the records in the record set.
 type RecordSetProperties struct {
 	// Metadata - The metadata attached to the record set.
-	Metadata	map[string]*string	`json:"metadata"`
+	Metadata map[string]*string `json:"metadata"`
 	// TTL - The TTL (time-to-live) of the records in the record set.
-	TTL	*int64	`json:"TTL,omitempty"`
+	TTL *int64 `json:"TTL,omitempty"`
 	// Fqdn - Fully qualified domain name of the record set.
-	Fqdn	*string	`json:"fqdn,omitempty"`
+	Fqdn *string `json:"fqdn,omitempty"`
 	// ARecords - The list of A records in the record set.
-	ARecords	*[]ARecord	`json:"ARecords,omitempty"`
+	ARecords *[]ARecord `json:"ARecords,omitempty"`
 	// AaaaRecords - The list of AAAA records in the record set.
-	AaaaRecords	*[]AaaaRecord	`json:"AAAARecords,omitempty"`
+	AaaaRecords *[]AaaaRecord `json:"AAAARecords,omitempty"`
 	// MxRecords - The list of MX records in the record set.
-	MxRecords	*[]MxRecord	`json:"MXRecords,omitempty"`
+	MxRecords *[]MxRecord `json:"MXRecords,omitempty"`
 	// NsRecords - The list of NS records in the record set.
-	NsRecords	*[]NsRecord	`json:"NSRecords,omitempty"`
+	NsRecords *[]NsRecord `json:"NSRecords,omitempty"`
 	// PtrRecords - The list of PTR records in the record set.
-	PtrRecords	*[]PtrRecord	`json:"PTRRecords,omitempty"`
+	PtrRecords *[]PtrRecord `json:"PTRRecords,omitempty"`
 	// SrvRecords - The list of SRV records in the record set.
-	SrvRecords	*[]SrvRecord	`json:"SRVRecords,omitempty"`
+	SrvRecords *[]SrvRecord `json:"SRVRecords,omitempty"`
 	// TxtRecords - The list of TXT records in the record set.
-	TxtRecords	*[]TxtRecord	`json:"TXTRecords,omitempty"`
+	TxtRecords *[]TxtRecord `json:"TXTRecords,omitempty"`
 	// CnameRecord - The CNAME record in the  record set.
-	CnameRecord	*CnameRecord	`json:"CNAMERecord,omitempty"`
+	CnameRecord *CnameRecord `json:"CNAMERecord,omitempty"`
 	// SoaRecord - The SOA record in the record set.
-	SoaRecord	*SoaRecord	`json:"SOARecord,omitempty"`
+	SoaRecord *SoaRecord `json:"SOARecord,omitempty"`
 	// CaaRecords - The list of CAA records in the record set.
-	CaaRecords	*[]CaaRecord	`json:"caaRecords,omitempty"`
+	CaaRecords *[]CaaRecord `json:"caaRecords,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -451,15 +451,15 @@ type RecordSetUpdateParameters struct {
 // Resource common properties of an Azure Resource Manager resource
 type Resource struct {
 	// ID - Resource ID.
-	ID	*string	`json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
-	Name	*string	`json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
-	Type	*string	`json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
-	Location	*string	`json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
-	Tags	map[string]*string	`json:"tags"`
+	Tags map[string]*string `json:"tags"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -488,32 +488,32 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // SoaRecord an SOA record.
 type SoaRecord struct {
 	// Host - The domain name of the authoritative name server for this SOA record.
-	Host	*string	`json:"host,omitempty"`
+	Host *string `json:"host,omitempty"`
 	// Email - The email contact for this SOA record.
-	Email	*string	`json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
 	// SerialNumber - The serial number for this SOA record.
-	SerialNumber	*int64	`json:"serialNumber,omitempty"`
+	SerialNumber *int64 `json:"serialNumber,omitempty"`
 	// RefreshTime - The refresh value for this SOA record.
-	RefreshTime	*int64	`json:"refreshTime,omitempty"`
+	RefreshTime *int64 `json:"refreshTime,omitempty"`
 	// RetryTime - The retry time for this SOA record.
-	RetryTime	*int64	`json:"retryTime,omitempty"`
+	RetryTime *int64 `json:"retryTime,omitempty"`
 	// ExpireTime - The expire time for this SOA record.
-	ExpireTime	*int64	`json:"expireTime,omitempty"`
+	ExpireTime *int64 `json:"expireTime,omitempty"`
 	// MinimumTTL - The minimum value for this SOA record. By convention this is used to determine the negative caching duration.
-	MinimumTTL	*int64	`json:"minimumTTL,omitempty"`
+	MinimumTTL *int64 `json:"minimumTTL,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // SrvRecord an SRV record.
 type SrvRecord struct {
 	// Priority - The priority value for this SRV record.
-	Priority	*int32	`json:"priority,omitempty"`
+	Priority *int32 `json:"priority,omitempty"`
 	// Weight - The weight value for this SRV record.
-	Weight	*int32	`json:"weight,omitempty"`
+	Weight *int32 `json:"weight,omitempty"`
 	// Port - The port value for this SRV record.
-	Port	*int32	`json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// Target - The target domain name for this SRV record.
-	Target	*string	`json:"target,omitempty"`
+	Target *string `json:"target,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -533,21 +533,21 @@ type TxtRecord struct {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // Zone describes a DNS zone.
 type Zone struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Etag - The etag of the zone.
-	Etag	*string	`json:"etag,omitempty"`
+	Etag *string `json:"etag,omitempty"`
 	// ZoneProperties - The properties of the zone.
-	*ZoneProperties	`json:"properties,omitempty"`
+	*ZoneProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
-	ID	*string	`json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
-	Name	*string	`json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
-	Type	*string	`json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
-	Location	*string	`json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
-	Tags	map[string]*string	`json:"tags"`
+	Tags map[string]*string `json:"tags"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -660,18 +660,18 @@ func (z *Zone) UnmarshalJSON(body []byte) error {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // ZoneListResult the response to a Zone List or ListAll operation.
 type ZoneListResult struct {
-	autorest.Response	`json:"-"`
+	autorest.Response `json:"-"`
 	// Value - Information about the DNS zones.
-	Value	*[]Zone	`json:"value,omitempty"`
+	Value *[]Zone `json:"value,omitempty"`
 	// NextLink - The continuation token for the next page of results.
-	NextLink	*string	`json:"nextLink,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // ZoneListResultIterator provides access to a complete listing of Zone values.
 type ZoneListResultIterator struct {
-	i	int
-	page	ZoneListResultPage
+	i    int
+	page ZoneListResultPage
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -734,8 +734,8 @@ func (zlr ZoneListResult) zoneListResultPreparer() (*http.Request, error) {
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // ZoneListResultPage contains a page of Zone values.
 type ZoneListResultPage struct {
-	fn	func(ZoneListResult) (ZoneListResult, error)
-	zlr	ZoneListResult
+	fn  func(ZoneListResult) (ZoneListResult, error)
+	zlr ZoneListResult
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
@@ -775,24 +775,24 @@ func (page ZoneListResultPage) Values() []Zone {
 // ZoneProperties represents the properties of the zone.
 type ZoneProperties struct {
 	// MaxNumberOfRecordSets - The maximum number of record sets that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
-	MaxNumberOfRecordSets	*int64	`json:"maxNumberOfRecordSets,omitempty"`
+	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty"`
 	// NumberOfRecordSets - The current number of record sets in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
-	NumberOfRecordSets	*int64	`json:"numberOfRecordSets,omitempty"`
+	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty"`
 	// NameServers - The name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
-	NameServers	*[]string	`json:"nameServers,omitempty"`
+	NameServers *[]string `json:"nameServers,omitempty"`
 	// ZoneType - The type of this DNS zone (Public or Private). Possible values include: 'Public', 'Private'
-	ZoneType	ZoneType	`json:"zoneType,omitempty"`
+	ZoneType ZoneType `json:"zoneType,omitempty"`
 	// RegistrationVirtualNetworks - A list of references to virtual networks that register hostnames in this DNS zone. This is a only when ZoneType is Private.
-	RegistrationVirtualNetworks	*[]SubResource	`json:"registrationVirtualNetworks,omitempty"`
+	RegistrationVirtualNetworks *[]SubResource `json:"registrationVirtualNetworks,omitempty"`
 	// ResolutionVirtualNetworks - A list of references to virtual networks that resolve records in this DNS zone. This is a only when ZoneType is Private.
-	ResolutionVirtualNetworks	*[]SubResource	`json:"resolutionVirtualNetworks,omitempty"`
+	ResolutionVirtualNetworks *[]SubResource `json:"resolutionVirtualNetworks,omitempty"`
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead
 // ZonesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ZonesDeleteFuture struct {
 	azure.Future
-	req	*http.Request
+	req *http.Request
 }
 
 // Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns instead

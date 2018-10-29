@@ -70,7 +70,7 @@ func (client PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 		{TargetValue: pipeline,
 			Constraints: []validation.Constraint{{Target: "pipeline.Pipeline", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "pipeline.Pipeline.Concurrency", Name: validation.Null, Rule: false,
-					Chain:	[]validation.Constraint{{Target: "pipeline.Pipeline.Concurrency", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "pipeline.Pipeline.Concurrency", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("datafactory.PipelinesClient", "CreateOrUpdate", err.Error())
 	}
@@ -100,10 +100,10 @@ func (client PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client PipelinesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, pipeline PipelineResource, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"pipelineName":		autorest.Encode("path", pipelineName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"pipelineName":      autorest.Encode("path", pipelineName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -196,10 +196,10 @@ func (client PipelinesClient) CreateRun(ctx context.Context, resourceGroupName s
 // CreateRunPreparer prepares the CreateRun request.
 func (client PipelinesClient) CreateRunPreparer(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string, parameters map[string]interface{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"pipelineName":		autorest.Encode("path", pipelineName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"pipelineName":      autorest.Encode("path", pipelineName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -290,10 +290,10 @@ func (client PipelinesClient) Delete(ctx context.Context, resourceGroupName stri
 // DeletePreparer prepares the Delete request.
 func (client PipelinesClient) DeletePreparer(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"pipelineName":		autorest.Encode("path", pipelineName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"pipelineName":      autorest.Encode("path", pipelineName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -378,10 +378,10 @@ func (client PipelinesClient) Get(ctx context.Context, resourceGroupName string,
 // GetPreparer prepares the Get request.
 func (client PipelinesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, pipelineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"pipelineName":		autorest.Encode("path", pipelineName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"pipelineName":      autorest.Encode("path", pipelineName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -463,9 +463,9 @@ func (client PipelinesClient) ListByFactory(ctx context.Context, resourceGroupNa
 // ListByFactoryPreparer prepares the ListByFactory request.
 func (client PipelinesClient) ListByFactoryPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"

@@ -102,10 +102,10 @@ func (client DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client DatasetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, datasetName string, dataset DatasetResource, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"datasetName":		autorest.Encode("path", datasetName),
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"datasetName":       autorest.Encode("path", datasetName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -197,10 +197,10 @@ func (client DatasetsClient) Delete(ctx context.Context, resourceGroupName strin
 // DeletePreparer prepares the Delete request.
 func (client DatasetsClient) DeletePreparer(ctx context.Context, resourceGroupName string, factoryName string, datasetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"datasetName":		autorest.Encode("path", datasetName),
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"datasetName":       autorest.Encode("path", datasetName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -285,10 +285,10 @@ func (client DatasetsClient) Get(ctx context.Context, resourceGroupName string, 
 // GetPreparer prepares the Get request.
 func (client DatasetsClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, datasetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"datasetName":		autorest.Encode("path", datasetName),
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"datasetName":       autorest.Encode("path", datasetName),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"
@@ -370,9 +370,9 @@ func (client DatasetsClient) ListByFactory(ctx context.Context, resourceGroupNam
 // ListByFactoryPreparer prepares the ListByFactory request.
 func (client DatasetsClient) ListByFactoryPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"factoryName":		autorest.Encode("path", factoryName),
-		"resourceGroupName":	autorest.Encode("path", resourceGroupName),
-		"subscriptionId":	autorest.Encode("path", client.SubscriptionID),
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2017-09-01-preview"

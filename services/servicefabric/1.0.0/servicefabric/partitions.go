@@ -73,8 +73,8 @@ func (client PartitionsClient) Get(ctx context.Context, serviceName string, part
 // GetPreparer prepares the Get request.
 func (client PartitionsClient) GetPreparer(ctx context.Context, serviceName string, partitionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"partitionId":	autorest.Encode("path", partitionID),
-		"serviceName":	serviceName,
+		"partitionId": autorest.Encode("path", partitionID),
+		"serviceName": serviceName,
 	}
 
 	const APIVersion = "1.0.0"

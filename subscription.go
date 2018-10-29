@@ -113,6 +113,26 @@ func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (Message
 	return newPeekIterator(s.entity, s.receiver.connection, options...)
 }
 
+// PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
+func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
+	err := s.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Adding PeekWithPageSize(1) as the last option assures that either:
+	// - creating the iterator will fail because two of the same option will be applied.
+	// - PeekWithPageSize(1) will be applied after all others, so we will not wastefully pull down messages destined to
+	//   be unread.
+	options = append(options, PeekWithPageSize(1))
+
+	it, err := newPeekIterator(s.entity, s.receiver.connection, options...)
+	if err != nil {
+		return nil, err
+	}
+	return it.Next(ctx)
+}
+
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
 func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")

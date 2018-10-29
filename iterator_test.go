@@ -18,6 +18,7 @@ func (suite *serviceBusSuite) TestMessageIterator() {
 		"Continue":      testMessageIteratorContinue,
 		"StartHalfway":  testMessageIteratorStartHalfway,
 		"LargePages":    testMessageIteratorLargePageSize,
+		"PeekOne":       testMessageIteratorPeekOne,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -101,7 +102,14 @@ func testMessageIteratorContinue(ctx context.Context, t *testing.T, queue *Queue
 	matchCount := uint(0)
 	for i := uint(0); i < numMessages; i++ {
 		cursor, err := subject.Next(ctx)
-		require.NoError(t, err)
+		if _, ok := err.(ErrNoMessages); ok {
+			i--
+			t.Error(err)
+			continue
+		} else if err != nil {
+			t.Error(err)
+			return
+		}
 
 		want, got := string(expectedMessages[i].Data), string(cursor.Data)
 		assert.Equal(t, want, got)
@@ -204,6 +212,32 @@ func testMessageIteratorLargePageSize(ctx context.Context, t *testing.T, queue *
 	if got != want {
 		t.Logf("got: %d want: %d", got, want)
 		t.Fail()
+	}
+}
+
+func testMessageIteratorPeekOne(ctx context.Context, t *testing.T, queue *Queue) {
+	createPayload := func(x int) string {
+		return fmt.Sprintf("payload-%d", x)
+	}
+
+	for i := 0; i < 5; i++ {
+		msg := NewMessageFromString(createPayload(i))
+		require.NoError(t, queue.Send(ctx, msg))
+	}
+
+	msg, err := queue.PeekOne(ctx)
+	if err == nil {
+		assert.Equal(t, createPayload(0), string(msg.Data))
+	} else {
+		t.Error(err)
+	}
+
+	const seqNum = 2
+	msg, err = queue.PeekOne(ctx, PeekFromSequenceNumber(seqNum))
+	if err == nil {
+		assert.Equal(t, createPayload(seqNum), string(msg.Data))
+	} else {
+		t.Error(err)
 	}
 }
 

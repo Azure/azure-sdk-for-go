@@ -150,8 +150,8 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 	return q.sender.Send(ctx, event)
 }
 
-// Peek fetches a list of Messages from the Service Bus broker, with-out acquiring a lock or committing to a
-// disposition. The messages are delivered as close to sequence order as possible.
+// Peek fetches a list of Messages from the Service Bus broker without acquiring a lock or committing to a disposition.
+// The messages are delivered as close to sequence order as possible.
 //
 // The MessageIterator that is returned has the following properties:
 // - Messages are fetches from the server in pages. Page size is configurable with PeekOptions.
@@ -166,6 +166,26 @@ func (q *Queue) Peek(ctx context.Context, options ...PeekOption) (MessageIterato
 	}
 
 	return newPeekIterator(q.entity, q.receiver.connection, options...)
+}
+
+// PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
+func (q *Queue) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
+	err := q.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Adding PeekWithPageSize(1) as the last option assures that either:
+	// - creating the iterator will fail because two of the same option will be applied.
+	// - PeekWithPageSize(1) will be applied after all others, so we will not wastefully pull down messages destined to
+	//   be unread.
+	options = append(options, PeekWithPageSize(1))
+
+	it, err := newPeekIterator(q.entity, q.receiver.connection, options...)
+	if err != nil {
+		return nil, err
+	}
+	return it.Next(ctx)
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.

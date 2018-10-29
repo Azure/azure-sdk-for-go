@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// BlobServiceClient is the the Azure Storage Management API.
-type BlobServiceClient struct {
+// BlobServicesClient is the the Azure Storage Management API.
+type BlobServicesClient struct {
 	BaseClient
 }
 
-// NewBlobServiceClient creates an instance of the BlobServiceClient client.
-func NewBlobServiceClient(subscriptionID string) BlobServiceClient {
-	return NewBlobServiceClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBlobServicesClient creates an instance of the BlobServicesClient client.
+func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
+	return NewBlobServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewBlobServiceClientWithBaseURI creates an instance of the BlobServiceClient client.
-func NewBlobServiceClientWithBaseURI(baseURI string, subscriptionID string) BlobServiceClient {
-	return BlobServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBlobServicesClientWithBaseURI creates an instance of the BlobServicesClient client.
+func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
+	return BlobServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetServiceProperties gets the properties of a storage account’s Blob service, including properties for Storage
@@ -47,7 +47,7 @@ func NewBlobServiceClientWithBaseURI(baseURI string, subscriptionID string) Blob
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-func (client BlobServiceClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result BlobServiceProperties, err error) {
+func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result BlobServiceProperties, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -58,32 +58,32 @@ func (client BlobServiceClient) GetServiceProperties(ctx context.Context, resour
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storage.BlobServiceClient", "GetServiceProperties", err.Error())
+		return result, validation.NewError("storage.BlobServicesClient", "GetServiceProperties", err.Error())
 	}
 
 	req, err := client.GetServicePropertiesPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "GetServiceProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "GetServiceProperties", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetServicePropertiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "GetServiceProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "GetServiceProperties", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetServicePropertiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "GetServiceProperties", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "GetServiceProperties", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetServicePropertiesPreparer prepares the GetServiceProperties request.
-func (client BlobServiceClient) GetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client BlobServicesClient) GetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"BlobServicesName":  autorest.Encode("path", "default"),
@@ -106,14 +106,14 @@ func (client BlobServiceClient) GetServicePropertiesPreparer(ctx context.Context
 
 // GetServicePropertiesSender sends the GetServiceProperties request. The method will close the
 // http.Response Body if it receives an error.
-func (client BlobServiceClient) GetServicePropertiesSender(req *http.Request) (*http.Response, error) {
+func (client BlobServicesClient) GetServicePropertiesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetServicePropertiesResponder handles the response to the GetServiceProperties request. The method always
 // closes the http.Response Body.
-func (client BlobServiceClient) GetServicePropertiesResponder(resp *http.Response) (result BlobServiceProperties, err error) {
+func (client BlobServicesClient) GetServicePropertiesResponder(resp *http.Response) (result BlobServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -133,7 +133,7 @@ func (client BlobServiceClient) GetServicePropertiesResponder(resp *http.Respons
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 // parameters - the properties of a storage account’s Blob service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
-func (client BlobServiceClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (result BlobServiceProperties, err error) {
+func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (result BlobServiceProperties, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -153,32 +153,32 @@ func (client BlobServiceClient) SetServiceProperties(ctx context.Context, resour
 						}},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewError("storage.BlobServiceClient", "SetServiceProperties", err.Error())
+		return result, validation.NewError("storage.BlobServicesClient", "SetServiceProperties", err.Error())
 	}
 
 	req, err := client.SetServicePropertiesPreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "SetServiceProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "SetServiceProperties", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.SetServicePropertiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "SetServiceProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "SetServiceProperties", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.SetServicePropertiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.BlobServiceClient", "SetServiceProperties", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storage.BlobServicesClient", "SetServiceProperties", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // SetServicePropertiesPreparer prepares the SetServiceProperties request.
-func (client BlobServiceClient) SetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*http.Request, error) {
+func (client BlobServicesClient) SetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"BlobServicesName":  autorest.Encode("path", "default"),
@@ -203,14 +203,14 @@ func (client BlobServiceClient) SetServicePropertiesPreparer(ctx context.Context
 
 // SetServicePropertiesSender sends the SetServiceProperties request. The method will close the
 // http.Response Body if it receives an error.
-func (client BlobServiceClient) SetServicePropertiesSender(req *http.Request) (*http.Response, error) {
+func (client BlobServicesClient) SetServicePropertiesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SetServicePropertiesResponder handles the response to the SetServiceProperties request. The method always
 // closes the http.Response Body.
-func (client BlobServiceClient) SetServicePropertiesResponder(resp *http.Response) (result BlobServiceProperties, err error) {
+func (client BlobServicesClient) SetServicePropertiesResponder(resp *http.Response) (result BlobServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

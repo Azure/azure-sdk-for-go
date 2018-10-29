@@ -23,7 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07
 
 type AccountsClient = original.AccountsClient
 type BlobContainersClient = original.BlobContainersClient
-type BlobServiceClient = original.BlobServiceClient
+type BlobServicesClient = original.BlobServicesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -326,11 +326,11 @@ func NewBlobContainersClient(subscriptionID string) BlobContainersClient {
 func NewBlobContainersClientWithBaseURI(baseURI string, subscriptionID string) BlobContainersClient {
 	return original.NewBlobContainersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBlobServiceClient(subscriptionID string) BlobServiceClient {
-	return original.NewBlobServiceClient(subscriptionID)
+func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClient(subscriptionID)
 }
-func NewBlobServiceClientWithBaseURI(baseURI string, subscriptionID string) BlobServiceClient {
-	return original.NewBlobServiceClientWithBaseURI(baseURI, subscriptionID)
+func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

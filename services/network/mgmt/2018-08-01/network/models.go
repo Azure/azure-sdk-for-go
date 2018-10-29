@@ -14512,6 +14512,108 @@ func (page LoadBalancerLoadBalancingRuleListResultPage) Values() []LoadBalancing
 	return *page.lblbrlr.Value
 }
 
+// LoadBalancerOutboundRuleListResult response for ListOutboundRule API service call.
+type LoadBalancerOutboundRuleListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of outbound rules in a load balancer.
+	Value *[]OutboundRule `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LoadBalancerOutboundRuleListResultIterator provides access to a complete listing of OutboundRule values.
+type LoadBalancerOutboundRuleListResultIterator struct {
+	i    int
+	page LoadBalancerOutboundRuleListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *LoadBalancerOutboundRuleListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter LoadBalancerOutboundRuleListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter LoadBalancerOutboundRuleListResultIterator) Response() LoadBalancerOutboundRuleListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter LoadBalancerOutboundRuleListResultIterator) Value() OutboundRule {
+	if !iter.page.NotDone() {
+		return OutboundRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lborlr LoadBalancerOutboundRuleListResult) IsEmpty() bool {
+	return lborlr.Value == nil || len(*lborlr.Value) == 0
+}
+
+// loadBalancerOutboundRuleListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lborlr LoadBalancerOutboundRuleListResult) loadBalancerOutboundRuleListResultPreparer() (*http.Request, error) {
+	if lborlr.NextLink == nil || len(to.String(lborlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lborlr.NextLink)))
+}
+
+// LoadBalancerOutboundRuleListResultPage contains a page of OutboundRule values.
+type LoadBalancerOutboundRuleListResultPage struct {
+	fn     func(LoadBalancerOutboundRuleListResult) (LoadBalancerOutboundRuleListResult, error)
+	lborlr LoadBalancerOutboundRuleListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *LoadBalancerOutboundRuleListResultPage) Next() error {
+	next, err := page.fn(page.lborlr)
+	if err != nil {
+		return err
+	}
+	page.lborlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page LoadBalancerOutboundRuleListResultPage) NotDone() bool {
+	return !page.lborlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page LoadBalancerOutboundRuleListResultPage) Response() LoadBalancerOutboundRuleListResult {
+	return page.lborlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page LoadBalancerOutboundRuleListResultPage) Values() []OutboundRule {
+	if page.lborlr.IsEmpty() {
+		return nil
+	}
+	return *page.lborlr.Value
+}
+
 // LoadBalancerProbeListResult response for ListProbe API service call.
 type LoadBalancerProbeListResult struct {
 	autorest.Response `json:"-"`
@@ -15438,6 +15540,7 @@ type OperationPropertiesFormatServiceSpecification struct {
 
 // OutboundRule outbound pool of the load balancer.
 type OutboundRule struct {
+	autorest.Response `json:"-"`
 	// OutboundRulePropertiesFormat - Properties of load balancer outbound rule.
 	*OutboundRulePropertiesFormat `json:"properties,omitempty"`
 	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.

@@ -61,6 +61,7 @@ type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddress
 type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
 type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
 type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
+type LoadBalancerOutboundRulesClient = original.LoadBalancerOutboundRulesClient
 type LoadBalancerProbesClient = original.LoadBalancerProbesClient
 type LoadBalancersClient = original.LoadBalancersClient
 type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
@@ -1236,6 +1237,9 @@ type LoadBalancerListResultPage = original.LoadBalancerListResultPage
 type LoadBalancerLoadBalancingRuleListResult = original.LoadBalancerLoadBalancingRuleListResult
 type LoadBalancerLoadBalancingRuleListResultIterator = original.LoadBalancerLoadBalancingRuleListResultIterator
 type LoadBalancerLoadBalancingRuleListResultPage = original.LoadBalancerLoadBalancingRuleListResultPage
+type LoadBalancerOutboundRuleListResult = original.LoadBalancerOutboundRuleListResult
+type LoadBalancerOutboundRuleListResultIterator = original.LoadBalancerOutboundRuleListResultIterator
+type LoadBalancerOutboundRuleListResultPage = original.LoadBalancerOutboundRuleListResultPage
 type LoadBalancerProbeListResult = original.LoadBalancerProbeListResult
 type LoadBalancerProbeListResultIterator = original.LoadBalancerProbeListResultIterator
 type LoadBalancerProbeListResultPage = original.LoadBalancerProbeListResultPage
@@ -1795,6 +1799,12 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string) LoadBalancerN
 }
 func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerNetworkInterfacesClient {
 	return original.NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLoadBalancerOutboundRulesClient(subscriptionID string) LoadBalancerOutboundRulesClient {
+	return original.NewLoadBalancerOutboundRulesClient(subscriptionID)
+}
+func NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerOutboundRulesClient {
+	return original.NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
 	return original.NewLoadBalancerProbesClient(subscriptionID)

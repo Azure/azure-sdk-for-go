@@ -10,7 +10,7 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:e4a0fb5f8a5bbb9d04f4a4e83c220df6ef5b976543deb986521330e6304d1f3c"
+  digest = "1:a1d029504b24da57f19540d571b0dc4cf5c213f271be6188ef1d387ce53c3a24"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -26,8 +26,8 @@
     "version",
   ]
   pruneopts = ""
-  revision = "54a89d8a156fa46c2d0a41237d66c3e8d2b591f7"
-  version = "v11.2.2"
+  revision = "4e5fffdf007df29ed0862f9e01fafabf4396e851"
+  version = "v11.2.6"
 
 [[projects]]
   digest = "1:e0a4505d5cf7ac6b5d92e3aee79d838b5f1ae8e9641ec7fa5d1e9b01d7a7ea95"
@@ -248,12 +248,12 @@
   version = "v1.1.2"
 
 [[projects]]
-  digest = "1:d0b38ba6da419a6d4380700218eeec8623841d44a856bb57369c172fbf692ab4"
+  digest = "1:ae3493c780092be9d576a1f746ab967293ec165e8473425631f06658b6212afc"
   name = "github.com/spf13/cast"
   packages = ["."]
   pruneopts = ""
-  revision = "8965335b8c7107321228e3e3702cab9832751bac"
-  version = "v1.2.0"
+  revision = "8c9545af88b134710ab1cd196795e7f2388358d7"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:a1403cc8a94b8d7956ee5e9694badef0e7b051af289caad1cf668331e3ffa4f6"
@@ -313,18 +313,18 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:b4657db81437337ae70edb2175bd358d00cc14ec39330341a70d00f68cd6347a"
+  digest = "1:0049ee593cea6375d6bbabe5e0a30aa05576846025811df879e9fcf1223d29a2"
   name = "golang.org/x/crypto"
   packages = [
     "pkcs12",
     "pkcs12/internal/rc2",
   ]
   pruneopts = ""
-  revision = "74cb1d3d52f4c01cbfb44c1b50d204462f3124c7"
+  revision = "b078efbc8099b041569edb8c6ab625cd430e3fce"
 
 [[projects]]
   branch = "master"
-  digest = "1:b001b57f383ecbebb54c3916ca6b8be129a6486d3dbf2dfc722cbb0a0b2a8679"
+  digest = "1:41055845ee2a3f0b0fbf94f12b7a6c5322ae66c166d192e38156e0d63a6e2993"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -336,7 +336,7 @@
     "trace",
   ]
   pruneopts = ""
-  revision = "9b4f9f5ad5197c79fd623a3638e70d8b26cef344"
+  revision = "c44066c5c816ec500d459a2a324a753f78531ae0"
 
 [[projects]]
   branch = "master"
@@ -348,11 +348,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3bb377065822540748d69a5a9cb0de617cf997a9e4f757eceaac3075d1f07d50"
+  digest = "1:2667800887f4161b5b1f49d3065204a82f974d1b857c00d7e450a5167477071f"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "5cd93ef61a7c8f0f858690154eb6de2e69415fa1"
+  revision = "d69651ed3497faee15a5363a89578e9991f6d5e2"
 
 [[projects]]
   digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"
@@ -379,7 +379,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d9f47d3af9482eea8b6f559fc709992cd8890ec615e855a61c2efdf5f1ca85ed"
+  digest = "1:a5c40d520f13a38fe3dbe1691f82b124dd2cdfccdbde32cfc8ea4547ae55cbc1"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -388,23 +388,23 @@
     "internal/gopathwalk",
   ]
   pruneopts = ""
-  revision = "a2dc47679d30b6c496245bafc6a166b46c5fe318"
+  revision = "2d2de6298155751e44170d1c9a9baacb688d2606"
 
 [[projects]]
   branch = "master"
-  digest = "1:3a3fd8f2124975e65b3f6b1cc93b6f194864c339ebf9561ec49cb4548b5812aa"
+  digest = "1:ba7c9eafe35679d6be0b1d064ab6b841fe968496c8a8381ddb55cb192b70c996"
   name = "google.golang.org/api"
   packages = ["support/bundler"]
   pruneopts = ""
-  revision = "a2651947f503a1793446d4058bb073a6fdf99e53"
+  revision = "aff2d7231e3cd0219626182c997296a559b5a27b"
 
 [[projects]]
   branch = "master"
-  digest = "1:849525811c9f6ae1f5bd9b866adb4c9436f4a12d767f48e33bf343596d4aafd7"
+  digest = "1:5bc459e4630e2f2adcd04005a06d6f9cdf614c6ffa751309497096efcab79150"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = ""
-  revision = "94acd270e44e65579b9ee3cdab25034d33fed608"
+  revision = "b69ba1387ce2108ac9bc8e8e5e5a46e7d5c72313"
 
 [[projects]]
   digest = "1:1293087271e314cfa2b3decededba2ecba0ff327e7b7809e00f73f616449191c"
@@ -468,6 +468,7 @@
     "github.com/Azure/go-autorest/autorest/date",
     "github.com/Azure/go-autorest/autorest/to",
     "github.com/Azure/go-autorest/autorest/validation",
+    "github.com/Azure/go-autorest/tracing",
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",

@@ -43,9 +43,9 @@ func NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI string, subscriptionI
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // loadBalancerName - the name of the load balancer.
-// loadBalancingRuleName - the name of the outbound rule.
-func (client LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string) (result OutboundRule, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, loadBalancerName, loadBalancingRuleName)
+// outboundRuleName - the name of the outbound rule.
+func (client LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (result OutboundRule, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, loadBalancerName, outboundRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerOutboundRulesClient", "Get", nil, "Failure preparing request")
 		return
@@ -67,12 +67,12 @@ func (client LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceG
 }
 
 // GetPreparer prepares the Get request.
-func (client LoadBalancerOutboundRulesClient) GetPreparer(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancingRuleName string) (*http.Request, error) {
+func (client LoadBalancerOutboundRulesClient) GetPreparer(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"loadBalancerName":      autorest.Encode("path", loadBalancerName),
-		"loadBalancingRuleName": autorest.Encode("path", loadBalancingRuleName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"loadBalancerName":  autorest.Encode("path", loadBalancerName),
+		"outboundRuleName":  autorest.Encode("path", outboundRuleName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-08-01"

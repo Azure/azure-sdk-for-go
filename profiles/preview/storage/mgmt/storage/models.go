@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07
 
 type AccountsClient = original.AccountsClient
 type BlobContainersClient = original.BlobContainersClient
+type BlobServicesClient = original.BlobServicesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -261,9 +262,14 @@ type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AzureEntityResource = original.AzureEntityResource
 type BlobContainer = original.BlobContainer
+type BlobServiceProperties = original.BlobServiceProperties
+type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type ContainerProperties = original.ContainerProperties
+type CorsRule = original.CorsRule
+type CorsRules = original.CorsRules
 type CustomDomain = original.CustomDomain
+type DeleteRetentionPolicy = original.DeleteRetentionPolicy
 type Dimension = original.Dimension
 type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
@@ -319,6 +325,12 @@ func NewBlobContainersClient(subscriptionID string) BlobContainersClient {
 }
 func NewBlobContainersClientWithBaseURI(baseURI string, subscriptionID string) BlobContainersClient {
 	return original.NewBlobContainersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClient(subscriptionID)
+}
+func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

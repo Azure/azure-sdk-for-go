@@ -30,22 +30,21 @@ type ProjectsClient struct {
 }
 
 // NewProjectsClient creates an instance of the ProjectsClient client.
-func NewProjectsClient() ProjectsClient {
-	return NewProjectsClientWithBaseURI(DefaultBaseURI)
+func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
+	return NewProjectsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewProjectsClientWithBaseURI creates an instance of the ProjectsClient client.
-func NewProjectsClientWithBaseURI(baseURI string) ProjectsClient {
-	return ProjectsClient{NewWithBaseURI(baseURI)}
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
+	return ProjectsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
 // GetMigrateProject sends the get migrate project request.
 // Parameters:
-// subscriptionID - subscription Id.
-// resourceGroupName - resource group name.
-// migrateProjectName - migrate Project name.
-func (client ProjectsClient) GetMigrateProject(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (result Project, err error) {
-	req, err := client.GetMigrateProjectPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+func (client ProjectsClient) GetMigrateProject(ctx context.Context, resourceGroupName string, migrateProjectName string) (result Project, err error) {
+	req, err := client.GetMigrateProjectPreparer(ctx, resourceGroupName, migrateProjectName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "GetMigrateProject", nil, "Failure preparing request")
 		return
@@ -67,11 +66,11 @@ func (client ProjectsClient) GetMigrateProject(ctx context.Context, subscription
 }
 
 // GetMigrateProjectPreparer prepares the GetMigrateProject request.
-func (client ProjectsClient) GetMigrateProjectPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
+func (client ProjectsClient) GetMigrateProjectPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -109,12 +108,11 @@ func (client ProjectsClient) GetMigrateProjectResponder(resp *http.Response) (re
 
 // PutMigrateProject sends the put migrate project request.
 // Parameters:
-// subscriptionID - subscription Id.
-// resourceGroupName - resource group name.
-// migrateProjectName - migrate Project name.
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
 // body - body with migrate project details.
-func (client ProjectsClient) PutMigrateProject(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, body Project) (result Project, err error) {
-	req, err := client.PutMigrateProjectPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, body)
+func (client ProjectsClient) PutMigrateProject(ctx context.Context, resourceGroupName string, migrateProjectName string, body Project) (result Project, err error) {
+	req, err := client.PutMigrateProjectPreparer(ctx, resourceGroupName, migrateProjectName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PutMigrateProject", nil, "Failure preparing request")
 		return
@@ -136,11 +134,11 @@ func (client ProjectsClient) PutMigrateProject(ctx context.Context, subscription
 }
 
 // PutMigrateProjectPreparer prepares the PutMigrateProject request.
-func (client ProjectsClient) PutMigrateProjectPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, body Project) (*http.Request, error) {
+func (client ProjectsClient) PutMigrateProjectPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, body Project) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -155,6 +153,10 @@ func (client ProjectsClient) PutMigrateProjectPreparer(ctx context.Context, subs
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -180,11 +182,10 @@ func (client ProjectsClient) PutMigrateProjectResponder(resp *http.Response) (re
 
 // RefreshMigrateProjectSummary sends the refresh migrate project summary request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-func (client ProjectsClient) RefreshMigrateProjectSummary(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (result RefreshSummaryResult, err error) {
-	req, err := client.RefreshMigrateProjectSummaryPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+func (client ProjectsClient) RefreshMigrateProjectSummary(ctx context.Context, resourceGroupName string, migrateProjectName string) (result RefreshSummaryResult, err error) {
+	req, err := client.RefreshMigrateProjectSummaryPreparer(ctx, resourceGroupName, migrateProjectName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "RefreshMigrateProjectSummary", nil, "Failure preparing request")
 		return
@@ -206,11 +207,11 @@ func (client ProjectsClient) RefreshMigrateProjectSummary(ctx context.Context, s
 }
 
 // RefreshMigrateProjectSummaryPreparer prepares the RefreshMigrateProjectSummary request.
-func (client ProjectsClient) RefreshMigrateProjectSummaryPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
+func (client ProjectsClient) RefreshMigrateProjectSummaryPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -248,12 +249,11 @@ func (client ProjectsClient) RefreshMigrateProjectSummaryResponder(resp *http.Re
 
 // RegisterTool sends the register tool request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
 // input - input containing the name of the tool to be registered.
-func (client ProjectsClient) RegisterTool(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, input RegisterToolInput) (result RegistrationResult, err error) {
-	req, err := client.RegisterToolPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, input)
+func (client ProjectsClient) RegisterTool(ctx context.Context, resourceGroupName string, migrateProjectName string, input RegisterToolInput) (result RegistrationResult, err error) {
+	req, err := client.RegisterToolPreparer(ctx, resourceGroupName, migrateProjectName, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "RegisterTool", nil, "Failure preparing request")
 		return
@@ -275,11 +275,11 @@ func (client ProjectsClient) RegisterTool(ctx context.Context, subscriptionID st
 }
 
 // RegisterToolPreparer prepares the RegisterTool request.
-func (client ProjectsClient) RegisterToolPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, input RegisterToolInput) (*http.Request, error) {
+func (client ProjectsClient) RegisterToolPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, input RegisterToolInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -294,6 +294,10 @@ func (client ProjectsClient) RegisterToolPreparer(ctx context.Context, subscript
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/registerTool", pathParameters),
 		autorest.WithJSON(input),
 		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

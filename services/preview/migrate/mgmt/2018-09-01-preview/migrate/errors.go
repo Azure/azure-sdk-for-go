@@ -30,23 +30,22 @@ type ErrorsClient struct {
 }
 
 // NewErrorsClient creates an instance of the ErrorsClient client.
-func NewErrorsClient() ErrorsClient {
-	return NewErrorsClientWithBaseURI(DefaultBaseURI)
+func NewErrorsClient(subscriptionID string, acceptLanguage string) ErrorsClient {
+	return NewErrorsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewErrorsClientWithBaseURI creates an instance of the ErrorsClient client.
-func NewErrorsClientWithBaseURI(baseURI string) ErrorsClient {
-	return ErrorsClient{NewWithBaseURI(baseURI)}
+func NewErrorsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ErrorsClient {
+	return ErrorsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
 // EnumerateErrors sends the enumerate errors request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the name of the migrate project.
-// continuationToken - continuation token from the previous call.
-func (client ErrorsClient) EnumerateErrors(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, continuationToken string) (result ErrorCollection, err error) {
-	req, err := client.EnumerateErrorsPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, continuationToken)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// continuationToken - the continuation token.
+func (client ErrorsClient) EnumerateErrors(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result ErrorCollection, err error) {
+	req, err := client.EnumerateErrorsPreparer(ctx, resourceGroupName, migrateProjectName, continuationToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ErrorsClient", "EnumerateErrors", nil, "Failure preparing request")
 		return
@@ -68,11 +67,11 @@ func (client ErrorsClient) EnumerateErrors(ctx context.Context, subscriptionID s
 }
 
 // EnumerateErrorsPreparer prepares the EnumerateErrors request.
-func (client ErrorsClient) EnumerateErrorsPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, continuationToken string) (*http.Request, error) {
+func (client ErrorsClient) EnumerateErrorsPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -88,6 +87,10 @@ func (client ErrorsClient) EnumerateErrorsPreparer(ctx context.Context, subscrip
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/MigrateErrors", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -113,12 +116,11 @@ func (client ErrorsClient) EnumerateErrorsResponder(resp *http.Response) (result
 
 // GetError sends the get error request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-// errorName - the ARM name of the error to be fetched.
-func (client ErrorsClient) GetError(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, errorName string) (result Error, err error) {
-	req, err := client.GetErrorPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, errorName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// errorName - unique name of an error within a migrate project.
+func (client ErrorsClient) GetError(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (result Error, err error) {
+	req, err := client.GetErrorPreparer(ctx, resourceGroupName, migrateProjectName, errorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ErrorsClient", "GetError", nil, "Failure preparing request")
 		return
@@ -140,12 +142,12 @@ func (client ErrorsClient) GetError(ctx context.Context, subscriptionID string, 
 }
 
 // GetErrorPreparer prepares the GetError request.
-func (client ErrorsClient) GetErrorPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, errorName string) (*http.Request, error) {
+func (client ErrorsClient) GetErrorPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"errorName":          autorest.Encode("path", errorName),
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"

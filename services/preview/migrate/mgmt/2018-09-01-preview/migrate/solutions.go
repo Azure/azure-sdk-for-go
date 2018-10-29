@@ -30,22 +30,21 @@ type SolutionsClient struct {
 }
 
 // NewSolutionsClient creates an instance of the SolutionsClient client.
-func NewSolutionsClient() SolutionsClient {
-	return NewSolutionsClientWithBaseURI(DefaultBaseURI)
+func NewSolutionsClient(subscriptionID string, acceptLanguage string) SolutionsClient {
+	return NewSolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewSolutionsClientWithBaseURI creates an instance of the SolutionsClient client.
-func NewSolutionsClientWithBaseURI(baseURI string) SolutionsClient {
-	return SolutionsClient{NewWithBaseURI(baseURI)}
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) SolutionsClient {
+	return SolutionsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
 // EnumerateSolutions sends the enumerate solutions request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the name of the migrate project.
-func (client SolutionsClient) EnumerateSolutions(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (result SolutionsCollection, err error) {
-	req, err := client.EnumerateSolutionsPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+func (client SolutionsClient) EnumerateSolutions(ctx context.Context, resourceGroupName string, migrateProjectName string) (result SolutionsCollection, err error) {
+	req, err := client.EnumerateSolutionsPreparer(ctx, resourceGroupName, migrateProjectName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "EnumerateSolutions", nil, "Failure preparing request")
 		return
@@ -67,11 +66,11 @@ func (client SolutionsClient) EnumerateSolutions(ctx context.Context, subscripti
 }
 
 // EnumerateSolutionsPreparer prepares the EnumerateSolutions request.
-func (client SolutionsClient) EnumerateSolutionsPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
+func (client SolutionsClient) EnumerateSolutionsPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -109,12 +108,11 @@ func (client SolutionsClient) EnumerateSolutionsResponder(resp *http.Response) (
 
 // GetConfig sends the get config request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-// solutionName - the name of the solution for which config is being fetched.
-func (client SolutionsClient) GetConfig(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string) (result SolutionConfig, err error) {
-	req, err := client.GetConfigPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, solutionName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// solutionName - unique name of a migration solution within a migrate project.
+func (client SolutionsClient) GetConfig(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (result SolutionConfig, err error) {
+	req, err := client.GetConfigPreparer(ctx, resourceGroupName, migrateProjectName, solutionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "GetConfig", nil, "Failure preparing request")
 		return
@@ -136,12 +134,12 @@ func (client SolutionsClient) GetConfig(ctx context.Context, subscriptionID stri
 }
 
 // GetConfigPreparer prepares the GetConfig request.
-func (client SolutionsClient) GetConfigPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string) (*http.Request, error) {
+func (client SolutionsClient) GetConfigPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"solutionName":       autorest.Encode("path", solutionName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -179,12 +177,11 @@ func (client SolutionsClient) GetConfigResponder(resp *http.Response) (result So
 
 // GetSolution sends the get solution request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-// solutionName - the name of the solution to be fetched.
-func (client SolutionsClient) GetSolution(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string) (result Solution, err error) {
-	req, err := client.GetSolutionPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, solutionName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// solutionName - unique name of a migration solution within a migrate project.
+func (client SolutionsClient) GetSolution(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (result Solution, err error) {
+	req, err := client.GetSolutionPreparer(ctx, resourceGroupName, migrateProjectName, solutionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "GetSolution", nil, "Failure preparing request")
 		return
@@ -206,12 +203,12 @@ func (client SolutionsClient) GetSolution(ctx context.Context, subscriptionID st
 }
 
 // GetSolutionPreparer prepares the GetSolution request.
-func (client SolutionsClient) GetSolutionPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string) (*http.Request, error) {
+func (client SolutionsClient) GetSolutionPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"solutionName":       autorest.Encode("path", solutionName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -249,13 +246,12 @@ func (client SolutionsClient) GetSolutionResponder(resp *http.Response) (result 
 
 // PutSolution sends the put solution request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-// solutionName - the name of the solution to be created.
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// solutionName - unique name of a migration solution within a migrate project.
 // solutionInput - the input for the solution.
-func (client SolutionsClient) PutSolution(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (result Solution, err error) {
-	req, err := client.PutSolutionPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, solutionName, solutionInput)
+func (client SolutionsClient) PutSolution(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (result Solution, err error) {
+	req, err := client.PutSolutionPreparer(ctx, resourceGroupName, migrateProjectName, solutionName, solutionInput)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PutSolution", nil, "Failure preparing request")
 		return
@@ -277,12 +273,12 @@ func (client SolutionsClient) PutSolution(ctx context.Context, subscriptionID st
 }
 
 // PutSolutionPreparer prepares the PutSolution request.
-func (client SolutionsClient) PutSolutionPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (*http.Request, error) {
+func (client SolutionsClient) PutSolutionPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"solutionName":       autorest.Encode("path", solutionName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"

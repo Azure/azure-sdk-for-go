@@ -323,23 +323,23 @@ type OperationsClient = original.OperationsClient
 type ProjectsClient = original.ProjectsClient
 type SolutionsClient = original.SolutionsClient
 
-func New() BaseClient {
-	return original.New()
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func NewErrorsClient() ErrorsClient {
-	return original.NewErrorsClient()
+func NewErrorsClient(subscriptionID string, acceptLanguage string) ErrorsClient {
+	return original.NewErrorsClient(subscriptionID, acceptLanguage)
 }
-func NewErrorsClientWithBaseURI(baseURI string) ErrorsClient {
-	return original.NewErrorsClientWithBaseURI(baseURI)
+func NewErrorsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ErrorsClient {
+	return original.NewErrorsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func NewMachinesClient() MachinesClient {
-	return original.NewMachinesClient()
+func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
+	return original.NewMachinesClient(subscriptionID, acceptLanguage)
 }
-func NewMachinesClientWithBaseURI(baseURI string) MachinesClient {
-	return original.NewMachinesClientWithBaseURI(baseURI)
+func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
+	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func PossibleContainerElementKindValues() []ContainerElementKind {
 	return original.PossibleContainerElementKindValues()
@@ -389,23 +389,23 @@ func PossibleTypeKindValues() []TypeKind {
 func PossibleTypeKind1Values() []TypeKind1 {
 	return original.PossibleTypeKind1Values()
 }
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
+func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func NewProjectsClient() ProjectsClient {
-	return original.NewProjectsClient()
+func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
+	return original.NewProjectsClient(subscriptionID, acceptLanguage)
 }
-func NewProjectsClientWithBaseURI(baseURI string) ProjectsClient {
-	return original.NewProjectsClientWithBaseURI(baseURI)
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
+	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func NewSolutionsClient() SolutionsClient {
-	return original.NewSolutionsClient()
+func NewSolutionsClient(subscriptionID string, acceptLanguage string) SolutionsClient {
+	return original.NewSolutionsClient(subscriptionID, acceptLanguage)
 }
-func NewSolutionsClientWithBaseURI(baseURI string) SolutionsClient {
-	return original.NewSolutionsClientWithBaseURI(baseURI)
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) SolutionsClient {
+	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

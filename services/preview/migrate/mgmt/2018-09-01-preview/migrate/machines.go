@@ -30,23 +30,22 @@ type MachinesClient struct {
 }
 
 // NewMachinesClient creates an instance of the MachinesClient client.
-func NewMachinesClient() MachinesClient {
-	return NewMachinesClientWithBaseURI(DefaultBaseURI)
+func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
+	return NewMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewMachinesClientWithBaseURI creates an instance of the MachinesClient client.
-func NewMachinesClientWithBaseURI(baseURI string) MachinesClient {
-	return MachinesClient{NewWithBaseURI(baseURI)}
+func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
+	return MachinesClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
 // EnumerateMachines sends the enumerate machines request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the name of the migrate project.
-// continuationToken - continuation token from the previous call.
-func (client MachinesClient) EnumerateMachines(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, continuationToken string) (result MachineCollection, err error) {
-	req, err := client.EnumerateMachinesPreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, continuationToken)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// continuationToken - the continuation token.
+func (client MachinesClient) EnumerateMachines(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result MachineCollection, err error) {
+	req, err := client.EnumerateMachinesPreparer(ctx, resourceGroupName, migrateProjectName, continuationToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "EnumerateMachines", nil, "Failure preparing request")
 		return
@@ -68,11 +67,11 @@ func (client MachinesClient) EnumerateMachines(ctx context.Context, subscription
 }
 
 // EnumerateMachinesPreparer prepares the EnumerateMachines request.
-func (client MachinesClient) EnumerateMachinesPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, continuationToken string) (*http.Request, error) {
+func (client MachinesClient) EnumerateMachinesPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"
@@ -113,12 +112,11 @@ func (client MachinesClient) EnumerateMachinesResponder(resp *http.Response) (re
 
 // GetMachine sends the get machine request.
 // Parameters:
-// subscriptionID - the subscription id.
-// resourceGroupName - the resource group name.
-// migrateProjectName - the migrate project name.
-// machineName - the ARM name of the machine to be fetched.
-func (client MachinesClient) GetMachine(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, machineName string) (result Machine, err error) {
-	req, err := client.GetMachinePreparer(ctx, subscriptionID, resourceGroupName, migrateProjectName, machineName)
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// machineName - unique name of a machine in Azure migration hub.
+func (client MachinesClient) GetMachine(ctx context.Context, resourceGroupName string, migrateProjectName string, machineName string) (result Machine, err error) {
+	req, err := client.GetMachinePreparer(ctx, resourceGroupName, migrateProjectName, machineName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.MachinesClient", "GetMachine", nil, "Failure preparing request")
 		return
@@ -140,12 +138,12 @@ func (client MachinesClient) GetMachine(ctx context.Context, subscriptionID stri
 }
 
 // GetMachinePreparer prepares the GetMachine request.
-func (client MachinesClient) GetMachinePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, migrateProjectName string, machineName string) (*http.Request, error) {
+func (client MachinesClient) GetMachinePreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, machineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"machineName":        autorest.Encode("path", machineName),
 		"migrateProjectName": autorest.Encode("path", migrateProjectName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", subscriptionID),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-09-01-preview"

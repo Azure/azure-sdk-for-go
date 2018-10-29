@@ -30,13 +30,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient() OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI)
+func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
 // List get a list of REST API supported by Microsoft.Migrate provider.

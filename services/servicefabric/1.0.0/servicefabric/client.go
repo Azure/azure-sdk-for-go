@@ -29,23 +29,26 @@ const (
 	DefaultBaseURI = "http://localhost:19080"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // BaseClient is the base client for Servicefabric.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
-	Timeout *int32
+	BaseURI	string
+	Timeout	*int32
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // New creates an instance of the BaseClient client.
 func New(timeout *int32) BaseClient {
 	return NewWithBaseURI(DefaultBaseURI, timeout)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric instead
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
-		Timeout: timeout,
+		Client:		autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:	baseURI,
+		Timeout:	timeout,
 	}
 }

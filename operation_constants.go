@@ -1,12 +1,16 @@
 package servicebus
 
+const vendorPrefix = "com.microsoft:"
+
 // Operations
 const (
-	serviceBuslockRenewalOperationName = "com.microsoft:renew-lock"
+	lockRenewalOperationName = vendorPrefix + "renew-lock"
+	peekMessageOperationID   = vendorPrefix + "peek-message"
 )
 
 // Field Descriptions
 const (
-	operationFieldName  = "operation"
-	lockTokensFieldName = "lock-tokens"
+	operationFieldName     = "operation"
+	lockTokensFieldName    = "lock-tokens"
+	serverTimeoutFieldName = vendorPrefix + "server-timeout"
 )

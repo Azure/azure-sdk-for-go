@@ -95,6 +95,44 @@ func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subsc
 	return sub, nil
 }
 
+// Peek fetches a list of Messages from the Service Bus broker, with-out acquiring a lock or committing to a
+// disposition. The messages are delivered as close to sequence order as possible.
+//
+// The MessageIterator that is returned has the following properties:
+// - Messages are fetches from the server in pages. Page size is configurable with PeekOptions.
+// - The MessageIterator will always return "false" for Done().
+// - When Next() is called, it will return either: a slice of messages and no error, nil with an error related to being
+// unable to complete the operation, or an empty slice of messages and an instance of "ErrNoMessages" signifying that
+// there are currently no messages in the subscription with a sequence ID larger than previously viewed ones.
+func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
+	err := s.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return newPeekIterator(s.entity, s.receiver.connection, options...)
+}
+
+// PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
+func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
+	err := s.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Adding PeekWithPageSize(1) as the last option assures that either:
+	// - creating the iterator will fail because two of the same option will be applied.
+	// - PeekWithPageSize(1) will be applied after all others, so we will not wastefully pull down messages destined to
+	//   be unread.
+	options = append(options, PeekWithPageSize(1))
+
+	it, err := newPeekIterator(s.entity, s.receiver.connection, options...)
+	if err != nil {
+		return nil, err
+	}
+	return it.Next(ctx)
+}
+
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
 func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")

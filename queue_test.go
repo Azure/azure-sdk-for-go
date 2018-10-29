@@ -127,10 +127,6 @@ const (
 		`</feed>`
 )
 
-var (
-	defaultTimeout = 60 * time.Second
-)
-
 func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
 	tests := map[string]func(context.Context, *testing.T, *QueueManager, string, *Queue){
 		"TestCountDetails": testCountDetails,

@@ -89,7 +89,6 @@ type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult
 type DomainServiceListResultIterator = original.DomainServiceListResultIterator
 type DomainServiceListResultPage = original.DomainServiceListResultPage
-type DomainServicePatchProperties = original.DomainServicePatchProperties
 type DomainServiceProperties = original.DomainServiceProperties
 type DomainServicesCreateOrUpdateFuture = original.DomainServicesCreateOrUpdateFuture
 type DomainServicesDeleteFuture = original.DomainServicesDeleteFuture

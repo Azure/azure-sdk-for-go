@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/network/mgmt/2018-02-01/network"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-02-01/network"
 
 // Access enumerates the values for access.
 type Access string

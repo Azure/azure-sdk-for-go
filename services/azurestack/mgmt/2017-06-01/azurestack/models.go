@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/azurestack/mgmt/2017-06-01/azurestack"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
 // ComputeRole enumerates the values for compute role.
 type ComputeRole string

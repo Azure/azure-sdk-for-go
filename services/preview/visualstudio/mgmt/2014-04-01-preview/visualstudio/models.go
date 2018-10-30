@@ -25,7 +25,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 
 // AccountResource the response to an account resource GET request.
 type AccountResource struct {

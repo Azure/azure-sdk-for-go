@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2015-11-01/subscriptions"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-11-01/subscriptions"
 
 // ListResult subscription list operation response.
 type ListResult struct {

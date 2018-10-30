@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 
 // IPAction enumerates the values for ip action.
 type IPAction string

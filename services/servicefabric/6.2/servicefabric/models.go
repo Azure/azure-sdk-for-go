@@ -25,7 +25,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/servicefabric/6.2/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric"
 
 // ApplicationDefinitionKind enumerates the values for application definition kind.
 type ApplicationDefinitionKind string

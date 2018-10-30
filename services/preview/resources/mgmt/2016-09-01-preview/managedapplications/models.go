@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/resources/mgmt/2016-09-01-preview/managedapplications"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications"
 
 // ApplianceArtifactType enumerates the values for appliance artifact type.
 type ApplianceArtifactType string

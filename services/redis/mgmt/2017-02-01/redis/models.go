@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/redis/mgmt/2017-02-01/redis"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
 
 // DayOfWeek enumerates the values for day of week.
 type DayOfWeek string

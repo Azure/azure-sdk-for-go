@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2016-06-01/subscriptions"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
 
 // SpendingLimit enumerates the values for spending limit.
 type SpendingLimit string

@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/network/mgmt/2018-08-01/network"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
 
 // Access enumerates the values for access.
 type Access string
@@ -81,6 +81,22 @@ const (
 // PossibleApplicationGatewayCookieBasedAffinityValues returns an array of possible values for the ApplicationGatewayCookieBasedAffinity const type.
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return []ApplicationGatewayCookieBasedAffinity{Disabled, Enabled}
+}
+
+// ApplicationGatewayCustomErrorStatusCode enumerates the values for application gateway custom error status
+// code.
+type ApplicationGatewayCustomErrorStatusCode string
+
+const (
+	// HTTPStatus403 ...
+	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = "HttpStatus403"
+	// HTTPStatus502 ...
+	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
+)
+
+// PossibleApplicationGatewayCustomErrorStatusCodeValues returns an array of possible values for the ApplicationGatewayCustomErrorStatusCode const type.
+func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
+	return []ApplicationGatewayCustomErrorStatusCode{HTTPStatus403, HTTPStatus502}
 }
 
 // ApplicationGatewayFirewallMode enumerates the values for application gateway firewall mode.
@@ -403,6 +419,8 @@ type AzureFirewallNetworkRuleProtocol string
 const (
 	// Any ...
 	Any AzureFirewallNetworkRuleProtocol = "Any"
+	// ICMP ...
+	ICMP AzureFirewallNetworkRuleProtocol = "ICMP"
 	// TCP ...
 	TCP AzureFirewallNetworkRuleProtocol = "TCP"
 	// UDP ...
@@ -411,7 +429,7 @@ const (
 
 // PossibleAzureFirewallNetworkRuleProtocolValues returns an array of possible values for the AzureFirewallNetworkRuleProtocol const type.
 func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRuleProtocol {
-	return []AzureFirewallNetworkRuleProtocol{Any, TCP, UDP}
+	return []AzureFirewallNetworkRuleProtocol{Any, ICMP, TCP, UDP}
 }
 
 // AzureFirewallRCActionType enumerates the values for azure firewall rc action type.
@@ -684,15 +702,47 @@ func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily
 type ExpressRouteCircuitSkuTier string
 
 const (
-	// Premium ...
-	Premium ExpressRouteCircuitSkuTier = "Premium"
-	// Standard ...
-	Standard ExpressRouteCircuitSkuTier = "Standard"
+	// ExpressRouteCircuitSkuTierBasic ...
+	ExpressRouteCircuitSkuTierBasic ExpressRouteCircuitSkuTier = "Basic"
+	// ExpressRouteCircuitSkuTierPremium ...
+	ExpressRouteCircuitSkuTierPremium ExpressRouteCircuitSkuTier = "Premium"
+	// ExpressRouteCircuitSkuTierStandard ...
+	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = "Standard"
 )
 
 // PossibleExpressRouteCircuitSkuTierValues returns an array of possible values for the ExpressRouteCircuitSkuTier const type.
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
-	return []ExpressRouteCircuitSkuTier{Premium, Standard}
+	return []ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierBasic, ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
+}
+
+// ExpressRouteLinkAdminState enumerates the values for express route link admin state.
+type ExpressRouteLinkAdminState string
+
+const (
+	// ExpressRouteLinkAdminStateDisabled ...
+	ExpressRouteLinkAdminStateDisabled ExpressRouteLinkAdminState = "Disabled"
+	// ExpressRouteLinkAdminStateEnabled ...
+	ExpressRouteLinkAdminStateEnabled ExpressRouteLinkAdminState = "Enabled"
+)
+
+// PossibleExpressRouteLinkAdminStateValues returns an array of possible values for the ExpressRouteLinkAdminState const type.
+func PossibleExpressRouteLinkAdminStateValues() []ExpressRouteLinkAdminState {
+	return []ExpressRouteLinkAdminState{ExpressRouteLinkAdminStateDisabled, ExpressRouteLinkAdminStateEnabled}
+}
+
+// ExpressRouteLinkConnectorType enumerates the values for express route link connector type.
+type ExpressRouteLinkConnectorType string
+
+const (
+	// LC ...
+	LC ExpressRouteLinkConnectorType = "LC"
+	// SC ...
+	SC ExpressRouteLinkConnectorType = "SC"
+)
+
+// PossibleExpressRouteLinkConnectorTypeValues returns an array of possible values for the ExpressRouteLinkConnectorType const type.
+func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorType {
+	return []ExpressRouteLinkConnectorType{LC, SC}
 }
 
 // ExpressRoutePeeringState enumerates the values for express route peering state.
@@ -725,6 +775,21 @@ const (
 // PossibleExpressRoutePeeringTypeValues returns an array of possible values for the ExpressRoutePeeringType const type.
 func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	return []ExpressRoutePeeringType{AzurePrivatePeering, AzurePublicPeering, MicrosoftPeering}
+}
+
+// ExpressRoutePortsEncapsulation enumerates the values for express route ports encapsulation.
+type ExpressRoutePortsEncapsulation string
+
+const (
+	// Dot1Q ...
+	Dot1Q ExpressRoutePortsEncapsulation = "Dot1Q"
+	// QinQ ...
+	QinQ ExpressRoutePortsEncapsulation = "QinQ"
+)
+
+// PossibleExpressRoutePortsEncapsulationValues returns an array of possible values for the ExpressRoutePortsEncapsulation const type.
+func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
+	return []ExpressRoutePortsEncapsulation{Dot1Q, QinQ}
 }
 
 // HTTPMethod enumerates the values for http method.
@@ -1235,13 +1300,13 @@ func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 type PublicIPPrefixSkuName string
 
 const (
-	// PublicIPPrefixSkuNameStandard ...
-	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = "Standard"
+	// Standard ...
+	Standard PublicIPPrefixSkuName = "Standard"
 )
 
 // PossiblePublicIPPrefixSkuNameValues returns an array of possible values for the PublicIPPrefixSkuName const type.
 func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
-	return []PublicIPPrefixSkuName{PublicIPPrefixSkuNameStandard}
+	return []PublicIPPrefixSkuName{Standard}
 }
 
 // RouteNextHopType enumerates the values for route next hop type.
@@ -1380,6 +1445,23 @@ const (
 // PossibleTunnelConnectionStatusValues returns an array of possible values for the TunnelConnectionStatus const type.
 func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 	return []TunnelConnectionStatus{TunnelConnectionStatusConnected, TunnelConnectionStatusConnecting, TunnelConnectionStatusNotConnected, TunnelConnectionStatusUnknown}
+}
+
+// VerbosityLevel enumerates the values for verbosity level.
+type VerbosityLevel string
+
+const (
+	// Full ...
+	Full VerbosityLevel = "Full"
+	// Minimum ...
+	Minimum VerbosityLevel = "Minimum"
+	// Normal ...
+	Normal VerbosityLevel = "Normal"
+)
+
+// PossibleVerbosityLevelValues returns an array of possible values for the VerbosityLevel const type.
+func PossibleVerbosityLevelValues() []VerbosityLevel {
+	return []VerbosityLevel{Full, Minimum, Normal}
 }
 
 // VirtualNetworkGatewayConnectionProtocol enumerates the values for virtual network gateway connection
@@ -2427,6 +2509,14 @@ type ApplicationGatewayConnectionDraining struct {
 	DrainTimeoutInSec *int32 `json:"drainTimeoutInSec,omitempty"`
 }
 
+// ApplicationGatewayCustomError customer error of an application gateway.
+type ApplicationGatewayCustomError struct {
+	// StatusCode - Status code of the application gateway customer error. Possible values include: 'HTTPStatus403', 'HTTPStatus502'
+	StatusCode ApplicationGatewayCustomErrorStatusCode `json:"statusCode,omitempty"`
+	// CustomErrorPageURL - Error page URL of the application gateway customer error.
+	CustomErrorPageURL *string `json:"customErrorPageUrl,omitempty"`
+}
+
 // ApplicationGatewayFirewallDisabledRuleGroup allows to disable rules within a rule group or an entire
 // rule group.
 type ApplicationGatewayFirewallDisabledRuleGroup struct {
@@ -2434,6 +2524,17 @@ type ApplicationGatewayFirewallDisabledRuleGroup struct {
 	RuleGroupName *string `json:"ruleGroupName,omitempty"`
 	// Rules - The list of rules that will be disabled. If null, all rules of the rule group will be disabled.
 	Rules *[]int32 `json:"rules,omitempty"`
+}
+
+// ApplicationGatewayFirewallExclusion allow to exclude some variable satisfy the condition for the WAF
+// check
+type ApplicationGatewayFirewallExclusion struct {
+	// MatchVariable - The variable to be excluded.
+	MatchVariable *string `json:"matchVariable,omitempty"`
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to.
+	SelectorMatchOperator *string `json:"selectorMatchOperator,omitempty"`
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+	Selector *string `json:"selector,omitempty"`
 }
 
 // ApplicationGatewayFirewallRule a web application firewall rule.
@@ -2895,6 +2996,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	RequireServerNameIndication *bool `json:"requireServerNameIndication,omitempty"`
 	// ProvisioningState - Provisioning state of the HTTP listener resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// CustomErrorConfigurations - Custom error configurations of the HTTP listener.
+	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1
@@ -3417,6 +3520,8 @@ type ApplicationGatewayPropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// CustomErrorConfigurations - Custom error configurations of the application gateway resource.
+	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 }
 
 // ApplicationGatewayRedirectConfiguration redirect configuration of an application gateway.
@@ -4241,6 +4346,12 @@ type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
 	// MaxRequestBodySize - Maxium request body size for WAF.
 	MaxRequestBodySize *int32 `json:"maxRequestBodySize,omitempty"`
+	// MaxRequestBodySizeInKb - Maxium request body size in Kb for WAF.
+	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
+	// FileUploadLimitInMb - Maxium file upload size in Mb for WAF.
+	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
+	// Exclusions - The exclusion list.
+	Exclusions *[]ApplicationGatewayFirewallExclusion `json:"exclusions,omitempty"`
 }
 
 // ApplicationSecurityGroup an application security group in a resource group.
@@ -6420,8 +6531,24 @@ type BgpSettings struct {
 type ConfigurationDiagnosticParameters struct {
 	// TargetResourceID - The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// Queries - List of traffic queries.
-	Queries *[]TrafficQuery `json:"queries,omitempty"`
+	// VerbosityLevel - Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'. Possible values include: 'Normal', 'Minimum', 'Full'
+	VerbosityLevel VerbosityLevel `json:"verbosityLevel,omitempty"`
+	// Profiles - List of network configuration diagnostic profiles.
+	Profiles *[]ConfigurationDiagnosticProfile `json:"profiles,omitempty"`
+}
+
+// ConfigurationDiagnosticProfile parameters to compare with network configuration.
+type ConfigurationDiagnosticProfile struct {
+	// Direction - The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
+	Direction Direction `json:"direction,omitempty"`
+	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
+	Protocol *string `json:"protocol,omitempty"`
+	// Source - Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
+	Source *string `json:"source,omitempty"`
+	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
+	Destination *string `json:"destination,omitempty"`
+	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
 // ConfigurationDiagnosticResponse results of network configuration diagnostic on the target resource.
@@ -6434,8 +6561,8 @@ type ConfigurationDiagnosticResponse struct {
 // ConfigurationDiagnosticResult network configuration diagnostic result corresponded to provided traffic
 // query.
 type ConfigurationDiagnosticResult struct {
-	TrafficQuery               *TrafficQuery        `json:"trafficQuery,omitempty"`
-	NetworkSecurityGroupResult *SecurityGroupResult `json:"networkSecurityGroupResult,omitempty"`
+	Profile                    *ConfigurationDiagnosticProfile `json:"profile,omitempty"`
+	NetworkSecurityGroupResult *SecurityGroupResult            `json:"networkSecurityGroupResult,omitempty"`
 }
 
 // ConnectionMonitor parameters that define the operation to create a connection monitor.
@@ -7955,8 +8082,10 @@ type ErrorResponse struct {
 // EvaluatedNetworkSecurityGroup results of network security group evaluation.
 type EvaluatedNetworkSecurityGroup struct {
 	// NetworkSecurityGroupID - Network security group ID.
-	NetworkSecurityGroupID *string      `json:"networkSecurityGroupId,omitempty"`
-	MatchedRule            *MatchedRule `json:"matchedRule,omitempty"`
+	NetworkSecurityGroupID *string `json:"networkSecurityGroupId,omitempty"`
+	// AppliedTo - Resource ID of nic or subnet to which network security group is applied.
+	AppliedTo   *string      `json:"appliedTo,omitempty"`
+	MatchedRule *MatchedRule `json:"matchedRule,omitempty"`
 	// RulesEvaluationResult - List of network security rules evaluation results.
 	RulesEvaluationResult *[]SecurityRulesEvaluationResult `json:"rulesEvaluationResult,omitempty"`
 }
@@ -8883,6 +9012,12 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	ServiceProviderNotes *string `json:"serviceProviderNotes,omitempty"`
 	// ServiceProviderProperties - The ServiceProviderProperties.
 	ServiceProviderProperties *ExpressRouteCircuitServiceProviderProperties `json:"serviceProviderProperties,omitempty"`
+	// ExpressRoutePort - The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource.
+	ExpressRoutePort *SubResource `json:"expressRoutePort,omitempty"`
+	// BandwidthInGbps - The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
+	BandwidthInGbps *float64 `json:"bandwidthInGbps,omitempty"`
+	// Stag - The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
+	Stag *int32 `json:"stag,omitempty"`
 	// ProvisioningState - Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// GatewayManagerEtag - The GatewayManager Etag.
@@ -9002,7 +9137,7 @@ type ExpressRouteCircuitServiceProviderProperties struct {
 type ExpressRouteCircuitSku struct {
 	// Name - The name of the SKU.
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'Standard', 'Premium'
+	// Tier - The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium', 'ExpressRouteCircuitSkuTierBasic'
 	Tier ExpressRouteCircuitSkuTier `json:"tier,omitempty"`
 	// Family - The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'
 	Family ExpressRouteCircuitSkuFamily `json:"family,omitempty"`
@@ -10263,6 +10398,877 @@ func (future *ExpressRouteGatewaysDeleteFuture) Result(client ExpressRouteGatewa
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// ExpressRouteLink expressRouteLink child resource definition.
+type ExpressRouteLink struct {
+	autorest.Response `json:"-"`
+	// ExpressRouteLinkPropertiesFormat - ExpressRouteLink properties
+	*ExpressRouteLinkPropertiesFormat `json:"properties,omitempty"`
+	// Name - Name of child port resource that is unique among child port resources of the parent.
+	Name *string `json:"name,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRouteLink.
+func (erl ExpressRouteLink) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erl.ExpressRouteLinkPropertiesFormat != nil {
+		objectMap["properties"] = erl.ExpressRouteLinkPropertiesFormat
+	}
+	if erl.Name != nil {
+		objectMap["name"] = erl.Name
+	}
+	if erl.Etag != nil {
+		objectMap["etag"] = erl.Etag
+	}
+	if erl.ID != nil {
+		objectMap["id"] = erl.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExpressRouteLink struct.
+func (erl *ExpressRouteLink) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var expressRouteLinkPropertiesFormat ExpressRouteLinkPropertiesFormat
+				err = json.Unmarshal(*v, &expressRouteLinkPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				erl.ExpressRouteLinkPropertiesFormat = &expressRouteLinkPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				erl.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				erl.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				erl.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// ExpressRouteLinkListResult response for ListExpressRouteLinks API service call.
+type ExpressRouteLinkListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of ExpressRouteLink sub-resources.
+	Value *[]ExpressRouteLink `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExpressRouteLinkListResultIterator provides access to a complete listing of ExpressRouteLink values.
+type ExpressRouteLinkListResultIterator struct {
+	i    int
+	page ExpressRouteLinkListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExpressRouteLinkListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteLinkListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExpressRouteLinkListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExpressRouteLinkListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExpressRouteLinkListResultIterator) Response() ExpressRouteLinkListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExpressRouteLinkListResultIterator) Value() ExpressRouteLink {
+	if !iter.page.NotDone() {
+		return ExpressRouteLink{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (erllr ExpressRouteLinkListResult) IsEmpty() bool {
+	return erllr.Value == nil || len(*erllr.Value) == 0
+}
+
+// expressRouteLinkListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (erllr ExpressRouteLinkListResult) expressRouteLinkListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if erllr.NextLink == nil || len(to.String(erllr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(erllr.NextLink)))
+}
+
+// ExpressRouteLinkListResultPage contains a page of ExpressRouteLink values.
+type ExpressRouteLinkListResultPage struct {
+	fn    func(context.Context, ExpressRouteLinkListResult) (ExpressRouteLinkListResult, error)
+	erllr ExpressRouteLinkListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExpressRouteLinkListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteLinkListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.erllr)
+	if err != nil {
+		return err
+	}
+	page.erllr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExpressRouteLinkListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExpressRouteLinkListResultPage) NotDone() bool {
+	return !page.erllr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExpressRouteLinkListResultPage) Response() ExpressRouteLinkListResult {
+	return page.erllr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExpressRouteLinkListResultPage) Values() []ExpressRouteLink {
+	if page.erllr.IsEmpty() {
+		return nil
+	}
+	return *page.erllr.Value
+}
+
+// ExpressRouteLinkPropertiesFormat properties specific to ExpressRouteLink resources.
+type ExpressRouteLinkPropertiesFormat struct {
+	// RouterName - Name of Azure router associated with physical port.
+	RouterName *string `json:"routerName,omitempty"`
+	// InterfaceName - Name of Azure router interface.
+	InterfaceName *string `json:"interfaceName,omitempty"`
+	// PatchPanelID - Mapping between physical port to patch panel port.
+	PatchPanelID *string `json:"patchPanelId,omitempty"`
+	// RackID - Mapping of physical patch panel to rack.
+	RackID *string `json:"rackId,omitempty"`
+	// ConnectorType - Physical fiber port type. Possible values include: 'LC', 'SC'
+	ConnectorType ExpressRouteLinkConnectorType `json:"connectorType,omitempty"`
+	// AdminState - Administrative state of the physical port. Possible values include: 'ExpressRouteLinkAdminStateEnabled', 'ExpressRouteLinkAdminStateDisabled'
+	AdminState ExpressRouteLinkAdminState `json:"adminState,omitempty"`
+	// ProvisioningState - The provisioning state of the ExpressRouteLink resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ExpressRoutePort expressRoutePort resource definition.
+type ExpressRoutePort struct {
+	autorest.Response `json:"-"`
+	// ExpressRoutePortPropertiesFormat - ExpressRoutePort properties
+	*ExpressRoutePortPropertiesFormat `json:"properties,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRoutePort.
+func (erp ExpressRoutePort) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erp.ExpressRoutePortPropertiesFormat != nil {
+		objectMap["properties"] = erp.ExpressRoutePortPropertiesFormat
+	}
+	if erp.Etag != nil {
+		objectMap["etag"] = erp.Etag
+	}
+	if erp.ID != nil {
+		objectMap["id"] = erp.ID
+	}
+	if erp.Name != nil {
+		objectMap["name"] = erp.Name
+	}
+	if erp.Type != nil {
+		objectMap["type"] = erp.Type
+	}
+	if erp.Location != nil {
+		objectMap["location"] = erp.Location
+	}
+	if erp.Tags != nil {
+		objectMap["tags"] = erp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExpressRoutePort struct.
+func (erp *ExpressRoutePort) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var expressRoutePortPropertiesFormat ExpressRoutePortPropertiesFormat
+				err = json.Unmarshal(*v, &expressRoutePortPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				erp.ExpressRoutePortPropertiesFormat = &expressRoutePortPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				erp.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				erp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				erp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				erp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				erp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				erp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ExpressRoutePortListResult response for ListExpressRoutePorts API service call.
+type ExpressRoutePortListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of ExpressRoutePort resources.
+	Value *[]ExpressRoutePort `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExpressRoutePortListResultIterator provides access to a complete listing of ExpressRoutePort values.
+type ExpressRoutePortListResultIterator struct {
+	i    int
+	page ExpressRoutePortListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExpressRoutePortListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRoutePortListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExpressRoutePortListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExpressRoutePortListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExpressRoutePortListResultIterator) Response() ExpressRoutePortListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExpressRoutePortListResultIterator) Value() ExpressRoutePort {
+	if !iter.page.NotDone() {
+		return ExpressRoutePort{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (erplr ExpressRoutePortListResult) IsEmpty() bool {
+	return erplr.Value == nil || len(*erplr.Value) == 0
+}
+
+// expressRoutePortListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (erplr ExpressRoutePortListResult) expressRoutePortListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if erplr.NextLink == nil || len(to.String(erplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(erplr.NextLink)))
+}
+
+// ExpressRoutePortListResultPage contains a page of ExpressRoutePort values.
+type ExpressRoutePortListResultPage struct {
+	fn    func(context.Context, ExpressRoutePortListResult) (ExpressRoutePortListResult, error)
+	erplr ExpressRoutePortListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExpressRoutePortListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRoutePortListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.erplr)
+	if err != nil {
+		return err
+	}
+	page.erplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExpressRoutePortListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExpressRoutePortListResultPage) NotDone() bool {
+	return !page.erplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExpressRoutePortListResultPage) Response() ExpressRoutePortListResult {
+	return page.erplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExpressRoutePortListResultPage) Values() []ExpressRoutePort {
+	if page.erplr.IsEmpty() {
+		return nil
+	}
+	return *page.erplr.Value
+}
+
+// ExpressRoutePortPropertiesFormat properties specific to ExpressRoutePort resources.
+type ExpressRoutePortPropertiesFormat struct {
+	// PeeringLocation - The name of the peering location that the ExpressRoutePort is mapped to physically.
+	PeeringLocation *string `json:"peeringLocation,omitempty"`
+	// BandwidthInGbps - Bandwidth of procured ports in Gbps
+	BandwidthInGbps *int32 `json:"bandwidthInGbps,omitempty"`
+	// ProvisionedBandwidthInGbps - Aggregate Gbps of associated circuit bandwidths.
+	ProvisionedBandwidthInGbps *float64 `json:"provisionedBandwidthInGbps,omitempty"`
+	// Mtu - Maximum transmission unit of the physical port pair(s)
+	Mtu *string `json:"mtu,omitempty"`
+	// Encapsulation - Encapsulation method on physical ports. Possible values include: 'Dot1Q', 'QinQ'
+	Encapsulation ExpressRoutePortsEncapsulation `json:"encapsulation,omitempty"`
+	// EtherType - Ethertype of the physical port.
+	EtherType *string `json:"etherType,omitempty"`
+	// AllocationDate - Date of the physical port allocation to be used in Letter of Authorization.
+	AllocationDate *string `json:"allocationDate,omitempty"`
+	// Links - The set of physical links of the ExpressRoutePort resource
+	Links *[]ExpressRouteLink `json:"links,omitempty"`
+	// Circuits - Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.
+	Circuits *[]SubResource `json:"circuits,omitempty"`
+	// ProvisioningState - The provisioning state of the ExpressRoutePort resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ResourceGUID - The resource GUID property of the ExpressRoutePort resource.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
+}
+
+// ExpressRoutePortsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExpressRoutePortsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExpressRoutePortsCreateOrUpdateFuture) Result(client ExpressRoutePortsClient) (erp ExpressRoutePort, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
+		erp, err = client.CreateOrUpdateResponder(erp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", erp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ExpressRoutePortsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExpressRoutePortsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExpressRoutePortsDeleteFuture) Result(client ExpressRoutePortsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExpressRoutePortsLocation definition of the ExpressRoutePorts peering location resource.
+type ExpressRoutePortsLocation struct {
+	autorest.Response `json:"-"`
+	// ExpressRoutePortsLocationPropertiesFormat - ExpressRoutePort peering location properties
+	*ExpressRoutePortsLocationPropertiesFormat `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRoutePortsLocation.
+func (erpl ExpressRoutePortsLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erpl.ExpressRoutePortsLocationPropertiesFormat != nil {
+		objectMap["properties"] = erpl.ExpressRoutePortsLocationPropertiesFormat
+	}
+	if erpl.ID != nil {
+		objectMap["id"] = erpl.ID
+	}
+	if erpl.Name != nil {
+		objectMap["name"] = erpl.Name
+	}
+	if erpl.Type != nil {
+		objectMap["type"] = erpl.Type
+	}
+	if erpl.Location != nil {
+		objectMap["location"] = erpl.Location
+	}
+	if erpl.Tags != nil {
+		objectMap["tags"] = erpl.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExpressRoutePortsLocation struct.
+func (erpl *ExpressRoutePortsLocation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var expressRoutePortsLocationPropertiesFormat ExpressRoutePortsLocationPropertiesFormat
+				err = json.Unmarshal(*v, &expressRoutePortsLocationPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				erpl.ExpressRoutePortsLocationPropertiesFormat = &expressRoutePortsLocationPropertiesFormat
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				erpl.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				erpl.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				erpl.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				erpl.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				erpl.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ExpressRoutePortsLocationBandwidths real-time inventory of available ExpressRoute port bandwidths.
+type ExpressRoutePortsLocationBandwidths struct {
+	// OfferName - Bandwidth descriptive name
+	OfferName *string `json:"offerName,omitempty"`
+	// ValueInGbps - Bandwidth value in Gbps
+	ValueInGbps *int32 `json:"valueInGbps,omitempty"`
+}
+
+// ExpressRoutePortsLocationListResult response for ListExpressRoutePortsLocations API service call.
+type ExpressRoutePortsLocationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of all ExpressRoutePort peering locations.
+	Value *[]ExpressRoutePortsLocation `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExpressRoutePortsLocationListResultIterator provides access to a complete listing of
+// ExpressRoutePortsLocation values.
+type ExpressRoutePortsLocationListResultIterator struct {
+	i    int
+	page ExpressRoutePortsLocationListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExpressRoutePortsLocationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRoutePortsLocationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExpressRoutePortsLocationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExpressRoutePortsLocationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExpressRoutePortsLocationListResultIterator) Response() ExpressRoutePortsLocationListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExpressRoutePortsLocationListResultIterator) Value() ExpressRoutePortsLocation {
+	if !iter.page.NotDone() {
+		return ExpressRoutePortsLocation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (erpllr ExpressRoutePortsLocationListResult) IsEmpty() bool {
+	return erpllr.Value == nil || len(*erpllr.Value) == 0
+}
+
+// expressRoutePortsLocationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (erpllr ExpressRoutePortsLocationListResult) expressRoutePortsLocationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if erpllr.NextLink == nil || len(to.String(erpllr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(erpllr.NextLink)))
+}
+
+// ExpressRoutePortsLocationListResultPage contains a page of ExpressRoutePortsLocation values.
+type ExpressRoutePortsLocationListResultPage struct {
+	fn     func(context.Context, ExpressRoutePortsLocationListResult) (ExpressRoutePortsLocationListResult, error)
+	erpllr ExpressRoutePortsLocationListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExpressRoutePortsLocationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRoutePortsLocationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.erpllr)
+	if err != nil {
+		return err
+	}
+	page.erpllr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExpressRoutePortsLocationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExpressRoutePortsLocationListResultPage) NotDone() bool {
+	return !page.erpllr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExpressRoutePortsLocationListResultPage) Response() ExpressRoutePortsLocationListResult {
+	return page.erpllr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExpressRoutePortsLocationListResultPage) Values() []ExpressRoutePortsLocation {
+	if page.erpllr.IsEmpty() {
+		return nil
+	}
+	return *page.erpllr.Value
+}
+
+// ExpressRoutePortsLocationPropertiesFormat properties specific to ExpressRoutePorts peering location
+// resources.
+type ExpressRoutePortsLocationPropertiesFormat struct {
+	// Address - Address of peering location.
+	Address *string `json:"address,omitempty"`
+	// Contact - Contact details of peering locations.
+	Contact *string `json:"contact,omitempty"`
+	// AvailableBandwidths - The inventory of available ExpressRoutePort bandwidths.
+	AvailableBandwidths *[]ExpressRoutePortsLocationBandwidths `json:"availableBandwidths,omitempty"`
+	// ProvisioningState - The provisioning state of the ExpressRoutePortLocation resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ExpressRoutePortsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExpressRoutePortsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExpressRoutePortsUpdateTagsFuture) Result(client ExpressRoutePortsClient) (erp ExpressRoutePort, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
+		erp, err = client.UpdateTagsResponder(erp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", erp.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -14761,6 +15767,142 @@ func (page LoadBalancerLoadBalancingRuleListResultPage) Values() []LoadBalancing
 	return *page.lblbrlr.Value
 }
 
+// LoadBalancerOutboundRuleListResult response for ListOutboundRule API service call.
+type LoadBalancerOutboundRuleListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of outbound rules in a load balancer.
+	Value *[]OutboundRule `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LoadBalancerOutboundRuleListResultIterator provides access to a complete listing of OutboundRule values.
+type LoadBalancerOutboundRuleListResultIterator struct {
+	i    int
+	page LoadBalancerOutboundRuleListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *LoadBalancerOutboundRuleListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LoadBalancerOutboundRuleListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *LoadBalancerOutboundRuleListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter LoadBalancerOutboundRuleListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter LoadBalancerOutboundRuleListResultIterator) Response() LoadBalancerOutboundRuleListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter LoadBalancerOutboundRuleListResultIterator) Value() OutboundRule {
+	if !iter.page.NotDone() {
+		return OutboundRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lborlr LoadBalancerOutboundRuleListResult) IsEmpty() bool {
+	return lborlr.Value == nil || len(*lborlr.Value) == 0
+}
+
+// loadBalancerOutboundRuleListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lborlr LoadBalancerOutboundRuleListResult) loadBalancerOutboundRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if lborlr.NextLink == nil || len(to.String(lborlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lborlr.NextLink)))
+}
+
+// LoadBalancerOutboundRuleListResultPage contains a page of OutboundRule values.
+type LoadBalancerOutboundRuleListResultPage struct {
+	fn     func(context.Context, LoadBalancerOutboundRuleListResult) (LoadBalancerOutboundRuleListResult, error)
+	lborlr LoadBalancerOutboundRuleListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *LoadBalancerOutboundRuleListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LoadBalancerOutboundRuleListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lborlr)
+	if err != nil {
+		return err
+	}
+	page.lborlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *LoadBalancerOutboundRuleListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page LoadBalancerOutboundRuleListResultPage) NotDone() bool {
+	return !page.lborlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page LoadBalancerOutboundRuleListResultPage) Response() LoadBalancerOutboundRuleListResult {
+	return page.lborlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page LoadBalancerOutboundRuleListResultPage) Values() []OutboundRule {
+	if page.lborlr.IsEmpty() {
+		return nil
+	}
+	return *page.lborlr.Value
+}
+
 // LoadBalancerProbeListResult response for ListProbe API service call.
 type LoadBalancerProbeListResult struct {
 	autorest.Response `json:"-"`
@@ -15791,6 +16933,7 @@ type OperationPropertiesFormatServiceSpecification struct {
 
 // OutboundRule outbound pool of the load balancer.
 type OutboundRule struct {
+	autorest.Response `json:"-"`
 	// OutboundRulePropertiesFormat - Properties of load balancer outbound rule.
 	*OutboundRulePropertiesFormat `json:"properties,omitempty"`
 	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -18329,7 +19472,7 @@ type PublicIPPrefixPropertiesFormat struct {
 
 // PublicIPPrefixSku SKU of a public IP prefix
 type PublicIPPrefixSku struct {
-	// Name - Name of a public IP prefix SKU. Possible values include: 'PublicIPPrefixSkuNameStandard'
+	// Name - Name of a public IP prefix SKU. Possible values include: 'Standard'
 	Name PublicIPPrefixSkuName `json:"name,omitempty"`
 }
 
@@ -21651,20 +22794,6 @@ type TrafficAnalyticsConfigurationProperties struct {
 // TrafficAnalyticsProperties parameters that define the configuration of traffic analytics.
 type TrafficAnalyticsProperties struct {
 	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties `json:"networkWatcherFlowAnalyticsConfiguration,omitempty"`
-}
-
-// TrafficQuery parameters to compare with network configuration.
-type TrafficQuery struct {
-	// Direction - The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'. Possible values include: 'Inbound', 'Outbound'
-	Direction Direction `json:"direction,omitempty"`
-	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
-	Protocol *string `json:"protocol,omitempty"`
-	// Source - Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
-	Source *string `json:"source,omitempty"`
-	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
-	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffice destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
-	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
 // TroubleshootingDetails information gained from troubleshooting of specified resource.

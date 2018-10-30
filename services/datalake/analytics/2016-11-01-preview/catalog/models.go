@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/datalake/analytics/2016-11-01-preview/catalog"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01-preview/catalog"
 
 // ACLType enumerates the values for acl type.
 type ACLType string

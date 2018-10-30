@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/scheduler/mgmt/2016-03-01/scheduler"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler"
 
 // DayOfWeek enumerates the values for day of week.
 type DayOfWeek string

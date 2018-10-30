@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/storage/mgmt/2015-06-15/storage"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2015-06-15/storage"
 
 // AccountStatus enumerates the values for account status.
 type AccountStatus string

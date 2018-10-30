@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/relay/mgmt/2017-04-01/relay"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
 
 // AccessRights enumerates the values for access rights.
 type AccessRights string

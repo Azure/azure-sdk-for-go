@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.2/customvision/training"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.2/customvision/training"
 
 // DomainType enumerates the values for domain type.
 type DomainType string

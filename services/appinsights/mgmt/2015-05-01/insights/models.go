@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/appinsights/mgmt/2015-05-01/insights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
 // ApplicationType enumerates the values for application type.
 type ApplicationType string

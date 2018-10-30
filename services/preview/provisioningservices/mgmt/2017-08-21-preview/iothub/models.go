@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub"
 
 // AccessRightsDescription enumerates the values for access rights description.
 type AccessRightsDescription string

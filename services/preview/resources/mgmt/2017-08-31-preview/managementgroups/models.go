@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/resources/mgmt/2017-08-31-preview/managementgroups"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/managementgroups"
 
 // ChildType enumerates the values for child type.
 type ChildType string

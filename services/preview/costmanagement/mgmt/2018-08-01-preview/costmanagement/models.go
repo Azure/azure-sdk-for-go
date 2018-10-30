@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
 
 // AlertCategory enumerates the values for alert category.
 type AlertCategory string

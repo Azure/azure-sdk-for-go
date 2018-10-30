@@ -22,7 +22,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v2.0/textanalytics"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/textanalytics"
 
 // BatchInput ...
 type BatchInput struct {

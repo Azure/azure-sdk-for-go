@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/dns/mgmt/2018-03-01-preview/dns"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns"
 
 // RecordType enumerates the values for record type.
 type RecordType string

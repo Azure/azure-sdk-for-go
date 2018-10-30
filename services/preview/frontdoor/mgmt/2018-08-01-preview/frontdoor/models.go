@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
 
 // Action enumerates the values for action.
 type Action string

@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/dns/mgmt/2016-04-01/dns"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
 
 // HTTPStatusCode enumerates the values for http status code.
 type HTTPStatusCode string

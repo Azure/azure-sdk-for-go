@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/graphrbac/1.6/graphrbac"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
 // ObjectType enumerates the values for object type.
 type ObjectType string
@@ -329,6 +329,8 @@ type Application struct {
 	Homepage *string `json:"homepage,omitempty"`
 	// Oauth2AllowImplicitFlow - Whether to allow implicit grant flow for OAuth2
 	Oauth2AllowImplicitFlow *bool `json:"oauth2AllowImplicitFlow,omitempty"`
+	// RequiredResourceAccess - Specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
+	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// ObjectID - The object ID.
@@ -369,6 +371,9 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.Oauth2AllowImplicitFlow != nil {
 		objectMap["oauth2AllowImplicitFlow"] = a.Oauth2AllowImplicitFlow
+	}
+	if a.RequiredResourceAccess != nil {
+		objectMap["requiredResourceAccess"] = a.RequiredResourceAccess
 	}
 	if a.ObjectID != nil {
 		objectMap["objectId"] = a.ObjectID
@@ -504,6 +509,15 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Oauth2AllowImplicitFlow = &oauth2AllowImplicitFlow
+			}
+		case "requiredResourceAccess":
+			if v != nil {
+				var requiredResourceAccess []RequiredResourceAccess
+				err = json.Unmarshal(*v, &requiredResourceAccess)
+				if err != nil {
+					return err
+				}
+				a.RequiredResourceAccess = &requiredResourceAccess
 			}
 		default:
 			if v != nil {

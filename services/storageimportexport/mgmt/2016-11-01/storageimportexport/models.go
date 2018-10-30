@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/storageimportexport/mgmt/2016-11-01/storageimportexport"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
 // DriveState enumerates the values for drive state.
 type DriveState string

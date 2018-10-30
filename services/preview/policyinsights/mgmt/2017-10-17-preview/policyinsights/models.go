@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights"
 
 // PolicyStatesResource enumerates the values for policy states resource.
 type PolicyStatesResource string

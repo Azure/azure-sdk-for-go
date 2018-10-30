@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/servicefabricmesh/mgmt/2018-07-01-preview/servicefabricmesh"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-07-01-preview/servicefabricmesh"
 
 // ApplicationResourceStatus enumerates the values for application resource status.
 type ApplicationResourceStatus string

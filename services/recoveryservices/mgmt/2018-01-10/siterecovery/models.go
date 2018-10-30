@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/recoveryservices/mgmt/2018-01-10/siterecovery"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery"
 
 // A2ARpRecoveryPointType enumerates the values for a2a rp recovery point type.
 type A2ARpRecoveryPointType string

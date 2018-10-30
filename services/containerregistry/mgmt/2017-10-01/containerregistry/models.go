@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/containerregistry/mgmt/2017-10-01/containerregistry"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
 
 // ImportMode enumerates the values for import mode.
 type ImportMode string

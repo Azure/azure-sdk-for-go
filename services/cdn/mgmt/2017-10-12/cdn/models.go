@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cdn/mgmt/2017-10-12/cdn"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn"
 
 // CacheBehavior enumerates the values for cache behavior.
 type CacheBehavior string

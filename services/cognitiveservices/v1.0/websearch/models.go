@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.0/websearch"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/websearch"
 
 // AnswerType enumerates the values for answer type.
 type AnswerType string

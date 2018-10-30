@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
 
 // APIType enumerates the values for api type.
 type APIType string

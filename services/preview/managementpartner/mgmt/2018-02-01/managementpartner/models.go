@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
 
 // Code enumerates the values for code.
 type Code string

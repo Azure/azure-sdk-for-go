@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/billing/mgmt/2018-03-01-preview/billing"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
 
 // DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
 type DownloadURL struct {

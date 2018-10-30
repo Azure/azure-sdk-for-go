@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
 
 // Accuracy enumerates the values for accuracy.
 type Accuracy string

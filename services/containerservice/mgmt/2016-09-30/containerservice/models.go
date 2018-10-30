@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/containerservice/mgmt/2016-09-30/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2016-09-30/containerservice"
 
 // OchestratorTypes enumerates the values for ochestrator types.
 type OchestratorTypes string

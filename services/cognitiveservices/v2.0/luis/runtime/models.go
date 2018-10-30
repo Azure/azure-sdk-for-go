@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v2.0/luis/runtime"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
 
 // APIError error information returned by the API
 type APIError struct {

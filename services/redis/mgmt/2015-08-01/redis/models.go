@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/redis/mgmt/2015-08-01/redis"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2015-08-01/redis"
 
 // KeyType enumerates the values for key type.
 type KeyType string

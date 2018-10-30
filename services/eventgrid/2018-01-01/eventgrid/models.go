@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/eventgrid/2018-01-01/eventgrid"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
 // MediaJobErrorCategory enumerates the values for media job error category.
 type MediaJobErrorCategory string

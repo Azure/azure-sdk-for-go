@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/machinelearning/mgmt/2017-01-01/webservices"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-01-01/webservices"
 
 // AssetType enumerates the values for asset type.
 type AssetType string

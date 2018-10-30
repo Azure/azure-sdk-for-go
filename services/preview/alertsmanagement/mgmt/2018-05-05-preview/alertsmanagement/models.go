@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement"
 
 // AlertModificationEvent enumerates the values for alert modification event.
 type AlertModificationEvent string

@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/consumption/mgmt/2018-03-31/consumption"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-03-31/consumption"
 
 // BillingFrequency enumerates the values for billing frequency.
 type BillingFrequency string

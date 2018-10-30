@@ -25,7 +25,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/search/mgmt/2015-08-19/search"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
 // AdminKeyKind enumerates the values for admin key kind.
 type AdminKeyKind string

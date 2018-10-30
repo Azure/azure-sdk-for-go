@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/batchai/mgmt/2017-09-01-preview/batchai"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai"
 
 // AllocationState enumerates the values for allocation state.
 type AllocationState string

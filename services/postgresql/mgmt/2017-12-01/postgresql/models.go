@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/postgresql/mgmt/2017-12-01/postgresql"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql"
 
 // CreateMode enumerates the values for create mode.
 type CreateMode string

@@ -25,7 +25,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/addons/mgmt/2017-05-15/addons"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons"
 
 // PlanTypeName enumerates the values for plan type name.
 type PlanTypeName string

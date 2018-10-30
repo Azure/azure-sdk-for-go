@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.0/spellcheck"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck"
 
 // ActionType enumerates the values for action type.
 type ActionType string

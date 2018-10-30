@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/sql/mgmt/2017-10-01-preview/sql"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql"
 
 // CapabilityGroup enumerates the values for capability group.
 type CapabilityGroup string

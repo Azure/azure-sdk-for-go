@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2018-05-01/policy"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy"
 
 // Mode enumerates the values for mode.
 type Mode string

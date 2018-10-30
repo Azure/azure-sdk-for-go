@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/machinelearning/mgmt/2017-08-01-preview/compute"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-08-01-preview/compute"
 
 // AgentVMSizeTypes enumerates the values for agent vm size types.
 type AgentVMSizeTypes string

@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/datacatalog/mgmt/2016-03-30/datacatalog"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog"
 
 // SkuType enumerates the values for sku type.
 type SkuType string

@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/datalake/store/2016-11-01/filesystem"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/datalake/store/2016-11-01/filesystem"
 
 // AppendModeType enumerates the values for append mode type.
 type AppendModeType string

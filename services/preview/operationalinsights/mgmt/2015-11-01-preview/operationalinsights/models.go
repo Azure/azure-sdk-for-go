@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
 // DataSourceKind enumerates the values for data source kind.
 type DataSourceKind string

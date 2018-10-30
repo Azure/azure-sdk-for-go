@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 
 // AlgorithmStepType enumerates the values for algorithm step type.
 type AlgorithmStepType string

@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/consumption/mgmt/2017-04-24-preview/consumption"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-04-24-preview/consumption"
 
 // ErrorDetails the details of the error.
 type ErrorDetails struct {

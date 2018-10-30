@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/search/mgmt/2015-02-28/search"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-02-28/search"
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string

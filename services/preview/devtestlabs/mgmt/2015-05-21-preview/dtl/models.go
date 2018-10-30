@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
 
 // CostPropertyType enumerates the values for cost property type.
 type CostPropertyType string

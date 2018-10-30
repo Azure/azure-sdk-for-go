@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight"
 
 // AsyncOperationState enumerates the values for async operation state.
 type AsyncOperationState string

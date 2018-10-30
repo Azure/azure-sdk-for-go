@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/databox/mgmt/2018-01-01/databox"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox"
 
 // AccessProtocol enumerates the values for access protocol.
 type AccessProtocol string

@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/logic/mgmt/2016-06-01/logic"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic"
 
 // AccessKeyType enumerates the values for access key type.
 type AccessKeyType string

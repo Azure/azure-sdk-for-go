@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/network/mgmt/2015-06-15/network"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network"
 
 // ApplicationGatewayCookieBasedAffinity enumerates the values for application gateway cookie based affinity.
 type ApplicationGatewayCookieBasedAffinity string

@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/containerregistry/mgmt/2017-03-01/containerregistry"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-03-01/containerregistry"
 
 // PasswordName enumerates the values for password name.
 type PasswordName string

@@ -22,7 +22,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/monitor/2018-09-01-preview/monitor"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/monitor/2018-09-01-preview/monitor"
 
 // APIError ...
 type APIError struct {

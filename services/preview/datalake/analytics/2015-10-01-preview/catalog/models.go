@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/datalake/analytics/2015-10-01-preview/catalog"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
 
 // FileType enumerates the values for file type.
 type FileType string

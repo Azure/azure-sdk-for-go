@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/compute/mgmt/2017-03-30/compute"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-03-30/compute"
 
 // AccessLevel enumerates the values for access level.
 type AccessLevel string

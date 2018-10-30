@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/keyvault/mgmt/2018-02-14/keyvault"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault"
 
 // AccessPolicyUpdateKind enumerates the values for access policy update kind.
 type AccessPolicyUpdateKind string

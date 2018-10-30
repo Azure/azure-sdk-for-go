@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/subscription/mgmt/2018-03-01-preview/subscription"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
 
 // OfferType enumerates the values for offer type.
 type OfferType string

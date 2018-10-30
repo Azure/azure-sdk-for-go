@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/databricks/mgmt/2018-04-01/databricks"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/databricks/mgmt/2018-04-01/databricks"
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string

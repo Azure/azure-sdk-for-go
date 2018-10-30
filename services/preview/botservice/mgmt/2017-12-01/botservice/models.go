@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/botservice/mgmt/2017-12-01/botservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2017-12-01/botservice"
 
 // ChannelName enumerates the values for channel name.
 type ChannelName string

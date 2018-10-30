@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/signalr/mgmt/2018-03-01-preview/signalr"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2018-03-01-preview/signalr"
 
 // KeyType enumerates the values for key type.
 type KeyType string

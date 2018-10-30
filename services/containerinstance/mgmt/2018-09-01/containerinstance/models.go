@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/containerinstance/mgmt/2018-09-01/containerinstance"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-09-01/containerinstance"
 
 // ContainerGroupIPAddressType enumerates the values for container group ip address type.
 type ContainerGroupIPAddressType string

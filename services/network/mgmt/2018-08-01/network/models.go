@@ -697,15 +697,17 @@ func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily
 type ExpressRouteCircuitSkuTier string
 
 const (
-	// Premium ...
-	Premium ExpressRouteCircuitSkuTier = "Premium"
-	// Standard ...
-	Standard ExpressRouteCircuitSkuTier = "Standard"
+	// ExpressRouteCircuitSkuTierBasic ...
+	ExpressRouteCircuitSkuTierBasic ExpressRouteCircuitSkuTier = "Basic"
+	// ExpressRouteCircuitSkuTierPremium ...
+	ExpressRouteCircuitSkuTierPremium ExpressRouteCircuitSkuTier = "Premium"
+	// ExpressRouteCircuitSkuTierStandard ...
+	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = "Standard"
 )
 
 // PossibleExpressRouteCircuitSkuTierValues returns an array of possible values for the ExpressRouteCircuitSkuTier const type.
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
-	return []ExpressRouteCircuitSkuTier{Premium, Standard}
+	return []ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierBasic, ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
 }
 
 // ExpressRouteLinkAdminState enumerates the values for express route link admin state.
@@ -1293,13 +1295,13 @@ func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 type PublicIPPrefixSkuName string
 
 const (
-	// PublicIPPrefixSkuNameStandard ...
-	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = "Standard"
+	// Standard ...
+	Standard PublicIPPrefixSkuName = "Standard"
 )
 
 // PossiblePublicIPPrefixSkuNameValues returns an array of possible values for the PublicIPPrefixSkuName const type.
 func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
-	return []PublicIPPrefixSkuName{PublicIPPrefixSkuNameStandard}
+	return []PublicIPPrefixSkuName{Standard}
 }
 
 // RouteNextHopType enumerates the values for route next hop type.
@@ -8702,7 +8704,7 @@ type ExpressRouteCircuitServiceProviderProperties struct {
 type ExpressRouteCircuitSku struct {
 	// Name - The name of the SKU.
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'Standard', 'Premium'
+	// Tier - The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium', 'ExpressRouteCircuitSkuTierBasic'
 	Tier ExpressRouteCircuitSkuTier `json:"tier,omitempty"`
 	// Family - The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'
 	Family ExpressRouteCircuitSkuFamily `json:"family,omitempty"`
@@ -17970,7 +17972,7 @@ type PublicIPPrefixPropertiesFormat struct {
 
 // PublicIPPrefixSku SKU of a public IP prefix
 type PublicIPPrefixSku struct {
-	// Name - Name of a public IP prefix SKU. Possible values include: 'PublicIPPrefixSkuNameStandard'
+	// Name - Name of a public IP prefix SKU. Possible values include: 'Standard'
 	Name PublicIPPrefixSkuName `json:"name,omitempty"`
 }
 

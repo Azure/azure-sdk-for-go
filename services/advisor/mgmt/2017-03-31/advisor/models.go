@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/advisor/mgmt/2017-03-31/advisor"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-03-31/advisor"
 
 // Category enumerates the values for category.
 type Category string

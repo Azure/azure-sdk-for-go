@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/customerinsights/mgmt/2017-04-26/customerinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
 
 // CalculationWindowTypes enumerates the values for calculation window types.
 type CalculationWindowTypes string

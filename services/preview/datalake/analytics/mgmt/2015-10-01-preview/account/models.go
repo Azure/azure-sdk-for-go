@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
 
 // DataLakeAnalyticsAccountState enumerates the values for data lake analytics account state.
 type DataLakeAnalyticsAccountState string

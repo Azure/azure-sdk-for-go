@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v2.0/computervision"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/computervision"
 
 // Details enumerates the values for details.
 type Details string

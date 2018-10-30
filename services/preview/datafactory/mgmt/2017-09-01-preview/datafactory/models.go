@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
 
 // AuthenticationType enumerates the values for authentication type.
 type AuthenticationType string

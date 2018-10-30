@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/notificationhubs/mgmt/2016-03-01/notificationhubs"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2016-03-01/notificationhubs"
 
 // AccessRights enumerates the values for access rights.
 type AccessRights string

@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
 
 // AgreementProperties agreement Terms definition
 type AgreementProperties struct {

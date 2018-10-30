@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
 // AccessKeyName enumerates the values for access key name.
 type AccessKeyName string

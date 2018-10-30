@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/recoveryservices/mgmt/2016-06-01/backup"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/backup"
 
 // DataSourceType enumerates the values for data source type.
 type DataSourceType string

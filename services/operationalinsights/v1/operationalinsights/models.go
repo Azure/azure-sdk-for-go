@@ -22,7 +22,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/operationalinsights/v1/operationalinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/operationalinsights/v1/operationalinsights"
 
 // Column a column in a table.
 type Column struct {

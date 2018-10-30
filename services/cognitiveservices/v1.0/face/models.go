@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.0/face"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face"
 
 // AccessoryType enumerates the values for accessory type.
 type AccessoryType string

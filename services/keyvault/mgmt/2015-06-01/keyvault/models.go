@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/keyvault/mgmt/2015-06-01/keyvault"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2015-06-01/keyvault"
 
 // CertificatePermissions enumerates the values for certificate permissions.
 type CertificatePermissions string

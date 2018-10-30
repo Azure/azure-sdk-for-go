@@ -25,7 +25,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cdn/mgmt/2016-04-02/cdn"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-04-02/cdn"
 
 // CustomDomainResourceState enumerates the values for custom domain resource state.
 type CustomDomainResourceState string

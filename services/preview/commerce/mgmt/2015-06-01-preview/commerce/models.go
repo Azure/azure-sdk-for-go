@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/commerce/mgmt/2015-06-01-preview/commerce"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
 
 // AggregationGranularity enumerates the values for aggregation granularity.
 type AggregationGranularity string

@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/mediaservices/mgmt/2015-10-01/media"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2015-10-01/media"
 
 // EntityNameUnavailabilityReason enumerates the values for entity name unavailability reason.
 type EntityNameUnavailabilityReason string

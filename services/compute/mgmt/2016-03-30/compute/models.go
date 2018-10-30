@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/compute/mgmt/2016-03-30/compute"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2016-03-30/compute"
 
 // CachingTypes enumerates the values for caching types.
 type CachingTypes string

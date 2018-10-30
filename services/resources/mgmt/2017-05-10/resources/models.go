@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2017-05-10/resources"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 
 // DeploymentMode enumerates the values for deployment mode.
 type DeploymentMode string

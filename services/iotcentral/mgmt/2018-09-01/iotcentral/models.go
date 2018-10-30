@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/iotcentral/mgmt/2018-09-01/iotcentral"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral"
 
 // AppSku enumerates the values for app sku.
 type AppSku string

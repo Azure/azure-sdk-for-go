@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
 
 // AlertGeneration enumerates the values for alert generation.
 type AlertGeneration string

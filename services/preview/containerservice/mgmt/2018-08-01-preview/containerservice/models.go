@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/containerservice/mgmt/2018-08-01-preview/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-08-01-preview/containerservice"
 
 // AgentPoolType enumerates the values for agent pool type.
 type AgentPoolType string

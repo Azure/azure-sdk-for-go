@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2016-09-01/links"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 
 // Filter enumerates the values for filter.
 type Filter string

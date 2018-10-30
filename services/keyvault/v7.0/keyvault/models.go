@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/keyvault/v7.0/keyvault"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.0/keyvault"
 
 // ActionType enumerates the values for action type.
 type ActionType string

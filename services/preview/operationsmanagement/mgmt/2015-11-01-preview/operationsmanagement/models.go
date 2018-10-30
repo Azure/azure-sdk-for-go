@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
 // ArmTemplateParameter parameter to pass to ARM template
 type ArmTemplateParameter struct {

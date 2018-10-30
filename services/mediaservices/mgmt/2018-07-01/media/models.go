@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/mediaservices/mgmt/2018-07-01/media"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media"
 
 // AacAudioProfile enumerates the values for aac audio profile.
 type AacAudioProfile string

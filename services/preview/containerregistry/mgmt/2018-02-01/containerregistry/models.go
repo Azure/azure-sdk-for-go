@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
 
 // BaseImageDependencyType enumerates the values for base image dependency type.
 type BaseImageDependencyType string

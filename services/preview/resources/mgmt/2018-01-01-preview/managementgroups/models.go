@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/resources/mgmt/2018-01-01-preview/managementgroups"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/managementgroups"
 
 // Permissions enumerates the values for permissions.
 type Permissions string

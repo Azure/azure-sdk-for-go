@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/blueprint/mgmt/2017-11-11-preview/blueprint"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2017-11-11-preview/blueprint"
 
 // AssignmentLockMode enumerates the values for assignment lock mode.
 type AssignmentLockMode string

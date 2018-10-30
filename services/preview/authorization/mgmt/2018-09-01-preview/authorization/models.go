@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/authorization/mgmt/2018-09-01-preview/authorization"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
 
 // PrincipalType enumerates the values for principal type.
 type PrincipalType string

@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/logic/mgmt/2018-07-01-preview/logic"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic"
 
 // AgreementType enumerates the values for agreement type.
 type AgreementType string

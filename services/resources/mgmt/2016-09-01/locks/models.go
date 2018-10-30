@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2016-09-01/locks"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
 
 // LockLevel enumerates the values for lock level.
 type LockLevel string

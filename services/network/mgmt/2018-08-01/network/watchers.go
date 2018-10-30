@@ -558,7 +558,7 @@ func (client WatchersClient) GetNetworkConfigurationDiagnostic(ctx context.Conte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Queries", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.Profiles", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetNetworkConfigurationDiagnostic", err.Error())
 	}
 

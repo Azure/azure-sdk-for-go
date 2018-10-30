@@ -31,7 +31,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/web/mgmt/2018-02-01/web"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web"
 
 // AccessControlEntryAction enumerates the values for access control entry action.
 type AccessControlEntryAction string

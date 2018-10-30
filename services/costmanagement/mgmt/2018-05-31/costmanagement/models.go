@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/costmanagement/mgmt/2018-05-31/costmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-05-31/costmanagement"
 
 // FormatType enumerates the values for format type.
 type FormatType string

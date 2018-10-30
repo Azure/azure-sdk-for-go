@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/subscription/mgmt/2017-11-01-preview/subscription"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2017-11-01-preview/subscription"
 
 // Definition the subscription definition used to create the subscription.
 type Definition struct {

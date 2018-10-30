@@ -31,7 +31,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/automation/mgmt/2018-01-15-preview/automation"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-01-15-preview/automation"
 
 // AccountState enumerates the values for account state.
 type AccountState string

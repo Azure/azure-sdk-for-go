@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/storagesync/mgmt/2018-04-02/storagesync"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-04-02/storagesync"
 
 // CloudTiering enumerates the values for cloud tiering.
 type CloudTiering string

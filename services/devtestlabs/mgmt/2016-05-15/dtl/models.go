@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/devtestlabs/mgmt/2016-05-15/dtl"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl"
 
 // CostThresholdStatus enumerates the values for cost threshold status.
 type CostThresholdStatus string

@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.0/autosuggest"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest"
 
 // ErrorCode enumerates the values for error code.
 type ErrorCode string

@@ -23,7 +23,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v1.0/imagesearch"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/imagesearch"
 
 // Currency enumerates the values for currency.
 type Currency string

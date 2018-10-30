@@ -24,7 +24,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/migrate/mgmt/2018-02-02/migrate"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2018-02-02/migrate"
 
 // AssessmentSizingCriterion enumerates the values for assessment sizing criterion.
 type AssessmentSizingCriterion string

@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/authorization/mgmt/2015-07-01/authorization"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 
 // ClassicAdministrator classic Administrators
 type ClassicAdministrator struct {

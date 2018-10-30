@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/streamanalytics/mgmt/2016-03-01/streamanalytics"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
 
 // BindingType enumerates the values for binding type.
 type BindingType string

@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/cosmos-db/mgmt/2015-04-08/documentdb"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 
 // DatabaseAccountKind enumerates the values for database account kind.
 type DatabaseAccountKind string

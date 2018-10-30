@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/eventhub/mgmt/2015-08-01/eventhub"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2015-08-01/eventhub"
 
 // AccessRights enumerates the values for access rights.
 type AccessRights string

@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
 
 // ApplicationScopedVolumeKind enumerates the values for application scoped volume kind.
 type ApplicationScopedVolumeKind string

@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/datalake/analytics/2017-09-01-preview/job"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job"
 
 // CompileMode enumerates the values for compile mode.
 type CompileMode string

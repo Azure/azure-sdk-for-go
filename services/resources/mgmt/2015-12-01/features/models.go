@@ -26,7 +26,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/resources/mgmt/2015-12-01/features"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features"
 
 // Operation microsoft.Features operation
 type Operation struct {

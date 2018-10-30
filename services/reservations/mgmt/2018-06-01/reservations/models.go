@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/reservations/mgmt/2018-06-01/reservations"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2018-06-01/reservations"
 
 // AppliedScopeType enumerates the values for applied scope type.
 type AppliedScopeType string

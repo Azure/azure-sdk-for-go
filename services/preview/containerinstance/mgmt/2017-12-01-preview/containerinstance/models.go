@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/containerinstance/mgmt/2017-12-01-preview/containerinstance"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-12-01-preview/containerinstance"
 
 // ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
 type ContainerGroupNetworkProtocol string

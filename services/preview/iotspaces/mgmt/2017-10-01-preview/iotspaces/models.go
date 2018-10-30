@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
 
 // NameUnavailabilityReason enumerates the values for name unavailability reason.
 type NameUnavailabilityReason string

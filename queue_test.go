@@ -410,19 +410,12 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		"Retry":              testRequeueOnFail,
 	}
 
-	timeouts := map[string]time.Duration{
-		"SendAndReceiveScheduled": 5 * time.Minute,
-	}
-
 	ns := suite.getNewSasInstance()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
-			timeout, ok := timeouts[name]
-			if !ok {
-				timeout = defaultTimeout
-			}
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 			defer cancel()
 
 			window := time.Duration(30 * time.Second)

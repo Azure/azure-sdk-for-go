@@ -104,6 +104,63 @@ func ExampleQueue_Receive() {
 	client.Receive(ctx, printMessage)
 }
 
+func ExampleQueue_ScheduleAt() {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute+40*time.Second)
+	defer cancel()
+
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	if connStr == "" {
+		fmt.Println("FATAL: expected environment variable SERVICEBUS_CONNECTION_STRING not set")
+		return
+	}
+
+	// Create a client to communicate with a Service Bus Namespace.
+	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
+	}
+
+	client, err := ns.NewQueue("schedulewithqueue")
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
+	}
+
+	// The delay that we should schedule a message for.
+	const waitTime = 1 * time.Minute
+
+	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll buffer our expectations
+	// on either side.
+	const buffer = 20 * time.Second
+
+	expectedTime := time.Now().Add(waitTime)
+	msg := servicebus.NewMessageFromString("to the future!!")
+
+	_, err = client.ScheduleAt(ctx, expectedTime, msg)
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
+	}
+
+	err = client.ReceiveOne(ctx,
+		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+			received := time.Now()
+			if received.Before(expectedTime.Add(buffer)) && received.After(expectedTime.Add(-buffer)) {
+				fmt.Println("Received when expected!")
+			} else {
+				fmt.Println("Received outside the expected window.")
+			}
+			return msg.Complete()
+		}))
+	if err != nil {
+		fmt.Println("FATAL: ", err)
+		return
+	}
+
+	// Output: Received when expected!
+}
+
 func ExampleQueue_sessionsRoundTrip() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()

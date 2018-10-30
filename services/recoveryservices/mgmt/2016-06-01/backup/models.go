@@ -18,12 +18,17 @@ package backup
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/recoveryservices/mgmt/2016-06-01/backup"
 
 // DataSourceType enumerates the values for data source type.
 type DataSourceType string
@@ -894,8 +899,8 @@ func (abse AzureBackupServerEngine) AsBasicEngineBase() (BasicEngineBase, bool) 
 	return &abse, true
 }
 
-// AzureIaaSClassicComputeVMContainer iaaS VM workload-specific backup item representing a classic-deployed virtual
-// machine.
+// AzureIaaSClassicComputeVMContainer iaaS VM workload-specific backup item representing a classic-deployed
+// virtual machine.
 type AzureIaaSClassicComputeVMContainer struct {
 	// VirtualMachineID - The fully qualified Resource Manager URL of the virtual machine represented by this Azure IaaS VM container.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -991,7 +996,8 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) AsBasicProtectionContainer() (
 	return &aisccvc, true
 }
 
-// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic VM.
+// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic
+// VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1057,7 +1063,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsBasicWorkloadProtecta
 	return &aisccvpi, true
 }
 
-// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic VM.
+// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic
+// VM.
 type AzureIaaSClassicComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1173,8 +1180,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsBasicProtectedItem() (B
 	return &aisccvpi, true
 }
 
-// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource Manager-deployed
-// virtual machine.
+// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource
+// Manager-deployed virtual machine.
 type AzureIaaSComputeVMContainer struct {
 	// VirtualMachineID - The fully qualified Resource Manager URL of the virtual machine represented by this Azure IaaS VM container.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1270,7 +1277,8 @@ func (aiscvc AzureIaaSComputeVMContainer) AsBasicProtectionContainer() (BasicPro
 	return &aiscvc, true
 }
 
-// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager VM.
+// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager
+// VM.
 type AzureIaaSComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1336,7 +1344,8 @@ func (aiscvpi AzureIaaSComputeVMProtectableItem) AsBasicWorkloadProtectableItem(
 	return &aiscvpi, true
 }
 
-// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager VM.
+// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager
+// VM.
 type AzureIaaSComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1621,8 +1630,8 @@ type BasicAzureIaaSVMProtectedItem interface {
 	AsAzureIaaSVMProtectedItem() (*AzureIaaSVMProtectedItem, bool)
 }
 
-// AzureIaaSVMProtectedItem this Azure VM workload-specific (also known as IaaS VM workload-specific) backup item
-// has been backed up.
+// AzureIaaSVMProtectedItem this Azure VM workload-specific (also known as IaaS VM workload-specific) backup
+// item has been backed up.
 type AzureIaaSVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1779,8 +1788,8 @@ func (aispi AzureIaaSVMProtectedItem) AsBasicProtectedItem() (BasicProtectedItem
 	return &aispi, true
 }
 
-// AzureIaaSVMProtectedItemExtendedInfo additional information for the Azure VM (also known as IaaS VM)-specific
-// backup item.
+// AzureIaaSVMProtectedItemExtendedInfo additional information for the Azure VM (also known as IaaS
+// VM)-specific backup item.
 type AzureIaaSVMProtectedItemExtendedInfo struct {
 	// OldestRecoveryPoint - The oldest backup copy available for this backup item.
 	OldestRecoveryPoint *date.Time `json:"oldestRecoveryPoint,omitempty"`
@@ -2599,7 +2608,8 @@ func (eb EngineBase) AsBasicEngineBase() (BasicEngineBase, bool) {
 	return &eb, true
 }
 
-// EngineBaseResource the base backup engine class. All workload-specific backup engines derive from this class.
+// EngineBaseResource the base backup engine class. All workload-specific backup engines derive from this
+// class.
 type EngineBaseResource struct {
 	Properties BasicEngineBase `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -2733,20 +2743,37 @@ type EngineBaseResourceListIterator struct {
 	page EngineBaseResourceListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *EngineBaseResourceListIterator) Next() error {
+func (iter *EngineBaseResourceListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EngineBaseResourceListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EngineBaseResourceListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2775,11 +2802,11 @@ func (ebrl EngineBaseResourceList) IsEmpty() bool {
 
 // engineBaseResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ebrl EngineBaseResourceList) engineBaseResourceListPreparer() (*http.Request, error) {
+func (ebrl EngineBaseResourceList) engineBaseResourceListPreparer(ctx context.Context) (*http.Request, error) {
 	if ebrl.NextLink == nil || len(to.String(ebrl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ebrl.NextLink)))
@@ -2787,19 +2814,36 @@ func (ebrl EngineBaseResourceList) engineBaseResourceListPreparer() (*http.Reque
 
 // EngineBaseResourceListPage contains a page of EngineBaseResource values.
 type EngineBaseResourceListPage struct {
-	fn   func(EngineBaseResourceList) (EngineBaseResourceList, error)
+	fn   func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)
 	ebrl EngineBaseResourceList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *EngineBaseResourceListPage) Next() error {
-	next, err := page.fn(page.ebrl)
+func (page *EngineBaseResourceListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EngineBaseResourceListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ebrl)
 	if err != nil {
 		return err
 	}
 	page.ebrl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EngineBaseResourceListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3108,8 +3152,8 @@ func (isc IaaSVMContainer) AsBasicProtectionContainer() (BasicProtectionContaine
 	return &isc, true
 }
 
-// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS (or
-// Azure) VM.
+// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS
+// (or Azure) VM.
 type IaasVMILRRegistrationRequest struct {
 	// RecoveryPointID - The ID of the IaaS VM recovery point used to restore the files or folders.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
@@ -3168,8 +3212,8 @@ type BasicIaaSVMProtectableItem interface {
 	AsIaaSVMProtectableItem() (*IaaSVMProtectableItem, bool)
 }
 
-// IaaSVMProtectableItem this Azure VM workload-specific (also known as IaaS VM workload-specific) backup item can
-// be backed up.
+// IaaSVMProtectableItem this Azure VM workload-specific (also known as IaaS VM workload-specific) backup item
+// can be backed up.
 type IaaSVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -3925,20 +3969,37 @@ type JobResourceListIterator struct {
 	page JobResourceListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *JobResourceListIterator) Next() error {
+func (iter *JobResourceListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/JobResourceListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *JobResourceListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3967,11 +4028,11 @@ func (jrl JobResourceList) IsEmpty() bool {
 
 // jobResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (jrl JobResourceList) jobResourceListPreparer() (*http.Request, error) {
+func (jrl JobResourceList) jobResourceListPreparer(ctx context.Context) (*http.Request, error) {
 	if jrl.NextLink == nil || len(to.String(jrl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(jrl.NextLink)))
@@ -3979,19 +4040,36 @@ func (jrl JobResourceList) jobResourceListPreparer() (*http.Request, error) {
 
 // JobResourceListPage contains a page of JobResource values.
 type JobResourceListPage struct {
-	fn  func(JobResourceList) (JobResourceList, error)
+	fn  func(context.Context, JobResourceList) (JobResourceList, error)
 	jrl JobResourceList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *JobResourceListPage) Next() error {
-	next, err := page.fn(page.jrl)
+func (page *JobResourceListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/JobResourceListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.jrl)
 	if err != nil {
 		return err
 	}
 	page.jrl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *JobResourceListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -5124,8 +5202,8 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 	return &osjei, true
 }
 
-// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR) provision
-// action, operation status.
+// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR)
+// provision action, operation status.
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for the file or folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
@@ -5483,20 +5561,37 @@ type ProtectedItemResourceListIterator struct {
 	page ProtectedItemResourceListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ProtectedItemResourceListIterator) Next() error {
+func (iter *ProtectedItemResourceListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemResourceListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ProtectedItemResourceListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -5525,11 +5620,11 @@ func (pirl ProtectedItemResourceList) IsEmpty() bool {
 
 // protectedItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (pirl ProtectedItemResourceList) protectedItemResourceListPreparer() (*http.Request, error) {
+func (pirl ProtectedItemResourceList) protectedItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
 	if pirl.NextLink == nil || len(to.String(pirl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(pirl.NextLink)))
@@ -5537,19 +5632,36 @@ func (pirl ProtectedItemResourceList) protectedItemResourceListPreparer() (*http
 
 // ProtectedItemResourceListPage contains a page of ProtectedItemResource values.
 type ProtectedItemResourceListPage struct {
-	fn   func(ProtectedItemResourceList) (ProtectedItemResourceList, error)
+	fn   func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)
 	pirl ProtectedItemResourceList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ProtectedItemResourceListPage) Next() error {
-	next, err := page.fn(page.pirl)
+func (page *ProtectedItemResourceListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemResourceListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pirl)
 	if err != nil {
 		return err
 	}
 	page.pirl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ProtectedItemResourceListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -5717,8 +5829,8 @@ func (pc ProtectionContainer) AsBasicProtectionContainer() (BasicProtectionConta
 	return &pc, true
 }
 
-// ProtectionContainerResource base class for a container with backup items. Containers with specific workloads are
-// derived from this class.
+// ProtectionContainerResource base class for a container with backup items. Containers with specific
+// workloads are derived from this class.
 type ProtectionContainerResource struct {
 	autorest.Response `json:"-"`
 	Properties        BasicProtectionContainer `json:"properties,omitempty"`
@@ -5954,8 +6066,8 @@ type ProtectionPolicyQueryObject struct {
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
 }
 
-// ProtectionPolicyResource the base class for backup policy. Workload-specific backup policies are derived from
-// this class.
+// ProtectionPolicyResource the base class for backup policy. Workload-specific backup policies are derived
+// from this class.
 type ProtectionPolicyResource struct {
 	autorest.Response `json:"-"`
 	Properties        BasicProtectionPolicy `json:"properties,omitempty"`
@@ -6168,8 +6280,8 @@ func (rp RecoveryPoint) AsBasicRecoveryPoint() (BasicRecoveryPoint, bool) {
 	return &rp, true
 }
 
-// RecoveryPointResource the base class for backup copies. Workload-specific backup copies are derived from this
-// class.
+// RecoveryPointResource the base class for backup copies. Workload-specific backup copies are derived from
+// this class.
 type RecoveryPointResource struct {
 	autorest.Response `json:"-"`
 	Properties        BasicRecoveryPoint `json:"properties,omitempty"`
@@ -6372,8 +6484,8 @@ func (r Request) AsBasicRequest() (BasicRequest, bool) {
 	return &r, true
 }
 
-// RequestResource base class for the backup request. Workload-specific backup requests are derived from this
-// class.
+// RequestResource base class for the backup request. Workload-specific backup requests are derived from
+// this class.
 type RequestResource struct {
 	Properties BasicRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -6614,8 +6726,8 @@ func (rr RestoreRequest) AsBasicRestoreRequest() (BasicRestoreRequest, bool) {
 	return &rr, true
 }
 
-// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are derived from
-// this class.
+// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are
+// derived from this class.
 type RestoreRequestResource struct {
 	Properties BasicRestoreRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -7143,8 +7255,8 @@ func (wpi WorkloadProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorklo
 	return &wpi, true
 }
 
-// WorkloadProtectableItemResource the base class for the backup item. Workload-specific backup items are derived
-// from this class.
+// WorkloadProtectableItemResource the base class for the backup item. Workload-specific backup items are
+// derived from this class.
 type WorkloadProtectableItemResource struct {
 	Properties BasicWorkloadProtectableItem `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -7279,20 +7391,37 @@ type WorkloadProtectableItemResourceListIterator struct {
 	page WorkloadProtectableItemResourceListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *WorkloadProtectableItemResourceListIterator) Next() error {
+func (iter *WorkloadProtectableItemResourceListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadProtectableItemResourceListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WorkloadProtectableItemResourceListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -7321,11 +7450,11 @@ func (wpirl WorkloadProtectableItemResourceList) IsEmpty() bool {
 
 // workloadProtectableItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (wpirl WorkloadProtectableItemResourceList) workloadProtectableItemResourceListPreparer() (*http.Request, error) {
+func (wpirl WorkloadProtectableItemResourceList) workloadProtectableItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
 	if wpirl.NextLink == nil || len(to.String(wpirl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(wpirl.NextLink)))
@@ -7333,19 +7462,36 @@ func (wpirl WorkloadProtectableItemResourceList) workloadProtectableItemResource
 
 // WorkloadProtectableItemResourceListPage contains a page of WorkloadProtectableItemResource values.
 type WorkloadProtectableItemResourceListPage struct {
-	fn    func(WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)
+	fn    func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)
 	wpirl WorkloadProtectableItemResourceList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *WorkloadProtectableItemResourceListPage) Next() error {
-	next, err := page.fn(page.wpirl)
+func (page *WorkloadProtectableItemResourceListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadProtectableItemResourceListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wpirl)
 	if err != nil {
 		return err
 	}
 	page.wpirl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WorkloadProtectableItemResourceListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

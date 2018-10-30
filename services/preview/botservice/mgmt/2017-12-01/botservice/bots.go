@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewBotsClientWithBaseURI(baseURI string, subscriptionID string) BotsClient 
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide for the created bot.
 func (client BotsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot) (result Bot, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -133,6 +144,16 @@ func (client BotsClient) CreateResponder(resp *http.Response) (result Bot, err e
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client BotsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -211,6 +232,16 @@ func (client BotsClient) DeleteResponder(resp *http.Response) (result autorest.R
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client BotsClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result Bot, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -289,6 +320,16 @@ func (client BotsClient) GetResponder(resp *http.Response) (result Bot, err erro
 // Parameters:
 // parameters - the request body parameters to provide for the check name availability request
 func (client BotsClient) GetCheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityRequestBody) (result CheckNameAvailabilityResponseBody, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.GetCheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetCheckNameAvailabilityPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotsClient", "GetCheckNameAvailability", nil, "Failure preparing request")
@@ -349,6 +390,16 @@ func (client BotsClient) GetCheckNameAvailabilityResponder(resp *http.Response) 
 
 // List returns all the resources of a particular type belonging to a subscription.
 func (client BotsClient) List(ctx context.Context) (result BotResponseListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.List")
+		defer func() {
+			sc := -1
+			if result.brl.Response.Response != nil {
+				sc = result.brl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -411,8 +462,8 @@ func (client BotsClient) ListResponder(resp *http.Response) (result BotResponseL
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client BotsClient) listNextResults(lastResults BotResponseList) (result BotResponseList, err error) {
-	req, err := lastResults.botResponseListPreparer()
+func (client BotsClient) listNextResults(ctx context.Context, lastResults BotResponseList) (result BotResponseList, err error) {
+	req, err := lastResults.botResponseListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "botservice.BotsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -433,6 +484,16 @@ func (client BotsClient) listNextResults(lastResults BotResponseList) (result Bo
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client BotsClient) ListComplete(ctx context.Context) (result BotResponseListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx)
 	return
 }
@@ -441,6 +502,16 @@ func (client BotsClient) ListComplete(ctx context.Context) (result BotResponseLi
 // Parameters:
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 func (client BotsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result BotResponseListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.brl.Response.Response != nil {
+				sc = result.brl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -512,8 +583,8 @@ func (client BotsClient) ListByResourceGroupResponder(resp *http.Response) (resu
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client BotsClient) listByResourceGroupNextResults(lastResults BotResponseList) (result BotResponseList, err error) {
-	req, err := lastResults.botResponseListPreparer()
+func (client BotsClient) listByResourceGroupNextResults(ctx context.Context, lastResults BotResponseList) (result BotResponseList, err error) {
+	req, err := lastResults.botResponseListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "botservice.BotsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -534,6 +605,16 @@ func (client BotsClient) listByResourceGroupNextResults(lastResults BotResponseL
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client BotsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result BotResponseListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -544,6 +625,16 @@ func (client BotsClient) ListByResourceGroupComplete(ctx context.Context, resour
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide for the created bot.
 func (client BotsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters Bot) (result Bot, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},

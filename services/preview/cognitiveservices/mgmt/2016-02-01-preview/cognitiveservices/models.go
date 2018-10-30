@@ -22,6 +22,9 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/cognitiveservices/mgmt/2016-02-01-preview/cognitiveservices"
+
 // KeyName enumerates the values for key name.
 type KeyName string
 
@@ -151,8 +154,8 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{Free, Premium, Standard}
 }
 
-// Account cognitive Services Account is an Azure resource representing the provisioned account, its type, location
-// and SKU.
+// Account cognitive Services Account is an Azure resource representing the provisioned account, its type,
+// location and SKU.
 type Account struct {
 	autorest.Response `json:"-"`
 	// Etag - Entity Tag

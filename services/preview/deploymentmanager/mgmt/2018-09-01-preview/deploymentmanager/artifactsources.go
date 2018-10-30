@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) 
 // artifactSourceName - the name of the artifact source.
 // artifactSourceInfo - source object that defines the resource.
 func (client ArtifactSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, artifactSourceName string, artifactSourceInfo *ArtifactSource) (result ArtifactSource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactSourcesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -127,6 +138,16 @@ func (client ArtifactSourcesClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // artifactSourceName - the name of the artifact source.
 func (client ArtifactSourcesClient) Delete(ctx context.Context, resourceGroupName string, artifactSourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactSourcesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -201,6 +222,16 @@ func (client ArtifactSourcesClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // artifactSourceName - the name of the artifact source.
 func (client ArtifactSourcesClient) Get(ctx context.Context, resourceGroupName string, artifactSourceName string) (result ArtifactSource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactSourcesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

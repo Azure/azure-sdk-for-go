@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewProtectionIntentClientWithBaseURI(baseURI string, subscriptionID string)
 // intentObjectName - intent object name.
 // parameters - resource backed up item
 func (client ProtectionIntentClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, parameters ProtectionIntentResource) (result ProtectionIntentResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, vaultName, resourceGroupName, fabricName, intentObjectName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionIntentClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -120,6 +131,16 @@ func (client ProtectionIntentClient) CreateOrUpdateResponder(resp *http.Response
 // fabricName - fabric name associated with the intent.
 // intentObjectName - intent to be deleted.
 func (client ProtectionIntentClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, vaultName, resourceGroupName, fabricName, intentObjectName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionIntentClient", "Delete", nil, "Failure preparing request")
@@ -192,6 +213,16 @@ func (client ProtectionIntentClient) DeleteResponder(resp *http.Response) (resul
 // fabricName - fabric name associated with the backed up item.
 // intentObjectName - backed up item name whose details are to be fetched.
 func (client ProtectionIntentClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string) (result ProtectionIntentResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, vaultName, resourceGroupName, fabricName, intentObjectName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionIntentClient", "Get", nil, "Failure preparing request")
@@ -261,6 +292,16 @@ func (client ProtectionIntentClient) GetResponder(resp *http.Response) (result P
 // azureRegion - azure region to hit Api
 // parameters - enable backup validation request on Virtual Machine
 func (client ProtectionIntentClient) Validate(ctx context.Context, azureRegion string, parameters PreValidateEnableBackupRequest) (result PreValidateEnableBackupResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentClient.Validate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ValidatePreparer(ctx, azureRegion, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionIntentClient", "Validate", nil, "Failure preparing request")

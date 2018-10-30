@@ -18,12 +18,17 @@ package insights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/monitor/mgmt/2018-03-01/insights"
 
 // AggregationType enumerates the values for aggregation type.
 type AggregationType string
@@ -860,15 +865,15 @@ type ActivityLogAlertActionList struct {
 	ActionGroups *[]ActivityLogAlertActionGroup `json:"actionGroups,omitempty"`
 }
 
-// ActivityLogAlertAllOfCondition an Activity Log alert condition that is met when all its member conditions are
-// met.
+// ActivityLogAlertAllOfCondition an Activity Log alert condition that is met when all its member
+// conditions are met.
 type ActivityLogAlertAllOfCondition struct {
 	// AllOf - The list of activity log alert conditions.
 	AllOf *[]ActivityLogAlertLeafCondition `json:"allOf,omitempty"`
 }
 
-// ActivityLogAlertLeafCondition an Activity Log alert condition that is met by comparing an activity log field and
-// value.
+// ActivityLogAlertLeafCondition an Activity Log alert condition that is met by comparing an activity log
+// field and value.
 type ActivityLogAlertLeafCondition struct {
 	// Field - The name of the field that this condition will examine. The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
 	Field *string `json:"field,omitempty"`
@@ -1411,7 +1416,8 @@ type AutoscaleProfile struct {
 	Recurrence *Recurrence `json:"recurrence,omitempty"`
 }
 
-// AutoscaleSetting a setting that contains all of the configuration for the automatic scaling of a resource.
+// AutoscaleSetting a setting that contains all of the configuration for the automatic scaling of a
+// resource.
 type AutoscaleSetting struct {
 	// Profiles - the collection of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
 	Profiles *[]AutoscaleProfile `json:"profiles,omitempty"`
@@ -1544,27 +1550,44 @@ type AutoscaleSettingResourceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AutoscaleSettingResourceCollectionIterator provides access to a complete listing of AutoscaleSettingResource
-// values.
+// AutoscaleSettingResourceCollectionIterator provides access to a complete listing of
+// AutoscaleSettingResource values.
 type AutoscaleSettingResourceCollectionIterator struct {
 	i    int
 	page AutoscaleSettingResourceCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *AutoscaleSettingResourceCollectionIterator) Next() error {
+func (iter *AutoscaleSettingResourceCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoscaleSettingResourceCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AutoscaleSettingResourceCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1593,11 +1616,11 @@ func (asrc AutoscaleSettingResourceCollection) IsEmpty() bool {
 
 // autoscaleSettingResourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (asrc AutoscaleSettingResourceCollection) autoscaleSettingResourceCollectionPreparer() (*http.Request, error) {
+func (asrc AutoscaleSettingResourceCollection) autoscaleSettingResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if asrc.NextLink == nil || len(to.String(asrc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(asrc.NextLink)))
@@ -1605,19 +1628,36 @@ func (asrc AutoscaleSettingResourceCollection) autoscaleSettingResourceCollectio
 
 // AutoscaleSettingResourceCollectionPage contains a page of AutoscaleSettingResource values.
 type AutoscaleSettingResourceCollectionPage struct {
-	fn   func(AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)
+	fn   func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)
 	asrc AutoscaleSettingResourceCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *AutoscaleSettingResourceCollectionPage) Next() error {
-	next, err := page.fn(page.asrc)
+func (page *AutoscaleSettingResourceCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoscaleSettingResourceCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.asrc)
 	if err != nil {
 		return err
 	}
 	page.asrc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AutoscaleSettingResourceCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1962,7 +2002,8 @@ func (dscr *DiagnosticSettingsCategoryResource) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// DiagnosticSettingsCategoryResourceCollection represents a collection of diagnostic setting category resources.
+// DiagnosticSettingsCategoryResourceCollection represents a collection of diagnostic setting category
+// resources.
 type DiagnosticSettingsCategoryResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The collection of diagnostic settings category resources.
@@ -2255,20 +2296,37 @@ type EventDataCollectionIterator struct {
 	page EventDataCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *EventDataCollectionIterator) Next() error {
+func (iter *EventDataCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventDataCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EventDataCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2297,11 +2355,11 @@ func (edc EventDataCollection) IsEmpty() bool {
 
 // eventDataCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (edc EventDataCollection) eventDataCollectionPreparer() (*http.Request, error) {
+func (edc EventDataCollection) eventDataCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if edc.NextLink == nil || len(to.String(edc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(edc.NextLink)))
@@ -2309,19 +2367,36 @@ func (edc EventDataCollection) eventDataCollectionPreparer() (*http.Request, err
 
 // EventDataCollectionPage contains a page of EventData values.
 type EventDataCollectionPage struct {
-	fn  func(EventDataCollection) (EventDataCollection, error)
+	fn  func(context.Context, EventDataCollection) (EventDataCollection, error)
 	edc EventDataCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *EventDataCollectionPage) Next() error {
-	next, err := page.fn(page.edc)
+func (page *EventDataCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventDataCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.edc)
 	if err != nil {
 		return err
 	}
 	page.edc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EventDataCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3297,8 +3372,8 @@ func (mac *MetricAlertCriteria) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MetricAlertMultipleResourceMultipleMetricCriteria speficies the metric alert criteria for multiple resource that
-// has multiple metric criteria.
+// MetricAlertMultipleResourceMultipleMetricCriteria speficies the metric alert criteria for multiple
+// resource that has multiple metric criteria.
 type MetricAlertMultipleResourceMultipleMetricCriteria struct {
 	// AllOf - the list of multiple metric criteria for this 'all of' operation.
 	AllOf *[]BasicMultiMetricCriteria `json:"allOf,omitempty"`
@@ -3708,8 +3783,8 @@ func (marp *MetricAlertResourcePatch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MetricAlertSingleResourceMultipleMetricCriteria specifies the metric alert criteria for a single resource that
-// has multiple metric criteria.
+// MetricAlertSingleResourceMultipleMetricCriteria specifies the metric alert criteria for a single
+// resource that has multiple metric criteria.
 type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	// AllOf - The list of metric criteria for this 'all of' operation.
 	AllOf *[]MetricCriteria `json:"allOf,omitempty"`
@@ -3844,8 +3919,8 @@ func (masp MetricAlertStatusProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MetricAvailability metric availability specifies the time grain (aggregation interval or frequency) and the
-// retention period for that time grain.
+// MetricAvailability metric availability specifies the time grain (aggregation interval or frequency) and
+// the retention period for that time grain.
 type MetricAvailability struct {
 	// TimeGrain - the time grain specifies the aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -4261,8 +4336,8 @@ type ProxyOnlyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate element
-// is used.
+// Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate
+// element is used.
 type Recurrence struct {
 	// Frequency - the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly. Possible values include: 'RecurrenceFrequencyNone', 'RecurrenceFrequencySecond', 'RecurrenceFrequencyMinute', 'RecurrenceFrequencyHour', 'RecurrenceFrequencyDay', 'RecurrenceFrequencyWeek', 'RecurrenceFrequencyMonth', 'RecurrenceFrequencyYear'
 	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
@@ -4646,8 +4721,8 @@ func (rds RuleDataSource) AsBasicRuleDataSource() (BasicRuleDataSource, bool) {
 	return &rds, true
 }
 
-// RuleEmailAction specifies the action to send email when the rule condition is evaluated. The discriminator is
-// always RuleEmailAction in this case.
+// RuleEmailAction specifies the action to send email when the rule condition is evaluated. The
+// discriminator is always RuleEmailAction in this case.
 type RuleEmailAction struct {
 	// SendToServiceOwners - Whether the administrators (service and co-administrators) of the service should be notified when the alert is activated.
 	SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
@@ -4786,8 +4861,8 @@ func (rmeds RuleManagementEventDataSource) AsBasicRuleDataSource() (BasicRuleDat
 	return &rmeds, true
 }
 
-// RuleMetricDataSource a rule metric data source. The discriminator value is always RuleMetricDataSource in this
-// case.
+// RuleMetricDataSource a rule metric data source. The discriminator value is always RuleMetricDataSource
+// in this case.
 type RuleMetricDataSource struct {
 	// MetricName - the name of the metric that defines what the rule monitors.
 	MetricName *string `json:"metricName,omitempty"`
@@ -4918,8 +4993,9 @@ type Schedule struct {
 	TimeWindowInMinutes *int32 `json:"timeWindowInMinutes,omitempty"`
 }
 
-// SenderAuthorization the authorization used by the user who has performed the operation that led to this event.
-// This captures the RBAC properties of the event. These usually include the 'action', 'role' and the 'scope'
+// SenderAuthorization the authorization used by the user who has performed the operation that led to this
+// event. This captures the RBAC properties of the event. These usually include the 'action', 'role' and
+// the 'scope'
 type SenderAuthorization struct {
 	// Action - the permissible actions. For instance: microsoft.support/supporttickets/write
 	Action *string `json:"action,omitempty"`

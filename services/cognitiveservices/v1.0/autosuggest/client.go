@@ -28,6 +28,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -166,6 +167,16 @@ func NewWithBaseURI(baseURI string) BaseClient {
 // values: JSON, JSONLD. The default is JSON. If you specify JSONLD, the response body includes JSON-LD objects
 // that contain the search results.
 func (client BaseClient) AutoSuggest(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (result Suggestions, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AutoSuggest")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AutoSuggestPreparer(ctx, query, acceptLanguage, pragma, userAgent, clientID, clientIP, location, countryCode, market, safeSearch, setLang, responseFormat)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "AutoSuggest", nil, "Failure preparing request")

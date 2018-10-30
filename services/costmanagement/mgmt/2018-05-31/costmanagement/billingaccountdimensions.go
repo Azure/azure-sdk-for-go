@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -52,6 +53,16 @@ func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N dimension data.
 func (client BillingAccountDimensionsClient) List(ctx context.Context, billingAccountID string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BillingAccountDimensionsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,

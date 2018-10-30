@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID stri
 // name - name of hostingEnvironment (App Service Environment)
 // hostingEnvironmentEnvelope - properties of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope HostingEnvironment) (result HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateHostingEnvironmentPreparer(ctx, resourceGroupName, name, hostingEnvironmentEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure preparing request")
@@ -92,10 +103,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(r
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -119,6 +126,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentResponde
 // name - name of hostingEnvironment (App Service Environment)
 // multiRolePoolEnvelope - properties of multiRole pool
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPool) (result HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateMultiRolePool")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateMultiRolePoolPreparer(ctx, resourceGroupName, name, multiRolePoolEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure preparing request")
@@ -166,10 +183,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *h
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -194,6 +207,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(res
 // workerPoolName - name of worker pool
 // workerPoolEnvelope - properties of worker pool
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPool) (result HostingEnvironmentsCreateOrUpdateWorkerPoolFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateWorkerPool")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateWorkerPoolPreparer(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure preparing request")
@@ -242,10 +265,6 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -269,6 +288,16 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *
 // name - name of hostingEnvironment (App Service Environment)
 // forceDelete - delete even if the hostingEnvironment (App Service Environment) contains resources
 func (client HostingEnvironmentsClient) DeleteHostingEnvironment(ctx context.Context, resourceGroupName string, name string, forceDelete *bool) (result HostingEnvironmentsDeleteHostingEnvironmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.DeleteHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteHostingEnvironmentPreparer(ctx, resourceGroupName, name, forceDelete)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure preparing request")
@@ -317,10 +346,6 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -343,6 +368,16 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironment(ctx context.Context, resourceGroupName string, name string) (result HostingEnvironment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironment", nil, "Failure preparing request")
@@ -410,6 +445,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentResponder(resp *htt
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacities(ctx context.Context, resourceGroupName string, name string) (result StampCapacityCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentCapacities")
+		defer func() {
+			sc := -1
+			if result.scc.Response.Response != nil {
+				sc = result.scc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentCapacitiesNextResults
 	req, err := client.GetHostingEnvironmentCapacitiesPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -474,8 +519,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesResponder
 }
 
 // getHostingEnvironmentCapacitiesNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentCapacitiesNextResults(lastResults StampCapacityCollection) (result StampCapacityCollection, err error) {
-	req, err := lastResults.stampCapacityCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentCapacitiesNextResults(ctx context.Context, lastResults StampCapacityCollection) (result StampCapacityCollection, err error) {
+	req, err := lastResults.stampCapacityCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentCapacitiesNextResults", nil, "Failure preparing next results request")
 	}
@@ -496,6 +541,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentCapacitiesNextResul
 
 // GetHostingEnvironmentCapacitiesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesComplete(ctx context.Context, resourceGroupName string, name string) (result StampCapacityCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentCapacities")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentCapacities(ctx, resourceGroupName, name)
 	return
 }
@@ -505,6 +560,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentCapacitiesComplete(
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnostics(ctx context.Context, resourceGroupName string, name string) (result ListHostingEnvironmentDiagnostics, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentDiagnostics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentDiagnosticsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnostics", nil, "Failure preparing request")
@@ -573,6 +638,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsResponde
 // name - name of hostingEnvironment (App Service Environment)
 // diagnosticsName - name of the diagnostics
 func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItem(ctx context.Context, resourceGroupName string, name string, diagnosticsName string) (result HostingEnvironmentDiagnostics, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentDiagnosticsItem")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentDiagnosticsItemPreparer(ctx, resourceGroupName, name, diagnosticsName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentDiagnosticsItem", nil, "Failure preparing request")
@@ -641,6 +716,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentDiagnosticsItemResp
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinition, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentMetricDefinitionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentMetricDefinitions", nil, "Failure preparing request")
@@ -712,6 +797,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricDefinitionsRe
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMetrics")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentMetricsNextResults
 	req, err := client.GetHostingEnvironmentMetricsPreparer(ctx, resourceGroupName, name, details, filter)
 	if err != nil {
@@ -782,8 +877,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsResponder(re
 }
 
 // getHostingEnvironmentMetricsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMetricsNextResults", nil, "Failure preparing next results request")
 	}
@@ -804,6 +899,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMetricsNextResults(
 
 // GetHostingEnvironmentMetricsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsComplete(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMetrics")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentMetrics(ctx, resourceGroupName, name, details, filter)
 	return
 }
@@ -814,6 +919,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMetricsComplete(ctx
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.mdc.Response.Response != nil {
+				sc = result.mdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentMultiRoleMetricDefinitionsNextResults
 	req, err := client.GetHostingEnvironmentMultiRoleMetricDefinitionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -878,8 +993,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 }
 
 // getHostingEnvironmentMultiRoleMetricDefinitionsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
-	req, err := lastResults.metricDefinitionCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricDefinitionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleMetricDefinitionsNextResults", nil, "Failure preparing next results request")
 	}
@@ -900,6 +1015,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricDefi
 
 // GetHostingEnvironmentMultiRoleMetricDefinitionsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefinitionsComplete(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentMultiRoleMetricDefinitions(ctx, resourceGroupName, name)
 	return
 }
@@ -916,6 +1041,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricDefi
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetrics(ctx context.Context, resourceGroupName string, name string, startTime string, endTime string, timeGrain string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleMetrics")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentMultiRoleMetricsNextResults
 	req, err := client.GetHostingEnvironmentMultiRoleMetricsPreparer(ctx, resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
 	if err != nil {
@@ -995,8 +1130,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsRes
 }
 
 // getHostingEnvironmentMultiRoleMetricsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleMetricsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1017,6 +1152,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleMetricsNex
 
 // GetHostingEnvironmentMultiRoleMetricsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsComplete(ctx context.Context, resourceGroupName string, name string, startTime string, endTime string, timeGrain string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleMetrics")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentMultiRoleMetrics(ctx, resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
 	return
 }
@@ -1026,6 +1171,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleMetricsCom
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsages(ctx context.Context, resourceGroupName string, name string) (result UsageCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleUsages")
+		defer func() {
+			sc := -1
+			if result.uc.Response.Response != nil {
+				sc = result.uc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentMultiRoleUsagesNextResults
 	req, err := client.GetHostingEnvironmentMultiRoleUsagesPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -1090,8 +1245,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesResp
 }
 
 // getHostingEnvironmentMultiRoleUsagesNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleUsagesNextResults(lastResults UsageCollection) (result UsageCollection, err error) {
-	req, err := lastResults.usageCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleUsagesNextResults(ctx context.Context, lastResults UsageCollection) (result UsageCollection, err error) {
+	req, err := lastResults.usageCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentMultiRoleUsagesNextResults", nil, "Failure preparing next results request")
 	}
@@ -1112,6 +1267,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentMultiRoleUsagesNext
 
 // GetHostingEnvironmentMultiRoleUsagesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesComplete(ctx context.Context, resourceGroupName string, name string) (result UsageCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentMultiRoleUsages")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentMultiRoleUsages(ctx, resourceGroupName, name)
 	return
 }
@@ -1122,6 +1287,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentMultiRoleUsagesComp
 // name - name of hostingEnvironment (App Service Environment)
 // operationID - operation identifier GUID
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentOperation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentOperationPreparer(ctx, resourceGroupName, name, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperation", nil, "Failure preparing request")
@@ -1190,6 +1365,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationResponder(
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentOperations(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentOperations")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentOperationsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentOperations", nil, "Failure preparing request")
@@ -1256,6 +1441,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentOperationsResponder
 // Parameters:
 // resourceGroupName - name of resource group
 func (client HostingEnvironmentsClient) GetHostingEnvironments(ctx context.Context, resourceGroupName string) (result HostingEnvironmentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.hec.Response.Response != nil {
+				sc = result.hec.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentsNextResults
 	req, err := client.GetHostingEnvironmentsPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -1319,8 +1514,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsResponder(resp *ht
 }
 
 // getHostingEnvironmentsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentsNextResults(lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
-	req, err := lastResults.hostingEnvironmentCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentsNextResults(ctx context.Context, lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
+	req, err := lastResults.hostingEnvironmentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1341,6 +1536,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentsNextResults(lastRe
 
 // GetHostingEnvironmentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentsComplete(ctx context.Context, resourceGroupName string) (result HostingEnvironmentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironments(ctx, resourceGroupName)
 	return
 }
@@ -1350,6 +1555,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentsComplete(ctx conte
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarms(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentServerFarms")
+		defer func() {
+			sc := -1
+			if result.sfc.Response.Response != nil {
+				sc = result.sfc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentServerFarmsNextResults
 	req, err := client.GetHostingEnvironmentServerFarmsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -1414,8 +1629,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsResponde
 }
 
 // getHostingEnvironmentServerFarmsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
-	req, err := lastResults.serverFarmCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentServerFarmsNextResults(ctx context.Context, lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.serverFarmCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentServerFarmsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1436,6 +1651,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentServerFarmsNextResu
 
 // GetHostingEnvironmentServerFarmsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsComplete(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentServerFarms")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentServerFarms(ctx, resourceGroupName, name)
 	return
 }
@@ -1446,6 +1671,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentServerFarmsComplete
 // name - name of hostingEnvironment (App Service Environment)
 // propertiesToInclude - comma separated list of site properties to include
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSites(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentSites")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentSitesNextResults
 	req, err := client.GetHostingEnvironmentSitesPreparer(ctx, resourceGroupName, name, propertiesToInclude)
 	if err != nil {
@@ -1513,8 +1748,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesResponder(resp
 }
 
 // getHostingEnvironmentSitesNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentSitesNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentSitesNextResults", nil, "Failure preparing next results request")
 	}
@@ -1535,6 +1770,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentSitesNextResults(la
 
 // GetHostingEnvironmentSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesComplete(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentSites")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentSites(ctx, resourceGroupName, name, propertiesToInclude)
 	return
 }
@@ -1547,6 +1792,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentSitesComplete(ctx c
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsages(ctx context.Context, resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentUsages")
+		defer func() {
+			sc := -1
+			if result.cuqc.Response.Response != nil {
+				sc = result.cuqc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentUsagesNextResults
 	req, err := client.GetHostingEnvironmentUsagesPreparer(ctx, resourceGroupName, name, filter)
 	if err != nil {
@@ -1614,8 +1869,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesResponder(res
 }
 
 // getHostingEnvironmentUsagesNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentUsagesNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
-	req, err := lastResults.csmUsageQuotaCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentUsagesNextResults(ctx context.Context, lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.csmUsageQuotaCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentUsagesNextResults", nil, "Failure preparing next results request")
 	}
@@ -1636,6 +1891,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentUsagesNextResults(l
 
 // GetHostingEnvironmentUsagesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesComplete(ctx context.Context, resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentUsages")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentUsages(ctx, resourceGroupName, name, filter)
 	return
 }
@@ -1645,6 +1910,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentUsagesComplete(ctx 
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentVips(ctx context.Context, resourceGroupName string, name string) (result AddressResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentVips")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetHostingEnvironmentVipsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetHostingEnvironmentVips", nil, "Failure preparing request")
@@ -1712,6 +1987,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentVipsResponder(resp 
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlans(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebHostingPlans")
+		defer func() {
+			sc := -1
+			if result.sfc.Response.Response != nil {
+				sc = result.sfc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentWebHostingPlansNextResults
 	req, err := client.GetHostingEnvironmentWebHostingPlansPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -1776,8 +2061,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansResp
 }
 
 // getHostingEnvironmentWebHostingPlansNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentWebHostingPlansNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
-	req, err := lastResults.serverFarmCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentWebHostingPlansNextResults(ctx context.Context, lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.serverFarmCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebHostingPlansNextResults", nil, "Failure preparing next results request")
 	}
@@ -1798,6 +2083,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebHostingPlansNext
 
 // GetHostingEnvironmentWebHostingPlansComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansComplete(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebHostingPlans")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentWebHostingPlans(ctx, resourceGroupName, name)
 	return
 }
@@ -1809,6 +2104,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebHostingPlansComp
 // name - name of hostingEnvironment (App Service Environment)
 // workerPoolName - name of worker pool
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitions(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result MetricDefinitionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.mdc.Response.Response != nil {
+				sc = result.mdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentWebWorkerMetricDefinitionsNextResults
 	req, err := client.GetHostingEnvironmentWebWorkerMetricDefinitionsPreparer(ctx, resourceGroupName, name, workerPoolName)
 	if err != nil {
@@ -1874,8 +2179,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 }
 
 // getHostingEnvironmentWebWorkerMetricDefinitionsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
-	req, err := lastResults.metricDefinitionCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricDefinitionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerMetricDefinitionsNextResults", nil, "Failure preparing next results request")
 	}
@@ -1896,6 +2201,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricDefi
 
 // GetHostingEnvironmentWebWorkerMetricDefinitionsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefinitionsComplete(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result MetricDefinitionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentWebWorkerMetricDefinitions(ctx, resourceGroupName, name, workerPoolName)
 	return
 }
@@ -1910,6 +2225,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricDefi
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetrics(ctx context.Context, resourceGroupName string, name string, workerPoolName string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerMetrics")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentWebWorkerMetricsNextResults
 	req, err := client.GetHostingEnvironmentWebWorkerMetricsPreparer(ctx, resourceGroupName, name, workerPoolName, details, filter)
 	if err != nil {
@@ -1981,8 +2306,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsRes
 }
 
 // getHostingEnvironmentWebWorkerMetricsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerMetricsNextResults", nil, "Failure preparing next results request")
 	}
@@ -2003,6 +2328,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerMetricsNex
 
 // GetHostingEnvironmentWebWorkerMetricsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsComplete(ctx context.Context, resourceGroupName string, name string, workerPoolName string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerMetrics")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentWebWorkerMetrics(ctx, resourceGroupName, name, workerPoolName, details, filter)
 	return
 }
@@ -2013,6 +2348,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerMetricsCom
 // name - name of hostingEnvironment (App Service Environment)
 // workerPoolName - name of worker pool
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsages(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result UsageCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerUsages")
+		defer func() {
+			sc := -1
+			if result.uc.Response.Response != nil {
+				sc = result.uc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getHostingEnvironmentWebWorkerUsagesNextResults
 	req, err := client.GetHostingEnvironmentWebWorkerUsagesPreparer(ctx, resourceGroupName, name, workerPoolName)
 	if err != nil {
@@ -2078,8 +2423,8 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesResp
 }
 
 // getHostingEnvironmentWebWorkerUsagesNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerUsagesNextResults(lastResults UsageCollection) (result UsageCollection, err error) {
-	req, err := lastResults.usageCollectionPreparer()
+func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerUsagesNextResults(ctx context.Context, lastResults UsageCollection) (result UsageCollection, err error) {
+	req, err := lastResults.usageCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getHostingEnvironmentWebWorkerUsagesNextResults", nil, "Failure preparing next results request")
 	}
@@ -2100,6 +2445,16 @@ func (client HostingEnvironmentsClient) getHostingEnvironmentWebWorkerUsagesNext
 
 // GetHostingEnvironmentWebWorkerUsagesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesComplete(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result UsageCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetHostingEnvironmentWebWorkerUsages")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetHostingEnvironmentWebWorkerUsages(ctx, resourceGroupName, name, workerPoolName)
 	return
 }
@@ -2109,6 +2464,16 @@ func (client HostingEnvironmentsClient) GetHostingEnvironmentWebWorkerUsagesComp
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetMultiRolePool(ctx context.Context, resourceGroupName string, name string) (result WorkerPool, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePool")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetMultiRolePoolPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePool", nil, "Failure preparing request")
@@ -2177,6 +2542,16 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Res
 // name - name of hostingEnvironment (App Service Environment)
 // instance - name of instance in the multiRole pool&gt;
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinitions(ctx context.Context, resourceGroupName string, name string, instance string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePoolInstanceMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetMultiRolePoolInstanceMetricDefinitionsPreparer(ctx, resourceGroupName, name, instance)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -2247,6 +2622,16 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricDefinition
 // instance - name of instance in the multiRole pool
 // details - include instance details
 func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetrics(ctx context.Context, resourceGroupName string, name string, instance string, details *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePoolInstanceMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetMultiRolePoolInstanceMetricsPreparer(ctx, resourceGroupName, name, instance, details)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetMultiRolePoolInstanceMetrics", nil, "Failure preparing request")
@@ -2318,6 +2703,16 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolInstanceMetricsResponder
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetMultiRolePools(ctx context.Context, resourceGroupName string, name string) (result WorkerPoolCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePools")
+		defer func() {
+			sc := -1
+			if result.wpc.Response.Response != nil {
+				sc = result.wpc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getMultiRolePoolsNextResults
 	req, err := client.GetMultiRolePoolsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -2382,8 +2777,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsResponder(resp *http.Re
 }
 
 // getMultiRolePoolsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getMultiRolePoolsNextResults(lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
-	req, err := lastResults.workerPoolCollectionPreparer()
+func (client HostingEnvironmentsClient) getMultiRolePoolsNextResults(ctx context.Context, lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
+	req, err := lastResults.workerPoolCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getMultiRolePoolsNextResults", nil, "Failure preparing next results request")
 	}
@@ -2404,6 +2799,16 @@ func (client HostingEnvironmentsClient) getMultiRolePoolsNextResults(lastResults
 
 // GetMultiRolePoolsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetMultiRolePoolsComplete(ctx context.Context, resourceGroupName string, name string) (result WorkerPoolCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePools")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetMultiRolePools(ctx, resourceGroupName, name)
 	return
 }
@@ -2413,6 +2818,16 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolsComplete(ctx context.Co
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkus(ctx context.Context, resourceGroupName string, name string) (result SkuInfoCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePoolSkus")
+		defer func() {
+			sc := -1
+			if result.sic.Response.Response != nil {
+				sc = result.sic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getMultiRolePoolSkusNextResults
 	req, err := client.GetMultiRolePoolSkusPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -2477,8 +2892,8 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusResponder(resp *http
 }
 
 // getMultiRolePoolSkusNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getMultiRolePoolSkusNextResults(lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
-	req, err := lastResults.skuInfoCollectionPreparer()
+func (client HostingEnvironmentsClient) getMultiRolePoolSkusNextResults(ctx context.Context, lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
+	req, err := lastResults.skuInfoCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getMultiRolePoolSkusNextResults", nil, "Failure preparing next results request")
 	}
@@ -2499,6 +2914,16 @@ func (client HostingEnvironmentsClient) getMultiRolePoolSkusNextResults(lastResu
 
 // GetMultiRolePoolSkusComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetMultiRolePoolSkusComplete(ctx context.Context, resourceGroupName string, name string) (result SkuInfoCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetMultiRolePoolSkus")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetMultiRolePoolSkus(ctx, resourceGroupName, name)
 	return
 }
@@ -2509,6 +2934,16 @@ func (client HostingEnvironmentsClient) GetMultiRolePoolSkusComplete(ctx context
 // name - name of hostingEnvironment (App Service Environment)
 // workerPoolName - name of worker pool
 func (client HostingEnvironmentsClient) GetWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result WorkerPool, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPool")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetWorkerPoolPreparer(ctx, resourceGroupName, name, workerPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPool", nil, "Failure preparing request")
@@ -2579,6 +3014,16 @@ func (client HostingEnvironmentsClient) GetWorkerPoolResponder(resp *http.Respon
 // workerPoolName - name of worker pool
 // instance - name of instance in the worker pool
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitions(ctx context.Context, resourceGroupName string, name string, workerPoolName string, instance string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPoolInstanceMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetWorkerPoolInstanceMetricDefinitionsPreparer(ctx, resourceGroupName, name, workerPoolName, instance)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetricDefinitions", nil, "Failure preparing request")
@@ -2654,6 +3099,16 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricDefinitionsRe
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetrics(ctx context.Context, resourceGroupName string, name string, workerPoolName string, instance string, details *bool, filter string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPoolInstanceMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetWorkerPoolInstanceMetricsPreparer(ctx, resourceGroupName, name, workerPoolName, instance, details, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "GetWorkerPoolInstanceMetrics", nil, "Failure preparing request")
@@ -2729,6 +3184,16 @@ func (client HostingEnvironmentsClient) GetWorkerPoolInstanceMetricsResponder(re
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) GetWorkerPools(ctx context.Context, resourceGroupName string, name string) (result WorkerPoolCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPools")
+		defer func() {
+			sc := -1
+			if result.wpc.Response.Response != nil {
+				sc = result.wpc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getWorkerPoolsNextResults
 	req, err := client.GetWorkerPoolsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -2793,8 +3258,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsResponder(resp *http.Respo
 }
 
 // getWorkerPoolsNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getWorkerPoolsNextResults(lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
-	req, err := lastResults.workerPoolCollectionPreparer()
+func (client HostingEnvironmentsClient) getWorkerPoolsNextResults(ctx context.Context, lastResults WorkerPoolCollection) (result WorkerPoolCollection, err error) {
+	req, err := lastResults.workerPoolCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getWorkerPoolsNextResults", nil, "Failure preparing next results request")
 	}
@@ -2815,6 +3280,16 @@ func (client HostingEnvironmentsClient) getWorkerPoolsNextResults(lastResults Wo
 
 // GetWorkerPoolsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetWorkerPoolsComplete(ctx context.Context, resourceGroupName string, name string) (result WorkerPoolCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPools")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetWorkerPools(ctx, resourceGroupName, name)
 	return
 }
@@ -2825,6 +3300,16 @@ func (client HostingEnvironmentsClient) GetWorkerPoolsComplete(ctx context.Conte
 // name - name of hostingEnvironment (App Service Environment)
 // workerPoolName - name of worker pool
 func (client HostingEnvironmentsClient) GetWorkerPoolSkus(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result SkuInfoCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPoolSkus")
+		defer func() {
+			sc := -1
+			if result.sic.Response.Response != nil {
+				sc = result.sic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getWorkerPoolSkusNextResults
 	req, err := client.GetWorkerPoolSkusPreparer(ctx, resourceGroupName, name, workerPoolName)
 	if err != nil {
@@ -2890,8 +3375,8 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusResponder(resp *http.Re
 }
 
 // getWorkerPoolSkusNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) getWorkerPoolSkusNextResults(lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
-	req, err := lastResults.skuInfoCollectionPreparer()
+func (client HostingEnvironmentsClient) getWorkerPoolSkusNextResults(ctx context.Context, lastResults SkuInfoCollection) (result SkuInfoCollection, err error) {
+	req, err := lastResults.skuInfoCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "getWorkerPoolSkusNextResults", nil, "Failure preparing next results request")
 	}
@@ -2912,6 +3397,16 @@ func (client HostingEnvironmentsClient) getWorkerPoolSkusNextResults(lastResults
 
 // GetWorkerPoolSkusComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) GetWorkerPoolSkusComplete(ctx context.Context, resourceGroupName string, name string, workerPoolName string) (result SkuInfoCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.GetWorkerPoolSkus")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetWorkerPoolSkus(ctx, resourceGroupName, name, workerPoolName)
 	return
 }
@@ -2921,6 +3416,16 @@ func (client HostingEnvironmentsClient) GetWorkerPoolSkusComplete(ctx context.Co
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) RebootHostingEnvironment(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.RebootHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RebootHostingEnvironmentPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "RebootHostingEnvironment", nil, "Failure preparing request")
@@ -2988,6 +3493,16 @@ func (client HostingEnvironmentsClient) RebootHostingEnvironmentResponder(resp *
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) ResumeHostingEnvironment(ctx context.Context, resourceGroupName string, name string) (result HostingEnvironmentsResumeHostingEnvironmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.ResumeHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ResumeHostingEnvironmentPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure preparing request")
@@ -3033,10 +3548,6 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -3061,8 +3572,8 @@ func (client HostingEnvironmentsClient) resumeHostingEnvironmentResponder(resp *
 }
 
 // resumeHostingEnvironmentNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) resumeHostingEnvironmentNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client HostingEnvironmentsClient) resumeHostingEnvironmentNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "resumeHostingEnvironmentNextResults", nil, "Failure preparing next results request")
 	}
@@ -3080,6 +3591,16 @@ func (client HostingEnvironmentsClient) resumeHostingEnvironmentNextResults(last
 
 // ResumeHostingEnvironmentComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentComplete(ctx context.Context, resourceGroupName string, name string) (result HostingEnvironmentsResumeHostingEnvironmentAllFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.ResumeHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	var future HostingEnvironmentsResumeHostingEnvironmentFuture
 	future, err = client.ResumeHostingEnvironment(ctx, resourceGroupName, name)
 	result.Future = future.Future
@@ -3091,6 +3612,16 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentComplete(ctx con
 // resourceGroupName - name of resource group
 // name - name of hostingEnvironment (App Service Environment)
 func (client HostingEnvironmentsClient) SuspendHostingEnvironment(ctx context.Context, resourceGroupName string, name string) (result HostingEnvironmentsSuspendHostingEnvironmentFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.SuspendHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SuspendHostingEnvironmentPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure preparing request")
@@ -3136,10 +3667,6 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *htt
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -3164,8 +3691,8 @@ func (client HostingEnvironmentsClient) suspendHostingEnvironmentResponder(resp 
 }
 
 // suspendHostingEnvironmentNextResults retrieves the next set of results, if any.
-func (client HostingEnvironmentsClient) suspendHostingEnvironmentNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client HostingEnvironmentsClient) suspendHostingEnvironmentNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "suspendHostingEnvironmentNextResults", nil, "Failure preparing next results request")
 	}
@@ -3183,6 +3710,16 @@ func (client HostingEnvironmentsClient) suspendHostingEnvironmentNextResults(las
 
 // SuspendHostingEnvironmentComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentComplete(ctx context.Context, resourceGroupName string, name string) (result HostingEnvironmentsSuspendHostingEnvironmentAllFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.SuspendHostingEnvironment")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	var future HostingEnvironmentsSuspendHostingEnvironmentFuture
 	future, err = client.SuspendHostingEnvironment(ctx, resourceGroupName, name)
 	result.Future = future.Future

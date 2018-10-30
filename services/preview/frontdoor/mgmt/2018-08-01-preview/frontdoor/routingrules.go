@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewRoutingRulesClientWithBaseURI(baseURI string, subscriptionID string) Rou
 // routingRuleName - name of the Routing Rule which is unique within the Front Door.
 // routingRuleParameters - routing Rule properties needed to create a new Front Door.
 func (client RoutingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, routingRuleName string, routingRuleParameters RoutingRule) (result RoutingRulesCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoutingRulesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -111,10 +122,6 @@ func (client RoutingRulesClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -138,6 +145,16 @@ func (client RoutingRulesClient) CreateOrUpdateResponder(resp *http.Response) (r
 // frontDoorName - name of the Front Door which is globally unique.
 // routingRuleName - name of the Routing Rule which is unique within the Front Door.
 func (client RoutingRulesClient) Delete(ctx context.Context, resourceGroupName string, frontDoorName string, routingRuleName string) (result RoutingRulesDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoutingRulesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -200,10 +217,6 @@ func (client RoutingRulesClient) DeleteSender(req *http.Request) (future Routing
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -226,6 +239,16 @@ func (client RoutingRulesClient) DeleteResponder(resp *http.Response) (result au
 // frontDoorName - name of the Front Door which is globally unique.
 // routingRuleName - name of the Routing Rule which is unique within the Front Door.
 func (client RoutingRulesClient) Get(ctx context.Context, resourceGroupName string, frontDoorName string, routingRuleName string) (result RoutingRule, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoutingRulesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -310,6 +333,16 @@ func (client RoutingRulesClient) GetResponder(resp *http.Response) (result Routi
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // frontDoorName - name of the Front Door which is globally unique.
 func (client RoutingRulesClient) ListByFrontDoor(ctx context.Context, resourceGroupName string, frontDoorName string) (result RoutingRuleListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoutingRulesClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.rrlr.Response.Response != nil {
+				sc = result.rrlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -386,8 +419,8 @@ func (client RoutingRulesClient) ListByFrontDoorResponder(resp *http.Response) (
 }
 
 // listByFrontDoorNextResults retrieves the next set of results, if any.
-func (client RoutingRulesClient) listByFrontDoorNextResults(lastResults RoutingRuleListResult) (result RoutingRuleListResult, err error) {
-	req, err := lastResults.routingRuleListResultPreparer()
+func (client RoutingRulesClient) listByFrontDoorNextResults(ctx context.Context, lastResults RoutingRuleListResult) (result RoutingRuleListResult, err error) {
+	req, err := lastResults.routingRuleListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "frontdoor.RoutingRulesClient", "listByFrontDoorNextResults", nil, "Failure preparing next results request")
 	}
@@ -408,6 +441,16 @@ func (client RoutingRulesClient) listByFrontDoorNextResults(lastResults RoutingR
 
 // ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
 func (client RoutingRulesClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result RoutingRuleListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoutingRulesClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
 	return
 }

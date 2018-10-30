@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewServiceReplicaClientWithBaseURI(baseURI string, subscriptionID string) S
 // serviceResourceName - the identity of the service.
 // replicaName - service Fabric replica name.
 func (client ServiceReplicaClient) Get(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string) (result ServiceReplicaDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceReplicaClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, applicationResourceName, serviceResourceName, replicaName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ServiceReplicaClient", "Get", nil, "Failure preparing request")
@@ -118,6 +129,16 @@ func (client ServiceReplicaClient) GetResponder(resp *http.Response) (result Ser
 // applicationResourceName - the identity of the application.
 // serviceResourceName - the identity of the service.
 func (client ServiceReplicaClient) List(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string) (result ServiceReplicaDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceReplicaClient.List")
+		defer func() {
+			sc := -1
+			if result.srdl.Response.Response != nil {
+				sc = result.srdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, applicationResourceName, serviceResourceName)
 	if err != nil {
@@ -183,8 +204,8 @@ func (client ServiceReplicaClient) ListResponder(resp *http.Response) (result Se
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ServiceReplicaClient) listNextResults(lastResults ServiceReplicaDescriptionList) (result ServiceReplicaDescriptionList, err error) {
-	req, err := lastResults.serviceReplicaDescriptionListPreparer()
+func (client ServiceReplicaClient) listNextResults(ctx context.Context, lastResults ServiceReplicaDescriptionList) (result ServiceReplicaDescriptionList, err error) {
+	req, err := lastResults.serviceReplicaDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.ServiceReplicaClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -205,6 +226,16 @@ func (client ServiceReplicaClient) listNextResults(lastResults ServiceReplicaDes
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServiceReplicaClient) ListComplete(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string) (result ServiceReplicaDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceReplicaClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, applicationResourceName, serviceResourceName)
 	return
 }

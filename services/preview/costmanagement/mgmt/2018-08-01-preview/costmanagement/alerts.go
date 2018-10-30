@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 // resourceGroupName - azure Resource Group Name.
 // alertID - alert ID.
 func (client AlertsClient) GetByResourceGroupName(ctx context.Context, resourceGroupName string, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetByResourceGroupNamePreparer(ctx, resourceGroupName, alertID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetByResourceGroupName", nil, "Failure preparing request")
@@ -111,6 +122,16 @@ func (client AlertsClient) GetByResourceGroupNameResponder(resp *http.Response) 
 // Parameters:
 // alertID - alert ID.
 func (client AlertsClient) GetBySubscription(ctx context.Context, alertID string) (result Alert, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetBySubscriptionPreparer(ctx, alertID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "GetBySubscription", nil, "Failure preparing request")
@@ -182,6 +203,16 @@ func (client AlertsClient) GetBySubscriptionResponder(resp *http.Response) (resu
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
 func (client AlertsClient) List(ctx context.Context, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.List")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -262,8 +293,8 @@ func (client AlertsClient) ListResponder(resp *http.Response) (result AlertListR
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AlertsClient) listNextResults(lastResults AlertListResult) (result AlertListResult, err error) {
-	req, err := lastResults.alertListResultPreparer()
+func (client AlertsClient) listNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -284,6 +315,16 @@ func (client AlertsClient) listNextResults(lastResults AlertListResult) (result 
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AlertsClient) ListComplete(ctx context.Context, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, filter, skiptoken, top)
 	return
 }
@@ -299,6 +340,16 @@ func (client AlertsClient) ListComplete(ctx context.Context, filter string, skip
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N alerts.
 func (client AlertsClient) ListByResourceGroupName(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result AlertListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.alr.Response.Response != nil {
+				sc = result.alr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -380,8 +431,8 @@ func (client AlertsClient) ListByResourceGroupNameResponder(resp *http.Response)
 }
 
 // listByResourceGroupNameNextResults retrieves the next set of results, if any.
-func (client AlertsClient) listByResourceGroupNameNextResults(lastResults AlertListResult) (result AlertListResult, err error) {
-	req, err := lastResults.alertListResultPreparer()
+func (client AlertsClient) listByResourceGroupNameNextResults(ctx context.Context, lastResults AlertListResult) (result AlertListResult, err error) {
+	req, err := lastResults.alertListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "listByResourceGroupNameNextResults", nil, "Failure preparing next results request")
 	}
@@ -402,6 +453,16 @@ func (client AlertsClient) listByResourceGroupNameNextResults(lastResults AlertL
 
 // ListByResourceGroupNameComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AlertsClient) ListByResourceGroupNameComplete(ctx context.Context, resourceGroupName string, filter string, skiptoken string, top *int32) (result AlertListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ListByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroupName(ctx, resourceGroupName, filter, skiptoken, top)
 	return
 }

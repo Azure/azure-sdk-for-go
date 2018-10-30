@@ -18,12 +18,17 @@ package policyinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights"
 
 // PolicyStatesResource enumerates the values for policy states resource.
 type PolicyStatesResource string
@@ -1042,27 +1047,44 @@ type PolicyTrackedResourcesQueryResults struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of PolicyTrackedResource
-// values.
+// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of
+// PolicyTrackedResource values.
 type PolicyTrackedResourcesQueryResultsIterator struct {
 	i    int
 	page PolicyTrackedResourcesQueryResultsPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *PolicyTrackedResourcesQueryResultsIterator) Next() error {
+func (iter *PolicyTrackedResourcesQueryResultsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesQueryResultsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PolicyTrackedResourcesQueryResultsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1091,11 +1113,11 @@ func (ptrqr PolicyTrackedResourcesQueryResults) IsEmpty() bool {
 
 // policyTrackedResourcesQueryResultsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ptrqr PolicyTrackedResourcesQueryResults) policyTrackedResourcesQueryResultsPreparer() (*http.Request, error) {
+func (ptrqr PolicyTrackedResourcesQueryResults) policyTrackedResourcesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
 	if ptrqr.NextLink == nil || len(to.String(ptrqr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ptrqr.NextLink)))
@@ -1103,19 +1125,36 @@ func (ptrqr PolicyTrackedResourcesQueryResults) policyTrackedResourcesQueryResul
 
 // PolicyTrackedResourcesQueryResultsPage contains a page of PolicyTrackedResource values.
 type PolicyTrackedResourcesQueryResultsPage struct {
-	fn    func(PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)
+	fn    func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)
 	ptrqr PolicyTrackedResourcesQueryResults
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *PolicyTrackedResourcesQueryResultsPage) Next() error {
-	next, err := page.fn(page.ptrqr)
+func (page *PolicyTrackedResourcesQueryResultsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyTrackedResourcesQueryResultsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ptrqr)
 	if err != nil {
 		return err
 	}
 	page.ptrqr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PolicyTrackedResourcesQueryResultsPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1259,26 +1298,44 @@ type RemediationDeploymentsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RemediationDeploymentsListResultIterator provides access to a complete listing of RemediationDeployment values.
+// RemediationDeploymentsListResultIterator provides access to a complete listing of RemediationDeployment
+// values.
 type RemediationDeploymentsListResultIterator struct {
 	i    int
 	page RemediationDeploymentsListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RemediationDeploymentsListResultIterator) Next() error {
+func (iter *RemediationDeploymentsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationDeploymentsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RemediationDeploymentsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1307,11 +1364,11 @@ func (rdlr RemediationDeploymentsListResult) IsEmpty() bool {
 
 // remediationDeploymentsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rdlr RemediationDeploymentsListResult) remediationDeploymentsListResultPreparer() (*http.Request, error) {
+func (rdlr RemediationDeploymentsListResult) remediationDeploymentsListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if rdlr.NextLink == nil || len(to.String(rdlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rdlr.NextLink)))
@@ -1319,19 +1376,36 @@ func (rdlr RemediationDeploymentsListResult) remediationDeploymentsListResultPre
 
 // RemediationDeploymentsListResultPage contains a page of RemediationDeployment values.
 type RemediationDeploymentsListResultPage struct {
-	fn   func(RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)
+	fn   func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)
 	rdlr RemediationDeploymentsListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RemediationDeploymentsListResultPage) Next() error {
-	next, err := page.fn(page.rdlr)
+func (page *RemediationDeploymentsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationDeploymentsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rdlr)
 	if err != nil {
 		return err
 	}
 	page.rdlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RemediationDeploymentsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1352,7 +1426,8 @@ func (page RemediationDeploymentsListResultPage) Values() []RemediationDeploymen
 	return *page.rdlr.Value
 }
 
-// RemediationDeploymentSummary the deployment status summary for all deplyoments created by the remediation.
+// RemediationDeploymentSummary the deployment status summary for all deplyoments created by the
+// remediation.
 type RemediationDeploymentSummary struct {
 	// TotalDeployments - The number of deployments required by the remediation.
 	TotalDeployments *int32 `json:"totalDeployments,omitempty"`
@@ -1383,20 +1458,37 @@ type RemediationListResultIterator struct {
 	page RemediationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RemediationListResultIterator) Next() error {
+func (iter *RemediationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RemediationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1425,11 +1517,11 @@ func (rlr RemediationListResult) IsEmpty() bool {
 
 // remediationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rlr RemediationListResult) remediationListResultPreparer() (*http.Request, error) {
+func (rlr RemediationListResult) remediationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rlr.NextLink)))
@@ -1437,19 +1529,36 @@ func (rlr RemediationListResult) remediationListResultPreparer() (*http.Request,
 
 // RemediationListResultPage contains a page of Remediation values.
 type RemediationListResultPage struct {
-	fn  func(RemediationListResult) (RemediationListResult, error)
+	fn  func(context.Context, RemediationListResult) (RemediationListResult, error)
 	rlr RemediationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RemediationListResultPage) Next() error {
-	next, err := page.fn(page.rlr)
+func (page *RemediationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RemediationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rlr)
 	if err != nil {
 		return err
 	}
 	page.rlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RemediationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1527,8 +1636,8 @@ type SummaryResults struct {
 	NonCompliantPolicies *int32 `json:"nonCompliantPolicies,omitempty"`
 }
 
-// TrackedResourceModificationDetails the details of the policy triggered deployment that created or modified the
-// tracked resource.
+// TrackedResourceModificationDetails the details of the policy triggered deployment that created or
+// modified the tracked resource.
 type TrackedResourceModificationDetails struct {
 	// PolicyDetails - The details of the policy that created or modified the tracked resource.
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty"`

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -43,6 +44,16 @@ func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalCli
 // Parameters:
 // request - name availability request
 func (client GlobalClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest) (result ResourceNameAvailability, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckNameAvailabilityPreparer(ctx, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -107,6 +118,16 @@ func (client GlobalClient) CheckNameAvailabilityResponder(resp *http.Response) (
 
 // GetAllCertificates sends the get all certificates request.
 func (client GlobalClient) GetAllCertificates(ctx context.Context) (result CertificateCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllCertificates")
+		defer func() {
+			sc := -1
+			if result.cc.Response.Response != nil {
+				sc = result.cc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllCertificatesNextResults
 	req, err := client.GetAllCertificatesPreparer(ctx)
 	if err != nil {
@@ -169,8 +190,8 @@ func (client GlobalClient) GetAllCertificatesResponder(resp *http.Response) (res
 }
 
 // getAllCertificatesNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllCertificatesNextResults(lastResults CertificateCollection) (result CertificateCollection, err error) {
-	req, err := lastResults.certificateCollectionPreparer()
+func (client GlobalClient) getAllCertificatesNextResults(ctx context.Context, lastResults CertificateCollection) (result CertificateCollection, err error) {
+	req, err := lastResults.certificateCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllCertificatesNextResults", nil, "Failure preparing next results request")
 	}
@@ -191,12 +212,32 @@ func (client GlobalClient) getAllCertificatesNextResults(lastResults Certificate
 
 // GetAllCertificatesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllCertificatesComplete(ctx context.Context) (result CertificateCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllCertificates")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllCertificates(ctx)
 	return
 }
 
 // GetAllClassicMobileServices sends the get all classic mobile services request.
 func (client GlobalClient) GetAllClassicMobileServices(ctx context.Context) (result ClassicMobileServiceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllClassicMobileServices")
+		defer func() {
+			sc := -1
+			if result.cmsc.Response.Response != nil {
+				sc = result.cmsc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllClassicMobileServicesNextResults
 	req, err := client.GetAllClassicMobileServicesPreparer(ctx)
 	if err != nil {
@@ -259,8 +300,8 @@ func (client GlobalClient) GetAllClassicMobileServicesResponder(resp *http.Respo
 }
 
 // getAllClassicMobileServicesNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllClassicMobileServicesNextResults(lastResults ClassicMobileServiceCollection) (result ClassicMobileServiceCollection, err error) {
-	req, err := lastResults.classicMobileServiceCollectionPreparer()
+func (client GlobalClient) getAllClassicMobileServicesNextResults(ctx context.Context, lastResults ClassicMobileServiceCollection) (result ClassicMobileServiceCollection, err error) {
+	req, err := lastResults.classicMobileServiceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllClassicMobileServicesNextResults", nil, "Failure preparing next results request")
 	}
@@ -281,12 +322,32 @@ func (client GlobalClient) getAllClassicMobileServicesNextResults(lastResults Cl
 
 // GetAllClassicMobileServicesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllClassicMobileServicesComplete(ctx context.Context) (result ClassicMobileServiceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllClassicMobileServices")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllClassicMobileServices(ctx)
 	return
 }
 
 // GetAllHostingEnvironments sends the get all hosting environments request.
 func (client GlobalClient) GetAllHostingEnvironments(ctx context.Context) (result HostingEnvironmentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.hec.Response.Response != nil {
+				sc = result.hec.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllHostingEnvironmentsNextResults
 	req, err := client.GetAllHostingEnvironmentsPreparer(ctx)
 	if err != nil {
@@ -349,8 +410,8 @@ func (client GlobalClient) GetAllHostingEnvironmentsResponder(resp *http.Respons
 }
 
 // getAllHostingEnvironmentsNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllHostingEnvironmentsNextResults(lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
-	req, err := lastResults.hostingEnvironmentCollectionPreparer()
+func (client GlobalClient) getAllHostingEnvironmentsNextResults(ctx context.Context, lastResults HostingEnvironmentCollection) (result HostingEnvironmentCollection, err error) {
+	req, err := lastResults.hostingEnvironmentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllHostingEnvironmentsNextResults", nil, "Failure preparing next results request")
 	}
@@ -371,12 +432,32 @@ func (client GlobalClient) getAllHostingEnvironmentsNextResults(lastResults Host
 
 // GetAllHostingEnvironmentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllHostingEnvironmentsComplete(ctx context.Context) (result HostingEnvironmentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllHostingEnvironments(ctx)
 	return
 }
 
 // GetAllManagedHostingEnvironments sends the get all managed hosting environments request.
 func (client GlobalClient) GetAllManagedHostingEnvironments(ctx context.Context) (result ManagedHostingEnvironmentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllManagedHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.mhec.Response.Response != nil {
+				sc = result.mhec.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllManagedHostingEnvironmentsNextResults
 	req, err := client.GetAllManagedHostingEnvironmentsPreparer(ctx)
 	if err != nil {
@@ -439,8 +520,8 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsResponder(resp *http.
 }
 
 // getAllManagedHostingEnvironmentsNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllManagedHostingEnvironmentsNextResults(lastResults ManagedHostingEnvironmentCollection) (result ManagedHostingEnvironmentCollection, err error) {
-	req, err := lastResults.managedHostingEnvironmentCollectionPreparer()
+func (client GlobalClient) getAllManagedHostingEnvironmentsNextResults(ctx context.Context, lastResults ManagedHostingEnvironmentCollection) (result ManagedHostingEnvironmentCollection, err error) {
+	req, err := lastResults.managedHostingEnvironmentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllManagedHostingEnvironmentsNextResults", nil, "Failure preparing next results request")
 	}
@@ -461,6 +542,16 @@ func (client GlobalClient) getAllManagedHostingEnvironmentsNextResults(lastResul
 
 // GetAllManagedHostingEnvironmentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllManagedHostingEnvironmentsComplete(ctx context.Context) (result ManagedHostingEnvironmentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllManagedHostingEnvironments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllManagedHostingEnvironments(ctx)
 	return
 }
@@ -470,6 +561,16 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsComplete(ctx context.
 // detailed - false to return a subset of App Service Plan properties, true to return all of the properties.
 // Retrieval of all properties may increase the API latency.
 func (client GlobalClient) GetAllServerFarms(ctx context.Context, detailed *bool) (result ServerFarmCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllServerFarms")
+		defer func() {
+			sc := -1
+			if result.sfc.Response.Response != nil {
+				sc = result.sfc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllServerFarmsNextResults
 	req, err := client.GetAllServerFarmsPreparer(ctx, detailed)
 	if err != nil {
@@ -535,8 +636,8 @@ func (client GlobalClient) GetAllServerFarmsResponder(resp *http.Response) (resu
 }
 
 // getAllServerFarmsNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
-	req, err := lastResults.serverFarmCollectionPreparer()
+func (client GlobalClient) getAllServerFarmsNextResults(ctx context.Context, lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.serverFarmCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllServerFarmsNextResults", nil, "Failure preparing next results request")
 	}
@@ -557,12 +658,32 @@ func (client GlobalClient) getAllServerFarmsNextResults(lastResults ServerFarmCo
 
 // GetAllServerFarmsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllServerFarmsComplete(ctx context.Context, detailed *bool) (result ServerFarmCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllServerFarms")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllServerFarms(ctx, detailed)
 	return
 }
 
 // GetAllSites sends the get all sites request.
 func (client GlobalClient) GetAllSites(ctx context.Context) (result SiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllSites")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllSitesNextResults
 	req, err := client.GetAllSitesPreparer(ctx)
 	if err != nil {
@@ -625,8 +746,8 @@ func (client GlobalClient) GetAllSitesResponder(resp *http.Response) (result Sit
 }
 
 // getAllSitesNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getAllSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client GlobalClient) getAllSitesNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getAllSitesNextResults", nil, "Failure preparing next results request")
 	}
@@ -647,6 +768,16 @@ func (client GlobalClient) getAllSitesNextResults(lastResults SiteCollection) (r
 
 // GetAllSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetAllSitesComplete(ctx context.Context) (result SiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetAllSites")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllSites(ctx)
 	return
 }
@@ -656,6 +787,16 @@ func (client GlobalClient) GetAllSitesComplete(ctx context.Context) (result Site
 // sku - filter only to regions that support this sku
 // linuxWorkersEnabled - filter only to regions that support linux workers
 func (client GlobalClient) GetSubscriptionGeoRegions(ctx context.Context, sku string, linuxWorkersEnabled *bool) (result GeoRegionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetSubscriptionGeoRegions")
+		defer func() {
+			sc := -1
+			if result.grc.Response.Response != nil {
+				sc = result.grc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSubscriptionGeoRegionsNextResults
 	req, err := client.GetSubscriptionGeoRegionsPreparer(ctx, sku, linuxWorkersEnabled)
 	if err != nil {
@@ -724,8 +865,8 @@ func (client GlobalClient) GetSubscriptionGeoRegionsResponder(resp *http.Respons
 }
 
 // getSubscriptionGeoRegionsNextResults retrieves the next set of results, if any.
-func (client GlobalClient) getSubscriptionGeoRegionsNextResults(lastResults GeoRegionCollection) (result GeoRegionCollection, err error) {
-	req, err := lastResults.geoRegionCollectionPreparer()
+func (client GlobalClient) getSubscriptionGeoRegionsNextResults(ctx context.Context, lastResults GeoRegionCollection) (result GeoRegionCollection, err error) {
+	req, err := lastResults.geoRegionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalClient", "getSubscriptionGeoRegionsNextResults", nil, "Failure preparing next results request")
 	}
@@ -746,12 +887,32 @@ func (client GlobalClient) getSubscriptionGeoRegionsNextResults(lastResults GeoR
 
 // GetSubscriptionGeoRegionsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalClient) GetSubscriptionGeoRegionsComplete(ctx context.Context, sku string, linuxWorkersEnabled *bool) (result GeoRegionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetSubscriptionGeoRegions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSubscriptionGeoRegions(ctx, sku, linuxWorkersEnabled)
 	return
 }
 
 // GetSubscriptionPublishingCredentials sends the get subscription publishing credentials request.
 func (client GlobalClient) GetSubscriptionPublishingCredentials(ctx context.Context) (result User, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.GetSubscriptionPublishingCredentials")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSubscriptionPublishingCredentialsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetSubscriptionPublishingCredentials", nil, "Failure preparing request")
@@ -816,6 +977,16 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsResponder(resp *h
 // Parameters:
 // name - hosting environment name
 func (client GlobalClient) IsHostingEnvironmentNameAvailable(ctx context.Context, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.IsHostingEnvironmentNameAvailable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.IsHostingEnvironmentNameAvailablePreparer(ctx, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "IsHostingEnvironmentNameAvailable", nil, "Failure preparing request")
@@ -881,6 +1052,16 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailableResponder(resp *http
 // Parameters:
 // name - hosting environment name
 func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailable(ctx context.Context, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.IsHostingEnvironmentWithLegacyNameAvailable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.IsHostingEnvironmentWithLegacyNameAvailablePreparer(ctx, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "IsHostingEnvironmentWithLegacyNameAvailable", nil, "Failure preparing request")
@@ -944,6 +1125,16 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableResponder(
 
 // ListPremierAddOnOffers sends the list premier add on offers request.
 func (client GlobalClient) ListPremierAddOnOffers(ctx context.Context) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.ListPremierAddOnOffers")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPremierAddOnOffersPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "ListPremierAddOnOffers", nil, "Failure preparing request")
@@ -1008,6 +1199,16 @@ func (client GlobalClient) ListPremierAddOnOffersResponder(resp *http.Response) 
 // Parameters:
 // requestMessage - requestMessage with new publishing credentials
 func (client GlobalClient) UpdateSubscriptionPublishingCredentials(ctx context.Context, requestMessage User) (result User, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalClient.UpdateSubscriptionPublishingCredentials")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSubscriptionPublishingCredentialsPreparer(ctx, requestMessage)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "UpdateSubscriptionPublishingCredentials", nil, "Failure preparing request")

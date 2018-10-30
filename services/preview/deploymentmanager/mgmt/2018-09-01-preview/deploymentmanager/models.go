@@ -25,6 +25,9 @@ import (
 	"net/http"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/deploymentmanager/mgmt/2018-09-01-preview/deploymentmanager"
+
 // DeploymentMode enumerates the values for deployment mode.
 type DeploymentMode string
 
@@ -231,7 +234,8 @@ func (as *ArtifactSourceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ArtifactSourcePropertiesModel the properties that define the source location where the artifacts are located.
+// ArtifactSourcePropertiesModel the properties that define the source location where the artifacts are
+// located.
 type ArtifactSourcePropertiesModel struct {
 	// SourceType - The type of artifact source used.
 	SourceType *string `json:"sourceType,omitempty"`
@@ -1317,8 +1321,8 @@ type ServiceUnitResourceProperties struct {
 	Artifacts *ServiceUnitArtifacts `json:"artifacts,omitempty"`
 }
 
-// ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServiceUnitsCreateOrUpdateFuture struct {
 	azure.Future
 }

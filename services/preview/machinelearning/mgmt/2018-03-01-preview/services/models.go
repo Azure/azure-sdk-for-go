@@ -18,13 +18,18 @@ package services
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/machinelearning/mgmt/2018-03-01-preview/services"
 
 // ComputeType enumerates the values for compute type.
 type ComputeType string
@@ -1021,8 +1026,8 @@ func (future *MachineLearningComputeCreateOrUpdateFuture) Result(client MachineL
 	return
 }
 
-// MachineLearningComputeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MachineLearningComputeDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type MachineLearningComputeDeleteFuture struct {
 	azure.Future
 }
@@ -1116,20 +1121,37 @@ type PaginatedComputeResourcesListIterator struct {
 	page PaginatedComputeResourcesListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *PaginatedComputeResourcesListIterator) Next() error {
+func (iter *PaginatedComputeResourcesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PaginatedComputeResourcesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PaginatedComputeResourcesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1158,11 +1180,11 @@ func (pcrl PaginatedComputeResourcesList) IsEmpty() bool {
 
 // paginatedComputeResourcesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (pcrl PaginatedComputeResourcesList) paginatedComputeResourcesListPreparer() (*http.Request, error) {
+func (pcrl PaginatedComputeResourcesList) paginatedComputeResourcesListPreparer(ctx context.Context) (*http.Request, error) {
 	if pcrl.NextLink == nil || len(to.String(pcrl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(pcrl.NextLink)))
@@ -1170,19 +1192,36 @@ func (pcrl PaginatedComputeResourcesList) paginatedComputeResourcesListPreparer(
 
 // PaginatedComputeResourcesListPage contains a page of ComputeResource values.
 type PaginatedComputeResourcesListPage struct {
-	fn   func(PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)
+	fn   func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)
 	pcrl PaginatedComputeResourcesList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *PaginatedComputeResourcesListPage) Next() error {
-	next, err := page.fn(page.pcrl)
+func (page *PaginatedComputeResourcesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PaginatedComputeResourcesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pcrl)
 	if err != nil {
 		return err
 	}
 	page.pcrl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PaginatedComputeResourcesListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1590,20 +1629,37 @@ type WorkspaceListResultIterator struct {
 	page WorkspaceListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *WorkspaceListResultIterator) Next() error {
+func (iter *WorkspaceListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WorkspaceListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1632,11 +1688,11 @@ func (wlr WorkspaceListResult) IsEmpty() bool {
 
 // workspaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (wlr WorkspaceListResult) workspaceListResultPreparer() (*http.Request, error) {
+func (wlr WorkspaceListResult) workspaceListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(wlr.NextLink)))
@@ -1644,19 +1700,36 @@ func (wlr WorkspaceListResult) workspaceListResultPreparer() (*http.Request, err
 
 // WorkspaceListResultPage contains a page of Workspace values.
 type WorkspaceListResultPage struct {
-	fn  func(WorkspaceListResult) (WorkspaceListResult, error)
+	fn  func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)
 	wlr WorkspaceListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *WorkspaceListResultPage) Next() error {
-	next, err := page.fn(page.wlr)
+func (page *WorkspaceListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wlr)
 	if err != nil {
 		return err
 	}
 	page.wlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WorkspaceListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1703,7 +1776,8 @@ type WorkspaceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning workspace.
+// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
+// workspace.
 type WorkspacePropertiesUpdateParameters struct {
 	// Description - The description of this workspace.
 	Description *string `json:"description,omitempty"`

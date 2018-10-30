@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 // groupName - a filter which allows the call to be filtered for a specific group.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client EntitiesClient) List(ctx context.Context, groupName string, cacheControl string) (result EntityListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
+		defer func() {
+			sc := -1
+			if result.elr.Response.Response != nil {
+				sc = result.elr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, groupName, cacheControl)
 	if err != nil {
@@ -117,8 +128,8 @@ func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityLi
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client EntitiesClient) listNextResults(lastResults EntityListResult) (result EntityListResult, err error) {
-	req, err := lastResults.entityListResultPreparer()
+func (client EntitiesClient) listNextResults(ctx context.Context, lastResults EntityListResult) (result EntityListResult, err error) {
+	req, err := lastResults.entityListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -139,6 +150,16 @@ func (client EntitiesClient) listNextResults(lastResults EntityListResult) (resu
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client EntitiesClient) ListComplete(ctx context.Context, groupName string, cacheControl string) (result EntityListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, groupName, cacheControl)
 	return
 }

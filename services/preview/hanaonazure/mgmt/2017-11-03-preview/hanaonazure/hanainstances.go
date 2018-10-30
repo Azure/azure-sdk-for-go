@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) Ha
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
 func (client HanaInstancesClient) Get(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result HanaInstance, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, hanaInstanceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Get", nil, "Failure preparing request")
@@ -109,6 +120,16 @@ func (client HanaInstancesClient) GetResponder(resp *http.Response) (result Hana
 // List gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
 // each SAP HANA on Azure instance.
 func (client HanaInstancesClient) List(ctx context.Context) (result HanaInstancesListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.List")
+		defer func() {
+			sc := -1
+			if result.hilr.Response.Response != nil {
+				sc = result.hilr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -171,8 +192,8 @@ func (client HanaInstancesClient) ListResponder(resp *http.Response) (result Han
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client HanaInstancesClient) listNextResults(lastResults HanaInstancesListResult) (result HanaInstancesListResult, err error) {
-	req, err := lastResults.hanaInstancesListResultPreparer()
+func (client HanaInstancesClient) listNextResults(ctx context.Context, lastResults HanaInstancesListResult) (result HanaInstancesListResult, err error) {
+	req, err := lastResults.hanaInstancesListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -193,6 +214,16 @@ func (client HanaInstancesClient) listNextResults(lastResults HanaInstancesListR
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HanaInstancesClient) ListComplete(ctx context.Context) (result HanaInstancesListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx)
 	return
 }
@@ -202,6 +233,16 @@ func (client HanaInstancesClient) ListComplete(ctx context.Context) (result Hana
 // Parameters:
 // resourceGroupName - name of the resource group.
 func (client HanaInstancesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result HanaInstancesListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.hilr.Response.Response != nil {
+				sc = result.hilr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -265,8 +306,8 @@ func (client HanaInstancesClient) ListByResourceGroupResponder(resp *http.Respon
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client HanaInstancesClient) listByResourceGroupNextResults(lastResults HanaInstancesListResult) (result HanaInstancesListResult, err error) {
-	req, err := lastResults.hanaInstancesListResultPreparer()
+func (client HanaInstancesClient) listByResourceGroupNextResults(ctx context.Context, lastResults HanaInstancesListResult) (result HanaInstancesListResult, err error) {
+	req, err := lastResults.hanaInstancesListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -287,6 +328,16 @@ func (client HanaInstancesClient) listByResourceGroupNextResults(lastResults Han
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HanaInstancesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result HanaInstancesListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -296,6 +347,16 @@ func (client HanaInstancesClient) ListByResourceGroupComplete(ctx context.Contex
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
 func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Restart")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestartPreparer(ctx, resourceGroupName, hanaInstanceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", nil, "Failure preparing request")

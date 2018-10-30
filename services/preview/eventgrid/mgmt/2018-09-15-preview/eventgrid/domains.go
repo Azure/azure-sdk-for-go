@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 // domainName - name of the domain
 // domainInfo - domain information
 func (client DomainsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainInfo Domain) (result DomainsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, domainName, domainInfo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -115,6 +126,16 @@ func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // resourceGroupName - the name of the resource group within the user's subscription.
 // domainName - name of the domain
 func (client DomainsClient) Delete(ctx context.Context, resourceGroupName string, domainName string) (result DomainsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "Delete", nil, "Failure preparing request")
@@ -181,6 +202,16 @@ func (client DomainsClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName - the name of the resource group within the user's subscription.
 // domainName - name of the domain
 func (client DomainsClient) Get(ctx context.Context, resourceGroupName string, domainName string) (result Domain, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "Get", nil, "Failure preparing request")
@@ -247,6 +278,16 @@ func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, er
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 func (client DomainsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -310,6 +351,16 @@ func (client DomainsClient) ListByResourceGroupResponder(resp *http.Response) (r
 
 // ListBySubscription list all the domains under an Azure subscription
 func (client DomainsClient) ListBySubscription(ctx context.Context) (result DomainsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -375,6 +426,16 @@ func (client DomainsClient) ListBySubscriptionResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group within the user's subscription.
 // domainName - name of the domain
 func (client DomainsClient) ListSharedAccessKeys(ctx context.Context, resourceGroupName string, domainName string) (result DomainSharedAccessKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.ListSharedAccessKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSharedAccessKeysPreparer(ctx, resourceGroupName, domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "ListSharedAccessKeys", nil, "Failure preparing request")
@@ -443,6 +504,16 @@ func (client DomainsClient) ListSharedAccessKeysResponder(resp *http.Response) (
 // domainName - name of the domain
 // regenerateKeyRequest - request body to regenerate key
 func (client DomainsClient) RegenerateKey(ctx context.Context, resourceGroupName string, domainName string, regenerateKeyRequest DomainRegenerateKeyRequest) (result DomainSharedAccessKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.RegenerateKey")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: regenerateKeyRequest,
 			Constraints: []validation.Constraint{{Target: "regenerateKeyRequest.KeyName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -519,6 +590,16 @@ func (client DomainsClient) RegenerateKeyResponder(resp *http.Response) (result 
 // domainName - name of the domain
 // domainUpdateParameters - domain update information
 func (client DomainsClient) Update(ctx context.Context, resourceGroupName string, domainName string, domainUpdateParameters DomainUpdateParameters) (result DomainsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, domainName, domainUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.DomainsClient", "Update", nil, "Failure preparing request")

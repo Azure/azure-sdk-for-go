@@ -22,6 +22,9 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights"
+
 // PolicyStatesResource enumerates the values for policy states resource.
 type PolicyStatesResource string
 

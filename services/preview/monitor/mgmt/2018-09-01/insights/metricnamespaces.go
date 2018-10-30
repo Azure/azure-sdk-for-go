@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewMetricNamespacesClientWithBaseURI(baseURI string, subscriptionID string)
 // resourceURI - the identifier of the resource.
 // startTime - the ISO 8601 conform Date start time from which to query for metric namespaces.
 func (client MetricNamespacesClient) List(ctx context.Context, resourceURI string, startTime string) (result MetricNamespaceCollection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetricNamespacesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPreparer(ctx, resourceURI, startTime)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricNamespacesClient", "List", nil, "Failure preparing request")

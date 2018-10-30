@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -199,6 +200,16 @@ func NewVideosClientWithBaseURI(baseURI string) VideosClient {
 // display strings that contain escapable HTML characters such as <, >, and &, if textFormat is set to HTML,
 // Bing escapes the characters as appropriate (for example, < is escaped to &lt;).
 func (client VideosClient) Details(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, ID string, modules []VideoInsightModule, market string, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (result VideoDetails, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VideosClient.Details")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DetailsPreparer(ctx, query, acceptLanguage, userAgent, clientID, clientIP, location, countryCode, ID, modules, market, resolution, safeSearch, setLang, textDecorations, textFormat)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "videosearch.VideosClient", "Details", nil, "Failure preparing request")
@@ -475,6 +486,16 @@ func (client VideosClient) DetailsResponder(resp *http.Response) (result VideoDe
 // display strings that contain escapable HTML characters such as <, >, and &, if textFormat is set to HTML,
 // Bing escapes the characters as appropriate (for example, < is escaped to &lt;).
 func (client VideosClient) Search(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, freshness Freshness, ID string, length VideoLength, market string, offset *int32, pricing VideoPricing, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (result Videos, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VideosClient.Search")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SearchPreparer(ctx, query, acceptLanguage, userAgent, clientID, clientIP, location, countryCode, count, freshness, ID, length, market, offset, pricing, resolution, safeSearch, setLang, textDecorations, textFormat)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "videosearch.VideosClient", "Search", nil, "Failure preparing request")
@@ -725,6 +746,16 @@ func (client VideosClient) SearchResponder(resp *http.Response) (result Videos, 
 // display strings that contain escapable HTML characters such as <, >, and &, if textFormat is set to HTML,
 // Bing escapes the characters as appropriate (for example, < is escaped to &lt;).
 func (client VideosClient) Trending(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (result TrendingVideos, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VideosClient.Trending")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.TrendingPreparer(ctx, acceptLanguage, userAgent, clientID, clientIP, location, countryCode, market, safeSearch, setLang, textDecorations, textFormat)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "videosearch.VideosClient", "Trending", nil, "Failure preparing request")

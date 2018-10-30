@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -252,6 +253,16 @@ func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
 // width - filter images that have the specified width, in pixels. You may use this filter with the size filter
 // to return small images that have a width of 150 pixels.
 func (client CustomInstanceClient) ImageSearch(ctx context.Context, customConfig string, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (result Images, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomInstanceClient.ImageSearch")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ImageSearchPreparer(ctx, customConfig, query, acceptLanguage, userAgent, clientID, clientIP, location, aspect, colorParameter, countryCode, count, freshness, height, ID, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", nil, "Failure preparing request")

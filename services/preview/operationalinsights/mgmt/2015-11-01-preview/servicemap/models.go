@@ -18,12 +18,17 @@ package servicemap
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
 
 // Accuracy enumerates the values for accuracy.
 type Accuracy string
@@ -702,8 +707,8 @@ type AzureVMScaleSetConfiguration struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ClientGroup represents a collection of clients of a resource. A client group can represent the clients of a
-// port, process, or a machine.
+// ClientGroup represents a collection of clients of a resource. A client group can represent the clients
+// of a port, process, or a machine.
 type ClientGroup struct {
 	autorest.Response `json:"-"`
 	// ClientGroupProperties - Resource properties.
@@ -955,20 +960,37 @@ type ClientGroupMembersCollectionIterator struct {
 	page ClientGroupMembersCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ClientGroupMembersCollectionIterator) Next() error {
+func (iter *ClientGroupMembersCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClientGroupMembersCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ClientGroupMembersCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -997,11 +1019,11 @@ func (cgmc ClientGroupMembersCollection) IsEmpty() bool {
 
 // clientGroupMembersCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (cgmc ClientGroupMembersCollection) clientGroupMembersCollectionPreparer() (*http.Request, error) {
+func (cgmc ClientGroupMembersCollection) clientGroupMembersCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if cgmc.NextLink == nil || len(to.String(cgmc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(cgmc.NextLink)))
@@ -1009,19 +1031,36 @@ func (cgmc ClientGroupMembersCollection) clientGroupMembersCollectionPreparer() 
 
 // ClientGroupMembersCollectionPage contains a page of ClientGroupMember values.
 type ClientGroupMembersCollectionPage struct {
-	fn   func(ClientGroupMembersCollection) (ClientGroupMembersCollection, error)
+	fn   func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)
 	cgmc ClientGroupMembersCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ClientGroupMembersCollectionPage) Next() error {
-	next, err := page.fn(page.cgmc)
+func (page *ClientGroupMembersCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClientGroupMembersCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.cgmc)
 	if err != nil {
 		return err
 	}
 	page.cgmc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ClientGroupMembersCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1282,20 +1321,37 @@ type ConnectionCollectionIterator struct {
 	page ConnectionCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ConnectionCollectionIterator) Next() error {
+func (iter *ConnectionCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectionCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1324,11 +1380,11 @@ func (cc ConnectionCollection) IsEmpty() bool {
 
 // connectionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (cc ConnectionCollection) connectionCollectionPreparer() (*http.Request, error) {
+func (cc ConnectionCollection) connectionCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(cc.NextLink)))
@@ -1336,19 +1392,36 @@ func (cc ConnectionCollection) connectionCollectionPreparer() (*http.Request, er
 
 // ConnectionCollectionPage contains a page of Connection values.
 type ConnectionCollectionPage struct {
-	fn func(ConnectionCollection) (ConnectionCollection, error)
+	fn func(context.Context, ConnectionCollection) (ConnectionCollection, error)
 	cc ConnectionCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ConnectionCollectionPage) Next() error {
-	next, err := page.fn(page.cc)
+func (page *ConnectionCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.cc)
 	if err != nil {
 		return err
 	}
 	page.cc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectionCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1724,12 +1797,12 @@ type Liveness struct {
 	Live *bool `json:"live,omitempty"`
 }
 
-// Machine a machine resource represents a discovered computer system. It can be *monitored*, i.e., a Dependency
-// Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the data stream from
-// monitored machines. As machines change, prior versions of the machine resource are preserved and available for
-// access. A machine is live during an interval of time, if either its Dependency Agent has reported data during
-// (parts) of that interval, or a Dependency agent running on other machines has reported activity associated with
-// the machine.
+// Machine a machine resource represents a discovered computer system. It can be *monitored*, i.e., a
+// Dependency Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the
+// data stream from monitored machines. As machines change, prior versions of the machine resource are
+// preserved and available for access. A machine is live during an interval of time, if either its
+// Dependency Agent has reported data during (parts) of that interval, or a Dependency agent running on
+// other machines has reported activity associated with the machine.
 type Machine struct {
 	autorest.Response `json:"-"`
 	// MachineProperties - Resource properties.
@@ -1890,20 +1963,37 @@ type MachineCollectionIterator struct {
 	page MachineCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *MachineCollectionIterator) Next() error {
+func (iter *MachineCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MachineCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1932,11 +2022,11 @@ func (mc MachineCollection) IsEmpty() bool {
 
 // machineCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (mc MachineCollection) machineCollectionPreparer() (*http.Request, error) {
+func (mc MachineCollection) machineCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if mc.NextLink == nil || len(to.String(mc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(mc.NextLink)))
@@ -1944,19 +2034,36 @@ func (mc MachineCollection) machineCollectionPreparer() (*http.Request, error) {
 
 // MachineCollectionPage contains a page of Machine values.
 type MachineCollectionPage struct {
-	fn func(MachineCollection) (MachineCollection, error)
+	fn func(context.Context, MachineCollection) (MachineCollection, error)
 	mc MachineCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *MachineCollectionPage) Next() error {
-	next, err := page.fn(page.mc)
+func (page *MachineCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mc)
 	if err != nil {
 		return err
 	}
 	page.mc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MachineCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2146,20 +2253,37 @@ type MachineGroupCollectionIterator struct {
 	page MachineGroupCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *MachineGroupCollectionIterator) Next() error {
+func (iter *MachineGroupCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineGroupCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MachineGroupCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2188,11 +2312,11 @@ func (mgc MachineGroupCollection) IsEmpty() bool {
 
 // machineGroupCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (mgc MachineGroupCollection) machineGroupCollectionPreparer() (*http.Request, error) {
+func (mgc MachineGroupCollection) machineGroupCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if mgc.NextLink == nil || len(to.String(mgc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(mgc.NextLink)))
@@ -2200,19 +2324,36 @@ func (mgc MachineGroupCollection) machineGroupCollectionPreparer() (*http.Reques
 
 // MachineGroupCollectionPage contains a page of MachineGroup values.
 type MachineGroupCollectionPage struct {
-	fn  func(MachineGroupCollection) (MachineGroupCollection, error)
+	fn  func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)
 	mgc MachineGroupCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *MachineGroupCollectionPage) Next() error {
-	next, err := page.fn(page.mgc)
+func (page *MachineGroupCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineGroupCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mgc)
 	if err != nil {
 		return err
 	}
 	page.mgc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MachineGroupCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2233,8 +2374,8 @@ func (page MachineGroupCollectionPage) Values() []MachineGroup {
 	return *page.mgc.Value
 }
 
-// MachineGroupMapRequest specifies the computation of a machine group dependency map. A machine group dependency
-// map includes all direct dependencies the machines in the group.
+// MachineGroupMapRequest specifies the computation of a machine group dependency map. A machine group
+// dependency map includes all direct dependencies the machines in the group.
 type MachineGroupMapRequest struct {
 	// MachineGroupID - URI of machine group resource for which to generate the map.
 	MachineGroupID *string `json:"machineGroupId,omitempty"`
@@ -3179,10 +3320,10 @@ type OperatingSystemConfiguration struct {
 	Bitness Bitness `json:"bitness,omitempty"`
 }
 
-// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e., a
-// Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by observing the
-// data stream from monitored machines. A port is live during an interval of time, if that port had associated
-// activity during (parts) of that interval.
+// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e.,
+// a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by
+// observing the data stream from monitored machines. A port is live during an interval of time, if that
+// port had associated activity during (parts) of that interval.
 type Port struct {
 	autorest.Response `json:"-"`
 	// PortProperties - Resource properties.
@@ -3343,20 +3484,37 @@ type PortCollectionIterator struct {
 	page PortCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *PortCollectionIterator) Next() error {
+func (iter *PortCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PortCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PortCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3385,11 +3543,11 @@ func (pc PortCollection) IsEmpty() bool {
 
 // portCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (pc PortCollection) portCollectionPreparer() (*http.Request, error) {
+func (pc PortCollection) portCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(pc.NextLink)))
@@ -3397,19 +3555,36 @@ func (pc PortCollection) portCollectionPreparer() (*http.Request, error) {
 
 // PortCollectionPage contains a page of Port values.
 type PortCollectionPage struct {
-	fn func(PortCollection) (PortCollection, error)
+	fn func(context.Context, PortCollection) (PortCollection, error)
 	pc PortCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *PortCollectionPage) Next() error {
-	next, err := page.fn(page.pc)
+func (page *PortCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PortCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pc)
 	if err != nil {
 		return err
 	}
 	page.pc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PortCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3644,12 +3819,12 @@ type PortReferenceProperties struct {
 	PortNumber *int32 `json:"portNumber,omitempty"`
 }
 
-// Process a process resource represents a process running on a machine. The process may be actively *monitored*,
-// i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by
-// observing the data stream from monitored machines. A process resource represents a pool of actual operating
-// system resources that share command lines and metadata. As the process pool evolves over time, prior versions of
-// the process resource are preserved and available for access. A process is live during an interval of time, if
-// that process is executing during (parts) of that interval
+// Process a process resource represents a process running on a machine. The process may be actively
+// *monitored*, i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence
+// was inferred by observing the data stream from monitored machines. A process resource represents a pool
+// of actual operating system resources that share command lines and metadata. As the process pool evolves
+// over time, prior versions of the process resource are preserved and available for access. A process is
+// live during an interval of time, if that process is executing during (parts) of that interval
 type Process struct {
 	autorest.Response `json:"-"`
 	// ProcessProperties - Resource properties.
@@ -3810,20 +3985,37 @@ type ProcessCollectionIterator struct {
 	page ProcessCollectionPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ProcessCollectionIterator) Next() error {
+func (iter *ProcessCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProcessCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ProcessCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3852,11 +4044,11 @@ func (pc ProcessCollection) IsEmpty() bool {
 
 // processCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (pc ProcessCollection) processCollectionPreparer() (*http.Request, error) {
+func (pc ProcessCollection) processCollectionPreparer(ctx context.Context) (*http.Request, error) {
 	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(pc.NextLink)))
@@ -3864,19 +4056,36 @@ func (pc ProcessCollection) processCollectionPreparer() (*http.Request, error) {
 
 // ProcessCollectionPage contains a page of Process values.
 type ProcessCollectionPage struct {
-	fn func(ProcessCollection) (ProcessCollection, error)
+	fn func(context.Context, ProcessCollection) (ProcessCollection, error)
 	pc ProcessCollection
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ProcessCollectionPage) Next() error {
-	next, err := page.fn(page.pc)
+func (page *ProcessCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProcessCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pc)
 	if err != nil {
 		return err
 	}
 	page.pc = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ProcessCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -4618,8 +4827,8 @@ func (rr ResourceReference) AsBasicResourceReference() (BasicResourceReference, 
 	return &rr, true
 }
 
-// SingleMachineDependencyMapRequest specifies the computation of a single server dependency map. A single server
-// dependency map includes all direct dependencies of a given machine.
+// SingleMachineDependencyMapRequest specifies the computation of a single server dependency map. A single
+// server dependency map includes all direct dependencies of a given machine.
 type SingleMachineDependencyMapRequest struct {
 	// MachineID - URI of machine resource for which to generate the map.
 	MachineID *string `json:"machineId,omitempty"`

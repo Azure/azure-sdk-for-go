@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewProtectionIntentGroupClientWithBaseURI(baseURI string, subscriptionID st
 // filter - oData filter options.
 // skipToken - skipToken Filter.
 func (client ProtectionIntentGroupClient) List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectionIntentResourceListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentGroupClient.List")
+		defer func() {
+			sc := -1
+			if result.pirl.Response.Response != nil {
+				sc = result.pirl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, vaultName, resourceGroupName, filter, skipToken)
 	if err != nil {
@@ -116,8 +127,8 @@ func (client ProtectionIntentGroupClient) ListResponder(resp *http.Response) (re
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ProtectionIntentGroupClient) listNextResults(lastResults ProtectionIntentResourceList) (result ProtectionIntentResourceList, err error) {
-	req, err := lastResults.protectionIntentResourceListPreparer()
+func (client ProtectionIntentGroupClient) listNextResults(ctx context.Context, lastResults ProtectionIntentResourceList) (result ProtectionIntentResourceList, err error) {
+	req, err := lastResults.protectionIntentResourceListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "backup.ProtectionIntentGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -138,6 +149,16 @@ func (client ProtectionIntentGroupClient) listNextResults(lastResults Protection
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProtectionIntentGroupClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectionIntentResourceListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectionIntentGroupClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, vaultName, resourceGroupName, filter, skipToken)
 	return
 }

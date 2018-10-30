@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewCodePackageClientWithBaseURI(baseURI string, subscriptionID string) Code
 // codePackageName - the name of code package of the service.
 // tail - number of lines to show from the end of the logs. Default is 100.
 func (client CodePackageClient) GetContainerLogs(ctx context.Context, resourceGroupName string, applicationResourceName string, serviceResourceName string, replicaName string, codePackageName string, tail *int32) (result ContainerLogs, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CodePackageClient.GetContainerLogs")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetContainerLogsPreparer(ctx, resourceGroupName, applicationResourceName, serviceResourceName, replicaName, codePackageName, tail)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.CodePackageClient", "GetContainerLogs", nil, "Failure preparing request")

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 // locationName - the desired region for the name check.
 // parameters - parameters to check availability of the given namespace name
 func (client ServicesClient) CheckNameAvailability(ctx context.Context, locationName string, parameters CheckNameAvailabilityParameters) (result CheckNameAvailabilityResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -123,6 +134,16 @@ func (client ServicesClient) CheckNameAvailabilityResponder(resp *http.Response)
 // storageSyncServiceName - name of Storage Sync Service resource.
 // parameters - storage Sync Service resource name.
 func (client ServicesClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters) (result Service, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -204,6 +225,16 @@ func (client ServicesClient) CreateResponder(resp *http.Response) (result Servic
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 func (client ServicesClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -280,6 +311,16 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result Service, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -356,6 +397,16 @@ func (client ServicesClient) GetResponder(resp *http.Response) (result Service, 
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ServiceArray, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -429,6 +480,16 @@ func (client ServicesClient) ListByResourceGroupResponder(resp *http.Response) (
 
 // ListBySubscription get a StorageSyncService list by subscription.
 func (client ServicesClient) ListBySubscription(ctx context.Context) (result ServiceArray, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -501,6 +562,16 @@ func (client ServicesClient) ListBySubscriptionResponder(resp *http.Response) (r
 // storageSyncServiceName - name of Storage Sync Service resource.
 // parameters - storage Sync Service resource.
 func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters *ServiceUpdateParameters) (result Service, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},

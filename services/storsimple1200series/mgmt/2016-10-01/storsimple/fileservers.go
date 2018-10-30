@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) File
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) BackupNow(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string) (result FileServersBackupNowFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.BackupNow")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -101,10 +112,6 @@ func (client FileServersClient) BackupNowSender(req *http.Request) (future FileS
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -129,6 +136,16 @@ func (client FileServersClient) BackupNowResponder(resp *http.Response) (result 
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) CreateOrUpdate(ctx context.Context, deviceName string, fileServerName string, fileServer FileServer, resourceGroupName string, managerName string) (result FileServersCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: fileServer,
 			Constraints: []validation.Constraint{{Target: "fileServer.FileServerProperties", Name: validation.Null, Rule: true,
@@ -191,10 +208,6 @@ func (client FileServersClient) CreateOrUpdateSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -219,6 +232,16 @@ func (client FileServersClient) CreateOrUpdateResponder(resp *http.Response) (re
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) Delete(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string) (result FileServersDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -273,10 +296,6 @@ func (client FileServersClient) DeleteSender(req *http.Request) (future FileServ
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -300,6 +319,16 @@ func (client FileServersClient) DeleteResponder(resp *http.Response) (result aut
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) Get(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string) (result FileServer, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -377,6 +406,16 @@ func (client FileServersClient) GetResponder(resp *http.Response) (result FileSe
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result FileServerList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.ListByDevice")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -452,6 +491,16 @@ func (client FileServersClient) ListByDeviceResponder(resp *http.Response) (resu
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) ListByManager(ctx context.Context, resourceGroupName string, managerName string) (result FileServerList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.ListByManager")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -528,6 +577,16 @@ func (client FileServersClient) ListByManagerResponder(resp *http.Response) (res
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileServersClient) ListMetricDefinition(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string) (result MetricDefinitionList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.ListMetricDefinition")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -607,6 +666,16 @@ func (client FileServersClient) ListMetricDefinitionResponder(resp *http.Respons
 // managerName - the manager name
 // filter - oData Filter options
 func (client FileServersClient) ListMetrics(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string, filter string) (result MetricList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.ListMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},

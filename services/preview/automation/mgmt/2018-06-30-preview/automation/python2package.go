@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string, c
 // packageName - the name of python package.
 // parameters - the create or update parameters for python package.
 func (client Python2PackageClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageCreateParameters) (result Module, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -135,6 +146,16 @@ func (client Python2PackageClient) CreateOrUpdateResponder(resp *http.Response) 
 // automationAccountName - the name of the automation account.
 // packageName - the python package name.
 func (client Python2PackageClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -211,6 +232,16 @@ func (client Python2PackageClient) DeleteResponder(resp *http.Response) (result 
 // automationAccountName - the name of the automation account.
 // packageName - the python package name.
 func (client Python2PackageClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string) (result Module, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -287,6 +318,16 @@ func (client Python2PackageClient) GetResponder(resp *http.Response) (result Mod
 // resourceGroupName - name of an Azure Resource group.
 // automationAccountName - the name of the automation account.
 func (client Python2PackageClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result ModuleListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.mlr.Response.Response != nil {
+				sc = result.mlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -359,8 +400,8 @@ func (client Python2PackageClient) ListByAutomationAccountResponder(resp *http.R
 }
 
 // listByAutomationAccountNextResults retrieves the next set of results, if any.
-func (client Python2PackageClient) listByAutomationAccountNextResults(lastResults ModuleListResult) (result ModuleListResult, err error) {
-	req, err := lastResults.moduleListResultPreparer()
+func (client Python2PackageClient) listByAutomationAccountNextResults(ctx context.Context, lastResults ModuleListResult) (result ModuleListResult, err error) {
+	req, err := lastResults.moduleListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "automation.Python2PackageClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
@@ -381,6 +422,16 @@ func (client Python2PackageClient) listByAutomationAccountNextResults(lastResult
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
 func (client Python2PackageClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result ModuleListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName)
 	return
 }
@@ -392,6 +443,16 @@ func (client Python2PackageClient) ListByAutomationAccountComplete(ctx context.C
 // packageName - the name of python package.
 // parameters - the update parameters for python package.
 func (client Python2PackageClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, packageName string, parameters PythonPackageUpdateParameters) (result Module, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Python2PackageClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

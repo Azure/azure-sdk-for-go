@@ -18,12 +18,17 @@ package logic
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/logic/mgmt/2015-08-01-preview/logic"
 
 // AgreementType enumerates the values for agreement type.
 type AgreementType string
@@ -1034,20 +1039,37 @@ type IntegrationAccountAgreementListResultIterator struct {
 	page IntegrationAccountAgreementListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountAgreementListResultIterator) Next() error {
+func (iter *IntegrationAccountAgreementListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountAgreementListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountAgreementListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1076,11 +1098,11 @@ func (iaalr IntegrationAccountAgreementListResult) IsEmpty() bool {
 
 // integrationAccountAgreementListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementListResultPreparer() (*http.Request, error) {
+func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if iaalr.NextLink == nil || len(to.String(iaalr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(iaalr.NextLink)))
@@ -1088,19 +1110,36 @@ func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementLi
 
 // IntegrationAccountAgreementListResultPage contains a page of IntegrationAccountAgreement values.
 type IntegrationAccountAgreementListResultPage struct {
-	fn    func(IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)
+	fn    func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)
 	iaalr IntegrationAccountAgreementListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountAgreementListResultPage) Next() error {
-	next, err := page.fn(page.iaalr)
+func (page *IntegrationAccountAgreementListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountAgreementListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iaalr)
 	if err != nil {
 		return err
 	}
 	page.iaalr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountAgreementListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1269,20 +1308,37 @@ type IntegrationAccountCertificateListResultIterator struct {
 	page IntegrationAccountCertificateListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountCertificateListResultIterator) Next() error {
+func (iter *IntegrationAccountCertificateListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountCertificateListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountCertificateListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1311,11 +1367,11 @@ func (iaclr IntegrationAccountCertificateListResult) IsEmpty() bool {
 
 // integrationAccountCertificateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertificateListResultPreparer() (*http.Request, error) {
+func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertificateListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if iaclr.NextLink == nil || len(to.String(iaclr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(iaclr.NextLink)))
@@ -1323,19 +1379,36 @@ func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertifica
 
 // IntegrationAccountCertificateListResultPage contains a page of IntegrationAccountCertificate values.
 type IntegrationAccountCertificateListResultPage struct {
-	fn    func(IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)
+	fn    func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)
 	iaclr IntegrationAccountCertificateListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountCertificateListResultPage) Next() error {
-	next, err := page.fn(page.iaclr)
+func (page *IntegrationAccountCertificateListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountCertificateListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iaclr)
 	if err != nil {
 		return err
 	}
 	page.iaclr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountCertificateListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1407,20 +1480,37 @@ type IntegrationAccountListResultIterator struct {
 	page IntegrationAccountListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountListResultIterator) Next() error {
+func (iter *IntegrationAccountListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1449,11 +1539,11 @@ func (ialr IntegrationAccountListResult) IsEmpty() bool {
 
 // integrationAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer() (*http.Request, error) {
+func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if ialr.NextLink == nil || len(to.String(ialr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ialr.NextLink)))
@@ -1461,19 +1551,36 @@ func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer() 
 
 // IntegrationAccountListResultPage contains a page of IntegrationAccount values.
 type IntegrationAccountListResultPage struct {
-	fn   func(IntegrationAccountListResult) (IntegrationAccountListResult, error)
+	fn   func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)
 	ialr IntegrationAccountListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountListResultPage) Next() error {
-	next, err := page.fn(page.ialr)
+func (page *IntegrationAccountListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ialr)
 	if err != nil {
 		return err
 	}
 	page.ialr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1619,26 +1726,44 @@ type IntegrationAccountMapListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountMapListResultIterator provides access to a complete listing of IntegrationAccountMap values.
+// IntegrationAccountMapListResultIterator provides access to a complete listing of IntegrationAccountMap
+// values.
 type IntegrationAccountMapListResultIterator struct {
 	i    int
 	page IntegrationAccountMapListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountMapListResultIterator) Next() error {
+func (iter *IntegrationAccountMapListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountMapListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountMapListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1667,11 +1792,11 @@ func (iamlr IntegrationAccountMapListResult) IsEmpty() bool {
 
 // integrationAccountMapListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPreparer() (*http.Request, error) {
+func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if iamlr.NextLink == nil || len(to.String(iamlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(iamlr.NextLink)))
@@ -1679,19 +1804,36 @@ func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPrep
 
 // IntegrationAccountMapListResultPage contains a page of IntegrationAccountMap values.
 type IntegrationAccountMapListResultPage struct {
-	fn    func(IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)
+	fn    func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)
 	iamlr IntegrationAccountMapListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountMapListResultPage) Next() error {
-	next, err := page.fn(page.iamlr)
+func (page *IntegrationAccountMapListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountMapListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iamlr)
 	if err != nil {
 		return err
 	}
 	page.iamlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountMapListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1855,27 +1997,44 @@ type IntegrationAccountPartnerListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountPartnerListResultIterator provides access to a complete listing of IntegrationAccountPartner
-// values.
+// IntegrationAccountPartnerListResultIterator provides access to a complete listing of
+// IntegrationAccountPartner values.
 type IntegrationAccountPartnerListResultIterator struct {
 	i    int
 	page IntegrationAccountPartnerListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountPartnerListResultIterator) Next() error {
+func (iter *IntegrationAccountPartnerListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountPartnerListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountPartnerListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1904,11 +2063,11 @@ func (iaplr IntegrationAccountPartnerListResult) IsEmpty() bool {
 
 // integrationAccountPartnerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListResultPreparer() (*http.Request, error) {
+func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if iaplr.NextLink == nil || len(to.String(iaplr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(iaplr.NextLink)))
@@ -1916,19 +2075,36 @@ func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListRe
 
 // IntegrationAccountPartnerListResultPage contains a page of IntegrationAccountPartner values.
 type IntegrationAccountPartnerListResultPage struct {
-	fn    func(IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)
+	fn    func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)
 	iaplr IntegrationAccountPartnerListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountPartnerListResultPage) Next() error {
-	next, err := page.fn(page.iaplr)
+func (page *IntegrationAccountPartnerListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountPartnerListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iaplr)
 	if err != nil {
 		return err
 	}
 	page.iaplr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountPartnerListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2123,27 +2299,44 @@ type IntegrationAccountSchemaListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountSchemaListResultIterator provides access to a complete listing of IntegrationAccountSchema
-// values.
+// IntegrationAccountSchemaListResultIterator provides access to a complete listing of
+// IntegrationAccountSchema values.
 type IntegrationAccountSchemaListResultIterator struct {
 	i    int
 	page IntegrationAccountSchemaListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountSchemaListResultIterator) Next() error {
+func (iter *IntegrationAccountSchemaListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountSchemaListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountSchemaListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2172,11 +2365,11 @@ func (iaslr IntegrationAccountSchemaListResult) IsEmpty() bool {
 
 // integrationAccountSchemaListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResultPreparer() (*http.Request, error) {
+func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if iaslr.NextLink == nil || len(to.String(iaslr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(iaslr.NextLink)))
@@ -2184,19 +2377,36 @@ func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResu
 
 // IntegrationAccountSchemaListResultPage contains a page of IntegrationAccountSchema values.
 type IntegrationAccountSchemaListResultPage struct {
-	fn    func(IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)
+	fn    func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)
 	iaslr IntegrationAccountSchemaListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *IntegrationAccountSchemaListResultPage) Next() error {
-	next, err := page.fn(page.iaslr)
+func (page *IntegrationAccountSchemaListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountSchemaListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iaslr)
 	if err != nil {
 		return err
 	}
 	page.iaslr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountSchemaListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

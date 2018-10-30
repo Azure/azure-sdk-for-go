@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID 
 // serverName - the name of the server.
 // recommendedElasticPoolName - the name of the recommended elastic pool to be retrieved.
 func (client RecommendedElasticPoolsClient) Get(ctx context.Context, resourceGroupName string, serverName string, recommendedElasticPoolName string) (result RecommendedElasticPool, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendedElasticPoolsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, recommendedElasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "Get", nil, "Failure preparing request")
@@ -117,6 +128,16 @@ func (client RecommendedElasticPoolsClient) GetResponder(resp *http.Response) (r
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 func (client RecommendedElasticPoolsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result RecommendedElasticPoolListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendedElasticPoolsClient.ListByServer")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
@@ -186,6 +207,16 @@ func (client RecommendedElasticPoolsClient) ListByServerResponder(resp *http.Res
 // serverName - the name of the server.
 // recommendedElasticPoolName - the name of the recommended elastic pool to be retrieved.
 func (client RecommendedElasticPoolsClient) ListMetrics(ctx context.Context, resourceGroupName string, serverName string, recommendedElasticPoolName string) (result RecommendedElasticPoolListMetricsResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendedElasticPoolsClient.ListMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, serverName, recommendedElasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RecommendedElasticPoolsClient", "ListMetrics", nil, "Failure preparing request")

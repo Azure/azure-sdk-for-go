@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewAccountFiltersClientWithBaseURI(baseURI string, subscriptionID string) A
 // filterName - the Account Filter name
 // parameters - the request parameters
 func (client AccountFiltersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, filterName string, parameters AccountFilter) (result AccountFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.FilterProperties", Name: validation.Null, Rule: false,
@@ -135,6 +146,16 @@ func (client AccountFiltersClient) CreateOrUpdateResponder(resp *http.Response) 
 // accountName - the Media Services account name.
 // filterName - the Account Filter name
 func (client AccountFiltersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, filterName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, filterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "Delete", nil, "Failure preparing request")
@@ -203,6 +224,16 @@ func (client AccountFiltersClient) DeleteResponder(resp *http.Response) (result 
 // accountName - the Media Services account name.
 // filterName - the Account Filter name
 func (client AccountFiltersClient) Get(ctx context.Context, resourceGroupName string, accountName string, filterName string) (result AccountFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, filterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "Get", nil, "Failure preparing request")
@@ -271,6 +302,16 @@ func (client AccountFiltersClient) GetResponder(resp *http.Response) (result Acc
 // resourceGroupName - the name of the resource group within the Azure subscription.
 // accountName - the Media Services account name.
 func (client AccountFiltersClient) List(ctx context.Context, resourceGroupName string, accountName string) (result AccountFilterCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.List")
+		defer func() {
+			sc := -1
+			if result.afc.Response.Response != nil {
+				sc = result.afc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -335,8 +376,8 @@ func (client AccountFiltersClient) ListResponder(resp *http.Response) (result Ac
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AccountFiltersClient) listNextResults(lastResults AccountFilterCollection) (result AccountFilterCollection, err error) {
-	req, err := lastResults.accountFilterCollectionPreparer()
+func (client AccountFiltersClient) listNextResults(ctx context.Context, lastResults AccountFilterCollection) (result AccountFilterCollection, err error) {
+	req, err := lastResults.accountFilterCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "media.AccountFiltersClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -357,6 +398,16 @@ func (client AccountFiltersClient) listNextResults(lastResults AccountFilterColl
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AccountFiltersClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result AccountFilterCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, accountName)
 	return
 }
@@ -368,6 +419,16 @@ func (client AccountFiltersClient) ListComplete(ctx context.Context, resourceGro
 // filterName - the Account Filter name
 // parameters - the request parameters
 func (client AccountFiltersClient) Update(ctx context.Context, resourceGroupName string, accountName string, filterName string, parameters AccountFilter) (result AccountFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountFiltersClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, filterName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AccountFiltersClient", "Update", nil, "Failure preparing request")

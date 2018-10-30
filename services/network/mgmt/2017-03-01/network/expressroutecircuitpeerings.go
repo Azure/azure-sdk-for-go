@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 // peeringName - the name of the peering.
 // peeringParameters - parameters supplied to the create or update express route circuit peering operation.
 func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (result ExpressRouteCircuitPeeringsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, circuitName, peeringName, peeringParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -117,6 +128,16 @@ func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdateResponder(resp *ht
 // circuitName - the name of the express route circuit.
 // peeringName - the name of the peering.
 func (client ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result ExpressRouteCircuitPeeringsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "Delete", nil, "Failure preparing request")
@@ -185,6 +206,16 @@ func (client ExpressRouteCircuitPeeringsClient) DeleteResponder(resp *http.Respo
 // circuitName - the name of the express route circuit.
 // peeringName - the name of the peering.
 func (client ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result ExpressRouteCircuitPeering, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "Get", nil, "Failure preparing request")
@@ -253,6 +284,16 @@ func (client ExpressRouteCircuitPeeringsClient) GetResponder(resp *http.Response
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the express route circuit.
 func (client ExpressRouteCircuitPeeringsClient) List(ctx context.Context, resourceGroupName string, circuitName string) (result ExpressRouteCircuitPeeringListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.List")
+		defer func() {
+			sc := -1
+			if result.ercplr.Response.Response != nil {
+				sc = result.ercplr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {
@@ -317,8 +358,8 @@ func (client ExpressRouteCircuitPeeringsClient) ListResponder(resp *http.Respons
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ExpressRouteCircuitPeeringsClient) listNextResults(lastResults ExpressRouteCircuitPeeringListResult) (result ExpressRouteCircuitPeeringListResult, err error) {
-	req, err := lastResults.expressRouteCircuitPeeringListResultPreparer()
+func (client ExpressRouteCircuitPeeringsClient) listNextResults(ctx context.Context, lastResults ExpressRouteCircuitPeeringListResult) (result ExpressRouteCircuitPeeringListResult, err error) {
+	req, err := lastResults.expressRouteCircuitPeeringListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -339,6 +380,16 @@ func (client ExpressRouteCircuitPeeringsClient) listNextResults(lastResults Expr
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ExpressRouteCircuitPeeringsClient) ListComplete(ctx context.Context, resourceGroupName string, circuitName string) (result ExpressRouteCircuitPeeringListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitPeeringsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, circuitName)
 	return
 }

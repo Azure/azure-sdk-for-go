@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // filter - return only channels specified in the filter. Filter is specified by using OData syntax. Example:
 // $filter=channels eq 'Api' or channel eq 'Notification'
 func (client RecommendationsClient) GetRecommendationBySubscription(ctx context.Context, featured *bool, filter string) (result ListRecommendation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationsClient.GetRecommendationBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRecommendationBySubscriptionPreparer(ctx, featured, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendationBySubscription", nil, "Failure preparing request")
@@ -121,6 +132,16 @@ func (client RecommendationsClient) GetRecommendationBySubscriptionResponder(res
 // endTime - the end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and
 // endTime eq '2015-01-02T00:00:00Z'
 func (client RecommendationsClient) GetRecommendationHistoryForSite(ctx context.Context, resourceGroupName string, siteName string, startTime string, endTime string) (result ListRecommendation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationsClient.GetRecommendationHistoryForSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRecommendationHistoryForSitePreparer(ctx, resourceGroupName, siteName, startTime, endTime)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendationHistoryForSite", nil, "Failure preparing request")
@@ -198,6 +219,16 @@ func (client RecommendationsClient) GetRecommendationHistoryForSiteResponder(res
 // siteSku - the name of site SKU.
 // numSlots - the number of site slots associated to the site
 func (client RecommendationsClient) GetRecommendedRulesForSite(ctx context.Context, resourceGroupName string, siteName string, featured *bool, siteSku string, numSlots *int32) (result ListRecommendation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationsClient.GetRecommendedRulesForSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRecommendedRulesForSitePreparer(ctx, resourceGroupName, siteName, featured, siteSku, numSlots)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRecommendedRulesForSite", nil, "Failure preparing request")
@@ -275,6 +306,16 @@ func (client RecommendationsClient) GetRecommendedRulesForSiteResponder(resp *ht
 // siteName - site name
 // name - recommendation rule name
 func (client RecommendationsClient) GetRuleDetailsBySiteName(ctx context.Context, resourceGroupName string, siteName string, name string) (result RecommendationRule, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationsClient.GetRuleDetailsBySiteName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRuleDetailsBySiteNamePreparer(ctx, resourceGroupName, siteName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.RecommendationsClient", "GetRuleDetailsBySiteName", nil, "Failure preparing request")

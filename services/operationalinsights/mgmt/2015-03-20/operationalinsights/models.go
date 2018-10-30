@@ -18,13 +18,18 @@ package operationalinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/operationalinsights/mgmt/2015-03-20/operationalinsights"
 
 // PurgeState enumerates the values for purge state.
 type PurgeState string
@@ -572,20 +577,37 @@ type StorageInsightListResultIterator struct {
 	page StorageInsightListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *StorageInsightListResultIterator) Next() error {
+func (iter *StorageInsightListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *StorageInsightListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -614,11 +636,11 @@ func (silr StorageInsightListResult) IsEmpty() bool {
 
 // storageInsightListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (silr StorageInsightListResult) storageInsightListResultPreparer() (*http.Request, error) {
+func (silr StorageInsightListResult) storageInsightListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if silr.OdataNextLink == nil || len(to.String(silr.OdataNextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(silr.OdataNextLink)))
@@ -626,19 +648,36 @@ func (silr StorageInsightListResult) storageInsightListResultPreparer() (*http.R
 
 // StorageInsightListResultPage contains a page of StorageInsight values.
 type StorageInsightListResultPage struct {
-	fn   func(StorageInsightListResult) (StorageInsightListResult, error)
+	fn   func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)
 	silr StorageInsightListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *StorageInsightListResultPage) Next() error {
-	next, err := page.fn(page.silr)
+func (page *StorageInsightListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.silr)
 	if err != nil {
 		return err
 	}
 	page.silr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *StorageInsightListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -721,8 +760,8 @@ type WorkspacePurgeStatusResponse struct {
 	Status PurgeState `json:"status,omitempty"`
 }
 
-// WorkspacesGetSearchResultsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesGetSearchResultsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type WorkspacesGetSearchResultsFuture struct {
 	azure.Future
 }

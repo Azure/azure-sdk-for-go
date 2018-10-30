@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) Policie
 // policyName - the name of the resource group.
 // parameters - policy to be created.
 func (client PoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy1) (result WebApplicationFirewallPolicy1, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
@@ -121,6 +132,16 @@ func (client PoliciesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName - the name of the resource group.
 // policyName - the name of the resource group.
 func (client PoliciesClient) Delete(ctx context.Context, resourceGroupName string, policyName string) (result PoliciesDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
@@ -172,10 +193,6 @@ func (client PoliciesClient) DeleteSender(req *http.Request) (future PoliciesDel
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -197,6 +214,16 @@ func (client PoliciesClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName - the name of the resource group.
 // policyName - the name of the resource group.
 func (client PoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string) (result WebApplicationFirewallPolicy1, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
@@ -269,6 +296,16 @@ func (client PoliciesClient) GetResponder(resp *http.Response) (result WebApplic
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client PoliciesClient) List(ctx context.Context, resourceGroupName string) (result WebApplicationFirewallPolicyListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.List")
+		defer func() {
+			sc := -1
+			if result.wafplr.Response.Response != nil {
+				sc = result.wafplr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -332,8 +369,8 @@ func (client PoliciesClient) ListResponder(resp *http.Response) (result WebAppli
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client PoliciesClient) listNextResults(lastResults WebApplicationFirewallPolicyListResult) (result WebApplicationFirewallPolicyListResult, err error) {
-	req, err := lastResults.webApplicationFirewallPolicyListResultPreparer()
+func (client PoliciesClient) listNextResults(ctx context.Context, lastResults WebApplicationFirewallPolicyListResult) (result WebApplicationFirewallPolicyListResult, err error) {
+	req, err := lastResults.webApplicationFirewallPolicyListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "frontdoor.PoliciesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -354,6 +391,16 @@ func (client PoliciesClient) listNextResults(lastResults WebApplicationFirewallP
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client PoliciesClient) ListComplete(ctx context.Context, resourceGroupName string) (result WebApplicationFirewallPolicyListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName)
 	return
 }

@@ -18,13 +18,18 @@ package documentdb
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/cosmos-db/mgmt/2015-04-08/documentdb"
 
 // DatabaseAccountKind enumerates the values for database account kind.
 type DatabaseAccountKind string
@@ -607,8 +612,8 @@ type DatabaseAccountRegenerateKeyParameters struct {
 	KeyKind KeyKind `json:"keyKind,omitempty"`
 }
 
-// DatabaseAccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabaseAccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -659,8 +664,8 @@ func (future *DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient
 	return
 }
 
-// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DatabaseAccountsFailoverPriorityChangeFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DatabaseAccountsFailoverPriorityChangeFuture struct {
 	azure.Future
 }
@@ -690,8 +695,8 @@ type DatabaseAccountsListResult struct {
 	Value *[]DatabaseAccount `json:"value,omitempty"`
 }
 
-// DatabaseAccountsOfflineRegionFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabaseAccountsOfflineRegionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsOfflineRegionFuture struct {
 	azure.Future
 }
@@ -713,8 +718,8 @@ func (future *DatabaseAccountsOfflineRegionFuture) Result(client DatabaseAccount
 	return
 }
 
-// DatabaseAccountsOnlineRegionFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabaseAccountsOnlineRegionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsOnlineRegionFuture struct {
 	azure.Future
 }
@@ -765,8 +770,8 @@ func (future *DatabaseAccountsPatchFuture) Result(client DatabaseAccountsClient)
 	return
 }
 
-// DatabaseAccountsRegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabaseAccountsRegenerateKeyFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabaseAccountsRegenerateKeyFuture struct {
 	azure.Future
 }
@@ -921,8 +926,8 @@ type OperationDisplay struct {
 	Description *string `json:"Description,omitempty"`
 }
 
-// OperationListResult result of the request to list Resource Provider operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Resource Provider operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the Resource Provider.
@@ -937,20 +942,37 @@ type OperationListResultIterator struct {
 	page OperationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -979,11 +1001,11 @@ func (olr OperationListResult) IsEmpty() bool {
 
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -991,19 +1013,36 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

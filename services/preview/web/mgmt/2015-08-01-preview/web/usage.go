@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClien
 // lastID - last marker that was returned from the batch
 // batchSize - size of the batch to be returned.
 func (client UsageClient) GetUsage(ctx context.Context, resourceGroupName string, environmentName string, lastID string, batchSize int32) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsageClient.GetUsage")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetUsagePreparer(ctx, resourceGroupName, environmentName, lastID, batchSize)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.UsageClient", "GetUsage", nil, "Failure preparing request")

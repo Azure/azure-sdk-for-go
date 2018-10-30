@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewProductClientWithBaseURI(baseURI string, subscriptionID string) ProductC
 // parameters - create or update parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
 func (client ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, ifMatch string) (result ProductContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -145,6 +156,16 @@ func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result
 // request or it should be * for unconditional update.
 // deleteSubscriptions - delete existing subscriptions associated with the product or not.
 func (client ProductClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -229,6 +250,16 @@ func (client ProductClient) DeleteResponder(resp *http.Response) (result autores
 // serviceName - the name of the API Management service.
 // productID - product identifier. Must be unique in the current API Management service instance.
 func (client ProductClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result ProductContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -310,6 +341,16 @@ func (client ProductClient) GetResponder(resp *http.Response) (result ProductCon
 // serviceName - the name of the API Management service.
 // productID - product identifier. Must be unique in the current API Management service instance.
 func (client ProductClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.GetEntityTag")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -400,6 +441,16 @@ func (client ProductClient) GetEntityTagResponder(resp *http.Response) (result a
 // expandGroups - when set to true, the response contains an array of groups that have visibility to the
 // product. The default is false.
 func (client ProductClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result ProductCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.ListByService")
+		defer func() {
+			sc := -1
+			if result.pc.Response.Response != nil {
+				sc = result.pc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -490,8 +541,8 @@ func (client ProductClient) ListByServiceResponder(resp *http.Response) (result 
 }
 
 // listByServiceNextResults retrieves the next set of results, if any.
-func (client ProductClient) listByServiceNextResults(lastResults ProductCollection) (result ProductCollection, err error) {
-	req, err := lastResults.productCollectionPreparer()
+func (client ProductClient) listByServiceNextResults(ctx context.Context, lastResults ProductCollection) (result ProductCollection, err error) {
+	req, err := lastResults.productCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByServiceNextResults", nil, "Failure preparing next results request")
 	}
@@ -512,6 +563,16 @@ func (client ProductClient) listByServiceNextResults(lastResults ProductCollecti
 
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result ProductCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.ListByService")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip, expandGroups)
 	return
 }
@@ -531,6 +592,16 @@ func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceG
 // skip - number of records to skip.
 // includeNotTaggedProducts - include not tagged products in response
 func (client ProductClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedProducts *bool) (result TagResourceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.ListByTags")
+		defer func() {
+			sc := -1
+			if result.trc.Response.Response != nil {
+				sc = result.trc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -623,8 +694,8 @@ func (client ProductClient) ListByTagsResponder(resp *http.Response) (result Tag
 }
 
 // listByTagsNextResults retrieves the next set of results, if any.
-func (client ProductClient) listByTagsNextResults(lastResults TagResourceCollection) (result TagResourceCollection, err error) {
-	req, err := lastResults.tagResourceCollectionPreparer()
+func (client ProductClient) listByTagsNextResults(ctx context.Context, lastResults TagResourceCollection) (result TagResourceCollection, err error) {
+	req, err := lastResults.tagResourceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "apimanagement.ProductClient", "listByTagsNextResults", nil, "Failure preparing next results request")
 	}
@@ -645,6 +716,16 @@ func (client ProductClient) listByTagsNextResults(lastResults TagResourceCollect
 
 // ListByTagsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProductClient) ListByTagsComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, includeNotTaggedProducts *bool) (result TagResourceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.ListByTags")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByTags(ctx, resourceGroupName, serviceName, filter, top, skip, includeNotTaggedProducts)
 	return
 }
@@ -658,6 +739,16 @@ func (client ProductClient) ListByTagsComplete(ctx context.Context, resourceGrou
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
 func (client ProductClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductUpdateParameters, ifMatch string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},

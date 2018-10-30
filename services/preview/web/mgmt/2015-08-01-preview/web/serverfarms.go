@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) Serv
 // serverFarmEnvelope - details of App Service Plan
 // allowPendingState - oBSOLETE: If true, allow pending state for App Service Plan
 func (client ServerFarmsClient) CreateOrUpdateServerFarm(ctx context.Context, resourceGroupName string, name string, serverFarmEnvelope ServerFarmWithRichSku, allowPendingState *bool) (result ServerFarmsCreateOrUpdateServerFarmFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.CreateOrUpdateServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateServerFarmPreparer(ctx, resourceGroupName, name, serverFarmEnvelope, allowPendingState)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure preparing request")
@@ -96,10 +107,6 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -125,6 +132,16 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmResponder(resp *http.Res
 // routeName - name of the virtual network route
 // route - the route object
 func (client ServerFarmsClient) CreateOrUpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.CreateOrUpdateVnetRoute")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateVnetRoutePreparer(ctx, resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateVnetRoute", nil, "Failure preparing request")
@@ -196,6 +213,16 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRouteResponder(resp *http.Resp
 // resourceGroupName - name of resource group
 // name - name of App Service Plan
 func (client ServerFarmsClient) DeleteServerFarm(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.DeleteServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteServerFarmPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteServerFarm", nil, "Failure preparing request")
@@ -265,6 +292,16 @@ func (client ServerFarmsClient) DeleteServerFarmResponder(resp *http.Response) (
 // vnetName - name of virtual network
 // routeName - name of the virtual network route
 func (client ServerFarmsClient) DeleteVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.DeleteVnetRoute")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteVnetRoutePreparer(ctx, resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "DeleteVnetRoute", nil, "Failure preparing request")
@@ -336,6 +373,16 @@ func (client ServerFarmsClient) DeleteVnetRouteResponder(resp *http.Response) (r
 // vnetName - name of virtual network
 // routeName - name of the virtual network route
 func (client ServerFarmsClient) GetRouteForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string) (result ListVnetRoute, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetRouteForVnet")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRouteForVnetPreparer(ctx, resourceGroupName, name, vnetName, routeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRouteForVnet", nil, "Failure preparing request")
@@ -406,6 +453,16 @@ func (client ServerFarmsClient) GetRouteForVnetResponder(resp *http.Response) (r
 // name - name of App Service Plan
 // vnetName - name of virtual network
 func (client ServerFarmsClient) GetRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string) (result ListVnetRoute, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetRoutesForVnet")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetRoutesForVnetPreparer(ctx, resourceGroupName, name, vnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetRoutesForVnet", nil, "Failure preparing request")
@@ -474,6 +531,16 @@ func (client ServerFarmsClient) GetRoutesForVnetResponder(resp *http.Response) (
 // resourceGroupName - name of resource group
 // name - name of App Service Plan
 func (client ServerFarmsClient) GetServerFarm(ctx context.Context, resourceGroupName string, name string) (result ServerFarmWithRichSku, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetServerFarmPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarm", nil, "Failure preparing request")
@@ -541,6 +608,16 @@ func (client ServerFarmsClient) GetServerFarmResponder(resp *http.Response) (res
 // resourceGroupName - name of resource group
 // name - name of App Service Plan
 func (client ServerFarmsClient) GetServerFarmMetricDefintions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefintions")
+		defer func() {
+			sc := -1
+			if result.mdc.Response.Response != nil {
+				sc = result.mdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getServerFarmMetricDefintionsNextResults
 	req, err := client.GetServerFarmMetricDefintionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -605,8 +682,8 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsResponder(resp *htt
 }
 
 // getServerFarmMetricDefintionsNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
-	req, err := lastResults.metricDefinitionCollectionPreparer()
+func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricDefintionsNextResults", nil, "Failure preparing next results request")
 	}
@@ -627,6 +704,16 @@ func (client ServerFarmsClient) getServerFarmMetricDefintionsNextResults(lastRes
 
 // GetServerFarmMetricDefintionsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServerFarmsClient) GetServerFarmMetricDefintionsComplete(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetricDefintions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetServerFarmMetricDefintions(ctx, resourceGroupName, name)
 	return
 }
@@ -640,6 +727,16 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsComplete(ctx contex
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client ServerFarmsClient) GetServerFarmMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetrics")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getServerFarmMetricsNextResults
 	req, err := client.GetServerFarmMetricsPreparer(ctx, resourceGroupName, name, details, filter)
 	if err != nil {
@@ -710,8 +807,8 @@ func (client ServerFarmsClient) GetServerFarmMetricsResponder(resp *http.Respons
 }
 
 // getServerFarmMetricsNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) getServerFarmMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client ServerFarmsClient) getServerFarmMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmMetricsNextResults", nil, "Failure preparing next results request")
 	}
@@ -732,6 +829,16 @@ func (client ServerFarmsClient) getServerFarmMetricsNextResults(lastResults Reso
 
 // GetServerFarmMetricsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServerFarmsClient) GetServerFarmMetricsComplete(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmMetrics")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetServerFarmMetrics(ctx, resourceGroupName, name, details, filter)
 	return
 }
@@ -742,6 +849,16 @@ func (client ServerFarmsClient) GetServerFarmMetricsComplete(ctx context.Context
 // name - name of server farm
 // operationID - id of Server farm operation"&gt;
 func (client ServerFarmsClient) GetServerFarmOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result ServerFarmWithRichSku, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmOperation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetServerFarmOperationPreparer(ctx, resourceGroupName, name, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmOperation", nil, "Failure preparing request")
@@ -809,6 +926,16 @@ func (client ServerFarmsClient) GetServerFarmOperationResponder(resp *http.Respo
 // Parameters:
 // resourceGroupName - name of resource group
 func (client ServerFarmsClient) GetServerFarms(ctx context.Context, resourceGroupName string) (result ServerFarmCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarms")
+		defer func() {
+			sc := -1
+			if result.sfc.Response.Response != nil {
+				sc = result.sfc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getServerFarmsNextResults
 	req, err := client.GetServerFarmsPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -872,8 +999,8 @@ func (client ServerFarmsClient) GetServerFarmsResponder(resp *http.Response) (re
 }
 
 // getServerFarmsNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) getServerFarmsNextResults(lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
-	req, err := lastResults.serverFarmCollectionPreparer()
+func (client ServerFarmsClient) getServerFarmsNextResults(ctx context.Context, lastResults ServerFarmCollection) (result ServerFarmCollection, err error) {
+	req, err := lastResults.serverFarmCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmsNextResults", nil, "Failure preparing next results request")
 	}
@@ -894,6 +1021,16 @@ func (client ServerFarmsClient) getServerFarmsNextResults(lastResults ServerFarm
 
 // GetServerFarmsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServerFarmsClient) GetServerFarmsComplete(ctx context.Context, resourceGroupName string) (result ServerFarmCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarms")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetServerFarms(ctx, resourceGroupName)
 	return
 }
@@ -907,6 +1044,16 @@ func (client ServerFarmsClient) GetServerFarmsComplete(ctx context.Context, reso
 // filter - supported filter: $filter=state eq running. Returns only web apps that are currently running
 // top - list page size. If specified, results are paged.
 func (client ServerFarmsClient) GetServerFarmSites(ctx context.Context, resourceGroupName string, name string, skipToken string, filter string, top string) (result SiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmSites")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getServerFarmSitesNextResults
 	req, err := client.GetServerFarmSitesPreparer(ctx, resourceGroupName, name, skipToken, filter, top)
 	if err != nil {
@@ -980,8 +1127,8 @@ func (client ServerFarmsClient) GetServerFarmSitesResponder(resp *http.Response)
 }
 
 // getServerFarmSitesNextResults retrieves the next set of results, if any.
-func (client ServerFarmsClient) getServerFarmSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client ServerFarmsClient) getServerFarmSitesNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ServerFarmsClient", "getServerFarmSitesNextResults", nil, "Failure preparing next results request")
 	}
@@ -1002,6 +1149,16 @@ func (client ServerFarmsClient) getServerFarmSitesNextResults(lastResults SiteCo
 
 // GetServerFarmSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServerFarmsClient) GetServerFarmSitesComplete(ctx context.Context, resourceGroupName string, name string, skipToken string, filter string, top string) (result SiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmSites")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetServerFarmSites(ctx, resourceGroupName, name, skipToken, filter, top)
 	return
 }
@@ -1013,6 +1170,16 @@ func (client ServerFarmsClient) GetServerFarmSitesComplete(ctx context.Context, 
 // vnetName - name of the virtual network
 // gatewayName - name of the gateway. Only the 'primary' gateway is supported.
 func (client ServerFarmsClient) GetServerFarmVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetServerFarmVnetGateway")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetServerFarmVnetGatewayPreparer(ctx, resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmVnetGateway", nil, "Failure preparing request")
@@ -1083,6 +1250,16 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayResponder(resp *http.Res
 // name - name of App Service Plan
 // vnetName - name of virtual network
 func (client ServerFarmsClient) GetVnetFromServerFarm(ctx context.Context, resourceGroupName string, name string, vnetName string) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetVnetFromServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetVnetFromServerFarmPreparer(ctx, resourceGroupName, name, vnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetFromServerFarm", nil, "Failure preparing request")
@@ -1151,6 +1328,16 @@ func (client ServerFarmsClient) GetVnetFromServerFarmResponder(resp *http.Respon
 // resourceGroupName - name of resource group
 // name - name of App Service Plan
 func (client ServerFarmsClient) GetVnetsForServerFarm(ctx context.Context, resourceGroupName string, name string) (result ListVnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.GetVnetsForServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetVnetsForServerFarmPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetVnetsForServerFarm", nil, "Failure preparing request")
@@ -1219,6 +1406,16 @@ func (client ServerFarmsClient) GetVnetsForServerFarmResponder(resp *http.Respon
 // name - name of server farm
 // workerName - name of worker machine, typically starts with RD
 func (client ServerFarmsClient) RebootWorkerForServerFarm(ctx context.Context, resourceGroupName string, name string, workerName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.RebootWorkerForServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RebootWorkerForServerFarmPreparer(ctx, resourceGroupName, name, workerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RebootWorkerForServerFarm", nil, "Failure preparing request")
@@ -1289,6 +1486,16 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmResponder(resp *http.Re
 // softRestart - soft restart applies the configuration settings and restarts the apps if necessary. Hard
 // restart always restarts and reprovisions the apps
 func (client ServerFarmsClient) RestartSitesForServerFarm(ctx context.Context, resourceGroupName string, name string, softRestart *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.RestartSitesForServerFarm")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestartSitesForServerFarmPreparer(ctx, resourceGroupName, name, softRestart)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "RestartSitesForServerFarm", nil, "Failure preparing request")
@@ -1362,6 +1569,16 @@ func (client ServerFarmsClient) RestartSitesForServerFarmResponder(resp *http.Re
 // gatewayName - the name of the gateway. Only 'primary' is supported.
 // connectionEnvelope - the gateway entity.
 func (client ServerFarmsClient) UpdateServerFarmVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.UpdateServerFarmVnetGateway")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateServerFarmVnetGatewayPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateServerFarmVnetGateway", nil, "Failure preparing request")
@@ -1436,6 +1653,16 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayResponder(resp *http.
 // routeName - name of the virtual network route
 // route - the route object
 func (client ServerFarmsClient) UpdateVnetRoute(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute) (result VnetRoute, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerFarmsClient.UpdateVnetRoute")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateVnetRoutePreparer(ctx, resourceGroupName, name, vnetName, routeName, route)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "UpdateVnetRoute", nil, "Failure preparing request")

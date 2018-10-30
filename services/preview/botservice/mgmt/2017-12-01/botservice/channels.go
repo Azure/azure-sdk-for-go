@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) Channel
 // channelName - the name of the Channel resource.
 // parameters - the parameters to provide for the created bot.
 func (client ChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel) (result BotChannel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -130,6 +141,16 @@ func (client ChannelsClient) CreateResponder(resp *http.Response) (result BotCha
 // resourceName - the name of the Bot resource.
 // channelName - the name of the Bot resource.
 func (client ChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, channelName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -214,6 +235,16 @@ func (client ChannelsClient) DeleteResponder(resp *http.Response) (result autore
 // resourceName - the name of the Bot resource.
 // channelName - the name of the Bot resource.
 func (client ChannelsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string) (result BotChannel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -298,6 +329,16 @@ func (client ChannelsClient) GetResponder(resp *http.Response) (result BotChanne
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client ChannelsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, resourceName string) (result ChannelResponseListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.crl.Response.Response != nil {
+				sc = result.crl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -374,8 +415,8 @@ func (client ChannelsClient) ListByResourceGroupResponder(resp *http.Response) (
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ChannelsClient) listByResourceGroupNextResults(lastResults ChannelResponseList) (result ChannelResponseList, err error) {
-	req, err := lastResults.channelResponseListPreparer()
+func (client ChannelsClient) listByResourceGroupNextResults(ctx context.Context, lastResults ChannelResponseList) (result ChannelResponseList, err error) {
+	req, err := lastResults.channelResponseListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "botservice.ChannelsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -396,6 +437,16 @@ func (client ChannelsClient) listByResourceGroupNextResults(lastResults ChannelR
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ChannelsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, resourceName string) (result ChannelResponseListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, resourceName)
 	return
 }
@@ -406,6 +457,16 @@ func (client ChannelsClient) ListByResourceGroupComplete(ctx context.Context, re
 // resourceName - the name of the Bot resource.
 // channelName - the name of the Channel resource.
 func (client ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName) (result BotChannel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.ListWithKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -488,6 +549,16 @@ func (client ChannelsClient) ListWithKeysResponder(resp *http.Response) (result 
 // channelName - the name of the Channel resource.
 // parameters - the parameters to provide for the created bot.
 func (client ChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel) (result BotChannel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,6 +42,16 @@ func NewGlobalResourceGroupsClientWithBaseURI(baseURI string, subscriptionID str
 
 // MoveResources sends the move resources request.
 func (client GlobalResourceGroupsClient) MoveResources(ctx context.Context, resourceGroupName string, moveResourceEnvelope CsmMoveResourceEnvelope) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalResourceGroupsClient.MoveResources")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.MoveResourcesPreparer(ctx, resourceGroupName, moveResourceEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalResourceGroupsClient", "MoveResources", nil, "Failure preparing request")

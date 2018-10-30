@@ -23,6 +23,9 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/cognitiveservices/v2.2/customvision/training"
+
 // Classifier enumerates the values for classifier.
 type Classifier string
 

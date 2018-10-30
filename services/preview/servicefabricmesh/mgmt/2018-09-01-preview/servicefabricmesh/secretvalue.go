@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -49,6 +50,16 @@ func NewSecretValueClientWithBaseURI(baseURI string, subscriptionID string) Secr
 // for the value.
 // secretValueResourceDescription - description for creating a value of a secret resource.
 func (client SecretValueClient) Create(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string, secretValueResourceDescription SecretValueResourceDescription) (result SecretValueResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: secretValueResourceDescription,
 			Constraints: []validation.Constraint{{Target: "secretValueResourceDescription.SecretValueResourceProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -128,6 +139,16 @@ func (client SecretValueClient) CreateResponder(resp *http.Response) (result Sec
 // secretValueResourceName - the name of the secret resource value which is typically the version identifier
 // for the value.
 func (client SecretValueClient) Delete(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, secretResourceName, secretValueResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretValueClient", "Delete", nil, "Failure preparing request")
@@ -198,6 +219,16 @@ func (client SecretValueClient) DeleteResponder(resp *http.Response) (result aut
 // secretValueResourceName - the name of the secret resource value which is typically the version identifier
 // for the value.
 func (client SecretValueClient) Get(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result SecretValueResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, secretResourceName, secretValueResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretValueClient", "Get", nil, "Failure preparing request")
@@ -267,6 +298,16 @@ func (client SecretValueClient) GetResponder(resp *http.Response) (result Secret
 // resourceGroupName - azure resource group name
 // secretResourceName - the name of the secret resource.
 func (client SecretValueClient) List(ctx context.Context, resourceGroupName string, secretResourceName string) (result SecretValueResourceDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.List")
+		defer func() {
+			sc := -1
+			if result.svrdl.Response.Response != nil {
+				sc = result.svrdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, secretResourceName)
 	if err != nil {
@@ -331,8 +372,8 @@ func (client SecretValueClient) ListResponder(resp *http.Response) (result Secre
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client SecretValueClient) listNextResults(lastResults SecretValueResourceDescriptionList) (result SecretValueResourceDescriptionList, err error) {
-	req, err := lastResults.secretValueResourceDescriptionListPreparer()
+func (client SecretValueClient) listNextResults(ctx context.Context, lastResults SecretValueResourceDescriptionList) (result SecretValueResourceDescriptionList, err error) {
+	req, err := lastResults.secretValueResourceDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.SecretValueClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -353,6 +394,16 @@ func (client SecretValueClient) listNextResults(lastResults SecretValueResourceD
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SecretValueClient) ListComplete(ctx context.Context, resourceGroupName string, secretResourceName string) (result SecretValueResourceDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, secretResourceName)
 	return
 }
@@ -365,6 +416,16 @@ func (client SecretValueClient) ListComplete(ctx context.Context, resourceGroupN
 // secretValueResourceName - the name of the secret resource value which is typically the version identifier
 // for the value.
 func (client SecretValueClient) ListValue(ctx context.Context, resourceGroupName string, secretResourceName string, secretValueResourceName string) (result SecretValue, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueClient.ListValue")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListValuePreparer(ctx, resourceGroupName, secretResourceName, secretValueResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretValueClient", "ListValue", nil, "Failure preparing request")

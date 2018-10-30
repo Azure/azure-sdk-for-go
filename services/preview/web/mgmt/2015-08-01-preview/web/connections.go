@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) Conn
 // connectionName - the connection name.
 // content - the content.
 func (client ConnectionsClient) ConfirmConsentCode(ctx context.Context, resourceGroupName string, connectionName string, content ConfirmConsentCodeInput) (result Connection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.ConfirmConsentCode")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ConfirmConsentCodePreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ConfirmConsentCode", nil, "Failure preparing request")
@@ -115,6 +126,16 @@ func (client ConnectionsClient) ConfirmConsentCodeResponder(resp *http.Response)
 // connectionName - the connection name.
 // connection - the connection.
 func (client ConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, connectionName string, connection Connection) (result Connection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, connectionName, connection)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -184,6 +205,16 @@ func (client ConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 // resourceGroupName - the resource group name.
 // connectionName - the connection name.
 func (client ConnectionsClient) Delete(ctx context.Context, resourceGroupName string, connectionName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, connectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "Delete", nil, "Failure preparing request")
@@ -250,6 +281,16 @@ func (client ConnectionsClient) DeleteResponder(resp *http.Response) (result aut
 // resourceGroupName - the resource group name.
 // connectionName - the connection name.
 func (client ConnectionsClient) Get(ctx context.Context, resourceGroupName string, connectionName string) (result Connection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, connectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "Get", nil, "Failure preparing request")
@@ -318,6 +359,16 @@ func (client ConnectionsClient) GetResponder(resp *http.Response) (result Connec
 // top - the number of items to be included in the result.
 // filter - the filter to apply on the operation.
 func (client ConnectionsClient) List(ctx context.Context, resourceGroupName string, top *int32, filter string) (result ConnectionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.List")
+		defer func() {
+			sc := -1
+			if result.cc.Response.Response != nil {
+				sc = result.cc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, top, filter)
 	if err != nil {
@@ -387,8 +438,8 @@ func (client ConnectionsClient) ListResponder(resp *http.Response) (result Conne
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ConnectionsClient) listNextResults(lastResults ConnectionCollection) (result ConnectionCollection, err error) {
-	req, err := lastResults.connectionCollectionPreparer()
+func (client ConnectionsClient) listNextResults(ctx context.Context, lastResults ConnectionCollection) (result ConnectionCollection, err error) {
+	req, err := lastResults.connectionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ConnectionsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -409,6 +460,16 @@ func (client ConnectionsClient) listNextResults(lastResults ConnectionCollection
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ConnectionsClient) ListComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result ConnectionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, top, filter)
 	return
 }
@@ -419,6 +480,16 @@ func (client ConnectionsClient) ListComplete(ctx context.Context, resourceGroupN
 // connectionName - the connection name.
 // content - the content.
 func (client ConnectionsClient) ListConnectionKeys(ctx context.Context, resourceGroupName string, connectionName string, content ListConnectionKeysInput) (result ConnectionSecrets, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.ListConnectionKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListConnectionKeysPreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ListConnectionKeys", nil, "Failure preparing request")
@@ -489,6 +560,16 @@ func (client ConnectionsClient) ListConnectionKeysResponder(resp *http.Response)
 // connectionName - the connection name.
 // content - the content.
 func (client ConnectionsClient) ListConsentLinks(ctx context.Context, resourceGroupName string, connectionName string, content ConsentLinkInput) (result ConsentLinkPayload, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectionsClient.ListConsentLinks")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListConsentLinksPreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "ListConsentLinks", nil, "Failure preparing request")

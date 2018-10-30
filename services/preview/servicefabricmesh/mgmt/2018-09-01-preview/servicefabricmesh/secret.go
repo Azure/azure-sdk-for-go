@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewSecretClientWithBaseURI(baseURI string, subscriptionID string) SecretCli
 // secretResourceName - the name of the secret resource.
 // secretResourceDescription - description for creating a secret resource.
 func (client SecretClient) Create(ctx context.Context, resourceGroupName string, secretResourceName string, secretResourceDescription SecretResourceDescription) (result SecretResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: secretResourceDescription,
 			Constraints: []validation.Constraint{{Target: "secretResourceDescription.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -122,6 +133,16 @@ func (client SecretClient) CreateResponder(resp *http.Response) (result SecretRe
 // resourceGroupName - azure resource group name
 // secretResourceName - the name of the secret resource.
 func (client SecretClient) Delete(ctx context.Context, resourceGroupName string, secretResourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, secretResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretClient", "Delete", nil, "Failure preparing request")
@@ -189,6 +210,16 @@ func (client SecretClient) DeleteResponder(resp *http.Response) (result autorest
 // resourceGroupName - azure resource group name
 // secretResourceName - the name of the secret resource.
 func (client SecretClient) Get(ctx context.Context, resourceGroupName string, secretResourceName string) (result SecretResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, secretResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretClient", "Get", nil, "Failure preparing request")
@@ -256,6 +287,16 @@ func (client SecretClient) GetResponder(resp *http.Response) (result SecretResou
 // Parameters:
 // resourceGroupName - azure resource group name
 func (client SecretClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result SecretResourceDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.srdl.Response.Response != nil {
+				sc = result.srdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -319,8 +360,8 @@ func (client SecretClient) ListByResourceGroupResponder(resp *http.Response) (re
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client SecretClient) listByResourceGroupNextResults(lastResults SecretResourceDescriptionList) (result SecretResourceDescriptionList, err error) {
-	req, err := lastResults.secretResourceDescriptionListPreparer()
+func (client SecretClient) listByResourceGroupNextResults(ctx context.Context, lastResults SecretResourceDescriptionList) (result SecretResourceDescriptionList, err error) {
+	req, err := lastResults.secretResourceDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.SecretClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -341,6 +382,16 @@ func (client SecretClient) listByResourceGroupNextResults(lastResults SecretReso
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SecretClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result SecretResourceDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -348,6 +399,16 @@ func (client SecretClient) ListByResourceGroupComplete(ctx context.Context, reso
 // ListBySubscription gets the information about all secret resources in a given resource group. The information
 // include the description and other properties of the secret.
 func (client SecretClient) ListBySubscription(ctx context.Context) (result SecretResourceDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.srdl.Response.Response != nil {
+				sc = result.srdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
@@ -410,8 +471,8 @@ func (client SecretClient) ListBySubscriptionResponder(resp *http.Response) (res
 }
 
 // listBySubscriptionNextResults retrieves the next set of results, if any.
-func (client SecretClient) listBySubscriptionNextResults(lastResults SecretResourceDescriptionList) (result SecretResourceDescriptionList, err error) {
-	req, err := lastResults.secretResourceDescriptionListPreparer()
+func (client SecretClient) listBySubscriptionNextResults(ctx context.Context, lastResults SecretResourceDescriptionList) (result SecretResourceDescriptionList, err error) {
+	req, err := lastResults.secretResourceDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.SecretClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
 	}
@@ -432,6 +493,16 @@ func (client SecretClient) listBySubscriptionNextResults(lastResults SecretResou
 
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SecretClient) ListBySubscriptionComplete(ctx context.Context) (result SecretResourceDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListBySubscription(ctx)
 	return
 }

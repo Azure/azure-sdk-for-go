@@ -18,13 +18,18 @@ package streamanalytics
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/streamanalytics/mgmt/2016-03-01/streamanalytics"
 
 // BindingType enumerates the values for binding type.
 type BindingType string
@@ -290,8 +295,8 @@ func PossibleUdfTypeValues() []UdfType {
 	return []UdfType{Scalar}
 }
 
-// AvroSerialization describes how data from an input is serialized or how data is serialized when written to an
-// output in Avro format.
+// AvroSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in Avro format.
 type AvroSerialization struct {
 	// Properties - The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
 	Properties interface{} `json:"properties,omitempty"`
@@ -444,7 +449,8 @@ func (adlsods *AzureDataLakeStoreOutputDataSource) UnmarshalJSON(body []byte) er
 	return nil
 }
 
-// AzureDataLakeStoreOutputDataSourceProperties the properties that are associated with an Azure Data Lake Store.
+// AzureDataLakeStoreOutputDataSourceProperties the properties that are associated with an Azure Data Lake
+// Store.
 type AzureDataLakeStoreOutputDataSourceProperties struct {
 	// AccountName - The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests.
 	AccountName *string `json:"accountName,omitempty"`
@@ -538,8 +544,8 @@ func (amlwsfb *AzureMachineLearningWebServiceFunctionBinding) UnmarshalJSON(body
 	return nil
 }
 
-// AzureMachineLearningWebServiceFunctionBindingProperties the binding properties associated with an Azure Machine
-// learning web service.
+// AzureMachineLearningWebServiceFunctionBindingProperties the binding properties associated with an Azure
+// Machine learning web service.
 type AzureMachineLearningWebServiceFunctionBindingProperties struct {
 	// Endpoint - The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -553,8 +559,8 @@ type AzureMachineLearningWebServiceFunctionBindingProperties struct {
 	BatchSize *int32 `json:"batchSize,omitempty"`
 }
 
-// AzureMachineLearningWebServiceFunctionBindingRetrievalProperties the binding retrieval properties associated
-// with an Azure Machine learning web service.
+// AzureMachineLearningWebServiceFunctionBindingRetrievalProperties the binding retrieval properties
+// associated with an Azure Machine learning web service.
 type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
 	// ExecuteEndpoint - The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
 	ExecuteEndpoint *string `json:"executeEndpoint,omitempty"`
@@ -562,8 +568,8 @@ type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
 	UdfType UdfType `json:"udfType,omitempty"`
 }
 
-// AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the
-// default function definition for an Azure Machine Learning web service function.
+// AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters the parameters needed to
+// retrieve the default function definition for an Azure Machine Learning web service function.
 type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters struct {
 	// AzureMachineLearningWebServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure Machine learning web service.
 	*AzureMachineLearningWebServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -637,8 +643,8 @@ func (amlwsfrddp *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitio
 	return nil
 }
 
-// AzureMachineLearningWebServiceInputColumn describes an input column for the Azure Machine Learning web service
-// endpoint.
+// AzureMachineLearningWebServiceInputColumn describes an input column for the Azure Machine Learning web
+// service endpoint.
 type AzureMachineLearningWebServiceInputColumn struct {
 	// Name - The name of the input column.
 	Name *string `json:"name,omitempty"`
@@ -656,8 +662,8 @@ type AzureMachineLearningWebServiceInputs struct {
 	ColumnNames *[]AzureMachineLearningWebServiceInputColumn `json:"columnNames,omitempty"`
 }
 
-// AzureMachineLearningWebServiceOutputColumn describes an output column for the Azure Machine Learning web service
-// endpoint.
+// AzureMachineLearningWebServiceOutputColumn describes an output column for the Azure Machine Learning web
+// service endpoint.
 type AzureMachineLearningWebServiceOutputColumn struct {
 	// Name - The name of the output column.
 	Name *string `json:"name,omitempty"`
@@ -665,7 +671,8 @@ type AzureMachineLearningWebServiceOutputColumn struct {
 	DataType *string `json:"dataType,omitempty"`
 }
 
-// AzureSQLDatabaseDataSourceProperties the properties that are associated with an Azure SQL database data source.
+// AzureSQLDatabaseDataSourceProperties the properties that are associated with an Azure SQL database data
+// source.
 type AzureSQLDatabaseDataSourceProperties struct {
 	// Server - The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
 	Server *string `json:"server,omitempty"`
@@ -788,7 +795,8 @@ func (asdods *AzureSQLDatabaseOutputDataSource) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// AzureSQLDatabaseOutputDataSourceProperties the properties that are associated with an Azure SQL database output.
+// AzureSQLDatabaseOutputDataSourceProperties the properties that are associated with an Azure SQL database
+// output.
 type AzureSQLDatabaseOutputDataSourceProperties struct {
 	// Server - The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
 	Server *string `json:"server,omitempty"`
@@ -1135,8 +1143,8 @@ func (brids *BlobReferenceInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobReferenceInputDataSourceProperties the properties that are associated with a blob input containing reference
-// data.
+// BlobReferenceInputDataSourceProperties the properties that are associated with a blob input containing
+// reference data.
 type BlobReferenceInputDataSourceProperties struct {
 	// StorageAccounts - A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
 	StorageAccounts *[]StorageAccount `json:"storageAccounts,omitempty"`
@@ -1229,7 +1237,8 @@ func (bsids *BlobStreamInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing stream data.
+// BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing
+// stream data.
 type BlobStreamInputDataSourceProperties struct {
 	// SourcePartitionCount - The partition count of the blob input data source. Range 1 - 256.
 	SourcePartitionCount *int32 `json:"sourcePartitionCount,omitempty"`
@@ -1245,8 +1254,8 @@ type BlobStreamInputDataSourceProperties struct {
 	TimeFormat *string `json:"timeFormat,omitempty"`
 }
 
-// CsvSerialization describes how data from an input is serialized or how data is serialized when written to an
-// output in CSV format.
+// CsvSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in CSV format.
 type CsvSerialization struct {
 	// CsvSerializationProperties - The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests.
 	*CsvSerializationProperties `json:"properties,omitempty"`
@@ -1344,8 +1353,8 @@ type DiagnosticCondition struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Diagnostics describes conditions applicable to the Input, Output, or the job overall, that warrant customer
-// attention.
+// Diagnostics describes conditions applicable to the Input, Output, or the job overall, that warrant
+// customer attention.
 type Diagnostics struct {
 	// Conditions - A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer attention.
 	Conditions *[]DiagnosticCondition `json:"conditions,omitempty"`
@@ -1698,8 +1707,8 @@ func (ehsids *EventHubStreamInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventHubStreamInputDataSourceProperties the properties that are associated with a Event Hub input containing
-// stream data.
+// EventHubStreamInputDataSourceProperties the properties that are associated with a Event Hub input
+// containing stream data.
 type EventHubStreamInputDataSourceProperties struct {
 	// ConsumerGroupName - The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
 	ConsumerGroupName *string `json:"consumerGroupName,omitempty"`
@@ -1713,8 +1722,8 @@ type EventHubStreamInputDataSourceProperties struct {
 	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
 }
 
-// Function a function object, containing all information associated with the named function. All functions are
-// contained under a streaming job.
+// Function a function object, containing all information associated with the named function. All functions
+// are contained under a streaming job.
 type Function struct {
 	autorest.Response `json:"-"`
 	// Properties - The properties that are associated with a function.
@@ -1785,8 +1794,8 @@ type BasicFunctionBinding interface {
 	AsFunctionBinding() (*FunctionBinding, bool)
 }
 
-// FunctionBinding the physical binding of the function. For example, in the Azure Machine Learning web service’s
-// case, this describes the endpoint.
+// FunctionBinding the physical binding of the function. For example, in the Azure Machine Learning web
+// service’s case, this describes the endpoint.
 type FunctionBinding struct {
 	// Type - Possible values include: 'TypeFunctionBinding', 'TypeMicrosoftStreamAnalyticsJavascriptUdf', 'TypeMicrosoftMachineLearningWebService'
 	Type TypeBasicFunctionBinding `json:"type,omitempty"`
@@ -1886,20 +1895,37 @@ type FunctionListResultIterator struct {
 	page FunctionListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *FunctionListResultIterator) Next() error {
+func (iter *FunctionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FunctionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *FunctionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1928,11 +1954,11 @@ func (flr FunctionListResult) IsEmpty() bool {
 
 // functionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (flr FunctionListResult) functionListResultPreparer() (*http.Request, error) {
+func (flr FunctionListResult) functionListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if flr.NextLink == nil || len(to.String(flr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(flr.NextLink)))
@@ -1940,19 +1966,36 @@ func (flr FunctionListResult) functionListResultPreparer() (*http.Request, error
 
 // FunctionListResultPage contains a page of Function values.
 type FunctionListResultPage struct {
-	fn  func(FunctionListResult) (FunctionListResult, error)
+	fn  func(context.Context, FunctionListResult) (FunctionListResult, error)
 	flr FunctionListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *FunctionListResultPage) Next() error {
-	next, err := page.fn(page.flr)
+func (page *FunctionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FunctionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.flr)
 	if err != nil {
 		return err
 	}
 	page.flr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *FunctionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2144,7 +2187,8 @@ func (frddp FunctionRetrieveDefaultDefinitionParameters) AsBasicFunctionRetrieve
 	return &frddp, true
 }
 
-// FunctionsTestFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// FunctionsTestFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type FunctionsTestFuture struct {
 	azure.Future
 }
@@ -2172,8 +2216,8 @@ func (future *FunctionsTestFuture) Result(client FunctionsClient) (rts ResourceT
 	return
 }
 
-// Input an input object, containing all information associated with the named input. All inputs are contained
-// under a streaming job.
+// Input an input object, containing all information associated with the named input. All inputs are
+// contained under a streaming job.
 type Input struct {
 	autorest.Response `json:"-"`
 	// Properties - The properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
@@ -2251,20 +2295,37 @@ type InputListResultIterator struct {
 	page InputListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *InputListResultIterator) Next() error {
+func (iter *InputListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InputListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *InputListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2293,11 +2354,11 @@ func (ilr InputListResult) IsEmpty() bool {
 
 // inputListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ilr InputListResult) inputListResultPreparer() (*http.Request, error) {
+func (ilr InputListResult) inputListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ilr.NextLink)))
@@ -2305,19 +2366,36 @@ func (ilr InputListResult) inputListResultPreparer() (*http.Request, error) {
 
 // InputListResultPage contains a page of Input values.
 type InputListResultPage struct {
-	fn  func(InputListResult) (InputListResult, error)
+	fn  func(context.Context, InputListResult) (InputListResult, error)
 	ilr InputListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *InputListResultPage) Next() error {
-	next, err := page.fn(page.ilr)
+func (page *InputListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InputListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ilr)
 	if err != nil {
 		return err
 	}
 	page.ilr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *InputListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2592,8 +2670,8 @@ func (ithsids *IoTHubStreamInputDataSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IoTHubStreamInputDataSourceProperties the properties that are associated with a IoT Hub input containing stream
-// data.
+// IoTHubStreamInputDataSourceProperties the properties that are associated with a IoT Hub input containing
+// stream data.
 type IoTHubStreamInputDataSourceProperties struct {
 	// IotHubNamespace - The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
 	IotHubNamespace *string `json:"iotHubNamespace,omitempty"`
@@ -2687,8 +2765,8 @@ type JavaScriptFunctionBindingProperties struct {
 	Script *string `json:"script,omitempty"`
 }
 
-// JavaScriptFunctionBindingRetrievalProperties the binding retrieval properties associated with a JavaScript
-// function.
+// JavaScriptFunctionBindingRetrievalProperties the binding retrieval properties associated with a
+// JavaScript function.
 type JavaScriptFunctionBindingRetrievalProperties struct {
 	// Script - The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
 	Script *string `json:"script,omitempty"`
@@ -2696,8 +2774,8 @@ type JavaScriptFunctionBindingRetrievalProperties struct {
 	UdfType UdfType `json:"udfType,omitempty"`
 }
 
-// JavaScriptFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the default function
-// definition for a JavaScript function.
+// JavaScriptFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the default
+// function definition for a JavaScript function.
 type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
 	// JavaScriptFunctionBindingRetrievalProperties - The binding retrieval properties associated with a JavaScript function.
 	*JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -2771,8 +2849,8 @@ func (jsfrddp *JavaScriptFunctionRetrieveDefaultDefinitionParameters) UnmarshalJ
 	return nil
 }
 
-// JSONSerialization describes how data from an input is serialized or how data is serialized when written to an
-// output in JSON format.
+// JSONSerialization describes how data from an input is serialized or how data is serialized when written
+// to an output in JSON format.
 type JSONSerialization struct {
 	// JSONSerializationProperties - The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests.
 	*JSONSerializationProperties `json:"properties,omitempty"`
@@ -2859,8 +2937,8 @@ type JSONSerializationProperties struct {
 	Format JSONOutputSerializationFormat `json:"format,omitempty"`
 }
 
-// OAuthBasedDataSourceProperties the properties that are associated with data sources that use OAuth as their
-// authentication model.
+// OAuthBasedDataSourceProperties the properties that are associated with data sources that use OAuth as
+// their authentication model.
 type OAuthBasedDataSourceProperties struct {
 	// RefreshToken - A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
 	RefreshToken *string `json:"refreshToken,omitempty"`
@@ -2890,8 +2968,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Stream Analytics operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Stream Analytics operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Stream Analytics operations supported by the Microsoft.StreamAnalytics resource provider.
@@ -2906,20 +2984,37 @@ type OperationListResultIterator struct {
 	page OperationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2948,11 +3043,11 @@ func (olr OperationListResult) IsEmpty() bool {
 
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -2960,19 +3055,36 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2993,8 +3105,8 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
-// Output an output object, containing all information associated with the named output. All outputs are contained
-// under a streaming job.
+// Output an output object, containing all information associated with the named output. All outputs are
+// contained under a streaming job.
 type Output struct {
 	autorest.Response `json:"-"`
 	// OutputProperties - The properties that are associated with an output. Required on PUT (CreateOrReplace) requests.
@@ -3245,20 +3357,37 @@ type OutputListResultIterator struct {
 	page OutputListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OutputListResultIterator) Next() error {
+func (iter *OutputListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutputListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OutputListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3287,11 +3416,11 @@ func (olr OutputListResult) IsEmpty() bool {
 
 // outputListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OutputListResult) outputListResultPreparer() (*http.Request, error) {
+func (olr OutputListResult) outputListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -3299,19 +3428,36 @@ func (olr OutputListResult) outputListResultPreparer() (*http.Request, error) {
 
 // OutputListResultPage contains a page of Output values.
 type OutputListResultPage struct {
-	fn  func(OutputListResult) (OutputListResult, error)
+	fn  func(context.Context, OutputListResult) (OutputListResult, error)
 	olr OutputListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OutputListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OutputListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OutputListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OutputListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3767,7 +3913,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceTestStatus describes the status of the test operation along with error information, if applicable.
+// ResourceTestStatus describes the status of the test operation along with error information, if
+// applicable.
 type ResourceTestStatus struct {
 	autorest.Response `json:"-"`
 	// Status - The status of the test operation.
@@ -4006,8 +4153,8 @@ func (s Serialization) AsBasicSerialization() (BasicSerialization, bool) {
 	return &s, true
 }
 
-// ServiceBusDataSourceProperties the common properties that are associated with Service Bus data sources (Queues,
-// Topics, Event Hubs, etc.).
+// ServiceBusDataSourceProperties the common properties that are associated with Service Bus data sources
+// (Queues, Topics, Event Hubs, etc.).
 type ServiceBusDataSourceProperties struct {
 	// ServiceBusNamespace - The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
 	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
@@ -4126,7 +4273,8 @@ func (sbqods *ServiceBusQueueOutputDataSource) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// ServiceBusQueueOutputDataSourceProperties the properties that are associated with a Service Bus Queue output.
+// ServiceBusQueueOutputDataSourceProperties the properties that are associated with a Service Bus Queue
+// output.
 type ServiceBusQueueOutputDataSourceProperties struct {
 	// QueueName - The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
 	QueueName *string `json:"queueName,omitempty"`
@@ -4249,7 +4397,8 @@ func (sbtods *ServiceBusTopicOutputDataSource) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// ServiceBusTopicOutputDataSourceProperties the properties that are associated with a Service Bus Topic output.
+// ServiceBusTopicOutputDataSourceProperties the properties that are associated with a Service Bus Topic
+// output.
 type ServiceBusTopicOutputDataSourceProperties struct {
 	// TopicName - The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
 	TopicName *string `json:"topicName,omitempty"`
@@ -4410,20 +4559,37 @@ type StreamingJobListResultIterator struct {
 	page StreamingJobListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *StreamingJobListResultIterator) Next() error {
+func (iter *StreamingJobListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingJobListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *StreamingJobListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -4452,11 +4618,11 @@ func (sjlr StreamingJobListResult) IsEmpty() bool {
 
 // streamingJobListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (sjlr StreamingJobListResult) streamingJobListResultPreparer() (*http.Request, error) {
+func (sjlr StreamingJobListResult) streamingJobListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if sjlr.NextLink == nil || len(to.String(sjlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(sjlr.NextLink)))
@@ -4464,19 +4630,36 @@ func (sjlr StreamingJobListResult) streamingJobListResultPreparer() (*http.Reque
 
 // StreamingJobListResultPage contains a page of StreamingJob values.
 type StreamingJobListResultPage struct {
-	fn   func(StreamingJobListResult) (StreamingJobListResult, error)
+	fn   func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)
 	sjlr StreamingJobListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *StreamingJobListResultPage) Next() error {
-	next, err := page.fn(page.sjlr)
+func (page *StreamingJobListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingJobListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.sjlr)
 	if err != nil {
 		return err
 	}
 	page.sjlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *StreamingJobListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -4539,8 +4722,8 @@ type StreamingJobProperties struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
-// StreamingJobsCreateOrReplaceFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// StreamingJobsCreateOrReplaceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StreamingJobsCreateOrReplaceFuture struct {
 	azure.Future
 }
@@ -4568,7 +4751,8 @@ func (future *StreamingJobsCreateOrReplaceFuture) Result(client StreamingJobsCli
 	return
 }
 
-// StreamingJobsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// StreamingJobsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type StreamingJobsDeleteFuture struct {
 	azure.Future
 }
@@ -4590,7 +4774,8 @@ func (future *StreamingJobsDeleteFuture) Result(client StreamingJobsClient) (ar 
 	return
 }
 
-// StreamingJobsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// StreamingJobsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type StreamingJobsStartFuture struct {
 	azure.Future
 }
@@ -4612,7 +4797,8 @@ func (future *StreamingJobsStartFuture) Result(client StreamingJobsClient) (ar a
 	return
 }
 
-// StreamingJobsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// StreamingJobsStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type StreamingJobsStopFuture struct {
 	azure.Future
 }
@@ -4945,8 +5131,8 @@ type SubscriptionQuotasListResult struct {
 	Value *[]SubscriptionQuota `json:"value,omitempty"`
 }
 
-// Transformation a transformation object, containing all information associated with the named transformation. All
-// transformations are contained under a streaming job.
+// Transformation a transformation object, containing all information associated with the named
+// transformation. All transformations are contained under a streaming job.
 type Transformation struct {
 	autorest.Response `json:"-"`
 	// TransformationProperties - The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.

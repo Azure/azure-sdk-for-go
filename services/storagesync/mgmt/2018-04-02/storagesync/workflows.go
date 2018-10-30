@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) Workfl
 // storageSyncServiceName - name of Storage Sync Service resource.
 // workflowID - workflow Id
 func (client WorkflowsClient) Abort(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowsClient.Abort")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -124,6 +135,16 @@ func (client WorkflowsClient) AbortResponder(resp *http.Response) (result autore
 // storageSyncServiceName - name of Storage Sync Service resource.
 // workflowID - workflow Id
 func (client WorkflowsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, workflowID string) (result Workflow, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewRegisteredServersClientWithBaseURI(baseURI string, subscriptionID string
 // serverID - GUID identifying the on-premises server.
 // parameters - body of Registered Server object.
 func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string, parameters RegisteredServerCreateParameters) (result RegisteredServersCreateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegisteredServersClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -128,6 +139,16 @@ func (client RegisteredServersClient) CreateResponder(resp *http.Response) (resu
 // storageSyncServiceName - name of Storage Sync Service resource.
 // serverID - GUID identifying the on-premises server.
 func (client RegisteredServersClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (result RegisteredServersDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegisteredServersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -206,6 +227,16 @@ func (client RegisteredServersClient) DeleteResponder(resp *http.Response) (resu
 // storageSyncServiceName - name of Storage Sync Service resource.
 // serverID - GUID identifying the on-premises server.
 func (client RegisteredServersClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, serverID string) (result RegisteredServer, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegisteredServersClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -284,6 +315,16 @@ func (client RegisteredServersClient) GetResponder(resp *http.Response) (result 
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // storageSyncServiceName - name of Storage Sync Service resource.
 func (client RegisteredServersClient) ListByStorageSyncService(ctx context.Context, resourceGroupName string, storageSyncServiceName string) (result RegisteredServerArray, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegisteredServersClient.ListByStorageSyncService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},

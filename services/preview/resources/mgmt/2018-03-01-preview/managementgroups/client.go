@@ -25,6 +25,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -56,6 +57,16 @@ func NewWithBaseURI(baseURI string) BaseClient {
 // Parameters:
 // checkNameAvailabilityRequest - management group name availability check parameters.
 func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityRequest CheckNameAvailabilityRequest) (result CheckNameAvailabilityResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckNameAvailabilityPreparer(ctx, checkNameAvailabilityRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -116,6 +127,16 @@ func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 
 // StartTenantBackfill starts backfilling subscriptions for the Tenant.
 func (client BaseClient) StartTenantBackfill(ctx context.Context) (result TenantBackfillStatusResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.StartTenantBackfill")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StartTenantBackfillPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", nil, "Failure preparing request")
@@ -174,6 +195,16 @@ func (client BaseClient) StartTenantBackfillResponder(resp *http.Response) (resu
 
 // TenantBackfillStatus gets tenant backfill status
 func (client BaseClient) TenantBackfillStatus(ctx context.Context) (result TenantBackfillStatusResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TenantBackfillStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.TenantBackfillStatusPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "TenantBackfillStatus", nil, "Failure preparing request")

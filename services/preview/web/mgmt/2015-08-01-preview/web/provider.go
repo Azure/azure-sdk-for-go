@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,6 +42,16 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 
 // GetPublishingUser sends the get publishing user request.
 func (client ProviderClient) GetPublishingUser(ctx context.Context) (result User, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetPublishingUser")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPublishingUserPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetPublishingUser", nil, "Failure preparing request")
@@ -101,6 +112,16 @@ func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (re
 // Parameters:
 // sourceControlType - type of source control
 func (client ProviderClient) GetSourceControl(ctx context.Context, sourceControlType string) (result SourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSourceControlPreparer(ctx, sourceControlType)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControl", nil, "Failure preparing request")
@@ -163,6 +184,16 @@ func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (res
 
 // GetSourceControls sends the get source controls request.
 func (client ProviderClient) GetSourceControls(ctx context.Context) (result SourceControlCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetSourceControls")
+		defer func() {
+			sc := -1
+			if result.scc.Response.Response != nil {
+				sc = result.scc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSourceControlsNextResults
 	req, err := client.GetSourceControlsPreparer(ctx)
 	if err != nil {
@@ -221,8 +252,8 @@ func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (re
 }
 
 // getSourceControlsNextResults retrieves the next set of results, if any.
-func (client ProviderClient) getSourceControlsNextResults(lastResults SourceControlCollection) (result SourceControlCollection, err error) {
-	req, err := lastResults.sourceControlCollectionPreparer()
+func (client ProviderClient) getSourceControlsNextResults(ctx context.Context, lastResults SourceControlCollection) (result SourceControlCollection, err error) {
+	req, err := lastResults.sourceControlCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", nil, "Failure preparing next results request")
 	}
@@ -243,6 +274,16 @@ func (client ProviderClient) getSourceControlsNextResults(lastResults SourceCont
 
 // GetSourceControlsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProviderClient) GetSourceControlsComplete(ctx context.Context) (result SourceControlCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetSourceControls")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSourceControls(ctx)
 	return
 }
@@ -251,6 +292,16 @@ func (client ProviderClient) GetSourceControlsComplete(ctx context.Context) (res
 // Parameters:
 // requestMessage - details of publishing user
 func (client ProviderClient) UpdatePublishingUser(ctx context.Context, requestMessage User) (result User, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.UpdatePublishingUser")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePublishingUserPreparer(ctx, requestMessage)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdatePublishingUser", nil, "Failure preparing request")
@@ -314,6 +365,16 @@ func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) 
 // sourceControlType - type of source control
 // requestMessage - source control token information
 func (client ProviderClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl) (result SourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.UpdateSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSourceControlPreparer(ctx, sourceControlType, requestMessage)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdateSourceControl", nil, "Failure preparing request")

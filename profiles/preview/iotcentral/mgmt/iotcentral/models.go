@@ -28,13 +28,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type AppNameUnavailabilityReason = original.AppNameUnavailabilityReason
-
-const (
-	AlreadyExists AppNameUnavailabilityReason = original.AlreadyExists
-	Invalid       AppNameUnavailabilityReason = original.Invalid
-)
-
 type AppSku = original.AppSku
 
 const (
@@ -43,10 +36,10 @@ const (
 )
 
 type App = original.App
+type AppAvailabilityInfo = original.AppAvailabilityInfo
 type AppListResult = original.AppListResult
 type AppListResultIterator = original.AppListResultIterator
 type AppListResultPage = original.AppListResultPage
-type AppNameAvailabilityInfo = original.AppNameAvailabilityInfo
 type AppPatch = original.AppPatch
 type AppProperties = original.AppProperties
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture
@@ -54,6 +47,7 @@ type AppsDeleteFuture = original.AppsDeleteFuture
 type AppSkuInfo = original.AppSkuInfo
 type AppsUpdateFuture = original.AppsUpdateFuture
 type ErrorDetails = original.ErrorDetails
+type ErrorResponseBody = original.ErrorResponseBody
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationInputs = original.OperationInputs
@@ -74,9 +68,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAppNameUnavailabilityReasonValues() []AppNameUnavailabilityReason {
-	return original.PossibleAppNameUnavailabilityReasonValues()
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()

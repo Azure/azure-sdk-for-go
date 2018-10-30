@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewChapSettingsClientWithBaseURI(baseURI string, subscriptionID string) Cha
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client ChapSettingsClient) CreateOrUpdate(ctx context.Context, deviceName string, chapUserName string, chapSetting ChapSettings, resourceGroupName string, managerName string) (result ChapSettingsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChapSettingsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: chapSetting,
 			Constraints: []validation.Constraint{{Target: "chapSetting.ChapProperties", Name: validation.Null, Rule: true,
@@ -109,10 +120,6 @@ func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -137,6 +144,16 @@ func (client ChapSettingsClient) CreateOrUpdateResponder(resp *http.Response) (r
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client ChapSettingsClient) Delete(ctx context.Context, deviceName string, chapUserName string, resourceGroupName string, managerName string) (result ChapSettingsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChapSettingsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -191,10 +208,6 @@ func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSet
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -218,6 +231,16 @@ func (client ChapSettingsClient) DeleteResponder(resp *http.Response) (result au
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client ChapSettingsClient) Get(ctx context.Context, deviceName string, chapUserName string, resourceGroupName string, managerName string) (result ChapSettings, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChapSettingsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -295,6 +318,16 @@ func (client ChapSettingsClient) GetResponder(resp *http.Response) (result ChapS
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client ChapSettingsClient) ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result ChapSettingsList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ChapSettingsClient.ListByDevice")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},

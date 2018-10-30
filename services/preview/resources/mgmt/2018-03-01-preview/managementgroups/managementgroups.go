@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewClientWithBaseURI(baseURI string) Client {
 // createManagementGroupRequest - management group creation parameters.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client Client) CreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (result CreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, groupID, createManagementGroupRequest, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "CreateOrUpdate", nil, "Failure preparing request")
@@ -99,10 +110,6 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpd
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -125,6 +132,16 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result SetObj
 // groupID - management Group ID.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client Client) Delete(ctx context.Context, groupID string, cacheControl string) (result DeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, groupID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Delete", nil, "Failure preparing request")
@@ -175,10 +192,6 @@ func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err e
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -207,6 +220,16 @@ func (client Client) DeleteResponder(resp *http.Response) (result OperationResul
 // ne Subscription')
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client Client) Get(ctx context.Context, groupID string, expand string, recurse *bool, filter string, cacheControl string) (result ManagementGroup, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, groupID, expand, recurse, filter, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", nil, "Failure preparing request")
@@ -290,6 +313,16 @@ func (client Client) GetResponder(resp *http.Response) (result ManagementGroup, 
 // previous response contains a nextLink element, the value of the nextLink element will include a token
 // parameter that specifies a starting point to use for subsequent calls.
 func (client Client) List(ctx context.Context, cacheControl string, skiptoken string) (result ListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
+		defer func() {
+			sc := -1
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, cacheControl, skiptoken)
 	if err != nil {
@@ -358,8 +391,8 @@ func (client Client) ListResponder(resp *http.Response) (result ListResult, err 
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client Client) listNextResults(lastResults ListResult) (result ListResult, err error) {
-	req, err := lastResults.listResultPreparer()
+func (client Client) listNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -380,6 +413,16 @@ func (client Client) listNextResults(lastResults ListResult) (result ListResult,
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client Client) ListComplete(ctx context.Context, cacheControl string, skiptoken string) (result ListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, cacheControl, skiptoken)
 	return
 }
@@ -390,6 +433,16 @@ func (client Client) ListComplete(ctx context.Context, cacheControl string, skip
 // patchGroupRequest - management group patch parameters.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client Client) Update(ctx context.Context, groupID string, patchGroupRequest PatchManagementGroupRequest, cacheControl string) (result ManagementGroup, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, groupID, patchGroupRequest, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", nil, "Failure preparing request")

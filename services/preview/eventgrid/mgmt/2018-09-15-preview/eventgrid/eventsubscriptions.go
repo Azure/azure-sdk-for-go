@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -54,6 +55,16 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 // characters in length and should use alphanumeric letters only.
 // eventSubscriptionInfo - event subscription properties containing the destination and filter information
 func (client EventSubscriptionsClient) CreateOrUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription) (result EventSubscriptionsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, scope, eventSubscriptionName, eventSubscriptionInfo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -129,6 +140,16 @@ func (client EventSubscriptionsClient) CreateOrUpdateResponder(resp *http.Respon
 // for an EventGrid topic.
 // eventSubscriptionName - name of the event subscription
 func (client EventSubscriptionsClient) Delete(ctx context.Context, scope string, eventSubscriptionName string) (result EventSubscriptionsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, scope, eventSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Delete", nil, "Failure preparing request")
@@ -201,6 +222,16 @@ func (client EventSubscriptionsClient) DeleteResponder(resp *http.Response) (res
 // for an EventGrid topic.
 // eventSubscriptionName - name of the event subscription
 func (client EventSubscriptionsClient) Get(ctx context.Context, scope string, eventSubscriptionName string) (result EventSubscription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, scope, eventSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Get", nil, "Failure preparing request")
@@ -274,6 +305,16 @@ func (client EventSubscriptionsClient) GetResponder(resp *http.Response) (result
 // for an EventGrid topic.
 // eventSubscriptionName - name of the event subscription
 func (client EventSubscriptionsClient) GetFullURL(ctx context.Context, scope string, eventSubscriptionName string) (result EventSubscriptionFullURL, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.GetFullURL")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetFullURLPreparer(ctx, scope, eventSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "GetFullURL", nil, "Failure preparing request")
@@ -341,6 +382,16 @@ func (client EventSubscriptionsClient) GetFullURLResponder(resp *http.Response) 
 // domainName - name of the top level domain
 // topicName - name of the domain topic
 func (client EventSubscriptionsClient) ListByDomainTopic(ctx context.Context, resourceGroupName string, domainName string, topicName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListByDomainTopic")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByDomainTopicPreparer(ctx, resourceGroupName, domainName, topicName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByDomainTopic", nil, "Failure preparing request")
@@ -411,6 +462,16 @@ func (client EventSubscriptionsClient) ListByDomainTopicResponder(resp *http.Res
 // resourceTypeName - name of the resource type
 // resourceName - name of the resource
 func (client EventSubscriptionsClient) ListByResource(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListByResource")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByResourcePreparer(ctx, resourceGroupName, providerNamespace, resourceTypeName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByResource", nil, "Failure preparing request")
@@ -479,6 +540,16 @@ func (client EventSubscriptionsClient) ListByResourceResponder(resp *http.Respon
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroup(ctx context.Context, resourceGroupName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListGlobalByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroup", nil, "Failure preparing request")
@@ -546,6 +617,16 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupResponder(resp *
 // resourceGroupName - the name of the resource group within the user's subscription.
 // topicTypeName - name of the topic type
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(ctx context.Context, resourceGroupName string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListGlobalByResourceGroupForTopicTypePreparer(ctx, resourceGroupName, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroupForTopicType", nil, "Failure preparing request")
@@ -610,6 +691,16 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeResp
 
 // ListGlobalBySubscription list all aggregated global event subscriptions under a specific Azure subscription
 func (client EventSubscriptionsClient) ListGlobalBySubscription(ctx context.Context) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListGlobalBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscription", nil, "Failure preparing request")
@@ -675,6 +766,16 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionResponder(resp *h
 // Parameters:
 // topicTypeName - name of the topic type
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(ctx context.Context, topicTypeName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListGlobalBySubscriptionForTopicTypePreparer(ctx, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscriptionForTopicType", nil, "Failure preparing request")
@@ -742,6 +843,16 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeRespo
 // resourceGroupName - the name of the resource group within the user's subscription.
 // location - name of the location
 func (client EventSubscriptionsClient) ListRegionalByResourceGroup(ctx context.Context, resourceGroupName string, location string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListRegionalByResourceGroupPreparer(ctx, resourceGroupName, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroup", nil, "Failure preparing request")
@@ -811,6 +922,16 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupResponder(resp
 // location - name of the location
 // topicTypeName - name of the topic type
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(ctx context.Context, resourceGroupName string, location string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListRegionalByResourceGroupForTopicTypePreparer(ctx, resourceGroupName, location, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroupForTopicType", nil, "Failure preparing request")
@@ -878,6 +999,16 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeRe
 // Parameters:
 // location - name of the location
 func (client EventSubscriptionsClient) ListRegionalBySubscription(ctx context.Context, location string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListRegionalBySubscriptionPreparer(ctx, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscription", nil, "Failure preparing request")
@@ -945,6 +1076,16 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionResponder(resp 
 // location - name of the location
 // topicTypeName - name of the topic type
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(ctx context.Context, location string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListRegionalBySubscriptionForTopicTypePreparer(ctx, location, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscriptionForTopicType", nil, "Failure preparing request")
@@ -1020,6 +1161,16 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypeRes
 // eventSubscriptionName - name of the event subscription to be updated
 // eventSubscriptionUpdateParameters - updated event subscription information
 func (client EventSubscriptionsClient) Update(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters) (result EventSubscriptionsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, scope, eventSubscriptionName, eventSubscriptionUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Update", nil, "Failure preparing request")

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"github.com/satori/go.uuid"
 	"net/http"
 )
@@ -49,6 +50,16 @@ func NewClientWithBaseURI(baseURI string, groupID uuid.UUID) Client {
 // recurse - the $recurse=true query string parameter allows clients to request inclusion of entire hierarchy
 // in the response payload.
 func (client Client) Get(ctx context.Context, expand string, recurse *bool) (result WithHierarchy, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, expand, recurse)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", nil, "Failure preparing request")
@@ -121,6 +132,16 @@ func (client Client) GetResponder(resp *http.Response) (result WithHierarchy, er
 // If a previous response contains a nextLink element, the value of the nextLink element will include a token
 // parameter that specifies a starting point to use for subsequent calls.
 func (client Client) List(ctx context.Context, skiptoken string) (result ListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
+		defer func() {
+			sc := -1
+			if result.lr.Response.Response != nil {
+				sc = result.lr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, skiptoken)
 	if err != nil {
@@ -182,8 +203,8 @@ func (client Client) ListResponder(resp *http.Response) (result ListResult, err 
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client Client) listNextResults(lastResults ListResult) (result ListResult, err error) {
-	req, err := lastResults.listResultPreparer()
+func (client Client) listNextResults(ctx context.Context, lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -204,6 +225,16 @@ func (client Client) listNextResults(lastResults ListResult) (result ListResult,
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client Client) ListComplete(ctx context.Context, skiptoken string) (result ListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, skiptoken)
 	return
 }

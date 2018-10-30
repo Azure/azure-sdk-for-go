@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsC
 // reportName - report Name.
 // parameters - parameters supplied to the CreateOrUpdate Report operation.
 func (client ReportsClient) CreateOrUpdate(ctx context.Context, reportName string, parameters Report) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ReportProperties", Name: validation.Null, Rule: false,
@@ -129,6 +140,16 @@ func (client ReportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // reportName - report Name.
 // parameters - parameters supplied to the CreateOrUpdate Report operation.
 func (client ReportsClient) CreateOrUpdateByBillingAccount(ctx context.Context, billingAccountID string, reportName string, parameters Report) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.CreateOrUpdateByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ReportProperties", Name: validation.Null, Rule: false,
@@ -211,6 +232,16 @@ func (client ReportsClient) CreateOrUpdateByBillingAccountResponder(resp *http.R
 // reportName - report Name.
 // parameters - parameters supplied to the CreateOrUpdate Report operation.
 func (client ReportsClient) CreateOrUpdateByDepartment(ctx context.Context, departmentID string, reportName string, parameters Report) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.CreateOrUpdateByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ReportProperties", Name: validation.Null, Rule: false,
@@ -293,6 +324,16 @@ func (client ReportsClient) CreateOrUpdateByDepartmentResponder(resp *http.Respo
 // reportName - report Name.
 // parameters - parameters supplied to the CreateOrUpdate Report operation.
 func (client ReportsClient) CreateOrUpdateByResourceGroupName(ctx context.Context, resourceGroupName string, reportName string, parameters Report) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.CreateOrUpdateByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ReportProperties", Name: validation.Null, Rule: false,
@@ -372,6 +413,16 @@ func (client ReportsClient) CreateOrUpdateByResourceGroupNameResponder(resp *htt
 // Parameters:
 // reportName - report Name.
 func (client ReportsClient) Delete(ctx context.Context, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Delete", nil, "Failure preparing request")
@@ -437,6 +488,16 @@ func (client ReportsClient) DeleteResponder(resp *http.Response) (result autores
 // billingAccountID - billingAccount ID
 // reportName - report Name.
 func (client ReportsClient) DeleteByBillingAccount(ctx context.Context, billingAccountID string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.DeleteByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteByBillingAccountPreparer(ctx, billingAccountID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByBillingAccount", nil, "Failure preparing request")
@@ -502,6 +563,16 @@ func (client ReportsClient) DeleteByBillingAccountResponder(resp *http.Response)
 // departmentID - department ID
 // reportName - report Name.
 func (client ReportsClient) DeleteByDepartment(ctx context.Context, departmentID string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.DeleteByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteByDepartmentPreparer(ctx, departmentID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByDepartment", nil, "Failure preparing request")
@@ -567,6 +638,16 @@ func (client ReportsClient) DeleteByDepartmentResponder(resp *http.Response) (re
 // resourceGroupName - azure Resource Group Name.
 // reportName - report Name.
 func (client ReportsClient) DeleteByResourceGroupName(ctx context.Context, resourceGroupName string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.DeleteByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteByResourceGroupNamePreparer(ctx, resourceGroupName, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "DeleteByResourceGroupName", nil, "Failure preparing request")
@@ -632,6 +713,16 @@ func (client ReportsClient) DeleteByResourceGroupNameResponder(resp *http.Respon
 // Parameters:
 // reportName - report Name.
 func (client ReportsClient) Execute(ctx context.Context, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.Execute")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ExecutePreparer(ctx, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Execute", nil, "Failure preparing request")
@@ -697,6 +788,16 @@ func (client ReportsClient) ExecuteResponder(resp *http.Response) (result autore
 // billingAccountID - billingAccount ID
 // reportName - report Name.
 func (client ReportsClient) ExecuteByBillingAccount(ctx context.Context, billingAccountID string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ExecuteByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ExecuteByBillingAccountPreparer(ctx, billingAccountID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByBillingAccount", nil, "Failure preparing request")
@@ -762,6 +863,16 @@ func (client ReportsClient) ExecuteByBillingAccountResponder(resp *http.Response
 // departmentID - department ID
 // reportName - report Name.
 func (client ReportsClient) ExecuteByDepartment(ctx context.Context, departmentID string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ExecuteByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ExecuteByDepartmentPreparer(ctx, departmentID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByDepartment", nil, "Failure preparing request")
@@ -827,6 +938,16 @@ func (client ReportsClient) ExecuteByDepartmentResponder(resp *http.Response) (r
 // resourceGroupName - azure Resource Group Name.
 // reportName - report Name.
 func (client ReportsClient) ExecuteByResourceGroupName(ctx context.Context, resourceGroupName string, reportName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ExecuteByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ExecuteByResourceGroupNamePreparer(ctx, resourceGroupName, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ExecuteByResourceGroupName", nil, "Failure preparing request")
@@ -892,6 +1013,16 @@ func (client ReportsClient) ExecuteByResourceGroupNameResponder(resp *http.Respo
 // Parameters:
 // reportName - report Name.
 func (client ReportsClient) Get(ctx context.Context, reportName string) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "Get", nil, "Failure preparing request")
@@ -958,6 +1089,16 @@ func (client ReportsClient) GetResponder(resp *http.Response) (result Report, er
 // billingAccountID - billingAccount ID
 // reportName - report Name.
 func (client ReportsClient) GetByBillingAccount(ctx context.Context, billingAccountID string, reportName string) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetByBillingAccountPreparer(ctx, billingAccountID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByBillingAccount", nil, "Failure preparing request")
@@ -1024,6 +1165,16 @@ func (client ReportsClient) GetByBillingAccountResponder(resp *http.Response) (r
 // departmentID - department ID
 // reportName - report Name.
 func (client ReportsClient) GetByDepartment(ctx context.Context, departmentID string, reportName string) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetByDepartmentPreparer(ctx, departmentID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByDepartment", nil, "Failure preparing request")
@@ -1090,6 +1241,16 @@ func (client ReportsClient) GetByDepartmentResponder(resp *http.Response) (resul
 // resourceGroupName - azure Resource Group Name.
 // reportName - report Name.
 func (client ReportsClient) GetByResourceGroupName(ctx context.Context, resourceGroupName string, reportName string) (result Report, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetByResourceGroupNamePreparer(ctx, resourceGroupName, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetByResourceGroupName", nil, "Failure preparing request")
@@ -1156,6 +1317,16 @@ func (client ReportsClient) GetByResourceGroupNameResponder(resp *http.Response)
 // Parameters:
 // reportName - report Name.
 func (client ReportsClient) GetExecutionHistory(ctx context.Context, reportName string) (result ReportExecutionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetExecutionHistory")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetExecutionHistoryPreparer(ctx, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistory", nil, "Failure preparing request")
@@ -1222,6 +1393,16 @@ func (client ReportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 // billingAccountID - billingAccount ID
 // reportName - report Name.
 func (client ReportsClient) GetExecutionHistoryByBillingAccount(ctx context.Context, billingAccountID string, reportName string) (result ReportExecutionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetExecutionHistoryByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetExecutionHistoryByBillingAccountPreparer(ctx, billingAccountID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByBillingAccount", nil, "Failure preparing request")
@@ -1288,6 +1469,16 @@ func (client ReportsClient) GetExecutionHistoryByBillingAccountResponder(resp *h
 // departmentID - department ID
 // reportName - report Name.
 func (client ReportsClient) GetExecutionHistoryByDepartment(ctx context.Context, departmentID string, reportName string) (result ReportExecutionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetExecutionHistoryByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetExecutionHistoryByDepartmentPreparer(ctx, departmentID, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByDepartment", nil, "Failure preparing request")
@@ -1354,6 +1545,16 @@ func (client ReportsClient) GetExecutionHistoryByDepartmentResponder(resp *http.
 // resourceGroupName - azure Resource Group Name.
 // reportName - report Name.
 func (client ReportsClient) GetExecutionHistoryByResourceGroupName(ctx context.Context, resourceGroupName string, reportName string) (result ReportExecutionListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.GetExecutionHistoryByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetExecutionHistoryByResourceGroupNamePreparer(ctx, resourceGroupName, reportName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "GetExecutionHistoryByResourceGroupName", nil, "Failure preparing request")
@@ -1418,6 +1619,16 @@ func (client ReportsClient) GetExecutionHistoryByResourceGroupNameResponder(resp
 
 // List lists all reports for a subscription.
 func (client ReportsClient) List(ctx context.Context) (result ReportListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "List", nil, "Failure preparing request")
@@ -1482,6 +1693,16 @@ func (client ReportsClient) ListResponder(resp *http.Response) (result ReportLis
 // Parameters:
 // billingAccountID - billingAccount ID
 func (client ReportsClient) ListByBillingAccount(ctx context.Context, billingAccountID string) (result ReportListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ListByBillingAccount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByBillingAccountPreparer(ctx, billingAccountID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByBillingAccount", nil, "Failure preparing request")
@@ -1546,6 +1767,16 @@ func (client ReportsClient) ListByBillingAccountResponder(resp *http.Response) (
 // Parameters:
 // departmentID - department ID
 func (client ReportsClient) ListByDepartment(ctx context.Context, departmentID string) (result ReportListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ListByDepartment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByDepartmentPreparer(ctx, departmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByDepartment", nil, "Failure preparing request")
@@ -1610,6 +1841,16 @@ func (client ReportsClient) ListByDepartmentResponder(resp *http.Response) (resu
 // Parameters:
 // resourceGroupName - azure Resource Group Name.
 func (client ReportsClient) ListByResourceGroupName(ctx context.Context, resourceGroupName string) (result ReportListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReportsClient.ListByResourceGroupName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByResourceGroupNamePreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.ReportsClient", "ListByResourceGroupName", nil, "Failure preparing request")

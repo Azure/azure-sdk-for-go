@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewOpenShiftManagedClustersClientWithBaseURI(baseURI string, subscriptionID
 // resourceName - the name of the openshift managed cluster resource.
 // parameters - parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
 func (client OpenShiftManagedClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftManagedCluster) (result OpenShiftManagedClustersCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.OpenShiftManagedClusterProperties", Name: validation.Null, Rule: false,
@@ -130,6 +141,16 @@ func (client OpenShiftManagedClustersClient) CreateOrUpdateResponder(resp *http.
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the openshift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedClustersDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "Delete", nil, "Failure preparing request")
@@ -196,6 +217,16 @@ func (client OpenShiftManagedClustersClient) DeleteResponder(resp *http.Response
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the openshift managed cluster resource.
 func (client OpenShiftManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result OpenShiftManagedCluster, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "Get", nil, "Failure preparing request")
@@ -264,6 +295,16 @@ func (client OpenShiftManagedClustersClient) GetResponder(resp *http.Response) (
 // resourceName - the name of the openshift managed cluster resource.
 // parameters - parameters supplied to the Update OpenShift Managed Cluster Tags operation.
 func (client OpenShiftManagedClustersClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters TagsObject) (result OpenShiftManagedClustersUpdateTagsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OpenShiftManagedClustersClient.UpdateTags")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, resourceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.OpenShiftManagedClustersClient", "UpdateTags", nil, "Failure preparing request")

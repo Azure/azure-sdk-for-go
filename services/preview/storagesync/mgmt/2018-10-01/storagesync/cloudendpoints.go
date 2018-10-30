@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) C
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint resource.
 func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters) (result CloudEndpointsCreateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -131,6 +142,16 @@ func (client CloudEndpointsClient) CreateResponder(resp *http.Response) (result 
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 func (client CloudEndpointsClient) Delete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpointsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -211,6 +232,16 @@ func (client CloudEndpointsClient) DeleteResponder(resp *http.Response) (result 
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 func (client CloudEndpointsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result CloudEndpoint, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -291,6 +322,16 @@ func (client CloudEndpointsClient) GetResponder(resp *http.Response) (result Clo
 // storageSyncServiceName - name of Storage Sync Service resource.
 // syncGroupName - name of Sync Group resource.
 func (client CloudEndpointsClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string) (result CloudEndpointArray, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.ListBySyncGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -372,6 +413,16 @@ func (client CloudEndpointsClient) ListBySyncGroupResponder(resp *http.Response)
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Backup request.
 func (client CloudEndpointsClient) PostBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsPostBackupFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.PostBackup")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -456,6 +507,16 @@ func (client CloudEndpointsClient) PostBackupResponder(resp *http.Response) (res
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint object.
 func (client CloudEndpointsClient) PostRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest) (result CloudEndpointsPostRestoreFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.PostRestore")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -539,6 +600,16 @@ func (client CloudEndpointsClient) PostRestoreResponder(resp *http.Response) (re
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Backup request.
 func (client CloudEndpointsClient) PreBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest) (result CloudEndpointsPreBackupFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.PreBackup")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -622,6 +693,16 @@ func (client CloudEndpointsClient) PreBackupResponder(resp *http.Response) (resu
 // cloudEndpointName - name of Cloud Endpoint object.
 // parameters - body of Cloud Endpoint object.
 func (client CloudEndpointsClient) PreRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest) (result CloudEndpointsPreRestoreFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.PreRestore")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
@@ -704,6 +785,16 @@ func (client CloudEndpointsClient) PreRestoreResponder(resp *http.Response) (res
 // syncGroupName - name of Sync Group resource.
 // cloudEndpointName - name of Cloud Endpoint object.
 func (client CloudEndpointsClient) Restoreheartbeat(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudEndpointsClient.Restoreheartbeat")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},

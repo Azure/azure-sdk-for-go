@@ -18,14 +18,19 @@ package customerinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"github.com/shopspring/decimal"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/customerinsights/mgmt/2017-01-01/customerinsights"
 
 // CalculationWindowTypes enumerates the values for calculation window types.
 type CalculationWindowTypes string
@@ -411,27 +416,44 @@ type AuthorizationPolicyListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AuthorizationPolicyListResultIterator provides access to a complete listing of AuthorizationPolicyResourceFormat
-// values.
+// AuthorizationPolicyListResultIterator provides access to a complete listing of
+// AuthorizationPolicyResourceFormat values.
 type AuthorizationPolicyListResultIterator struct {
 	i    int
 	page AuthorizationPolicyListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *AuthorizationPolicyListResultIterator) Next() error {
+func (iter *AuthorizationPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AuthorizationPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -460,11 +482,11 @@ func (aplr AuthorizationPolicyListResult) IsEmpty() bool {
 
 // authorizationPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (aplr AuthorizationPolicyListResult) authorizationPolicyListResultPreparer() (*http.Request, error) {
+func (aplr AuthorizationPolicyListResult) authorizationPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(aplr.NextLink)))
@@ -472,19 +494,36 @@ func (aplr AuthorizationPolicyListResult) authorizationPolicyListResultPreparer(
 
 // AuthorizationPolicyListResultPage contains a page of AuthorizationPolicyResourceFormat values.
 type AuthorizationPolicyListResultPage struct {
-	fn   func(AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)
+	fn   func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)
 	aplr AuthorizationPolicyListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *AuthorizationPolicyListResultPage) Next() error {
-	next, err := page.fn(page.aplr)
+func (page *AuthorizationPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aplr)
 	if err != nil {
 		return err
 	}
 	page.aplr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AuthorizationPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -672,20 +711,37 @@ type ConnectorListResultIterator struct {
 	page ConnectorListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ConnectorListResultIterator) Next() error {
+func (iter *ConnectorListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectorListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -714,11 +770,11 @@ func (clr ConnectorListResult) IsEmpty() bool {
 
 // connectorListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (clr ConnectorListResult) connectorListResultPreparer() (*http.Request, error) {
+func (clr ConnectorListResult) connectorListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(clr.NextLink)))
@@ -726,19 +782,36 @@ func (clr ConnectorListResult) connectorListResultPreparer() (*http.Request, err
 
 // ConnectorListResultPage contains a page of ConnectorResourceFormat values.
 type ConnectorListResultPage struct {
-	fn  func(ConnectorListResult) (ConnectorListResult, error)
+	fn  func(context.Context, ConnectorListResult) (ConnectorListResult, error)
 	clr ConnectorListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ConnectorListResultPage) Next() error {
-	next, err := page.fn(page.clr)
+func (page *ConnectorListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.clr)
 	if err != nil {
 		return err
 	}
 	page.clr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectorListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -842,27 +915,44 @@ type ConnectorMappingListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ConnectorMappingListResultIterator provides access to a complete listing of ConnectorMappingResourceFormat
-// values.
+// ConnectorMappingListResultIterator provides access to a complete listing of
+// ConnectorMappingResourceFormat values.
 type ConnectorMappingListResultIterator struct {
 	i    int
 	page ConnectorMappingListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ConnectorMappingListResultIterator) Next() error {
+func (iter *ConnectorMappingListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorMappingListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectorMappingListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -891,11 +981,11 @@ func (cmlr ConnectorMappingListResult) IsEmpty() bool {
 
 // connectorMappingListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (cmlr ConnectorMappingListResult) connectorMappingListResultPreparer() (*http.Request, error) {
+func (cmlr ConnectorMappingListResult) connectorMappingListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if cmlr.NextLink == nil || len(to.String(cmlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(cmlr.NextLink)))
@@ -903,19 +993,36 @@ func (cmlr ConnectorMappingListResult) connectorMappingListResultPreparer() (*ht
 
 // ConnectorMappingListResultPage contains a page of ConnectorMappingResourceFormat values.
 type ConnectorMappingListResultPage struct {
-	fn   func(ConnectorMappingListResult) (ConnectorMappingListResult, error)
+	fn   func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)
 	cmlr ConnectorMappingListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ConnectorMappingListResultPage) Next() error {
-	next, err := page.fn(page.cmlr)
+func (page *ConnectorMappingListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorMappingListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.cmlr)
 	if err != nil {
 		return err
 	}
 	page.cmlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectorMappingListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1130,8 +1237,8 @@ func (crf *ConnectorResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ConnectorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1159,7 +1266,8 @@ func (future *ConnectorsCreateOrUpdateFuture) Result(client ConnectorsClient) (c
 	return
 }
 
-// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConnectorsDeleteFuture struct {
 	azure.Future
 }
@@ -1205,8 +1313,8 @@ type CrmConnectorProperties struct {
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
-// DataSource data Source is a way for us to know the source of instances. A single type can have data coming in
-// from multiple places. In activities we use this to determine precedence rules.
+// DataSource data Source is a way for us to know the source of instances. A single type can have data
+// coming in from multiple places. In activities we use this to determine precedence rules.
 type DataSource struct {
 	// Name - The data source name
 	Name *string `json:"name,omitempty"`
@@ -1616,20 +1724,37 @@ type HubListResultIterator struct {
 	page HubListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *HubListResultIterator) Next() error {
+func (iter *HubListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *HubListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1658,11 +1783,11 @@ func (hlr HubListResult) IsEmpty() bool {
 
 // hubListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (hlr HubListResult) hubListResultPreparer() (*http.Request, error) {
+func (hlr HubListResult) hubListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if hlr.NextLink == nil || len(to.String(hlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(hlr.NextLink)))
@@ -1670,19 +1795,36 @@ func (hlr HubListResult) hubListResultPreparer() (*http.Request, error) {
 
 // HubListResultPage contains a page of Hub values.
 type HubListResultPage struct {
-	fn  func(HubListResult) (HubListResult, error)
+	fn  func(context.Context, HubListResult) (HubListResult, error)
 	hlr HubListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *HubListResultPage) Next() error {
-	next, err := page.fn(page.hlr)
+func (page *HubListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HubListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.hlr)
 	if err != nil {
 		return err
 	}
 	page.hlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *HubListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1765,20 +1907,37 @@ type InteractionListResultIterator struct {
 	page InteractionListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *InteractionListResultIterator) Next() error {
+func (iter *InteractionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InteractionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *InteractionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1807,11 +1966,11 @@ func (ilr InteractionListResult) IsEmpty() bool {
 
 // interactionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ilr InteractionListResult) interactionListResultPreparer() (*http.Request, error) {
+func (ilr InteractionListResult) interactionListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ilr.NextLink)))
@@ -1819,19 +1978,36 @@ func (ilr InteractionListResult) interactionListResultPreparer() (*http.Request,
 
 // InteractionListResultPage contains a page of InteractionResourceFormat values.
 type InteractionListResultPage struct {
-	fn  func(InteractionListResult) (InteractionListResult, error)
+	fn  func(context.Context, InteractionListResult) (InteractionListResult, error)
 	ilr InteractionListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *InteractionListResultPage) Next() error {
-	next, err := page.fn(page.ilr)
+func (page *InteractionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InteractionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ilr)
 	if err != nil {
 		return err
 	}
 	page.ilr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *InteractionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1933,8 +2109,8 @@ func (irf *InteractionResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type InteractionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2317,7 +2493,8 @@ type KpiAlias struct {
 	Expression *string `json:"expression,omitempty"`
 }
 
-// KpiCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// KpiCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type KpiCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2520,20 +2697,37 @@ type KpiListResultIterator struct {
 	page KpiListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *KpiListResultIterator) Next() error {
+func (iter *KpiListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/KpiListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *KpiListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2562,11 +2756,11 @@ func (klr KpiListResult) IsEmpty() bool {
 
 // kpiListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (klr KpiListResult) kpiListResultPreparer() (*http.Request, error) {
+func (klr KpiListResult) kpiListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if klr.NextLink == nil || len(to.String(klr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(klr.NextLink)))
@@ -2574,19 +2768,36 @@ func (klr KpiListResult) kpiListResultPreparer() (*http.Request, error) {
 
 // KpiListResultPage contains a page of KpiResourceFormat values.
 type KpiListResultPage struct {
-	fn  func(KpiListResult) (KpiListResult, error)
+	fn  func(context.Context, KpiListResult) (KpiListResult, error)
 	klr KpiListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *KpiListResultPage) Next() error {
-	next, err := page.fn(page.klr)
+func (page *KpiListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/KpiListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.klr)
 	if err != nil {
 		return err
 	}
 	page.klr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *KpiListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2784,20 +2995,37 @@ type LinkListResultIterator struct {
 	page LinkListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *LinkListResultIterator) Next() error {
+func (iter *LinkListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *LinkListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2826,11 +3054,11 @@ func (llr LinkListResult) IsEmpty() bool {
 
 // linkListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (llr LinkListResult) linkListResultPreparer() (*http.Request, error) {
+func (llr LinkListResult) linkListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if llr.NextLink == nil || len(to.String(llr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(llr.NextLink)))
@@ -2838,19 +3066,36 @@ func (llr LinkListResult) linkListResultPreparer() (*http.Request, error) {
 
 // LinkListResultPage contains a page of LinkResourceFormat values.
 type LinkListResultPage struct {
-	fn  func(LinkListResult) (LinkListResult, error)
+	fn  func(context.Context, LinkListResult) (LinkListResult, error)
 	llr LinkListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *LinkListResultPage) Next() error {
-	next, err := page.fn(page.llr)
+func (page *LinkListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LinkListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.llr)
 	if err != nil {
 		return err
 	}
 	page.llr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *LinkListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2952,7 +3197,8 @@ func (lrf *LinkResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// LinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// LinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LinksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3049,8 +3295,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list Customer Insights operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Customer Insights operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Customer Insights operations supported by the Microsoft.CustomerInsights resource provider.
@@ -3065,20 +3311,37 @@ type OperationListResultIterator struct {
 	page OperationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3107,11 +3370,11 @@ func (olr OperationListResult) IsEmpty() bool {
 
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -3119,19 +3382,36 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3235,20 +3515,37 @@ type ProfileListResultIterator struct {
 	page ProfileListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ProfileListResultIterator) Next() error {
+func (iter *ProfileListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfileListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ProfileListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3277,11 +3574,11 @@ func (plr ProfileListResult) IsEmpty() bool {
 
 // profileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (plr ProfileListResult) profileListResultPreparer() (*http.Request, error) {
+func (plr ProfileListResult) profileListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(plr.NextLink)))
@@ -3289,19 +3586,36 @@ func (plr ProfileListResult) profileListResultPreparer() (*http.Request, error) 
 
 // ProfileListResultPage contains a page of ProfileResourceFormat values.
 type ProfileListResultPage struct {
-	fn  func(ProfileListResult) (ProfileListResult, error)
+	fn  func(context.Context, ProfileListResult) (ProfileListResult, error)
 	plr ProfileListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ProfileListResultPage) Next() error {
-	next, err := page.fn(page.plr)
+func (page *ProfileListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfileListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.plr)
 	if err != nil {
 		return err
 	}
 	page.plr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ProfileListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3432,7 +3746,8 @@ func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (prf P
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ProfilesDeleteFuture struct {
 	azure.Future
 }
@@ -3754,27 +4069,44 @@ type RelationshipLinkListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipLinkListResultIterator provides access to a complete listing of RelationshipLinkResourceFormat
-// values.
+// RelationshipLinkListResultIterator provides access to a complete listing of
+// RelationshipLinkResourceFormat values.
 type RelationshipLinkListResultIterator struct {
 	i    int
 	page RelationshipLinkListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RelationshipLinkListResultIterator) Next() error {
+func (iter *RelationshipLinkListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationshipLinkListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RelationshipLinkListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3803,11 +4135,11 @@ func (rllr RelationshipLinkListResult) IsEmpty() bool {
 
 // relationshipLinkListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rllr RelationshipLinkListResult) relationshipLinkListResultPreparer() (*http.Request, error) {
+func (rllr RelationshipLinkListResult) relationshipLinkListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if rllr.NextLink == nil || len(to.String(rllr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rllr.NextLink)))
@@ -3815,19 +4147,36 @@ func (rllr RelationshipLinkListResult) relationshipLinkListResultPreparer() (*ht
 
 // RelationshipLinkListResultPage contains a page of RelationshipLinkResourceFormat values.
 type RelationshipLinkListResultPage struct {
-	fn   func(RelationshipLinkListResult) (RelationshipLinkListResult, error)
+	fn   func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)
 	rllr RelationshipLinkListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RelationshipLinkListResultPage) Next() error {
-	next, err := page.fn(page.rllr)
+func (page *RelationshipLinkListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationshipLinkListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rllr)
 	if err != nil {
 		return err
 	}
 	page.rllr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RelationshipLinkListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3929,8 +4278,8 @@ func (rlrf *RelationshipLinkResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RelationshipLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RelationshipLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RelationshipLinksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3990,26 +4339,44 @@ type RelationshipListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat values.
+// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat
+// values.
 type RelationshipListResultIterator struct {
 	i    int
 	page RelationshipListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RelationshipListResultIterator) Next() error {
+func (iter *RelationshipListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationshipListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RelationshipListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -4038,11 +4405,11 @@ func (rlr RelationshipListResult) IsEmpty() bool {
 
 // relationshipListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rlr RelationshipListResult) relationshipListResultPreparer() (*http.Request, error) {
+func (rlr RelationshipListResult) relationshipListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rlr.NextLink)))
@@ -4050,19 +4417,36 @@ func (rlr RelationshipListResult) relationshipListResultPreparer() (*http.Reques
 
 // RelationshipListResultPage contains a page of RelationshipResourceFormat values.
 type RelationshipListResultPage struct {
-	fn  func(RelationshipListResult) (RelationshipListResult, error)
+	fn  func(context.Context, RelationshipListResult) (RelationshipListResult, error)
 	rlr RelationshipListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RelationshipListResultPage) Next() error {
-	next, err := page.fn(page.rlr)
+func (page *RelationshipListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RelationshipListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rlr)
 	if err != nil {
 		return err
 	}
 	page.rlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RelationshipListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -4164,8 +4548,8 @@ func (rrf *RelationshipResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RelationshipsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4193,7 +4577,8 @@ func (future *RelationshipsCreateOrUpdateFuture) Result(client RelationshipsClie
 	return
 }
 
-// RelationshipsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RelationshipsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RelationshipsDeleteFuture struct {
 	azure.Future
 }
@@ -4413,26 +4798,44 @@ type RoleAssignmentListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RoleAssignmentListResultIterator provides access to a complete listing of RoleAssignmentResourceFormat values.
+// RoleAssignmentListResultIterator provides access to a complete listing of RoleAssignmentResourceFormat
+// values.
 type RoleAssignmentListResultIterator struct {
 	i    int
 	page RoleAssignmentListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RoleAssignmentListResultIterator) Next() error {
+func (iter *RoleAssignmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleAssignmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RoleAssignmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -4461,11 +4864,11 @@ func (ralr RoleAssignmentListResult) IsEmpty() bool {
 
 // roleAssignmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer() (*http.Request, error) {
+func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if ralr.NextLink == nil || len(to.String(ralr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ralr.NextLink)))
@@ -4473,19 +4876,36 @@ func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer() (*http.R
 
 // RoleAssignmentListResultPage contains a page of RoleAssignmentResourceFormat values.
 type RoleAssignmentListResultPage struct {
-	fn   func(RoleAssignmentListResult) (RoleAssignmentListResult, error)
+	fn   func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)
 	ralr RoleAssignmentListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RoleAssignmentListResultPage) Next() error {
-	next, err := page.fn(page.ralr)
+func (page *RoleAssignmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleAssignmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ralr)
 	if err != nil {
 		return err
 	}
 	page.ralr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RoleAssignmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -4587,8 +5007,8 @@ func (rarf *RoleAssignmentResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RoleAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RoleAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RoleAssignmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4631,20 +5051,37 @@ type RoleListResultIterator struct {
 	page RoleListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RoleListResultIterator) Next() error {
+func (iter *RoleListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RoleListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -4673,11 +5110,11 @@ func (rlr RoleListResult) IsEmpty() bool {
 
 // roleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rlr RoleListResult) roleListResultPreparer() (*http.Request, error) {
+func (rlr RoleListResult) roleListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rlr.NextLink)))
@@ -4685,19 +5122,36 @@ func (rlr RoleListResult) roleListResultPreparer() (*http.Request, error) {
 
 // RoleListResultPage contains a page of RoleResourceFormat values.
 type RoleListResultPage struct {
-	fn  func(RoleListResult) (RoleListResult, error)
+	fn  func(context.Context, RoleListResult) (RoleListResult, error)
 	rlr RoleListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RoleListResultPage) Next() error {
-	next, err := page.fn(page.rlr)
+func (page *RoleListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RoleListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rlr)
 	if err != nil {
 		return err
 	}
 	page.rlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RoleListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -4937,20 +5391,37 @@ type ViewListResultIterator struct {
 	page ViewListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ViewListResultIterator) Next() error {
+func (iter *ViewListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ViewListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ViewListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -4979,11 +5450,11 @@ func (vlr ViewListResult) IsEmpty() bool {
 
 // viewListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (vlr ViewListResult) viewListResultPreparer() (*http.Request, error) {
+func (vlr ViewListResult) viewListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if vlr.NextLink == nil || len(to.String(vlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(vlr.NextLink)))
@@ -4991,19 +5462,36 @@ func (vlr ViewListResult) viewListResultPreparer() (*http.Request, error) {
 
 // ViewListResultPage contains a page of ViewResourceFormat values.
 type ViewListResultPage struct {
-	fn  func(ViewListResult) (ViewListResult, error)
+	fn  func(context.Context, ViewListResult) (ViewListResult, error)
 	vlr ViewListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ViewListResultPage) Next() error {
-	next, err := page.fn(page.vlr)
+func (page *ViewListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ViewListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.vlr)
 	if err != nil {
 		return err
 	}
 	page.vlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ViewListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -5175,20 +5663,37 @@ type WidgetTypeListResultIterator struct {
 	page WidgetTypeListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *WidgetTypeListResultIterator) Next() error {
+func (iter *WidgetTypeListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WidgetTypeListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WidgetTypeListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -5217,11 +5722,11 @@ func (wtlr WidgetTypeListResult) IsEmpty() bool {
 
 // widgetTypeListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (wtlr WidgetTypeListResult) widgetTypeListResultPreparer() (*http.Request, error) {
+func (wtlr WidgetTypeListResult) widgetTypeListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if wtlr.NextLink == nil || len(to.String(wtlr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(wtlr.NextLink)))
@@ -5229,19 +5734,36 @@ func (wtlr WidgetTypeListResult) widgetTypeListResultPreparer() (*http.Request, 
 
 // WidgetTypeListResultPage contains a page of WidgetTypeResourceFormat values.
 type WidgetTypeListResultPage struct {
-	fn   func(WidgetTypeListResult) (WidgetTypeListResult, error)
+	fn   func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)
 	wtlr WidgetTypeListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *WidgetTypeListResultPage) Next() error {
-	next, err := page.fn(page.wtlr)
+func (page *WidgetTypeListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WidgetTypeListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wtlr)
 	if err != nil {
 		return err
 	}
 	page.wtlr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WidgetTypeListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

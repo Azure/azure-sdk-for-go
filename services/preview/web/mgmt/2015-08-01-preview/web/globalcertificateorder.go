@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,6 +42,16 @@ func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID s
 
 // GetAllCertificateOrders sends the get all certificate orders request.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrders(ctx context.Context) (result CertificateOrderCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalCertificateOrderClient.GetAllCertificateOrders")
+		defer func() {
+			sc := -1
+			if result.coc.Response.Response != nil {
+				sc = result.coc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllCertificateOrdersNextResults
 	req, err := client.GetAllCertificateOrdersPreparer(ctx)
 	if err != nil {
@@ -103,8 +114,8 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersResponder(resp
 }
 
 // getAllCertificateOrdersNextResults retrieves the next set of results, if any.
-func (client GlobalCertificateOrderClient) getAllCertificateOrdersNextResults(lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
-	req, err := lastResults.certificateOrderCollectionPreparer()
+func (client GlobalCertificateOrderClient) getAllCertificateOrdersNextResults(ctx context.Context, lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
+	req, err := lastResults.certificateOrderCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "getAllCertificateOrdersNextResults", nil, "Failure preparing next results request")
 	}
@@ -125,6 +136,16 @@ func (client GlobalCertificateOrderClient) getAllCertificateOrdersNextResults(la
 
 // GetAllCertificateOrdersComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersComplete(ctx context.Context) (result CertificateOrderCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalCertificateOrderClient.GetAllCertificateOrders")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllCertificateOrders(ctx)
 	return
 }
@@ -133,6 +154,16 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersComplete(ctx c
 // Parameters:
 // certificateOrder - certificate order
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformation(ctx context.Context, certificateOrder CertificateOrder) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalCertificateOrderClient.ValidateCertificatePurchaseInformation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ValidateCertificatePurchaseInformationPreparer(ctx, certificateOrder)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "ValidateCertificatePurchaseInformation", nil, "Failure preparing request")

@@ -22,6 +22,9 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/eventgrid/2018-01-01/eventgrid"
+
 // MediaJobErrorCategory enumerates the values for media job error category.
 type MediaJobErrorCategory string
 
@@ -138,8 +141,8 @@ func PossibleOdataTypeValues() []OdataType {
 	return []OdataType{OdataTypeMediaJobOutput, OdataTypeMicrosoftMediaJobOutputAsset}
 }
 
-// ContainerRegistryEventActor the agent that initiated the event. For most situations, this could be from the
-// authorization context of the request.
+// ContainerRegistryEventActor the agent that initiated the event. For most situations, this could be from
+// the authorization context of the request.
 type ContainerRegistryEventActor struct {
 	// Name - The subject or username associated with the request context that generated the event.
 	Name *string `json:"name,omitempty"`
@@ -177,8 +180,8 @@ type ContainerRegistryEventRequest struct {
 	Useragent *string `json:"useragent,omitempty"`
 }
 
-// ContainerRegistryEventSource the registry node that generated the event. Put differently, while the actor
-// initiates the event, the source generates it.
+// ContainerRegistryEventSource the registry node that generated the event. Put differently, while the
+// actor initiates the event, the source generates it.
 type ContainerRegistryEventSource struct {
 	// Addr - The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
 	Addr *string `json:"addr,omitempty"`
@@ -248,8 +251,8 @@ type DeviceConnectionStateEventInfo struct {
 	SequenceNumber *string `json:"sequenceNumber,omitempty"`
 }
 
-// DeviceConnectionStateEventProperties schema of the Data property of an EventGridEvent for a device connection
-// state event (DeviceConnected, DeviceDisconnected).
+// DeviceConnectionStateEventProperties schema of the Data property of an EventGridEvent for a device
+// connection state event (DeviceConnected, DeviceDisconnected).
 type DeviceConnectionStateEventProperties struct {
 	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
@@ -261,8 +264,8 @@ type DeviceConnectionStateEventProperties struct {
 	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo `json:"deviceConnectionStateEventInfo,omitempty"`
 }
 
-// DeviceLifeCycleEventProperties schema of the Data property of an EventGridEvent for a device life cycle event
-// (DeviceCreated, DeviceDeleted).
+// DeviceLifeCycleEventProperties schema of the Data property of an EventGridEvent for a device life cycle
+// event (DeviceCreated, DeviceDeleted).
 type DeviceLifeCycleEventProperties struct {
 	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
@@ -272,8 +275,8 @@ type DeviceLifeCycleEventProperties struct {
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
 }
 
-// DeviceTwinInfo information about the device twin, which is the cloud representation of application device
-// metadata.
+// DeviceTwinInfo information about the device twin, which is the cloud representation of application
+// device metadata.
 type DeviceTwinInfo struct {
 	// AuthenticationType - Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
 	AuthenticationType *string `json:"authenticationType,omitempty"`
@@ -307,9 +310,9 @@ type DeviceTwinInfoProperties struct {
 	Reported *DeviceTwinProperties `json:"reported,omitempty"`
 }
 
-// DeviceTwinInfoX509Thumbprint the thumbprint is a unique value for the x509 certificate, commonly used to find a
-// particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm,
-// and does not physically exist in the certificate.
+// DeviceTwinInfoX509Thumbprint the thumbprint is a unique value for the x509 certificate, commonly used to
+// find a particular certificate in a certificate store. The thumbprint is dynamically generated using the
+// SHA1 algorithm, and does not physically exist in the certificate.
 type DeviceTwinInfoX509Thumbprint struct {
 	// PrimaryThumbprint - Primary thumbprint for the x509 certificate.
 	PrimaryThumbprint *string `json:"primaryThumbprint,omitempty"`
@@ -323,8 +326,8 @@ type DeviceTwinMetadata struct {
 	LastUpdated *string `json:"lastUpdated,omitempty"`
 }
 
-// DeviceTwinProperties a portion of the properties that can be written only by the application back-end, and read
-// by the device.
+// DeviceTwinProperties a portion of the properties that can be written only by the application back-end,
+// and read by the device.
 type DeviceTwinProperties struct {
 	// Metadata - Metadata information for the properties JSON document.
 	Metadata *DeviceTwinMetadata `json:"metadata,omitempty"`
@@ -1536,7 +1539,8 @@ type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 }
 
 // ResourceActionCancelData schema of the Data property of an EventGridEvent for an
-// Microsoft.Resources.ResourceActionCancel event. This is raised when a resource action operation is canceled.
+// Microsoft.Resources.ResourceActionCancel event. This is raised when a resource action operation is
+// canceled.
 type ResourceActionCancelData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1590,7 +1594,8 @@ type ResourceActionFailureData struct {
 }
 
 // ResourceActionSuccessData schema of the Data property of an EventGridEvent for a
-// Microsoft.Resources.ResourceActionSuccess event. This is raised when a resource action operation succeeds.
+// Microsoft.Resources.ResourceActionSuccess event. This is raised when a resource action operation
+// succeeds.
 type ResourceActionSuccessData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1617,7 +1622,8 @@ type ResourceActionSuccessData struct {
 }
 
 // ResourceDeleteCancelData schema of the Data property of an EventGridEvent for an
-// Microsoft.Resources.ResourceDeleteCancel event. This is raised when a resource delete operation is canceled.
+// Microsoft.Resources.ResourceDeleteCancel event. This is raised when a resource delete operation is
+// canceled.
 type ResourceDeleteCancelData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1671,7 +1677,8 @@ type ResourceDeleteFailureData struct {
 }
 
 // ResourceDeleteSuccessData schema of the Data property of an EventGridEvent for a
-// Microsoft.Resources.ResourceDeleteSuccess event. This is raised when a resource delete operation succeeds.
+// Microsoft.Resources.ResourceDeleteSuccess event. This is raised when a resource delete operation
+// succeeds.
 type ResourceDeleteSuccessData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1698,8 +1705,8 @@ type ResourceDeleteSuccessData struct {
 }
 
 // ResourceWriteCancelData schema of the Data property of an EventGridEvent for a
-// Microsoft.Resources.ResourceWriteCancel event. This is raised when a resource create or update operation is
-// canceled.
+// Microsoft.Resources.ResourceWriteCancel event. This is raised when a resource create or update operation
+// is canceled.
 type ResourceWriteCancelData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1726,7 +1733,8 @@ type ResourceWriteCancelData struct {
 }
 
 // ResourceWriteFailureData schema of the Data property of an EventGridEvent for a
-// Microsoft.Resources.ResourceWriteFailure event. This is raised when a resource create or update operation fails.
+// Microsoft.Resources.ResourceWriteFailure event. This is raised when a resource create or update
+// operation fails.
 type ResourceWriteFailureData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1753,8 +1761,8 @@ type ResourceWriteFailureData struct {
 }
 
 // ResourceWriteSuccessData schema of the Data property of an EventGridEvent for a
-// Microsoft.Resources.ResourceWriteSuccess event. This is raised when a resource create or update operation
-// succeeds.
+// Microsoft.Resources.ResourceWriteSuccess event. This is raised when a resource create or update
+// operation succeeds.
 type ResourceWriteSuccessData struct {
 	// TenantID - The tenant ID of the resource.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -1780,8 +1788,8 @@ type ResourceWriteSuccessData struct {
 	HTTPRequest *string `json:"httpRequest,omitempty"`
 }
 
-// ServiceBusActiveMessagesAvailableWithNoListenersEventData schema of the Data property of an EventGridEvent for a
-// Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners event.
+// ServiceBusActiveMessagesAvailableWithNoListenersEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners event.
 type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
 	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string `json:"namespaceName,omitempty"`
@@ -1797,8 +1805,8 @@ type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
 }
 
-// ServiceBusDeadletterMessagesAvailableWithNoListenersEventData schema of the Data property of an EventGridEvent
-// for a Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent event.
+// ServiceBusDeadletterMessagesAvailableWithNoListenersEventData schema of the Data property of an
+// EventGridEvent for a Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListenersEvent event.
 type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
 	// NamespaceName - The namespace name of the Microsoft.ServiceBus resource.
 	NamespaceName *string `json:"namespaceName,omitempty"`
@@ -1876,8 +1884,8 @@ type SubscriptionValidationEventData struct {
 	ValidationURL *string `json:"validationUrl,omitempty"`
 }
 
-// SubscriptionValidationResponse to complete an event subscription validation handshake, a subscriber can use
-// either the validationCode or the validationUrl received in a SubscriptionValidationEvent. When the
+// SubscriptionValidationResponse to complete an event subscription validation handshake, a subscriber can
+// use either the validationCode or the validationUrl received in a SubscriptionValidationEvent. When the
 // validationCode is used, the SubscriptionValidationResponse can be used to build the response.
 type SubscriptionValidationResponse struct {
 	// ValidationResponse - The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.

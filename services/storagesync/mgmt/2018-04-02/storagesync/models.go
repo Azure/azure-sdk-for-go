@@ -18,12 +18,17 @@ package storagesync
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/storagesync/mgmt/2018-04-02/storagesync"
 
 // CloudTiering enumerates the values for cloud tiering.
 type CloudTiering string
@@ -381,7 +386,8 @@ type CloudEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 }
 
-// CloudEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CloudEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsCreateFuture struct {
 	azure.Future
 }
@@ -409,7 +415,8 @@ func (future *CloudEndpointsCreateFuture) Result(client CloudEndpointsClient) (c
 	return
 }
 
-// CloudEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// CloudEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsDeleteFuture struct {
 	azure.Future
 }
@@ -431,8 +438,8 @@ func (future *CloudEndpointsDeleteFuture) Result(client CloudEndpointsClient) (a
 	return
 }
 
-// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CloudEndpointsPostBackupFuture struct {
 	azure.Future
 }
@@ -460,8 +467,8 @@ func (future *CloudEndpointsPostBackupFuture) Result(client CloudEndpointsClient
 	return
 }
 
-// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CloudEndpointsPostRestoreFuture struct {
 	azure.Future
 }
@@ -506,8 +513,8 @@ func (future *CloudEndpointsPreBackupFuture) Result(client CloudEndpointsClient)
 	return
 }
 
-// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type CloudEndpointsPreRestoreFuture struct {
 	azure.Future
 }
@@ -596,20 +603,37 @@ type OperationEntityListResultIterator struct {
 	page OperationEntityListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationEntityListResultIterator) Next() error {
+func (iter *OperationEntityListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationEntityListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationEntityListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -638,11 +662,11 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http.Request, error) {
+func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(oelr.NextLink)))
@@ -650,19 +674,36 @@ func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http
 
 // OperationEntityListResultPage contains a page of OperationEntity values.
 type OperationEntityListResultPage struct {
-	fn   func(OperationEntityListResult) (OperationEntityListResult, error)
+	fn   func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)
 	oelr OperationEntityListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationEntityListResultPage) Next() error {
-	next, err := page.fn(page.oelr)
+func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationEntityListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.oelr)
 	if err != nil {
 		return err
 	}
 	page.oelr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationEntityListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1330,8 +1371,8 @@ func (future *ServerEndpointsDeleteFuture) Result(client ServerEndpointsClient) 
 	return
 }
 
-// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerEndpointsRecallActionFuture struct {
 	azure.Future
 }

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,6 +42,16 @@ func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID 
 
 // List lists all the available Domain Services operations.
 func (client DomainServiceOperationsClient) List(ctx context.Context) (result OperationEntityListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServiceOperationsClient.List")
+		defer func() {
+			sc := -1
+			if result.oelr.Response.Response != nil {
+				sc = result.oelr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -99,8 +110,8 @@ func (client DomainServiceOperationsClient) ListResponder(resp *http.Response) (
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client DomainServiceOperationsClient) listNextResults(lastResults OperationEntityListResult) (result OperationEntityListResult, err error) {
-	req, err := lastResults.operationEntityListResultPreparer()
+func (client DomainServiceOperationsClient) listNextResults(ctx context.Context, lastResults OperationEntityListResult) (result OperationEntityListResult, err error) {
+	req, err := lastResults.operationEntityListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "aad.DomainServiceOperationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -121,6 +132,16 @@ func (client DomainServiceOperationsClient) listNextResults(lastResults Operatio
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DomainServiceOperationsClient) ListComplete(ctx context.Context) (result OperationEntityListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServiceOperationsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx)
 	return
 }

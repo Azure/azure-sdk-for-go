@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewManagedApisClientWithBaseURI(baseURI string, subscriptionID string) Mana
 // APIName - the managed API name.
 // export - flag showing whether to export API definition in format specified by Accept header.
 func (client ManagedApisClient) Get(ctx context.Context, location string, APIName string, export *bool) (result APIEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedApisClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, location, APIName, export)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "Get", nil, "Failure preparing request")
@@ -114,6 +125,16 @@ func (client ManagedApisClient) GetResponder(resp *http.Response) (result APIEnt
 // Parameters:
 // location - the location.
 func (client ManagedApisClient) List(ctx context.Context, location string) (result ApisCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedApisClient.List")
+		defer func() {
+			sc := -1
+			if result.ac.Response.Response != nil {
+				sc = result.ac.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, location)
 	if err != nil {
@@ -177,8 +198,8 @@ func (client ManagedApisClient) ListResponder(resp *http.Response) (result ApisC
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ManagedApisClient) listNextResults(lastResults ApisCollection) (result ApisCollection, err error) {
-	req, err := lastResults.apisCollectionPreparer()
+func (client ManagedApisClient) listNextResults(ctx context.Context, lastResults ApisCollection) (result ApisCollection, err error) {
+	req, err := lastResults.apisCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ManagedApisClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -199,6 +220,16 @@ func (client ManagedApisClient) listNextResults(lastResults ApisCollection) (res
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ManagedApisClient) ListComplete(ctx context.Context, location string) (result ApisCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedApisClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, location)
 	return
 }

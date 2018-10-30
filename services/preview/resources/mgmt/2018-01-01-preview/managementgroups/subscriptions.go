@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string,
 // subscriptionID - subscription ID.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client SubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreatePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Create", nil, "Failure preparing request")
@@ -120,6 +131,16 @@ func (client SubscriptionsClient) CreateResponder(resp *http.Response) (result a
 // subscriptionID - subscription ID.
 // cacheControl - indicates that the request shouldn't utilize any caches.
 func (client SubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Delete", nil, "Failure preparing request")

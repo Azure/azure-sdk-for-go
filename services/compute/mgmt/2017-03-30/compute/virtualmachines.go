@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 // VMName - the name of the virtual machine.
 // parameters - parameters supplied to the Capture Virtual Machine operation.
 func (client VirtualMachinesClient) Capture(ctx context.Context, resourceGroupName string, VMName string, parameters VirtualMachineCaptureParameters) (result VirtualMachinesCaptureFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Capture")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.VhdPrefix", Name: validation.Null, Rule: true, Chain: nil},
@@ -125,6 +136,16 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) ConvertToManagedDisks(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesConvertToManagedDisksFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ConvertToManagedDisks")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ConvertToManagedDisksPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ConvertToManagedDisks", nil, "Failure preparing request")
@@ -193,6 +214,16 @@ func (client VirtualMachinesClient) ConvertToManagedDisksResponder(resp *http.Re
 // VMName - the name of the virtual machine.
 // parameters - parameters supplied to the Create Virtual Machine operation.
 func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, VMName string, parameters VirtualMachine) (result VirtualMachinesCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.VirtualMachineProperties", Name: validation.Null, Rule: false,
@@ -284,6 +315,16 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Deallocate(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesDeallocateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Deallocate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeallocatePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Deallocate", nil, "Failure preparing request")
@@ -351,6 +392,16 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Delete", nil, "Failure preparing request")
@@ -418,6 +469,16 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Generalize(ctx context.Context, resourceGroupName string, VMName string) (result OperationStatusResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Generalize")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GeneralizePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Generalize", nil, "Failure preparing request")
@@ -486,6 +547,16 @@ func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (re
 // VMName - the name of the virtual machine.
 // expand - the expand expression to apply on the operation.
 func (client VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, VMName string, expand InstanceViewTypes) (result VirtualMachine, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, VMName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Get", nil, "Failure preparing request")
@@ -557,6 +628,16 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 // VMName - the name of the virtual machine containing the extension.
 // expand - the expand expression to apply on the operation.
 func (client VirtualMachinesClient) GetExtensions(ctx context.Context, resourceGroupName string, VMName string, expand string) (result VirtualMachineExtensionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.GetExtensions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetExtensionsPreparer(ctx, resourceGroupName, VMName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "GetExtensions", nil, "Failure preparing request")
@@ -627,6 +708,16 @@ func (client VirtualMachinesClient) GetExtensionsResponder(resp *http.Response) 
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachineInstanceView, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.InstanceView")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.InstanceViewPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "InstanceView", nil, "Failure preparing request")
@@ -694,6 +785,16 @@ func (client VirtualMachinesClient) InstanceViewResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client VirtualMachinesClient) List(ctx context.Context, resourceGroupName string) (result VirtualMachineListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.List")
+		defer func() {
+			sc := -1
+			if result.vmlr.Response.Response != nil {
+				sc = result.vmlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -757,8 +858,8 @@ func (client VirtualMachinesClient) ListResponder(resp *http.Response) (result V
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client VirtualMachinesClient) listNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
-	req, err := lastResults.virtualMachineListResultPreparer()
+func (client VirtualMachinesClient) listNextResults(ctx context.Context, lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
+	req, err := lastResults.virtualMachineListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -779,6 +880,16 @@ func (client VirtualMachinesClient) listNextResults(lastResults VirtualMachineLi
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client VirtualMachinesClient) ListComplete(ctx context.Context, resourceGroupName string) (result VirtualMachineListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName)
 	return
 }
@@ -786,6 +897,16 @@ func (client VirtualMachinesClient) ListComplete(ctx context.Context, resourceGr
 // ListAll lists all of the virtual machines in the specified subscription. Use the nextLink property in the response
 // to get the next page of virtual machines.
 func (client VirtualMachinesClient) ListAll(ctx context.Context) (result VirtualMachineListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListAll")
+		defer func() {
+			sc := -1
+			if result.vmlr.Response.Response != nil {
+				sc = result.vmlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -848,8 +969,8 @@ func (client VirtualMachinesClient) ListAllResponder(resp *http.Response) (resul
 }
 
 // listAllNextResults retrieves the next set of results, if any.
-func (client VirtualMachinesClient) listAllNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
-	req, err := lastResults.virtualMachineListResultPreparer()
+func (client VirtualMachinesClient) listAllNextResults(ctx context.Context, lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
+	req, err := lastResults.virtualMachineListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listAllNextResults", nil, "Failure preparing next results request")
 	}
@@ -870,6 +991,16 @@ func (client VirtualMachinesClient) listAllNextResults(lastResults VirtualMachin
 
 // ListAllComplete enumerates all values, automatically crossing page boundaries as required.
 func (client VirtualMachinesClient) ListAllComplete(ctx context.Context) (result VirtualMachineListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListAll")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListAll(ctx)
 	return
 }
@@ -879,6 +1010,16 @@ func (client VirtualMachinesClient) ListAllComplete(ctx context.Context) (result
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachineSizeListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListAvailableSizes")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListAvailableSizesPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAvailableSizes", nil, "Failure preparing request")
@@ -945,6 +1086,16 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 // Parameters:
 // location - the location for which virtual machines under the subscription are queried.
 func (client VirtualMachinesClient) ListByLocation(ctx context.Context, location string) (result VirtualMachineListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListByLocation")
+		defer func() {
+			sc := -1
+			if result.vmlr.Response.Response != nil {
+				sc = result.vmlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: location,
 			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
@@ -1014,8 +1165,8 @@ func (client VirtualMachinesClient) ListByLocationResponder(resp *http.Response)
 }
 
 // listByLocationNextResults retrieves the next set of results, if any.
-func (client VirtualMachinesClient) listByLocationNextResults(lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
-	req, err := lastResults.virtualMachineListResultPreparer()
+func (client VirtualMachinesClient) listByLocationNextResults(ctx context.Context, lastResults VirtualMachineListResult) (result VirtualMachineListResult, err error) {
+	req, err := lastResults.virtualMachineListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "listByLocationNextResults", nil, "Failure preparing next results request")
 	}
@@ -1036,6 +1187,16 @@ func (client VirtualMachinesClient) listByLocationNextResults(lastResults Virtua
 
 // ListByLocationComplete enumerates all values, automatically crossing page boundaries as required.
 func (client VirtualMachinesClient) ListByLocationComplete(ctx context.Context, location string) (result VirtualMachineListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListByLocation")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByLocation(ctx, location)
 	return
 }
@@ -1045,6 +1206,16 @@ func (client VirtualMachinesClient) ListByLocationComplete(ctx context.Context, 
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesPerformMaintenanceFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.PerformMaintenance")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.PerformMaintenancePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "PerformMaintenance", nil, "Failure preparing request")
@@ -1113,6 +1284,16 @@ func (client VirtualMachinesClient) PerformMaintenanceResponder(resp *http.Respo
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) PowerOff(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesPowerOffFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.PowerOff")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.PowerOffPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "PowerOff", nil, "Failure preparing request")
@@ -1180,6 +1361,16 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesRedeployFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Redeploy")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RedeployPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Redeploy", nil, "Failure preparing request")
@@ -1247,6 +1438,16 @@ func (client VirtualMachinesClient) RedeployResponder(resp *http.Response) (resu
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Restart(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesRestartFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Restart")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestartPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Restart", nil, "Failure preparing request")
@@ -1315,6 +1516,16 @@ func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (resul
 // VMName - the name of the virtual machine.
 // parameters - parameters supplied to the Run command operation.
 func (client VirtualMachinesClient) RunCommand(ctx context.Context, resourceGroupName string, VMName string, parameters RunCommandInput) (result VirtualMachinesRunCommandFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.RunCommand")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.CommandID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -1390,6 +1601,16 @@ func (client VirtualMachinesClient) RunCommandResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Start(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesStartFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Start")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StartPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Start", nil, "Failure preparing request")

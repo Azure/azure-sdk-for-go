@@ -18,12 +18,17 @@ package servicefabricmesh
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
 
 // ApplicationScopedVolumeKind enumerates the values for application scoped volume kind.
 type ApplicationScopedVolumeKind string
@@ -350,8 +355,8 @@ func PossibleVolumeProviderValues() []VolumeProvider {
 	return []VolumeProvider{SFAzureFile}
 }
 
-// AddRemoveReplicaScalingMechanism describes the horizontal auto scaling mechanism that adds or removes replicas
-// (containers or container groups).
+// AddRemoveReplicaScalingMechanism describes the horizontal auto scaling mechanism that adds or removes
+// replicas (containers or container groups).
 type AddRemoveReplicaScalingMechanism struct {
 	// MinCount - Minimum number of containers (scale down won't be performed below this number).
 	MinCount *int32 `json:"minCount,omitempty"`
@@ -545,20 +550,37 @@ type ApplicationResourceDescriptionListIterator struct {
 	page ApplicationResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ApplicationResourceDescriptionListIterator) Next() error {
+func (iter *ApplicationResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ApplicationResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -587,11 +609,11 @@ func (ardl ApplicationResourceDescriptionList) IsEmpty() bool {
 
 // applicationResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ardl ApplicationResourceDescriptionList) applicationResourceDescriptionListPreparer() (*http.Request, error) {
+func (ardl ApplicationResourceDescriptionList) applicationResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if ardl.NextLink == nil || len(to.String(ardl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ardl.NextLink)))
@@ -599,19 +621,36 @@ func (ardl ApplicationResourceDescriptionList) applicationResourceDescriptionLis
 
 // ApplicationResourceDescriptionListPage contains a page of ApplicationResourceDescription values.
 type ApplicationResourceDescriptionListPage struct {
-	fn   func(ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)
+	fn   func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)
 	ardl ApplicationResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ApplicationResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.ardl)
+func (page *ApplicationResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ardl)
 	if err != nil {
 		return err
 	}
 	page.ardl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ApplicationResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -922,8 +961,8 @@ type BasicAutoScalingMetric interface {
 	AsAutoScalingMetric() (*AutoScalingMetric, bool)
 }
 
-// AutoScalingMetric describes the metric that is used for triggering auto scaling operation. Derived classes will
-// describe resources or metrics.
+// AutoScalingMetric describes the metric that is used for triggering auto scaling operation. Derived classes
+// will describe resources or metrics.
 type AutoScalingMetric struct {
 	// Kind - Possible values include: 'KindAutoScalingMetric', 'KindResource'
 	Kind KindBasicAutoScalingMetric `json:"kind,omitempty"`
@@ -1763,27 +1802,44 @@ type GatewayResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// GatewayResourceDescriptionListIterator provides access to a complete listing of GatewayResourceDescription
-// values.
+// GatewayResourceDescriptionListIterator provides access to a complete listing of
+// GatewayResourceDescription values.
 type GatewayResourceDescriptionListIterator struct {
 	i    int
 	page GatewayResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *GatewayResourceDescriptionListIterator) Next() error {
+func (iter *GatewayResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GatewayResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1812,11 +1868,11 @@ func (grdl GatewayResourceDescriptionList) IsEmpty() bool {
 
 // gatewayResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (grdl GatewayResourceDescriptionList) gatewayResourceDescriptionListPreparer() (*http.Request, error) {
+func (grdl GatewayResourceDescriptionList) gatewayResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if grdl.NextLink == nil || len(to.String(grdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(grdl.NextLink)))
@@ -1824,19 +1880,36 @@ func (grdl GatewayResourceDescriptionList) gatewayResourceDescriptionListPrepare
 
 // GatewayResourceDescriptionListPage contains a page of GatewayResourceDescription values.
 type GatewayResourceDescriptionListPage struct {
-	fn   func(GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)
+	fn   func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)
 	grdl GatewayResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *GatewayResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.grdl)
+func (page *GatewayResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.grdl)
 	if err != nil {
 		return err
 	}
 	page.grdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GatewayResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1945,10 +2018,10 @@ type ImageRegistryCredential struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// InlinedValueSecretResourceProperties describes the properties of a secret resource whose value is provided
-// explicitly as plaintext. The secret resource may have multiple values, each being uniquely versioned. The secret
-// value of each version is stored encrypted, and delivered as plaintext into the context of applications
-// referencing it.
+// InlinedValueSecretResourceProperties describes the properties of a secret resource whose value is
+// provided explicitly as plaintext. The secret resource may have multiple values, each being uniquely
+// versioned. The secret value of each version is stored encrypted, and delivered as plaintext into the
+// context of applications referencing it.
 type InlinedValueSecretResourceProperties struct {
 	// Description - User readable description of the secret.
 	Description *string `json:"description,omitempty"`
@@ -2014,8 +2087,8 @@ func (ivsrp InlinedValueSecretResourceProperties) AsBasicSecretResourcePropertie
 	return &ivsrp, true
 }
 
-// LocalNetworkResourceProperties information about a Service Fabric container network local to a single Service
-// Fabric cluster.
+// LocalNetworkResourceProperties information about a Service Fabric container network local to a single
+// Service Fabric cluster.
 type LocalNetworkResourceProperties struct {
 	// NetworkAddressPrefix - Address space for the local container network.
 	NetworkAddressPrefix *string `json:"networkAddressPrefix,omitempty"`
@@ -2081,9 +2154,9 @@ func (lnrp LocalNetworkResourceProperties) AsBasicNetworkResourcePropertiesBase(
 	return &lnrp, true
 }
 
-// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
-// everything other than required location and tags. This proxy resource is explicitly created or updated by
-// including it in the parent resource.
+// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will
+// have everything other than required location and tags. This proxy resource is explicitly created or
+// updated by including it in the parent resource.
 type ManagedProxyResource struct {
 	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -2217,27 +2290,44 @@ type NetworkResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// NetworkResourceDescriptionListIterator provides access to a complete listing of NetworkResourceDescription
-// values.
+// NetworkResourceDescriptionListIterator provides access to a complete listing of
+// NetworkResourceDescription values.
 type NetworkResourceDescriptionListIterator struct {
 	i    int
 	page NetworkResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *NetworkResourceDescriptionListIterator) Next() error {
+func (iter *NetworkResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *NetworkResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2266,11 +2356,11 @@ func (nrdl NetworkResourceDescriptionList) IsEmpty() bool {
 
 // networkResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (nrdl NetworkResourceDescriptionList) networkResourceDescriptionListPreparer() (*http.Request, error) {
+func (nrdl NetworkResourceDescriptionList) networkResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if nrdl.NextLink == nil || len(to.String(nrdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(nrdl.NextLink)))
@@ -2278,19 +2368,36 @@ func (nrdl NetworkResourceDescriptionList) networkResourceDescriptionListPrepare
 
 // NetworkResourceDescriptionListPage contains a page of NetworkResourceDescription values.
 type NetworkResourceDescriptionListPage struct {
-	fn   func(NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)
+	fn   func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)
 	nrdl NetworkResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *NetworkResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.nrdl)
+func (page *NetworkResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.nrdl)
 	if err != nil {
 		return err
 	}
 	page.nrdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *NetworkResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2525,20 +2632,37 @@ type OperationListResultIterator struct {
 	page OperationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2567,11 +2691,11 @@ func (olr OperationListResult) IsEmpty() bool {
 
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -2579,19 +2703,36 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 
 // OperationListResultPage contains a page of OperationResult values.
 type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2630,8 +2771,8 @@ type ProvisionedResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have everything
-// other than required location and tags.
+// ProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
+// everything other than required location and tags.
 type ProxyResource struct {
 	// ID - Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -2659,8 +2800,8 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ResourceLimits this type describes the resource limits for a given container. It describes the most amount of
-// resources a container is allowed to use before being restarted.
+// ResourceLimits this type describes the resource limits for a given container. It describes the most
+// amount of resources a container is allowed to use before being restarted.
 type ResourceLimits struct {
 	// MemoryInGB - The memory limit in GB.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -2668,9 +2809,10 @@ type ResourceLimits struct {
 	CPU *float64 `json:"cpu,omitempty"`
 }
 
-// ResourceRequests this type describes the requested resources for a given container. It describes the least
-// amount of resources required for the container. A container can consume more than requested resources up to the
-// specified limits before being restarted. Currently, the requested resources are treated as limits.
+// ResourceRequests this type describes the requested resources for a given container. It describes the
+// least amount of resources required for the container. A container can consume more than requested
+// resources up to the specified limits before being restarted. Currently, the requested resources are
+// treated as limits.
 type ResourceRequests struct {
 	// MemoryInGB - The memory request in GB for this container.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -2802,26 +2944,44 @@ type SecretResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SecretResourceDescriptionListIterator provides access to a complete listing of SecretResourceDescription values.
+// SecretResourceDescriptionListIterator provides access to a complete listing of SecretResourceDescription
+// values.
 type SecretResourceDescriptionListIterator struct {
 	i    int
 	page SecretResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *SecretResourceDescriptionListIterator) Next() error {
+func (iter *SecretResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SecretResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2850,11 +3010,11 @@ func (srdl SecretResourceDescriptionList) IsEmpty() bool {
 
 // secretResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (srdl SecretResourceDescriptionList) secretResourceDescriptionListPreparer() (*http.Request, error) {
+func (srdl SecretResourceDescriptionList) secretResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if srdl.NextLink == nil || len(to.String(srdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(srdl.NextLink)))
@@ -2862,19 +3022,36 @@ func (srdl SecretResourceDescriptionList) secretResourceDescriptionListPreparer(
 
 // SecretResourceDescriptionListPage contains a page of SecretResourceDescription values.
 type SecretResourceDescriptionListPage struct {
-	fn   func(SecretResourceDescriptionList) (SecretResourceDescriptionList, error)
+	fn   func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)
 	srdl SecretResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *SecretResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.srdl)
+func (page *SecretResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.srdl)
 	if err != nil {
 		return err
 	}
 	page.srdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SecretResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3112,8 +3289,8 @@ type SecretValueProperties struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SecretValueResourceDescription this type describes a value of a secret resource. The name of this resource is
-// the version identifier corresponding to this secret value.
+// SecretValueResourceDescription this type describes a value of a secret resource. The name of this
+// resource is the version identifier corresponding to this secret value.
 type SecretValueResourceDescription struct {
 	autorest.Response `json:"-"`
 	// SecretValueResourceProperties - This type describes properties of a secret value resource.
@@ -3223,8 +3400,8 @@ func (svrd *SecretValueResourceDescription) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SecretValueResourceDescriptionList a pageable list of values of a secret resource. The information does not
-// include only the name of the value and not the actual unecrypted value.
+// SecretValueResourceDescriptionList a pageable list of values of a secret resource. The information does
+// not include only the name of the value and not the actual unecrypted value.
 type SecretValueResourceDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - One page of the list.
@@ -3240,20 +3417,37 @@ type SecretValueResourceDescriptionListIterator struct {
 	page SecretValueResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *SecretValueResourceDescriptionListIterator) Next() error {
+func (iter *SecretValueResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SecretValueResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3282,11 +3476,11 @@ func (svrdl SecretValueResourceDescriptionList) IsEmpty() bool {
 
 // secretValueResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (svrdl SecretValueResourceDescriptionList) secretValueResourceDescriptionListPreparer() (*http.Request, error) {
+func (svrdl SecretValueResourceDescriptionList) secretValueResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if svrdl.NextLink == nil || len(to.String(svrdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(svrdl.NextLink)))
@@ -3294,19 +3488,36 @@ func (svrdl SecretValueResourceDescriptionList) secretValueResourceDescriptionLi
 
 // SecretValueResourceDescriptionListPage contains a page of SecretValueResourceDescription values.
 type SecretValueResourceDescriptionListPage struct {
-	fn    func(SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)
+	fn    func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)
 	svrdl SecretValueResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *SecretValueResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.svrdl)
+func (page *SecretValueResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SecretValueResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.svrdl)
 	if err != nil {
 		return err
 	}
 	page.svrdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SecretValueResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3377,26 +3588,44 @@ type ServiceReplicaDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ServiceReplicaDescriptionListIterator provides access to a complete listing of ServiceReplicaDescription values.
+// ServiceReplicaDescriptionListIterator provides access to a complete listing of ServiceReplicaDescription
+// values.
 type ServiceReplicaDescriptionListIterator struct {
 	i    int
 	page ServiceReplicaDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ServiceReplicaDescriptionListIterator) Next() error {
+func (iter *ServiceReplicaDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceReplicaDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ServiceReplicaDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3425,11 +3654,11 @@ func (srdl ServiceReplicaDescriptionList) IsEmpty() bool {
 
 // serviceReplicaDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (srdl ServiceReplicaDescriptionList) serviceReplicaDescriptionListPreparer() (*http.Request, error) {
+func (srdl ServiceReplicaDescriptionList) serviceReplicaDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if srdl.NextLink == nil || len(to.String(srdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(srdl.NextLink)))
@@ -3437,19 +3666,36 @@ func (srdl ServiceReplicaDescriptionList) serviceReplicaDescriptionListPreparer(
 
 // ServiceReplicaDescriptionListPage contains a page of ServiceReplicaDescription values.
 type ServiceReplicaDescriptionListPage struct {
-	fn   func(ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)
+	fn   func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)
 	srdl ServiceReplicaDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ServiceReplicaDescriptionListPage) Next() error {
-	next, err := page.fn(page.srdl)
+func (page *ServiceReplicaDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceReplicaDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.srdl)
 	if err != nil {
 		return err
 	}
 	page.srdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ServiceReplicaDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3573,27 +3819,44 @@ type ServiceResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ServiceResourceDescriptionListIterator provides access to a complete listing of ServiceResourceDescription
-// values.
+// ServiceResourceDescriptionListIterator provides access to a complete listing of
+// ServiceResourceDescription values.
 type ServiceResourceDescriptionListIterator struct {
 	i    int
 	page ServiceResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ServiceResourceDescriptionListIterator) Next() error {
+func (iter *ServiceResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ServiceResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3622,11 +3885,11 @@ func (srdl ServiceResourceDescriptionList) IsEmpty() bool {
 
 // serviceResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (srdl ServiceResourceDescriptionList) serviceResourceDescriptionListPreparer() (*http.Request, error) {
+func (srdl ServiceResourceDescriptionList) serviceResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if srdl.NextLink == nil || len(to.String(srdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(srdl.NextLink)))
@@ -3634,19 +3897,36 @@ func (srdl ServiceResourceDescriptionList) serviceResourceDescriptionListPrepare
 
 // ServiceResourceDescriptionListPage contains a page of ServiceResourceDescription values.
 type ServiceResourceDescriptionListPage struct {
-	fn   func(ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)
+	fn   func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)
 	srdl ServiceResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ServiceResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.srdl)
+func (page *ServiceResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.srdl)
 	if err != nil {
 		return err
 	}
 	page.srdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ServiceResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -3695,9 +3975,9 @@ type ServiceResourceProperties struct {
 	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty"`
 }
 
-// Setting describes a setting for the container. The setting file path can be fetched from environment variable
-// "Fabric_SettingPath". The path for Windows container is "C:\\secrets". The path for Linux container is
-// "/var/secrets".
+// Setting describes a setting for the container. The setting file path can be fetched from environment
+// variable "Fabric_SettingPath". The path for Windows container is "C:\\secrets". The path for Linux
+// container is "/var/secrets".
 type Setting struct {
 	// Name - The name of the setting.
 	Name *string `json:"name,omitempty"`
@@ -3903,26 +4183,44 @@ type VolumeResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// VolumeResourceDescriptionListIterator provides access to a complete listing of VolumeResourceDescription values.
+// VolumeResourceDescriptionListIterator provides access to a complete listing of VolumeResourceDescription
+// values.
 type VolumeResourceDescriptionListIterator struct {
 	i    int
 	page VolumeResourceDescriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *VolumeResourceDescriptionListIterator) Next() error {
+func (iter *VolumeResourceDescriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VolumeResourceDescriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *VolumeResourceDescriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -3951,11 +4249,11 @@ func (vrdl VolumeResourceDescriptionList) IsEmpty() bool {
 
 // volumeResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (vrdl VolumeResourceDescriptionList) volumeResourceDescriptionListPreparer() (*http.Request, error) {
+func (vrdl VolumeResourceDescriptionList) volumeResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if vrdl.NextLink == nil || len(to.String(vrdl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(vrdl.NextLink)))
@@ -3963,19 +4261,36 @@ func (vrdl VolumeResourceDescriptionList) volumeResourceDescriptionListPreparer(
 
 // VolumeResourceDescriptionListPage contains a page of VolumeResourceDescription values.
 type VolumeResourceDescriptionListPage struct {
-	fn   func(VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)
+	fn   func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)
 	vrdl VolumeResourceDescriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *VolumeResourceDescriptionListPage) Next() error {
-	next, err := page.fn(page.vrdl)
+func (page *VolumeResourceDescriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VolumeResourceDescriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.vrdl)
 	if err != nil {
 		return err
 	}
 	page.vrdl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *VolumeResourceDescriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

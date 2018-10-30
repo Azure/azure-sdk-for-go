@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 // artifactName - name of the artifact.
 // artifact - blueprint artifact to save.
 func (client ArtifactsClient) CreateOrUpdate(ctx context.Context, managementGroupName string, blueprintName string, artifactName string, artifact BasicArtifact) (result ArtifactModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, managementGroupName, blueprintName, artifactName, artifact)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -116,6 +127,16 @@ func (client ArtifactsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // blueprintName - name of the blueprint.
 // artifactName - name of the artifact.
 func (client ArtifactsClient) Delete(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, managementGroupName, blueprintName, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "Delete", nil, "Failure preparing request")
@@ -184,6 +205,16 @@ func (client ArtifactsClient) DeleteResponder(resp *http.Response) (result Artif
 // blueprintName - name of the blueprint.
 // artifactName - name of the artifact.
 func (client ArtifactsClient) Get(ctx context.Context, managementGroupName string, blueprintName string, artifactName string) (result ArtifactModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "Get", nil, "Failure preparing request")
@@ -251,6 +282,16 @@ func (client ArtifactsClient) GetResponder(resp *http.Response) (result Artifact
 // managementGroupName - managementGroup where blueprint stores.
 // blueprintName - name of the blueprint.
 func (client ArtifactsClient) List(ctx context.Context, managementGroupName string, blueprintName string) (result ArtifactListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.List")
+		defer func() {
+			sc := -1
+			if result.al.Response.Response != nil {
+				sc = result.al.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, managementGroupName, blueprintName)
 	if err != nil {
@@ -314,8 +355,8 @@ func (client ArtifactsClient) ListResponder(resp *http.Response) (result Artifac
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ArtifactsClient) listNextResults(lastResults ArtifactList) (result ArtifactList, err error) {
-	req, err := lastResults.artifactListPreparer()
+func (client ArtifactsClient) listNextResults(ctx context.Context, lastResults ArtifactList) (result ArtifactList, err error) {
+	req, err := lastResults.artifactListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "blueprint.ArtifactsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -336,6 +377,16 @@ func (client ArtifactsClient) listNextResults(lastResults ArtifactList) (result 
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ArtifactsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string) (result ArtifactListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ArtifactsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, managementGroupName, blueprintName)
 	return
 }

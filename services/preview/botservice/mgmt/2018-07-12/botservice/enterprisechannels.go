@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID strin
 // Parameters:
 // parameters - the parameters to provide for the Enterprise Channel check name availability request.
 func (client EnterpriseChannelsClient) CheckNameAvailability(ctx context.Context, parameters EnterpriseChannelCheckNameAvailabilityRequest) (result EnterpriseChannelCheckNameAvailabilityResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckNameAvailabilityPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -108,6 +119,16 @@ func (client EnterpriseChannelsClient) CheckNameAvailabilityResponder(resp *http
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide for the new Enterprise Channel.
 func (client EnterpriseChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannelsCreateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -170,10 +191,6 @@ func (client EnterpriseChannelsClient) CreateSender(req *http.Request) (future E
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -196,6 +213,16 @@ func (client EnterpriseChannelsClient) CreateResponder(resp *http.Response) (res
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client EnterpriseChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result EnterpriseChannelsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -253,10 +280,6 @@ func (client EnterpriseChannelsClient) DeleteSender(req *http.Request) (future E
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -278,6 +301,16 @@ func (client EnterpriseChannelsClient) DeleteResponder(resp *http.Response) (res
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client EnterpriseChannelsClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result EnterpriseChannel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -356,6 +389,16 @@ func (client EnterpriseChannelsClient) GetResponder(resp *http.Response) (result
 // Parameters:
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 func (client EnterpriseChannelsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result EnterpriseChannelResponseListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.ecrl.Response.Response != nil {
+				sc = result.ecrl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -427,8 +470,8 @@ func (client EnterpriseChannelsClient) ListByResourceGroupResponder(resp *http.R
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client EnterpriseChannelsClient) listByResourceGroupNextResults(lastResults EnterpriseChannelResponseList) (result EnterpriseChannelResponseList, err error) {
-	req, err := lastResults.enterpriseChannelResponseListPreparer()
+func (client EnterpriseChannelsClient) listByResourceGroupNextResults(ctx context.Context, lastResults EnterpriseChannelResponseList) (result EnterpriseChannelResponseList, err error) {
+	req, err := lastResults.enterpriseChannelResponseListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -449,6 +492,16 @@ func (client EnterpriseChannelsClient) listByResourceGroupNextResults(lastResult
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client EnterpriseChannelsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result EnterpriseChannelResponseListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -459,6 +512,16 @@ func (client EnterpriseChannelsClient) ListByResourceGroupComplete(ctx context.C
 // resourceName - the name of the Bot resource.
 // parameters - the parameters to provide to update the Enterprise Channel.
 func (client EnterpriseChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters EnterpriseChannel) (result EnterpriseChannelsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterpriseChannelsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -515,10 +578,6 @@ func (client EnterpriseChannelsClient) UpdateSender(req *http.Request) (future E
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
 	if err != nil {
 		return
 	}

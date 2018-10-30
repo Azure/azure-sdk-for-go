@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewWatcherClientWithBaseURI(baseURI string, subscriptionID string, countTyp
 // watcherName - the watcher name.
 // parameters - the create or update parameters for watcher.
 func (client WatcherClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters Watcher) (result Watcher, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -126,6 +137,16 @@ func (client WatcherClient) CreateOrUpdateResponder(resp *http.Response) (result
 // automationAccountName - the name of the automation account.
 // watcherName - the watcher name.
 func (client WatcherClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -202,6 +223,16 @@ func (client WatcherClient) DeleteResponder(resp *http.Response) (result autores
 // automationAccountName - the name of the automation account.
 // watcherName - the watcher name.
 func (client WatcherClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result Watcher, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -279,6 +310,16 @@ func (client WatcherClient) GetResponder(resp *http.Response) (result Watcher, e
 // automationAccountName - the name of the automation account.
 // filter - the filter to apply on the operation.
 func (client WatcherClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result WatcherListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.wlr.Response.Response != nil {
+				sc = result.wlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -354,8 +395,8 @@ func (client WatcherClient) ListByAutomationAccountResponder(resp *http.Response
 }
 
 // listByAutomationAccountNextResults retrieves the next set of results, if any.
-func (client WatcherClient) listByAutomationAccountNextResults(lastResults WatcherListResult) (result WatcherListResult, err error) {
-	req, err := lastResults.watcherListResultPreparer()
+func (client WatcherClient) listByAutomationAccountNextResults(ctx context.Context, lastResults WatcherListResult) (result WatcherListResult, err error) {
+	req, err := lastResults.watcherListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "automation.WatcherClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
@@ -376,6 +417,16 @@ func (client WatcherClient) listByAutomationAccountNextResults(lastResults Watch
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
 func (client WatcherClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result WatcherListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, filter)
 	return
 }
@@ -386,6 +437,16 @@ func (client WatcherClient) ListByAutomationAccountComplete(ctx context.Context,
 // automationAccountName - the name of the automation account.
 // watcherName - the watcher name.
 func (client WatcherClient) Start(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.Start")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -462,6 +523,16 @@ func (client WatcherClient) StartResponder(resp *http.Response) (result autorest
 // automationAccountName - the name of the automation account.
 // watcherName - the watcher name.
 func (client WatcherClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.Stop")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -539,6 +610,16 @@ func (client WatcherClient) StopResponder(resp *http.Response) (result autorest.
 // watcherName - the watcher name.
 // parameters - the update parameters for watcher.
 func (client WatcherClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters WatcherUpdateParameters) (result Watcher, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

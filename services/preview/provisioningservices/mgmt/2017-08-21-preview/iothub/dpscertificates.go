@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewDpsCertificatesClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName - name of resource group.
 // provisioningServiceName - name of provisioning service to retrieve certificates for.
 func (client DpsCertificatesClient) List(ctx context.Context, resourceGroupName string, provisioningServiceName string) (result CertificateListDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DpsCertificatesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPreparer(ctx, resourceGroupName, provisioningServiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.DpsCertificatesClient", "List", nil, "Failure preparing request")

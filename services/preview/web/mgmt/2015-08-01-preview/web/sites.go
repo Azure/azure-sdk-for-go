@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -41,6 +42,16 @@ func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClien
 
 // AddSitePremierAddOn sends the add site premier add on request.
 func (client SitesClient) AddSitePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.AddSitePremierAddOn")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AddSitePremierAddOnPreparer(ctx, resourceGroupName, name, premierAddOnName, premierAddOn)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "AddSitePremierAddOn", nil, "Failure preparing request")
@@ -108,6 +119,16 @@ func (client SitesClient) AddSitePremierAddOnResponder(resp *http.Response) (res
 
 // AddSitePremierAddOnSlot sends the add site premier add on slot request.
 func (client SitesClient) AddSitePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnRequest, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.AddSitePremierAddOnSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AddSitePremierAddOnSlotPreparer(ctx, resourceGroupName, name, premierAddOnName, premierAddOn, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "AddSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -182,6 +203,16 @@ func (client SitesClient) AddSitePremierAddOnSlotResponder(resp *http.Response) 
 // the source slot
 // slot - name of the source slot. Settings from the target slot will be applied onto this slot
 func (client SitesClient) ApplySlotConfigSlot(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ApplySlotConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ApplySlotConfigSlotPreparer(ctx, resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ApplySlotConfigSlot", nil, "Failure preparing request")
@@ -254,6 +285,16 @@ func (client SitesClient) ApplySlotConfigSlotResponder(resp *http.Response) (res
 // slotSwapEntity - request body that contains the target slot name. Settings from that slot will be applied on
 // the source slot
 func (client SitesClient) ApplySlotConfigToProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ApplySlotConfigToProduction")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ApplySlotConfigToProductionPreparer(ctx, resourceGroupName, name, slotSwapEntity)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ApplySlotConfigToProduction", nil, "Failure preparing request")
@@ -324,6 +365,16 @@ func (client SitesClient) ApplySlotConfigToProductionResponder(resp *http.Respon
 // name - name of web app
 // request - information on backup request
 func (client SitesClient) BackupSite(ctx context.Context, resourceGroupName string, name string, request BackupRequest) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.BackupSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.BackupSitePreparer(ctx, resourceGroupName, name, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "BackupSite", nil, "Failure preparing request")
@@ -395,6 +446,16 @@ func (client SitesClient) BackupSiteResponder(resp *http.Response) (result Backu
 // request - information on backup request
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) BackupSiteSlot(ctx context.Context, resourceGroupName string, name string, request BackupRequest, slot string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.BackupSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.BackupSiteSlotPreparer(ctx, resourceGroupName, name, request, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "BackupSiteSlot", nil, "Failure preparing request")
@@ -467,6 +528,16 @@ func (client SitesClient) BackupSiteSlotResponder(resp *http.Response) (result B
 // ID - id of the deployment
 // deployment - details of deployment
 func (client SitesClient) CreateDeployment(ctx context.Context, resourceGroupName string, name string, ID string, deployment Deployment) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateDeploymentPreparer(ctx, resourceGroupName, name, ID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateDeployment", nil, "Failure preparing request")
@@ -540,6 +611,16 @@ func (client SitesClient) CreateDeploymentResponder(resp *http.Response) (result
 // slot - name of web app slot. If not specified then will default to production slot.
 // deployment - details of deployment
 func (client SitesClient) CreateDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string, deployment Deployment) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateDeploymentSlot", nil, "Failure preparing request")
@@ -614,6 +695,16 @@ func (client SitesClient) CreateDeploymentSlotResponder(resp *http.Response) (re
 // instanceID - id of web app instance
 // deployment - details of deployment
 func (client SitesClient) CreateInstanceDeployment(ctx context.Context, resourceGroupName string, name string, ID string, instanceID string, deployment Deployment) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateInstanceDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateInstanceDeploymentPreparer(ctx, resourceGroupName, name, ID, instanceID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateInstanceDeployment", nil, "Failure preparing request")
@@ -689,6 +780,16 @@ func (client SitesClient) CreateInstanceDeploymentResponder(resp *http.Response)
 // instanceID - id of web app instance
 // deployment - details of deployment
 func (client SitesClient) CreateInstanceDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string, instanceID string, deployment Deployment) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateInstanceDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateInstanceDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot, instanceID, deployment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateInstanceDeploymentSlot", nil, "Failure preparing request")
@@ -768,6 +869,16 @@ func (client SitesClient) CreateInstanceDeploymentSlotResponder(resp *http.Respo
 // forceDNSRegistration - if true, web app hostname is force registered with DNS
 // TTLInSeconds - time to live in seconds for web app's default domain name
 func (client SitesClient) CreateOrUpdateSite(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, TTLInSeconds string) (result SitesCreateOrUpdateSiteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSite")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSitePreparer(ctx, resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", nil, "Failure preparing request")
@@ -827,10 +938,6 @@ func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future Si
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -854,6 +961,16 @@ func (client SitesClient) CreateOrUpdateSiteResponder(resp *http.Response) (resu
 // name - name of web app
 // siteConfig - request body that contains the configuraiton setting for the web app
 func (client SitesClient) CreateOrUpdateSiteConfig(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteConfigPreparer(ctx, resourceGroupName, name, siteConfig)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteConfig", nil, "Failure preparing request")
@@ -925,6 +1042,16 @@ func (client SitesClient) CreateOrUpdateSiteConfigResponder(resp *http.Response)
 // siteConfig - request body that contains the configuraiton setting for the web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) CreateOrUpdateSiteConfigSlot(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteConfigSlotPreparer(ctx, resourceGroupName, name, siteConfig, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteConfigSlot", nil, "Failure preparing request")
@@ -997,6 +1124,16 @@ func (client SitesClient) CreateOrUpdateSiteConfigSlotResponder(resp *http.Respo
 // hostName - name of host
 // hostNameBinding - host name binding information
 func (client SitesClient) CreateOrUpdateSiteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding) (result HostNameBinding, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteHostNameBinding")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteHostNameBindingPreparer(ctx, resourceGroupName, name, hostName, hostNameBinding)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteHostNameBinding", nil, "Failure preparing request")
@@ -1070,6 +1207,16 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingResponder(resp *http.
 // hostNameBinding - host name binding information
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding, slot string) (result HostNameBinding, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteHostNameBindingSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteHostNameBindingSlotPreparer(ctx, resourceGroupName, name, hostName, hostNameBinding, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteHostNameBindingSlot", nil, "Failure preparing request")
@@ -1143,6 +1290,16 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotResponder(resp *h
 // entityName - the name by which the Hybrid Connection is identified
 // connectionEnvelope - the details of the Hybrid Connection
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteRelayServiceConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteRelayServiceConnectionPreparer(ctx, resourceGroupName, name, entityName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteRelayServiceConnection", nil, "Failure preparing request")
@@ -1216,6 +1373,16 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionResponder(resp
 // connectionEnvelope - the details of the Hybrid Connection
 // slot - the name of the slot for the web app.
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, slot string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteRelayServiceConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteRelayServiceConnectionSlotPreparer(ctx, resourceGroupName, name, entityName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteRelayServiceConnectionSlot", nil, "Failure preparing request")
@@ -1295,6 +1462,16 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotResponder(
 // forceDNSRegistration - if true, web app hostname is force registered with DNS
 // TTLInSeconds - time to live in seconds for web app's default domain name
 func (client SitesClient) CreateOrUpdateSiteSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, slot string, skipDNSRegistration string, skipCustomDomainVerification string, forceDNSRegistration string, TTLInSeconds string) (result SitesCreateOrUpdateSiteSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteSlotPreparer(ctx, resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure preparing request")
@@ -1355,10 +1532,6 @@ func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -1382,6 +1555,16 @@ func (client SitesClient) CreateOrUpdateSiteSlotResponder(resp *http.Response) (
 // name - name of web app
 // siteSourceControl - request body that contains the source control parameters
 func (client SitesClient) CreateOrUpdateSiteSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteSourceControlPreparer(ctx, resourceGroupName, name, siteSourceControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSourceControl", nil, "Failure preparing request")
@@ -1453,6 +1636,16 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlResponder(resp *http.Re
 // siteSourceControl - request body that contains the source control parameters
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) CreateOrUpdateSiteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteSourceControlSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteSourceControlSlotPreparer(ctx, resourceGroupName, name, siteSourceControl, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSourceControlSlot", nil, "Failure preparing request")
@@ -1525,6 +1718,16 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotResponder(resp *htt
 // vnetName - the name of the Virtual Network
 // connectionEnvelope - the properties of this Virtual Network Connection
 func (client SitesClient) CreateOrUpdateSiteVNETConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteVNETConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteVNETConnectionPreparer(ctx, resourceGroupName, name, vnetName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnection", nil, "Failure preparing request")
@@ -1598,6 +1801,16 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionResponder(resp *http.R
 // gatewayName - the name of the gateway. The only gateway that exists presently is "primary"
 // connectionEnvelope - the properties to update this gateway with.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteVNETConnectionGateway")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteVNETConnectionGatewayPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionGateway", nil, "Failure preparing request")
@@ -1673,6 +1886,16 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewayResponder(resp 
 // connectionEnvelope - the properties to update this gateway with.
 // slot - the name of the slot for this web app.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, slot string) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteVNETConnectionGatewaySlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteVNETConnectionGatewaySlotPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionGatewaySlot", nil, "Failure preparing request")
@@ -1748,6 +1971,16 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotResponder(r
 // connectionEnvelope - the properties of this Virtual Network Connection
 // slot - the name of the slot for this web app.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, slot string) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteVNETConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateSiteVNETConnectionSlotPreparer(ctx, resourceGroupName, name, vnetName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteVNETConnectionSlot", nil, "Failure preparing request")
@@ -1820,6 +2053,16 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotResponder(resp *ht
 // name - name of web app
 // backupID - id of backup
 func (client SitesClient) DeleteBackup(ctx context.Context, resourceGroupName string, name string, backupID string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteBackup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteBackupPreparer(ctx, resourceGroupName, name, backupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteBackup", nil, "Failure preparing request")
@@ -1890,6 +2133,16 @@ func (client SitesClient) DeleteBackupResponder(resp *http.Response) (result Bac
 // backupID - id of backup
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) DeleteBackupSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteBackupSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteBackupSlotPreparer(ctx, resourceGroupName, name, backupID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteBackupSlot", nil, "Failure preparing request")
@@ -1960,6 +2213,16 @@ func (client SitesClient) DeleteBackupSlotResponder(resp *http.Response) (result
 // name - name of web app
 // ID - id of the deployment
 func (client SitesClient) DeleteDeployment(ctx context.Context, resourceGroupName string, name string, ID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteDeploymentPreparer(ctx, resourceGroupName, name, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteDeployment", nil, "Failure preparing request")
@@ -2030,6 +2293,16 @@ func (client SitesClient) DeleteDeploymentResponder(resp *http.Response) (result
 // ID - id of the deployment
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) DeleteDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteDeploymentSlot", nil, "Failure preparing request")
@@ -2101,6 +2374,16 @@ func (client SitesClient) DeleteDeploymentSlotResponder(resp *http.Response) (re
 // ID - id of the deployment
 // instanceID - id of web app instance
 func (client SitesClient) DeleteInstanceDeployment(ctx context.Context, resourceGroupName string, name string, ID string, instanceID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteInstanceDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteInstanceDeploymentPreparer(ctx, resourceGroupName, name, ID, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteInstanceDeployment", nil, "Failure preparing request")
@@ -2173,6 +2456,16 @@ func (client SitesClient) DeleteInstanceDeploymentResponder(resp *http.Response)
 // slot - name of web app slot. If not specified then will default to production slot.
 // instanceID - id of web app instance
 func (client SitesClient) DeleteInstanceDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string, instanceID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteInstanceDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteInstanceDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteInstanceDeploymentSlot", nil, "Failure preparing request")
@@ -2248,6 +2541,16 @@ func (client SitesClient) DeleteInstanceDeploymentSlotResponder(resp *http.Respo
 // skipDNSRegistration - if true, DNS registration is skipped
 // deleteAllSlots - if true, all slots associated with web app are also deleted
 func (client SitesClient) DeleteSite(ctx context.Context, resourceGroupName string, name string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSitePreparer(ctx, resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration, deleteAllSlots)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSite", nil, "Failure preparing request")
@@ -2328,6 +2631,16 @@ func (client SitesClient) DeleteSiteResponder(resp *http.Response) (result SetOb
 // name - name of web app
 // hostName - name of host
 func (client SitesClient) DeleteSiteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteHostNameBinding")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteHostNameBindingPreparer(ctx, resourceGroupName, name, hostName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteHostNameBinding", nil, "Failure preparing request")
@@ -2398,6 +2711,16 @@ func (client SitesClient) DeleteSiteHostNameBindingResponder(resp *http.Response
 // slot - name of web app slot. If not specified then will default to production slot.
 // hostName - name of host
 func (client SitesClient) DeleteSiteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteHostNameBindingSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteHostNameBindingSlotPreparer(ctx, resourceGroupName, name, slot, hostName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteHostNameBindingSlot", nil, "Failure preparing request")
@@ -2464,6 +2787,16 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotResponder(resp *http.Resp
 
 // DeleteSitePremierAddOn sends the delete site premier add on request.
 func (client SitesClient) DeleteSitePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSitePremierAddOn")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSitePremierAddOnPreparer(ctx, resourceGroupName, name, premierAddOnName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSitePremierAddOn", nil, "Failure preparing request")
@@ -2529,6 +2862,16 @@ func (client SitesClient) DeleteSitePremierAddOnResponder(resp *http.Response) (
 
 // DeleteSitePremierAddOnSlot sends the delete site premier add on slot request.
 func (client SitesClient) DeleteSitePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSitePremierAddOnSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSitePremierAddOnSlotPreparer(ctx, resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -2599,6 +2942,16 @@ func (client SitesClient) DeleteSitePremierAddOnSlotResponder(resp *http.Respons
 // name - the name of the web app
 // entityName - the name by which the Hybrid Connection is identified
 func (client SitesClient) DeleteSiteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteRelayServiceConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteRelayServiceConnectionPreparer(ctx, resourceGroupName, name, entityName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteRelayServiceConnection", nil, "Failure preparing request")
@@ -2669,6 +3022,16 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionResponder(resp *http.R
 // entityName - the name by which the Hybrid Connection is identified
 // slot - the name of the slot for the web app.
 func (client SitesClient) DeleteSiteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteRelayServiceConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteRelayServiceConnectionSlotPreparer(ctx, resourceGroupName, name, entityName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteRelayServiceConnectionSlot", nil, "Failure preparing request")
@@ -2744,6 +3107,16 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotResponder(resp *ht
 // skipDNSRegistration - if true, DNS registration is skipped
 // deleteAllSlots - if true, all slots associated with web app are also deleted
 func (client SitesClient) DeleteSiteSlot(ctx context.Context, resourceGroupName string, name string, slot string, deleteMetrics string, deleteEmptyServerFarm string, skipDNSRegistration string, deleteAllSlots string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteSlotPreparer(ctx, resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration, deleteAllSlots)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSlot", nil, "Failure preparing request")
@@ -2824,6 +3197,16 @@ func (client SitesClient) DeleteSiteSlotResponder(resp *http.Response) (result S
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) DeleteSiteSourceControl(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteSourceControlPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSourceControl", nil, "Failure preparing request")
@@ -2892,6 +3275,16 @@ func (client SitesClient) DeleteSiteSourceControlResponder(resp *http.Response) 
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) DeleteSiteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteSourceControlSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteSourceControlSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteSourceControlSlot", nil, "Failure preparing request")
@@ -2961,6 +3354,16 @@ func (client SitesClient) DeleteSiteSourceControlSlotResponder(resp *http.Respon
 // name - the name of the web app
 // vnetName - the name of the Virtual Network
 func (client SitesClient) DeleteSiteVNETConnection(ctx context.Context, resourceGroupName string, name string, vnetName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteVNETConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteVNETConnectionPreparer(ctx, resourceGroupName, name, vnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteVNETConnection", nil, "Failure preparing request")
@@ -3031,6 +3434,16 @@ func (client SitesClient) DeleteSiteVNETConnectionResponder(resp *http.Response)
 // vnetName - the name of the Virtual Network
 // slot - the name of the slot for this web app.
 func (client SitesClient) DeleteSiteVNETConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DeleteSiteVNETConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteSiteVNETConnectionSlotPreparer(ctx, resourceGroupName, name, vnetName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DeleteSiteVNETConnectionSlot", nil, "Failure preparing request")
@@ -3101,6 +3514,16 @@ func (client SitesClient) DeleteSiteVNETConnectionSlotResponder(resp *http.Respo
 // name - name of web app
 // request - information on restore request
 func (client SitesClient) DiscoverSiteRestore(ctx context.Context, resourceGroupName string, name string, request RestoreRequest) (result RestoreRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DiscoverSiteRestore")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DiscoverSiteRestorePreparer(ctx, resourceGroupName, name, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DiscoverSiteRestore", nil, "Failure preparing request")
@@ -3172,6 +3595,16 @@ func (client SitesClient) DiscoverSiteRestoreResponder(resp *http.Response) (res
 // request - information on restore request
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) DiscoverSiteRestoreSlot(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, slot string) (result RestoreRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.DiscoverSiteRestoreSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DiscoverSiteRestoreSlotPreparer(ctx, resourceGroupName, name, request, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "DiscoverSiteRestoreSlot", nil, "Failure preparing request")
@@ -3242,6 +3675,16 @@ func (client SitesClient) DiscoverSiteRestoreSlotResponder(resp *http.Response) 
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GenerateNewSitePublishingPassword(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GenerateNewSitePublishingPassword")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GenerateNewSitePublishingPasswordPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GenerateNewSitePublishingPassword", nil, "Failure preparing request")
@@ -3310,6 +3753,16 @@ func (client SitesClient) GenerateNewSitePublishingPasswordResponder(resp *http.
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GenerateNewSitePublishingPasswordSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GenerateNewSitePublishingPasswordSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GenerateNewSitePublishingPasswordSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GenerateNewSitePublishingPasswordSlot", nil, "Failure preparing request")
@@ -3379,6 +3832,16 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlotResponder(resp *h
 // propertiesToInclude - additional web app properties included in the response
 // includeSiteTypes - types of apps included in the response
 func (client SitesClient) GetDeletedSites(ctx context.Context, resourceGroupName string, propertiesToInclude string, includeSiteTypes string) (result DeletedSiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeletedSites")
+		defer func() {
+			sc := -1
+			if result.dsc.Response.Response != nil {
+				sc = result.dsc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getDeletedSitesNextResults
 	req, err := client.GetDeletedSitesPreparer(ctx, resourceGroupName, propertiesToInclude, includeSiteTypes)
 	if err != nil {
@@ -3448,8 +3911,8 @@ func (client SitesClient) GetDeletedSitesResponder(resp *http.Response) (result 
 }
 
 // getDeletedSitesNextResults retrieves the next set of results, if any.
-func (client SitesClient) getDeletedSitesNextResults(lastResults DeletedSiteCollection) (result DeletedSiteCollection, err error) {
-	req, err := lastResults.deletedSiteCollectionPreparer()
+func (client SitesClient) getDeletedSitesNextResults(ctx context.Context, lastResults DeletedSiteCollection) (result DeletedSiteCollection, err error) {
+	req, err := lastResults.deletedSiteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getDeletedSitesNextResults", nil, "Failure preparing next results request")
 	}
@@ -3470,6 +3933,16 @@ func (client SitesClient) getDeletedSitesNextResults(lastResults DeletedSiteColl
 
 // GetDeletedSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetDeletedSitesComplete(ctx context.Context, resourceGroupName string, propertiesToInclude string, includeSiteTypes string) (result DeletedSiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeletedSites")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetDeletedSites(ctx, resourceGroupName, propertiesToInclude, includeSiteTypes)
 	return
 }
@@ -3480,6 +3953,16 @@ func (client SitesClient) GetDeletedSitesComplete(ctx context.Context, resourceG
 // name - name of web app
 // ID - id of the deployment
 func (client SitesClient) GetDeployment(ctx context.Context, resourceGroupName string, name string, ID string) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetDeploymentPreparer(ctx, resourceGroupName, name, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployment", nil, "Failure preparing request")
@@ -3548,6 +4031,16 @@ func (client SitesClient) GetDeploymentResponder(resp *http.Response) (result De
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetDeployments(ctx context.Context, resourceGroupName string, name string) (result DeploymentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeployments")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getDeploymentsNextResults
 	req, err := client.GetDeploymentsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -3612,8 +4105,8 @@ func (client SitesClient) GetDeploymentsResponder(resp *http.Response) (result D
 }
 
 // getDeploymentsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getDeploymentsNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
-	req, err := lastResults.deploymentCollectionPreparer()
+func (client SitesClient) getDeploymentsNextResults(ctx context.Context, lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.deploymentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsNextResults", nil, "Failure preparing next results request")
 	}
@@ -3634,6 +4127,16 @@ func (client SitesClient) getDeploymentsNextResults(lastResults DeploymentCollec
 
 // GetDeploymentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetDeploymentsComplete(ctx context.Context, resourceGroupName string, name string) (result DeploymentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeployments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetDeployments(ctx, resourceGroupName, name)
 	return
 }
@@ -3645,6 +4148,16 @@ func (client SitesClient) GetDeploymentsComplete(ctx context.Context, resourceGr
 // ID - id of the deployment
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentSlot", nil, "Failure preparing request")
@@ -3715,6 +4228,16 @@ func (client SitesClient) GetDeploymentSlotResponder(resp *http.Response) (resul
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetDeploymentsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result DeploymentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeploymentsSlot")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getDeploymentsSlotNextResults
 	req, err := client.GetDeploymentsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
@@ -3780,8 +4303,8 @@ func (client SitesClient) GetDeploymentsSlotResponder(resp *http.Response) (resu
 }
 
 // getDeploymentsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getDeploymentsSlotNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
-	req, err := lastResults.deploymentCollectionPreparer()
+func (client SitesClient) getDeploymentsSlotNextResults(ctx context.Context, lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.deploymentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getDeploymentsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -3802,6 +4325,16 @@ func (client SitesClient) getDeploymentsSlotNextResults(lastResults DeploymentCo
 
 // GetDeploymentsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetDeploymentsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result DeploymentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetDeploymentsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetDeploymentsSlot(ctx, resourceGroupName, name, slot)
 	return
 }
@@ -3813,6 +4346,16 @@ func (client SitesClient) GetDeploymentsSlotComplete(ctx context.Context, resour
 // ID - id of the deployment
 // instanceID - id of web app instance
 func (client SitesClient) GetInstanceDeployment(ctx context.Context, resourceGroupName string, name string, ID string, instanceID string) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeployment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetInstanceDeploymentPreparer(ctx, resourceGroupName, name, ID, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployment", nil, "Failure preparing request")
@@ -3883,6 +4426,16 @@ func (client SitesClient) GetInstanceDeploymentResponder(resp *http.Response) (r
 // name - name of web app
 // instanceID - id of web app instance
 func (client SitesClient) GetInstanceDeployments(ctx context.Context, resourceGroupName string, name string, instanceID string) (result DeploymentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeployments")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getInstanceDeploymentsNextResults
 	req, err := client.GetInstanceDeploymentsPreparer(ctx, resourceGroupName, name, instanceID)
 	if err != nil {
@@ -3948,8 +4501,8 @@ func (client SitesClient) GetInstanceDeploymentsResponder(resp *http.Response) (
 }
 
 // getInstanceDeploymentsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getInstanceDeploymentsNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
-	req, err := lastResults.deploymentCollectionPreparer()
+func (client SitesClient) getInstanceDeploymentsNextResults(ctx context.Context, lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.deploymentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsNextResults", nil, "Failure preparing next results request")
 	}
@@ -3970,6 +4523,16 @@ func (client SitesClient) getInstanceDeploymentsNextResults(lastResults Deployme
 
 // GetInstanceDeploymentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetInstanceDeploymentsComplete(ctx context.Context, resourceGroupName string, name string, instanceID string) (result DeploymentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeployments")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetInstanceDeployments(ctx, resourceGroupName, name, instanceID)
 	return
 }
@@ -3982,6 +4545,16 @@ func (client SitesClient) GetInstanceDeploymentsComplete(ctx context.Context, re
 // slot - name of web app slot. If not specified then will default to production slot.
 // instanceID - id of web app instance
 func (client SitesClient) GetInstanceDeploymentSlot(ctx context.Context, resourceGroupName string, name string, ID string, slot string, instanceID string) (result Deployment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeploymentSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetInstanceDeploymentSlotPreparer(ctx, resourceGroupName, name, ID, slot, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentSlot", nil, "Failure preparing request")
@@ -4054,6 +4627,16 @@ func (client SitesClient) GetInstanceDeploymentSlotResponder(resp *http.Response
 // slot - name of web app slot. If not specified then will default to production slot.
 // instanceID - id of web app instance
 func (client SitesClient) GetInstanceDeploymentsSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string) (result DeploymentCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeploymentsSlot")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getInstanceDeploymentsSlotNextResults
 	req, err := client.GetInstanceDeploymentsSlotPreparer(ctx, resourceGroupName, name, slot, instanceID)
 	if err != nil {
@@ -4120,8 +4703,8 @@ func (client SitesClient) GetInstanceDeploymentsSlotResponder(resp *http.Respons
 }
 
 // getInstanceDeploymentsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getInstanceDeploymentsSlotNextResults(lastResults DeploymentCollection) (result DeploymentCollection, err error) {
-	req, err := lastResults.deploymentCollectionPreparer()
+func (client SitesClient) getInstanceDeploymentsSlotNextResults(ctx context.Context, lastResults DeploymentCollection) (result DeploymentCollection, err error) {
+	req, err := lastResults.deploymentCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getInstanceDeploymentsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -4142,6 +4725,16 @@ func (client SitesClient) getInstanceDeploymentsSlotNextResults(lastResults Depl
 
 // GetInstanceDeploymentsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetInstanceDeploymentsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string) (result DeploymentCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetInstanceDeploymentsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetInstanceDeploymentsSlot(ctx, resourceGroupName, name, slot, instanceID)
 	return
 }
@@ -4152,6 +4745,16 @@ func (client SitesClient) GetInstanceDeploymentsSlotComplete(ctx context.Context
 // name - name of web app
 // propertiesToInclude - additional web app properties included in the response
 func (client SitesClient) GetSite(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result Site, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSitePreparer(ctx, resourceGroupName, name, propertiesToInclude)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSite", nil, "Failure preparing request")
@@ -4222,6 +4825,16 @@ func (client SitesClient) GetSiteResponder(resp *http.Response) (result Site, er
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteBackupConfiguration(ctx context.Context, resourceGroupName string, name string) (result BackupRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupConfiguration")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupConfigurationPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupConfiguration", nil, "Failure preparing request")
@@ -4290,6 +4903,16 @@ func (client SitesClient) GetSiteBackupConfigurationResponder(resp *http.Respons
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result BackupRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupConfigurationSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupConfigurationSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupConfigurationSlot", nil, "Failure preparing request")
@@ -4359,6 +4982,16 @@ func (client SitesClient) GetSiteBackupConfigurationSlotResponder(resp *http.Res
 // name - name of web app
 // backupID - id of backup
 func (client SitesClient) GetSiteBackupStatus(ctx context.Context, resourceGroupName string, name string, backupID string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupStatusPreparer(ctx, resourceGroupName, name, backupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatus", nil, "Failure preparing request")
@@ -4429,6 +5062,16 @@ func (client SitesClient) GetSiteBackupStatusResponder(resp *http.Response) (res
 // backupID - id of backup
 // request - information on backup request
 func (client SitesClient) GetSiteBackupStatusSecrets(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupStatusSecrets")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupStatusSecretsPreparer(ctx, resourceGroupName, name, backupID, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSecrets", nil, "Failure preparing request")
@@ -4502,6 +5145,16 @@ func (client SitesClient) GetSiteBackupStatusSecretsResponder(resp *http.Respons
 // request - information on backup request
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteBackupStatusSecretsSlot(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest, slot string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupStatusSecretsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupStatusSecretsSlotPreparer(ctx, resourceGroupName, name, backupID, request, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSecretsSlot", nil, "Failure preparing request")
@@ -4575,6 +5228,16 @@ func (client SitesClient) GetSiteBackupStatusSecretsSlotResponder(resp *http.Res
 // backupID - id of backup
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteBackupStatusSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string) (result BackupItem, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteBackupStatusSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteBackupStatusSlotPreparer(ctx, resourceGroupName, name, backupID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteBackupStatusSlot", nil, "Failure preparing request")
@@ -4644,6 +5307,16 @@ func (client SitesClient) GetSiteBackupStatusSlotResponder(resp *http.Response) 
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteConfig(ctx context.Context, resourceGroupName string, name string) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteConfigPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteConfig", nil, "Failure preparing request")
@@ -4712,6 +5385,16 @@ func (client SitesClient) GetSiteConfigResponder(resp *http.Response) (result Si
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteConfigSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteConfigSlot", nil, "Failure preparing request")
@@ -4781,6 +5464,16 @@ func (client SitesClient) GetSiteConfigSlotResponder(resp *http.Response) (resul
 // name - name of web app
 // hostName - name of host
 func (client SitesClient) GetSiteHostNameBinding(ctx context.Context, resourceGroupName string, name string, hostName string) (result HostNameBinding, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBinding")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteHostNameBindingPreparer(ctx, resourceGroupName, name, hostName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBinding", nil, "Failure preparing request")
@@ -4849,6 +5542,16 @@ func (client SitesClient) GetSiteHostNameBindingResponder(resp *http.Response) (
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteHostNameBindings(ctx context.Context, resourceGroupName string, name string) (result HostNameBindingCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBindings")
+		defer func() {
+			sc := -1
+			if result.hnbc.Response.Response != nil {
+				sc = result.hnbc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteHostNameBindingsNextResults
 	req, err := client.GetSiteHostNameBindingsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -4913,8 +5616,8 @@ func (client SitesClient) GetSiteHostNameBindingsResponder(resp *http.Response) 
 }
 
 // getSiteHostNameBindingsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteHostNameBindingsNextResults(lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
-	req, err := lastResults.hostNameBindingCollectionPreparer()
+func (client SitesClient) getSiteHostNameBindingsNextResults(ctx context.Context, lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
+	req, err := lastResults.hostNameBindingCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsNextResults", nil, "Failure preparing next results request")
 	}
@@ -4935,6 +5638,16 @@ func (client SitesClient) getSiteHostNameBindingsNextResults(lastResults HostNam
 
 // GetSiteHostNameBindingsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteHostNameBindingsComplete(ctx context.Context, resourceGroupName string, name string) (result HostNameBindingCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBindings")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteHostNameBindings(ctx, resourceGroupName, name)
 	return
 }
@@ -4946,6 +5659,16 @@ func (client SitesClient) GetSiteHostNameBindingsComplete(ctx context.Context, r
 // slot - name of web app slot. If not specified then will default to production slot.
 // hostName - name of host
 func (client SitesClient) GetSiteHostNameBindingSlot(ctx context.Context, resourceGroupName string, name string, slot string, hostName string) (result HostNameBinding, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBindingSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteHostNameBindingSlotPreparer(ctx, resourceGroupName, name, slot, hostName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingSlot", nil, "Failure preparing request")
@@ -5016,6 +5739,16 @@ func (client SitesClient) GetSiteHostNameBindingSlotResponder(resp *http.Respons
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteHostNameBindingsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result HostNameBindingCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBindingsSlot")
+		defer func() {
+			sc := -1
+			if result.hnbc.Response.Response != nil {
+				sc = result.hnbc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteHostNameBindingsSlotNextResults
 	req, err := client.GetSiteHostNameBindingsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
@@ -5081,8 +5814,8 @@ func (client SitesClient) GetSiteHostNameBindingsSlotResponder(resp *http.Respon
 }
 
 // getSiteHostNameBindingsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteHostNameBindingsSlotNextResults(lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
-	req, err := lastResults.hostNameBindingCollectionPreparer()
+func (client SitesClient) getSiteHostNameBindingsSlotNextResults(ctx context.Context, lastResults HostNameBindingCollection) (result HostNameBindingCollection, err error) {
+	req, err := lastResults.hostNameBindingCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteHostNameBindingsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -5103,6 +5836,16 @@ func (client SitesClient) getSiteHostNameBindingsSlotNextResults(lastResults Hos
 
 // GetSiteHostNameBindingsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteHostNameBindingsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result HostNameBindingCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteHostNameBindingsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteHostNameBindingsSlot(ctx, resourceGroupName, name, slot)
 	return
 }
@@ -5112,6 +5855,16 @@ func (client SitesClient) GetSiteHostNameBindingsSlotComplete(ctx context.Contex
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteInstanceIdentifiers(ctx context.Context, resourceGroupName string, name string) (result SiteInstanceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteInstanceIdentifiers")
+		defer func() {
+			sc := -1
+			if result.sic.Response.Response != nil {
+				sc = result.sic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteInstanceIdentifiersNextResults
 	req, err := client.GetSiteInstanceIdentifiersPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -5176,8 +5929,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersResponder(resp *http.Respons
 }
 
 // getSiteInstanceIdentifiersNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteInstanceIdentifiersNextResults(lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
-	req, err := lastResults.siteInstanceCollectionPreparer()
+func (client SitesClient) getSiteInstanceIdentifiersNextResults(ctx context.Context, lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
+	req, err := lastResults.siteInstanceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersNextResults", nil, "Failure preparing next results request")
 	}
@@ -5198,6 +5951,16 @@ func (client SitesClient) getSiteInstanceIdentifiersNextResults(lastResults Site
 
 // GetSiteInstanceIdentifiersComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteInstanceIdentifiersComplete(ctx context.Context, resourceGroupName string, name string) (result SiteInstanceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteInstanceIdentifiers")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteInstanceIdentifiers(ctx, resourceGroupName, name)
 	return
 }
@@ -5208,6 +5971,16 @@ func (client SitesClient) GetSiteInstanceIdentifiersComplete(ctx context.Context
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteInstanceIdentifiersSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteInstanceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteInstanceIdentifiersSlot")
+		defer func() {
+			sc := -1
+			if result.sic.Response.Response != nil {
+				sc = result.sic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteInstanceIdentifiersSlotNextResults
 	req, err := client.GetSiteInstanceIdentifiersSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
@@ -5273,8 +6046,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotResponder(resp *http.Res
 }
 
 // getSiteInstanceIdentifiersSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteInstanceIdentifiersSlotNextResults(lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
-	req, err := lastResults.siteInstanceCollectionPreparer()
+func (client SitesClient) getSiteInstanceIdentifiersSlotNextResults(ctx context.Context, lastResults SiteInstanceCollection) (result SiteInstanceCollection, err error) {
+	req, err := lastResults.siteInstanceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteInstanceIdentifiersSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -5295,6 +6068,16 @@ func (client SitesClient) getSiteInstanceIdentifiersSlotNextResults(lastResults 
 
 // GetSiteInstanceIdentifiersSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteInstanceIdentifiersSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteInstanceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteInstanceIdentifiersSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteInstanceIdentifiersSlot(ctx, resourceGroupName, name, slot)
 	return
 }
@@ -5304,6 +6087,16 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotComplete(ctx context.Con
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteLogsConfig(ctx context.Context, resourceGroupName string, name string) (result SiteLogsConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteLogsConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteLogsConfigPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteLogsConfig", nil, "Failure preparing request")
@@ -5372,6 +6165,16 @@ func (client SitesClient) GetSiteLogsConfigResponder(resp *http.Response) (resul
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteLogsConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteLogsConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteLogsConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteLogsConfigSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteLogsConfigSlot", nil, "Failure preparing request")
@@ -5440,6 +6243,16 @@ func (client SitesClient) GetSiteLogsConfigSlotResponder(resp *http.Response) (r
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.mdc.Response.Response != nil {
+				sc = result.mdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteMetricDefinitionsNextResults
 	req, err := client.GetSiteMetricDefinitionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -5504,8 +6317,8 @@ func (client SitesClient) GetSiteMetricDefinitionsResponder(resp *http.Response)
 }
 
 // getSiteMetricDefinitionsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteMetricDefinitionsNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
-	req, err := lastResults.metricDefinitionCollectionPreparer()
+func (client SitesClient) getSiteMetricDefinitionsNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsNextResults", nil, "Failure preparing next results request")
 	}
@@ -5526,6 +6339,16 @@ func (client SitesClient) getSiteMetricDefinitionsNextResults(lastResults Metric
 
 // GetSiteMetricDefinitionsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteMetricDefinitionsComplete(ctx context.Context, resourceGroupName string, name string) (result MetricDefinitionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricDefinitions")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteMetricDefinitions(ctx, resourceGroupName, name)
 	return
 }
@@ -5536,6 +6359,16 @@ func (client SitesClient) GetSiteMetricDefinitionsComplete(ctx context.Context, 
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteMetricDefinitionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result MetricDefinitionCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricDefinitionsSlot")
+		defer func() {
+			sc := -1
+			if result.mdc.Response.Response != nil {
+				sc = result.mdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteMetricDefinitionsSlotNextResults
 	req, err := client.GetSiteMetricDefinitionsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
@@ -5601,8 +6434,8 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotResponder(resp *http.Respo
 }
 
 // getSiteMetricDefinitionsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteMetricDefinitionsSlotNextResults(lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
-	req, err := lastResults.metricDefinitionCollectionPreparer()
+func (client SitesClient) getSiteMetricDefinitionsSlotNextResults(ctx context.Context, lastResults MetricDefinitionCollection) (result MetricDefinitionCollection, err error) {
+	req, err := lastResults.metricDefinitionCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricDefinitionsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -5623,6 +6456,16 @@ func (client SitesClient) getSiteMetricDefinitionsSlotNextResults(lastResults Me
 
 // GetSiteMetricDefinitionsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteMetricDefinitionsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result MetricDefinitionCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricDefinitionsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteMetricDefinitionsSlot(ctx, resourceGroupName, name, slot)
 	return
 }
@@ -5636,6 +6479,16 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotComplete(ctx context.Conte
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client SitesClient) GetSiteMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetrics")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteMetricsNextResults
 	req, err := client.GetSiteMetricsPreparer(ctx, resourceGroupName, name, details, filter)
 	if err != nil {
@@ -5706,8 +6559,8 @@ func (client SitesClient) GetSiteMetricsResponder(resp *http.Response) (result R
 }
 
 // getSiteMetricsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteMetricsNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client SitesClient) getSiteMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsNextResults", nil, "Failure preparing next results request")
 	}
@@ -5728,6 +6581,16 @@ func (client SitesClient) getSiteMetricsNextResults(lastResults ResourceMetricCo
 
 // GetSiteMetricsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteMetricsComplete(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetrics")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteMetrics(ctx, resourceGroupName, name, details, filter)
 	return
 }
@@ -5742,6 +6605,16 @@ func (client SitesClient) GetSiteMetricsComplete(ctx context.Context, resourceGr
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client SitesClient) GetSiteMetricsSlot(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricsSlot")
+		defer func() {
+			sc := -1
+			if result.rmc.Response.Response != nil {
+				sc = result.rmc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteMetricsSlotNextResults
 	req, err := client.GetSiteMetricsSlotPreparer(ctx, resourceGroupName, name, slot, details, filter)
 	if err != nil {
@@ -5813,8 +6686,8 @@ func (client SitesClient) GetSiteMetricsSlotResponder(resp *http.Response) (resu
 }
 
 // getSiteMetricsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteMetricsSlotNextResults(lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer()
+func (client SitesClient) getSiteMetricsSlotNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
+	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteMetricsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -5835,6 +6708,16 @@ func (client SitesClient) getSiteMetricsSlotNextResults(lastResults ResourceMetr
 
 // GetSiteMetricsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteMetricsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteMetricsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteMetricsSlot(ctx, resourceGroupName, name, slot, details, filter)
 	return
 }
@@ -5845,6 +6728,16 @@ func (client SitesClient) GetSiteMetricsSlotComplete(ctx context.Context, resour
 // name - the name of the web app
 // view - the type of view. This can either be "summary" or "detailed".
 func (client SitesClient) GetSiteNetworkFeatures(ctx context.Context, resourceGroupName string, name string, view string) (result NetworkFeatures, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteNetworkFeatures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteNetworkFeaturesPreparer(ctx, resourceGroupName, name, view)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteNetworkFeatures", nil, "Failure preparing request")
@@ -5915,6 +6808,16 @@ func (client SitesClient) GetSiteNetworkFeaturesResponder(resp *http.Response) (
 // view - the type of view. This can either be "summary" or "detailed".
 // slot - the name of the slot for this web app.
 func (client SitesClient) GetSiteNetworkFeaturesSlot(ctx context.Context, resourceGroupName string, name string, view string, slot string) (result NetworkFeatures, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteNetworkFeaturesSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteNetworkFeaturesSlotPreparer(ctx, resourceGroupName, name, view, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteNetworkFeaturesSlot", nil, "Failure preparing request")
@@ -5985,6 +6888,16 @@ func (client SitesClient) GetSiteNetworkFeaturesSlotResponder(resp *http.Respons
 // name - name of web app
 // operationID - id of an operation
 func (client SitesClient) GetSiteOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteOperation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteOperationPreparer(ctx, resourceGroupName, name, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteOperation", nil, "Failure preparing request")
@@ -6055,6 +6968,16 @@ func (client SitesClient) GetSiteOperationResponder(resp *http.Response) (result
 // operationID - id of an operation
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteOperationSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteOperationSlotPreparer(ctx, resourceGroupName, name, operationID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteOperationSlot", nil, "Failure preparing request")
@@ -6121,6 +7044,16 @@ func (client SitesClient) GetSiteOperationSlotResponder(resp *http.Response) (re
 
 // GetSitePremierAddOn sends the get site premier add on request.
 func (client SitesClient) GetSitePremierAddOn(ctx context.Context, resourceGroupName string, name string, premierAddOnName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSitePremierAddOn")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSitePremierAddOnPreparer(ctx, resourceGroupName, name, premierAddOnName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSitePremierAddOn", nil, "Failure preparing request")
@@ -6186,6 +7119,16 @@ func (client SitesClient) GetSitePremierAddOnResponder(resp *http.Response) (res
 
 // GetSitePremierAddOnSlot sends the get site premier add on slot request.
 func (client SitesClient) GetSitePremierAddOnSlot(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSitePremierAddOnSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSitePremierAddOnSlotPreparer(ctx, resourceGroupName, name, premierAddOnName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSitePremierAddOnSlot", nil, "Failure preparing request")
@@ -6256,6 +7199,16 @@ func (client SitesClient) GetSitePremierAddOnSlotResponder(resp *http.Response) 
 // name - the name of the web app
 // entityName - the name by which the Hybrid Connection is identified
 func (client SitesClient) GetSiteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteRelayServiceConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteRelayServiceConnectionPreparer(ctx, resourceGroupName, name, entityName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteRelayServiceConnection", nil, "Failure preparing request")
@@ -6326,6 +7279,16 @@ func (client SitesClient) GetSiteRelayServiceConnectionResponder(resp *http.Resp
 // entityName - the name by which the Hybrid Connection is identified
 // slot - the name of the slot for the web app.
 func (client SitesClient) GetSiteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, slot string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteRelayServiceConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteRelayServiceConnectionSlotPreparer(ctx, resourceGroupName, name, entityName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteRelayServiceConnectionSlot", nil, "Failure preparing request")
@@ -6397,6 +7360,16 @@ func (client SitesClient) GetSiteRelayServiceConnectionSlotResponder(resp *http.
 // includeSiteTypes - types of apps included in the response
 // includeSlots - whether or not to include deployments slots in results
 func (client SitesClient) GetSites(ctx context.Context, resourceGroupName string, propertiesToInclude string, includeSiteTypes string, includeSlots *bool) (result SiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSites")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSitesNextResults
 	req, err := client.GetSitesPreparer(ctx, resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots)
 	if err != nil {
@@ -6469,8 +7442,8 @@ func (client SitesClient) GetSitesResponder(resp *http.Response) (result SiteCol
 }
 
 // getSitesNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSitesNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client SitesClient) getSitesNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSitesNextResults", nil, "Failure preparing next results request")
 	}
@@ -6491,6 +7464,16 @@ func (client SitesClient) getSitesNextResults(lastResults SiteCollection) (resul
 
 // GetSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSitesComplete(ctx context.Context, resourceGroupName string, propertiesToInclude string, includeSiteTypes string, includeSlots *bool) (result SiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSites")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSites(ctx, resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots)
 	return
 }
@@ -6502,6 +7485,16 @@ func (client SitesClient) GetSitesComplete(ctx context.Context, resourceGroupNam
 // slot - name of web app slot. If not specified then will default to production slot.
 // propertiesToInclude - additional web app properties included in the response
 func (client SitesClient) GetSiteSlot(ctx context.Context, resourceGroupName string, name string, slot string, propertiesToInclude string) (result Site, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteSlotPreparer(ctx, resourceGroupName, name, slot, propertiesToInclude)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlot", nil, "Failure preparing request")
@@ -6574,6 +7567,16 @@ func (client SitesClient) GetSiteSlotResponder(resp *http.Response) (result Site
 // name - name of web app
 // propertiesToInclude - list of app properties to include in the response
 func (client SitesClient) GetSiteSlots(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSlots")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteSlotsNextResults
 	req, err := client.GetSiteSlotsPreparer(ctx, resourceGroupName, name, propertiesToInclude)
 	if err != nil {
@@ -6641,8 +7644,8 @@ func (client SitesClient) GetSiteSlotsResponder(resp *http.Response) (result Sit
 }
 
 // getSiteSlotsNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteSlotsNextResults(lastResults SiteCollection) (result SiteCollection, err error) {
-	req, err := lastResults.siteCollectionPreparer()
+func (client SitesClient) getSiteSlotsNextResults(ctx context.Context, lastResults SiteCollection) (result SiteCollection, err error) {
+	req, err := lastResults.siteCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteSlotsNextResults", nil, "Failure preparing next results request")
 	}
@@ -6663,6 +7666,16 @@ func (client SitesClient) getSiteSlotsNextResults(lastResults SiteCollection) (r
 
 // GetSiteSlotsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteSlotsComplete(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSlots")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteSlots(ctx, resourceGroupName, name, propertiesToInclude)
 	return
 }
@@ -6672,6 +7685,16 @@ func (client SitesClient) GetSiteSlotsComplete(ctx context.Context, resourceGrou
 // resourceGroupName - webspace
 // name - website Name
 func (client SitesClient) GetSiteSnapshots(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSnapshots")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteSnapshotsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSnapshots", nil, "Failure preparing request")
@@ -6740,6 +7763,16 @@ func (client SitesClient) GetSiteSnapshotsResponder(resp *http.Response) (result
 // name - website Name
 // slot - website Slot
 func (client SitesClient) GetSiteSnapshotsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSnapshotsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteSnapshotsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSnapshotsSlot", nil, "Failure preparing request")
@@ -6808,6 +7841,16 @@ func (client SitesClient) GetSiteSnapshotsSlotResponder(resp *http.Response) (re
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSiteSourceControl(ctx context.Context, resourceGroupName string, name string) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteSourceControlPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSourceControl", nil, "Failure preparing request")
@@ -6876,6 +7919,16 @@ func (client SitesClient) GetSiteSourceControlResponder(resp *http.Response) (re
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) GetSiteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteSourceControlSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteSourceControlSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSourceControlSlot", nil, "Failure preparing request")
@@ -6947,6 +8000,16 @@ func (client SitesClient) GetSiteSourceControlSlotResponder(resp *http.Response)
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client SitesClient) GetSiteUsages(ctx context.Context, resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteUsages")
+		defer func() {
+			sc := -1
+			if result.cuqc.Response.Response != nil {
+				sc = result.cuqc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteUsagesNextResults
 	req, err := client.GetSiteUsagesPreparer(ctx, resourceGroupName, name, filter)
 	if err != nil {
@@ -7014,8 +8077,8 @@ func (client SitesClient) GetSiteUsagesResponder(resp *http.Response) (result Cs
 }
 
 // getSiteUsagesNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteUsagesNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
-	req, err := lastResults.csmUsageQuotaCollectionPreparer()
+func (client SitesClient) getSiteUsagesNextResults(ctx context.Context, lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.csmUsageQuotaCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesNextResults", nil, "Failure preparing next results request")
 	}
@@ -7036,6 +8099,16 @@ func (client SitesClient) getSiteUsagesNextResults(lastResults CsmUsageQuotaColl
 
 // GetSiteUsagesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteUsagesComplete(ctx context.Context, resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteUsages")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteUsages(ctx, resourceGroupName, name, filter)
 	return
 }
@@ -7049,6 +8122,16 @@ func (client SitesClient) GetSiteUsagesComplete(ctx context.Context, resourceGro
 // $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and
 // endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
 func (client SitesClient) GetSiteUsagesSlot(ctx context.Context, resourceGroupName string, name string, slot string, filter string) (result CsmUsageQuotaCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteUsagesSlot")
+		defer func() {
+			sc := -1
+			if result.cuqc.Response.Response != nil {
+				sc = result.cuqc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSiteUsagesSlotNextResults
 	req, err := client.GetSiteUsagesSlotPreparer(ctx, resourceGroupName, name, slot, filter)
 	if err != nil {
@@ -7117,8 +8200,8 @@ func (client SitesClient) GetSiteUsagesSlotResponder(resp *http.Response) (resul
 }
 
 // getSiteUsagesSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSiteUsagesSlotNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
-	req, err := lastResults.csmUsageQuotaCollectionPreparer()
+func (client SitesClient) getSiteUsagesSlotNextResults(ctx context.Context, lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.csmUsageQuotaCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSiteUsagesSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -7139,6 +8222,16 @@ func (client SitesClient) getSiteUsagesSlotNextResults(lastResults CsmUsageQuota
 
 // GetSiteUsagesSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSiteUsagesSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string, filter string) (result CsmUsageQuotaCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteUsagesSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSiteUsagesSlot(ctx, resourceGroupName, name, slot, filter)
 	return
 }
@@ -7149,6 +8242,16 @@ func (client SitesClient) GetSiteUsagesSlotComplete(ctx context.Context, resourc
 // name - the name of the web app
 // vnetName - the name of the Virtual Network
 func (client SitesClient) GetSiteVNETConnection(ctx context.Context, resourceGroupName string, name string, vnetName string) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVNETConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVNETConnectionPreparer(ctx, resourceGroupName, name, vnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnection", nil, "Failure preparing request")
@@ -7217,6 +8320,16 @@ func (client SitesClient) GetSiteVNETConnectionResponder(resp *http.Response) (r
 // resourceGroupName - the resource group name
 // name - the name of the web app
 func (client SitesClient) GetSiteVNETConnections(ctx context.Context, resourceGroupName string, name string) (result ListVnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVNETConnections")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVNETConnectionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnections", nil, "Failure preparing request")
@@ -7286,6 +8399,16 @@ func (client SitesClient) GetSiteVNETConnectionsResponder(resp *http.Response) (
 // vnetName - the name of the Virtual Network
 // slot - the name of the slot for this web app.
 func (client SitesClient) GetSiteVNETConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVNETConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVNETConnectionSlotPreparer(ctx, resourceGroupName, name, vnetName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnectionSlot", nil, "Failure preparing request")
@@ -7356,6 +8479,16 @@ func (client SitesClient) GetSiteVNETConnectionSlotResponder(resp *http.Response
 // name - the name of the web app
 // slot - the name of the slot for this web app.
 func (client SitesClient) GetSiteVNETConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result ListVnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVNETConnectionsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVNETConnectionsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVNETConnectionsSlot", nil, "Failure preparing request")
@@ -7426,6 +8559,16 @@ func (client SitesClient) GetSiteVNETConnectionsSlotResponder(resp *http.Respons
 // vnetName - the name of the Virtual Network
 // gatewayName - the name of the gateway. The only gateway that exists presently is "primary"
 func (client SitesClient) GetSiteVnetGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVnetGateway")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVnetGatewayPreparer(ctx, resourceGroupName, name, vnetName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVnetGateway", nil, "Failure preparing request")
@@ -7498,6 +8641,16 @@ func (client SitesClient) GetSiteVnetGatewayResponder(resp *http.Response) (resu
 // gatewayName - the name of the gateway. The only gateway that exists presently is "primary"
 // slot - the name of the slot for this web app.
 func (client SitesClient) GetSiteVnetGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSiteVnetGatewaySlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSiteVnetGatewaySlotPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteVnetGatewaySlot", nil, "Failure preparing request")
@@ -7568,6 +8721,16 @@ func (client SitesClient) GetSiteVnetGatewaySlotResponder(resp *http.Response) (
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) GetSlotConfigNames(ctx context.Context, resourceGroupName string, name string) (result SlotConfigNamesResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSlotConfigNames")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetSlotConfigNamesPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotConfigNames", nil, "Failure preparing request")
@@ -7636,6 +8799,16 @@ func (client SitesClient) GetSlotConfigNamesResponder(resp *http.Response) (resu
 // name - name of web app
 // slotSwapEntity - request body that contains the target slot name
 func (client SitesClient) GetSlotsDifferencesFromProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SlotDifferenceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSlotsDifferencesFromProduction")
+		defer func() {
+			sc := -1
+			if result.sdc.Response.Response != nil {
+				sc = result.sdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSlotsDifferencesFromProductionNextResults
 	req, err := client.GetSlotsDifferencesFromProductionPreparer(ctx, resourceGroupName, name, slotSwapEntity)
 	if err != nil {
@@ -7702,8 +8875,8 @@ func (client SitesClient) GetSlotsDifferencesFromProductionResponder(resp *http.
 }
 
 // getSlotsDifferencesFromProductionNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSlotsDifferencesFromProductionNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
-	req, err := lastResults.slotDifferenceCollectionPreparer()
+func (client SitesClient) getSlotsDifferencesFromProductionNextResults(ctx context.Context, lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.slotDifferenceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesFromProductionNextResults", nil, "Failure preparing next results request")
 	}
@@ -7724,6 +8897,16 @@ func (client SitesClient) getSlotsDifferencesFromProductionNextResults(lastResul
 
 // GetSlotsDifferencesFromProductionComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSlotsDifferencesFromProductionComplete(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SlotDifferenceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSlotsDifferencesFromProduction")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSlotsDifferencesFromProduction(ctx, resourceGroupName, name, slotSwapEntity)
 	return
 }
@@ -7735,6 +8918,16 @@ func (client SitesClient) GetSlotsDifferencesFromProductionComplete(ctx context.
 // slotSwapEntity - request body that contains the target slot name
 // slot - name of the source slot
 func (client SitesClient) GetSlotsDifferencesSlot(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SlotDifferenceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSlotsDifferencesSlot")
+		defer func() {
+			sc := -1
+			if result.sdc.Response.Response != nil {
+				sc = result.sdc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getSlotsDifferencesSlotNextResults
 	req, err := client.GetSlotsDifferencesSlotPreparer(ctx, resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
@@ -7802,8 +8995,8 @@ func (client SitesClient) GetSlotsDifferencesSlotResponder(resp *http.Response) 
 }
 
 // getSlotsDifferencesSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) getSlotsDifferencesSlotNextResults(lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
-	req, err := lastResults.slotDifferenceCollectionPreparer()
+func (client SitesClient) getSlotsDifferencesSlotNextResults(ctx context.Context, lastResults SlotDifferenceCollection) (result SlotDifferenceCollection, err error) {
+	req, err := lastResults.slotDifferenceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "getSlotsDifferencesSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -7824,6 +9017,16 @@ func (client SitesClient) getSlotsDifferencesSlotNextResults(lastResults SlotDif
 
 // GetSlotsDifferencesSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) GetSlotsDifferencesSlotComplete(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SlotDifferenceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.GetSlotsDifferencesSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetSlotsDifferencesSlot(ctx, resourceGroupName, name, slotSwapEntity, slot)
 	return
 }
@@ -7833,6 +9036,16 @@ func (client SitesClient) GetSlotsDifferencesSlotComplete(ctx context.Context, r
 // resourceGroupName - name of the resource group
 // name - name of the web app
 func (client SitesClient) IsSiteCloneable(ctx context.Context, resourceGroupName string, name string) (result SiteCloneability, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.IsSiteCloneable")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.IsSiteCloneablePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "IsSiteCloneable", nil, "Failure preparing request")
@@ -7901,6 +9114,16 @@ func (client SitesClient) IsSiteCloneableResponder(resp *http.Response) (result 
 // name - name of the web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) IsSiteCloneableSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteCloneability, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.IsSiteCloneableSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.IsSiteCloneableSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "IsSiteCloneableSlot", nil, "Failure preparing request")
@@ -7969,6 +9192,16 @@ func (client SitesClient) IsSiteCloneableSlotResponder(resp *http.Response) (res
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSiteAppSettings(ctx context.Context, resourceGroupName string, name string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteAppSettings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteAppSettingsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAppSettings", nil, "Failure preparing request")
@@ -8037,6 +9270,16 @@ func (client SitesClient) ListSiteAppSettingsResponder(resp *http.Response) (res
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSiteAppSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteAppSettingsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteAppSettingsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAppSettingsSlot", nil, "Failure preparing request")
@@ -8105,6 +9348,16 @@ func (client SitesClient) ListSiteAppSettingsSlotResponder(resp *http.Response) 
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSiteAuthSettings(ctx context.Context, resourceGroupName string, name string) (result SiteAuthSettings, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteAuthSettings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteAuthSettingsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAuthSettings", nil, "Failure preparing request")
@@ -8173,6 +9426,16 @@ func (client SitesClient) ListSiteAuthSettingsResponder(resp *http.Response) (re
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSiteAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteAuthSettings, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteAuthSettingsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteAuthSettingsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteAuthSettingsSlot", nil, "Failure preparing request")
@@ -8241,6 +9504,16 @@ func (client SitesClient) ListSiteAuthSettingsSlotResponder(resp *http.Response)
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSiteBackups(ctx context.Context, resourceGroupName string, name string) (result BackupItemCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteBackups")
+		defer func() {
+			sc := -1
+			if result.bic.Response.Response != nil {
+				sc = result.bic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listSiteBackupsNextResults
 	req, err := client.ListSiteBackupsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -8305,8 +9578,8 @@ func (client SitesClient) ListSiteBackupsResponder(resp *http.Response) (result 
 }
 
 // listSiteBackupsNextResults retrieves the next set of results, if any.
-func (client SitesClient) listSiteBackupsNextResults(lastResults BackupItemCollection) (result BackupItemCollection, err error) {
-	req, err := lastResults.backupItemCollectionPreparer()
+func (client SitesClient) listSiteBackupsNextResults(ctx context.Context, lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.backupItemCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsNextResults", nil, "Failure preparing next results request")
 	}
@@ -8327,6 +9600,16 @@ func (client SitesClient) listSiteBackupsNextResults(lastResults BackupItemColle
 
 // ListSiteBackupsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) ListSiteBackupsComplete(ctx context.Context, resourceGroupName string, name string) (result BackupItemCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteBackups")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListSiteBackups(ctx, resourceGroupName, name)
 	return
 }
@@ -8337,6 +9620,16 @@ func (client SitesClient) ListSiteBackupsComplete(ctx context.Context, resourceG
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSiteBackupsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result BackupItemCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteBackupsSlot")
+		defer func() {
+			sc := -1
+			if result.bic.Response.Response != nil {
+				sc = result.bic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listSiteBackupsSlotNextResults
 	req, err := client.ListSiteBackupsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
@@ -8402,8 +9695,8 @@ func (client SitesClient) ListSiteBackupsSlotResponder(resp *http.Response) (res
 }
 
 // listSiteBackupsSlotNextResults retrieves the next set of results, if any.
-func (client SitesClient) listSiteBackupsSlotNextResults(lastResults BackupItemCollection) (result BackupItemCollection, err error) {
-	req, err := lastResults.backupItemCollectionPreparer()
+func (client SitesClient) listSiteBackupsSlotNextResults(ctx context.Context, lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.backupItemCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.SitesClient", "listSiteBackupsSlotNextResults", nil, "Failure preparing next results request")
 	}
@@ -8424,6 +9717,16 @@ func (client SitesClient) listSiteBackupsSlotNextResults(lastResults BackupItemC
 
 // ListSiteBackupsSlotComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SitesClient) ListSiteBackupsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result BackupItemCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteBackupsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListSiteBackupsSlot(ctx, resourceGroupName, name, slot)
 	return
 }
@@ -8433,6 +9736,16 @@ func (client SitesClient) ListSiteBackupsSlotComplete(ctx context.Context, resou
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSiteConnectionStrings(ctx context.Context, resourceGroupName string, name string) (result ConnectionStringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteConnectionStrings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteConnectionStringsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteConnectionStrings", nil, "Failure preparing request")
@@ -8501,6 +9814,16 @@ func (client SitesClient) ListSiteConnectionStringsResponder(resp *http.Response
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSiteConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result ConnectionStringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteConnectionStringsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteConnectionStringsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteConnectionStringsSlot", nil, "Failure preparing request")
@@ -8569,6 +9892,16 @@ func (client SitesClient) ListSiteConnectionStringsSlotResponder(resp *http.Resp
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSiteMetadata(ctx context.Context, resourceGroupName string, name string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteMetadata")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteMetadataPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteMetadata", nil, "Failure preparing request")
@@ -8637,6 +9970,16 @@ func (client SitesClient) ListSiteMetadataResponder(resp *http.Response) (result
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSiteMetadataSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteMetadataSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteMetadataSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteMetadataSlot", nil, "Failure preparing request")
@@ -8702,6 +10045,16 @@ func (client SitesClient) ListSiteMetadataSlotResponder(resp *http.Response) (re
 
 // ListSitePremierAddOns sends the list site premier add ons request.
 func (client SitesClient) ListSitePremierAddOns(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePremierAddOns")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePremierAddOnsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePremierAddOns", nil, "Failure preparing request")
@@ -8766,6 +10119,16 @@ func (client SitesClient) ListSitePremierAddOnsResponder(resp *http.Response) (r
 
 // ListSitePremierAddOnsSlot sends the list site premier add ons slot request.
 func (client SitesClient) ListSitePremierAddOnsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePremierAddOnsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePremierAddOnsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePremierAddOnsSlot", nil, "Failure preparing request")
@@ -8834,6 +10197,16 @@ func (client SitesClient) ListSitePremierAddOnsSlotResponder(resp *http.Response
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ListSitePublishingCredentials(ctx context.Context, resourceGroupName string, name string) (result SitesListSitePublishingCredentialsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingCredentials")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePublishingCredentialsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentials", nil, "Failure preparing request")
@@ -8879,10 +10252,6 @@ func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request)
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -8906,6 +10275,16 @@ func (client SitesClient) ListSitePublishingCredentialsResponder(resp *http.Resp
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSitePublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SitesListSitePublishingCredentialsSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingCredentialsSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePublishingCredentialsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentialsSlot", nil, "Failure preparing request")
@@ -8952,10 +10331,6 @@ func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Requ
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -8980,6 +10355,16 @@ func (client SitesClient) ListSitePublishingCredentialsSlotResponder(resp *http.
 // options - specifies options for publishing profile. Pass CsmPublishingProfileOptions.Format=FileZilla3 for
 // FileZilla FTP format.
 func (client SitesClient) ListSitePublishingProfileXML(ctx context.Context, resourceGroupName string, name string, options CsmPublishingProfileOptions) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingProfileXML")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePublishingProfileXMLPreparer(ctx, resourceGroupName, name, options)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingProfileXML", nil, "Failure preparing request")
@@ -9051,6 +10436,16 @@ func (client SitesClient) ListSitePublishingProfileXMLResponder(resp *http.Respo
 // FileZilla FTP format.
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ListSitePublishingProfileXMLSlot(ctx context.Context, resourceGroupName string, name string, options CsmPublishingProfileOptions, slot string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingProfileXMLSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSitePublishingProfileXMLSlotPreparer(ctx, resourceGroupName, name, options, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingProfileXMLSlot", nil, "Failure preparing request")
@@ -9120,6 +10515,16 @@ func (client SitesClient) ListSitePublishingProfileXMLSlotResponder(resp *http.R
 // resourceGroupName - the resource group name
 // name - the name of the web app
 func (client SitesClient) ListSiteRelayServiceConnections(ctx context.Context, resourceGroupName string, name string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteRelayServiceConnections")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteRelayServiceConnectionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteRelayServiceConnections", nil, "Failure preparing request")
@@ -9188,6 +10593,16 @@ func (client SitesClient) ListSiteRelayServiceConnectionsResponder(resp *http.Re
 // name - the name of the web app
 // slot - the name of the slot for the web app.
 func (client SitesClient) ListSiteRelayServiceConnectionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSiteRelayServiceConnectionsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListSiteRelayServiceConnectionsSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteRelayServiceConnectionsSlot", nil, "Failure preparing request")
@@ -9258,6 +10673,16 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlotResponder(resp *htt
 // recoveryEntity - snapshot data used for web app recovery. Snapshot information can be obtained by calling
 // GetDeletedSites or GetSiteSnapshots API.
 func (client SitesClient) RecoverSite(ctx context.Context, resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity) (result SitesRecoverSiteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RecoverSite")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RecoverSitePreparer(ctx, resourceGroupName, name, recoveryEntity)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSite", nil, "Failure preparing request")
@@ -9305,10 +10730,6 @@ func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesReco
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9334,6 +10755,16 @@ func (client SitesClient) RecoverSiteResponder(resp *http.Response) (result Site
 // GetDeletedSites or GetSiteSnapshots API.
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) RecoverSiteSlot(ctx context.Context, resourceGroupName string, name string, recoveryEntity CsmSiteRecoveryEntity, slot string) (result SitesRecoverSiteSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RecoverSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RecoverSiteSlotPreparer(ctx, resourceGroupName, name, recoveryEntity, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSiteSlot", nil, "Failure preparing request")
@@ -9382,10 +10813,6 @@ func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future Sites
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9408,6 +10835,16 @@ func (client SitesClient) RecoverSiteSlotResponder(resp *http.Response) (result 
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) ResetProductionSlotConfig(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ResetProductionSlotConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ResetProductionSlotConfigPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ResetProductionSlotConfig", nil, "Failure preparing request")
@@ -9476,6 +10913,16 @@ func (client SitesClient) ResetProductionSlotConfigResponder(resp *http.Response
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) ResetSlotConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ResetSlotConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ResetSlotConfigSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ResetSlotConfigSlot", nil, "Failure preparing request")
@@ -9547,6 +10994,16 @@ func (client SitesClient) ResetSlotConfigSlotResponder(resp *http.Response) (res
 // restart always restarts and reprovisions the app
 // synchronous - if true then the API will block until the app has been restarted
 func (client SitesClient) RestartSite(ctx context.Context, resourceGroupName string, name string, softRestart *bool, synchronous *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestartSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestartSitePreparer(ctx, resourceGroupName, name, softRestart, synchronous)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestartSite", nil, "Failure preparing request")
@@ -9624,6 +11081,16 @@ func (client SitesClient) RestartSiteResponder(resp *http.Response) (result SetO
 // restart always restarts and reprovisions the app
 // synchronous - if true then the API will block until the app has been restarted
 func (client SitesClient) RestartSiteSlot(ctx context.Context, resourceGroupName string, name string, slot string, softRestart *bool, synchronous *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestartSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestartSiteSlotPreparer(ctx, resourceGroupName, name, slot, softRestart, synchronous)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestartSiteSlot", nil, "Failure preparing request")
@@ -9700,6 +11167,16 @@ func (client SitesClient) RestartSiteSlotResponder(resp *http.Response) (result 
 // backupID - id of backup to restore
 // request - information on restore request
 func (client SitesClient) RestoreSite(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest) (result SitesRestoreSiteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestoreSite")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestoreSitePreparer(ctx, resourceGroupName, name, backupID, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSite", nil, "Failure preparing request")
@@ -9748,10 +11225,6 @@ func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRest
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9777,6 +11250,16 @@ func (client SitesClient) RestoreSiteResponder(resp *http.Response) (result Rest
 // request - information on restore request
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) RestoreSiteSlot(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, slot string) (result SitesRestoreSiteSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestoreSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RestoreSiteSlotPreparer(ctx, resourceGroupName, name, backupID, request, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSiteSlot", nil, "Failure preparing request")
@@ -9826,10 +11309,6 @@ func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future Sites
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -9852,6 +11331,16 @@ func (client SitesClient) RestoreSiteSlotResponder(resp *http.Response) (result 
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) StartSite(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.StartSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StartSitePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StartSite", nil, "Failure preparing request")
@@ -9920,6 +11409,16 @@ func (client SitesClient) StartSiteResponder(resp *http.Response) (result SetObj
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) StartSiteSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.StartSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StartSiteSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StartSiteSlot", nil, "Failure preparing request")
@@ -9988,6 +11487,16 @@ func (client SitesClient) StartSiteSlotResponder(resp *http.Response) (result Se
 // resourceGroupName - name of resource group
 // name - name of web app
 func (client SitesClient) StopSite(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.StopSite")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StopSitePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StopSite", nil, "Failure preparing request")
@@ -10056,6 +11565,16 @@ func (client SitesClient) StopSiteResponder(resp *http.Response) (result SetObje
 // name - name of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) StopSiteSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.StopSiteSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.StopSiteSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "StopSiteSlot", nil, "Failure preparing request")
@@ -10126,6 +11645,16 @@ func (client SitesClient) StopSiteSlotResponder(resp *http.Response) (result Set
 // slotSwapEntity - request body that contains the target slot name
 // slot - name of source slot for the swap
 func (client SitesClient) SwapSlotsSlot(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, slot string) (result SitesSwapSlotsSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SwapSlotsSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SwapSlotsSlotPreparer(ctx, resourceGroupName, name, slotSwapEntity, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotsSlot", nil, "Failure preparing request")
@@ -10174,10 +11703,6 @@ func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSw
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -10201,6 +11726,16 @@ func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result Se
 // name - name of web app
 // slotSwapEntity - request body that contains the target slot name
 func (client SitesClient) SwapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity) (result SitesSwapSlotWithProductionFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SwapSlotWithProduction")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SwapSlotWithProductionPreparer(ctx, resourceGroupName, name, slotSwapEntity)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotWithProduction", nil, "Failure preparing request")
@@ -10248,10 +11783,6 @@ func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (futur
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -10271,6 +11802,16 @@ func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (
 
 // SyncSiteRepository sends the sync site repository request.
 func (client SitesClient) SyncSiteRepository(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SyncSiteRepository")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SyncSiteRepositoryPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SyncSiteRepository", nil, "Failure preparing request")
@@ -10335,6 +11876,16 @@ func (client SitesClient) SyncSiteRepositoryResponder(resp *http.Response) (resu
 
 // SyncSiteRepositorySlot sends the sync site repository slot request.
 func (client SitesClient) SyncSiteRepositorySlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SyncSiteRepositorySlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SyncSiteRepositorySlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "SyncSiteRepositorySlot", nil, "Failure preparing request")
@@ -10404,6 +11955,16 @@ func (client SitesClient) SyncSiteRepositorySlotResponder(resp *http.Response) (
 // name - name of web app
 // appSettings - application settings of web app
 func (client SitesClient) UpdateSiteAppSettings(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteAppSettings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteAppSettingsPreparer(ctx, resourceGroupName, name, appSettings)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAppSettings", nil, "Failure preparing request")
@@ -10475,6 +12036,16 @@ func (client SitesClient) UpdateSiteAppSettingsResponder(resp *http.Response) (r
 // appSettings - application settings of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteAppSettingsSlot(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, slot string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteAppSettingsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteAppSettingsSlotPreparer(ctx, resourceGroupName, name, appSettings, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAppSettingsSlot", nil, "Failure preparing request")
@@ -10546,6 +12117,16 @@ func (client SitesClient) UpdateSiteAppSettingsSlotResponder(resp *http.Response
 // name - name of web app
 // siteAuthSettings - auth settings associated with web app
 func (client SitesClient) UpdateSiteAuthSettings(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings) (result SiteAuthSettings, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteAuthSettings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteAuthSettingsPreparer(ctx, resourceGroupName, name, siteAuthSettings)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAuthSettings", nil, "Failure preparing request")
@@ -10617,6 +12198,16 @@ func (client SitesClient) UpdateSiteAuthSettingsResponder(resp *http.Response) (
 // siteAuthSettings - auth settings associated with web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteAuthSettingsSlot(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings, slot string) (result SiteAuthSettings, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteAuthSettingsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteAuthSettingsSlotPreparer(ctx, resourceGroupName, name, siteAuthSettings, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteAuthSettingsSlot", nil, "Failure preparing request")
@@ -10688,6 +12279,16 @@ func (client SitesClient) UpdateSiteAuthSettingsSlotResponder(resp *http.Respons
 // name - name of web app
 // request - information on backup request
 func (client SitesClient) UpdateSiteBackupConfiguration(ctx context.Context, resourceGroupName string, name string, request BackupRequest) (result BackupRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteBackupConfiguration")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteBackupConfigurationPreparer(ctx, resourceGroupName, name, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteBackupConfiguration", nil, "Failure preparing request")
@@ -10759,6 +12360,16 @@ func (client SitesClient) UpdateSiteBackupConfigurationResponder(resp *http.Resp
 // request - information on backup request
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteBackupConfigurationSlot(ctx context.Context, resourceGroupName string, name string, request BackupRequest, slot string) (result BackupRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteBackupConfigurationSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteBackupConfigurationSlotPreparer(ctx, resourceGroupName, name, request, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteBackupConfigurationSlot", nil, "Failure preparing request")
@@ -10830,6 +12441,16 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlotResponder(resp *http.
 // name - name of web app
 // siteConfig - request body that contains the configuraiton setting for the web app
 func (client SitesClient) UpdateSiteConfig(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteConfigPreparer(ctx, resourceGroupName, name, siteConfig)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConfig", nil, "Failure preparing request")
@@ -10901,6 +12522,16 @@ func (client SitesClient) UpdateSiteConfigResponder(resp *http.Response) (result
 // siteConfig - request body that contains the configuraiton setting for the web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteConfigSlot(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfig, slot string) (result SiteConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteConfigSlotPreparer(ctx, resourceGroupName, name, siteConfig, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConfigSlot", nil, "Failure preparing request")
@@ -10972,6 +12603,16 @@ func (client SitesClient) UpdateSiteConfigSlotResponder(resp *http.Response) (re
 // name - name of web app
 // connectionStrings - connection strings associated with web app
 func (client SitesClient) UpdateSiteConnectionStrings(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary) (result ConnectionStringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteConnectionStrings")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteConnectionStringsPreparer(ctx, resourceGroupName, name, connectionStrings)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConnectionStrings", nil, "Failure preparing request")
@@ -11043,6 +12684,16 @@ func (client SitesClient) UpdateSiteConnectionStringsResponder(resp *http.Respon
 // connectionStrings - connection strings associated with web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteConnectionStringsSlot(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary, slot string) (result ConnectionStringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteConnectionStringsSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteConnectionStringsSlotPreparer(ctx, resourceGroupName, name, connectionStrings, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteConnectionStringsSlot", nil, "Failure preparing request")
@@ -11114,6 +12765,16 @@ func (client SitesClient) UpdateSiteConnectionStringsSlotResponder(resp *http.Re
 // name - name of web app
 // siteLogsConfig - site logs configuration
 func (client SitesClient) UpdateSiteLogsConfig(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig) (result SiteLogsConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteLogsConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteLogsConfigPreparer(ctx, resourceGroupName, name, siteLogsConfig)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteLogsConfig", nil, "Failure preparing request")
@@ -11185,6 +12846,16 @@ func (client SitesClient) UpdateSiteLogsConfigResponder(resp *http.Response) (re
 // siteLogsConfig - site logs configuration
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteLogsConfigSlot(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig, slot string) (result SiteLogsConfig, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteLogsConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteLogsConfigSlotPreparer(ctx, resourceGroupName, name, siteLogsConfig, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteLogsConfigSlot", nil, "Failure preparing request")
@@ -11256,6 +12927,16 @@ func (client SitesClient) UpdateSiteLogsConfigSlotResponder(resp *http.Response)
 // name - name of web app
 // metadata - meta data of web app
 func (client SitesClient) UpdateSiteMetadata(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteMetadata")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteMetadataPreparer(ctx, resourceGroupName, name, metadata)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteMetadata", nil, "Failure preparing request")
@@ -11327,6 +13008,16 @@ func (client SitesClient) UpdateSiteMetadataResponder(resp *http.Response) (resu
 // metadata - meta data of web app
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteMetadataSlot(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary, slot string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteMetadataSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteMetadataSlotPreparer(ctx, resourceGroupName, name, metadata, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteMetadataSlot", nil, "Failure preparing request")
@@ -11399,6 +13090,16 @@ func (client SitesClient) UpdateSiteMetadataSlotResponder(resp *http.Response) (
 // entityName - the name by which the Hybrid Connection is identified
 // connectionEnvelope - the details of the Hybrid Connection
 func (client SitesClient) UpdateSiteRelayServiceConnection(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteRelayServiceConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteRelayServiceConnectionPreparer(ctx, resourceGroupName, name, entityName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteRelayServiceConnection", nil, "Failure preparing request")
@@ -11472,6 +13173,16 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionResponder(resp *http.R
 // connectionEnvelope - the details of the Hybrid Connection
 // slot - the name of the slot for the web app.
 func (client SitesClient) UpdateSiteRelayServiceConnectionSlot(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, slot string) (result RelayServiceConnectionEntity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteRelayServiceConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteRelayServiceConnectionSlotPreparer(ctx, resourceGroupName, name, entityName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteRelayServiceConnectionSlot", nil, "Failure preparing request")
@@ -11544,6 +13255,16 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSlotResponder(resp *ht
 // name - name of web app
 // siteSourceControl - request body that contains the source control parameters
 func (client SitesClient) UpdateSiteSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteSourceControl")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteSourceControlPreparer(ctx, resourceGroupName, name, siteSourceControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteSourceControl", nil, "Failure preparing request")
@@ -11615,6 +13336,16 @@ func (client SitesClient) UpdateSiteSourceControlResponder(resp *http.Response) 
 // siteSourceControl - request body that contains the source control parameters
 // slot - name of web app slot. If not specified then will default to production slot.
 func (client SitesClient) UpdateSiteSourceControlSlot(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string) (result SiteSourceControl, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteSourceControlSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteSourceControlSlotPreparer(ctx, resourceGroupName, name, siteSourceControl, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteSourceControlSlot", nil, "Failure preparing request")
@@ -11687,6 +13418,16 @@ func (client SitesClient) UpdateSiteSourceControlSlotResponder(resp *http.Respon
 // vnetName - the name of the Virtual Network
 // connectionEnvelope - the properties of this Virtual Network Connection
 func (client SitesClient) UpdateSiteVNETConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteVNETConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteVNETConnectionPreparer(ctx, resourceGroupName, name, vnetName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnection", nil, "Failure preparing request")
@@ -11760,6 +13501,16 @@ func (client SitesClient) UpdateSiteVNETConnectionResponder(resp *http.Response)
 // gatewayName - the name of the gateway. The only gateway that exists presently is "primary"
 // connectionEnvelope - the properties to update this gateway with.
 func (client SitesClient) UpdateSiteVNETConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteVNETConnectionGateway")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteVNETConnectionGatewayPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionGateway", nil, "Failure preparing request")
@@ -11835,6 +13586,16 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewayResponder(resp *http.Re
 // connectionEnvelope - the properties to update this gateway with.
 // slot - the name of the slot for this web app.
 func (client SitesClient) UpdateSiteVNETConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, slot string) (result VnetGateway, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteVNETConnectionGatewaySlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteVNETConnectionGatewaySlotPreparer(ctx, resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionGatewaySlot", nil, "Failure preparing request")
@@ -11910,6 +13671,16 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotResponder(resp *htt
 // connectionEnvelope - the properties of this Virtual Network Connection
 // slot - the name of the slot for this web app.
 func (client SitesClient) UpdateSiteVNETConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfo, slot string) (result VnetInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSiteVNETConnectionSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSiteVNETConnectionSlotPreparer(ctx, resourceGroupName, name, vnetName, connectionEnvelope, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSiteVNETConnectionSlot", nil, "Failure preparing request")
@@ -11982,6 +13753,16 @@ func (client SitesClient) UpdateSiteVNETConnectionSlotResponder(resp *http.Respo
 // name - name of web app
 // slotConfigNames - request body containing the names of application settings and connection strings
 func (client SitesClient) UpdateSlotConfigNames(ctx context.Context, resourceGroupName string, name string, slotConfigNames SlotConfigNamesResource) (result SlotConfigNamesResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.UpdateSlotConfigNames")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateSlotConfigNamesPreparer(ctx, resourceGroupName, name, slotConfigNames)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "UpdateSlotConfigNames", nil, "Failure preparing request")

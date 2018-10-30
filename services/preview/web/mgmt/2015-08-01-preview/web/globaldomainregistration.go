@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -43,6 +44,16 @@ func NewGlobalDomainRegistrationClientWithBaseURI(baseURI string, subscriptionID
 // Parameters:
 // identifier - name of the domain
 func (client GlobalDomainRegistrationClient) CheckDomainAvailability(ctx context.Context, identifier NameIdentifier) (result DomainAvailablilityCheckResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.CheckDomainAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckDomainAvailabilityPreparer(ctx, identifier)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "CheckDomainAvailability", nil, "Failure preparing request")
@@ -107,6 +118,16 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityResponder(re
 
 // GetAllDomains sends the get all domains request.
 func (client GlobalDomainRegistrationClient) GetAllDomains(ctx context.Context) (result DomainCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.GetAllDomains")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getAllDomainsNextResults
 	req, err := client.GetAllDomainsPreparer(ctx)
 	if err != nil {
@@ -169,8 +190,8 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsResponder(resp *http.R
 }
 
 // getAllDomainsNextResults retrieves the next set of results, if any.
-func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
-	req, err := lastResults.domainCollectionPreparer()
+func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(ctx context.Context, lastResults DomainCollection) (result DomainCollection, err error) {
+	req, err := lastResults.domainCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "getAllDomainsNextResults", nil, "Failure preparing next results request")
 	}
@@ -191,12 +212,32 @@ func (client GlobalDomainRegistrationClient) getAllDomainsNextResults(lastResult
 
 // GetAllDomainsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalDomainRegistrationClient) GetAllDomainsComplete(ctx context.Context) (result DomainCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.GetAllDomains")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetAllDomains(ctx)
 	return
 }
 
 // GetDomainControlCenterSsoRequest sends the get domain control center sso request request.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequest(ctx context.Context) (result DomainControlCenterSsoRequest, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.GetDomainControlCenterSsoRequest")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetDomainControlCenterSsoRequestPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetDomainControlCenterSsoRequest", nil, "Failure preparing request")
@@ -261,6 +302,16 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestRes
 // Parameters:
 // parameters - domain recommendation search parameters
 func (client GlobalDomainRegistrationClient) ListDomainRecommendations(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.ListDomainRecommendations")
+		defer func() {
+			sc := -1
+			if result.nic.Response.Response != nil {
+				sc = result.nic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listDomainRecommendationsNextResults
 	req, err := client.ListDomainRecommendationsPreparer(ctx, parameters)
 	if err != nil {
@@ -325,8 +376,8 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsResponder(
 }
 
 // listDomainRecommendationsNextResults retrieves the next set of results, if any.
-func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResults(lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
-	req, err := lastResults.nameIdentifierCollectionPreparer()
+func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResults(ctx context.Context, lastResults NameIdentifierCollection) (result NameIdentifierCollection, err error) {
+	req, err := lastResults.nameIdentifierCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "listDomainRecommendationsNextResults", nil, "Failure preparing next results request")
 	}
@@ -347,6 +398,16 @@ func (client GlobalDomainRegistrationClient) listDomainRecommendationsNextResult
 
 // ListDomainRecommendationsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsComplete(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.ListDomainRecommendations")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListDomainRecommendations(ctx, parameters)
 	return
 }
@@ -355,6 +416,16 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsComplete(c
 // Parameters:
 // domainRegistrationInput - domain registration information
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformation(ctx context.Context, domainRegistrationInput DomainRegistrationInput) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalDomainRegistrationClient.ValidateDomainPurchaseInformation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ValidateDomainPurchaseInformationPreparer(ctx, domainRegistrationInput)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ValidateDomainPurchaseInformation", nil, "Failure preparing request")

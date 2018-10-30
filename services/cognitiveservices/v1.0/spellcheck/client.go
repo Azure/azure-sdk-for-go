@@ -24,6 +24,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -178,6 +179,16 @@ func NewWithBaseURI(baseURI string) BaseClient {
 // postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string
 // of a GET request or in the body of a POST request.
 func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode string, preContextText string, postContextText string) (result SpellCheck, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.SpellCheckerMethod")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SpellCheckerMethodPreparer(ctx, textParameter, acceptLanguage, pragma, userAgent, clientID, clientIP, location, actionType, appName, countryCode, clientMachineName, docID, market, sessionID, setLang, userID, mode, preContextText, postContextText)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "spellcheck.BaseClient", "SpellCheckerMethod", nil, "Failure preparing request")

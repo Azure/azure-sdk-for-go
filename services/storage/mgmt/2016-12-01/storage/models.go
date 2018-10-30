@@ -25,6 +25,9 @@ import (
 	"net/http"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go//services/storage/mgmt/2016-12-01/storage"
+
 // AccessTier enumerates the values for access tier.
 type AccessTier string
 
@@ -437,7 +440,8 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage account name.
+// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage
+// account name.
 type AccountCheckNameAvailabilityParameters struct {
 	Name *string `json:"name,omitempty"`
 	Type *string `json:"type,omitempty"`
@@ -640,7 +644,8 @@ type AccountSasParameters struct {
 	KeyToSign *string `json:"keyToSign,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }
@@ -668,7 +673,8 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
-// AccountUpdateParameters the parameters that can be provided when updating the storage account properties.
+// AccountUpdateParameters the parameters that can be provided when updating the storage account
+// properties.
 type AccountUpdateParameters struct {
 	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value.
 	Sku *Sku `json:"sku,omitempty"`

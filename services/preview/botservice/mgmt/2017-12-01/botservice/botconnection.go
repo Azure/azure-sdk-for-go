@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) Bo
 // connectionName - the name of the Bot Service Connection Setting resource
 // parameters - the parameters to provide for creating the Connection Setting.
 func (client BotConnectionClient) Create(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -134,6 +145,16 @@ func (client BotConnectionClient) CreateResponder(resp *http.Response) (result C
 // resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
 func (client BotConnectionClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -218,6 +239,16 @@ func (client BotConnectionClient) DeleteResponder(resp *http.Response) (result a
 // resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
 func (client BotConnectionClient) Get(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -302,6 +333,16 @@ func (client BotConnectionClient) GetResponder(resp *http.Response) (result Conn
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 func (client BotConnectionClient) ListByBotService(ctx context.Context, resourceGroupName string, resourceName string) (result ConnectionSettingResponseListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.ListByBotService")
+		defer func() {
+			sc := -1
+			if result.csrl.Response.Response != nil {
+				sc = result.csrl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -378,8 +419,8 @@ func (client BotConnectionClient) ListByBotServiceResponder(resp *http.Response)
 }
 
 // listByBotServiceNextResults retrieves the next set of results, if any.
-func (client BotConnectionClient) listByBotServiceNextResults(lastResults ConnectionSettingResponseList) (result ConnectionSettingResponseList, err error) {
-	req, err := lastResults.connectionSettingResponseListPreparer()
+func (client BotConnectionClient) listByBotServiceNextResults(ctx context.Context, lastResults ConnectionSettingResponseList) (result ConnectionSettingResponseList, err error) {
+	req, err := lastResults.connectionSettingResponseListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "listByBotServiceNextResults", nil, "Failure preparing next results request")
 	}
@@ -400,12 +441,32 @@ func (client BotConnectionClient) listByBotServiceNextResults(lastResults Connec
 
 // ListByBotServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client BotConnectionClient) ListByBotServiceComplete(ctx context.Context, resourceGroupName string, resourceName string) (result ConnectionSettingResponseListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.ListByBotService")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByBotService(ctx, resourceGroupName, resourceName)
 	return
 }
 
 // ListServiceProviders lists the available Service Providers for creating Connection Settings
 func (client BotConnectionClient) ListServiceProviders(ctx context.Context) (result ServiceProviderResponseList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.ListServiceProviders")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListServiceProvidersPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListServiceProviders", nil, "Failure preparing request")
@@ -472,6 +533,16 @@ func (client BotConnectionClient) ListServiceProvidersResponder(resp *http.Respo
 // resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
 func (client BotConnectionClient) ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.ListWithSecrets")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -558,6 +629,16 @@ func (client BotConnectionClient) ListWithSecretsResponder(resp *http.Response) 
 // connectionName - the name of the Bot Service Connection Setting resource
 // parameters - the parameters to provide for updating the Connection Setting.
 func (client BotConnectionClient) Update(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BotConnectionClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},

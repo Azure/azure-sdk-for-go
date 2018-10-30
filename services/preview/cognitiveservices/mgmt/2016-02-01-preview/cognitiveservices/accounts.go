@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -49,6 +50,16 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // only.
 // parameters - the parameters to provide for the created account.
 func (client AccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters) (result Account, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -132,6 +143,16 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result Accoun
 // Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters
 // only.
 func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -208,6 +229,16 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters
 // only.
 func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result Account, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetProperties")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -280,6 +311,16 @@ func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result
 
 // List returns all the resources of a particular type belonging to a subscription.
 func (client AccountsClient) List(ctx context.Context) (result AccountListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "List", nil, "Failure preparing request")
@@ -344,6 +385,16 @@ func (client AccountsClient) ListResponder(resp *http.Response) (result AccountL
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AccountListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -412,6 +463,16 @@ func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (
 // Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters
 // only.
 func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result AccountKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -489,6 +550,16 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result Acco
 // Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters
 // only.
 func (client AccountsClient) ListSkus(ctx context.Context, resourceGroupName string, accountName string) (result AccountEnumerateSkusResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListSkus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -567,6 +638,16 @@ func (client AccountsClient) ListSkusResponder(resp *http.Response) (result Acco
 // only.
 // body - regenerate key parameters.
 func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, body RegenerateKeyParameters) (result AccountKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.RegenerateKey")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -647,6 +728,16 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 // only.
 // body - the parameters to provide for the created account.
 func (client AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, body AccountUpdateParameters) (result Account, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},

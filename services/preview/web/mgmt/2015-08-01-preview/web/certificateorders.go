@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string
 // name - certificate name
 // keyVaultCertificate - key Vault secret csm Id
 func (client CertificateOrdersClient) CreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (result CertificateOrderCertificate, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.CreateOrUpdateCertificate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "CreateOrUpdateCertificate", nil, "Failure preparing request")
@@ -117,6 +128,16 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateResponder(resp *h
 // name - certificate name
 // certificateDistinguishedName - distinguished name to be used for purchasing certificate
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrder(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (result CertificateOrder, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.CreateOrUpdateCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateCertificateOrderPreparer(ctx, resourceGroupName, name, certificateDistinguishedName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "CreateOrUpdateCertificateOrder", nil, "Failure preparing request")
@@ -187,6 +208,16 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderResponder(re
 // certificateOrderName - certificate name
 // name - certificate name
 func (client CertificateOrdersClient) DeleteCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.DeleteCertificate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "DeleteCertificate", nil, "Failure preparing request")
@@ -255,6 +286,16 @@ func (client CertificateOrdersClient) DeleteCertificateResponder(resp *http.Resp
 // resourceGroupName - azure resource group name
 // name - certificate name
 func (client CertificateOrdersClient) DeleteCertificateOrder(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.DeleteCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteCertificateOrderPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "DeleteCertificateOrder", nil, "Failure preparing request")
@@ -323,6 +364,16 @@ func (client CertificateOrdersClient) DeleteCertificateOrderResponder(resp *http
 // certificateOrderName - certificate name
 // name - certificate name
 func (client CertificateOrdersClient) GetCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (result CertificateOrderCertificate, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificate", nil, "Failure preparing request")
@@ -391,6 +442,16 @@ func (client CertificateOrdersClient) GetCertificateResponder(resp *http.Respons
 // resourceGroupName - azure resource group name
 // name - certificate name
 func (client CertificateOrdersClient) GetCertificateOrder(ctx context.Context, resourceGroupName string, name string) (result CertificateOrder, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetCertificateOrderPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrder", nil, "Failure preparing request")
@@ -457,6 +518,16 @@ func (client CertificateOrdersClient) GetCertificateOrderResponder(resp *http.Re
 // Parameters:
 // resourceGroupName - azure resource group name
 func (client CertificateOrdersClient) GetCertificateOrders(ctx context.Context, resourceGroupName string) (result CertificateOrderCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificateOrders")
+		defer func() {
+			sc := -1
+			if result.coc.Response.Response != nil {
+				sc = result.coc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getCertificateOrdersNextResults
 	req, err := client.GetCertificateOrdersPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -520,8 +591,8 @@ func (client CertificateOrdersClient) GetCertificateOrdersResponder(resp *http.R
 }
 
 // getCertificateOrdersNextResults retrieves the next set of results, if any.
-func (client CertificateOrdersClient) getCertificateOrdersNextResults(lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
-	req, err := lastResults.certificateOrderCollectionPreparer()
+func (client CertificateOrdersClient) getCertificateOrdersNextResults(ctx context.Context, lastResults CertificateOrderCollection) (result CertificateOrderCollection, err error) {
+	req, err := lastResults.certificateOrderCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "getCertificateOrdersNextResults", nil, "Failure preparing next results request")
 	}
@@ -542,6 +613,16 @@ func (client CertificateOrdersClient) getCertificateOrdersNextResults(lastResult
 
 // GetCertificateOrdersComplete enumerates all values, automatically crossing page boundaries as required.
 func (client CertificateOrdersClient) GetCertificateOrdersComplete(ctx context.Context, resourceGroupName string) (result CertificateOrderCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificateOrders")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetCertificateOrders(ctx, resourceGroupName)
 	return
 }
@@ -551,6 +632,16 @@ func (client CertificateOrdersClient) GetCertificateOrdersComplete(ctx context.C
 // resourceGroupName - azure resource group name
 // certificateOrderName - certificate name
 func (client CertificateOrdersClient) GetCertificates(ctx context.Context, resourceGroupName string, certificateOrderName string) (result CertificateOrderCertificateCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificates")
+		defer func() {
+			sc := -1
+			if result.cocc.Response.Response != nil {
+				sc = result.cocc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getCertificatesNextResults
 	req, err := client.GetCertificatesPreparer(ctx, resourceGroupName, certificateOrderName)
 	if err != nil {
@@ -615,8 +706,8 @@ func (client CertificateOrdersClient) GetCertificatesResponder(resp *http.Respon
 }
 
 // getCertificatesNextResults retrieves the next set of results, if any.
-func (client CertificateOrdersClient) getCertificatesNextResults(lastResults CertificateOrderCertificateCollection) (result CertificateOrderCertificateCollection, err error) {
-	req, err := lastResults.certificateOrderCertificateCollectionPreparer()
+func (client CertificateOrdersClient) getCertificatesNextResults(ctx context.Context, lastResults CertificateOrderCertificateCollection) (result CertificateOrderCertificateCollection, err error) {
+	req, err := lastResults.certificateOrderCertificateCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "getCertificatesNextResults", nil, "Failure preparing next results request")
 	}
@@ -637,6 +728,16 @@ func (client CertificateOrdersClient) getCertificatesNextResults(lastResults Cer
 
 // GetCertificatesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client CertificateOrdersClient) GetCertificatesComplete(ctx context.Context, resourceGroupName string, certificateOrderName string) (result CertificateOrderCertificateCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.GetCertificates")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetCertificates(ctx, resourceGroupName, certificateOrderName)
 	return
 }
@@ -647,6 +748,16 @@ func (client CertificateOrdersClient) GetCertificatesComplete(ctx context.Contex
 // name - certificate name
 // reissueCertificateOrderRequest - reissue parameters
 func (client CertificateOrdersClient) ReissueCertificateOrder(ctx context.Context, resourceGroupName string, name string, reissueCertificateOrderRequest ReissueCertificateOrderRequest) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.ReissueCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ReissueCertificateOrderPreparer(ctx, resourceGroupName, name, reissueCertificateOrderRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "ReissueCertificateOrder", nil, "Failure preparing request")
@@ -717,6 +828,16 @@ func (client CertificateOrdersClient) ReissueCertificateOrderResponder(resp *htt
 // name - certificate name
 // renewCertificateOrderRequest - renew parameters
 func (client CertificateOrdersClient) RenewCertificateOrder(ctx context.Context, resourceGroupName string, name string, renewCertificateOrderRequest RenewCertificateOrderRequest) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.RenewCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RenewCertificateOrderPreparer(ctx, resourceGroupName, name, renewCertificateOrderRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "RenewCertificateOrder", nil, "Failure preparing request")
@@ -786,6 +907,16 @@ func (client CertificateOrdersClient) RenewCertificateOrderResponder(resp *http.
 // resourceGroupName - azure resource group name
 // name - certificate order name
 func (client CertificateOrdersClient) ResendCertificateEmail(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.ResendCertificateEmail")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ResendCertificateEmailPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "ResendCertificateEmail", nil, "Failure preparing request")
@@ -853,6 +984,16 @@ func (client CertificateOrdersClient) ResendCertificateEmailResponder(resp *http
 // resourceGroupName - azure resource group name
 // name - certificate order name
 func (client CertificateOrdersClient) RetrieveCertificateActions(ctx context.Context, resourceGroupName string, name string) (result ListCertificateOrderAction, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.RetrieveCertificateActions")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RetrieveCertificateActionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "RetrieveCertificateActions", nil, "Failure preparing request")
@@ -920,6 +1061,16 @@ func (client CertificateOrdersClient) RetrieveCertificateActionsResponder(resp *
 // resourceGroupName - azure resource group name
 // name - certificate order name
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistory(ctx context.Context, resourceGroupName string, name string) (result ListCertificateEmail, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.RetrieveCertificateEmailHistory")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RetrieveCertificateEmailHistoryPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "RetrieveCertificateEmailHistory", nil, "Failure preparing request")
@@ -989,6 +1140,16 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryResponder(r
 // name - certificate name
 // keyVaultCertificate - key Vault secret csm Id
 func (client CertificateOrdersClient) UpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (result CertificateOrderCertificate, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.UpdateCertificate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "UpdateCertificate", nil, "Failure preparing request")
@@ -1060,6 +1221,16 @@ func (client CertificateOrdersClient) UpdateCertificateResponder(resp *http.Resp
 // name - certificate name
 // certificateDistinguishedName - distinguished name to be used for purchasing certificate
 func (client CertificateOrdersClient) UpdateCertificateOrder(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (result CertificateOrder, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.UpdateCertificateOrder")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateCertificateOrderPreparer(ctx, resourceGroupName, name, certificateDistinguishedName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "UpdateCertificateOrder", nil, "Failure preparing request")
@@ -1129,6 +1300,16 @@ func (client CertificateOrdersClient) UpdateCertificateOrderResponder(resp *http
 // resourceGroupName - azure resource group name
 // name - certificate order name
 func (client CertificateOrdersClient) VerifyDomainOwnership(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateOrdersClient.VerifyDomainOwnership")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.VerifyDomainOwnershipPreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "VerifyDomainOwnership", nil, "Failure preparing request")

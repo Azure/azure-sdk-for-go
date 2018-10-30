@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewHealthProbeSettingsClientWithBaseURI(baseURI string, subscriptionID stri
 // healthProbeSettingsName - name of the health probe settings which is unique within the Front Door.
 // healthProbeSettingsParameters - healthProbeSettings properties needed to create a new Front Door.
 func (client HealthProbeSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, healthProbeSettingsName string, healthProbeSettingsParameters HealthProbeSettingsModel) (result HealthProbeSettingsCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthProbeSettingsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -111,10 +122,6 @@ func (client HealthProbeSettingsClient) CreateOrUpdateSender(req *http.Request) 
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -138,6 +145,16 @@ func (client HealthProbeSettingsClient) CreateOrUpdateResponder(resp *http.Respo
 // frontDoorName - name of the Front Door which is globally unique.
 // healthProbeSettingsName - name of the health probe settings which is unique within the Front Door.
 func (client HealthProbeSettingsClient) Delete(ctx context.Context, resourceGroupName string, frontDoorName string, healthProbeSettingsName string) (result HealthProbeSettingsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthProbeSettingsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -200,10 +217,6 @@ func (client HealthProbeSettingsClient) DeleteSender(req *http.Request) (future 
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -226,6 +239,16 @@ func (client HealthProbeSettingsClient) DeleteResponder(resp *http.Response) (re
 // frontDoorName - name of the Front Door which is globally unique.
 // healthProbeSettingsName - name of the health probe settings which is unique within the Front Door.
 func (client HealthProbeSettingsClient) Get(ctx context.Context, resourceGroupName string, frontDoorName string, healthProbeSettingsName string) (result HealthProbeSettingsModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthProbeSettingsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -310,6 +333,16 @@ func (client HealthProbeSettingsClient) GetResponder(resp *http.Response) (resul
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // frontDoorName - name of the Front Door which is globally unique.
 func (client HealthProbeSettingsClient) ListByFrontDoor(ctx context.Context, resourceGroupName string, frontDoorName string) (result HealthProbeSettingsListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthProbeSettingsClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.hpslr.Response.Response != nil {
+				sc = result.hpslr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 80, Chain: nil},
@@ -386,8 +419,8 @@ func (client HealthProbeSettingsClient) ListByFrontDoorResponder(resp *http.Resp
 }
 
 // listByFrontDoorNextResults retrieves the next set of results, if any.
-func (client HealthProbeSettingsClient) listByFrontDoorNextResults(lastResults HealthProbeSettingsListResult) (result HealthProbeSettingsListResult, err error) {
-	req, err := lastResults.healthProbeSettingsListResultPreparer()
+func (client HealthProbeSettingsClient) listByFrontDoorNextResults(ctx context.Context, lastResults HealthProbeSettingsListResult) (result HealthProbeSettingsListResult, err error) {
+	req, err := lastResults.healthProbeSettingsListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "frontdoor.HealthProbeSettingsClient", "listByFrontDoorNextResults", nil, "Failure preparing next results request")
 	}
@@ -408,6 +441,16 @@ func (client HealthProbeSettingsClient) listByFrontDoorNextResults(lastResults H
 
 // ListByFrontDoorComplete enumerates all values, automatically crossing page boundaries as required.
 func (client HealthProbeSettingsClient) ListByFrontDoorComplete(ctx context.Context, resourceGroupName string, frontDoorName string) (result HealthProbeSettingsListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthProbeSettingsClient.ListByFrontDoor")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByFrontDoor(ctx, resourceGroupName, frontDoorName)
 	return
 }

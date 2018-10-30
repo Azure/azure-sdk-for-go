@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string, countTyp
 // automationAccountName - the name of the automation account.
 // nodeID - the node id.
 func (client DscNodeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string) (result DscNode, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DscNodeClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -123,6 +134,16 @@ func (client DscNodeClient) DeleteResponder(resp *http.Response) (result DscNode
 // automationAccountName - the name of the automation account.
 // nodeID - the node id.
 func (client DscNodeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string) (result DscNode, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DscNodeClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -203,6 +224,16 @@ func (client DscNodeClient) GetResponder(resp *http.Response) (result DscNode, e
 // top - the the number of rows to take.
 // inlinecount - return total rows.
 func (client DscNodeClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, skip *int32, top *int32, inlinecount string) (result DscNodeListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DscNodeClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.dnlr.Response.Response != nil {
+				sc = result.dnlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -287,8 +318,8 @@ func (client DscNodeClient) ListByAutomationAccountResponder(resp *http.Response
 }
 
 // listByAutomationAccountNextResults retrieves the next set of results, if any.
-func (client DscNodeClient) listByAutomationAccountNextResults(lastResults DscNodeListResult) (result DscNodeListResult, err error) {
-	req, err := lastResults.dscNodeListResultPreparer()
+func (client DscNodeClient) listByAutomationAccountNextResults(ctx context.Context, lastResults DscNodeListResult) (result DscNodeListResult, err error) {
+	req, err := lastResults.dscNodeListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "automation.DscNodeClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
@@ -309,6 +340,16 @@ func (client DscNodeClient) listByAutomationAccountNextResults(lastResults DscNo
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DscNodeClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, skip *int32, top *int32, inlinecount string) (result DscNodeListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DscNodeClient.ListByAutomationAccount")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, filter, skip, top, inlinecount)
 	return
 }
@@ -320,6 +361,16 @@ func (client DscNodeClient) ListByAutomationAccountComplete(ctx context.Context,
 // nodeID - parameters supplied to the update dsc node.
 // dscNodeUpdateParameters - parameters supplied to the update dsc node.
 func (client DscNodeClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters) (result DscNode, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DscNodeClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

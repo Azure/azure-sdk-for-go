@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID st
 // resourceGroupName - name of resource group
 // name - name of mobile service
 func (client ClassicMobileServicesClient) DeleteClassicMobileService(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicMobileServicesClient.DeleteClassicMobileService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteClassicMobileServicePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "DeleteClassicMobileService", nil, "Failure preparing request")
@@ -111,6 +122,16 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(re
 // resourceGroupName - name of resource group
 // name - name of mobile service
 func (client ClassicMobileServicesClient) GetClassicMobileService(ctx context.Context, resourceGroupName string, name string) (result ClassicMobileService, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicMobileServicesClient.GetClassicMobileService")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetClassicMobileServicePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileService", nil, "Failure preparing request")
@@ -177,6 +198,16 @@ func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp 
 // Parameters:
 // resourceGroupName - name of resource group
 func (client ClassicMobileServicesClient) GetClassicMobileServices(ctx context.Context, resourceGroupName string) (result ClassicMobileServiceCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicMobileServicesClient.GetClassicMobileServices")
+		defer func() {
+			sc := -1
+			if result.cmsc.Response.Response != nil {
+				sc = result.cmsc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getClassicMobileServicesNextResults
 	req, err := client.GetClassicMobileServicesPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -240,8 +271,8 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesResponder(resp
 }
 
 // getClassicMobileServicesNextResults retrieves the next set of results, if any.
-func (client ClassicMobileServicesClient) getClassicMobileServicesNextResults(lastResults ClassicMobileServiceCollection) (result ClassicMobileServiceCollection, err error) {
-	req, err := lastResults.classicMobileServiceCollectionPreparer()
+func (client ClassicMobileServicesClient) getClassicMobileServicesNextResults(ctx context.Context, lastResults ClassicMobileServiceCollection) (result ClassicMobileServiceCollection, err error) {
+	req, err := lastResults.classicMobileServiceCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "getClassicMobileServicesNextResults", nil, "Failure preparing next results request")
 	}
@@ -262,6 +293,16 @@ func (client ClassicMobileServicesClient) getClassicMobileServicesNextResults(la
 
 // GetClassicMobileServicesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ClassicMobileServicesClient) GetClassicMobileServicesComplete(ctx context.Context, resourceGroupName string) (result ClassicMobileServiceCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClassicMobileServicesClient.GetClassicMobileServices")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetClassicMobileServices(ctx, resourceGroupName)
 	return
 }

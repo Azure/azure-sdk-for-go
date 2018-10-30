@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 // domainName - name of the domain
 // domain - domain registration information
 func (client DomainsClient) CreateOrUpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.CreateOrUpdateDomain")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdateDomainPreparer(ctx, resourceGroupName, domainName, domain)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", nil, "Failure preparing request")
@@ -115,6 +126,16 @@ func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (
 // domainName - name of the domain
 // forceHardDeleteDomain - if true then the domain will be deleted immediately instead of after 24 hours
 func (client DomainsClient) DeleteDomain(ctx context.Context, resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.DeleteDomain")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeleteDomainPreparer(ctx, resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", nil, "Failure preparing request")
@@ -185,6 +206,16 @@ func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result S
 // resourceGroupName - name of the resource group
 // domainName - name of the domain
 func (client DomainsClient) GetDomain(ctx context.Context, resourceGroupName string, domainName string) (result Domain, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.GetDomain")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetDomainPreparer(ctx, resourceGroupName, domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", nil, "Failure preparing request")
@@ -253,6 +284,16 @@ func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Doma
 // domainName - name of the domain
 // operationID - domain purchase operation Id
 func (client DomainsClient) GetDomainOperation(ctx context.Context, resourceGroupName string, domainName string, operationID string) (result Domain, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.GetDomainOperation")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetDomainOperationPreparer(ctx, resourceGroupName, domainName, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", nil, "Failure preparing request")
@@ -320,6 +361,16 @@ func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (re
 // Parameters:
 // resourceGroupName - name of the resource group
 func (client DomainsClient) GetDomains(ctx context.Context, resourceGroupName string) (result DomainCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.GetDomains")
+		defer func() {
+			sc := -1
+			if result.dc.Response.Response != nil {
+				sc = result.dc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.getDomainsNextResults
 	req, err := client.GetDomainsPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -383,8 +434,8 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 }
 
 // getDomainsNextResults retrieves the next set of results, if any.
-func (client DomainsClient) getDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
-	req, err := lastResults.domainCollectionPreparer()
+func (client DomainsClient) getDomainsNextResults(ctx context.Context, lastResults DomainCollection) (result DomainCollection, err error) {
+	req, err := lastResults.domainCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", nil, "Failure preparing next results request")
 	}
@@ -405,6 +456,16 @@ func (client DomainsClient) getDomainsNextResults(lastResults DomainCollection) 
 
 // GetDomainsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DomainsClient) GetDomainsComplete(ctx context.Context, resourceGroupName string) (result DomainCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.GetDomains")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.GetDomains(ctx, resourceGroupName)
 	return
 }
@@ -415,6 +476,16 @@ func (client DomainsClient) GetDomainsComplete(ctx context.Context, resourceGrou
 // domainName - name of the domain
 // domain - domain registration information
 func (client DomainsClient) UpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.UpdateDomain")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdateDomainPreparer(ctx, resourceGroupName, domainName, domain)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", nil, "Failure preparing request")

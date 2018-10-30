@@ -27,6 +27,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -62,6 +63,16 @@ func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) 
 // Parameters:
 // checkNameAvailabilityRequest - management group name availability check parameters.
 func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityRequest CheckNameAvailabilityRequest) (result CheckNameAvailabilityResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckNameAvailabilityPreparer(ctx, checkNameAvailabilityRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "CheckNameAvailability", nil, "Failure preparing request")

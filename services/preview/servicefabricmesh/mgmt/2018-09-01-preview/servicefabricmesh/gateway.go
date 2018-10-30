@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayC
 // gatewayResourceName - the identity of the gateway.
 // gatewayResourceDescription - description for creating a Gateway resource.
 func (client GatewayClient) Create(ctx context.Context, resourceGroupName string, gatewayResourceName string, gatewayResourceDescription GatewayResourceDescription) (result GatewayResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: gatewayResourceDescription,
 			Constraints: []validation.Constraint{{Target: "gatewayResourceDescription.GatewayResourceProperties", Name: validation.Null, Rule: true,
@@ -126,6 +137,16 @@ func (client GatewayClient) CreateResponder(resp *http.Response) (result Gateway
 // resourceGroupName - azure resource group name
 // gatewayResourceName - the identity of the gateway.
 func (client GatewayClient) Delete(ctx context.Context, resourceGroupName string, gatewayResourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, gatewayResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.GatewayClient", "Delete", nil, "Failure preparing request")
@@ -193,6 +214,16 @@ func (client GatewayClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName - azure resource group name
 // gatewayResourceName - the identity of the gateway.
 func (client GatewayClient) Get(ctx context.Context, resourceGroupName string, gatewayResourceName string) (result GatewayResourceDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, gatewayResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.GatewayClient", "Get", nil, "Failure preparing request")
@@ -260,6 +291,16 @@ func (client GatewayClient) GetResponder(resp *http.Response) (result GatewayRes
 // Parameters:
 // resourceGroupName - azure resource group name
 func (client GatewayClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result GatewayResourceDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.grdl.Response.Response != nil {
+				sc = result.grdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -323,8 +364,8 @@ func (client GatewayClient) ListByResourceGroupResponder(resp *http.Response) (r
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client GatewayClient) listByResourceGroupNextResults(lastResults GatewayResourceDescriptionList) (result GatewayResourceDescriptionList, err error) {
-	req, err := lastResults.gatewayResourceDescriptionListPreparer()
+func (client GatewayClient) listByResourceGroupNextResults(ctx context.Context, lastResults GatewayResourceDescriptionList) (result GatewayResourceDescriptionList, err error) {
+	req, err := lastResults.gatewayResourceDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.GatewayClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -345,6 +386,16 @@ func (client GatewayClient) listByResourceGroupNextResults(lastResults GatewayRe
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GatewayClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result GatewayResourceDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -352,6 +403,16 @@ func (client GatewayClient) ListByResourceGroupComplete(ctx context.Context, res
 // ListBySubscription gets the information about all gateway resources in a given resource group. The information
 // include the description and other properties of the gateway.
 func (client GatewayClient) ListBySubscription(ctx context.Context) (result GatewayResourceDescriptionListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.grdl.Response.Response != nil {
+				sc = result.grdl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
@@ -414,8 +475,8 @@ func (client GatewayClient) ListBySubscriptionResponder(resp *http.Response) (re
 }
 
 // listBySubscriptionNextResults retrieves the next set of results, if any.
-func (client GatewayClient) listBySubscriptionNextResults(lastResults GatewayResourceDescriptionList) (result GatewayResourceDescriptionList, err error) {
-	req, err := lastResults.gatewayResourceDescriptionListPreparer()
+func (client GatewayClient) listBySubscriptionNextResults(ctx context.Context, lastResults GatewayResourceDescriptionList) (result GatewayResourceDescriptionList, err error) {
+	req, err := lastResults.gatewayResourceDescriptionListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "servicefabricmesh.GatewayClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
 	}
@@ -436,6 +497,16 @@ func (client GatewayClient) listBySubscriptionNextResults(lastResults GatewayRes
 
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GatewayClient) ListBySubscriptionComplete(ctx context.Context) (result GatewayResourceDescriptionListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GatewayClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListBySubscription(ctx)
 	return
 }

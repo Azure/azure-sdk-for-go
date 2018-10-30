@@ -28,6 +28,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -55,6 +56,16 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 // Parameters:
 // input - collection of documents to analyze.
 func (client BaseClient) DetectLanguage(ctx context.Context, input BatchInput) (result LanguageBatchResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DetectLanguage")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DetectLanguagePreparer(ctx, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "DetectLanguage", nil, "Failure preparing request")
@@ -127,6 +138,16 @@ func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result La
 // Parameters:
 // input - collection of documents to analyze.
 func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchInput) (result EntitiesBatchResultV2dot1, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Entities")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.EntitiesPreparer(ctx, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", nil, "Failure preparing request")
@@ -190,6 +211,16 @@ func (client BaseClient) EntitiesResponder(resp *http.Response) (result Entities
 // input - collection of documents to analyze. Documents can now contain a language field to indicate the text
 // language
 func (client BaseClient) KeyPhrases(ctx context.Context, input MultiLanguageBatchInput) (result KeyPhraseBatchResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.KeyPhrases")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.KeyPhrasesPreparer(ctx, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "KeyPhrases", nil, "Failure preparing request")
@@ -253,6 +284,16 @@ func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhr
 // Parameters:
 // input - collection of documents to analyze.
 func (client BaseClient) Sentiment(ctx context.Context, input MultiLanguageBatchInput) (result SentimentBatchResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Sentiment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SentimentPreparer(ctx, input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Sentiment", nil, "Failure preparing request")

@@ -20,9 +20,9 @@ using [Azure/autorest.go][] and [Azure/autorest][]. These generated packages
 depend on the HTTP client implemented at [Azure/go-autorest][].
 
 [azure_rest_specs]: https://github.com/Azure/azure-rest-api-specs
-[Azure/autorest]: https://github.com/Azure/autorest
-[Azure/autorest.go]: https://github.com/Azure/autorest.go
-[Azure/go-autorest]: https://github.com/Azure/go-autorest
+[azure/autorest]: https://github.com/Azure/autorest
+[azure/autorest.go]: https://github.com/Azure/autorest.go
+[azure/go-autorest]: https://github.com/Azure/go-autorest
 
 The SDK codebase adheres to [semantic versioning](https://semver.org) and thus
 avoids breaking changes other than at major (x.0.0) releases. Because Azure's
@@ -38,13 +38,13 @@ recommend [golang/dep](https://github.com/golang/dep).
 Azure provides several other packages for using services from Go, listed below.
 If a package you need isn't available please open an issue and let us know.
 
-| Service | Import Path/Repo |
-|---------|------------------|
-| Storage - Blobs | [github.com/Azure/azure-storage-blob-go](https://github.com/Azure/azure-storage-blob-go) |
-| Storage - Files | [github.com/Azure/azure-storage-file-go](https://github.com/Azure/azure-storage-file-go) |
-| Storage - Queues | [github.com/Azure/azure-storage-queue-go](https://github.com/Azure/azure-storage-queue-go) |
-| Service Bus | [github.com/Azure/azure-service-bus-go](https://github.com/Azure/azure-service-bus-go) |
-| Event Hubs | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go) |
+| Service              | Import Path/Repo                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------------------- |
+| Storage - Blobs      | [github.com/Azure/azure-storage-blob-go](https://github.com/Azure/azure-storage-blob-go)           |
+| Storage - Files      | [github.com/Azure/azure-storage-file-go](https://github.com/Azure/azure-storage-file-go)           |
+| Storage - Queues     | [github.com/Azure/azure-storage-queue-go](https://github.com/Azure/azure-storage-queue-go)         |
+| Service Bus          | [github.com/Azure/azure-service-bus-go](https://github.com/Azure/azure-service-bus-go)             |
+| Event Hubs           | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go)               |
 | Application Insights | [github.com/Microsoft/ApplicationInsights-go](https://github.com/Microsoft/ApplicationInsights-go) |
 
 # Install and Use:
@@ -136,7 +136,7 @@ func main() {
 
 ## Authentication
 
-Typical SDK operations must be authenticated and authorized. The *Authorizer*
+Typical SDK operations must be authenticated and authorized. The _Authorizer_
 interface allows use of any auth style in requests, such as inserting an OAuth2
 Authorization header and bearer token received from Azure AD.
 
@@ -171,8 +171,7 @@ The following environment variables help determine authentication configuration:
 - `AZURE_AD_RESOURCE`: Specifies the AAD resource ID to use. If not set, it
   defaults to `ResourceManagerEndpoint` for operations with Azure Resource
   Manager. You can also choose an alternate resource programatically with
-  `auth.NewAuthorizerFromEnvironmentWithResource(resource
-  string)`.
+  `auth.NewAuthorizerFromEnvironmentWithResource(resource string)`.
 
 ### More Authentication Details
 
@@ -181,94 +180,92 @@ options offered by the SDK because it allows seamless use of both service
 principals and [Azure Managed Service Identity][]. Other options are listed
 below.
 
-> Note: If you need to create a new service principal, run `az ad sp
-> create-for-rbac -n "<app_name>"` in the
+> Note: If you need to create a new service principal, run `az ad sp create-for-rbac -n "<app_name>"` in the
 > [azure-cli](https://github.com/Azure/azure-cli). See [these
 > docs](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
 > for more info. Copy the new principal's ID, secret, and tenant ID for use in
 > your app, or consider the `--sdk-auth` parameter for serialized output.
 
-[Azure Managed Service Identity]: https://docs.microsoft.com/en-us/azure/active-directory/msi-overview
+[azure managed service identity]: https://docs.microsoft.com/en-us/azure/active-directory/msi-overview
 
-* The `auth.NewAuthorizerFromEnvironment()` described above creates an authorizer
-from the first available of the following configuration:
+- The `auth.NewAuthorizerFromEnvironment()` described above creates an authorizer
+  from the first available of the following configuration:
 
-    1. **Client Credentials**: Azure AD Application ID and Secret.
+      1. **Client Credentials**: Azure AD Application ID and Secret.
 
-        - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
-        - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
-        - `AZURE_CLIENT_SECRET`: Specifies the app secret to use.
+          - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+          - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+          - `AZURE_CLIENT_SECRET`: Specifies the app secret to use.
 
-    2. **Client Certificate**: Azure AD Application ID and X.509 Certificate.
+      2. **Client Certificate**: Azure AD Application ID and X.509 Certificate.
 
-        - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
-        - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
-        - `AZURE_CERTIFICATE_PATH`: Specifies the certificate Path to use.
-        - `AZURE_CERTIFICATE_PASSWORD`: Specifies the certificate password to use.
+          - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+          - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+          - `AZURE_CERTIFICATE_PATH`: Specifies the certificate Path to use.
+          - `AZURE_CERTIFICATE_PASSWORD`: Specifies the certificate password to use.
 
-    3. **Resource Owner Password**: Azure AD User and Password. This grant type is *not
-       recommended*, use device login instead if you need interactive login.
+      3. **Resource Owner Password**: Azure AD User and Password. This grant type is *not
+         recommended*, use device login instead if you need interactive login.
 
-        - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
-        - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
-        - `AZURE_USERNAME`: Specifies the username to use.
-        - `AZURE_PASSWORD`: Specifies the password to use.
+          - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+          - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+          - `AZURE_USERNAME`: Specifies the username to use.
+          - `AZURE_PASSWORD`: Specifies the password to use.
 
-    4. **Azure Managed Service Identity**: Delegate credential management to the
-       platform. Requires that code is running in Azure, e.g. on a VM. All
-       configuration is handled by Azure. See [Azure Managed Service
-       Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview)
-       for more details.
+      4. **Azure Managed Service Identity**: Delegate credential management to the
+         platform. Requires that code is running in Azure, e.g. on a VM. All
+         configuration is handled by Azure. See [Azure Managed Service
+         Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview)
+         for more details.
 
-* The `auth.NewAuthorizerFromFile()` method creates an authorizer using
+- The `auth.NewAuthorizerFromFile()` method creates an authorizer using
   credentials from an auth file created by the [Azure CLI][]. Follow these
   steps to utilize:
 
-    1. Create a service principal and output an auth file using `az ad sp
-       create-for-rbac --sdk-auth > client_credentials.json`.
-    2. Set environment variable `AZURE_AUTH_LOCATION` to the path of the saved
-       output file.
-    3. Use the authorizer returned by `auth.NewAuthorizerFromFile()` in your
-       client as described above.
-	  
-* The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
+  1. Create a service principal and output an auth file using `az ad sp create-for-rbac --sdk-auth > client_credentials.json`.
+  2. Set environment variable `AZURE_AUTH_LOCATION` to the path of the saved
+     output file.
+  3. Use the authorizer returned by `auth.NewAuthorizerFromFile()` in your
+     client as described above.
+
+- The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
   uses [Azure CLI][] to obtain its credentials. To use this method follow
   these steps:
-  
-    1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
-    2. Use `az login` to sign in to Azure.
-  
+
+  1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
+  2. Use `az login` to sign in to Azure.
+
   If you receive an error, use `az account get-access-token` to verify access.
-  
-  If Azure CLI is not installed to the default directory, you may receive an error 
+
+  If Azure CLI is not installed to the default directory, you may receive an error
   reporting that `az` cannot be found.  
   Use the `AzureCLIPath` environment variable to define the Azure CLI installation folder.
-  
-  If you are signed in to Azure CLI using multiple accounts or your account has 
-  access to multiple subscriptions, you need to specify the specific subscription 
-  to be used.  To do so, use:
-  
+
+  If you are signed in to Azure CLI using multiple accounts or your account has
+  access to multiple subscriptions, you need to specify the specific subscription
+  to be used. To do so, use:
+
   ```
   az account set --subscription <subscription-id>
   ```
-  
+
   To verify the current account settings, use:
-  
+
   ```
   az account list
   ```
-  
-[Azure CLI]: https://github.com/Azure/azure-cli
 
-* Finally, you can use OAuth's [Device Flow][] by calling
+[azure cli]: https://github.com/Azure/azure-cli
+
+- Finally, you can use OAuth's [Device Flow][] by calling
   `auth.NewDeviceFlowConfig()` and extracting the Authorizer as follows:
 
-    ```go
-    config := auth.NewDeviceFlowConfig(clientID, tenantID)
-    a, err = config.Authorizer()
-    ```
+  ```go
+  config := auth.NewDeviceFlowConfig(clientID, tenantID)
+  a, err = config.Authorizer()
+  ```
 
-[Device Flow]: https://oauth.net/2/device-flow/
+[device flow]: https://oauth.net/2/device-flow/
 
 # Versioning
 
@@ -298,17 +295,16 @@ These cases are noted in the changelog, and for this reason `Service API version
 cannot be used alone to ensure backwards compatibility.
 
 All available services and versions are listed under the `services/` path in
-this repo and in [GoDoc][services_godoc].  Run `find ./services -type d
--mindepth 3` to list all available service packages.
+this repo and in [GoDoc][services_godoc]. Run `find ./services -type d -mindepth 3` to list all available service packages.
 
-[services_godoc]:       https://godoc.org/github.com/Azure/azure-sdk-for-go/services
+[services_godoc]: https://godoc.org/github.com/Azure/azure-sdk-for-go/services
 
 ### Profiles
 
 Azure **API profiles** specify subsets of Azure APIs and versions. Profiles can provide:
 
-* **stability** for your application by locking to specific API versions; and/or
-* **compatibility** for your application with Azure Stack and regional Azure datacenters.
+- **stability** for your application by locking to specific API versions; and/or
+- **compatibility** for your application with Azure Stack and regional Azure datacenters.
 
 In the Go SDK, profiles are available under the `profiles/` path and their
 component API versions are aliases to the true service package under
@@ -324,9 +320,9 @@ The `2017-03-09` profile is the only one currently available and is for use in
 hybrid Azure and Azure Stack environments. More profiles are under development.
 
 In addition to versioned profiles, we also provide two special profiles
-`latest` and `preview`. These *always* include the most recent respective stable or
+`latest` and `preview`. These _always_ include the most recent respective stable or
 preview API versions for each service, even when updating them to do so causes
-breaking changes. That is, these do *not* adhere to semantic versioning rules.
+breaking changes. That is, these do _not_ adhere to semantic versioning rules.
 
 The `latest` and `preview` profiles can help you stay up to date with API
 updates as you build applications. Since they are by definition not stable,
@@ -397,7 +393,6 @@ All clients implement some handy hooks to help inspect the underlying requests b
 Here is an example of how these can be used with `net/http/httputil` to see requests and responses.
 
 ```go
-
 vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
 vnetClient.RequestInspector = LogRequest()
 vnetClient.ResponseInspector = LogResponse()
@@ -430,6 +425,51 @@ func LogResponse() autorest.RespondDecorator {
 			return err
 		})
 	}
+}
+```
+
+## Tracing and Metrics
+
+All packages and the runtime are instrumented using [OpenCensus](https://opencensus.io/).
+
+### Enable
+
+As of now, tracing is disabled by default. There are 2 ways to enable tracing:
+
+- set the environment variable `AZURE_SDK_TRACING_ENABELD` (_Recommended_)
+- alternatively, import the `github.com/Azure/go-autorest/tracing` package and call the `tracing.Enable()` function or `tracing.EnableWithAIForwarding()` if using the [App Insights Forwarder](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder).
+
+**Note**: In future major releases of the SDK, tracing may become enabled by default.
+
+### Usage
+
+Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
+
+To correlate the SDK calls between them and with the rest of your code, pass in a context that has a span initiated using the [opencensus-go library](https://github.com/census-instrumentation/opencensus-go) using the `trace.Startspan(ctx context.Context, name string, o ...StartOption)` function. Here is an example:
+
+```go
+func doAzureCalls() {
+    // The resulting context will be initialized with a root span as the context passed to
+    // trace.StartSpan() has no existing span.
+    ctx, span := trace.StartSpan(context.Background(),"doAzureCalls", trace.WithSampler(trace.AlwaysSample()))
+    defer span.End()
+
+    // The traces from the SDK calls will be correlated under the span inside the context that is passed in.
+    zone, _ := zonesClient.CreateOrUpdate(ctx, rg, zoneName, dns.Zone{Location: to.StringPtr("global")}, "", "")
+    zone, _ = zonesClient.Get(ctx, rg, *zone.Name)
+    for i := 0; i < rrCount; i++ {
+        rr, _ := recordsClient.CreateOrUpdate(ctx, rg, zoneName, fmt.Sprintf("rr%d", i), dns.CNAME, rdSet{
+            RecordSetProperties: &dns.RecordSetProperties{
+                TTL: to.Int64Ptr(3600),
+                CnameRecord: &dns.CnameRecord{
+                    Cname: to.StringPtr("vladdbCname"),
+                },
+            },
+        },
+            "",
+            "",
+        )
+    }
 }
 ```
 

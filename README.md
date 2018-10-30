@@ -434,40 +434,43 @@ All packages and the runtime are instrumented using [OpenCensus](https://opencen
 
 ### Enable
 
-As of now, tracing is disabled by default. To enable it:
+As of now, tracing is disabled by default. There are 2 ways to enable tracing:
 
 - set the environment variable `AZURE_SDK_TRACING_ENABELD` (_Recommended_)
-- import the `github.com/Azure/go-autorest/tracing` package and calling the `tracing.Enable()`.
+- alternatively, import the `github.com/Azure/go-autorest/tracing` package and call the `tracing.Enable()` function or `tracing.EnableWithAIForwarding()` if using the [App Insights Forwarder](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder).
 
 **Note**: In future major releases of the SDK, tracing may become enabled by default.
 
 ### Usage
 
-Once enabled, all SDK calls will emit traces and metrics if you are instrumenting your code and the traces will correlate the SDK calls with the raw http calls made to Azure API's. If are not doing it yet, to instrument your code see how to do it with [Azure App Insights](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder) or with [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
+Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
 
-To correlate the SDK calls between them and with the rest of your code, pass in a context that has a span initiated using the [opencensus-go library](https://github.com/census-instrumentation/opencensus-go) using the `trace.Startspan(ctx context.Context, name string, o ...StartOption)` function.
+To correlate the SDK calls between them and with the rest of your code, pass in a context that has a span initiated using the [opencensus-go library](https://github.com/census-instrumentation/opencensus-go) using the `trace.Startspan(ctx context.Context, name string, o ...StartOption)` function. Here is an example:
 
 ```go
-        func doAzureCalls() {
-            ctx, span := trace.StartSpan(context.Background(),"doAzureCalls", trace.WithSampler(trace.AlwaysSample()))
-            defer span.End()
+func doAzureCalls() {
+    // The resulting context will be initialized with a root span as the context passed to
+    // trace.StartSpan() has no existing span.
+    ctx, span := trace.StartSpan(context.Background(),"doAzureCalls", trace.WithSampler(trace.AlwaysSample()))
+    defer span.End()
 
-            zone, _ := zonesClient.CreateOrUpdate(ctx, rg, zoneName, dns.Zone{Location: to.StringPtr("global")}, "", "")
-            zone, _ = zonesClient.Get(ctx, rg, *zone.Name)
-            for i := 0; i < rrCount; i++ {
-		        rr, _ := recordsClient.CreateOrUpdate(ctx, rg, zoneName, fmt.Sprintf("rr%d", i), dns.CNAME, dns.RecordSet{
-			        RecordSetProperties: &dns.RecordSetProperties{
-				        TTL: to.Int64Ptr(3600),
-				        CnameRecord: &dns.CnameRecord{
-					        Cname: to.StringPtr("vladdbCname"),
-				        },
-			        },
-		        },
-			        "",
-			        "",
-		        )
-	        }
-        }
+    // The traces from the SDK calls will be correlated under the span inside the context that is passed in.
+    zone, _ := zonesClient.CreateOrUpdate(ctx, rg, zoneName, dns.Zone{Location: to.StringPtr("global")}, "", "")
+    zone, _ = zonesClient.Get(ctx, rg, *zone.Name)
+    for i := 0; i < rrCount; i++ {
+        rr, _ := recordsClient.CreateOrUpdate(ctx, rg, zoneName, fmt.Sprintf("rr%d", i), dns.CNAME, rdSet{
+            RecordSetProperties: &dns.RecordSetProperties{
+                TTL: to.Int64Ptr(3600),
+                CnameRecord: &dns.CnameRecord{
+                    Cname: to.StringPtr("vladdbCname"),
+                },
+            },
+        },
+            "",
+            "",
+        )
+    }
+}
 ```
 
 # Resources

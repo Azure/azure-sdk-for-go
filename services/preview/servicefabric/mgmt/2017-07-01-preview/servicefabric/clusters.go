@@ -32,21 +32,22 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates an instance of the ClustersClient client.
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return NewClustersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewClustersClient() ClustersClient {
+	return NewClustersClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewClustersClientWithBaseURI creates an instance of the ClustersClient client.
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
+	return ClustersClient{NewWithBaseURI(baseURI)}
 }
 
 // Create create cluster resource
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
+// resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource
-// parameters - put Request
-func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateFuture, err error) {
+// subscriptionID - the customer subscription identifier
+// parameters - the cluster resource.
+func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters Cluster) (result ClustersCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Create")
 		defer func() {
@@ -109,7 +110,7 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 		return result, validation.NewError("servicefabric.ClustersClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, subscriptionID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Create", nil, "Failure preparing request")
 		return
@@ -125,14 +126,14 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (*http.Request, error) {
+func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters Cluster) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -175,9 +176,10 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 
 // Delete delete cluster resource
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
+// resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource
-func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result autorest.Response, err error) {
+// subscriptionID - the customer subscription identifier
+func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Delete")
 		defer func() {
@@ -188,7 +190,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Delete", nil, "Failure preparing request")
 		return
@@ -210,14 +212,14 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -251,9 +253,10 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get get cluster resource
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
+// resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource
-func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
+// subscriptionID - the customer subscription identifier
+func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (result Cluster, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Get")
 		defer func() {
@@ -264,7 +267,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Get", nil, "Failure preparing request")
 		return
@@ -286,14 +289,14 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -327,19 +330,20 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 }
 
 // List list cluster resource
-func (client ClustersClient) List(ctx context.Context) (result ClusterListResultPage, err error) {
+// Parameters:
+// subscriptionID - the customer subscription identifier
+func (client ClustersClient) List(ctx context.Context, subscriptionID string) (result ClusterListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.List")
 		defer func() {
 			sc := -1
-			if result.clr.Response.Response != nil {
-				sc = result.clr.Response.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", nil, "Failure preparing request")
 		return
@@ -347,12 +351,12 @@ func (client ClustersClient) List(ctx context.Context) (result ClusterListResult
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.clr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.clr, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", resp, "Failure responding to request")
 	}
@@ -361,12 +365,12 @@ func (client ClustersClient) List(ctx context.Context) (result ClusterListResult
 }
 
 // ListPreparer prepares the List request.
-func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ClustersClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -399,59 +403,22 @@ func (client ClustersClient) ListResponder(resp *http.Response) (result ClusterL
 	return
 }
 
-// listNextResults retrieves the next set of results, if any.
-func (client ClustersClient) listNextResults(ctx context.Context, lastResults ClusterListResult) (result ClusterListResult, err error) {
-	req, err := lastResults.clusterListResultPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ClustersClient) ListComplete(ctx context.Context) (result ClusterListResultIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.List")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.List(ctx)
-	return
-}
-
 // ListByResourceGroup list cluster resource by resource group
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResultPage, err error) {
+// resourceGroupName - the name of the resource group.
+// subscriptionID - the customer subscription identifier
+func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string) (result ClusterListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.clr.Response.Response != nil {
-				sc = result.clr.Response.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -459,12 +426,12 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.clr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.clr, err = client.ListByResourceGroupResponder(resp)
+	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -473,13 +440,13 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -512,50 +479,14 @@ func (client ClustersClient) ListByResourceGroupResponder(resp *http.Response) (
 	return
 }
 
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ClustersClient) listByResourceGroupNextResults(ctx context.Context, lastResults ClusterListResult) (result ClusterListResult, err error) {
-	req, err := lastResults.clusterListResultPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ClusterListResultIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListByResourceGroup")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
-	return
-}
-
 // Update update cluster configuration
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
+// resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource
+// subscriptionID - the customer subscription identifier
 // parameters - the parameters which contains the property value and property name which used to update the
-// cluster configuration
-func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters) (result ClustersUpdateFuture, err error) {
+// cluster configuration.
+func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters ClusterUpdateParameters) (result ClustersUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Update")
 		defer func() {
@@ -566,7 +497,7 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, subscriptionID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Update", nil, "Failure preparing request")
 		return
@@ -582,14 +513,14 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters) (*http.Request, error) {
+func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, subscriptionID string, parameters ClusterUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2017-07-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

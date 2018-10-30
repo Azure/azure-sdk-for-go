@@ -91,5 +91,5 @@ type Table struct {
 	// Columns - The list of columns in this table.
 	Columns *[]Column `json:"columns,omitempty"`
 	// Rows - The resulting rows from this query.
-	Rows *[][]string `json:"rows,omitempty"`
+	Rows *[][]interface{} `json:"rows,omitempty"`
 }

@@ -39,6 +39,78 @@ func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, accept
 	return SolutionsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
+// DeleteSolution delete the solution. Deleting non-existent project is a no-operation.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// solutionName - unique name of a migration solution within a migrate project.
+func (client SolutionsClient) DeleteSolution(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (result autorest.Response, err error) {
+	req, err := client.DeleteSolutionPreparer(ctx, resourceGroupName, migrateProjectName, solutionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "DeleteSolution", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSolutionSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "DeleteSolution", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteSolutionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "DeleteSolution", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteSolutionPreparer prepares the DeleteSolution request.
+func (client SolutionsClient) DeleteSolutionPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"migrateProjectName": autorest.Encode("path", migrateProjectName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"solutionName":       autorest.Encode("path", solutionName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/Solutions/{solutionName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSolutionSender sends the DeleteSolution request. The method will close the
+// http.Response Body if it receives an error.
+func (client SolutionsClient) DeleteSolutionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteSolutionResponder handles the response to the DeleteSolution request. The method always
+// closes the http.Response Body.
+func (client SolutionsClient) DeleteSolutionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // EnumerateSolutions sends the enumerate solutions request.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that migrate project is part of.
@@ -234,6 +306,79 @@ func (client SolutionsClient) GetSolutionSender(req *http.Request) (*http.Respon
 // GetSolutionResponder handles the response to the GetSolution request. The method always
 // closes the http.Response Body.
 func (client SolutionsClient) GetSolutionResponder(resp *http.Response) (result Solution, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PatchSolution update a solution with specified name. Supports partial updates, for example only tags can be
+// provided.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// solutionName - unique name of a migration solution within a migrate project.
+// solutionInput - the input for the solution.
+func (client SolutionsClient) PatchSolution(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (result Solution, err error) {
+	req, err := client.PatchSolutionPreparer(ctx, resourceGroupName, migrateProjectName, solutionName, solutionInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PatchSolution", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchSolutionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PatchSolution", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchSolutionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.SolutionsClient", "PatchSolution", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchSolutionPreparer prepares the PatchSolution request.
+func (client SolutionsClient) PatchSolutionPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, solutionName string, solutionInput Solution) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"migrateProjectName": autorest.Encode("path", migrateProjectName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"solutionName":       autorest.Encode("path", solutionName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/Solutions/{solutionName}", pathParameters),
+		autorest.WithJSON(solutionInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchSolutionSender sends the PatchSolution request. The method will close the
+// http.Response Body if it receives an error.
+func (client SolutionsClient) PatchSolutionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchSolutionResponder handles the response to the PatchSolution request. The method always
+// closes the http.Response Body.
+func (client SolutionsClient) PatchSolutionResponder(resp *http.Response) (result Solution, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -39,6 +39,76 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptL
 	return ProjectsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
+// DeleteMigrateProject delete the migrate project. Deleting non-existent project is a no-operation.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+func (client ProjectsClient) DeleteMigrateProject(ctx context.Context, resourceGroupName string, migrateProjectName string) (result autorest.Response, err error) {
+	req, err := client.DeleteMigrateProjectPreparer(ctx, resourceGroupName, migrateProjectName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteMigrateProject", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteMigrateProjectSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteMigrateProject", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteMigrateProjectResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteMigrateProject", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteMigrateProjectPreparer prepares the DeleteMigrateProject request.
+func (client ProjectsClient) DeleteMigrateProjectPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"migrateProjectName": autorest.Encode("path", migrateProjectName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteMigrateProjectSender sends the DeleteMigrateProject request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProjectsClient) DeleteMigrateProjectSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteMigrateProjectResponder handles the response to the DeleteMigrateProject request. The method always
+// closes the http.Response Body.
+func (client ProjectsClient) DeleteMigrateProjectResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // GetMigrateProject sends the get migrate project request.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that migrate project is part of.
@@ -96,6 +166,81 @@ func (client ProjectsClient) GetMigrateProjectSender(req *http.Request) (*http.R
 // GetMigrateProjectResponder handles the response to the GetMigrateProject request. The method always
 // closes the http.Response Body.
 func (client ProjectsClient) GetMigrateProjectResponder(resp *http.Response) (result Project, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// PatchMigrateProject update a migrate project with specified name. Supports partial updates, for example only tags
+// can be provided.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// body - body with migrate project details.
+func (client ProjectsClient) PatchMigrateProject(ctx context.Context, resourceGroupName string, migrateProjectName string, body Project) (result Project, err error) {
+	req, err := client.PatchMigrateProjectPreparer(ctx, resourceGroupName, migrateProjectName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PatchMigrateProject", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchMigrateProjectSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PatchMigrateProject", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchMigrateProjectResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "PatchMigrateProject", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchMigrateProjectPreparer prepares the PatchMigrateProject request.
+func (client ProjectsClient) PatchMigrateProjectPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, body Project) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"migrateProjectName": autorest.Encode("path", migrateProjectName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchMigrateProjectSender sends the PatchMigrateProject request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProjectsClient) PatchMigrateProjectSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchMigrateProjectResponder handles the response to the PatchMigrateProject request. The method always
+// closes the http.Response Body.
+func (client ProjectsClient) PatchMigrateProjectResponder(resp *http.Response) (result Project, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

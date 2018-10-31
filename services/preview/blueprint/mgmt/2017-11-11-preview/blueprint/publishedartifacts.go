@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewPublishedArtifactsClientWithBaseURI(baseURI string) PublishedArtifactsCl
 // versionID - version of the published blueprint.
 // artifactName - name of the artifact.
 func (client PublishedArtifactsClient) Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string, artifactName string) (result ArtifactModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, versionID, artifactName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "Get", nil, "Failure preparing request")
@@ -115,6 +126,16 @@ func (client PublishedArtifactsClient) GetResponder(resp *http.Response) (result
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
 func (client PublishedArtifactsClient) List(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result ArtifactListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.List")
+		defer func() {
+			sc := -1
+			if result.al.Response.Response != nil {
+				sc = result.al.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, managementGroupName, blueprintName, versionID)
 	if err != nil {
@@ -179,8 +200,8 @@ func (client PublishedArtifactsClient) ListResponder(resp *http.Response) (resul
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client PublishedArtifactsClient) listNextResults(lastResults ArtifactList) (result ArtifactList, err error) {
-	req, err := lastResults.artifactListPreparer()
+func (client PublishedArtifactsClient) listNextResults(ctx context.Context, lastResults ArtifactList) (result ArtifactList, err error) {
+	req, err := lastResults.artifactListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "blueprint.PublishedArtifactsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -201,6 +222,16 @@ func (client PublishedArtifactsClient) listNextResults(lastResults ArtifactList)
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client PublishedArtifactsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result ArtifactListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedArtifactsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, managementGroupName, blueprintName, versionID)
 	return
 }

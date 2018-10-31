@@ -21,6 +21,7 @@ package costmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
 
+type AlertsClient = original.AlertsClient
 type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
 
 const (
@@ -29,12 +30,52 @@ const (
 
 type BaseClient = original.BaseClient
 type ConnectorClient = original.ConnectorClient
+type AlertCategory = original.AlertCategory
+
+const (
+	Billing AlertCategory = original.Billing
+	Cost    AlertCategory = original.Cost
+	Usage   AlertCategory = original.Usage
+)
+
+type AlertCriteria = original.AlertCriteria
+
+const (
+	CostThresholdExceeded  AlertCriteria = original.CostThresholdExceeded
+	CreditThresholdReached AlertCriteria = original.CreditThresholdReached
+	UsageThresholdExceeded AlertCriteria = original.UsageThresholdExceeded
+)
+
+type AlertSource = original.AlertSource
+
+const (
+	Preset AlertSource = original.Preset
+	User   AlertSource = original.User
+)
+
+type AlertStatus = original.AlertStatus
+
+const (
+	Active     AlertStatus = original.Active
+	Dismissed  AlertStatus = original.Dismissed
+	Overridden AlertStatus = original.Overridden
+	Resolved   AlertStatus = original.Resolved
+)
+
+type AlertType = original.AlertType
+
+const (
+	Budget  AlertType = original.Budget
+	Credit  AlertType = original.Credit
+	Invoice AlertType = original.Invoice
+)
+
 type ConnectorStatus = original.ConnectorStatus
 
 const (
-	Active    ConnectorStatus = original.Active
-	Error     ConnectorStatus = original.Error
-	Suspended ConnectorStatus = original.Suspended
+	ConnectorStatusActive    ConnectorStatus = original.ConnectorStatusActive
+	ConnectorStatusError     ConnectorStatus = original.ConnectorStatusError
+	ConnectorStatusSuspended ConnectorStatus = original.ConnectorStatusSuspended
 )
 
 type ExecutionStatus = original.ExecutionStatus
@@ -97,6 +138,12 @@ const (
 	WeekToDate  TimeframeType = original.WeekToDate
 )
 
+type Alert = original.Alert
+type AlertDefinition = original.AlertDefinition
+type AlertListResult = original.AlertListResult
+type AlertListResultIterator = original.AlertListResultIterator
+type AlertListResultPage = original.AlertListResultPage
+type AlertProperties = original.AlertProperties
 type CommonReportProperties = original.CommonReportProperties
 type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
 type ConnectorCollectionInfo = original.ConnectorCollectionInfo
@@ -109,6 +156,11 @@ type DimensionsListResult = original.DimensionsListResult
 type ErrorBase = original.ErrorBase
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type Query = original.Query
 type QueryColumn = original.QueryColumn
 type QueryProperties = original.QueryProperties
@@ -132,10 +184,17 @@ type ReportRecurrencePeriod = original.ReportRecurrencePeriod
 type ReportSchedule = original.ReportSchedule
 type ReportTimePeriod = original.ReportTimePeriod
 type Resource = original.Resource
+type OperationsClient = original.OperationsClient
 type ReportsClient = original.ReportsClient
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
 	return original.NewBillingAccountDimensionsClient(subscriptionID)
 }
@@ -153,6 +212,21 @@ func NewConnectorClient(subscriptionID string) ConnectorClient {
 }
 func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) ConnectorClient {
 	return original.NewConnectorClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAlertCategoryValues() []AlertCategory {
+	return original.PossibleAlertCategoryValues()
+}
+func PossibleAlertCriteriaValues() []AlertCriteria {
+	return original.PossibleAlertCriteriaValues()
+}
+func PossibleAlertSourceValues() []AlertSource {
+	return original.PossibleAlertSourceValues()
+}
+func PossibleAlertStatusValues() []AlertStatus {
+	return original.PossibleAlertStatusValues()
+}
+func PossibleAlertTypeValues() []AlertType {
+	return original.PossibleAlertTypeValues()
 }
 func PossibleConnectorStatusValues() []ConnectorStatus {
 	return original.PossibleConnectorStatusValues()
@@ -180,6 +254,12 @@ func PossibleStatusTypeValues() []StatusType {
 }
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewReportsClient(subscriptionID string) ReportsClient {
 	return original.NewReportsClient(subscriptionID)

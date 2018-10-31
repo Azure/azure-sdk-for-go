@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewPublishedBlueprintsClientWithBaseURI(baseURI string) PublishedBlueprints
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
 func (client PublishedBlueprintsClient) Create(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreatePreparer(ctx, managementGroupName, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Create", nil, "Failure preparing request")
@@ -113,6 +124,16 @@ func (client PublishedBlueprintsClient) CreateResponder(resp *http.Response) (re
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
 func (client PublishedBlueprintsClient) Delete(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, managementGroupName, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Delete", nil, "Failure preparing request")
@@ -181,6 +202,16 @@ func (client PublishedBlueprintsClient) DeleteResponder(resp *http.Response) (re
 // blueprintName - name of the blueprint.
 // versionID - version of the published blueprint.
 func (client PublishedBlueprintsClient) Get(ctx context.Context, managementGroupName string, blueprintName string, versionID string) (result PublishedBlueprint, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "Get", nil, "Failure preparing request")
@@ -248,6 +279,16 @@ func (client PublishedBlueprintsClient) GetResponder(resp *http.Response) (resul
 // managementGroupName - managementGroup where blueprint stores.
 // blueprintName - name of the blueprint.
 func (client PublishedBlueprintsClient) List(ctx context.Context, managementGroupName string, blueprintName string) (result PublishedBlueprintListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.List")
+		defer func() {
+			sc := -1
+			if result.pbl.Response.Response != nil {
+				sc = result.pbl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, managementGroupName, blueprintName)
 	if err != nil {
@@ -311,8 +352,8 @@ func (client PublishedBlueprintsClient) ListResponder(resp *http.Response) (resu
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client PublishedBlueprintsClient) listNextResults(lastResults PublishedBlueprintList) (result PublishedBlueprintList, err error) {
-	req, err := lastResults.publishedBlueprintListPreparer()
+func (client PublishedBlueprintsClient) listNextResults(ctx context.Context, lastResults PublishedBlueprintList) (result PublishedBlueprintList, err error) {
+	req, err := lastResults.publishedBlueprintListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "blueprint.PublishedBlueprintsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -333,6 +374,16 @@ func (client PublishedBlueprintsClient) listNextResults(lastResults PublishedBlu
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client PublishedBlueprintsClient) ListComplete(ctx context.Context, managementGroupName string, blueprintName string) (result PublishedBlueprintListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PublishedBlueprintsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, managementGroupName, blueprintName)
 	return
 }

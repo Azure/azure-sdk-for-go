@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewBlueprintsClientWithBaseURI(baseURI string) BlueprintsClient {
 // blueprintName - name of the blueprint.
 // blueprint - blueprint definition.
 func (client BlueprintsClient) CreateOrUpdate(ctx context.Context, managementGroupName string, blueprintName string, blueprint Model) (result Model, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: blueprint,
 			Constraints: []validation.Constraint{{Target: "blueprint.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -120,6 +131,16 @@ func (client BlueprintsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // managementGroupName - managementGroup where blueprint stores.
 // blueprintName - name of the blueprint.
 func (client BlueprintsClient) Delete(ctx context.Context, managementGroupName string, blueprintName string) (result Model, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, managementGroupName, blueprintName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.BlueprintsClient", "Delete", nil, "Failure preparing request")
@@ -186,6 +207,16 @@ func (client BlueprintsClient) DeleteResponder(resp *http.Response) (result Mode
 // managementGroupName - managementGroup where blueprint stores.
 // blueprintName - name of the blueprint.
 func (client BlueprintsClient) Get(ctx context.Context, managementGroupName string, blueprintName string) (result Model, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, managementGroupName, blueprintName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.BlueprintsClient", "Get", nil, "Failure preparing request")
@@ -251,6 +282,16 @@ func (client BlueprintsClient) GetResponder(resp *http.Response) (result Model, 
 // Parameters:
 // managementGroupName - managementGroup where blueprint stores.
 func (client BlueprintsClient) List(ctx context.Context, managementGroupName string) (result ListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.List")
+		defer func() {
+			sc := -1
+			if result.l.Response.Response != nil {
+				sc = result.l.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, managementGroupName)
 	if err != nil {
@@ -313,8 +354,8 @@ func (client BlueprintsClient) ListResponder(resp *http.Response) (result List, 
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client BlueprintsClient) listNextResults(lastResults List) (result List, err error) {
-	req, err := lastResults.listPreparer()
+func (client BlueprintsClient) listNextResults(ctx context.Context, lastResults List) (result List, err error) {
+	req, err := lastResults.listPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "blueprint.BlueprintsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -335,6 +376,16 @@ func (client BlueprintsClient) listNextResults(lastResults List) (result List, e
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client BlueprintsClient) ListComplete(ctx context.Context, managementGroupName string) (result ListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BlueprintsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, managementGroupName)
 	return
 }

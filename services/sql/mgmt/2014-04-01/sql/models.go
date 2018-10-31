@@ -26,6 +26,9 @@ import (
 	"net/http"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
+
 // AuthenticationType enumerates the values for authentication type.
 type AuthenticationType string
 
@@ -529,7 +532,8 @@ type CheckNameAvailabilityRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is available.
+// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
+// available.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
 	// Available - True if the name is available, otherwise false.
@@ -737,8 +741,8 @@ type DatabaseProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DatabasesCreateImportOperationFuture struct {
 	azure.Future
 }
@@ -925,7 +929,8 @@ type DatabaseSecurityAlertPolicyProperties struct {
 	UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
 }
 
-// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesExportFuture struct {
 	azure.Future
 }
@@ -953,7 +958,8 @@ func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesImportFuture struct {
 	azure.Future
 }
@@ -981,7 +987,8 @@ func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesPauseFuture struct {
 	azure.Future
 }
@@ -1003,7 +1010,8 @@ func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesResumeFuture struct {
 	azure.Future
 }
@@ -1025,7 +1033,8 @@ func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1513,7 +1522,8 @@ func (epda *ElasticPoolDatabaseActivity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ElasticPoolDatabaseActivityListResult represents the response to a list elastic pool database activity request.
+// ElasticPoolDatabaseActivityListResult represents the response to a list elastic pool database activity
+// request.
 type ElasticPoolDatabaseActivityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of elastic pool database activities.
@@ -1581,8 +1591,8 @@ type ElasticPoolProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1610,7 +1620,8 @@ func (future *ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient
 	return
 }
 
-// ElasticPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ElasticPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ElasticPoolsUpdateFuture struct {
 	azure.Future
 }
@@ -2191,8 +2202,8 @@ func (rep *RecommendedElasticPool) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool metrics
-// request.
+// RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool
+// metrics request.
 type RecommendedElasticPoolListMetricsResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of recommended elastic pools metrics.
@@ -2478,8 +2489,8 @@ type ReplicationLinkProperties struct {
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
-// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ReplicationLinksFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -2501,8 +2512,8 @@ func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client Replica
 	return
 }
 
-// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ReplicationLinksFailoverFuture struct {
 	azure.Future
 }
@@ -2909,8 +2920,8 @@ type TransparentDataEncryptionActivityListResult struct {
 	Value *[]TransparentDataEncryptionActivity `json:"value,omitempty"`
 }
 
-// TransparentDataEncryptionActivityProperties represents the properties of a database transparent data encryption
-// Scan.
+// TransparentDataEncryptionActivityProperties represents the properties of a database transparent data
+// encryption Scan.
 type TransparentDataEncryptionActivityProperties struct {
 	// Status - The status of the database. Possible values include: 'Encrypting', 'Decrypting'
 	Status TransparentDataEncryptionActivityStatus `json:"status,omitempty"`

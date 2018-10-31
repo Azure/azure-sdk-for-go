@@ -23,6 +23,9 @@ import (
 	"io"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/computervision"
+
 // Details enumerates the values for details.
 type Details string
 
@@ -341,8 +344,8 @@ type ImageCaption struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level, and
-// image metadata.
+// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level,
+// and image metadata.
 type ImageDescription struct {
 	autorest.Response        `json:"-"`
 	*ImageDescriptionDetails `json:"description,omitempty"`
@@ -408,8 +411,8 @@ func (ID *ImageDescription) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageDescriptionDetails a collection of content tags, along with a list of captions sorted by confidence level,
-// and image metadata.
+// ImageDescriptionDetails a collection of content tags, along with a list of captions sorted by confidence
+// level, and image metadata.
 type ImageDescriptionDetails struct {
 	// Tags - A collection of image tags.
 	Tags *[]string `json:"tags,omitempty"`

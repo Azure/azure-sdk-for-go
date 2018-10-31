@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -49,6 +50,16 @@ func NewFileSharesClientWithBaseURI(baseURI string, subscriptionID string) FileS
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) CreateOrUpdate(ctx context.Context, deviceName string, fileServerName string, shareName string, fileShare FileShare, resourceGroupName string, managerName string) (result FileSharesCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: fileShare,
 			Constraints: []validation.Constraint{{Target: "fileShare.FileShareProperties", Name: validation.Null, Rule: true,
@@ -111,10 +122,6 @@ func (client FileSharesClient) CreateOrUpdateSender(req *http.Request) (future F
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -140,6 +147,16 @@ func (client FileSharesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) Delete(ctx context.Context, deviceName string, fileServerName string, shareName string, resourceGroupName string, managerName string) (result FileSharesDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -195,10 +212,6 @@ func (client FileSharesClient) DeleteSender(req *http.Request) (future FileShare
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -223,6 +236,16 @@ func (client FileSharesClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) Get(ctx context.Context, deviceName string, fileServerName string, shareName string, resourceGroupName string, managerName string) (result FileShare, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -301,6 +324,16 @@ func (client FileSharesClient) GetResponder(resp *http.Response) (result FileSha
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result FileShareList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.ListByDevice")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -378,6 +411,16 @@ func (client FileSharesClient) ListByDeviceResponder(resp *http.Response) (resul
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) ListByFileServer(ctx context.Context, deviceName string, fileServerName string, resourceGroupName string, managerName string) (result FileShareList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.ListByFileServer")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -457,6 +500,16 @@ func (client FileSharesClient) ListByFileServerResponder(resp *http.Response) (r
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client FileSharesClient) ListMetricDefinition(ctx context.Context, deviceName string, fileServerName string, shareName string, resourceGroupName string, managerName string) (result MetricDefinitionList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.ListMetricDefinition")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -538,6 +591,16 @@ func (client FileSharesClient) ListMetricDefinitionResponder(resp *http.Response
 // managerName - the manager name
 // filter - oData Filter options
 func (client FileSharesClient) ListMetrics(ctx context.Context, deviceName string, fileServerName string, shareName string, resourceGroupName string, managerName string, filter string) (result MetricList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.ListMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},

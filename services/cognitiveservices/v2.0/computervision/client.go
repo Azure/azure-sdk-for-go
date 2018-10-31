@@ -29,6 +29,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"io"
 	"net/http"
 )
@@ -73,6 +74,16 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, visualFeatures []VisualFeatureTypes, details []Details, language string) (result ImageAnalysis, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeImage")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -161,6 +172,16 @@ func (client BaseClient) AnalyzeImageResponder(resp *http.Response) (result Imag
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string, imageURL ImageURL, language string) (result DomainModelResults, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeImageByDomain")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -247,6 +268,16 @@ func (client BaseClient) AnalyzeImageByDomainResponder(resp *http.Response) (res
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (result DomainModelResults, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeImageByDomainInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AnalyzeImageByDomainInStreamPreparer(ctx, model, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageByDomainInStream", nil, "Failure preparing request")
@@ -333,6 +364,16 @@ func (client BaseClient) AnalyzeImageByDomainInStreamResponder(resp *http.Respon
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageInStream(ctx context.Context, imageParameter io.ReadCloser, visualFeatures []VisualFeatureTypes, details []Details, language string) (result ImageAnalysis, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.AnalyzeImageInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AnalyzeImageInStreamPreparer(ctx, imageParameter, visualFeatures, details, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageInStream", nil, "Failure preparing request")
@@ -416,6 +457,16 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, maxCandidates *int32, language string) (result ImageDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DescribeImage")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -504,6 +555,16 @@ func (client BaseClient) DescribeImageResponder(resp *http.Response) (result Ima
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) DescribeImageInStream(ctx context.Context, imageParameter io.ReadCloser, maxCandidates *int32, language string) (result ImageDescription, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DescribeImageInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DescribeImageInStreamPreparer(ctx, imageParameter, maxCandidates, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "DescribeImageInStream", nil, "Failure preparing request")
@@ -584,6 +645,16 @@ func (client BaseClient) DescribeImageInStreamResponder(resp *http.Response) (re
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // smartCropping - boolean flag for enabling smart cropping.
 func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, height int32, imageURL ImageURL, smartCropping *bool) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GenerateThumbnail")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
 			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
@@ -673,6 +744,16 @@ func (client BaseClient) GenerateThumbnailResponder(resp *http.Response) (result
 // imageParameter - an image stream.
 // smartCropping - boolean flag for enabling smart cropping.
 func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width int32, height int32, imageParameter io.ReadCloser, smartCropping *bool) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GenerateThumbnailInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
 			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
@@ -754,6 +835,16 @@ func (client BaseClient) GenerateThumbnailInStreamResponder(resp *http.Response)
 // Parameters:
 // operationID - id of the text operation returned in the response of the 'Recognize Text'
 func (client BaseClient) GetTextOperationResult(ctx context.Context, operationID string) (result TextOperationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetTextOperationResult")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetTextOperationResultPreparer(ctx, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "GetTextOperationResult", nil, "Failure preparing request")
@@ -817,6 +908,16 @@ func (client BaseClient) GetTextOperationResultResponder(resp *http.Response) (r
 // returned in JSON.  If the request failed, the response will contain an error code and a message to help understand
 // what went wrong.
 func (client BaseClient) ListModels(ctx context.Context) (result ListModelsResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListModels")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListModelsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "ListModels", nil, "Failure preparing request")
@@ -883,6 +984,16 @@ func (client BaseClient) ListModelsResponder(resp *http.Response) (result ListMo
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // language - the BCP-47 language code of the text to be detected in the image. The default value is 'unk'
 func (client BaseClient) RecognizePrintedText(ctx context.Context, detectOrientation bool, imageURL ImageURL, language OcrLanguages) (result OcrResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.RecognizePrintedText")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -967,6 +1078,16 @@ func (client BaseClient) RecognizePrintedTextResponder(resp *http.Response) (res
 // imageParameter - an image stream.
 // language - the BCP-47 language code of the text to be detected in the image. The default value is 'unk'
 func (client BaseClient) RecognizePrintedTextInStream(ctx context.Context, detectOrientation bool, imageParameter io.ReadCloser, language OcrLanguages) (result OcrResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.RecognizePrintedTextInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RecognizePrintedTextInStreamPreparer(ctx, detectOrientation, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "RecognizePrintedTextInStream", nil, "Failure preparing request")
@@ -1040,6 +1161,16 @@ func (client BaseClient) RecognizePrintedTextInStreamResponder(resp *http.Respon
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // mode - type of text to recognize.
 func (client BaseClient) RecognizeText(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.RecognizeText")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -1113,6 +1244,16 @@ func (client BaseClient) RecognizeTextResponder(resp *http.Response) (result aut
 // imageParameter - an image stream.
 // mode - type of text to recognize.
 func (client BaseClient) RecognizeTextInStream(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.RecognizeTextInStream")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RecognizeTextInStreamPreparer(ctx, imageParameter, mode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "RecognizeTextInStream", nil, "Failure preparing request")
@@ -1184,6 +1325,16 @@ func (client BaseClient) RecognizeTextInStreamResponder(resp *http.Response) (re
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL, language string) (result TagResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TagImage")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -1265,6 +1416,16 @@ func (client BaseClient) TagImageResponder(resp *http.Response) (result TagResul
 // is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
 // zh - Simplified Chinese.
 func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io.ReadCloser, language string) (result TagResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.TagImageInStream")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.TagImageInStreamPreparer(ctx, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "TagImageInStream", nil, "Failure preparing request")

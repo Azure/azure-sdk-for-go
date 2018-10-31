@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -44,6 +45,16 @@ func NewDenyAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // scope - the scope of the deny assignment.
 // denyAssignmentID - the ID of the deny assignment to get.
 func (client DenyAssignmentsClient) Get(ctx context.Context, scope string, denyAssignmentID string) (result DenyAssignment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, scope, denyAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "Get", nil, "Failure preparing request")
@@ -112,6 +123,16 @@ func (client DenyAssignmentsClient) GetResponder(resp *http.Response) (result De
 // level deny assignments, or /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for tenant
 // level deny assignments.
 func (client DenyAssignmentsClient) GetByID(ctx context.Context, denyAssignmentID string) (result DenyAssignment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.GetByID")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetByIDPreparer(ctx, denyAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "GetByID", nil, "Failure preparing request")
@@ -184,6 +205,16 @@ func (client DenyAssignmentsClient) GetByIDResponder(resp *http.Response) (resul
 // Additionally, when gdprExportPrincipalId filter is used, only the deny assignment name and description
 // properties are returned.
 func (client DenyAssignmentsClient) List(ctx context.Context, filter string) (result DenyAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.List")
+		defer func() {
+			sc := -1
+			if result.dalr.Response.Response != nil {
+				sc = result.dalr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
@@ -249,8 +280,8 @@ func (client DenyAssignmentsClient) ListResponder(resp *http.Response) (result D
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client DenyAssignmentsClient) listNextResults(lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
-	req, err := lastResults.denyAssignmentListResultPreparer()
+func (client DenyAssignmentsClient) listNextResults(ctx context.Context, lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
+	req, err := lastResults.denyAssignmentListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -271,6 +302,16 @@ func (client DenyAssignmentsClient) listNextResults(lastResults DenyAssignmentLi
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DenyAssignmentsClient) ListComplete(ctx context.Context, filter string) (result DenyAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, filter)
 	return
 }
@@ -292,6 +333,16 @@ func (client DenyAssignmentsClient) ListComplete(ctx context.Context, filter str
 // Additionally, when gdprExportPrincipalId filter is used, only the deny assignment name and description
 // properties are returned.
 func (client DenyAssignmentsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result DenyAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForResource")
+		defer func() {
+			sc := -1
+			if result.dalr.Response.Response != nil {
+				sc = result.dalr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listForResourceNextResults
 	req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
@@ -362,8 +413,8 @@ func (client DenyAssignmentsClient) ListForResourceResponder(resp *http.Response
 }
 
 // listForResourceNextResults retrieves the next set of results, if any.
-func (client DenyAssignmentsClient) listForResourceNextResults(lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
-	req, err := lastResults.denyAssignmentListResultPreparer()
+func (client DenyAssignmentsClient) listForResourceNextResults(ctx context.Context, lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
+	req, err := lastResults.denyAssignmentListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "listForResourceNextResults", nil, "Failure preparing next results request")
 	}
@@ -384,6 +435,16 @@ func (client DenyAssignmentsClient) listForResourceNextResults(lastResults DenyA
 
 // ListForResourceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DenyAssignmentsClient) ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result DenyAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForResource")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListForResource(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	return
 }
@@ -401,6 +462,16 @@ func (client DenyAssignmentsClient) ListForResourceComplete(ctx context.Context,
 // Additionally, when gdprExportPrincipalId filter is used, only the deny assignment name and description
 // properties are returned.
 func (client DenyAssignmentsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result DenyAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForResourceGroup")
+		defer func() {
+			sc := -1
+			if result.dalr.Response.Response != nil {
+				sc = result.dalr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listForResourceGroupNextResults
 	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, filter)
 	if err != nil {
@@ -467,8 +538,8 @@ func (client DenyAssignmentsClient) ListForResourceGroupResponder(resp *http.Res
 }
 
 // listForResourceGroupNextResults retrieves the next set of results, if any.
-func (client DenyAssignmentsClient) listForResourceGroupNextResults(lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
-	req, err := lastResults.denyAssignmentListResultPreparer()
+func (client DenyAssignmentsClient) listForResourceGroupNextResults(ctx context.Context, lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
+	req, err := lastResults.denyAssignmentListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "listForResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -489,6 +560,16 @@ func (client DenyAssignmentsClient) listForResourceGroupNextResults(lastResults 
 
 // ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DenyAssignmentsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result DenyAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListForResourceGroup(ctx, resourceGroupName, filter)
 	return
 }
@@ -506,6 +587,16 @@ func (client DenyAssignmentsClient) ListForResourceGroupComplete(ctx context.Con
 // Additionally, when gdprExportPrincipalId filter is used, only the deny assignment name and description
 // properties are returned.
 func (client DenyAssignmentsClient) ListForScope(ctx context.Context, scope string, filter string) (result DenyAssignmentListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForScope")
+		defer func() {
+			sc := -1
+			if result.dalr.Response.Response != nil {
+				sc = result.dalr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listForScopeNextResults
 	req, err := client.ListForScopePreparer(ctx, scope, filter)
 	if err != nil {
@@ -571,8 +662,8 @@ func (client DenyAssignmentsClient) ListForScopeResponder(resp *http.Response) (
 }
 
 // listForScopeNextResults retrieves the next set of results, if any.
-func (client DenyAssignmentsClient) listForScopeNextResults(lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
-	req, err := lastResults.denyAssignmentListResultPreparer()
+func (client DenyAssignmentsClient) listForScopeNextResults(ctx context.Context, lastResults DenyAssignmentListResult) (result DenyAssignmentListResult, err error) {
+	req, err := lastResults.denyAssignmentListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "authorization.DenyAssignmentsClient", "listForScopeNextResults", nil, "Failure preparing next results request")
 	}
@@ -593,6 +684,16 @@ func (client DenyAssignmentsClient) listForScopeNextResults(lastResults DenyAssi
 
 // ListForScopeComplete enumerates all values, automatically crossing page boundaries as required.
 func (client DenyAssignmentsClient) ListForScopeComplete(ctx context.Context, scope string, filter string) (result DenyAssignmentListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DenyAssignmentsClient.ListForScope")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListForScope(ctx, scope, filter)
 	return
 }

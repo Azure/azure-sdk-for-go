@@ -46,6 +46,9 @@ type ExpressRouteConnectionsClient = original.ExpressRouteConnectionsClient
 type ExpressRouteCrossConnectionPeeringsClient = original.ExpressRouteCrossConnectionPeeringsClient
 type ExpressRouteCrossConnectionsClient = original.ExpressRouteCrossConnectionsClient
 type ExpressRouteGatewaysClient = original.ExpressRouteGatewaysClient
+type ExpressRouteLinksClient = original.ExpressRouteLinksClient
+type ExpressRoutePortsClient = original.ExpressRoutePortsClient
+type ExpressRoutePortsLocationsClient = original.ExpressRoutePortsLocationsClient
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
 type HubVirtualNetworkConnectionsClient = original.HubVirtualNetworkConnectionsClient
 type InboundNatRulesClient = original.InboundNatRulesClient
@@ -58,6 +61,7 @@ type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddress
 type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
 type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
 type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
+type LoadBalancerOutboundRulesClient = original.LoadBalancerOutboundRulesClient
 type LoadBalancerProbesClient = original.LoadBalancerProbesClient
 type LoadBalancersClient = original.LoadBalancersClient
 type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
@@ -83,6 +87,13 @@ type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBa
 const (
 	Disabled ApplicationGatewayCookieBasedAffinity = original.Disabled
 	Enabled  ApplicationGatewayCookieBasedAffinity = original.Enabled
+)
+
+type ApplicationGatewayCustomErrorStatusCode = original.ApplicationGatewayCustomErrorStatusCode
+
+const (
+	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus403
+	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = original.HTTPStatus502
 )
 
 type ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallMode
@@ -236,9 +247,10 @@ const (
 type AzureFirewallNetworkRuleProtocol = original.AzureFirewallNetworkRuleProtocol
 
 const (
-	Any AzureFirewallNetworkRuleProtocol = original.Any
-	TCP AzureFirewallNetworkRuleProtocol = original.TCP
-	UDP AzureFirewallNetworkRuleProtocol = original.UDP
+	Any  AzureFirewallNetworkRuleProtocol = original.Any
+	ICMP AzureFirewallNetworkRuleProtocol = original.ICMP
+	TCP  AzureFirewallNetworkRuleProtocol = original.TCP
+	UDP  AzureFirewallNetworkRuleProtocol = original.UDP
 )
 
 type AzureFirewallRCActionType = original.AzureFirewallRCActionType
@@ -369,8 +381,23 @@ const (
 type ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTier
 
 const (
-	Premium  ExpressRouteCircuitSkuTier = original.Premium
-	Standard ExpressRouteCircuitSkuTier = original.Standard
+	ExpressRouteCircuitSkuTierBasic    ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierBasic
+	ExpressRouteCircuitSkuTierPremium  ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierPremium
+	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
+)
+
+type ExpressRouteLinkAdminState = original.ExpressRouteLinkAdminState
+
+const (
+	ExpressRouteLinkAdminStateDisabled ExpressRouteLinkAdminState = original.ExpressRouteLinkAdminStateDisabled
+	ExpressRouteLinkAdminStateEnabled  ExpressRouteLinkAdminState = original.ExpressRouteLinkAdminStateEnabled
+)
+
+type ExpressRouteLinkConnectorType = original.ExpressRouteLinkConnectorType
+
+const (
+	LC ExpressRouteLinkConnectorType = original.LC
+	SC ExpressRouteLinkConnectorType = original.SC
 )
 
 type ExpressRoutePeeringState = original.ExpressRoutePeeringState
@@ -386,6 +413,13 @@ const (
 	AzurePrivatePeering ExpressRoutePeeringType = original.AzurePrivatePeering
 	AzurePublicPeering  ExpressRoutePeeringType = original.AzurePublicPeering
 	MicrosoftPeering    ExpressRoutePeeringType = original.MicrosoftPeering
+)
+
+type ExpressRoutePortsEncapsulation = original.ExpressRoutePortsEncapsulation
+
+const (
+	Dot1Q ExpressRoutePortsEncapsulation = original.Dot1Q
+	QinQ  ExpressRoutePortsEncapsulation = original.QinQ
 )
 
 type HTTPMethod = original.HTTPMethod
@@ -630,7 +664,7 @@ const (
 type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
 
 const (
-	PublicIPPrefixSkuNameStandard PublicIPPrefixSkuName = original.PublicIPPrefixSkuNameStandard
+	Standard PublicIPPrefixSkuName = original.Standard
 )
 
 type RouteNextHopType = original.RouteNextHopType
@@ -696,6 +730,14 @@ const (
 	TunnelConnectionStatusConnecting   TunnelConnectionStatus = original.TunnelConnectionStatusConnecting
 	TunnelConnectionStatusNotConnected TunnelConnectionStatus = original.TunnelConnectionStatusNotConnected
 	TunnelConnectionStatusUnknown      TunnelConnectionStatus = original.TunnelConnectionStatusUnknown
+)
+
+type VerbosityLevel = original.VerbosityLevel
+
+const (
+	Full    VerbosityLevel = original.Full
+	Minimum VerbosityLevel = original.Minimum
+	Normal  VerbosityLevel = original.Normal
 )
 
 type VirtualNetworkGatewayConnectionProtocol = original.VirtualNetworkGatewayConnectionProtocol
@@ -833,7 +875,9 @@ type ApplicationGatewayBackendHealthServer = original.ApplicationGatewayBackendH
 type ApplicationGatewayBackendHTTPSettings = original.ApplicationGatewayBackendHTTPSettings
 type ApplicationGatewayBackendHTTPSettingsPropertiesFormat = original.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
 type ApplicationGatewayConnectionDraining = original.ApplicationGatewayConnectionDraining
+type ApplicationGatewayCustomError = original.ApplicationGatewayCustomError
 type ApplicationGatewayFirewallDisabledRuleGroup = original.ApplicationGatewayFirewallDisabledRuleGroup
+type ApplicationGatewayFirewallExclusion = original.ApplicationGatewayFirewallExclusion
 type ApplicationGatewayFirewallRule = original.ApplicationGatewayFirewallRule
 type ApplicationGatewayFirewallRuleGroup = original.ApplicationGatewayFirewallRuleGroup
 type ApplicationGatewayFirewallRuleSet = original.ApplicationGatewayFirewallRuleSet
@@ -941,6 +985,7 @@ type BgpServiceCommunityListResultPage = original.BgpServiceCommunityListResultP
 type BgpServiceCommunityPropertiesFormat = original.BgpServiceCommunityPropertiesFormat
 type BgpSettings = original.BgpSettings
 type ConfigurationDiagnosticParameters = original.ConfigurationDiagnosticParameters
+type ConfigurationDiagnosticProfile = original.ConfigurationDiagnosticProfile
 type ConfigurationDiagnosticResponse = original.ConfigurationDiagnosticResponse
 type ConfigurationDiagnosticResult = original.ConfigurationDiagnosticResult
 type ConnectionMonitor = original.ConnectionMonitor
@@ -1068,6 +1113,25 @@ type ExpressRouteGatewayPropertiesAutoScaleConfiguration = original.ExpressRoute
 type ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds = original.ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds
 type ExpressRouteGatewaysCreateOrUpdateFuture = original.ExpressRouteGatewaysCreateOrUpdateFuture
 type ExpressRouteGatewaysDeleteFuture = original.ExpressRouteGatewaysDeleteFuture
+type ExpressRouteLink = original.ExpressRouteLink
+type ExpressRouteLinkListResult = original.ExpressRouteLinkListResult
+type ExpressRouteLinkListResultIterator = original.ExpressRouteLinkListResultIterator
+type ExpressRouteLinkListResultPage = original.ExpressRouteLinkListResultPage
+type ExpressRouteLinkPropertiesFormat = original.ExpressRouteLinkPropertiesFormat
+type ExpressRoutePort = original.ExpressRoutePort
+type ExpressRoutePortListResult = original.ExpressRoutePortListResult
+type ExpressRoutePortListResultIterator = original.ExpressRoutePortListResultIterator
+type ExpressRoutePortListResultPage = original.ExpressRoutePortListResultPage
+type ExpressRoutePortPropertiesFormat = original.ExpressRoutePortPropertiesFormat
+type ExpressRoutePortsCreateOrUpdateFuture = original.ExpressRoutePortsCreateOrUpdateFuture
+type ExpressRoutePortsDeleteFuture = original.ExpressRoutePortsDeleteFuture
+type ExpressRoutePortsLocation = original.ExpressRoutePortsLocation
+type ExpressRoutePortsLocationBandwidths = original.ExpressRoutePortsLocationBandwidths
+type ExpressRoutePortsLocationListResult = original.ExpressRoutePortsLocationListResult
+type ExpressRoutePortsLocationListResultIterator = original.ExpressRoutePortsLocationListResultIterator
+type ExpressRoutePortsLocationListResultPage = original.ExpressRoutePortsLocationListResultPage
+type ExpressRoutePortsLocationPropertiesFormat = original.ExpressRoutePortsLocationPropertiesFormat
+type ExpressRoutePortsUpdateTagsFuture = original.ExpressRoutePortsUpdateTagsFuture
 type ExpressRouteServiceProvider = original.ExpressRouteServiceProvider
 type ExpressRouteServiceProviderBandwidthsOffered = original.ExpressRouteServiceProviderBandwidthsOffered
 type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProviderListResult
@@ -1174,6 +1238,9 @@ type LoadBalancerListResultPage = original.LoadBalancerListResultPage
 type LoadBalancerLoadBalancingRuleListResult = original.LoadBalancerLoadBalancingRuleListResult
 type LoadBalancerLoadBalancingRuleListResultIterator = original.LoadBalancerLoadBalancingRuleListResultIterator
 type LoadBalancerLoadBalancingRuleListResultPage = original.LoadBalancerLoadBalancingRuleListResultPage
+type LoadBalancerOutboundRuleListResult = original.LoadBalancerOutboundRuleListResult
+type LoadBalancerOutboundRuleListResultIterator = original.LoadBalancerOutboundRuleListResultIterator
+type LoadBalancerOutboundRuleListResultPage = original.LoadBalancerOutboundRuleListResultPage
 type LoadBalancerProbeListResult = original.LoadBalancerProbeListResult
 type LoadBalancerProbeListResultIterator = original.LoadBalancerProbeListResultIterator
 type LoadBalancerProbeListResultPage = original.LoadBalancerProbeListResultPage
@@ -1360,7 +1427,6 @@ type TopologyParameters = original.TopologyParameters
 type TopologyResource = original.TopologyResource
 type TrafficAnalyticsConfigurationProperties = original.TrafficAnalyticsConfigurationProperties
 type TrafficAnalyticsProperties = original.TrafficAnalyticsProperties
-type TrafficQuery = original.TrafficQuery
 type TroubleshootingDetails = original.TroubleshootingDetails
 type TroubleshootingParameters = original.TroubleshootingParameters
 type TroubleshootingProperties = original.TroubleshootingProperties
@@ -1645,6 +1711,24 @@ func NewExpressRouteGatewaysClient(subscriptionID string) ExpressRouteGatewaysCl
 func NewExpressRouteGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteGatewaysClient {
 	return original.NewExpressRouteGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewExpressRouteLinksClient(subscriptionID string) ExpressRouteLinksClient {
+	return original.NewExpressRouteLinksClient(subscriptionID)
+}
+func NewExpressRouteLinksClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteLinksClient {
+	return original.NewExpressRouteLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRoutePortsClient(subscriptionID string) ExpressRoutePortsClient {
+	return original.NewExpressRoutePortsClient(subscriptionID)
+}
+func NewExpressRoutePortsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRoutePortsClient {
+	return original.NewExpressRoutePortsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRoutePortsLocationsClient(subscriptionID string) ExpressRoutePortsLocationsClient {
+	return original.NewExpressRoutePortsLocationsClient(subscriptionID)
+}
+func NewExpressRoutePortsLocationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRoutePortsLocationsClient {
+	return original.NewExpressRoutePortsLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
 	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
 }
@@ -1717,6 +1801,12 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string) LoadBalancerN
 func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerNetworkInterfacesClient {
 	return original.NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLoadBalancerOutboundRulesClient(subscriptionID string) LoadBalancerOutboundRulesClient {
+	return original.NewLoadBalancerOutboundRulesClient(subscriptionID)
+}
+func NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerOutboundRulesClient {
+	return original.NewLoadBalancerOutboundRulesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
 	return original.NewLoadBalancerProbesClient(subscriptionID)
 }
@@ -1743,6 +1833,9 @@ func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGa
 }
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
+}
+func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
+	return original.PossibleApplicationGatewayCustomErrorStatusCodeValues()
 }
 func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewallMode {
 	return original.PossibleApplicationGatewayFirewallModeValues()
@@ -1843,11 +1936,20 @@ func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
 	return original.PossibleExpressRouteCircuitSkuTierValues()
 }
+func PossibleExpressRouteLinkAdminStateValues() []ExpressRouteLinkAdminState {
+	return original.PossibleExpressRouteLinkAdminStateValues()
+}
+func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorType {
+	return original.PossibleExpressRouteLinkConnectorTypeValues()
+}
 func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
 	return original.PossibleExpressRoutePeeringStateValues()
 }
 func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	return original.PossibleExpressRoutePeeringTypeValues()
+}
+func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
+	return original.PossibleExpressRoutePortsEncapsulationValues()
 }
 func PossibleHTTPMethodValues() []HTTPMethod {
 	return original.PossibleHTTPMethodValues()
@@ -1953,6 +2055,9 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 }
 func PossibleTunnelConnectionStatusValues() []TunnelConnectionStatus {
 	return original.PossibleTunnelConnectionStatusValues()
+}
+func PossibleVerbosityLevelValues() []VerbosityLevel {
+	return original.PossibleVerbosityLevelValues()
 }
 func PossibleVirtualNetworkGatewayConnectionProtocolValues() []VirtualNetworkGatewayConnectionProtocol {
 	return original.PossibleVirtualNetworkGatewayConnectionProtocolValues()

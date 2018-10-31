@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -162,6 +163,16 @@ func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
 // display strings that contain escapable HTML characters such as <, >, and &, if textFormat is set to HTML,
 // Bing escapes the characters as appropriate (for example, < is escaped to &lt;).
 func (client CustomInstanceClient) Search(ctx context.Context, customConfig string, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, market string, offset *int32, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (result SearchResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomInstanceClient.Search")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SearchPreparer(ctx, customConfig, query, acceptLanguage, userAgent, clientID, clientIP, location, countryCode, count, market, offset, safeSearch, setLang, textDecorations, textFormat)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customsearch.CustomInstanceClient", "Search", nil, "Failure preparing request")

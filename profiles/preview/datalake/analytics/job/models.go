@@ -19,7 +19,7 @@
 
 package job
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2017-09-01-preview/job"
+import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job"
 
 const (
 	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
@@ -86,7 +86,6 @@ type Type = original.Type
 const (
 	TypeHive          Type = original.TypeHive
 	TypeJobProperties Type = original.TypeJobProperties
-	TypeScope         Type = original.TypeScope
 	TypeUSQL          Type = original.TypeUSQL
 )
 
@@ -94,26 +93,21 @@ type TypeBasicCreateJobProperties = original.TypeBasicCreateJobProperties
 
 const (
 	TypeBasicCreateJobPropertiesTypeCreateJobProperties TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeCreateJobProperties
-	TypeBasicCreateJobPropertiesTypeScope               TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeScope
 	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
 type TypeEnum = original.TypeEnum
 
 const (
-	Hive  TypeEnum = original.Hive
-	Scope TypeEnum = original.Scope
-	USQL  TypeEnum = original.USQL
+	Hive TypeEnum = original.Hive
+	USQL TypeEnum = original.USQL
 )
 
 type BaseJobParameters = original.BaseJobParameters
 type BuildJobParameters = original.BuildJobParameters
-type CancelFuture = original.CancelFuture
 type CreateJobParameters = original.CreateJobParameters
 type BasicCreateJobProperties = original.BasicCreateJobProperties
 type CreateJobProperties = original.CreateJobProperties
-type CreateScopeJobParameters = original.CreateScopeJobParameters
-type CreateScopeJobProperties = original.CreateScopeJobProperties
 type CreateUSQLJobProperties = original.CreateUSQLJobProperties
 type DataPath = original.DataPath
 type Diagnostics = original.Diagnostics
@@ -138,17 +132,10 @@ type RecurrenceInformationListResultIterator = original.RecurrenceInformationLis
 type RecurrenceInformationListResultPage = original.RecurrenceInformationListResultPage
 type RelationshipProperties = original.RelationshipProperties
 type Resource = original.Resource
-type ResourceUsageStatistics = original.ResourceUsageStatistics
-type ScopeJobProperties = original.ScopeJobProperties
-type ScopeJobResource = original.ScopeJobResource
 type StateAuditRecord = original.StateAuditRecord
 type Statistics = original.Statistics
-type StatisticsVertex = original.StatisticsVertex
 type StatisticsVertexStage = original.StatisticsVertexStage
-type UpdateFuture = original.UpdateFuture
-type UpdateJobParameters = original.UpdateJobParameters
 type USQLJobProperties = original.USQLJobProperties
-type YieldFuture = original.YieldFuture
 type PipelineClient = original.PipelineClient
 type RecurrenceClient = original.RecurrenceClient
 

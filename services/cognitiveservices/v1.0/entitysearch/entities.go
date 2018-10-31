@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -145,6 +146,16 @@ func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
 // string that's used as a label in a user interface. There are few user interface strings in the JSON response
 // objects. Also, any links to Bing.com properties in the response objects apply the specified language.
 func (client EntitiesClient) Search(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, responseFilter []AnswerType, responseFormat []ResponseFormat, safeSearch SafeSearch, setLang string) (result SearchResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.Search")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SearchPreparer(ctx, query, acceptLanguage, pragma, userAgent, clientID, clientIP, location, countryCode, market, responseFilter, responseFormat, safeSearch, setLang)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "entitysearch.EntitiesClient", "Search", nil, "Failure preparing request")

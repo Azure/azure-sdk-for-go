@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"github.com/satori/go.uuid"
 	"net/http"
 )
@@ -40,6 +41,16 @@ func NewSettingsClient(endpoint string) SettingsClient {
 // appID - the application ID.
 // versionID - the version ID.
 func (client SettingsClient) List(ctx context.Context, appID uuid.UUID, versionID string) (result ListAppVersionSettingObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListPreparer(ctx, appID, versionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "List", nil, "Failure preparing request")
@@ -105,6 +116,16 @@ func (client SettingsClient) ListResponder(resp *http.Response) (result ListAppV
 // versionID - the version ID.
 // listOfAppVersionSettingObject - a list of the updated application version settings.
 func (client SettingsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, listOfAppVersionSettingObject AppVersionSettingObject) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SettingsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, appID, versionID, listOfAppVersionSettingObject)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authoring.SettingsClient", "Update", nil, "Failure preparing request")

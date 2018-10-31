@@ -22,6 +22,9 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/entitysearch"
+
 // AnswerType enumerates the values for answer type.
 type AnswerType string
 
@@ -10571,8 +10574,8 @@ type BasicResponse interface {
 	AsResponse() (*Response, bool)
 }
 
-// Response defines a response. All schemas that could be returned at the root of a response should inherit from
-// this
+// Response defines a response. All schemas that could be returned at the root of a response should inherit
+// from this
 type Response struct {
 	// ContractualRules - A list of rules that you must adhere to if you display the item.
 	ContractualRules *[]BasicContractualRulesContractualRule `json:"contractualRules,omitempty"`

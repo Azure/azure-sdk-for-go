@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -45,6 +46,16 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, purge
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.
 func (client WorkspacesClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspacePurgeStatusResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.GetPurgeStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -121,6 +132,16 @@ func (client WorkspacesClient) GetPurgeStatusResponder(resp *http.Response) (res
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.
 func (client WorkspacesClient) GetSchema(ctx context.Context, resourceGroupName string, workspaceName string) (result SearchGetSchemaResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.GetSchema")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -199,6 +220,16 @@ func (client WorkspacesClient) GetSchemaResponder(resp *http.Response) (result S
 // workspaceName - the Log Analytics Workspace name.
 // parameters - the parameters required to execute a search query.
 func (client WorkspacesClient) GetSearchResults(ctx context.Context, resourceGroupName string, workspaceName string, parameters SearchParameters) (result WorkspacesGetSearchResultsFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.GetSearchResults")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -256,10 +287,6 @@ func (client WorkspacesClient) GetSearchResultsSender(req *http.Request) (future
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -283,6 +310,16 @@ func (client WorkspacesClient) GetSearchResultsResponder(resp *http.Response) (r
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.
 func (client WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string) (result SharedKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -356,6 +393,16 @@ func (client WorkspacesClient) ListKeysResponder(resp *http.Response) (result Sh
 // ListLinkTargets get a list of workspaces which the current user has administrator privileges and are not associated
 // with an Azure Subscription. The subscriptionId parameter in the Url is ignored.
 func (client WorkspacesClient) ListLinkTargets(ctx context.Context) (result ListLinkTarget, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListLinkTargets")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListLinkTargetsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListLinkTargets", nil, "Failure preparing request")
@@ -422,6 +469,16 @@ func (client WorkspacesClient) ListLinkTargetsResponder(resp *http.Response) (re
 // workspaceName - the Log Analytics Workspace name.
 // body - describes the body of a request to purge data in a single table of an Log Analytics Workspace
 func (client WorkspacesClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody) (result WorkspacePurgeResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Purge")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -503,6 +560,16 @@ func (client WorkspacesClient) PurgeResponder(resp *http.Response) (result Works
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.
 func (client WorkspacesClient) RegenerateSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string) (result SharedKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.RegenerateSharedKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -580,6 +647,16 @@ func (client WorkspacesClient) RegenerateSharedKeysResponder(resp *http.Response
 // ID - the id of the search that will have results updated. You can get the id from the response of the
 // GetResults call.
 func (client WorkspacesClient) UpdateSearchResults(ctx context.Context, resourceGroupName string, workspaceName string, ID string) (result SearchResultsResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.UpdateSearchResults")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

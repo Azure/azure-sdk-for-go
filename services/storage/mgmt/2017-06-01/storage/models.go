@@ -25,6 +25,9 @@ import (
 	"net/http"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-06-01/storage"
+
 // AccessTier enumerates the values for access tier.
 type AccessTier string
 
@@ -523,7 +526,8 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage account name.
+// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage
+// account name.
 type AccountCheckNameAvailabilityParameters struct {
 	// Name - The storage account name.
 	Name *string `json:"name,omitempty"`
@@ -750,7 +754,8 @@ type AccountSasParameters struct {
 	KeyToSign *string `json:"keyToSign,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }
@@ -778,7 +783,8 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
-// AccountUpdateParameters the parameters that can be provided when updating the storage account properties.
+// AccountUpdateParameters the parameters that can be provided when updating the storage account
+// properties.
 type AccountUpdateParameters struct {
 	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS or Premium_LRS, nor can accounts of those sku names be updated to any other value.
 	Sku *Sku `json:"sku,omitempty"`
@@ -1095,8 +1101,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list Storage operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult result of the request to list Storage operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -1218,8 +1224,8 @@ type Sku struct {
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
 }
 
-// SKUCapability the capability information in the specified sku, including file encryption, network acls, change
-// notification, etc.
+// SKUCapability the capability information in the specified sku, including file encryption, network acls,
+// change notification, etc.
 type SKUCapability struct {
 	// Name - The name of capability, The capability information in the specified sku, including file encryption, network acls, change notification, etc.
 	Name *string `json:"name,omitempty"`

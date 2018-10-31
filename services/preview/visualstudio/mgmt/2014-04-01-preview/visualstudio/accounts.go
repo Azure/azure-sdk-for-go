@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // Parameters:
 // body - parameters describing the name to check availability for.
 func (client AccountsClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityParameter) (result CheckNameAvailabilityResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckNameAvailabilityPreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -115,6 +126,16 @@ func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response)
 // body - the request data.
 // resourceName - name of the resource.
 func (client AccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, body AccountResourceRequest, resourceName string) (result AccountResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, body, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -184,6 +205,16 @@ func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName - name of the resource group within the Azure subscription.
 // resourceName - name of the resource.
 func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "Delete", nil, "Failure preparing request")
@@ -250,6 +281,16 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName - name of the resource group within the Azure subscription.
 // resourceName - name of the resource.
 func (client AccountsClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result AccountResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "Get", nil, "Failure preparing request")
@@ -317,6 +358,16 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result AccountRe
 // Parameters:
 // resourceGroupName - name of the resource group within the Azure subscription.
 func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AccountResourceListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "ListByResourceGroup", nil, "Failure preparing request")

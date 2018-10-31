@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"github.com/satori/go.uuid"
 	"io"
 	"net/http"
@@ -58,6 +59,16 @@ func NewClient() Client {
 // from the same client and same session. This will give a performance benefit when syncFlag is DATA or
 // METADATA.
 func (client Client) Append(ctx context.Context, accountName string, pathParameter string, streamContents io.ReadCloser, offset *int64, syncFlag SyncFlag, leaseID *uuid.UUID, fileSessionID *uuid.UUID) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Append")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.AppendPreparer(ctx, accountName, pathParameter, streamContents, offset, syncFlag, leaseID, fileSessionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Append", nil, "Failure preparing request")
@@ -147,6 +158,16 @@ func (client Client) AppendResponder(resp *http.Response) (result autorest.Respo
 // access.
 // fsaction - file system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
 func (client Client) CheckAccess(ctx context.Context, accountName string, pathParameter string, fsaction string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CheckAccess")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CheckAccessPreparer(ctx, accountName, pathParameter, fsaction)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "CheckAccess", nil, "Failure preparing request")
@@ -221,6 +242,16 @@ func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.
 // sources - a list of comma separated Data Lake Store paths (starting with '/') of the files to concatenate,
 // in the order in which they should be concatenated.
 func (client Client) Concat(ctx context.Context, accountName string, pathParameter string, sources []string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Concat")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sources,
 			Constraints: []validation.Constraint{{Target: "sources", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -312,6 +343,16 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 // should get updated. CLOSE indicates that the client is done sending data, the file handle should be
 // closed/unlocked, and file metadata should get updated.
 func (client Client) ConcurrentAppend(ctx context.Context, accountName string, pathParameter string, streamContents io.ReadCloser, appendMode AppendModeType, syncFlag SyncFlag) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ConcurrentAppend")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ConcurrentAppendPreparer(ctx, accountName, pathParameter, streamContents, appendMode, syncFlag)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ConcurrentAppend", nil, "Failure preparing request")
@@ -407,6 +448,16 @@ func (client Client) ConcurrentAppendResponder(resp *http.Response) (result auto
 // permission - the octal representation of the unnamed user, mask and other permissions that should be set for
 // the file when created. If not specified, it inherits these from the container.
 func (client Client) Create(ctx context.Context, accountName string, pathParameter string, streamContents io.ReadCloser, overwrite *bool, syncFlag SyncFlag, leaseID *uuid.UUID, permission *int32) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.CreatePreparer(ctx, accountName, pathParameter, streamContents, overwrite, syncFlag, leaseID, permission)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Create", nil, "Failure preparing request")
@@ -498,6 +549,16 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 // pathParameter - the Data Lake Store path (starting with '/') of the file or directory to delete.
 // recursive - the optional switch indicating if the delete should be recursive
 func (client Client) Delete(ctx context.Context, accountName string, pathParameter string, recursive *bool) (result FileOperationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, accountName, pathParameter, recursive)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Delete", nil, "Failure preparing request")
@@ -575,6 +636,16 @@ func (client Client) DeleteResponder(resp *http.Response) (result FileOperationR
 // tooID - an optional switch to return friendly names in place of object ID for ACL entries. tooid=false
 // returns friendly names instead of the AAD Object ID. Default value is true, returning AAD object IDs.
 func (client Client) GetACLStatus(ctx context.Context, accountName string, pathParameter string, tooID *bool) (result ACLStatusResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetACLStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetACLStatusPreparer(ctx, accountName, pathParameter, tooID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetACLStatus", nil, "Failure preparing request")
@@ -649,6 +720,16 @@ func (client Client) GetACLStatusResponder(resp *http.Response) (result ACLStatu
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // pathParameter - the Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
 func (client Client) GetContentSummary(ctx context.Context, accountName string, pathParameter string) (result ContentSummaryResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetContentSummary")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetContentSummaryPreparer(ctx, accountName, pathParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetContentSummary", nil, "Failure preparing request")
@@ -723,6 +804,16 @@ func (client Client) GetContentSummaryResponder(resp *http.Response) (result Con
 // tooID - an optional switch to return friendly names in place of owner and group. tooid=false returns
 // friendly names instead of the AAD Object ID. Default value is true, returning AAD object IDs.
 func (client Client) GetFileStatus(ctx context.Context, accountName string, pathParameter string, tooID *bool) (result FileStatusResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetFileStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetFileStatusPreparer(ctx, accountName, pathParameter, tooID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "GetFileStatus", nil, "Failure preparing request")
@@ -806,6 +897,16 @@ func (client Client) GetFileStatusResponder(resp *http.Response) (result FileSta
 // tooID - an optional switch to return friendly names in place of owner and group. tooid=false returns
 // friendly names instead of the AAD Object ID. Default value is true, returning AAD object IDs.
 func (client Client) ListFileStatus(ctx context.Context, accountName string, pathParameter string, listSize *int32, listAfter string, listBefore string, tooID *bool) (result FileStatusesResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListFileStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ListFileStatusPreparer(ctx, accountName, pathParameter, listSize, listAfter, listBefore, tooID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ListFileStatus", nil, "Failure preparing request")
@@ -890,6 +991,16 @@ func (client Client) ListFileStatusResponder(resp *http.Response) (result FileSt
 // pathParameter - the Data Lake Store path (starting with '/') of the directory to create.
 // permission - optional octal permission with which the directory should be created.
 func (client Client) Mkdirs(ctx context.Context, accountName string, pathParameter string, permission *int32) (result FileOperationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Mkdirs")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.MkdirsPreparer(ctx, accountName, pathParameter, permission)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Mkdirs", nil, "Failure preparing request")
@@ -967,6 +1078,16 @@ func (client Client) MkdirsResponder(resp *http.Response) (result FileOperationR
 // aclspec - the ACL specification included in ACL modification operations in the format
 // '[default:]user|group|other::r|-w|-x|-'
 func (client Client) ModifyACLEntries(ctx context.Context, accountName string, pathParameter string, aclspec string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ModifyACLEntries")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.ModifyACLEntriesPreparer(ctx, accountName, pathParameter, aclspec)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "ModifyACLEntries", nil, "Failure preparing request")
@@ -1048,6 +1169,16 @@ func (client Client) ModifyACLEntriesResponder(resp *http.Response) (result auto
 // WARNING: This includes the deletion of any other files that are not source files. Only set this to true when
 // source files are the only files in the source directory.
 func (client Client) MsConcat(ctx context.Context, accountName string, pathParameter string, streamContents io.ReadCloser, deleteSourceDirectory *bool) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.MsConcat")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.MsConcatPreparer(ctx, accountName, pathParameter, streamContents, deleteSourceDirectory)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "MsConcat", nil, "Failure preparing request")
@@ -1127,6 +1258,16 @@ func (client Client) MsConcatResponder(resp *http.Response) (result autorest.Res
 // fileSessionID - optional unique GUID per file indicating all the reads with the same fileSessionId are from
 // the same client and same session. This will give a performance benefit.
 func (client Client) Open(ctx context.Context, accountName string, pathParameter string, length *int64, offset *int64, fileSessionID *uuid.UUID) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Open")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.OpenPreparer(ctx, accountName, pathParameter, length, offset, fileSessionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Open", nil, "Failure preparing request")
@@ -1208,6 +1349,16 @@ func (client Client) OpenResponder(resp *http.Response) (result ReadCloser, err 
 // pathParameter - the Data Lake Store path (starting with '/') of the file or directory with the ACL being
 // removed.
 func (client Client) RemoveACL(ctx context.Context, accountName string, pathParameter string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveACL")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RemoveACLPreparer(ctx, accountName, pathParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACL", nil, "Failure preparing request")
@@ -1280,6 +1431,16 @@ func (client Client) RemoveACLResponder(resp *http.Response) (result autorest.Re
 // removed.
 // aclspec - the ACL spec included in ACL removal operations in the format '[default:]user|group|other'
 func (client Client) RemoveACLEntries(ctx context.Context, accountName string, pathParameter string, aclspec string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveACLEntries")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RemoveACLEntriesPreparer(ctx, accountName, pathParameter, aclspec)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveACLEntries", nil, "Failure preparing request")
@@ -1352,6 +1513,16 @@ func (client Client) RemoveACLEntriesResponder(resp *http.Response) (result auto
 // pathParameter - the Data Lake Store path (starting with '/') of the directory with the default ACL being
 // removed.
 func (client Client) RemoveDefaultACL(ctx context.Context, accountName string, pathParameter string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveDefaultACL")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RemoveDefaultACLPreparer(ctx, accountName, pathParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "RemoveDefaultACL", nil, "Failure preparing request")
@@ -1423,6 +1594,16 @@ func (client Client) RemoveDefaultACLResponder(resp *http.Response) (result auto
 // pathParameter - the Data Lake Store path (starting with '/') of the file or directory to move/rename.
 // destination - the path to move/rename the file or folder to
 func (client Client) Rename(ctx context.Context, accountName string, pathParameter string, destination string) (result FileOperationResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Rename")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.RenamePreparer(ctx, accountName, pathParameter, destination)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "Rename", nil, "Failure preparing request")
@@ -1498,6 +1679,16 @@ func (client Client) RenameResponder(resp *http.Response) (result FileOperationR
 // aclspec - the ACL spec included in ACL creation operations in the format
 // '[default:]user|group|other::r|-w|-x|-'
 func (client Client) SetACL(ctx context.Context, accountName string, pathParameter string, aclspec string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetACL")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SetACLPreparer(ctx, accountName, pathParameter, aclspec)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetACL", nil, "Failure preparing request")
@@ -1577,6 +1768,16 @@ func (client Client) SetACLResponder(resp *http.Response) (result autorest.Respo
 // Unix timestamp relative to 1/1/1970 00:00:00.
 // expireTime - the time that the file will expire, corresponding to the ExpiryOption that was set.
 func (client Client) SetFileExpiry(ctx context.Context, accountName string, pathParameter string, expiryOption ExpiryOptionType, expireTime *int64) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetFileExpiry")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SetFileExpiryPreparer(ctx, accountName, pathParameter, expiryOption, expireTime)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetFileExpiry", nil, "Failure preparing request")
@@ -1656,6 +1857,16 @@ func (client Client) SetFileExpiryResponder(resp *http.Response) (result autores
 // group - the AAD Object ID of the group owner of the file or directory. If empty, the property will remain
 // unchanged.
 func (client Client) SetOwner(ctx context.Context, accountName string, pathParameter string, owner string, group string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetOwner")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SetOwnerPreparer(ctx, accountName, pathParameter, owner, group)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetOwner", nil, "Failure preparing request")
@@ -1735,6 +1946,16 @@ func (client Client) SetOwnerResponder(resp *http.Response) (result autorest.Res
 // permission - a string representation of the permission (i.e 'rwx'). If empty, this property remains
 // unchanged.
 func (client Client) SetPermission(ctx context.Context, accountName string, pathParameter string, permission string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetPermission")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.SetPermissionPreparer(ctx, accountName, pathParameter, permission)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "filesystem.Client", "SetPermission", nil, "Failure preparing request")

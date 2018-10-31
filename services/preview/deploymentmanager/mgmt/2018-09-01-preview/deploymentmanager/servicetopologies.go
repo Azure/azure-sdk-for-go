@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewServiceTopologiesClientWithBaseURI(baseURI string, subscriptionID string
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
 func (client ServiceTopologiesClient) CreateOrUpdate(ctx context.Context, serviceTopologyInfo ServiceTopologyResource, resourceGroupName string, serviceTopologyName string) (result ServiceTopologyResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTopologiesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceTopologyInfo,
 			Constraints: []validation.Constraint{{Target: "serviceTopologyInfo.ServiceTopologyResourceProperties", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -126,6 +137,16 @@ func (client ServiceTopologiesClient) CreateOrUpdateResponder(resp *http.Respons
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
 func (client ServiceTopologiesClient) Delete(ctx context.Context, resourceGroupName string, serviceTopologyName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTopologiesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -200,6 +221,16 @@ func (client ServiceTopologiesClient) DeleteResponder(resp *http.Response) (resu
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // serviceTopologyName - the name of the service topology .
 func (client ServiceTopologiesClient) Get(ctx context.Context, resourceGroupName string, serviceTopologyName string) (result ServiceTopologyResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTopologiesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},

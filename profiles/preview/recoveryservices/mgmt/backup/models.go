@@ -70,7 +70,7 @@ type ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtecti
 const (
 	ContainerTypeAzureBackupServerContainer1            ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureBackupServerContainer1
 	ContainerTypeAzureSQLContainer1                     ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureSQLContainer1
-	ContainerTypeAzureWorkloadContainer                 ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureWorkloadContainer
+	ContainerTypeAzureWorkloadBackupRequest             ContainerTypeBasicProtectionContainer = original.ContainerTypeAzureWorkloadBackupRequest
 	ContainerTypeDPMContainer1                          ContainerTypeBasicProtectionContainer = original.ContainerTypeDPMContainer1
 	ContainerTypeGenericContainer1                      ContainerTypeBasicProtectionContainer = original.ContainerTypeGenericContainer1
 	ContainerTypeIaaSVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeIaaSVMContainer
@@ -239,6 +239,14 @@ const (
 	InquiryStatusFailed  InquiryStatus = original.InquiryStatusFailed
 	InquiryStatusInvalid InquiryStatus = original.InquiryStatusInvalid
 	InquiryStatusSuccess InquiryStatus = original.InquiryStatusSuccess
+)
+
+type IntentItemType = original.IntentItemType
+
+const (
+	IntentItemTypeInvalid                       IntentItemType = original.IntentItemTypeInvalid
+	IntentItemTypeSQLAvailabilityGroupContainer IntentItemType = original.IntentItemTypeSQLAvailabilityGroupContainer
+	IntentItemTypeSQLInstance                   IntentItemType = original.IntentItemTypeSQLInstance
 )
 
 type ItemType = original.ItemType
@@ -461,6 +469,16 @@ const (
 	OverwriteOptionsFailOnConflict OverwriteOptions = original.OverwriteOptionsFailOnConflict
 	OverwriteOptionsInvalid        OverwriteOptions = original.OverwriteOptionsInvalid
 	OverwriteOptionsOverwrite      OverwriteOptions = original.OverwriteOptionsOverwrite
+)
+
+type PolicyType = original.PolicyType
+
+const (
+	PolicyTypeCopyOnlyFull PolicyType = original.PolicyTypeCopyOnlyFull
+	PolicyTypeDifferential PolicyType = original.PolicyTypeDifferential
+	PolicyTypeFull         PolicyType = original.PolicyTypeFull
+	PolicyTypeInvalid      PolicyType = original.PolicyTypeInvalid
+	PolicyTypeLog          PolicyType = original.PolicyTypeLog
 )
 
 type ProtectableContainerType = original.ProtectableContainerType
@@ -993,7 +1011,11 @@ type ProtectionContainerResourceListIterator = original.ProtectionContainerResou
 type ProtectionContainerResourceListPage = original.ProtectionContainerResourceListPage
 type BasicProtectionIntent = original.BasicProtectionIntent
 type ProtectionIntent = original.ProtectionIntent
+type ProtectionIntentQueryObject = original.ProtectionIntentQueryObject
 type ProtectionIntentResource = original.ProtectionIntentResource
+type ProtectionIntentResourceList = original.ProtectionIntentResourceList
+type ProtectionIntentResourceListIterator = original.ProtectionIntentResourceListIterator
+type ProtectionIntentResourceListPage = original.ProtectionIntentResourceListPage
 type BasicProtectionPolicy = original.BasicProtectionPolicy
 type ProtectionPolicy = original.ProtectionPolicy
 type ProtectionPolicyQueryObject = original.ProtectionPolicyQueryObject
@@ -1076,6 +1098,7 @@ type ProtectionContainerRefreshOperationResultsClient = original.ProtectionConta
 type ProtectionContainersClient = original.ProtectionContainersClient
 type ProtectionContainersGroupClient = original.ProtectionContainersGroupClient
 type ProtectionIntentClient = original.ProtectionIntentClient
+type ProtectionIntentGroupClient = original.ProtectionIntentGroupClient
 type ProtectionPoliciesClient = original.ProtectionPoliciesClient
 type ProtectionPolicyOperationResultsClient = original.ProtectionPolicyOperationResultsClient
 type ProtectionPolicyOperationStatusesClient = original.ProtectionPolicyOperationStatusesClient
@@ -1199,6 +1222,9 @@ func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 func PossibleInquiryStatusValues() []InquiryStatus {
 	return original.PossibleInquiryStatusValues()
 }
+func PossibleIntentItemTypeValues() []IntentItemType {
+	return original.PossibleIntentItemTypeValues()
+}
 func PossibleItemTypeValues() []ItemType {
 	return original.PossibleItemTypeValues()
 }
@@ -1255,6 +1281,9 @@ func PossibleOperationStatusValuesValues() []OperationStatusValues {
 }
 func PossibleOverwriteOptionsValues() []OverwriteOptions {
 	return original.PossibleOverwriteOptionsValues()
+}
+func PossiblePolicyTypeValues() []PolicyType {
+	return original.PossiblePolicyTypeValues()
 }
 func PossibleProtectableContainerTypeValues() []ProtectableContainerType {
 	return original.PossibleProtectableContainerTypeValues()
@@ -1444,6 +1473,12 @@ func NewProtectionIntentClient(subscriptionID string) ProtectionIntentClient {
 }
 func NewProtectionIntentClientWithBaseURI(baseURI string, subscriptionID string) ProtectionIntentClient {
 	return original.NewProtectionIntentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectionIntentGroupClient(subscriptionID string) ProtectionIntentGroupClient {
+	return original.NewProtectionIntentGroupClient(subscriptionID)
+}
+func NewProtectionIntentGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectionIntentGroupClient {
+	return original.NewProtectionIntentGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProtectionPoliciesClient(subscriptionID string) ProtectionPoliciesClient {
 	return original.NewProtectionPoliciesClient(subscriptionID)

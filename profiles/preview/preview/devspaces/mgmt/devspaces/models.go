@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ContainerHostMappingsClient = original.ContainerHostMappingsClient
 type ControllersClient = original.ControllersClient
 type InstanceType = original.InstanceType
 
@@ -39,6 +40,7 @@ type ProvisioningState = original.ProvisioningState
 const (
 	Canceled  ProvisioningState = original.Canceled
 	Creating  ProvisioningState = original.Creating
+	Deleted   ProvisioningState = original.Deleted
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
 	Succeeded ProvisioningState = original.Succeeded
@@ -51,6 +53,7 @@ const (
 	Standard SkuTier = original.Standard
 )
 
+type ContainerHostMapping = original.ContainerHostMapping
 type Controller = original.Controller
 type ControllerConnectionDetails = original.ControllerConnectionDetails
 type ControllerConnectionDetailsList = original.ControllerConnectionDetailsList
@@ -72,6 +75,7 @@ type ResourceProviderOperationDisplay = original.ResourceProviderOperationDispla
 type ResourceProviderOperationList = original.ResourceProviderOperationList
 type ResourceProviderOperationListIterator = original.ResourceProviderOperationListIterator
 type ResourceProviderOperationListPage = original.ResourceProviderOperationListPage
+type SetObject = original.SetObject
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type OperationsClient = original.OperationsClient
@@ -81,6 +85,12 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerHostMappingsClient(subscriptionID string) ContainerHostMappingsClient {
+	return original.NewContainerHostMappingsClient(subscriptionID)
+}
+func NewContainerHostMappingsClientWithBaseURI(baseURI string, subscriptionID string) ContainerHostMappingsClient {
+	return original.NewContainerHostMappingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewControllersClient(subscriptionID string) ControllersClient {
 	return original.NewControllersClient(subscriptionID)

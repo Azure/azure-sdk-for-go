@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -49,6 +50,16 @@ func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) D
 // domainServiceName - the name of the domain service in the specified subscription and resource group.
 // properties - properties supplied to the Create or Update a Domain Service operation.
 func (client DomainServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServiceProperties) (result DomainServicesCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -104,10 +115,6 @@ func (client DomainServicesClient) CreateOrUpdateSender(req *http.Request) (futu
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -131,6 +138,16 @@ func (client DomainServicesClient) CreateOrUpdateResponder(resp *http.Response) 
 // insensitive.
 // domainServiceName - the name of the domain service in the specified subscription and resource group.
 func (client DomainServicesClient) Delete(ctx context.Context, resourceGroupName string, domainServiceName string) (result DomainServicesDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -184,10 +201,6 @@ func (client DomainServicesClient) DeleteSender(req *http.Request) (future Domai
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -211,6 +224,16 @@ func (client DomainServicesClient) DeleteResponder(resp *http.Response) (result 
 // insensitive.
 // domainServiceName - the name of the domain service in the specified subscription and resource group.
 func (client DomainServicesClient) Get(ctx context.Context, resourceGroupName string, domainServiceName string) (result DomainService, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -283,7 +306,18 @@ func (client DomainServicesClient) GetResponder(resp *http.Response) (result Dom
 
 // List the List Domain Services in Subscription operation lists all the domain services available under the given
 // subscription (and across all resource groups within that subscription).
-func (client DomainServicesClient) List(ctx context.Context) (result DomainServiceListResult, err error) {
+func (client DomainServicesClient) List(ctx context.Context) (result DomainServiceListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.List")
+		defer func() {
+			sc := -1
+			if result.dslr.Response.Response != nil {
+				sc = result.dslr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", nil, "Failure preparing request")
@@ -292,12 +326,12 @@ func (client DomainServicesClient) List(ctx context.Context) (result DomainServi
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.dslr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "List", resp, "Failure responding to request")
 	}
@@ -344,12 +378,59 @@ func (client DomainServicesClient) ListResponder(resp *http.Response) (result Do
 	return
 }
 
+// listNextResults retrieves the next set of results, if any.
+func (client DomainServicesClient) listNextResults(ctx context.Context, lastResults DomainServiceListResult) (result DomainServiceListResult, err error) {
+	req, err := lastResults.domainServiceListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DomainServicesClient) ListComplete(ctx context.Context) (result DomainServiceListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx)
+	return
+}
+
 // ListByResourceGroup the List Domain Services in Resource Group operation lists all the domain services available
 // under the given resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainServiceListResult, err error) {
+func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainServiceListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.dslr.Response.Response != nil {
+				sc = result.dslr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -358,6 +439,7 @@ func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, reso
 		return result, validation.NewError("aad.DomainServicesClient", "ListByResourceGroup", err.Error())
 	}
 
+	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -366,12 +448,12 @@ func (client DomainServicesClient) ListByResourceGroup(ctx context.Context, reso
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.dslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -419,6 +501,43 @@ func (client DomainServicesClient) ListByResourceGroupResponder(resp *http.Respo
 	return
 }
 
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client DomainServicesClient) listByResourceGroupNextResults(ctx context.Context, lastResults DomainServiceListResult) (result DomainServiceListResult, err error) {
+	req, err := lastResults.domainServiceListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DomainServicesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result DomainServiceListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
 // Update the Update Domain Service operation can be used to update the existing deployment. The update call only
 // supports the properties listed in the PATCH body.
 // Parameters:
@@ -427,6 +546,16 @@ func (client DomainServicesClient) ListByResourceGroupResponder(resp *http.Respo
 // domainServiceName - the name of the domain service in the specified subscription and resource group.
 // properties - properties supplied to the Update a Domain Service operation.
 func (client DomainServicesClient) Update(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServicePatchProperties) (result DomainServicesUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -479,10 +608,6 @@ func (client DomainServicesClient) UpdateSender(req *http.Request) (future Domai
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

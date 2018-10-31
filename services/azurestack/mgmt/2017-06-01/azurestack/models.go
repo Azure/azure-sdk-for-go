@@ -18,11 +18,16 @@ package azurestack
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
 // ComputeRole enumerates the values for compute role.
 type ComputeRole string
@@ -208,20 +213,37 @@ type CustomerSubscriptionListIterator struct {
 	page CustomerSubscriptionListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *CustomerSubscriptionListIterator) Next() error {
+func (iter *CustomerSubscriptionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomerSubscriptionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomerSubscriptionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -250,11 +272,11 @@ func (csl CustomerSubscriptionList) IsEmpty() bool {
 
 // customerSubscriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (csl CustomerSubscriptionList) customerSubscriptionListPreparer() (*http.Request, error) {
+func (csl CustomerSubscriptionList) customerSubscriptionListPreparer(ctx context.Context) (*http.Request, error) {
 	if csl.NextLink == nil || len(to.String(csl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(csl.NextLink)))
@@ -262,19 +284,36 @@ func (csl CustomerSubscriptionList) customerSubscriptionListPreparer() (*http.Re
 
 // CustomerSubscriptionListPage contains a page of CustomerSubscription values.
 type CustomerSubscriptionListPage struct {
-	fn  func(CustomerSubscriptionList) (CustomerSubscriptionList, error)
+	fn  func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)
 	csl CustomerSubscriptionList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *CustomerSubscriptionListPage) Next() error {
-	next, err := page.fn(page.csl)
+func (page *CustomerSubscriptionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomerSubscriptionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.csl)
 	if err != nil {
 		return err
 	}
 	page.csl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomerSubscriptionListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -331,8 +370,8 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// ErrorResponse error response indicates that the service is not able to process the incoming request. The reason
-// is provided in the error message.
+// ErrorResponse error response indicates that the service is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// Error - The details of the error.
 	Error *ErrorDetails `json:"error,omitempty"`
@@ -596,20 +635,37 @@ type OperationListIterator struct {
 	page OperationListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListIterator) Next() error {
+func (iter *OperationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -638,11 +694,11 @@ func (ol OperationList) IsEmpty() bool {
 
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ol OperationList) operationListPreparer() (*http.Request, error) {
+func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
 	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(ol.NextLink)))
@@ -650,19 +706,36 @@ func (ol OperationList) operationListPreparer() (*http.Request, error) {
 
 // OperationListPage contains a page of Operation values.
 type OperationListPage struct {
-	fn func(OperationList) (OperationList, error)
+	fn func(context.Context, OperationList) (OperationList, error)
 	ol OperationList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListPage) Next() error {
-	next, err := page.fn(page.ol)
+func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ol)
 	if err != nil {
 		return err
 	}
 	page.ol = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -810,20 +883,37 @@ type ProductListIterator struct {
 	page ProductListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ProductListIterator) Next() error {
+func (iter *ProductListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ProductListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -852,11 +942,11 @@ func (pl ProductList) IsEmpty() bool {
 
 // productListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (pl ProductList) productListPreparer() (*http.Request, error) {
+func (pl ProductList) productListPreparer(ctx context.Context) (*http.Request, error) {
 	if pl.NextLink == nil || len(to.String(pl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(pl.NextLink)))
@@ -864,19 +954,36 @@ func (pl ProductList) productListPreparer() (*http.Request, error) {
 
 // ProductListPage contains a page of Product values.
 type ProductListPage struct {
-	fn func(ProductList) (ProductList, error)
+	fn func(context.Context, ProductList) (ProductList, error)
 	pl ProductList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ProductListPage) Next() error {
-	next, err := page.fn(page.pl)
+func (page *ProductListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProductListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pl)
 	if err != nil {
 		return err
 	}
 	page.pl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ProductListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1080,20 +1187,37 @@ type RegistrationListIterator struct {
 	page RegistrationListPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *RegistrationListIterator) Next() error {
+func (iter *RegistrationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RegistrationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -1122,11 +1246,11 @@ func (rl RegistrationList) IsEmpty() bool {
 
 // registrationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (rl RegistrationList) registrationListPreparer() (*http.Request, error) {
+func (rl RegistrationList) registrationListPreparer(ctx context.Context) (*http.Request, error) {
 	if rl.NextLink == nil || len(to.String(rl.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(rl.NextLink)))
@@ -1134,19 +1258,36 @@ func (rl RegistrationList) registrationListPreparer() (*http.Request, error) {
 
 // RegistrationListPage contains a page of Registration values.
 type RegistrationListPage struct {
-	fn func(RegistrationList) (RegistrationList, error)
+	fn func(context.Context, RegistrationList) (RegistrationList, error)
 	rl RegistrationList
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *RegistrationListPage) Next() error {
-	next, err := page.fn(page.rl)
+func (page *RegistrationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rl)
 	if err != nil {
 		return err
 	}
 	page.rl = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RegistrationListPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

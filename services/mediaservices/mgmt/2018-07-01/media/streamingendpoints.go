@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewStreamingEndpointsClientWithBaseURI(baseURI string, subscriptionID strin
 // parameters - streamingEndpoint properties needed for creation.
 // autoStart - the flag indicates if the resource should be automatically started on creation.
 func (client StreamingEndpointsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint, autoStart *bool) (result StreamingEndpointsCreateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -110,10 +121,6 @@ func (client StreamingEndpointsClient) CreateSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -137,6 +144,16 @@ func (client StreamingEndpointsClient) CreateResponder(resp *http.Response) (res
 // accountName - the Media Services account name.
 // streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -191,10 +208,6 @@ func (client StreamingEndpointsClient) DeleteSender(req *http.Request) (future S
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -217,6 +230,16 @@ func (client StreamingEndpointsClient) DeleteResponder(resp *http.Response) (res
 // accountName - the Media Services account name.
 // streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpoint, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -293,6 +316,16 @@ func (client StreamingEndpointsClient) GetResponder(resp *http.Response) (result
 // resourceGroupName - the name of the resource group within the Azure subscription.
 // accountName - the Media Services account name.
 func (client StreamingEndpointsClient) List(ctx context.Context, resourceGroupName string, accountName string) (result StreamingEndpointListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.List")
+		defer func() {
+			sc := -1
+			if result.selr.Response.Response != nil {
+				sc = result.selr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -357,8 +390,8 @@ func (client StreamingEndpointsClient) ListResponder(resp *http.Response) (resul
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client StreamingEndpointsClient) listNextResults(lastResults StreamingEndpointListResult) (result StreamingEndpointListResult, err error) {
-	req, err := lastResults.streamingEndpointListResultPreparer()
+func (client StreamingEndpointsClient) listNextResults(ctx context.Context, lastResults StreamingEndpointListResult) (result StreamingEndpointListResult, err error) {
+	req, err := lastResults.streamingEndpointListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -379,6 +412,16 @@ func (client StreamingEndpointsClient) listNextResults(lastResults StreamingEndp
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client StreamingEndpointsClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string) (result StreamingEndpointListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, accountName)
 	return
 }
@@ -390,6 +433,16 @@ func (client StreamingEndpointsClient) ListComplete(ctx context.Context, resourc
 // streamingEndpointName - the name of the StreamingEndpoint.
 // parameters - streamingEndpoint scale parameters
 func (client StreamingEndpointsClient) Scale(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEntityScaleUnit) (result StreamingEndpointsScaleFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Scale")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -446,10 +499,6 @@ func (client StreamingEndpointsClient) ScaleSender(req *http.Request) (future St
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -472,6 +521,16 @@ func (client StreamingEndpointsClient) ScaleResponder(resp *http.Response) (resu
 // accountName - the Media Services account name.
 // streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Start(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsStartFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Start")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -526,10 +585,6 @@ func (client StreamingEndpointsClient) StartSender(req *http.Request) (future St
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -552,6 +607,16 @@ func (client StreamingEndpointsClient) StartResponder(resp *http.Response) (resu
 // accountName - the Media Services account name.
 // streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Stop(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsStopFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Stop")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -606,10 +671,6 @@ func (client StreamingEndpointsClient) StopSender(req *http.Request) (future Str
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -633,6 +694,16 @@ func (client StreamingEndpointsClient) StopResponder(resp *http.Response) (resul
 // streamingEndpointName - the name of the StreamingEndpoint.
 // parameters - streamingEndpoint properties needed for creation.
 func (client StreamingEndpointsClient) Update(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint) (result StreamingEndpointsUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingEndpointsClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
@@ -686,10 +757,6 @@ func (client StreamingEndpointsClient) UpdateSender(req *http.Request) (future S
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
 	if err != nil {
 		return
 	}

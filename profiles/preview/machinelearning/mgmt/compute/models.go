@@ -19,7 +19,7 @@
 
 package compute
 
-import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-08-01-preview/compute"
+import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-06-01-preview/compute"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -79,30 +79,14 @@ const (
 	StandardGS5   AgentVMSizeTypes = original.StandardGS5
 )
 
-type ClusterType = original.ClusterType
+type ProvisioningState = original.ProvisioningState
 
 const (
-	ACS   ClusterType = original.ACS
-	Local ClusterType = original.Local
-)
-
-type OperationStatus = original.OperationStatus
-
-const (
-	Canceled  OperationStatus = original.Canceled
-	Creating  OperationStatus = original.Creating
-	Deleting  OperationStatus = original.Deleting
-	Failed    OperationStatus = original.Failed
-	Succeeded OperationStatus = original.Succeeded
-	Unknown   OperationStatus = original.Unknown
-	Updating  OperationStatus = original.Updating
-)
-
-type OrchestratorType = original.OrchestratorType
-
-const (
-	Kubernetes OrchestratorType = original.Kubernetes
-	None       OrchestratorType = original.None
+	Creating  ProvisioningState = original.Creating
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Unknown   ProvisioningState = original.Unknown
+	Updating  ProvisioningState = original.Updating
 )
 
 type Status = original.Status
@@ -112,12 +96,11 @@ const (
 	Enabled  Status = original.Enabled
 )
 
-type SystemServiceType = original.SystemServiceType
+type SystemServices = original.SystemServices
 
 const (
-	SystemServiceTypeBatchFrontEnd   SystemServiceType = original.SystemServiceTypeBatchFrontEnd
-	SystemServiceTypeNone            SystemServiceType = original.SystemServiceTypeNone
-	SystemServiceTypeScoringFrontEnd SystemServiceType = original.SystemServiceTypeScoringFrontEnd
+	Batch   SystemServices = original.Batch
+	Scoring SystemServices = original.Scoring
 )
 
 type UpdatesAvailable = original.UpdatesAvailable
@@ -127,26 +110,35 @@ const (
 	Yes UpdatesAvailable = original.Yes
 )
 
+type UpdateStatus = original.UpdateStatus
+
+const (
+	Completed  UpdateStatus = original.Completed
+	InProgress UpdateStatus = original.InProgress
+)
+
 type AcsClusterProperties = original.AcsClusterProperties
 type AppInsightsCredentials = original.AppInsightsCredentials
-type AppInsightsProperties = original.AppInsightsProperties
+type AsyncOperationErrorInfo = original.AsyncOperationErrorInfo
+type AsyncOperationStatus = original.AsyncOperationStatus
 type AutoScaleConfiguration = original.AutoScaleConfiguration
 type AvailableOperations = original.AvailableOperations
-type CheckSystemServicesUpdatesAvailableResponse = original.CheckSystemServicesUpdatesAvailableResponse
+type CheckUpdateResponse = original.CheckUpdateResponse
 type ContainerRegistryCredentials = original.ContainerRegistryCredentials
 type ContainerRegistryProperties = original.ContainerRegistryProperties
 type ContainerServiceCredentials = original.ContainerServiceCredentials
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseWrapper = original.ErrorResponseWrapper
 type GlobalServiceConfiguration = original.GlobalServiceConfiguration
 type KubernetesClusterProperties = original.KubernetesClusterProperties
 type OperationalizationCluster = original.OperationalizationCluster
 type OperationalizationClusterCredentials = original.OperationalizationClusterCredentials
 type OperationalizationClusterProperties = original.OperationalizationClusterProperties
+type OperationalizationClustersCheckUpdateFuture = original.OperationalizationClustersCheckUpdateFuture
 type OperationalizationClustersCreateOrUpdateFuture = original.OperationalizationClustersCreateOrUpdateFuture
 type OperationalizationClustersDeleteFuture = original.OperationalizationClustersDeleteFuture
-type OperationalizationClustersUpdateSystemServicesFuture = original.OperationalizationClustersUpdateSystemServicesFuture
+type OperationalizationClustersListKeysFuture = original.OperationalizationClustersListKeysFuture
+type OperationalizationClustersUpdateSystemFuture = original.OperationalizationClustersUpdateSystemFuture
 type OperationalizationClusterUpdateParameters = original.OperationalizationClusterUpdateParameters
 type PaginatedOperationalizationClustersList = original.PaginatedOperationalizationClustersList
 type PaginatedOperationalizationClustersListIterator = original.PaginatedOperationalizationClustersListIterator
@@ -159,8 +151,7 @@ type ServicePrincipalProperties = original.ServicePrincipalProperties
 type SslConfiguration = original.SslConfiguration
 type StorageAccountCredentials = original.StorageAccountCredentials
 type StorageAccountProperties = original.StorageAccountProperties
-type SystemService = original.SystemService
-type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
+type UpdateSystemResponse = original.UpdateSystemResponse
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 
 func New(subscriptionID string) BaseClient {
@@ -178,23 +169,20 @@ func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID s
 func PossibleAgentVMSizeTypesValues() []AgentVMSizeTypes {
 	return original.PossibleAgentVMSizeTypesValues()
 }
-func PossibleClusterTypeValues() []ClusterType {
-	return original.PossibleClusterTypeValues()
-}
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
-}
-func PossibleOrchestratorTypeValues() []OrchestratorType {
-	return original.PossibleOrchestratorTypeValues()
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
-func PossibleSystemServiceTypeValues() []SystemServiceType {
-	return original.PossibleSystemServiceTypeValues()
+func PossibleSystemServicesValues() []SystemServices {
+	return original.PossibleSystemServicesValues()
 }
 func PossibleUpdatesAvailableValues() []UpdatesAvailable {
 	return original.PossibleUpdatesAvailableValues()
+}
+func PossibleUpdateStatusValues() []UpdateStatus {
+	return original.PossibleUpdateStatusValues()
 }
 func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
 	return original.NewOperationalizationClustersClient(subscriptionID)

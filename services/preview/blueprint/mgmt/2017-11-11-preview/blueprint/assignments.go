@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -46,6 +47,16 @@ func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 // assignmentName - name of the assignment.
 // assignment - assignment object to save.
 func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, subscriptionID string, assignmentName string, assignment Assignment) (result Assignment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: assignment,
 			Constraints: []validation.Constraint{{Target: "assignment.Identity", Name: validation.Null, Rule: true, Chain: nil},
@@ -124,6 +135,16 @@ func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 // assignmentName - name of the assignment.
 func (client AssignmentsClient) Delete(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, subscriptionID, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Delete", nil, "Failure preparing request")
@@ -190,6 +211,16 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 // assignmentName - name of the assignment.
 func (client AssignmentsClient) Get(ctx context.Context, subscriptionID string, assignmentName string) (result Assignment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, subscriptionID, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "Get", nil, "Failure preparing request")
@@ -255,6 +286,16 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // Parameters:
 // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 func (client AssignmentsClient) List(ctx context.Context, subscriptionID string) (result AssignmentListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
+		defer func() {
+			sc := -1
+			if result.al.Response.Response != nil {
+				sc = result.al.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, subscriptionID)
 	if err != nil {
@@ -317,8 +358,8 @@ func (client AssignmentsClient) ListResponder(resp *http.Response) (result Assig
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AssignmentsClient) listNextResults(lastResults AssignmentList) (result AssignmentList, err error) {
-	req, err := lastResults.assignmentListPreparer()
+func (client AssignmentsClient) listNextResults(ctx context.Context, lastResults AssignmentList) (result AssignmentList, err error) {
+	req, err := lastResults.assignmentListPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -339,6 +380,16 @@ func (client AssignmentsClient) listNextResults(lastResults AssignmentList) (res
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AssignmentsClient) ListComplete(ctx context.Context, subscriptionID string) (result AssignmentListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, subscriptionID)
 	return
 }

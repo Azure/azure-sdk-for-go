@@ -21,6 +21,9 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.1/textanalytics"
+
 // BatchInput ...
 type BatchInput struct {
 	Documents *[]Input `json:"documents,omitempty"`

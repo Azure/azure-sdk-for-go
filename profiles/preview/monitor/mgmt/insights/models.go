@@ -19,7 +19,7 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2018-03-01/insights"
+import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2017-09-01/insights"
 
 type ActionGroupsClient = original.ActionGroupsClient
 type ActivityLogAlertsClient = original.ActivityLogAlertsClient
@@ -236,7 +236,6 @@ type AutoscaleSettingResourceCollectionIterator = original.AutoscaleSettingResou
 type AutoscaleSettingResourceCollectionPage = original.AutoscaleSettingResourceCollectionPage
 type AutoscaleSettingResourcePatch = original.AutoscaleSettingResourcePatch
 type AzureAppPushReceiver = original.AzureAppPushReceiver
-type AzureFunctionReceiver = original.AzureFunctionReceiver
 type Baseline = original.Baseline
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties
@@ -263,7 +262,6 @@ type IncidentListResult = original.IncidentListResult
 type ItsmReceiver = original.ItsmReceiver
 type LocalizableString = original.LocalizableString
 type LocationThresholdRuleCondition = original.LocationThresholdRuleCondition
-type LogicAppReceiver = original.LogicAppReceiver
 type LogProfileCollection = original.LogProfileCollection
 type LogProfileProperties = original.LogProfileProperties
 type LogProfileResource = original.LogProfileResource
@@ -397,60 +395,6 @@ func NewMetricsClient(subscriptionID string) MetricsClient {
 }
 func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsClient {
 	return original.NewMetricsClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAggregationTypeValues() []AggregationType {
-	return original.PossibleAggregationTypeValues()
-}
-func PossibleCategoryTypeValues() []CategoryType {
-	return original.PossibleCategoryTypeValues()
-}
-func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
-	return original.PossibleComparisonOperationTypeValues()
-}
-func PossibleConditionOperatorValues() []ConditionOperator {
-	return original.PossibleConditionOperatorValues()
-}
-func PossibleEventLevelValues() []EventLevel {
-	return original.PossibleEventLevelValues()
-}
-func PossibleMetricStatisticTypeValues() []MetricStatisticType {
-	return original.PossibleMetricStatisticTypeValues()
-}
-func PossibleOdataTypeValues() []OdataType {
-	return original.PossibleOdataTypeValues()
-}
-func PossibleOdataTypeBasicRuleActionValues() []OdataTypeBasicRuleAction {
-	return original.PossibleOdataTypeBasicRuleActionValues()
-}
-func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
-	return original.PossibleOdataTypeBasicRuleConditionValues()
-}
-func PossibleReceiverStatusValues() []ReceiverStatus {
-	return original.PossibleReceiverStatusValues()
-}
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return original.PossibleRecurrenceFrequencyValues()
-}
-func PossibleResultTypeValues() []ResultType {
-	return original.PossibleResultTypeValues()
-}
-func PossibleScaleDirectionValues() []ScaleDirection {
-	return original.PossibleScaleDirectionValues()
-}
-func PossibleScaleTypeValues() []ScaleType {
-	return original.PossibleScaleTypeValues()
-}
-func PossibleSensitivityValues() []Sensitivity {
-	return original.PossibleSensitivityValues()
-}
-func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
-	return original.PossibleTimeAggregationOperatorValues()
-}
-func PossibleTimeAggregationTypeValues() []TimeAggregationType {
-	return original.PossibleTimeAggregationTypeValues()
-}
-func PossibleUnitValues() []Unit {
-	return original.PossibleUnitValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -18,12 +18,17 @@ package storagesync
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-04-02/storagesync"
 
 // CloudTiering enumerates the values for cloud tiering.
 type CloudTiering string
@@ -381,150 +386,150 @@ type CloudEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 }
 
-// CloudEndpointsGroupCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// CloudEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type CloudEndpointsGroupCreateFuture struct {
+type CloudEndpointsCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupCreateFuture) Result(client CloudEndpointsGroupClient) (ce CloudEndpoint, err error) {
+func (future *CloudEndpointsCreateFuture) Result(client CloudEndpointsClient) (ce CloudEndpoint, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if ce.Response.Response, err = future.GetResult(sender); err == nil && ce.Response.Response.StatusCode != http.StatusNoContent {
 		ce, err = client.CreateResponder(ce.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupCreateFuture", "Result", ce.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsCreateFuture", "Result", ce.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// CloudEndpointsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// CloudEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type CloudEndpointsGroupDeleteFuture struct {
+type CloudEndpointsDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupDeleteFuture) Result(client CloudEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *CloudEndpointsDeleteFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// CloudEndpointsGroupPostBackupFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type CloudEndpointsGroupPostBackupFuture struct {
+// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CloudEndpointsPostBackupFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupPostBackupFuture) Result(client CloudEndpointsGroupClient) (pbr PostBackupResponse, err error) {
+func (future *CloudEndpointsPostBackupFuture) Result(client CloudEndpointsClient) (pbr PostBackupResponse, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupPostBackupFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostBackupFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupPostBackupFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPostBackupFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if pbr.Response.Response, err = future.GetResult(sender); err == nil && pbr.Response.Response.StatusCode != http.StatusNoContent {
 		pbr, err = client.PostBackupResponder(pbr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupPostBackupFuture", "Result", pbr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostBackupFuture", "Result", pbr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// CloudEndpointsGroupPostRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type CloudEndpointsGroupPostRestoreFuture struct {
+// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CloudEndpointsPostRestoreFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupPostRestoreFuture) Result(client CloudEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *CloudEndpointsPostRestoreFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupPostRestoreFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupPostRestoreFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPostRestoreFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// CloudEndpointsGroupPreBackupFuture an abstraction for monitoring and retrieving the results of a long-running
+// CloudEndpointsPreBackupFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type CloudEndpointsGroupPreBackupFuture struct {
+type CloudEndpointsPreBackupFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupPreBackupFuture) Result(client CloudEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *CloudEndpointsPreBackupFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupPreBackupFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPreBackupFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupPreBackupFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPreBackupFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// CloudEndpointsGroupPreRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type CloudEndpointsGroupPreRestoreFuture struct {
+// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CloudEndpointsPreRestoreFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CloudEndpointsGroupPreRestoreFuture) Result(client CloudEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *CloudEndpointsPreRestoreFuture) Result(client CloudEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsGroupPreRestoreFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPreRestoreFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsGroupPreRestoreFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPreRestoreFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -598,20 +603,37 @@ type OperationEntityListResultIterator struct {
 	page OperationEntityListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationEntityListResultIterator) Next() error {
+func (iter *OperationEntityListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationEntityListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationEntityListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -640,11 +662,11 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http.Request, error) {
+func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(oelr.NextLink)))
@@ -652,19 +674,36 @@ func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http
 
 // OperationEntityListResultPage contains a page of OperationEntity values.
 type OperationEntityListResultPage struct {
-	fn   func(OperationEntityListResult) (OperationEntityListResult, error)
+	fn   func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)
 	oelr OperationEntityListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationEntityListResultPage) Next() error {
-	next, err := page.fn(page.oelr)
+func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationEntityListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.oelr)
 	if err != nil {
 		return err
 	}
 	page.oelr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationEntityListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -1010,52 +1049,52 @@ type RegisteredServerProperties struct {
 	ManagementEndpointURI *string `json:"managementEndpointUri,omitempty"`
 }
 
-// RegisteredServersGroupCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// RegisteredServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type RegisteredServersGroupCreateFuture struct {
+type RegisteredServersCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *RegisteredServersGroupCreateFuture) Result(client RegisteredServersGroupClient) (rs RegisteredServer, err error) {
+func (future *RegisteredServersCreateFuture) Result(client RegisteredServersClient) (rs RegisteredServer, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersGroupCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if rs.Response.Response, err = future.GetResult(sender); err == nil && rs.Response.Response.StatusCode != http.StatusNoContent {
 		rs, err = client.CreateResponder(rs.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupCreateFuture", "Result", rs.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersCreateFuture", "Result", rs.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// RegisteredServersGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// RegisteredServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type RegisteredServersGroupDeleteFuture struct {
+type RegisteredServersDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *RegisteredServersGroupDeleteFuture) Result(client RegisteredServersGroupClient) (ar autorest.Response, err error) {
+func (future *RegisteredServersDeleteFuture) Result(client RegisteredServersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersGroupDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersGroupDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -1280,105 +1319,105 @@ type ServerEndpointProperties struct {
 	SyncStatus interface{} `json:"syncStatus,omitempty"`
 }
 
-// ServerEndpointsGroupCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServerEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServerEndpointsGroupCreateFuture struct {
+type ServerEndpointsCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServerEndpointsGroupCreateFuture) Result(client ServerEndpointsGroupClient) (se ServerEndpoint, err error) {
+func (future *ServerEndpointsCreateFuture) Result(client ServerEndpointsClient) (se ServerEndpoint, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsGroupCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 		se, err = client.CreateResponder(se.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupCreateFuture", "Result", se.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsCreateFuture", "Result", se.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// ServerEndpointsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServerEndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServerEndpointsGroupDeleteFuture struct {
+type ServerEndpointsDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServerEndpointsGroupDeleteFuture) Result(client ServerEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *ServerEndpointsDeleteFuture) Result(client ServerEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsGroupDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// ServerEndpointsGroupRecallActionFuture an abstraction for monitoring and retrieving the results of a
+// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type ServerEndpointsGroupRecallActionFuture struct {
+type ServerEndpointsRecallActionFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServerEndpointsGroupRecallActionFuture) Result(client ServerEndpointsGroupClient) (ar autorest.Response, err error) {
+func (future *ServerEndpointsRecallActionFuture) Result(client ServerEndpointsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupRecallActionFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsRecallActionFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsGroupRecallActionFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsRecallActionFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// ServerEndpointsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServerEndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServerEndpointsGroupUpdateFuture struct {
+type ServerEndpointsUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServerEndpointsGroupUpdateFuture) Result(client ServerEndpointsGroupClient) (se ServerEndpoint, err error) {
+func (future *ServerEndpointsUpdateFuture) Result(client ServerEndpointsClient) (se ServerEndpoint, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsGroupUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 		se, err = client.UpdateResponder(se.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsGroupUpdateFuture", "Result", se.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsUpdateFuture", "Result", se.Response.Response, "Failure responding to request")
 		}
 	}
 	return

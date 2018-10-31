@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -48,6 +49,16 @@ func NewAssetFiltersClientWithBaseURI(baseURI string, subscriptionID string) Ass
 // filterName - the Asset Filter name
 // parameters - the request parameters
 func (client AssetFiltersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter) (result AssetFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.FilterProperties", Name: validation.Null, Rule: false,
@@ -138,6 +149,16 @@ func (client AssetFiltersClient) CreateOrUpdateResponder(resp *http.Response) (r
 // assetName - the Asset name.
 // filterName - the Asset Filter name
 func (client AssetFiltersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, assetName, filterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AssetFiltersClient", "Delete", nil, "Failure preparing request")
@@ -208,6 +229,16 @@ func (client AssetFiltersClient) DeleteResponder(resp *http.Response) (result au
 // assetName - the Asset name.
 // filterName - the Asset Filter name
 func (client AssetFiltersClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string) (result AssetFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, assetName, filterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AssetFiltersClient", "Get", nil, "Failure preparing request")
@@ -278,6 +309,16 @@ func (client AssetFiltersClient) GetResponder(resp *http.Response) (result Asset
 // accountName - the Media Services account name.
 // assetName - the Asset name.
 func (client AssetFiltersClient) List(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result AssetFilterCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.List")
+		defer func() {
+			sc := -1
+			if result.afc.Response.Response != nil {
+				sc = result.afc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, assetName)
 	if err != nil {
@@ -343,8 +384,8 @@ func (client AssetFiltersClient) ListResponder(resp *http.Response) (result Asse
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AssetFiltersClient) listNextResults(lastResults AssetFilterCollection) (result AssetFilterCollection, err error) {
-	req, err := lastResults.assetFilterCollectionPreparer()
+func (client AssetFiltersClient) listNextResults(ctx context.Context, lastResults AssetFilterCollection) (result AssetFilterCollection, err error) {
+	req, err := lastResults.assetFilterCollectionPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "media.AssetFiltersClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -365,6 +406,16 @@ func (client AssetFiltersClient) listNextResults(lastResults AssetFilterCollecti
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AssetFiltersClient) ListComplete(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result AssetFilterCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.List(ctx, resourceGroupName, accountName, assetName)
 	return
 }
@@ -377,6 +428,16 @@ func (client AssetFiltersClient) ListComplete(ctx context.Context, resourceGroup
 // filterName - the Asset Filter name
 // parameters - the request parameters
 func (client AssetFiltersClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, filterName string, parameters AssetFilter) (result AssetFilter, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssetFiltersClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, assetName, filterName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.AssetFiltersClient", "Update", nil, "Failure preparing request")

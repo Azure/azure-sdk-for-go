@@ -18,11 +18,16 @@ package hanaonazure
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
 // HanaHardwareTypeNamesEnum enumerates the values for hana hardware type names enum.
 type HanaHardwareTypeNamesEnum string
@@ -280,20 +285,37 @@ type HanaInstancesListResultIterator struct {
 	page HanaInstancesListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *HanaInstancesListResultIterator) Next() error {
+func (iter *HanaInstancesListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *HanaInstancesListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -322,11 +344,11 @@ func (hilr HanaInstancesListResult) IsEmpty() bool {
 
 // hanaInstancesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (hilr HanaInstancesListResult) hanaInstancesListResultPreparer() (*http.Request, error) {
+func (hilr HanaInstancesListResult) hanaInstancesListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if hilr.NextLink == nil || len(to.String(hilr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(hilr.NextLink)))
@@ -334,19 +356,36 @@ func (hilr HanaInstancesListResult) hanaInstancesListResultPreparer() (*http.Req
 
 // HanaInstancesListResultPage contains a page of HanaInstance values.
 type HanaInstancesListResultPage struct {
-	fn   func(HanaInstancesListResult) (HanaInstancesListResult, error)
+	fn   func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)
 	hilr HanaInstancesListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *HanaInstancesListResultPage) Next() error {
-	next, err := page.fn(page.hilr)
+func (page *HanaInstancesListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.hilr)
 	if err != nil {
 		return err
 	}
 	page.hilr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *HanaInstancesListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.

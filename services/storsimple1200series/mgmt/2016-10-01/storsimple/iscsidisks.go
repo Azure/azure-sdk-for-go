@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -49,6 +50,16 @@ func NewIscsiDisksClientWithBaseURI(baseURI string, subscriptionID string) Iscsi
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) CreateOrUpdate(ctx context.Context, deviceName string, iscsiServerName string, diskName string, iscsiDisk ISCSIDisk, resourceGroupName string, managerName string) (result IscsiDisksCreateOrUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: iscsiDisk,
 			Constraints: []validation.Constraint{{Target: "iscsiDisk.ISCSIDiskProperties", Name: validation.Null, Rule: true,
@@ -111,10 +122,6 @@ func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future I
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -140,6 +147,16 @@ func (client IscsiDisksClient) CreateOrUpdateResponder(resp *http.Response) (res
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) Delete(ctx context.Context, deviceName string, iscsiServerName string, diskName string, resourceGroupName string, managerName string) (result IscsiDisksDeleteFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -195,10 +212,6 @@ func (client IscsiDisksClient) DeleteSender(req *http.Request) (future IscsiDisk
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	if err != nil {
-		return
-	}
 	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
@@ -223,6 +236,16 @@ func (client IscsiDisksClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) Get(ctx context.Context, deviceName string, iscsiServerName string, diskName string, resourceGroupName string, managerName string) (result ISCSIDisk, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -301,6 +324,16 @@ func (client IscsiDisksClient) GetResponder(resp *http.Response) (result ISCSIDi
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result ISCSIDiskList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.ListByDevice")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -378,6 +411,16 @@ func (client IscsiDisksClient) ListByDeviceResponder(resp *http.Response) (resul
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) ListByIscsiServer(ctx context.Context, deviceName string, iscsiServerName string, resourceGroupName string, managerName string) (result ISCSIDiskList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.ListByIscsiServer")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -457,6 +500,16 @@ func (client IscsiDisksClient) ListByIscsiServerResponder(resp *http.Response) (
 // resourceGroupName - the resource group name
 // managerName - the manager name
 func (client IscsiDisksClient) ListMetricDefinition(ctx context.Context, deviceName string, iscsiServerName string, diskName string, resourceGroupName string, managerName string) (result MetricDefinitionList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.ListMetricDefinition")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -538,6 +591,16 @@ func (client IscsiDisksClient) ListMetricDefinitionResponder(resp *http.Response
 // managerName - the manager name
 // filter - oData Filter options
 func (client IscsiDisksClient) ListMetrics(ctx context.Context, deviceName string, iscsiServerName string, diskName string, resourceGroupName string, managerName string, filter string) (result MetricList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.ListMetrics")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
 			Constraints: []validation.Constraint{{Target: "managerName", Name: validation.MaxLength, Rule: 50, Chain: nil},

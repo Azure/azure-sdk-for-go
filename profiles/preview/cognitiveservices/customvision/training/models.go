@@ -19,11 +19,7 @@
 
 package training
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.1/customvision/training"
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.2/customvision/training"
 
 type BaseClient = original.BaseClient
 type Classifier = original.Classifier
@@ -40,20 +36,22 @@ const (
 	ObjectDetection DomainType = original.ObjectDetection
 )
 
-type ExportFlavor = original.ExportFlavor
+type ExportFlavorModel = original.ExportFlavorModel
 
 const (
-	Linux   ExportFlavor = original.Linux
-	Windows ExportFlavor = original.Windows
+	Linux   ExportFlavorModel = original.Linux
+	ONNX10  ExportFlavorModel = original.ONNX10
+	ONNX12  ExportFlavorModel = original.ONNX12
+	Windows ExportFlavorModel = original.Windows
 )
 
-type ExportPlatform = original.ExportPlatform
+type ExportPlatformModel = original.ExportPlatformModel
 
 const (
-	CoreML     ExportPlatform = original.CoreML
-	DockerFile ExportPlatform = original.DockerFile
-	ONNX       ExportPlatform = original.ONNX
-	TensorFlow ExportPlatform = original.TensorFlow
+	CoreML     ExportPlatformModel = original.CoreML
+	DockerFile ExportPlatformModel = original.DockerFile
+	ONNX       ExportPlatformModel = original.ONNX
+	TensorFlow ExportPlatformModel = original.TensorFlow
 )
 
 type ExportStatusModel = original.ExportStatusModel
@@ -64,19 +62,20 @@ const (
 	Failed    ExportStatusModel = original.Failed
 )
 
-type ImageUploadStatus = original.ImageUploadStatus
+type ImageCreateStatus = original.ImageCreateStatus
 
 const (
-	ErrorImageFormat       ImageUploadStatus = original.ErrorImageFormat
-	ErrorImageSize         ImageUploadStatus = original.ErrorImageSize
-	ErrorLimitExceed       ImageUploadStatus = original.ErrorLimitExceed
-	ErrorRegionLimitExceed ImageUploadStatus = original.ErrorRegionLimitExceed
-	ErrorSource            ImageUploadStatus = original.ErrorSource
-	ErrorStorage           ImageUploadStatus = original.ErrorStorage
-	ErrorTagLimitExceed    ImageUploadStatus = original.ErrorTagLimitExceed
-	ErrorUnknown           ImageUploadStatus = original.ErrorUnknown
-	OK                     ImageUploadStatus = original.OK
-	OKDuplicate            ImageUploadStatus = original.OKDuplicate
+	ErrorImageFormat                      ImageCreateStatus = original.ErrorImageFormat
+	ErrorImageSize                        ImageCreateStatus = original.ErrorImageSize
+	ErrorLimitExceed                      ImageCreateStatus = original.ErrorLimitExceed
+	ErrorNegativeAndRegularTagOnSameImage ImageCreateStatus = original.ErrorNegativeAndRegularTagOnSameImage
+	ErrorRegionLimitExceed                ImageCreateStatus = original.ErrorRegionLimitExceed
+	ErrorSource                           ImageCreateStatus = original.ErrorSource
+	ErrorStorage                          ImageCreateStatus = original.ErrorStorage
+	ErrorTagLimitExceed                   ImageCreateStatus = original.ErrorTagLimitExceed
+	ErrorUnknown                          ImageCreateStatus = original.ErrorUnknown
+	OK                                    ImageCreateStatus = original.OK
+	OKDuplicate                           ImageCreateStatus = original.OKDuplicate
 )
 
 type OrderBy = original.OrderBy
@@ -85,6 +84,13 @@ const (
 	Newest    OrderBy = original.Newest
 	Oldest    OrderBy = original.Oldest
 	Suggested OrderBy = original.Suggested
+)
+
+type TagType = original.TagType
+
+const (
+	Negative TagType = original.Negative
+	Regular  TagType = original.Regular
 )
 
 type BoundingBox = original.BoundingBox
@@ -134,11 +140,11 @@ type StoredImagePrediction = original.StoredImagePrediction
 type Tag = original.Tag
 type TagPerformance = original.TagPerformance
 
-func New(aPIKey string) BaseClient {
-	return original.New(aPIKey)
+func New(aPIKey string, endpoint string) BaseClient {
+	return original.New(aPIKey, endpoint)
 }
-func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
-	return original.NewWithBaseURI(baseURI, aPIKey)
+func NewWithoutDefaults(aPIKey string, endpoint string) BaseClient {
+	return original.NewWithoutDefaults(aPIKey, endpoint)
 }
 func PossibleClassifierValues() []Classifier {
 	return original.PossibleClassifierValues()
@@ -146,20 +152,23 @@ func PossibleClassifierValues() []Classifier {
 func PossibleDomainTypeValues() []DomainType {
 	return original.PossibleDomainTypeValues()
 }
-func PossibleExportFlavorValues() []ExportFlavor {
-	return original.PossibleExportFlavorValues()
+func PossibleExportFlavorModelValues() []ExportFlavorModel {
+	return original.PossibleExportFlavorModelValues()
 }
-func PossibleExportPlatformValues() []ExportPlatform {
-	return original.PossibleExportPlatformValues()
+func PossibleExportPlatformModelValues() []ExportPlatformModel {
+	return original.PossibleExportPlatformModelValues()
 }
 func PossibleExportStatusModelValues() []ExportStatusModel {
 	return original.PossibleExportStatusModelValues()
 }
-func PossibleImageUploadStatusValues() []ImageUploadStatus {
-	return original.PossibleImageUploadStatusValues()
+func PossibleImageCreateStatusValues() []ImageCreateStatus {
+	return original.PossibleImageCreateStatusValues()
 }
 func PossibleOrderByValues() []OrderBy {
 	return original.PossibleOrderByValues()
+}
+func PossibleTagTypeValues() []TagType {
+	return original.PossibleTagTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

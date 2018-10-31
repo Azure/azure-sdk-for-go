@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/tracing"
 	"io"
 	"net/http"
 )
@@ -163,6 +164,16 @@ func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
 // form data in the same request only if knowledgeRequest form data specifies the cropArea field only  (it must
 // not include an insights token or URL).
 func (client ImagesClient) VisualSearch(ctx context.Context, acceptLanguage string, contentType string, userAgent string, clientID string, clientIP string, location string, market string, safeSearch SafeSearch, setLang string, knowledgeRequest string, imageParameter io.ReadCloser) (result ImageKnowledge, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ImagesClient.VisualSearch")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	req, err := client.VisualSearchPreparer(ctx, acceptLanguage, contentType, userAgent, clientID, clientIP, location, market, safeSearch, setLang, knowledgeRequest, imageParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualsearch.ImagesClient", "VisualSearch", nil, "Failure preparing request")

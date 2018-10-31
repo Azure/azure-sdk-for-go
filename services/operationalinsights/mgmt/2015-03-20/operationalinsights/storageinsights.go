@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -47,6 +48,16 @@ func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string, 
 // storageInsightName - name of the storageInsightsConfigs resource
 // parameters - the parameters required to create or update a storage insight.
 func (client StorageInsightsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters StorageInsight) (result StorageInsight, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightsClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -133,6 +144,16 @@ func (client StorageInsightsClient) CreateOrUpdateResponder(resp *http.Response)
 // workspaceName - the Log Analytics Workspace name.
 // storageInsightName - name of the storageInsightsConfigs resource
 func (client StorageInsightsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -209,6 +230,16 @@ func (client StorageInsightsClient) DeleteResponder(resp *http.Response) (result
 // workspaceName - the Log Analytics Workspace name.
 // storageInsightName - name of the storageInsightsConfigs resource
 func (client StorageInsightsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string) (result StorageInsight, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -285,6 +316,16 @@ func (client StorageInsightsClient) GetResponder(resp *http.Response) (result St
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.
 func (client StorageInsightsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result StorageInsightListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightsClient.ListByWorkspace")
+		defer func() {
+			sc := -1
+			if result.silr.Response.Response != nil {
+				sc = result.silr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -357,8 +398,8 @@ func (client StorageInsightsClient) ListByWorkspaceResponder(resp *http.Response
 }
 
 // listByWorkspaceNextResults retrieves the next set of results, if any.
-func (client StorageInsightsClient) listByWorkspaceNextResults(lastResults StorageInsightListResult) (result StorageInsightListResult, err error) {
-	req, err := lastResults.storageInsightListResultPreparer()
+func (client StorageInsightsClient) listByWorkspaceNextResults(ctx context.Context, lastResults StorageInsightListResult) (result StorageInsightListResult, err error) {
+	req, err := lastResults.storageInsightListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "operationalinsights.StorageInsightsClient", "listByWorkspaceNextResults", nil, "Failure preparing next results request")
 	}
@@ -379,6 +420,16 @@ func (client StorageInsightsClient) listByWorkspaceNextResults(lastResults Stora
 
 // ListByWorkspaceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client StorageInsightsClient) ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result StorageInsightListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageInsightsClient.ListByWorkspace")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	result.page, err = client.ListByWorkspace(ctx, resourceGroupName, workspaceName)
 	return
 }

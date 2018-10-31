@@ -108,6 +108,21 @@ func (arr AccountResourceRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AccountTagRequest the body of a Patch request to add tags to a Visual Studio account resource.
+type AccountTagRequest struct {
+	// Tags - The custom tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AccountTagRequest.
+func (atr AccountTagRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if atr.Tags != nil {
+		objectMap["tags"] = atr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // CheckNameAvailabilityParameter the body of a POST request to check name availability.
 type CheckNameAvailabilityParameter struct {
 	// ResourceName - The name of the resource to check availability for.

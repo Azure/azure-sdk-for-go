@@ -33,6 +33,10 @@ Practices](https://github.com/Azure/azure-sdk-for-go/wiki/SDK-Update-Practices).
 To more reliably manage dependencies like the Azure SDK in your applications we
 recommend [golang/dep](https://github.com/golang/dep).
 
+Packages that are still in public preview can be found under the ./services/preview
+directory.  Please be aware that since these packages are in preview they are subject
+to change, including breaking changes outside of a major semver bump.
+
 ## Other Azure Go Packages
 
 Azure provides several other packages for using services from Go, listed below.

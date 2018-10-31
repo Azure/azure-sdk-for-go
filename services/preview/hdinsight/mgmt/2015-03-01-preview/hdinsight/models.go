@@ -183,8 +183,6 @@ type ApplicationGetEndpoint struct {
 
 // ApplicationGetHTTPSEndpoint gets the application HTTP endpoints.
 type ApplicationGetHTTPSEndpoint struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]*string `json:""`
 	// AccessModes - The list of access modes for the application.
 	AccessModes *[]string `json:"accessModes,omitempty"`
 	// Location - The location of the endpoint.
@@ -193,90 +191,6 @@ type ApplicationGetHTTPSEndpoint struct {
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// PublicPort - The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ApplicationGetHTTPSEndpoint.
-func (aghe ApplicationGetHTTPSEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if aghe.AccessModes != nil {
-		objectMap["accessModes"] = aghe.AccessModes
-	}
-	if aghe.Location != nil {
-		objectMap["location"] = aghe.Location
-	}
-	if aghe.DestinationPort != nil {
-		objectMap["destinationPort"] = aghe.DestinationPort
-	}
-	if aghe.PublicPort != nil {
-		objectMap["publicPort"] = aghe.PublicPort
-	}
-	for k, v := range aghe.AdditionalProperties {
-		objectMap[k] = v
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ApplicationGetHTTPSEndpoint struct.
-func (aghe *ApplicationGetHTTPSEndpoint) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		default:
-			if v != nil {
-				var additionalProperties string
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if aghe.AdditionalProperties == nil {
-					aghe.AdditionalProperties = make(map[string]*string)
-				}
-				aghe.AdditionalProperties[k] = &additionalProperties
-			}
-		case "accessModes":
-			if v != nil {
-				var accessModes []string
-				err = json.Unmarshal(*v, &accessModes)
-				if err != nil {
-					return err
-				}
-				aghe.AccessModes = &accessModes
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				aghe.Location = &location
-			}
-		case "destinationPort":
-			if v != nil {
-				var destinationPort int32
-				err = json.Unmarshal(*v, &destinationPort)
-				if err != nil {
-					return err
-				}
-				aghe.DestinationPort = &destinationPort
-			}
-		case "publicPort":
-			if v != nil {
-				var publicPort int32
-				err = json.Unmarshal(*v, &publicPort)
-				if err != nil {
-					return err
-				}
-				aghe.PublicPort = &publicPort
-			}
-		}
-	}
-
-	return nil
 }
 
 // ApplicationListResult result of the request to list cluster Applications. It contains a list of
@@ -440,8 +354,6 @@ type ApplicationProperties struct {
 	CreatedDate *string `json:"createdDate,omitempty"`
 	// MarketplaceIdentifier - The marketplace identifier.
 	MarketplaceIdentifier *string `json:"marketplaceIdentifier,omitempty"`
-	// AdditionalProperties - The additional properties for application.
-	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
 // ApplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

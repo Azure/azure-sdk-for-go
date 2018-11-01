@@ -39,6 +39,74 @@ func NewErrorsClientWithBaseURI(baseURI string, subscriptionID string, acceptLan
 	return ErrorsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
+// DeleteError delete the migrate error. Deleting non-existent migrate error is a no-operation.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that migrate project is part of.
+// migrateProjectName - name of the Azure Migrate project.
+// errorName - unique name of an error within a migrate project.
+func (client ErrorsClient) DeleteError(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (result autorest.Response, err error) {
+	req, err := client.DeleteErrorPreparer(ctx, resourceGroupName, migrateProjectName, errorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ErrorsClient", "DeleteError", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteErrorSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "migrate.ErrorsClient", "DeleteError", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteErrorResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ErrorsClient", "DeleteError", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteErrorPreparer prepares the DeleteError request.
+func (client ErrorsClient) DeleteErrorPreparer(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"errorName":          autorest.Encode("path", errorName),
+		"migrateProjectName": autorest.Encode("path", migrateProjectName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/MigrateErrors/{errorName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteErrorSender sends the DeleteError request. The method will close the
+// http.Response Body if it receives an error.
+func (client ErrorsClient) DeleteErrorSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteErrorResponder handles the response to the DeleteError request. The method always
+// closes the http.Response Body.
+func (client ErrorsClient) DeleteErrorResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // EnumerateErrors sends the enumerate errors request.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that migrate project is part of.

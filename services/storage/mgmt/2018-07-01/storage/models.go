@@ -1195,6 +1195,98 @@ func (bc *BlobContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BlobServiceProperties the properties of a storage account’s Blob service.
+type BlobServiceProperties struct {
+	autorest.Response `json:"-"`
+	// BlobServicePropertiesProperties - The properties of a storage account’s Blob service.
+	*BlobServicePropertiesProperties `json:"properties,omitempty"`
+	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BlobServiceProperties.
+func (bsp BlobServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bsp.BlobServicePropertiesProperties != nil {
+		objectMap["properties"] = bsp.BlobServicePropertiesProperties
+	}
+	if bsp.ID != nil {
+		objectMap["id"] = bsp.ID
+	}
+	if bsp.Name != nil {
+		objectMap["name"] = bsp.Name
+	}
+	if bsp.Type != nil {
+		objectMap["type"] = bsp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BlobServiceProperties struct.
+func (bsp *BlobServiceProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var blobServiceProperties BlobServicePropertiesProperties
+				err = json.Unmarshal(*v, &blobServiceProperties)
+				if err != nil {
+					return err
+				}
+				bsp.BlobServicePropertiesProperties = &blobServiceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				bsp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				bsp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				bsp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BlobServicePropertiesProperties the properties of a storage account’s Blob service.
+type BlobServicePropertiesProperties struct {
+	// Cors - Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.
+	Cors *CorsRules `json:"cors,omitempty"`
+	// DefaultServiceVersion - DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
+	DefaultServiceVersion *string `json:"defaultServiceVersion,omitempty"`
+	// DeleteRetentionPolicy - The blob service properties for soft delete.
+	DeleteRetentionPolicy *DeleteRetentionPolicy `json:"deleteRetentionPolicy,omitempty"`
+}
+
 // CheckNameAvailabilityResult the CheckNameAvailability operation response.
 type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
@@ -1266,12 +1358,40 @@ func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CorsRule specifies a CORS rule for the Blob service.
+type CorsRule struct {
+	// AllowedOrigins - Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow all domains
+	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
+	// AllowedMethods - Required if CorsRule element is present. A list of HTTP methods that are allowed to be executed by the origin.
+	AllowedMethods *[]string `json:"allowedMethods,omitempty"`
+	// MaxAgeInSeconds - Required if CorsRule element is present. The number of seconds that the client/browser should cache a preflight response.
+	MaxAgeInSeconds *int32 `json:"maxAgeInSeconds,omitempty"`
+	// ExposedHeaders - Required if CorsRule element is present. A list of response headers to expose to CORS clients.
+	ExposedHeaders *[]string `json:"exposedHeaders,omitempty"`
+	// AllowedHeaders - Required if CorsRule element is present. A list of headers allowed to be part of the cross-origin request.
+	AllowedHeaders *[]string `json:"allowedHeaders,omitempty"`
+}
+
+// CorsRules sets the CORS rules. You can include up to five CorsRule elements in the request.
+type CorsRules struct {
+	// CorsRules - The List of CORS rules. You can include up to five CorsRule elements in the request.
+	CorsRules *[]CorsRule `json:"corsRules,omitempty"`
+}
+
 // CustomDomain the custom domain assigned to this storage account. This can be set via Update.
 type CustomDomain struct {
 	// Name - Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
 	Name *string `json:"name,omitempty"`
 	// UseSubDomain - Indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
 	UseSubDomain *bool `json:"useSubDomain,omitempty"`
+}
+
+// DeleteRetentionPolicy the blob service properties for soft delete.
+type DeleteRetentionPolicy struct {
+	// Enabled - Indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Days - Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+	Days *int32 `json:"days,omitempty"`
 }
 
 // Dimension dimension of blobs, possiblly be blob type or access tier.

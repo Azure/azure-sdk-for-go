@@ -1138,6 +1138,7 @@ type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProvide
 type ExpressRouteServiceProviderListResultIterator = original.ExpressRouteServiceProviderListResultIterator
 type ExpressRouteServiceProviderListResultPage = original.ExpressRouteServiceProviderListResultPage
 type ExpressRouteServiceProviderPropertiesFormat = original.ExpressRouteServiceProviderPropertiesFormat
+type FlowLogFormatParameters = original.FlowLogFormatParameters
 type FlowLogInformation = original.FlowLogInformation
 type FlowLogProperties = original.FlowLogProperties
 type FlowLogStatusParameters = original.FlowLogStatusParameters

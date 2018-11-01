@@ -11536,6 +11536,14 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// FlowLogFormatParameters parameters that define the flow log format.
+type FlowLogFormatParameters struct {
+	// Type - The type of flow log format.
+	Type interface{} `json:"type,omitempty"`
+	// Version - The version (revision) of the flow log format.
+	Version *int32 `json:"version,omitempty"`
+}
+
 // FlowLogInformation information on the configuration of flow log and traffic analytics (optional) .
 type FlowLogInformation struct {
 	autorest.Response `json:"-"`
@@ -11609,6 +11617,7 @@ type FlowLogProperties struct {
 	// Enabled - Flag to enable/disable flow logging.
 	Enabled         *bool                      `json:"enabled,omitempty"`
 	RetentionPolicy *RetentionPolicyParameters `json:"retentionPolicy,omitempty"`
+	Format          *FlowLogFormatParameters   `json:"format,omitempty"`
 }
 
 // FlowLogStatusParameters parameters that define a resource to query flow log and traffic analytics

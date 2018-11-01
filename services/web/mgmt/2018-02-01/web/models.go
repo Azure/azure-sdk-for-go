@@ -4311,6 +4311,8 @@ type AppServicePlanPatchResourceProperties struct {
 
 // AppServicePlanProperties appServicePlan resource specific properties
 type AppServicePlanProperties struct {
+	// Name - Name for the App Service plan.
+	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
@@ -4352,6 +4354,18 @@ type AppServicePlanProperties struct {
 	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
 	// ProvisioningState - Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// MdmID - MDM ID of the App Service plan.
+	MdmID *string `json:"mdmId,omitempty"`
+	// CurrentNumberOfWorkers - Current worker count.
+	CurrentNumberOfWorkers *int32 `json:"currentNumberOfWorkers,omitempty"`
+	// CurrentWorkerSize - Current worker size.
+	CurrentWorkerSize *string `json:"currentWorkerSize,omitempty"`
+	// NumberOfWorkers - Worker count.
+	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+	// WorkerSize - Worker size.
+	WorkerSize *string `json:"workerSize,omitempty"`
 }
 
 // AppServicePlansCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

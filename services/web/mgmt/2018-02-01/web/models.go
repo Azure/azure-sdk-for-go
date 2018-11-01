@@ -4748,7 +4748,7 @@ type AppsStartNetworkTraceFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AppsStartNetworkTraceFuture) Result(client AppsClient) (so SetObject, err error) {
+func (future *AppsStartNetworkTraceFuture) Result(client AppsClient) (lnt ListNetworkTrace, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4760,10 +4760,10 @@ func (future *AppsStartNetworkTraceFuture) Result(client AppsClient) (so SetObje
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StartNetworkTraceResponder(so.Response.Response)
+	if lnt.Response.Response, err = future.GetResult(sender); err == nil && lnt.Response.Response.StatusCode != http.StatusNoContent {
+		lnt, err = client.StartNetworkTraceResponder(lnt.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceFuture", "Result", lnt.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -4777,7 +4777,7 @@ type AppsStartNetworkTraceSlotFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AppsStartNetworkTraceSlotFuture) Result(client AppsClient) (so SetObject, err error) {
+func (future *AppsStartNetworkTraceSlotFuture) Result(client AppsClient) (lnt ListNetworkTrace, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4789,10 +4789,10 @@ func (future *AppsStartNetworkTraceSlotFuture) Result(client AppsClient) (so Set
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StartNetworkTraceSlotResponder(so.Response.Response)
+	if lnt.Response.Response, err = future.GetResult(sender); err == nil && lnt.Response.Response.StatusCode != http.StatusNoContent {
+		lnt, err = client.StartNetworkTraceSlotResponder(lnt.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceSlotFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsStartNetworkTraceSlotFuture", "Result", lnt.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -4806,7 +4806,7 @@ type AppsStartWebSiteNetworkTraceOperationFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AppsStartWebSiteNetworkTraceOperationFuture) Result(client AppsClient) (so SetObject, err error) {
+func (future *AppsStartWebSiteNetworkTraceOperationFuture) Result(client AppsClient) (lnt ListNetworkTrace, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4818,10 +4818,10 @@ func (future *AppsStartWebSiteNetworkTraceOperationFuture) Result(client AppsCli
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StartWebSiteNetworkTraceOperationResponder(so.Response.Response)
+	if lnt.Response.Response, err = future.GetResult(sender); err == nil && lnt.Response.Response.StatusCode != http.StatusNoContent {
+		lnt, err = client.StartWebSiteNetworkTraceOperationResponder(lnt.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationFuture", "Result", lnt.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -4835,7 +4835,7 @@ type AppsStartWebSiteNetworkTraceOperationSlotFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) Result(client AppsClient) (so SetObject, err error) {
+func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) Result(client AppsClient) (lnt ListNetworkTrace, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4847,10 +4847,10 @@ func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) Result(client App
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StartWebSiteNetworkTraceOperationSlotResponder(so.Response.Response)
+	if lnt.Response.Response, err = future.GetResult(sender); err == nil && lnt.Response.Response.StatusCode != http.StatusNoContent {
+		lnt, err = client.StartWebSiteNetworkTraceOperationSlotResponder(lnt.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationSlotFuture", "Result", so.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsStartWebSiteNetworkTraceOperationSlotFuture", "Result", lnt.Response.Response, "Failure responding to request")
 		}
 	}
 	return

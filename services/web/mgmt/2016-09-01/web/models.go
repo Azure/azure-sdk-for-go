@@ -3958,6 +3958,7 @@ type AppServicePlanProperties struct {
 	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
 	// ProvisioningState - Provisioning state of the App Service Environment. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateInProgress', 'ProvisioningStateDeleting'
 	ProvisioningState      ProvisioningState `json:"provisioningState,omitempty"`
+	Kind                   *string           `json:"kind,omitempty"`
 	MdmID                  *string           `json:"mdmId,omitempty"`
 	CurrentNumberOfWorkers *int32            `json:"currentNumberOfWorkers,omitempty"`
 	CurrentWorkerSize      *string           `json:"currentWorkerSize,omitempty"`

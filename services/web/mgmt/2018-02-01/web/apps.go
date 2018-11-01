@@ -11445,7 +11445,7 @@ func (client AppsClient) GetMSDeployStatusSlotResponder(resp *http.Response) (re
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // operationID - GUID of the operation.
-func (client AppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperation")
 		defer func() {
@@ -11516,7 +11516,7 @@ func (client AppsClient) GetNetworkTraceOperationSender(req *http.Request) (*htt
 
 // GetNetworkTraceOperationResponder handles the response to the GetNetworkTraceOperation request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11535,7 +11535,7 @@ func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) 
 // operationID - GUID of the operation.
 // slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
 // production slot.
-func (client AppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationSlot")
 		defer func() {
@@ -11607,7 +11607,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotSender(req *http.Request) (
 
 // GetNetworkTraceOperationSlotResponder handles the response to the GetNetworkTraceOperationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11626,7 +11626,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Respon
 // operationID - GUID of the operation.
 // slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
 // production slot.
-func (client AppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationSlotV2")
 		defer func() {
@@ -11698,7 +11698,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Sender(req *http.Request)
 
 // GetNetworkTraceOperationSlotV2Responder handles the response to the GetNetworkTraceOperationSlotV2 request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11714,7 +11714,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Resp
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // operationID - GUID of the operation.
-func (client AppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationV2")
 		defer func() {
@@ -11785,7 +11785,7 @@ func (client AppsClient) GetNetworkTraceOperationV2Sender(req *http.Request) (*h
 
 // GetNetworkTraceOperationV2Responder handles the response to the GetNetworkTraceOperationV2 request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -27943,7 +27943,7 @@ func (client AppsClient) StartNetworkTraceSender(req *http.Request) (future Apps
 
 // StartNetworkTraceResponder handles the response to the StartNetworkTrace request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28042,7 +28042,7 @@ func (client AppsClient) StartNetworkTraceSlotSender(req *http.Request) (future 
 
 // StartNetworkTraceSlotResponder handles the response to the StartNetworkTraceSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28322,7 +28322,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSender(req *http.Reque
 
 // StartWebSiteNetworkTraceOperationResponder handles the response to the StartWebSiteNetworkTraceOperation request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28421,7 +28421,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotSender(req *http.R
 
 // StartWebSiteNetworkTraceOperationSlotResponder handles the response to the StartWebSiteNetworkTraceOperationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

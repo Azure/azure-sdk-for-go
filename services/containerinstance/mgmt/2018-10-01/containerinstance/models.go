@@ -93,6 +93,23 @@ func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return []ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
 }
 
+// GpuSku enumerates the values for gpu sku.
+type GpuSku string
+
+const (
+	// K80 ...
+	K80 GpuSku = "K80"
+	// P100 ...
+	P100 GpuSku = "P100"
+	// V100 ...
+	V100 GpuSku = "V100"
+)
+
+// PossibleGpuSkuValues returns an array of possible values for the GpuSku const type.
+func PossibleGpuSkuValues() []GpuSku {
+	return []GpuSku{K80, P100, V100}
+}
+
 // LogAnalyticsLogType enumerates the values for log analytics log type.
 type LogAnalyticsLogType string
 
@@ -603,6 +620,8 @@ type ContainerGroupProperties struct {
 	Diagnostics *ContainerGroupDiagnostics `json:"diagnostics,omitempty"`
 	// NetworkProfile - The network profile information for a container group.
 	NetworkProfile *ContainerGroupNetworkProfile `json:"networkProfile,omitempty"`
+	// DNSConfig - The DNS config information for a container group.
+	DNSConfig *DNSConfiguration `json:"dnsConfig,omitempty"`
 }
 
 // ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
@@ -749,6 +768,16 @@ type ContainerState struct {
 	DetailStatus *string `json:"detailStatus,omitempty"`
 }
 
+// DNSConfiguration DNS configuration for the container group.
+type DNSConfiguration struct {
+	// NameServers - The DNS servers for the container group.
+	NameServers *[]string `json:"nameServers,omitempty"`
+	// SearchDomains - The DNS search domains for hostname lookup in the container group.
+	SearchDomains *string `json:"searchDomains,omitempty"`
+	// Options - The DNS options for the container group.
+	Options *string `json:"options,omitempty"`
+}
+
 // EnvironmentVariable the environment variable to set within the container instance.
 type EnvironmentVariable struct {
 	// Name - The name of the environment variable.
@@ -783,6 +812,14 @@ type GitRepoVolume struct {
 	Repository *string `json:"repository,omitempty"`
 	// Revision - Commit hash for the specified revision.
 	Revision *string `json:"revision,omitempty"`
+}
+
+// GpuResource the GPU resource.
+type GpuResource struct {
+	// Count - The count of the GPU resource.
+	Count *int32 `json:"count,omitempty"`
+	// Sku - The SKU of the GPU resource. Possible values include: 'K80', 'P100', 'V100'
+	Sku GpuSku `json:"sku,omitempty"`
 }
 
 // ImageRegistryCredential image registry credential.
@@ -927,6 +964,8 @@ type ResourceLimits struct {
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
 	// CPU - The CPU limit of this container instance.
 	CPU *float64 `json:"cpu,omitempty"`
+	// Gpu - The GPU limit of this container instance.
+	Gpu *GpuResource `json:"gpu,omitempty"`
 }
 
 // ResourceRequests the resource requests.
@@ -935,6 +974,8 @@ type ResourceRequests struct {
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
 	// CPU - The CPU request of this container instance.
 	CPU *float64 `json:"cpu,omitempty"`
+	// Gpu - The GPU request of this container instance.
+	Gpu *GpuResource `json:"gpu,omitempty"`
 }
 
 // ResourceRequirements the resource requirements.

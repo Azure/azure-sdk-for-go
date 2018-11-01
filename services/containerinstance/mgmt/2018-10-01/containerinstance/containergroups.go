@@ -71,6 +71,8 @@ func (client ContainerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 						}},
 					{Target: "containerGroup.ContainerGroupProperties.NetworkProfile", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "containerGroup.ContainerGroupProperties.NetworkProfile.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "containerGroup.ContainerGroupProperties.DNSConfig", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "containerGroup.ContainerGroupProperties.DNSConfig.NameServers", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("containerinstance.ContainerGroupsClient", "CreateOrUpdate", err.Error())
 	}

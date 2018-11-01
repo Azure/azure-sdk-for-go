@@ -3962,7 +3962,7 @@ type AppServicePlanProperties struct {
 	CurrentNumberOfWorkers *int32            `json:"currentNumberOfWorkers,omitempty"`
 	CurrentWorkerSize      *string           `json:"currentWorkerSize,omitempty"`
 	NumberOfWorkers        *int32            `json:"numberOfWorkers,omitempty"`
-	WorkerSize             *int32            `json:"workerSize,omitempty"`
+	WorkerSize             *string           `json:"workerSize,omitempty"`
 }
 
 // AppServicePlansCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

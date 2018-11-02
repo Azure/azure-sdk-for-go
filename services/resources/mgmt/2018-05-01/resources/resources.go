@@ -64,7 +64,7 @@ func (client Client) CheckExistence(ctx context.Context, resourceGroupName strin
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "CheckExistence", err.Error())
 	}
 
@@ -230,7 +230,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.Kind", Name: validation.Pattern, Rule: `^[-\w\._,\(\)]+$`, Chain: nil}}}}}}); err != nil {
@@ -413,7 +413,7 @@ func (client Client) Delete(ctx context.Context, resourceGroupName string, resou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "Delete", err.Error())
 	}
 
@@ -579,7 +579,7 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, resource
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "Get", err.Error())
 	}
 
@@ -890,7 +890,7 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "ListByResourceGroup", err.Error())
 	}
 
@@ -1023,7 +1023,7 @@ func (client Client) MoveResources(ctx context.Context, sourceResourceGroupName 
 		{TargetValue: sourceResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "sourceResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "sourceResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "sourceResourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "sourceResourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "MoveResources", err.Error())
 	}
 
@@ -1112,7 +1112,7 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "Update", err.Error())
 	}
 
@@ -1285,7 +1285,7 @@ func (client Client) ValidateMoveResources(ctx context.Context, sourceResourceGr
 		{TargetValue: sourceResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "sourceResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "sourceResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "sourceResourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "sourceResourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.Client", "ValidateMoveResources", err.Error())
 	}
 

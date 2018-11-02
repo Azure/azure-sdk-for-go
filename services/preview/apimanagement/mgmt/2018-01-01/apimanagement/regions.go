@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegionsClient is the apiManagement Client
 type RegionsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewRegionsClient creates an instance of the RegionsClient client.
 func NewRegionsClient(subscriptionID string) RegionsClient {
 	return NewRegionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewRegionsClientWithBaseURI creates an instance of the RegionsClient client.
 func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
 	return RegionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists all azure regions in which the service exists.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -86,6 +90,7 @@ func (client RegionsClient) ListByService(ctx context.Context, resourceGroupName
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client RegionsClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -107,6 +112,7 @@ func (client RegionsClient) ListByServicePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegionsClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -114,6 +120,7 @@ func (client RegionsClient) ListByServiceSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client RegionsClient) ListByServiceResponder(resp *http.Response) (result RegionListResult, err error) {
@@ -148,6 +155,7 @@ func (client RegionsClient) listByServiceNextResults(ctx context.Context, lastRe
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client RegionsClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResultIterator, err error) {
 	if tracing.IsEnabled() {

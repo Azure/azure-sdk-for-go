@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerClient is the apiManagement Client
 type LoggerClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewLoggerClient creates an instance of the LoggerClient client.
 func NewLoggerClient(subscriptionID string) LoggerClient {
 	return NewLoggerClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewLoggerClientWithBaseURI creates an instance of the LoggerClient client.
 func NewLoggerClientWithBaseURI(baseURI string, subscriptionID string) LoggerClient {
 	return LoggerClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or Updates a logger.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -97,6 +101,7 @@ func (client LoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client LoggerClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -125,6 +130,7 @@ func (client LoggerClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -132,6 +138,7 @@ func (client LoggerClient) CreateOrUpdateSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) CreateOrUpdateResponder(resp *http.Response) (result LoggerContract, err error) {
@@ -145,6 +152,7 @@ func (client LoggerClient) CreateOrUpdateResponder(resp *http.Response) (result 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the specified logger.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -195,6 +203,7 @@ func (client LoggerClient) Delete(ctx context.Context, resourceGroupName string,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client LoggerClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -218,6 +227,7 @@ func (client LoggerClient) DeletePreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -225,6 +235,7 @@ func (client LoggerClient) DeleteSender(req *http.Request) (*http.Response, erro
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -237,6 +248,7 @@ func (client LoggerClient) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the logger specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -285,6 +297,7 @@ func (client LoggerClient) Get(ctx context.Context, resourceGroupName string, se
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client LoggerClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -307,6 +320,7 @@ func (client LoggerClient) GetPreparer(ctx context.Context, resourceGroupName st
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -314,6 +328,7 @@ func (client LoggerClient) GetSender(req *http.Request) (*http.Response, error) 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) GetResponder(resp *http.Response) (result LoggerContract, err error) {
@@ -327,6 +342,7 @@ func (client LoggerClient) GetResponder(resp *http.Response) (result LoggerContr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the logger specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -375,6 +391,7 @@ func (client LoggerClient) GetEntityTag(ctx context.Context, resourceGroupName s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client LoggerClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -397,6 +414,7 @@ func (client LoggerClient) GetEntityTagPreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -404,6 +422,7 @@ func (client LoggerClient) GetEntityTagSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -416,6 +435,7 @@ func (client LoggerClient) GetEntityTagResponder(resp *http.Response) (result au
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of loggers in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -473,6 +493,7 @@ func (client LoggerClient) ListByService(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client LoggerClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -503,6 +524,7 @@ func (client LoggerClient) ListByServicePreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -510,6 +532,7 @@ func (client LoggerClient) ListByServiceSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) ListByServiceResponder(resp *http.Response) (result LoggerCollection, err error) {
@@ -544,6 +567,7 @@ func (client LoggerClient) listByServiceNextResults(ctx context.Context, lastRes
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client LoggerClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result LoggerCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -560,6 +584,7 @@ func (client LoggerClient) ListByServiceComplete(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates an existing logger.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -611,6 +636,7 @@ func (client LoggerClient) Update(ctx context.Context, resourceGroupName string,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client LoggerClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, loggerid string, parameters LoggerUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -636,6 +662,7 @@ func (client LoggerClient) UpdatePreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoggerClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -643,6 +670,7 @@ func (client LoggerClient) UpdateSender(req *http.Request) (*http.Response, erro
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client LoggerClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

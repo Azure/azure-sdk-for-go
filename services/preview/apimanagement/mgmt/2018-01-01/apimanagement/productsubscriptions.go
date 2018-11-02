@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductSubscriptionsClient is the apiManagement Client
 type ProductSubscriptionsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewProductSubscriptionsClient creates an instance of the ProductSubscriptionsClient client.
 func NewProductSubscriptionsClient(subscriptionID string) ProductSubscriptionsClient {
 	return NewProductSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewProductSubscriptionsClientWithBaseURI creates an instance of the ProductSubscriptionsClient client.
 func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductSubscriptionsClient {
 	return ProductSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // List lists the collection of subscriptions to the specified product.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -107,6 +111,7 @@ func (client ProductSubscriptionsClient) List(ctx context.Context, resourceGroup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListPreparer prepares the List request.
 func (client ProductSubscriptionsClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -138,6 +143,7 @@ func (client ProductSubscriptionsClient) ListPreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductSubscriptionsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -145,6 +151,7 @@ func (client ProductSubscriptionsClient) ListSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client ProductSubscriptionsClient) ListResponder(resp *http.Response) (result SubscriptionCollection, err error) {
@@ -179,6 +186,7 @@ func (client ProductSubscriptionsClient) listNextResults(ctx context.Context, la
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProductSubscriptionsClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result SubscriptionCollectionIterator, err error) {
 	if tracing.IsEnabled() {

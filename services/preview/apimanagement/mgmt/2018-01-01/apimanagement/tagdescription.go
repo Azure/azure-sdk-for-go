@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionClient is the apiManagement Client
 type TagDescriptionClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTagDescriptionClient creates an instance of the TagDescriptionClient client.
 func NewTagDescriptionClient(subscriptionID string) TagDescriptionClient {
 	return NewTagDescriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTagDescriptionClientWithBaseURI creates an instance of the TagDescriptionClient client.
 func NewTagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) TagDescriptionClient {
 	return TagDescriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate create/Update tag fescription in scope of the Api.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -103,6 +107,7 @@ func (client TagDescriptionClient) CreateOrUpdate(ctx context.Context, resourceG
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client TagDescriptionClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, parameters TagDescriptionCreateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -132,6 +137,7 @@ func (client TagDescriptionClient) CreateOrUpdatePreparer(ctx context.Context, r
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -139,6 +145,7 @@ func (client TagDescriptionClient) CreateOrUpdateSender(req *http.Request) (*htt
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client TagDescriptionClient) CreateOrUpdateResponder(resp *http.Response) (result TagDescriptionContract, err error) {
@@ -152,6 +159,7 @@ func (client TagDescriptionClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete delete tag description for the Api.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -209,6 +217,7 @@ func (client TagDescriptionClient) Delete(ctx context.Context, resourceGroupName
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client TagDescriptionClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -233,6 +242,7 @@ func (client TagDescriptionClient) DeletePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -240,6 +250,7 @@ func (client TagDescriptionClient) DeleteSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client TagDescriptionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -252,6 +263,7 @@ func (client TagDescriptionClient) DeleteResponder(resp *http.Response) (result 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get get tag associated with the API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -307,6 +319,7 @@ func (client TagDescriptionClient) Get(ctx context.Context, resourceGroupName st
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client TagDescriptionClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -330,6 +343,7 @@ func (client TagDescriptionClient) GetPreparer(ctx context.Context, resourceGrou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -337,6 +351,7 @@ func (client TagDescriptionClient) GetSender(req *http.Request) (*http.Response,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client TagDescriptionClient) GetResponder(resp *http.Response) (result TagDescriptionContract, err error) {
@@ -350,6 +365,7 @@ func (client TagDescriptionClient) GetResponder(resp *http.Response) (result Tag
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityState gets the entity state version of the tag specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -405,6 +421,7 @@ func (client TagDescriptionClient) GetEntityState(ctx context.Context, resourceG
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityStatePreparer prepares the GetEntityState request.
 func (client TagDescriptionClient) GetEntityStatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -428,6 +445,7 @@ func (client TagDescriptionClient) GetEntityStatePreparer(ctx context.Context, r
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityStateSender sends the GetEntityState request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) GetEntityStateSender(req *http.Request) (*http.Response, error) {
@@ -435,6 +453,7 @@ func (client TagDescriptionClient) GetEntityStateSender(req *http.Request) (*htt
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityStateResponder handles the response to the GetEntityState request. The method always
 // closes the http.Response Body.
 func (client TagDescriptionClient) GetEntityStateResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -447,6 +466,7 @@ func (client TagDescriptionClient) GetEntityStateResponder(resp *http.Response) 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPI lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API
 // level but tag may be assigned to the Operations
 // Parameters:
@@ -511,6 +531,7 @@ func (client TagDescriptionClient) ListByAPI(ctx context.Context, resourceGroupN
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIPreparer prepares the ListByAPI request.
 func (client TagDescriptionClient) ListByAPIPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -542,6 +563,7 @@ func (client TagDescriptionClient) ListByAPIPreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) ListByAPISender(req *http.Request) (*http.Response, error) {
@@ -549,6 +571,7 @@ func (client TagDescriptionClient) ListByAPISender(req *http.Request) (*http.Res
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
 // closes the http.Response Body.
 func (client TagDescriptionClient) ListByAPIResponder(resp *http.Response) (result TagDescriptionCollection, err error) {
@@ -583,6 +606,7 @@ func (client TagDescriptionClient) listByAPINextResults(ctx context.Context, las
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIComplete enumerates all values, automatically crossing page boundaries as required.
 func (client TagDescriptionClient) ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result TagDescriptionCollectionIterator, err error) {
 	if tracing.IsEnabled() {

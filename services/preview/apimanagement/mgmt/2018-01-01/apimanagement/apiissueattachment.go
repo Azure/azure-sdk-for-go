@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIIssueAttachmentClient is the apiManagement Client
 type APIIssueAttachmentClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIIssueAttachmentClient creates an instance of the APIIssueAttachmentClient client.
 func NewAPIIssueAttachmentClient(subscriptionID string) APIIssueAttachmentClient {
 	return NewAPIIssueAttachmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIIssueAttachmentClientWithBaseURI creates an instance of the APIIssueAttachmentClient client.
 func NewAPIIssueAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentClient {
 	return APIIssueAttachmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates a new Attachment for the Issue in an API or updates an existing one.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -109,6 +113,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIIssueAttachmentClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, parameters IssueAttachmentContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -139,6 +144,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdatePreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueAttachmentClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -146,6 +152,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdateSender(req *http.Request) (
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client APIIssueAttachmentClient) CreateOrUpdateResponder(resp *http.Response) (result IssueAttachmentContract, err error) {
@@ -159,6 +166,7 @@ func (client APIIssueAttachmentClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the specified comment from an Issue.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -220,6 +228,7 @@ func (client APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client APIIssueAttachmentClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -245,6 +254,7 @@ func (client APIIssueAttachmentClient) DeletePreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueAttachmentClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -252,6 +262,7 @@ func (client APIIssueAttachmentClient) DeleteSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client APIIssueAttachmentClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -264,6 +275,7 @@ func (client APIIssueAttachmentClient) DeleteResponder(resp *http.Response) (res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the issue Attachment for an API specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -323,6 +335,7 @@ func (client APIIssueAttachmentClient) Get(ctx context.Context, resourceGroupNam
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client APIIssueAttachmentClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -347,6 +360,7 @@ func (client APIIssueAttachmentClient) GetPreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueAttachmentClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -354,6 +368,7 @@ func (client APIIssueAttachmentClient) GetSender(req *http.Request) (*http.Respo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client APIIssueAttachmentClient) GetResponder(resp *http.Response) (result IssueAttachmentContract, err error) {
@@ -367,6 +382,7 @@ func (client APIIssueAttachmentClient) GetResponder(resp *http.Response) (result
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -426,6 +442,7 @@ func (client APIIssueAttachmentClient) GetEntityTag(ctx context.Context, resourc
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client APIIssueAttachmentClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -450,6 +467,7 @@ func (client APIIssueAttachmentClient) GetEntityTagPreparer(ctx context.Context,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueAttachmentClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -457,6 +475,7 @@ func (client APIIssueAttachmentClient) GetEntityTagSender(req *http.Request) (*h
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client APIIssueAttachmentClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -469,6 +488,7 @@ func (client APIIssueAttachmentClient) GetEntityTagResponder(resp *http.Response
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists all comments for the Issue assosiated with the specified API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -536,6 +556,7 @@ func (client APIIssueAttachmentClient) ListByService(ctx context.Context, resour
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client APIIssueAttachmentClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -568,6 +589,7 @@ func (client APIIssueAttachmentClient) ListByServicePreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueAttachmentClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -575,6 +597,7 @@ func (client APIIssueAttachmentClient) ListByServiceSender(req *http.Request) (*
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client APIIssueAttachmentClient) ListByServiceResponder(resp *http.Response) (result IssueAttachmentCollection, err error) {
@@ -609,6 +632,7 @@ func (client APIIssueAttachmentClient) listByServiceNextResults(ctx context.Cont
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client APIIssueAttachmentClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (result IssueAttachmentCollectionIterator, err error) {
 	if tracing.IsEnabled() {

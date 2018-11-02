@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIOperationPolicyClient is the apiManagement Client
 type APIOperationPolicyClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIOperationPolicyClient creates an instance of the APIOperationPolicyClient client.
 func NewAPIOperationPolicyClient(subscriptionID string) APIOperationPolicyClient {
 	return NewAPIOperationPolicyClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIOperationPolicyClientWithBaseURI creates an instance of the APIOperationPolicyClient client.
 func NewAPIOperationPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIOperationPolicyClient {
 	return APIOperationPolicyClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or updates policy configuration for the API Operation level.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -102,6 +106,7 @@ func (client APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, resou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIOperationPolicyClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, parameters PolicyContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -132,6 +137,7 @@ func (client APIOperationPolicyClient) CreateOrUpdatePreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationPolicyClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -139,6 +145,7 @@ func (client APIOperationPolicyClient) CreateOrUpdateSender(req *http.Request) (
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client APIOperationPolicyClient) CreateOrUpdateResponder(resp *http.Response) (result PolicyContract, err error) {
@@ -152,6 +159,7 @@ func (client APIOperationPolicyClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the policy configuration at the Api Operation.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -210,6 +218,7 @@ func (client APIOperationPolicyClient) Delete(ctx context.Context, resourceGroup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client APIOperationPolicyClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -235,6 +244,7 @@ func (client APIOperationPolicyClient) DeletePreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationPolicyClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -242,6 +252,7 @@ func (client APIOperationPolicyClient) DeleteSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client APIOperationPolicyClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -254,6 +265,7 @@ func (client APIOperationPolicyClient) DeleteResponder(resp *http.Response) (res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get get the policy configuration at the API Operation level.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -310,6 +322,7 @@ func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNam
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -334,6 +347,7 @@ func (client APIOperationPolicyClient) GetPreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationPolicyClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -341,6 +355,7 @@ func (client APIOperationPolicyClient) GetSender(req *http.Request) (*http.Respo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client APIOperationPolicyClient) GetResponder(resp *http.Response) (result PolicyContract, err error) {
@@ -354,6 +369,7 @@ func (client APIOperationPolicyClient) GetResponder(resp *http.Response) (result
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the API operation policy specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -410,6 +426,7 @@ func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourc
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client APIOperationPolicyClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -434,6 +451,7 @@ func (client APIOperationPolicyClient) GetEntityTagPreparer(ctx context.Context,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationPolicyClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -441,6 +459,7 @@ func (client APIOperationPolicyClient) GetEntityTagSender(req *http.Request) (*h
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client APIOperationPolicyClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -453,6 +472,7 @@ func (client APIOperationPolicyClient) GetEntityTagResponder(resp *http.Response
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByOperation get the list of policy configuration at the API Operation level.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -509,6 +529,7 @@ func (client APIOperationPolicyClient) ListByOperation(ctx context.Context, reso
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByOperationPreparer prepares the ListByOperation request.
 func (client APIOperationPolicyClient) ListByOperationPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -532,6 +553,7 @@ func (client APIOperationPolicyClient) ListByOperationPreparer(ctx context.Conte
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByOperationSender sends the ListByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationPolicyClient) ListByOperationSender(req *http.Request) (*http.Response, error) {
@@ -539,6 +561,7 @@ func (client APIOperationPolicyClient) ListByOperationSender(req *http.Request) 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByOperationResponder handles the response to the ListByOperation request. The method always
 // closes the http.Response Body.
 func (client APIOperationPolicyClient) ListByOperationResponder(resp *http.Response) (result PolicyCollection, err error) {

@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SignUpSettingsClient is the apiManagement Client
 type SignUpSettingsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewSignUpSettingsClient creates an instance of the SignUpSettingsClient client.
 func NewSignUpSettingsClient(subscriptionID string) SignUpSettingsClient {
 	return NewSignUpSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewSignUpSettingsClientWithBaseURI creates an instance of the SignUpSettingsClient client.
 func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) SignUpSettingsClient {
 	return SignUpSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate create or Update Sign-Up settings.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -86,6 +90,7 @@ func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceG
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client SignUpSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -109,6 +114,7 @@ func (client SignUpSettingsClient) CreateOrUpdatePreparer(ctx context.Context, r
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignUpSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -116,6 +122,7 @@ func (client SignUpSettingsClient) CreateOrUpdateSender(req *http.Request) (*htt
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client SignUpSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result PortalSignupSettings, err error) {
@@ -129,6 +136,7 @@ func (client SignUpSettingsClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get get Sign-Up settings.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -173,6 +181,7 @@ func (client SignUpSettingsClient) Get(ctx context.Context, resourceGroupName st
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client SignUpSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -194,6 +203,7 @@ func (client SignUpSettingsClient) GetPreparer(ctx context.Context, resourceGrou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignUpSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -201,6 +211,7 @@ func (client SignUpSettingsClient) GetSender(req *http.Request) (*http.Response,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client SignUpSettingsClient) GetResponder(resp *http.Response) (result PortalSignupSettings, err error) {
@@ -214,6 +225,7 @@ func (client SignUpSettingsClient) GetResponder(resp *http.Response) (result Por
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the SignUpSettings.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -258,6 +270,7 @@ func (client SignUpSettingsClient) GetEntityTag(ctx context.Context, resourceGro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client SignUpSettingsClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -279,6 +292,7 @@ func (client SignUpSettingsClient) GetEntityTagPreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignUpSettingsClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -286,6 +300,7 @@ func (client SignUpSettingsClient) GetEntityTagSender(req *http.Request) (*http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client SignUpSettingsClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -298,6 +313,7 @@ func (client SignUpSettingsClient) GetEntityTagResponder(resp *http.Response) (r
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update update Sign-Up settings.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -345,6 +361,7 @@ func (client SignUpSettingsClient) Update(ctx context.Context, resourceGroupName
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client SignUpSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -369,6 +386,7 @@ func (client SignUpSettingsClient) UpdatePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignUpSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -376,6 +394,7 @@ func (client SignUpSettingsClient) UpdateSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client SignUpSettingsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

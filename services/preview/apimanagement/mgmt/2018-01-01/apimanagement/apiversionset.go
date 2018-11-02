@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetClient is the apiManagement Client
 type APIVersionSetClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIVersionSetClient creates an instance of the APIVersionSetClient client.
 func NewAPIVersionSetClient(subscriptionID string) APIVersionSetClient {
 	return NewAPIVersionSetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIVersionSetClientWithBaseURI creates an instance of the APIVersionSetClient client.
 func NewAPIVersionSetClientWithBaseURI(baseURI string, subscriptionID string) APIVersionSetClient {
 	return APIVersionSetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or Updates a Api Version Set.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -99,6 +103,7 @@ func (client APIVersionSetClient) CreateOrUpdate(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIVersionSetClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, parameters APIVersionSetContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -127,6 +132,7 @@ func (client APIVersionSetClient) CreateOrUpdatePreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -134,6 +140,7 @@ func (client APIVersionSetClient) CreateOrUpdateSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) CreateOrUpdateResponder(resp *http.Response) (result APIVersionSetContract, err error) {
@@ -147,6 +154,7 @@ func (client APIVersionSetClient) CreateOrUpdateResponder(resp *http.Response) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes specific Api Version Set.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -198,6 +206,7 @@ func (client APIVersionSetClient) Delete(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client APIVersionSetClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -221,6 +230,7 @@ func (client APIVersionSetClient) DeletePreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -228,6 +238,7 @@ func (client APIVersionSetClient) DeleteSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -240,6 +251,7 @@ func (client APIVersionSetClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the Api Version Set specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -289,6 +301,7 @@ func (client APIVersionSetClient) Get(ctx context.Context, resourceGroupName str
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client APIVersionSetClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -311,6 +324,7 @@ func (client APIVersionSetClient) GetPreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -318,6 +332,7 @@ func (client APIVersionSetClient) GetSender(req *http.Request) (*http.Response, 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) GetResponder(resp *http.Response) (result APIVersionSetContract, err error) {
@@ -331,6 +346,7 @@ func (client APIVersionSetClient) GetResponder(resp *http.Response) (result APIV
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the Api Version Set specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -380,6 +396,7 @@ func (client APIVersionSetClient) GetEntityTag(ctx context.Context, resourceGrou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client APIVersionSetClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -402,6 +419,7 @@ func (client APIVersionSetClient) GetEntityTagPreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -409,6 +427,7 @@ func (client APIVersionSetClient) GetEntityTagSender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -421,6 +440,7 @@ func (client APIVersionSetClient) GetEntityTagResponder(resp *http.Response) (re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of API Version Sets in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -483,6 +503,7 @@ func (client APIVersionSetClient) ListByService(ctx context.Context, resourceGro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client APIVersionSetClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -513,6 +534,7 @@ func (client APIVersionSetClient) ListByServicePreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -520,6 +542,7 @@ func (client APIVersionSetClient) ListByServiceSender(req *http.Request) (*http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) ListByServiceResponder(resp *http.Response) (result APIVersionSetCollection, err error) {
@@ -554,6 +577,7 @@ func (client APIVersionSetClient) listByServiceNextResults(ctx context.Context, 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client APIVersionSetClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result APIVersionSetCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -570,6 +594,7 @@ func (client APIVersionSetClient) ListByServiceComplete(ctx context.Context, res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates the details of the Api VersionSet specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -622,6 +647,7 @@ func (client APIVersionSetClient) Update(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client APIVersionSetClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, parameters APIVersionSetUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -647,6 +673,7 @@ func (client APIVersionSetClient) UpdatePreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIVersionSetClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -654,6 +681,7 @@ func (client APIVersionSetClient) UpdateSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client APIVersionSetClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

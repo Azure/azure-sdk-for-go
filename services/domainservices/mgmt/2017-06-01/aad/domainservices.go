@@ -47,9 +47,9 @@ func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) D
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// domainServiceName - the name of the domain service in the specified subscription and resource group.
-// properties - properties supplied to the Create or Update a Domain Service operation.
-func (client DomainServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServiceProperties) (result DomainServicesCreateOrUpdateFuture, err error) {
+// domainServiceName - the name of the domain service.
+// domainService - properties supplied to the Create or Update a Domain Service operation.
+func (client DomainServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService) (result DomainServicesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.CreateOrUpdate")
 		defer func() {
@@ -68,7 +68,7 @@ func (client DomainServicesClient) CreateOrUpdate(ctx context.Context, resourceG
 		return result, validation.NewError("aad.DomainServicesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, domainServiceName, properties)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, domainServiceName, domainService)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -84,7 +84,7 @@ func (client DomainServicesClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DomainServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServiceProperties) (*http.Request, error) {
+func (client DomainServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainServiceName": autorest.Encode("path", domainServiceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -101,7 +101,7 @@ func (client DomainServicesClient) CreateOrUpdatePreparer(ctx context.Context, r
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}", pathParameters),
-		autorest.WithJSON(properties),
+		autorest.WithJSON(domainService),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -136,7 +136,7 @@ func (client DomainServicesClient) CreateOrUpdateResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// domainServiceName - the name of the domain service in the specified subscription and resource group.
+// domainServiceName - the name of the domain service.
 func (client DomainServicesClient) Delete(ctx context.Context, resourceGroupName string, domainServiceName string) (result DomainServicesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Delete")
@@ -222,7 +222,7 @@ func (client DomainServicesClient) DeleteResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// domainServiceName - the name of the domain service in the specified subscription and resource group.
+// domainServiceName - the name of the domain service.
 func (client DomainServicesClient) Get(ctx context.Context, resourceGroupName string, domainServiceName string) (result DomainService, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Get")
@@ -543,9 +543,9 @@ func (client DomainServicesClient) ListByResourceGroupComplete(ctx context.Conte
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// domainServiceName - the name of the domain service in the specified subscription and resource group.
-// properties - properties supplied to the Update a Domain Service operation.
-func (client DomainServicesClient) Update(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServicePatchProperties) (result DomainServicesUpdateFuture, err error) {
+// domainServiceName - the name of the domain service.
+// domainService - properties supplied to the Update a Domain Service operation.
+func (client DomainServicesClient) Update(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService) (result DomainServicesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainServicesClient.Update")
 		defer func() {
@@ -564,7 +564,7 @@ func (client DomainServicesClient) Update(ctx context.Context, resourceGroupName
 		return result, validation.NewError("aad.DomainServicesClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, domainServiceName, properties)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, domainServiceName, domainService)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServicesClient", "Update", nil, "Failure preparing request")
 		return
@@ -580,7 +580,7 @@ func (client DomainServicesClient) Update(ctx context.Context, resourceGroupName
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DomainServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, domainServiceName string, properties DomainServicePatchProperties) (*http.Request, error) {
+func (client DomainServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, domainServiceName string, domainService DomainService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainServiceName": autorest.Encode("path", domainServiceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -597,7 +597,7 @@ func (client DomainServicesClient) UpdatePreparer(ctx context.Context, resourceG
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}", pathParameters),
-		autorest.WithJSON(properties),
+		autorest.WithJSON(domainService),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

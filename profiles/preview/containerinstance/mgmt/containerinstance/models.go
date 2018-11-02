@@ -58,6 +58,14 @@ const (
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = original.ContainerNetworkProtocolUDP
 )
 
+type GpuSku = original.GpuSku
+
+const (
+	K80  GpuSku = original.K80
+	P100 GpuSku = original.P100
+	V100 GpuSku = original.V100
+)
+
 type LogAnalyticsLogType = original.LogAnalyticsLogType
 
 const (
@@ -119,9 +127,11 @@ type ContainerProbe = original.ContainerProbe
 type ContainerProperties = original.ContainerProperties
 type ContainerPropertiesInstanceView = original.ContainerPropertiesInstanceView
 type ContainerState = original.ContainerState
+type DNSConfiguration = original.DNSConfiguration
 type EnvironmentVariable = original.EnvironmentVariable
 type Event = original.Event
 type GitRepoVolume = original.GitRepoVolume
+type GpuResource = original.GpuResource
 type ImageRegistryCredential = original.ImageRegistryCredential
 type IPAddress = original.IPAddress
 type LogAnalytics = original.LogAnalytics
@@ -177,6 +187,9 @@ func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
 }
 func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return original.PossibleContainerNetworkProtocolValues()
+}
+func PossibleGpuSkuValues() []GpuSku {
+	return original.PossibleGpuSkuValues()
 }
 func PossibleLogAnalyticsLogTypeValues() []LogAnalyticsLogType {
 	return original.PossibleLogAnalyticsLogTypeValues()

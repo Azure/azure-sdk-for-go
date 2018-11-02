@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserClient is the apiManagement Client
 type UserClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewUserClient creates an instance of the UserClient client.
 func NewUserClient(subscriptionID string) UserClient {
 	return NewUserClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewUserClientWithBaseURI creates an instance of the UserClient client.
 func NewUserClientWithBaseURI(baseURI string, subscriptionID string) UserClient {
 	return UserClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or Updates a user.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -107,6 +111,7 @@ func (client UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client UserClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserCreateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -135,6 +140,7 @@ func (client UserClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -142,6 +148,7 @@ func (client UserClient) CreateOrUpdateSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client UserClient) CreateOrUpdateResponder(resp *http.Response) (result UserContract, err error) {
@@ -155,6 +162,7 @@ func (client UserClient) CreateOrUpdateResponder(resp *http.Response) (result Us
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes specific user.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -208,6 +216,7 @@ func (client UserClient) Delete(ctx context.Context, resourceGroupName string, s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client UserClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string, ifMatch string, deleteSubscriptions *bool, notify *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -237,6 +246,7 @@ func (client UserClient) DeletePreparer(ctx context.Context, resourceGroupName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -244,6 +254,7 @@ func (client UserClient) DeleteSender(req *http.Request) (*http.Response, error)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client UserClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -256,6 +267,7 @@ func (client UserClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GenerateSsoURL retrieves a redirection URL containing an authentication token for signing a given user into the
 // developer portal.
 // Parameters:
@@ -306,6 +318,7 @@ func (client UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GenerateSsoURLPreparer prepares the GenerateSsoURL request.
 func (client UserClient) GenerateSsoURLPreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -328,6 +341,7 @@ func (client UserClient) GenerateSsoURLPreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GenerateSsoURLSender sends the GenerateSsoURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) GenerateSsoURLSender(req *http.Request) (*http.Response, error) {
@@ -335,6 +349,7 @@ func (client UserClient) GenerateSsoURLSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GenerateSsoURLResponder handles the response to the GenerateSsoURL request. The method always
 // closes the http.Response Body.
 func (client UserClient) GenerateSsoURLResponder(resp *http.Response) (result GenerateSsoURLResult, err error) {
@@ -348,6 +363,7 @@ func (client UserClient) GenerateSsoURLResponder(resp *http.Response) (result Ge
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the user specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -397,6 +413,7 @@ func (client UserClient) Get(ctx context.Context, resourceGroupName string, serv
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client UserClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -419,6 +436,7 @@ func (client UserClient) GetPreparer(ctx context.Context, resourceGroupName stri
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -426,6 +444,7 @@ func (client UserClient) GetSender(req *http.Request) (*http.Response, error) {
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client UserClient) GetResponder(resp *http.Response) (result UserContract, err error) {
@@ -439,6 +458,7 @@ func (client UserClient) GetResponder(resp *http.Response) (result UserContract,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the user specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -488,6 +508,7 @@ func (client UserClient) GetEntityTag(ctx context.Context, resourceGroupName str
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client UserClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -510,6 +531,7 @@ func (client UserClient) GetEntityTagPreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -517,6 +539,7 @@ func (client UserClient) GetEntityTagSender(req *http.Request) (*http.Response, 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client UserClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -529,6 +552,7 @@ func (client UserClient) GetEntityTagResponder(resp *http.Response) (result auto
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSharedAccessToken gets the Shared Access Authorization Token for the User.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -581,6 +605,7 @@ func (client UserClient) GetSharedAccessToken(ctx context.Context, resourceGroup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSharedAccessTokenPreparer prepares the GetSharedAccessToken request.
 func (client UserClient) GetSharedAccessTokenPreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserTokenParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -605,6 +630,7 @@ func (client UserClient) GetSharedAccessTokenPreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSharedAccessTokenSender sends the GetSharedAccessToken request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) GetSharedAccessTokenSender(req *http.Request) (*http.Response, error) {
@@ -612,6 +638,7 @@ func (client UserClient) GetSharedAccessTokenSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSharedAccessTokenResponder handles the response to the GetSharedAccessToken request. The method always
 // closes the http.Response Body.
 func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (result UserTokenResult, err error) {
@@ -625,6 +652,7 @@ func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of registered users in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -687,6 +715,7 @@ func (client UserClient) ListByService(ctx context.Context, resourceGroupName st
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client UserClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -717,6 +746,7 @@ func (client UserClient) ListByServicePreparer(ctx context.Context, resourceGrou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -724,6 +754,7 @@ func (client UserClient) ListByServiceSender(req *http.Request) (*http.Response,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client UserClient) ListByServiceResponder(resp *http.Response) (result UserCollection, err error) {
@@ -758,6 +789,7 @@ func (client UserClient) listByServiceNextResults(ctx context.Context, lastResul
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client UserClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result UserCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -774,6 +806,7 @@ func (client UserClient) ListByServiceComplete(ctx context.Context, resourceGrou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates the details of the user specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -826,6 +859,7 @@ func (client UserClient) Update(ctx context.Context, resourceGroupName string, s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client UserClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -851,6 +885,7 @@ func (client UserClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -858,6 +893,7 @@ func (client UserClient) UpdateSender(req *http.Request) (*http.Response, error)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client UserClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

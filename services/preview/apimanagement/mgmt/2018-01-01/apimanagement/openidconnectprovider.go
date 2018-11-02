@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenIDConnectProviderClient is the apiManagement Client
 type OpenIDConnectProviderClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewOpenIDConnectProviderClient creates an instance of the OpenIDConnectProviderClient client.
 func NewOpenIDConnectProviderClient(subscriptionID string) OpenIDConnectProviderClient {
 	return NewOpenIDConnectProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewOpenIDConnectProviderClientWithBaseURI creates an instance of the OpenIDConnectProviderClient client.
 func NewOpenIDConnectProviderClientWithBaseURI(baseURI string, subscriptionID string) OpenIDConnectProviderClient {
 	return OpenIDConnectProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or updates the OpenID Connect Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -98,6 +102,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -126,6 +131,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdatePreparer(ctx context.Con
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -133,6 +139,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdateSender(req *http.Request
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) CreateOrUpdateResponder(resp *http.Response) (result OpenidConnectProviderContract, err error) {
@@ -146,6 +153,7 @@ func (client OpenIDConnectProviderClient) CreateOrUpdateResponder(resp *http.Res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes specific OpenID Connect Provider of the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -196,6 +204,7 @@ func (client OpenIDConnectProviderClient) Delete(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client OpenIDConnectProviderClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -219,6 +228,7 @@ func (client OpenIDConnectProviderClient) DeletePreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -226,6 +236,7 @@ func (client OpenIDConnectProviderClient) DeleteSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -238,6 +249,7 @@ func (client OpenIDConnectProviderClient) DeleteResponder(resp *http.Response) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets specific OpenID Connect Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -286,6 +298,7 @@ func (client OpenIDConnectProviderClient) Get(ctx context.Context, resourceGroup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client OpenIDConnectProviderClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -308,6 +321,7 @@ func (client OpenIDConnectProviderClient) GetPreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -315,6 +329,7 @@ func (client OpenIDConnectProviderClient) GetSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) GetResponder(resp *http.Response) (result OpenidConnectProviderContract, err error) {
@@ -328,6 +343,7 @@ func (client OpenIDConnectProviderClient) GetResponder(resp *http.Response) (res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -376,6 +392,7 @@ func (client OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, reso
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client OpenIDConnectProviderClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -398,6 +415,7 @@ func (client OpenIDConnectProviderClient) GetEntityTagPreparer(ctx context.Conte
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -405,6 +423,7 @@ func (client OpenIDConnectProviderClient) GetEntityTagSender(req *http.Request) 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -417,6 +436,7 @@ func (client OpenIDConnectProviderClient) GetEntityTagResponder(resp *http.Respo
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists all OpenID Connect Providers.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -474,6 +494,7 @@ func (client OpenIDConnectProviderClient) ListByService(ctx context.Context, res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client OpenIDConnectProviderClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -504,6 +525,7 @@ func (client OpenIDConnectProviderClient) ListByServicePreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -511,6 +533,7 @@ func (client OpenIDConnectProviderClient) ListByServiceSender(req *http.Request)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) ListByServiceResponder(resp *http.Response) (result OpenIDConnectProviderCollection, err error) {
@@ -545,6 +568,7 @@ func (client OpenIDConnectProviderClient) listByServiceNextResults(ctx context.C
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client OpenIDConnectProviderClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result OpenIDConnectProviderCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -561,6 +585,7 @@ func (client OpenIDConnectProviderClient) ListByServiceComplete(ctx context.Cont
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates the specific OpenID Connect Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -612,6 +637,7 @@ func (client OpenIDConnectProviderClient) Update(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client OpenIDConnectProviderClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -637,6 +663,7 @@ func (client OpenIDConnectProviderClient) UpdatePreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client OpenIDConnectProviderClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -644,6 +671,7 @@ func (client OpenIDConnectProviderClient) UpdateSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client OpenIDConnectProviderClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

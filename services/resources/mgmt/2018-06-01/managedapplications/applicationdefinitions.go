@@ -61,7 +61,7 @@ func (client ApplicationDefinitionsClient) CreateOrUpdate(ctx context.Context, r
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
 		{TargetValue: applicationDefinitionName,
 			Constraints: []validation.Constraint{{Target: "applicationDefinitionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "applicationDefinitionName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
@@ -240,7 +240,7 @@ func (client ApplicationDefinitionsClient) Delete(ctx context.Context, resourceG
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
 		{TargetValue: applicationDefinitionName,
 			Constraints: []validation.Constraint{{Target: "applicationDefinitionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "applicationDefinitionName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
@@ -402,7 +402,7 @@ func (client ApplicationDefinitionsClient) Get(ctx context.Context, resourceGrou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
 		{TargetValue: applicationDefinitionName,
 			Constraints: []validation.Constraint{{Target: "applicationDefinitionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "applicationDefinitionName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
@@ -565,7 +565,7 @@ func (client ApplicationDefinitionsClient) ListByResourceGroup(ctx context.Conte
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("managedapplications.ApplicationDefinitionsClient", "ListByResourceGroup", err.Error())
 	}
 

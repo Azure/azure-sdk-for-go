@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationClient is the apiManagement Client
 type OperationClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewOperationClient creates an instance of the OperationClient client.
 func NewOperationClient(subscriptionID string) OperationClient {
 	return NewOperationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewOperationClientWithBaseURI creates an instance of the OperationClient client.
 func NewOperationClientWithBaseURI(baseURI string, subscriptionID string) OperationClient {
 	return OperationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByTags lists a collection of operations associated with tags.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -108,6 +112,7 @@ func (client OperationClient) ListByTags(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByTagsPreparer prepares the ListByTags request.
 func (client OperationClient) ListByTagsPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -139,6 +144,7 @@ func (client OperationClient) ListByTagsPreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByTagsSender sends the ListByTags request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationClient) ListByTagsSender(req *http.Request) (*http.Response, error) {
@@ -146,6 +152,7 @@ func (client OperationClient) ListByTagsSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByTagsResponder handles the response to the ListByTags request. The method always
 // closes the http.Response Body.
 func (client OperationClient) ListByTagsResponder(resp *http.Response) (result TagResourceCollection, err error) {
@@ -180,6 +187,7 @@ func (client OperationClient) listByTagsNextResults(ctx context.Context, lastRes
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByTagsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client OperationClient) ListByTagsComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result TagResourceCollectionIterator, err error) {
 	if tracing.IsEnabled() {

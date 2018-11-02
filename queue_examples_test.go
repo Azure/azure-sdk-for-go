@@ -104,7 +104,7 @@ func ExampleQueue_Receive() {
 	client.Receive(ctx, printMessage)
 }
 
-func ExampleQueue_ScheduleAt() {
+func ExampleQueue_scheduleAndCancelMessages() {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute+40*time.Second)
 	defer cancel()
 
@@ -137,28 +137,21 @@ func ExampleQueue_ScheduleAt() {
 	expectedTime := time.Now().Add(waitTime)
 	msg := servicebus.NewMessageFromString("to the future!!")
 
-	_, err = client.ScheduleAt(ctx, expectedTime, msg)
+	scheduled, err := client.ScheduleAt(ctx, expectedTime, msg)
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
 	}
 
-	err = client.ReceiveOne(ctx,
-		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
-			received := time.Now()
-			if received.Before(expectedTime.Add(buffer)) && received.After(expectedTime.Add(-buffer)) {
-				fmt.Println("Received when expected!")
-			} else {
-				fmt.Println("Received outside the expected window.")
-			}
-			return msg.Complete()
-		}))
+	err = client.CancelScheduled(ctx, scheduled...)
 	if err != nil {
 		fmt.Println("FATAL: ", err)
 		return
 	}
 
-	// Output: Received when expected!
+	fmt.Println("All Messages Scheduled and Cancelled")
+
+	// Output: All Messages Scheduled and Cancelled
 }
 
 func ExampleQueue_sessionsRoundTrip() {

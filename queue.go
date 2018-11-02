@@ -243,11 +243,49 @@ func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages 
 				}
 				return retval, nil
 			}
-			return nil, newErrIncorrectType(sequenceFieldName, []interface{}{}, rawArr)
+			return nil, newErrIncorrectType(sequenceFieldName, []int64{}, rawArr)
 		}
 		return nil, ErrMissingField(sequenceFieldName)
 	}
 	return nil, newErrIncorrectType("value", map[string]interface{}{}, resp.Message.Value)
+}
+
+// CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
+// but have not yet ben enqueued.
+func (q *Queue) CancelScheduled(ctx context.Context, seq ...int64) error {
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			operationFieldName: cancelScheduledOperationID,
+		},
+		Value: map[string]interface{}{
+			"sequence-numbers": seq,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties[serverTimeoutFieldName] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	err := q.ensureSender(ctx)
+	if err != nil {
+		return err
+	}
+
+	link, err := rpc.NewLink(q.sender.connection, q.ManagementPath())
+	if err != nil {
+		return err
+	}
+
+	resp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
+	}
+
+	return nil
 }
 
 // Peek fetches a list of Messages from the Service Bus broker without acquiring a lock or committing to a disposition.

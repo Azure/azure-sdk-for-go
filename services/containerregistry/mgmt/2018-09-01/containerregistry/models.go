@@ -675,6 +675,8 @@ type DockerBuildStep struct {
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -703,6 +705,9 @@ func (dbs DockerBuildStep) MarshalJSON() ([]byte, error) {
 	}
 	if dbs.ContextPath != nil {
 		objectMap["contextPath"] = dbs.ContextPath
+	}
+	if dbs.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = dbs.ContextAccessToken
 	}
 	if dbs.Type != "" {
 		objectMap["type"] = dbs.Type
@@ -749,6 +754,8 @@ type DockerBuildStepUpdateParameters struct {
 	Arguments *[]Argument `json:"arguments,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -774,6 +781,9 @@ func (dbsup DockerBuildStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if dbsup.ContextPath != nil {
 		objectMap["contextPath"] = dbsup.ContextPath
+	}
+	if dbsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = dbsup.ContextAccessToken
 	}
 	if dbsup.Type != "" {
 		objectMap["type"] = dbsup.Type
@@ -905,6 +915,8 @@ type EncodedTaskStep struct {
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -927,6 +939,9 @@ func (ets EncodedTaskStep) MarshalJSON() ([]byte, error) {
 	}
 	if ets.ContextPath != nil {
 		objectMap["contextPath"] = ets.ContextPath
+	}
+	if ets.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = ets.ContextAccessToken
 	}
 	if ets.Type != "" {
 		objectMap["type"] = ets.Type
@@ -969,6 +984,8 @@ type EncodedTaskStepUpdateParameters struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -988,6 +1005,9 @@ func (etsup EncodedTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if etsup.ContextPath != nil {
 		objectMap["contextPath"] = etsup.ContextPath
+	}
+	if etsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = etsup.ContextAccessToken
 	}
 	if etsup.Type != "" {
 		objectMap["type"] = etsup.Type
@@ -1360,6 +1380,8 @@ type FileTaskStep struct {
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -1382,6 +1404,9 @@ func (fts FileTaskStep) MarshalJSON() ([]byte, error) {
 	}
 	if fts.ContextPath != nil {
 		objectMap["contextPath"] = fts.ContextPath
+	}
+	if fts.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = fts.ContextAccessToken
 	}
 	if fts.Type != "" {
 		objectMap["type"] = fts.Type
@@ -1424,6 +1449,8 @@ type FileTaskStepUpdateParameters struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -1443,6 +1470,9 @@ func (ftsup FileTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if ftsup.ContextPath != nil {
 		objectMap["contextPath"] = ftsup.ContextPath
+	}
+	if ftsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = ftsup.ContextAccessToken
 	}
 	if ftsup.Type != "" {
 		objectMap["type"] = ftsup.Type
@@ -3954,6 +3984,8 @@ type TaskStepProperties struct {
 	BaseImageDependencies *[]BaseImageDependency `json:"baseImageDependencies,omitempty"`
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
@@ -4013,6 +4045,9 @@ func (tsp TaskStepProperties) MarshalJSON() ([]byte, error) {
 	if tsp.ContextPath != nil {
 		objectMap["contextPath"] = tsp.ContextPath
 	}
+	if tsp.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = tsp.ContextAccessToken
+	}
 	if tsp.Type != "" {
 		objectMap["type"] = tsp.Type
 	}
@@ -4056,6 +4091,8 @@ type BasicTaskStepUpdateParameters interface {
 type TaskStepUpdateParameters struct {
 	// ContextPath - The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
+	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
+	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
 	// Type - Possible values include: 'TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters', 'TypeBasicTaskStepUpdateParametersTypeDocker', 'TypeBasicTaskStepUpdateParametersTypeFileTask', 'TypeBasicTaskStepUpdateParametersTypeEncodedTask'
 	Type TypeBasicTaskStepUpdateParameters `json:"type,omitempty"`
 }
@@ -4111,6 +4148,9 @@ func (tsup TaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tsup.ContextPath != nil {
 		objectMap["contextPath"] = tsup.ContextPath
+	}
+	if tsup.ContextAccessToken != nil {
+		objectMap["contextAccessToken"] = tsup.ContextAccessToken
 	}
 	if tsup.Type != "" {
 		objectMap["type"] = tsup.Type

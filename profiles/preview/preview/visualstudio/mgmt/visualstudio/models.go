@@ -32,6 +32,7 @@ type ExtensionsClient = original.ExtensionsClient
 type AccountResource = original.AccountResource
 type AccountResourceListResult = original.AccountResourceListResult
 type AccountResourceRequest = original.AccountResourceRequest
+type AccountTagRequest = original.AccountTagRequest
 type CheckNameAvailabilityParameter = original.CheckNameAvailabilityParameter
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type ExtensionResource = original.ExtensionResource

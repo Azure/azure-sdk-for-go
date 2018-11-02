@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationClient is the apiManagement Client
 type NotificationClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewNotificationClient creates an instance of the NotificationClient client.
 func NewNotificationClient(subscriptionID string) NotificationClient {
 	return NewNotificationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewNotificationClientWithBaseURI creates an instance of the NotificationClient client.
 func NewNotificationClientWithBaseURI(baseURI string, subscriptionID string) NotificationClient {
 	return NotificationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate updates an Notification.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -87,6 +91,7 @@ func (client NotificationClient) CreateOrUpdate(ctx context.Context, resourceGro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client NotificationClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -113,6 +118,7 @@ func (client NotificationClient) CreateOrUpdatePreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -120,6 +126,7 @@ func (client NotificationClient) CreateOrUpdateSender(req *http.Request) (*http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client NotificationClient) CreateOrUpdateResponder(resp *http.Response) (result NotificationContract, err error) {
@@ -133,6 +140,7 @@ func (client NotificationClient) CreateOrUpdateResponder(resp *http.Response) (r
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the Notification specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -178,6 +186,7 @@ func (client NotificationClient) Get(ctx context.Context, resourceGroupName stri
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client NotificationClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -200,6 +209,7 @@ func (client NotificationClient) GetPreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -207,6 +217,7 @@ func (client NotificationClient) GetSender(req *http.Request) (*http.Response, e
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client NotificationClient) GetResponder(resp *http.Response) (result NotificationContract, err error) {
@@ -220,6 +231,7 @@ func (client NotificationClient) GetResponder(resp *http.Response) (result Notif
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of properties defined within a service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -273,6 +285,7 @@ func (client NotificationClient) ListByService(ctx context.Context, resourceGrou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client NotificationClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -300,6 +313,7 @@ func (client NotificationClient) ListByServicePreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -307,6 +321,7 @@ func (client NotificationClient) ListByServiceSender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client NotificationClient) ListByServiceResponder(resp *http.Response) (result NotificationCollection, err error) {
@@ -341,6 +356,7 @@ func (client NotificationClient) listByServiceNextResults(ctx context.Context, l
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client NotificationClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result NotificationCollectionIterator, err error) {
 	if tracing.IsEnabled() {

@@ -29,9 +29,11 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-01-01/apimanagement"
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIType enumerates the values for api type.
 type APIType string
 
@@ -42,11 +44,13 @@ const (
 	Soap APIType = "soap"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleAPITypeValues returns an array of possible values for the APIType const type.
 func PossibleAPITypeValues() []APIType {
 	return []APIType{HTTP, Soap}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AsyncOperationStatus enumerates the values for async operation status.
 type AsyncOperationStatus string
 
@@ -61,11 +65,13 @@ const (
 	Succeeded AsyncOperationStatus = "Succeeded"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleAsyncOperationStatusValues returns an array of possible values for the AsyncOperationStatus const type.
 func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 	return []AsyncOperationStatus{Failed, InProgress, Started, Succeeded}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationMethod enumerates the values for authorization method.
 type AuthorizationMethod string
 
@@ -88,11 +94,13 @@ const (
 	TRACE AuthorizationMethod = "TRACE"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleAuthorizationMethodValues returns an array of possible values for the AuthorizationMethod const type.
 func PossibleAuthorizationMethodValues() []AuthorizationMethod {
 	return []AuthorizationMethod{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendProtocol enumerates the values for backend protocol.
 type BackendProtocol string
 
@@ -103,11 +111,13 @@ const (
 	BackendProtocolSoap BackendProtocol = "soap"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleBackendProtocolValues returns an array of possible values for the BackendProtocol const type.
 func PossibleBackendProtocolValues() []BackendProtocol {
 	return []BackendProtocol{BackendProtocolHTTP, BackendProtocolSoap}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BearerTokenSendingMethod enumerates the values for bearer token sending method.
 type BearerTokenSendingMethod string
 
@@ -118,11 +128,13 @@ const (
 	Query BearerTokenSendingMethod = "query"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleBearerTokenSendingMethodValues returns an array of possible values for the BearerTokenSendingMethod const type.
 func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 	return []BearerTokenSendingMethod{AuthorizationHeader, Query}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BearerTokenSendingMethods enumerates the values for bearer token sending methods.
 type BearerTokenSendingMethods string
 
@@ -134,11 +146,13 @@ const (
 	BearerTokenSendingMethodsQuery BearerTokenSendingMethods = "query"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleBearerTokenSendingMethodsValues returns an array of possible values for the BearerTokenSendingMethods const type.
 func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
 	return []BearerTokenSendingMethods{BearerTokenSendingMethodsAuthorizationHeader, BearerTokenSendingMethodsQuery}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ClientAuthenticationMethod enumerates the values for client authentication method.
 type ClientAuthenticationMethod string
 
@@ -149,11 +163,13 @@ const (
 	Body ClientAuthenticationMethod = "Body"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleClientAuthenticationMethodValues returns an array of possible values for the ClientAuthenticationMethod const type.
 func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	return []ClientAuthenticationMethod{Basic, Body}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Confirmation enumerates the values for confirmation.
 type Confirmation string
 
@@ -164,11 +180,13 @@ const (
 	Signup Confirmation = "signup"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleConfirmationValues returns an array of possible values for the Confirmation const type.
 func PossibleConfirmationValues() []Confirmation {
 	return []Confirmation{Invite, Signup}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ConnectivityStatusType enumerates the values for connectivity status type.
 type ConnectivityStatusType string
 
@@ -181,11 +199,13 @@ const (
 	Success ConnectivityStatusType = "success"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleConnectivityStatusTypeValues returns an array of possible values for the ConnectivityStatusType const type.
 func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 	return []ConnectivityStatusType{Failure, Initializing, Success}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ContentFormat enumerates the values for content format.
 type ContentFormat string
 
@@ -204,11 +224,13 @@ const (
 	WsdlLink ContentFormat = "wsdl-link"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleContentFormatValues returns an array of possible values for the ContentFormat const type.
 func PossibleContentFormatValues() []ContentFormat {
 	return []ContentFormat{SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ExportFormat enumerates the values for export format.
 type ExportFormat string
 
@@ -222,11 +244,13 @@ const (
 	ExportFormatWsdl ExportFormat = "wsdl-link"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleExportFormatValues returns an array of possible values for the ExportFormat const type.
 func PossibleExportFormatValues() []ExportFormat {
 	return []ExportFormat{ExportFormatSwagger, ExportFormatWadl, ExportFormatWsdl}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GrantType enumerates the values for grant type.
 type GrantType string
 
@@ -244,11 +268,13 @@ const (
 	ResourceOwnerPassword GrantType = "resourceOwnerPassword"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleGrantTypeValues returns an array of possible values for the GrantType const type.
 func PossibleGrantTypeValues() []GrantType {
 	return []GrantType{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupType enumerates the values for group type.
 type GroupType string
 
@@ -261,11 +287,13 @@ const (
 	System GroupType = "system"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleGroupTypeValues returns an array of possible values for the GroupType const type.
 func PossibleGroupTypeValues() []GroupType {
 	return []GroupType{Custom, External, System}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // HostnameType enumerates the values for hostname type.
 type HostnameType string
 
@@ -280,11 +308,13 @@ const (
 	Scm HostnameType = "Scm"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
 func PossibleHostnameTypeValues() []HostnameType {
 	return []HostnameType{Management, Portal, Proxy, Scm}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderType enumerates the values for identity provider type.
 type IdentityProviderType string
 
@@ -303,11 +333,13 @@ const (
 	Twitter IdentityProviderType = "twitter"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleIdentityProviderTypeValues returns an array of possible values for the IdentityProviderType const type.
 func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 	return []IdentityProviderType{Aad, AadB2C, Facebook, Google, Microsoft, Twitter}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // KeyType enumerates the values for key type.
 type KeyType string
 
@@ -318,11 +350,13 @@ const (
 	Secondary KeyType = "secondary"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{Primary, Secondary}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerType enumerates the values for logger type.
 type LoggerType string
 
@@ -333,11 +367,13 @@ const (
 	AzureEventHub LoggerType = "azureEventHub"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleLoggerTypeValues returns an array of possible values for the LoggerType const type.
 func PossibleLoggerTypeValues() []LoggerType {
 	return []LoggerType{ApplicationInsights, AzureEventHub}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NameAvailabilityReason enumerates the values for name availability reason.
 type NameAvailabilityReason string
 
@@ -350,11 +386,13 @@ const (
 	Valid NameAvailabilityReason = "Valid"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return []NameAvailabilityReason{AlreadyExists, Invalid, Valid}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationName enumerates the values for notification name.
 type NotificationName string
 
@@ -381,11 +419,13 @@ const (
 	RequestPublisherNotificationMessage NotificationName = "RequestPublisherNotificationMessage"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleNotificationNameValues returns an array of possible values for the NotificationName const type.
 func PossibleNotificationNameValues() []NotificationName {
 	return []NotificationName{AccountClosedPublisher, BCC, NewApplicationNotificationMessage, NewIssuePublisherNotificationMessage, PurchasePublisherNotificationMessage, QuotaLimitApproachingPublisherNotificationMessage, RequestPublisherNotificationMessage}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicyContentFormat enumerates the values for policy content format.
 type PolicyContentFormat string
 
@@ -401,11 +441,13 @@ const (
 	XMLLink PolicyContentFormat = "xml-link"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossiblePolicyContentFormatValues returns an array of possible values for the PolicyContentFormat const type.
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
 	return []PolicyContentFormat{Rawxml, RawxmlLink, XML, XMLLink}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicyScopeContract enumerates the values for policy scope contract.
 type PolicyScopeContract string
 
@@ -422,11 +464,13 @@ const (
 	PolicyScopeContractTenant PolicyScopeContract = "Tenant"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossiblePolicyScopeContractValues returns an array of possible values for the PolicyScopeContract const type.
 func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return []PolicyScopeContract{PolicyScopeContractAll, PolicyScopeContractAPI, PolicyScopeContractOperation, PolicyScopeContractProduct, PolicyScopeContractTenant}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductState enumerates the values for product state.
 type ProductState string
 
@@ -437,11 +481,13 @@ const (
 	Published ProductState = "published"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleProductStateValues returns an array of possible values for the ProductState const type.
 func PossibleProductStateValues() []ProductState {
 	return []ProductState{NotPublished, Published}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Protocol enumerates the values for protocol.
 type Protocol string
 
@@ -452,11 +498,13 @@ const (
 	ProtocolHTTPS Protocol = "https"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SkuType enumerates the values for sku type.
 type SkuType string
 
@@ -471,11 +519,13 @@ const (
 	SkuTypeStandard SkuType = "Standard"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
 func PossibleSkuTypeValues() []SkuType {
 	return []SkuType{SkuTypeBasic, SkuTypeDeveloper, SkuTypePremium, SkuTypeStandard}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SoapAPIType enumerates the values for soap api type.
 type SoapAPIType string
 
@@ -486,11 +536,13 @@ const (
 	SoapToRest SoapAPIType = "http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleSoapAPITypeValues returns an array of possible values for the SoapAPIType const type.
 func PossibleSoapAPITypeValues() []SoapAPIType {
 	return []SoapAPIType{SoapPassThrough, SoapToRest}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // State enumerates the values for state.
 type State string
 
@@ -507,11 +559,13 @@ const (
 	Resolved State = "resolved"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{Closed, Open, Proposed, Removed, Resolved}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // StoreName enumerates the values for store name.
 type StoreName string
 
@@ -522,11 +576,13 @@ const (
 	Root StoreName = "Root"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleStoreNameValues returns an array of possible values for the StoreName const type.
 func PossibleStoreNameValues() []StoreName {
 	return []StoreName{CertificateAuthority, Root}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionState enumerates the values for subscription state.
 type SubscriptionState string
 
@@ -545,11 +601,13 @@ const (
 	Suspended SubscriptionState = "suspended"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleSubscriptionStateValues returns an array of possible values for the SubscriptionState const type.
 func PossibleSubscriptionStateValues() []SubscriptionState {
 	return []SubscriptionState{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TemplateName enumerates the values for template name.
 type TemplateName string
 
@@ -584,11 +642,13 @@ const (
 	RequestDeveloperNotificationMessage TemplateName = "requestDeveloperNotificationMessage"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleTemplateNameValues returns an array of possible values for the TemplateName const type.
 func PossibleTemplateNameValues() []TemplateName {
 	return []TemplateName{AccountClosedDeveloper, ApplicationApprovedNotificationMessage, ConfirmSignUpIdentityDefault, EmailChangeIdentityDefault, InviteUserNotificationMessage, NewCommentNotificationMessage, NewDeveloperNotificationMessage, NewIssueNotificationMessage, PasswordResetByAdminNotificationMessage, PasswordResetIdentityDefault, PurchaseDeveloperNotificationMessage, QuotaLimitApproachingDeveloperNotificationMessage, RejectDeveloperNotificationMessage, RequestDeveloperNotificationMessage}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserState enumerates the values for user state.
 type UserState string
 
@@ -603,11 +663,13 @@ const (
 	UserStatePending UserState = "pending"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleUserStateValues returns an array of possible values for the UserState const type.
 func PossibleUserStateValues() []UserState {
 	return []UserState{UserStateActive, UserStateBlocked, UserStateDeleted, UserStatePending}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // VersioningScheme enumerates the values for versioning scheme.
 type VersioningScheme string
 
@@ -620,11 +682,13 @@ const (
 	VersioningSchemeSegment VersioningScheme = "Segment"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleVersioningSchemeValues returns an array of possible values for the VersioningScheme const type.
 func PossibleVersioningSchemeValues() []VersioningScheme {
 	return []VersioningScheme{VersioningSchemeHeader, VersioningSchemeQuery, VersioningSchemeSegment}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // VersioningScheme1 enumerates the values for versioning scheme 1.
 type VersioningScheme1 string
 
@@ -637,11 +701,13 @@ const (
 	VersioningScheme1Segment VersioningScheme1 = "Segment"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleVersioningScheme1Values returns an array of possible values for the VersioningScheme1 const type.
 func PossibleVersioningScheme1Values() []VersioningScheme1 {
 	return []VersioningScheme1{VersioningScheme1Header, VersioningScheme1Query, VersioningScheme1Segment}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // VirtualNetworkType enumerates the values for virtual network type.
 type VirtualNetworkType string
 
@@ -655,11 +721,13 @@ const (
 	VirtualNetworkTypeNone VirtualNetworkType = "None"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PossibleVirtualNetworkTypeValues returns an array of possible values for the VirtualNetworkType const type.
 func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
 	return []VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AccessInformationContract tenant access information contract of the API Management service.
 type AccessInformationContract struct {
 	autorest.Response `json:"-"`
@@ -673,6 +741,7 @@ type AccessInformationContract struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AccessInformationUpdateParameters tenant access information update parameters of the API Management
 // service.
 type AccessInformationUpdateParameters struct {
@@ -680,6 +749,7 @@ type AccessInformationUpdateParameters struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AdditionalLocation description of an additional API Management resource location.
 type AdditionalLocation struct {
 	// Location - The location name of the additional region among Azure Data center regions.
@@ -696,6 +766,7 @@ type AdditionalLocation struct {
 	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICollection paged Api list representation.
 type APICollection struct {
 	autorest.Response `json:"-"`
@@ -705,12 +776,14 @@ type APICollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICollectionIterator provides access to a complete listing of APIContract values.
 type APICollectionIterator struct {
 	i    int
 	page APICollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *APICollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -737,6 +810,7 @@ func (iter *APICollectionIterator) NextWithContext(ctx context.Context) (err err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -744,16 +818,19 @@ func (iter *APICollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter APICollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter APICollectionIterator) Response() APICollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter APICollectionIterator) Value() APIContract {
@@ -763,6 +840,7 @@ func (iter APICollectionIterator) Value() APIContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ac APICollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -780,12 +858,14 @@ func (ac APICollection) aPICollectionPreparer(ctx context.Context) (*http.Reques
 		autorest.WithBaseURL(to.String(ac.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICollectionPage contains a page of APIContract values.
 type APICollectionPage struct {
 	fn func(context.Context, APICollection) (APICollection, error)
 	ac APICollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *APICollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -807,6 +887,7 @@ func (page *APICollectionPage) NextWithContext(ctx context.Context) (err error) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -814,16 +895,19 @@ func (page *APICollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page APICollectionPage) NotDone() bool {
 	return !page.ac.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page APICollectionPage) Response() APICollection {
 	return page.ac
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page APICollectionPage) Values() []APIContract {
 	if page.ac.IsEmpty() {
@@ -832,6 +916,7 @@ func (page APICollectionPage) Values() []APIContract {
 	return *page.ac.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIContract API details.
 type APIContract struct {
 	autorest.Response `json:"-"`
@@ -845,6 +930,7 @@ type APIContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APIContract.
 func (ac APIContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -863,6 +949,7 @@ func (ac APIContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APIContract struct.
 func (ac *APIContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -914,6 +1001,7 @@ func (ac *APIContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIContractProperties api Entity Properties
 type APIContractProperties struct {
 	// DisplayName - API name.
@@ -949,6 +1037,7 @@ type APIContractProperties struct {
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIContractUpdateProperties API update contract properties.
 type APIContractUpdateProperties struct {
 	// DisplayName - API name.
@@ -983,12 +1072,14 @@ type APIContractUpdateProperties struct {
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICreateOrUpdateParameter API Create or Update Parameters.
 type APICreateOrUpdateParameter struct {
 	// APICreateOrUpdateProperties - Api entity create of update properties.
 	*APICreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APICreateOrUpdateParameter.
 func (acoup APICreateOrUpdateParameter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -998,6 +1089,7 @@ func (acoup APICreateOrUpdateParameter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APICreateOrUpdateParameter struct.
 func (acoup *APICreateOrUpdateParameter) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1022,6 +1114,7 @@ func (acoup *APICreateOrUpdateParameter) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICreateOrUpdateProperties api Create or Update Properties.
 type APICreateOrUpdateProperties struct {
 	// ContentValue - Content value when Importing an API.
@@ -1067,6 +1160,7 @@ type APICreateOrUpdateProperties struct {
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APICreateOrUpdatePropertiesWsdlSelector criteria to limit import of WSDL to a subset of the document.
 type APICreateOrUpdatePropertiesWsdlSelector struct {
 	// WsdlServiceName - Name of service to import from WSDL
@@ -1075,6 +1169,7 @@ type APICreateOrUpdatePropertiesWsdlSelector struct {
 	WsdlEndpointName *string `json:"wsdlEndpointName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIEntityBaseContract API base contract details.
 type APIEntityBaseContract struct {
 	// Description - Description of the API. May include HTML formatting tags.
@@ -1101,6 +1196,7 @@ type APIEntityBaseContract struct {
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIExportResult API Export result Blob Uri.
 type APIExportResult struct {
 	autorest.Response `json:"-"`
@@ -1108,6 +1204,7 @@ type APIExportResult struct {
 	Link *string `json:"link,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ApimResource the Resource definition.
 type ApimResource struct {
 	// ID - Resource ID.
@@ -1120,6 +1217,7 @@ type ApimResource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ApimResource.
 func (ar ApimResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1138,6 +1236,7 @@ func (ar ApimResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIReleaseCollection paged Api Revision list representation.
 type APIReleaseCollection struct {
 	autorest.Response `json:"-"`
@@ -1147,12 +1246,14 @@ type APIReleaseCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIReleaseCollectionIterator provides access to a complete listing of APIReleaseContract values.
 type APIReleaseCollectionIterator struct {
 	i    int
 	page APIReleaseCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *APIReleaseCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -1179,6 +1280,7 @@ func (iter *APIReleaseCollectionIterator) NextWithContext(ctx context.Context) (
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1186,16 +1288,19 @@ func (iter *APIReleaseCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter APIReleaseCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter APIReleaseCollectionIterator) Response() APIReleaseCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter APIReleaseCollectionIterator) Value() APIReleaseContract {
@@ -1205,6 +1310,7 @@ func (iter APIReleaseCollectionIterator) Value() APIReleaseContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (arc APIReleaseCollection) IsEmpty() bool {
 	return arc.Value == nil || len(*arc.Value) == 0
@@ -1222,12 +1328,14 @@ func (arc APIReleaseCollection) aPIReleaseCollectionPreparer(ctx context.Context
 		autorest.WithBaseURL(to.String(arc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIReleaseCollectionPage contains a page of APIReleaseContract values.
 type APIReleaseCollectionPage struct {
 	fn  func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)
 	arc APIReleaseCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *APIReleaseCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -1249,6 +1357,7 @@ func (page *APIReleaseCollectionPage) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1256,16 +1365,19 @@ func (page *APIReleaseCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page APIReleaseCollectionPage) NotDone() bool {
 	return !page.arc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page APIReleaseCollectionPage) Response() APIReleaseCollection {
 	return page.arc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page APIReleaseCollectionPage) Values() []APIReleaseContract {
 	if page.arc.IsEmpty() {
@@ -1274,6 +1386,7 @@ func (page APIReleaseCollectionPage) Values() []APIReleaseContract {
 	return *page.arc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIReleaseContract api Release details.
 type APIReleaseContract struct {
 	autorest.Response `json:"-"`
@@ -1287,6 +1400,7 @@ type APIReleaseContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APIReleaseContract.
 func (arc APIReleaseContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1305,6 +1419,7 @@ func (arc APIReleaseContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APIReleaseContract struct.
 func (arc *APIReleaseContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1356,6 +1471,7 @@ func (arc *APIReleaseContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIReleaseContractProperties API Release details
 type APIReleaseContractProperties struct {
 	// APIID - Identifier of the API the release belongs to.
@@ -1368,6 +1484,7 @@ type APIReleaseContractProperties struct {
 	Notes *string `json:"notes,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIRevisionCollection paged Api Revision list representation.
 type APIRevisionCollection struct {
 	autorest.Response `json:"-"`
@@ -1377,12 +1494,14 @@ type APIRevisionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIRevisionCollectionIterator provides access to a complete listing of APIRevisionContract values.
 type APIRevisionCollectionIterator struct {
 	i    int
 	page APIRevisionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *APIRevisionCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -1409,6 +1528,7 @@ func (iter *APIRevisionCollectionIterator) NextWithContext(ctx context.Context) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1416,16 +1536,19 @@ func (iter *APIRevisionCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter APIRevisionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter APIRevisionCollectionIterator) Response() APIRevisionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter APIRevisionCollectionIterator) Value() APIRevisionContract {
@@ -1435,6 +1558,7 @@ func (iter APIRevisionCollectionIterator) Value() APIRevisionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (arc APIRevisionCollection) IsEmpty() bool {
 	return arc.Value == nil || len(*arc.Value) == 0
@@ -1452,12 +1576,14 @@ func (arc APIRevisionCollection) aPIRevisionCollectionPreparer(ctx context.Conte
 		autorest.WithBaseURL(to.String(arc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIRevisionCollectionPage contains a page of APIRevisionContract values.
 type APIRevisionCollectionPage struct {
 	fn  func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)
 	arc APIRevisionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *APIRevisionCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -1479,6 +1605,7 @@ func (page *APIRevisionCollectionPage) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1486,16 +1613,19 @@ func (page *APIRevisionCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page APIRevisionCollectionPage) NotDone() bool {
 	return !page.arc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page APIRevisionCollectionPage) Response() APIRevisionCollection {
 	return page.arc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page APIRevisionCollectionPage) Values() []APIRevisionContract {
 	if page.arc.IsEmpty() {
@@ -1504,6 +1634,7 @@ func (page APIRevisionCollectionPage) Values() []APIRevisionContract {
 	return *page.arc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIRevisionContract summary of revision metadata.
 type APIRevisionContract struct {
 	// APIID - Identifier of the API Revision.
@@ -1524,6 +1655,7 @@ type APIRevisionContract struct {
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIRevisionInfoContract object used to create an API Revision or Version based on an existing API
 // Revision
 type APIRevisionInfoContract struct {
@@ -1537,6 +1669,7 @@ type APIRevisionInfoContract struct {
 	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APITagResourceContractProperties API contract properties for the Tag Resources.
 type APITagResourceContractProperties struct {
 	// ID - API identifier in the form /apis/{apiId}.
@@ -1573,12 +1706,14 @@ type APITagResourceContractProperties struct {
 	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIUpdateContract API update contract details.
 type APIUpdateContract struct {
 	// APIContractUpdateProperties - Properties of the API entity that can be updated.
 	*APIContractUpdateProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APIUpdateContract.
 func (auc APIUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1588,6 +1723,7 @@ func (auc APIUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APIUpdateContract struct.
 func (auc *APIUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1612,6 +1748,7 @@ func (auc *APIUpdateContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetCollection paged Api Version Set list representation.
 type APIVersionSetCollection struct {
 	autorest.Response `json:"-"`
@@ -1621,12 +1758,14 @@ type APIVersionSetCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetCollectionIterator provides access to a complete listing of APIVersionSetContract values.
 type APIVersionSetCollectionIterator struct {
 	i    int
 	page APIVersionSetCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *APIVersionSetCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -1653,6 +1792,7 @@ func (iter *APIVersionSetCollectionIterator) NextWithContext(ctx context.Context
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1660,16 +1800,19 @@ func (iter *APIVersionSetCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter APIVersionSetCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter APIVersionSetCollectionIterator) Response() APIVersionSetCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter APIVersionSetCollectionIterator) Value() APIVersionSetContract {
@@ -1679,6 +1822,7 @@ func (iter APIVersionSetCollectionIterator) Value() APIVersionSetContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (avsc APIVersionSetCollection) IsEmpty() bool {
 	return avsc.Value == nil || len(*avsc.Value) == 0
@@ -1696,12 +1840,14 @@ func (avsc APIVersionSetCollection) aPIVersionSetCollectionPreparer(ctx context.
 		autorest.WithBaseURL(to.String(avsc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetCollectionPage contains a page of APIVersionSetContract values.
 type APIVersionSetCollectionPage struct {
 	fn   func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)
 	avsc APIVersionSetCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *APIVersionSetCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -1723,6 +1869,7 @@ func (page *APIVersionSetCollectionPage) NextWithContext(ctx context.Context) (e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1730,16 +1877,19 @@ func (page *APIVersionSetCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page APIVersionSetCollectionPage) NotDone() bool {
 	return !page.avsc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page APIVersionSetCollectionPage) Response() APIVersionSetCollection {
 	return page.avsc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page APIVersionSetCollectionPage) Values() []APIVersionSetContract {
 	if page.avsc.IsEmpty() {
@@ -1748,6 +1898,7 @@ func (page APIVersionSetCollectionPage) Values() []APIVersionSetContract {
 	return *page.avsc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetContract api Version Set Contract details.
 type APIVersionSetContract struct {
 	autorest.Response `json:"-"`
@@ -1761,6 +1912,7 @@ type APIVersionSetContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APIVersionSetContract.
 func (avsc APIVersionSetContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1779,6 +1931,7 @@ func (avsc APIVersionSetContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APIVersionSetContract struct.
 func (avsc *APIVersionSetContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1830,6 +1983,7 @@ func (avsc *APIVersionSetContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetContractDetails an API Version Set contains the common configuration for a set of API
 // Versions relating
 type APIVersionSetContractDetails struct {
@@ -1845,6 +1999,7 @@ type APIVersionSetContractDetails struct {
 	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetContractProperties properties of an API Version Set.
 type APIVersionSetContractProperties struct {
 	// DisplayName - Name of API Version Set
@@ -1859,6 +2014,7 @@ type APIVersionSetContractProperties struct {
 	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetEntityBase api Version set base parameters
 type APIVersionSetEntityBase struct {
 	// Description - Description of API Version Set.
@@ -1869,12 +2025,14 @@ type APIVersionSetEntityBase struct {
 	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetUpdateParameters parameters to update or create an Api Version Set Contract.
 type APIVersionSetUpdateParameters struct {
 	// APIVersionSetUpdateParametersProperties - Parameters to update or create an Api Version Set Contract.
 	*APIVersionSetUpdateParametersProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for APIVersionSetUpdateParameters.
 func (avsup APIVersionSetUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1884,6 +2042,7 @@ func (avsup APIVersionSetUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for APIVersionSetUpdateParameters struct.
 func (avsup *APIVersionSetUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1908,6 +2067,7 @@ func (avsup *APIVersionSetUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIVersionSetUpdateParametersProperties properties used to create or update an API Version Set.
 type APIVersionSetUpdateParametersProperties struct {
 	// DisplayName - Name of API Version Set
@@ -1922,6 +2082,7 @@ type APIVersionSetUpdateParametersProperties struct {
 	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthenticationSettingsContract API Authentication Settings.
 type AuthenticationSettingsContract struct {
 	// OAuth2 - OAuth2 Authentication settings
@@ -1932,6 +2093,7 @@ type AuthenticationSettingsContract struct {
 	SubscriptionKeyRequired *bool `json:"subscriptionKeyRequired,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerCollection paged OAuth2 Authorization Servers list representation.
 type AuthorizationServerCollection struct {
 	autorest.Response `json:"-"`
@@ -1943,6 +2105,7 @@ type AuthorizationServerCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerCollectionIterator provides access to a complete listing of
 // AuthorizationServerContract values.
 type AuthorizationServerCollectionIterator struct {
@@ -1950,6 +2113,7 @@ type AuthorizationServerCollectionIterator struct {
 	page AuthorizationServerCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *AuthorizationServerCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -1976,6 +2140,7 @@ func (iter *AuthorizationServerCollectionIterator) NextWithContext(ctx context.C
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -1983,16 +2148,19 @@ func (iter *AuthorizationServerCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter AuthorizationServerCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter AuthorizationServerCollectionIterator) Response() AuthorizationServerCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter AuthorizationServerCollectionIterator) Value() AuthorizationServerContract {
@@ -2002,6 +2170,7 @@ func (iter AuthorizationServerCollectionIterator) Value() AuthorizationServerCon
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (asc AuthorizationServerCollection) IsEmpty() bool {
 	return asc.Value == nil || len(*asc.Value) == 0
@@ -2019,12 +2188,14 @@ func (asc AuthorizationServerCollection) authorizationServerCollectionPreparer(c
 		autorest.WithBaseURL(to.String(asc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerCollectionPage contains a page of AuthorizationServerContract values.
 type AuthorizationServerCollectionPage struct {
 	fn  func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)
 	asc AuthorizationServerCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *AuthorizationServerCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -2046,6 +2217,7 @@ func (page *AuthorizationServerCollectionPage) NextWithContext(ctx context.Conte
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -2053,16 +2225,19 @@ func (page *AuthorizationServerCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page AuthorizationServerCollectionPage) NotDone() bool {
 	return !page.asc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page AuthorizationServerCollectionPage) Response() AuthorizationServerCollection {
 	return page.asc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page AuthorizationServerCollectionPage) Values() []AuthorizationServerContract {
 	if page.asc.IsEmpty() {
@@ -2071,6 +2246,7 @@ func (page AuthorizationServerCollectionPage) Values() []AuthorizationServerCont
 	return *page.asc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerContract external OAuth authorization server settings.
 type AuthorizationServerContract struct {
 	autorest.Response `json:"-"`
@@ -2084,6 +2260,7 @@ type AuthorizationServerContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for AuthorizationServerContract.
 func (asc AuthorizationServerContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2102,6 +2279,7 @@ func (asc AuthorizationServerContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for AuthorizationServerContract struct.
 func (asc *AuthorizationServerContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2153,6 +2331,7 @@ func (asc *AuthorizationServerContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerContractBaseProperties external OAuth authorization server Update settings contract.
 type AuthorizationServerContractBaseProperties struct {
 	// Description - Description of the authorization server. Can contain HTML formatting tags.
@@ -2179,6 +2358,7 @@ type AuthorizationServerContractBaseProperties struct {
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerContractProperties external OAuth authorization server settings Properties.
 type AuthorizationServerContractProperties struct {
 	// DisplayName - User-friendly authorization server name.
@@ -2215,6 +2395,7 @@ type AuthorizationServerContractProperties struct {
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerUpdateContract external OAuth authorization server settings.
 type AuthorizationServerUpdateContract struct {
 	// AuthorizationServerUpdateContractProperties - Properties of the External OAuth authorization server update Contract.
@@ -2227,6 +2408,7 @@ type AuthorizationServerUpdateContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for AuthorizationServerUpdateContract.
 func (asuc AuthorizationServerUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2245,6 +2427,7 @@ func (asuc AuthorizationServerUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for AuthorizationServerUpdateContract struct.
 func (asuc *AuthorizationServerUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2296,6 +2479,7 @@ func (asuc *AuthorizationServerUpdateContract) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // AuthorizationServerUpdateContractProperties external OAuth authorization server Update settings
 // contract.
 type AuthorizationServerUpdateContractProperties struct {
@@ -2333,6 +2517,7 @@ type AuthorizationServerUpdateContractProperties struct {
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendAuthorizationHeaderCredentials authorization header information.
 type BackendAuthorizationHeaderCredentials struct {
 	// Scheme - Authentication Scheme name.
@@ -2341,6 +2526,7 @@ type BackendAuthorizationHeaderCredentials struct {
 	Parameter *string `json:"parameter,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendBaseParameters backend entity base Parameter set.
 type BackendBaseParameters struct {
 	// Title - Backend Title.
@@ -2359,6 +2545,7 @@ type BackendBaseParameters struct {
 	TLS *BackendTLSProperties `json:"tls,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendCollection paged Backend list representation.
 type BackendCollection struct {
 	autorest.Response `json:"-"`
@@ -2368,12 +2555,14 @@ type BackendCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendCollectionIterator provides access to a complete listing of BackendContract values.
 type BackendCollectionIterator struct {
 	i    int
 	page BackendCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *BackendCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -2400,6 +2589,7 @@ func (iter *BackendCollectionIterator) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -2407,16 +2597,19 @@ func (iter *BackendCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter BackendCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter BackendCollectionIterator) Response() BackendCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter BackendCollectionIterator) Value() BackendContract {
@@ -2426,6 +2619,7 @@ func (iter BackendCollectionIterator) Value() BackendContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (bc BackendCollection) IsEmpty() bool {
 	return bc.Value == nil || len(*bc.Value) == 0
@@ -2443,12 +2637,14 @@ func (bc BackendCollection) backendCollectionPreparer(ctx context.Context) (*htt
 		autorest.WithBaseURL(to.String(bc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendCollectionPage contains a page of BackendContract values.
 type BackendCollectionPage struct {
 	fn func(context.Context, BackendCollection) (BackendCollection, error)
 	bc BackendCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *BackendCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -2470,6 +2666,7 @@ func (page *BackendCollectionPage) NextWithContext(ctx context.Context) (err err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -2477,16 +2674,19 @@ func (page *BackendCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page BackendCollectionPage) NotDone() bool {
 	return !page.bc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page BackendCollectionPage) Response() BackendCollection {
 	return page.bc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page BackendCollectionPage) Values() []BackendContract {
 	if page.bc.IsEmpty() {
@@ -2495,6 +2695,7 @@ func (page BackendCollectionPage) Values() []BackendContract {
 	return *page.bc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendContract backend details.
 type BackendContract struct {
 	autorest.Response `json:"-"`
@@ -2508,6 +2709,7 @@ type BackendContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for BackendContract.
 func (bc BackendContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2526,6 +2728,7 @@ func (bc BackendContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for BackendContract struct.
 func (bc *BackendContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2577,6 +2780,7 @@ func (bc *BackendContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendContractProperties parameters supplied to the Create Backend operation.
 type BackendContractProperties struct {
 	// URL - Runtime Url of the Backend.
@@ -2599,6 +2803,7 @@ type BackendContractProperties struct {
 	TLS *BackendTLSProperties `json:"tls,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendCredentialsContract details of the Credentials used to connect to Backend.
 type BackendCredentialsContract struct {
 	// Certificate - List of Client Certificate Thumbprint.
@@ -2611,6 +2816,7 @@ type BackendCredentialsContract struct {
 	Authorization *BackendAuthorizationHeaderCredentials `json:"authorization,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for BackendCredentialsContract.
 func (bcc BackendCredentialsContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2629,12 +2835,14 @@ func (bcc BackendCredentialsContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendProperties properties specific to the Backend Type.
 type BackendProperties struct {
 	// ServiceFabricCluster - Backend Service Fabric Cluster Properties
 	ServiceFabricCluster *BackendServiceFabricClusterProperties `json:"serviceFabricCluster,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendProxyContract details of the Backend WebProxy Server to use in the Request to Backend.
 type BackendProxyContract struct {
 	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
@@ -2645,6 +2853,7 @@ type BackendProxyContract struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendReconnectContract reconnect request parameters.
 type BackendReconnectContract struct {
 	// BackendReconnectProperties - Reconnect request properties.
@@ -2657,6 +2866,7 @@ type BackendReconnectContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for BackendReconnectContract.
 func (brc BackendReconnectContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2675,6 +2885,7 @@ func (brc BackendReconnectContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for BackendReconnectContract struct.
 func (brc *BackendReconnectContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2726,12 +2937,14 @@ func (brc *BackendReconnectContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendReconnectProperties properties to control reconnect requests.
 type BackendReconnectProperties struct {
 	// After - Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconect is PT2M.
 	After *string `json:"after,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendServiceFabricClusterProperties properties of the Service Fabric Type Backend.
 type BackendServiceFabricClusterProperties struct {
 	// ClientCertificatethumbprint - The client certificate thumbprint for the management endpoint.
@@ -2746,6 +2959,7 @@ type BackendServiceFabricClusterProperties struct {
 	ServerX509Names *[]X509CertificateName `json:"serverX509Names,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendTLSProperties properties controlling TLS Certificate Validation.
 type BackendTLSProperties struct {
 	// ValidateCertificateChain - Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend host.
@@ -2754,6 +2968,7 @@ type BackendTLSProperties struct {
 	ValidateCertificateName *bool `json:"validateCertificateName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendUpdateParameterProperties parameters supplied to the Update Backend operation.
 type BackendUpdateParameterProperties struct {
 	// URL - Runtime Url of the Backend.
@@ -2776,12 +2991,14 @@ type BackendUpdateParameterProperties struct {
 	TLS *BackendTLSProperties `json:"tls,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // BackendUpdateParameters backend update parameters.
 type BackendUpdateParameters struct {
 	// BackendUpdateParameterProperties - Backend entity update contract properties.
 	*BackendUpdateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for BackendUpdateParameters.
 func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2791,6 +3008,7 @@ func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for BackendUpdateParameters struct.
 func (bup *BackendUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2815,6 +3033,7 @@ func (bup *BackendUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateCollection paged Certificates list representation.
 type CertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -2824,12 +3043,14 @@ type CertificateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateCollectionIterator provides access to a complete listing of CertificateContract values.
 type CertificateCollectionIterator struct {
 	i    int
 	page CertificateCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *CertificateCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -2856,6 +3077,7 @@ func (iter *CertificateCollectionIterator) NextWithContext(ctx context.Context) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -2863,16 +3085,19 @@ func (iter *CertificateCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter CertificateCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter CertificateCollectionIterator) Response() CertificateCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter CertificateCollectionIterator) Value() CertificateContract {
@@ -2882,6 +3107,7 @@ func (iter CertificateCollectionIterator) Value() CertificateContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
@@ -2899,12 +3125,14 @@ func (cc CertificateCollection) certificateCollectionPreparer(ctx context.Contex
 		autorest.WithBaseURL(to.String(cc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateCollectionPage contains a page of CertificateContract values.
 type CertificateCollectionPage struct {
 	fn func(context.Context, CertificateCollection) (CertificateCollection, error)
 	cc CertificateCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *CertificateCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -2926,6 +3154,7 @@ func (page *CertificateCollectionPage) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -2933,16 +3162,19 @@ func (page *CertificateCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page CertificateCollectionPage) NotDone() bool {
 	return !page.cc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page CertificateCollectionPage) Response() CertificateCollection {
 	return page.cc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page CertificateCollectionPage) Values() []CertificateContract {
 	if page.cc.IsEmpty() {
@@ -2951,6 +3183,7 @@ func (page CertificateCollectionPage) Values() []CertificateContract {
 	return *page.cc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateConfiguration certificate configuration which consist of non-trusted intermediates and root
 // certificates.
 type CertificateConfiguration struct {
@@ -2964,6 +3197,7 @@ type CertificateConfiguration struct {
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateContract certificate details.
 type CertificateContract struct {
 	autorest.Response `json:"-"`
@@ -2977,6 +3211,7 @@ type CertificateContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for CertificateContract.
 func (cc CertificateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2995,6 +3230,7 @@ func (cc CertificateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateContract struct.
 func (cc *CertificateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3046,6 +3282,7 @@ func (cc *CertificateContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateContractProperties properties of the Certificate contract.
 type CertificateContractProperties struct {
 	// Subject - Subject attribute of the certificate.
@@ -3056,12 +3293,14 @@ type CertificateContractProperties struct {
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateCreateOrUpdateParameters certificate create or update details.
 type CertificateCreateOrUpdateParameters struct {
 	// CertificateCreateOrUpdateProperties - Certificate create or update properties details.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for CertificateCreateOrUpdateParameters.
 func (ccoup CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3071,6 +3310,7 @@ func (ccoup CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateCreateOrUpdateParameters struct.
 func (ccoup *CertificateCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3095,6 +3335,7 @@ func (ccoup *CertificateCreateOrUpdateParameters) UnmarshalJSON(body []byte) err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateCreateOrUpdateProperties parameters supplied to the CreateOrUpdate certificate operation.
 type CertificateCreateOrUpdateProperties struct {
 	// Data - Base 64 encoded certificate using the application/x-pkcs12 representation.
@@ -3103,6 +3344,7 @@ type CertificateCreateOrUpdateProperties struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateInformation SSL certificate information.
 type CertificateInformation struct {
 	autorest.Response `json:"-"`
@@ -3114,6 +3356,7 @@ type CertificateInformation struct {
 	Subject *string `json:"subject,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ConnectivityStatusContract details about connectivity to a resource.
 type ConnectivityStatusContract struct {
 	// Name - The hostname of the resource which the service depends on. This can be the database, storage or any other azure resource on which the service depends upon.
@@ -3128,6 +3371,7 @@ type ConnectivityStatusContract struct {
 	LastStatusChange *date.Time `json:"lastStatusChange,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeployConfigurationParameters parameters supplied to the Deploy Configuration operation.
 type DeployConfigurationParameters struct {
 	// Branch - The name of the Git branch from which the configuration is to be deployed to the configuration database.
@@ -3136,6 +3380,7 @@ type DeployConfigurationParameters struct {
 	Force *bool `json:"force,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DiagnosticCollection paged Diagnostic list representation.
 type DiagnosticCollection struct {
 	autorest.Response `json:"-"`
@@ -3145,12 +3390,14 @@ type DiagnosticCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DiagnosticCollectionIterator provides access to a complete listing of DiagnosticContract values.
 type DiagnosticCollectionIterator struct {
 	i    int
 	page DiagnosticCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *DiagnosticCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -3177,6 +3424,7 @@ func (iter *DiagnosticCollectionIterator) NextWithContext(ctx context.Context) (
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3184,16 +3432,19 @@ func (iter *DiagnosticCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter DiagnosticCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter DiagnosticCollectionIterator) Response() DiagnosticCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter DiagnosticCollectionIterator) Value() DiagnosticContract {
@@ -3203,6 +3454,7 @@ func (iter DiagnosticCollectionIterator) Value() DiagnosticContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (dc DiagnosticCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
@@ -3220,12 +3472,14 @@ func (dc DiagnosticCollection) diagnosticCollectionPreparer(ctx context.Context)
 		autorest.WithBaseURL(to.String(dc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DiagnosticCollectionPage contains a page of DiagnosticContract values.
 type DiagnosticCollectionPage struct {
 	fn func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)
 	dc DiagnosticCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *DiagnosticCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -3247,6 +3501,7 @@ func (page *DiagnosticCollectionPage) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3254,16 +3509,19 @@ func (page *DiagnosticCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page DiagnosticCollectionPage) NotDone() bool {
 	return !page.dc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page DiagnosticCollectionPage) Response() DiagnosticCollection {
 	return page.dc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page DiagnosticCollectionPage) Values() []DiagnosticContract {
 	if page.dc.IsEmpty() {
@@ -3272,6 +3530,7 @@ func (page DiagnosticCollectionPage) Values() []DiagnosticContract {
 	return *page.dc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DiagnosticContract diagnostic details.
 type DiagnosticContract struct {
 	autorest.Response `json:"-"`
@@ -3285,6 +3544,7 @@ type DiagnosticContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for DiagnosticContract.
 func (dc DiagnosticContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3303,6 +3563,7 @@ func (dc DiagnosticContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for DiagnosticContract struct.
 func (dc *DiagnosticContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3354,12 +3615,14 @@ func (dc *DiagnosticContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DiagnosticContractProperties diagnostic Entity Properties
 type DiagnosticContractProperties struct {
 	// Enabled - Indicates whether a diagnostic should receive data or not.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateCollection paged email template list representation.
 type EmailTemplateCollection struct {
 	autorest.Response `json:"-"`
@@ -3369,12 +3632,14 @@ type EmailTemplateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateCollectionIterator provides access to a complete listing of EmailTemplateContract values.
 type EmailTemplateCollectionIterator struct {
 	i    int
 	page EmailTemplateCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *EmailTemplateCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -3401,6 +3666,7 @@ func (iter *EmailTemplateCollectionIterator) NextWithContext(ctx context.Context
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3408,16 +3674,19 @@ func (iter *EmailTemplateCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter EmailTemplateCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter EmailTemplateCollectionIterator) Response() EmailTemplateCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter EmailTemplateCollectionIterator) Value() EmailTemplateContract {
@@ -3427,6 +3696,7 @@ func (iter EmailTemplateCollectionIterator) Value() EmailTemplateContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (etc EmailTemplateCollection) IsEmpty() bool {
 	return etc.Value == nil || len(*etc.Value) == 0
@@ -3444,12 +3714,14 @@ func (etc EmailTemplateCollection) emailTemplateCollectionPreparer(ctx context.C
 		autorest.WithBaseURL(to.String(etc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateCollectionPage contains a page of EmailTemplateContract values.
 type EmailTemplateCollectionPage struct {
 	fn  func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)
 	etc EmailTemplateCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *EmailTemplateCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -3471,6 +3743,7 @@ func (page *EmailTemplateCollectionPage) NextWithContext(ctx context.Context) (e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3478,16 +3751,19 @@ func (page *EmailTemplateCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page EmailTemplateCollectionPage) NotDone() bool {
 	return !page.etc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page EmailTemplateCollectionPage) Response() EmailTemplateCollection {
 	return page.etc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page EmailTemplateCollectionPage) Values() []EmailTemplateContract {
 	if page.etc.IsEmpty() {
@@ -3496,6 +3772,7 @@ func (page EmailTemplateCollectionPage) Values() []EmailTemplateContract {
 	return *page.etc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateContract email Template details.
 type EmailTemplateContract struct {
 	autorest.Response `json:"-"`
@@ -3509,6 +3786,7 @@ type EmailTemplateContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for EmailTemplateContract.
 func (etc EmailTemplateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3527,6 +3805,7 @@ func (etc EmailTemplateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for EmailTemplateContract struct.
 func (etc *EmailTemplateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3578,6 +3857,7 @@ func (etc *EmailTemplateContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateContractProperties email Template Contract properties.
 type EmailTemplateContractProperties struct {
 	// Subject - Subject of the Template.
@@ -3594,6 +3874,7 @@ type EmailTemplateContractProperties struct {
 	Parameters *[]EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateParametersContractProperties email Template Parameter contract.
 type EmailTemplateParametersContractProperties struct {
 	// Name - Template parameter name.
@@ -3604,6 +3885,7 @@ type EmailTemplateParametersContractProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateUpdateParameterProperties email Template Update Contract properties.
 type EmailTemplateUpdateParameterProperties struct {
 	// Subject - Subject of the Template.
@@ -3618,12 +3900,14 @@ type EmailTemplateUpdateParameterProperties struct {
 	Parameters *[]EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateUpdateParameters email Template update Parameters.
 type EmailTemplateUpdateParameters struct {
 	// EmailTemplateUpdateParameterProperties - Email Template Update contract properties.
 	*EmailTemplateUpdateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for EmailTemplateUpdateParameters.
 func (etup EmailTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3633,6 +3917,7 @@ func (etup EmailTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for EmailTemplateUpdateParameters struct.
 func (etup *EmailTemplateUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3657,6 +3942,7 @@ func (etup *EmailTemplateUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ErrorFieldContract error Field contract.
 type ErrorFieldContract struct {
 	// Code - Property level error code.
@@ -3667,12 +3953,14 @@ type ErrorFieldContract struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ErrorResponse error Response.
 type ErrorResponse struct {
 	// ErrorResponseBody - Properties of the Error Response.
 	*ErrorResponseBody `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ErrorResponse.
 func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3682,6 +3970,7 @@ func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for ErrorResponse struct.
 func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3706,6 +3995,7 @@ func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ErrorResponseBody error Body contract.
 type ErrorResponseBody struct {
 	// Code - Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
@@ -3716,6 +4006,7 @@ type ErrorResponseBody struct {
 	Details *[]ErrorFieldContract `json:"details,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GenerateSsoURLResult generate SSO Url operations response details.
 type GenerateSsoURLResult struct {
 	autorest.Response `json:"-"`
@@ -3723,6 +4014,7 @@ type GenerateSsoURLResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupCollection paged Group list representation.
 type GroupCollection struct {
 	autorest.Response `json:"-"`
@@ -3732,12 +4024,14 @@ type GroupCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupCollectionIterator provides access to a complete listing of GroupContract values.
 type GroupCollectionIterator struct {
 	i    int
 	page GroupCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *GroupCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -3764,6 +4058,7 @@ func (iter *GroupCollectionIterator) NextWithContext(ctx context.Context) (err e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3771,16 +4066,19 @@ func (iter *GroupCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter GroupCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter GroupCollectionIterator) Response() GroupCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter GroupCollectionIterator) Value() GroupContract {
@@ -3790,6 +4088,7 @@ func (iter GroupCollectionIterator) Value() GroupContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (gc GroupCollection) IsEmpty() bool {
 	return gc.Value == nil || len(*gc.Value) == 0
@@ -3807,12 +4106,14 @@ func (gc GroupCollection) groupCollectionPreparer(ctx context.Context) (*http.Re
 		autorest.WithBaseURL(to.String(gc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupCollectionPage contains a page of GroupContract values.
 type GroupCollectionPage struct {
 	fn func(context.Context, GroupCollection) (GroupCollection, error)
 	gc GroupCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *GroupCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -3834,6 +4135,7 @@ func (page *GroupCollectionPage) NextWithContext(ctx context.Context) (err error
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -3841,16 +4143,19 @@ func (page *GroupCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page GroupCollectionPage) NotDone() bool {
 	return !page.gc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page GroupCollectionPage) Response() GroupCollection {
 	return page.gc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page GroupCollectionPage) Values() []GroupContract {
 	if page.gc.IsEmpty() {
@@ -3859,6 +4164,7 @@ func (page GroupCollectionPage) Values() []GroupContract {
 	return *page.gc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupContract contract details.
 type GroupContract struct {
 	autorest.Response `json:"-"`
@@ -3872,6 +4178,7 @@ type GroupContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for GroupContract.
 func (gc GroupContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3890,6 +4197,7 @@ func (gc GroupContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for GroupContract struct.
 func (gc *GroupContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3941,6 +4249,7 @@ func (gc *GroupContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupContractProperties group contract Properties.
 type GroupContractProperties struct {
 	// DisplayName - Group name.
@@ -3955,12 +4264,14 @@ type GroupContractProperties struct {
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupCreateParameters parameters supplied to the Create Group operation.
 type GroupCreateParameters struct {
 	// GroupCreateParametersProperties - Properties supplied to Create Group operation.
 	*GroupCreateParametersProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for GroupCreateParameters.
 func (gcp GroupCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3970,6 +4281,7 @@ func (gcp GroupCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for GroupCreateParameters struct.
 func (gcp *GroupCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3994,6 +4306,7 @@ func (gcp *GroupCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupCreateParametersProperties parameters supplied to the Create Group operation.
 type GroupCreateParametersProperties struct {
 	// DisplayName - Group name.
@@ -4006,12 +4319,14 @@ type GroupCreateParametersProperties struct {
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupUpdateParameters parameters supplied to the Update Group operation.
 type GroupUpdateParameters struct {
 	// GroupUpdateParametersProperties - Group entity update contract properties.
 	*GroupUpdateParametersProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for GroupUpdateParameters.
 func (gup GroupUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4021,6 +4336,7 @@ func (gup GroupUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for GroupUpdateParameters struct.
 func (gup *GroupUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4045,6 +4361,7 @@ func (gup *GroupUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GroupUpdateParametersProperties parameters supplied to the Update Group operation.
 type GroupUpdateParametersProperties struct {
 	// DisplayName - Group name.
@@ -4057,6 +4374,7 @@ type GroupUpdateParametersProperties struct {
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // HostnameConfiguration custom hostname configuration.
 type HostnameConfiguration struct {
 	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
@@ -4077,6 +4395,7 @@ type HostnameConfiguration struct {
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // HostnameConfigurationOld custom hostname configuration.
 type HostnameConfigurationOld struct {
 	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
@@ -4087,6 +4406,7 @@ type HostnameConfigurationOld struct {
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderBaseParameters identity Provider Base Parameter Properties.
 type IdentityProviderBaseParameters struct {
 	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
@@ -4103,6 +4423,7 @@ type IdentityProviderBaseParameters struct {
 	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderContract identity Provider details.
 type IdentityProviderContract struct {
 	autorest.Response `json:"-"`
@@ -4116,6 +4437,7 @@ type IdentityProviderContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for IdentityProviderContract.
 func (ipc IdentityProviderContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4134,6 +4456,7 @@ func (ipc IdentityProviderContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for IdentityProviderContract struct.
 func (ipc *IdentityProviderContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4185,6 +4508,7 @@ func (ipc *IdentityProviderContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderContractProperties the external Identity Providers like Facebook, Google, Microsoft,
 // Twitter or Azure Active Directory which can be used to enable access to the API Management service
 // developer portal for all users.
@@ -4207,6 +4531,7 @@ type IdentityProviderContractProperties struct {
 	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderList list of all the Identity Providers configured on the service instance.
 type IdentityProviderList struct {
 	autorest.Response `json:"-"`
@@ -4216,12 +4541,14 @@ type IdentityProviderList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderListIterator provides access to a complete listing of IdentityProviderContract values.
 type IdentityProviderListIterator struct {
 	i    int
 	page IdentityProviderListPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *IdentityProviderListIterator) NextWithContext(ctx context.Context) (err error) {
@@ -4248,6 +4575,7 @@ func (iter *IdentityProviderListIterator) NextWithContext(ctx context.Context) (
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4255,16 +4583,19 @@ func (iter *IdentityProviderListIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter IdentityProviderListIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter IdentityProviderListIterator) Response() IdentityProviderList {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter IdentityProviderListIterator) Value() IdentityProviderContract {
@@ -4274,6 +4605,7 @@ func (iter IdentityProviderListIterator) Value() IdentityProviderContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ipl IdentityProviderList) IsEmpty() bool {
 	return ipl.Value == nil || len(*ipl.Value) == 0
@@ -4291,12 +4623,14 @@ func (ipl IdentityProviderList) identityProviderListPreparer(ctx context.Context
 		autorest.WithBaseURL(to.String(ipl.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderListPage contains a page of IdentityProviderContract values.
 type IdentityProviderListPage struct {
 	fn  func(context.Context, IdentityProviderList) (IdentityProviderList, error)
 	ipl IdentityProviderList
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *IdentityProviderListPage) NextWithContext(ctx context.Context) (err error) {
@@ -4318,6 +4652,7 @@ func (page *IdentityProviderListPage) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4325,16 +4660,19 @@ func (page *IdentityProviderListPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page IdentityProviderListPage) NotDone() bool {
 	return !page.ipl.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page IdentityProviderListPage) Response() IdentityProviderList {
 	return page.ipl
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page IdentityProviderListPage) Values() []IdentityProviderContract {
 	if page.ipl.IsEmpty() {
@@ -4343,12 +4681,14 @@ func (page IdentityProviderListPage) Values() []IdentityProviderContract {
 	return *page.ipl.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderUpdateParameters parameters supplied to update Identity Provider
 type IdentityProviderUpdateParameters struct {
 	// IdentityProviderUpdateProperties - Identity Provider update properties.
 	*IdentityProviderUpdateProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for IdentityProviderUpdateParameters.
 func (ipup IdentityProviderUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4358,6 +4698,7 @@ func (ipup IdentityProviderUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for IdentityProviderUpdateParameters struct.
 func (ipup *IdentityProviderUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4382,6 +4723,7 @@ func (ipup *IdentityProviderUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IdentityProviderUpdateProperties parameters supplied to the Update Identity Provider operation.
 type IdentityProviderUpdateProperties struct {
 	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
@@ -4402,6 +4744,7 @@ type IdentityProviderUpdateProperties struct {
 	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueAttachmentCollection paged Issue Attachment list representation.
 type IssueAttachmentCollection struct {
 	autorest.Response `json:"-"`
@@ -4411,6 +4754,7 @@ type IssueAttachmentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueAttachmentCollectionIterator provides access to a complete listing of IssueAttachmentContract
 // values.
 type IssueAttachmentCollectionIterator struct {
@@ -4418,6 +4762,7 @@ type IssueAttachmentCollectionIterator struct {
 	page IssueAttachmentCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *IssueAttachmentCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -4444,6 +4789,7 @@ func (iter *IssueAttachmentCollectionIterator) NextWithContext(ctx context.Conte
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4451,16 +4797,19 @@ func (iter *IssueAttachmentCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter IssueAttachmentCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter IssueAttachmentCollectionIterator) Response() IssueAttachmentCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter IssueAttachmentCollectionIterator) Value() IssueAttachmentContract {
@@ -4470,6 +4819,7 @@ func (iter IssueAttachmentCollectionIterator) Value() IssueAttachmentContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (iac IssueAttachmentCollection) IsEmpty() bool {
 	return iac.Value == nil || len(*iac.Value) == 0
@@ -4487,12 +4837,14 @@ func (iac IssueAttachmentCollection) issueAttachmentCollectionPreparer(ctx conte
 		autorest.WithBaseURL(to.String(iac.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueAttachmentCollectionPage contains a page of IssueAttachmentContract values.
 type IssueAttachmentCollectionPage struct {
 	fn  func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)
 	iac IssueAttachmentCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *IssueAttachmentCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -4514,6 +4866,7 @@ func (page *IssueAttachmentCollectionPage) NextWithContext(ctx context.Context) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4521,16 +4874,19 @@ func (page *IssueAttachmentCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page IssueAttachmentCollectionPage) NotDone() bool {
 	return !page.iac.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page IssueAttachmentCollectionPage) Response() IssueAttachmentCollection {
 	return page.iac
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page IssueAttachmentCollectionPage) Values() []IssueAttachmentContract {
 	if page.iac.IsEmpty() {
@@ -4539,6 +4895,7 @@ func (page IssueAttachmentCollectionPage) Values() []IssueAttachmentContract {
 	return *page.iac.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueAttachmentContract issue Attachment Contract details.
 type IssueAttachmentContract struct {
 	autorest.Response `json:"-"`
@@ -4552,6 +4909,7 @@ type IssueAttachmentContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for IssueAttachmentContract.
 func (iac IssueAttachmentContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4570,6 +4928,7 @@ func (iac IssueAttachmentContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for IssueAttachmentContract struct.
 func (iac *IssueAttachmentContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4621,6 +4980,7 @@ func (iac *IssueAttachmentContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueAttachmentContractProperties issue Attachment contract Properties.
 type IssueAttachmentContractProperties struct {
 	// Title - Filename by which the binary data will be saved.
@@ -4631,6 +4991,7 @@ type IssueAttachmentContractProperties struct {
 	Content *string `json:"content,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCollection paged Issue list representation.
 type IssueCollection struct {
 	autorest.Response `json:"-"`
@@ -4640,12 +5001,14 @@ type IssueCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCollectionIterator provides access to a complete listing of IssueContract values.
 type IssueCollectionIterator struct {
 	i    int
 	page IssueCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *IssueCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -4672,6 +5035,7 @@ func (iter *IssueCollectionIterator) NextWithContext(ctx context.Context) (err e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4679,16 +5043,19 @@ func (iter *IssueCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter IssueCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter IssueCollectionIterator) Response() IssueCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter IssueCollectionIterator) Value() IssueContract {
@@ -4698,6 +5065,7 @@ func (iter IssueCollectionIterator) Value() IssueContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ic IssueCollection) IsEmpty() bool {
 	return ic.Value == nil || len(*ic.Value) == 0
@@ -4715,12 +5083,14 @@ func (ic IssueCollection) issueCollectionPreparer(ctx context.Context) (*http.Re
 		autorest.WithBaseURL(to.String(ic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCollectionPage contains a page of IssueContract values.
 type IssueCollectionPage struct {
 	fn func(context.Context, IssueCollection) (IssueCollection, error)
 	ic IssueCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *IssueCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -4742,6 +5112,7 @@ func (page *IssueCollectionPage) NextWithContext(ctx context.Context) (err error
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4749,16 +5120,19 @@ func (page *IssueCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page IssueCollectionPage) NotDone() bool {
 	return !page.ic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page IssueCollectionPage) Response() IssueCollection {
 	return page.ic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page IssueCollectionPage) Values() []IssueContract {
 	if page.ic.IsEmpty() {
@@ -4767,6 +5141,7 @@ func (page IssueCollectionPage) Values() []IssueContract {
 	return *page.ic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCommentCollection paged Issue Comment list representation.
 type IssueCommentCollection struct {
 	autorest.Response `json:"-"`
@@ -4776,12 +5151,14 @@ type IssueCommentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCommentCollectionIterator provides access to a complete listing of IssueCommentContract values.
 type IssueCommentCollectionIterator struct {
 	i    int
 	page IssueCommentCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *IssueCommentCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -4808,6 +5185,7 @@ func (iter *IssueCommentCollectionIterator) NextWithContext(ctx context.Context)
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4815,16 +5193,19 @@ func (iter *IssueCommentCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter IssueCommentCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter IssueCommentCollectionIterator) Response() IssueCommentCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter IssueCommentCollectionIterator) Value() IssueCommentContract {
@@ -4834,6 +5215,7 @@ func (iter IssueCommentCollectionIterator) Value() IssueCommentContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (icc IssueCommentCollection) IsEmpty() bool {
 	return icc.Value == nil || len(*icc.Value) == 0
@@ -4851,12 +5233,14 @@ func (icc IssueCommentCollection) issueCommentCollectionPreparer(ctx context.Con
 		autorest.WithBaseURL(to.String(icc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCommentCollectionPage contains a page of IssueCommentContract values.
 type IssueCommentCollectionPage struct {
 	fn  func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)
 	icc IssueCommentCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *IssueCommentCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -4878,6 +5262,7 @@ func (page *IssueCommentCollectionPage) NextWithContext(ctx context.Context) (er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -4885,16 +5270,19 @@ func (page *IssueCommentCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page IssueCommentCollectionPage) NotDone() bool {
 	return !page.icc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page IssueCommentCollectionPage) Response() IssueCommentCollection {
 	return page.icc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page IssueCommentCollectionPage) Values() []IssueCommentContract {
 	if page.icc.IsEmpty() {
@@ -4903,6 +5291,7 @@ func (page IssueCommentCollectionPage) Values() []IssueCommentContract {
 	return *page.icc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCommentContract issue Comment Contract details.
 type IssueCommentContract struct {
 	autorest.Response `json:"-"`
@@ -4916,6 +5305,7 @@ type IssueCommentContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for IssueCommentContract.
 func (icc IssueCommentContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4934,6 +5324,7 @@ func (icc IssueCommentContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for IssueCommentContract struct.
 func (icc *IssueCommentContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4985,6 +5376,7 @@ func (icc *IssueCommentContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueCommentContractProperties issue Comment contract Properties.
 type IssueCommentContractProperties struct {
 	// Text - Comment text.
@@ -4995,6 +5387,7 @@ type IssueCommentContractProperties struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueContract issue Contract details.
 type IssueContract struct {
 	autorest.Response `json:"-"`
@@ -5008,6 +5401,7 @@ type IssueContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for IssueContract.
 func (ic IssueContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5026,6 +5420,7 @@ func (ic IssueContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for IssueContract struct.
 func (ic *IssueContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5077,6 +5472,7 @@ func (ic *IssueContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IssueContractProperties issue contract Properties.
 type IssueContractProperties struct {
 	// Title - The issue title.
@@ -5093,12 +5489,14 @@ type IssueContractProperties struct {
 	APIID *string `json:"apiId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListNetworkStatusContractByLocation ...
 type ListNetworkStatusContractByLocation struct {
 	autorest.Response `json:"-"`
 	Value             *[]NetworkStatusContractByLocation `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerCollection paged Logger list representation.
 type LoggerCollection struct {
 	autorest.Response `json:"-"`
@@ -5110,12 +5508,14 @@ type LoggerCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerCollectionIterator provides access to a complete listing of LoggerContract values.
 type LoggerCollectionIterator struct {
 	i    int
 	page LoggerCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *LoggerCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -5142,6 +5542,7 @@ func (iter *LoggerCollectionIterator) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5149,16 +5550,19 @@ func (iter *LoggerCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter LoggerCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter LoggerCollectionIterator) Response() LoggerCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter LoggerCollectionIterator) Value() LoggerContract {
@@ -5168,6 +5572,7 @@ func (iter LoggerCollectionIterator) Value() LoggerContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (lc LoggerCollection) IsEmpty() bool {
 	return lc.Value == nil || len(*lc.Value) == 0
@@ -5185,12 +5590,14 @@ func (lc LoggerCollection) loggerCollectionPreparer(ctx context.Context) (*http.
 		autorest.WithBaseURL(to.String(lc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerCollectionPage contains a page of LoggerContract values.
 type LoggerCollectionPage struct {
 	fn func(context.Context, LoggerCollection) (LoggerCollection, error)
 	lc LoggerCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *LoggerCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -5212,6 +5619,7 @@ func (page *LoggerCollectionPage) NextWithContext(ctx context.Context) (err erro
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5219,16 +5627,19 @@ func (page *LoggerCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page LoggerCollectionPage) NotDone() bool {
 	return !page.lc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page LoggerCollectionPage) Response() LoggerCollection {
 	return page.lc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page LoggerCollectionPage) Values() []LoggerContract {
 	if page.lc.IsEmpty() {
@@ -5237,6 +5648,7 @@ func (page LoggerCollectionPage) Values() []LoggerContract {
 	return *page.lc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerContract logger details.
 type LoggerContract struct {
 	autorest.Response `json:"-"`
@@ -5250,6 +5662,7 @@ type LoggerContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for LoggerContract.
 func (lc LoggerContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5268,6 +5681,7 @@ func (lc LoggerContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for LoggerContract struct.
 func (lc *LoggerContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5319,6 +5733,7 @@ func (lc *LoggerContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerContractProperties the Logger entity in API Management represents an event sink that you can use
 // to log API Management events. Currently the Logger entity supports logging API Management events to
 // Azure Event Hubs.
@@ -5334,6 +5749,7 @@ type LoggerContractProperties struct {
 	IsBuffered *bool `json:"isBuffered,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for LoggerContractProperties.
 func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5352,12 +5768,14 @@ func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerUpdateContract logger update contract.
 type LoggerUpdateContract struct {
 	// LoggerUpdateParameters - Logger entity update contract properties.
 	*LoggerUpdateParameters `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for LoggerUpdateContract.
 func (luc LoggerUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5367,6 +5785,7 @@ func (luc LoggerUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for LoggerUpdateContract struct.
 func (luc *LoggerUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5391,6 +5810,7 @@ func (luc *LoggerUpdateContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // LoggerUpdateParameters parameters supplied to the Update Logger operation.
 type LoggerUpdateParameters struct {
 	// LoggerType - Logger type. Possible values include: 'AzureEventHub', 'ApplicationInsights'
@@ -5403,6 +5823,7 @@ type LoggerUpdateParameters struct {
 	IsBuffered *bool `json:"isBuffered,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for LoggerUpdateParameters.
 func (lup LoggerUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5421,6 +5842,7 @@ func (lup LoggerUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NetworkStatusContract network Status details.
 type NetworkStatusContract struct {
 	autorest.Response `json:"-"`
@@ -5430,6 +5852,7 @@ type NetworkStatusContract struct {
 	ConnectivityStatus *[]ConnectivityStatusContract `json:"connectivityStatus,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NetworkStatusContractByLocation network Status in the Location
 type NetworkStatusContractByLocation struct {
 	// Location - Location of service
@@ -5438,6 +5861,7 @@ type NetworkStatusContractByLocation struct {
 	NetworkStatus *NetworkStatusContract `json:"networkStatus,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationCollection paged Notification list representation.
 type NotificationCollection struct {
 	autorest.Response `json:"-"`
@@ -5447,12 +5871,14 @@ type NotificationCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationCollectionIterator provides access to a complete listing of NotificationContract values.
 type NotificationCollectionIterator struct {
 	i    int
 	page NotificationCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *NotificationCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -5479,6 +5905,7 @@ func (iter *NotificationCollectionIterator) NextWithContext(ctx context.Context)
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5486,16 +5913,19 @@ func (iter *NotificationCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter NotificationCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter NotificationCollectionIterator) Response() NotificationCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter NotificationCollectionIterator) Value() NotificationContract {
@@ -5505,6 +5935,7 @@ func (iter NotificationCollectionIterator) Value() NotificationContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (nc NotificationCollection) IsEmpty() bool {
 	return nc.Value == nil || len(*nc.Value) == 0
@@ -5522,12 +5953,14 @@ func (nc NotificationCollection) notificationCollectionPreparer(ctx context.Cont
 		autorest.WithBaseURL(to.String(nc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationCollectionPage contains a page of NotificationContract values.
 type NotificationCollectionPage struct {
 	fn func(context.Context, NotificationCollection) (NotificationCollection, error)
 	nc NotificationCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *NotificationCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -5549,6 +5982,7 @@ func (page *NotificationCollectionPage) NextWithContext(ctx context.Context) (er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5556,16 +5990,19 @@ func (page *NotificationCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page NotificationCollectionPage) NotDone() bool {
 	return !page.nc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page NotificationCollectionPage) Response() NotificationCollection {
 	return page.nc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page NotificationCollectionPage) Values() []NotificationContract {
 	if page.nc.IsEmpty() {
@@ -5574,6 +6011,7 @@ func (page NotificationCollectionPage) Values() []NotificationContract {
 	return *page.nc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationContract notification details.
 type NotificationContract struct {
 	autorest.Response `json:"-"`
@@ -5587,6 +6025,7 @@ type NotificationContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for NotificationContract.
 func (nc NotificationContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5605,6 +6044,7 @@ func (nc NotificationContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for NotificationContract struct.
 func (nc *NotificationContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5656,6 +6096,7 @@ func (nc *NotificationContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotificationContractProperties notification Contract properties.
 type NotificationContractProperties struct {
 	// Title - Title of the Notification.
@@ -5666,6 +6107,7 @@ type NotificationContractProperties struct {
 	Recipients *RecipientsContractProperties `json:"recipients,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OAuth2AuthenticationSettingsContract API OAuth2 Authentication settings details.
 type OAuth2AuthenticationSettingsContract struct {
 	// AuthorizationServerID - OAuth authorization server identifier.
@@ -5674,6 +6116,7 @@ type OAuth2AuthenticationSettingsContract struct {
 	Scope *string `json:"scope,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenIDAuthenticationSettingsContract API OAuth2 Authentication settings details.
 type OpenIDAuthenticationSettingsContract struct {
 	// OpenidProviderID - OAuth authorization server identifier.
@@ -5682,6 +6125,7 @@ type OpenIDAuthenticationSettingsContract struct {
 	BearerTokenSendingMethods *[]BearerTokenSendingMethods `json:"bearerTokenSendingMethods,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenIDConnectProviderCollection paged OpenIdProviders list representation.
 type OpenIDConnectProviderCollection struct {
 	autorest.Response `json:"-"`
@@ -5691,6 +6135,7 @@ type OpenIDConnectProviderCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenIDConnectProviderCollectionIterator provides access to a complete listing of
 // OpenidConnectProviderContract values.
 type OpenIDConnectProviderCollectionIterator struct {
@@ -5698,6 +6143,7 @@ type OpenIDConnectProviderCollectionIterator struct {
 	page OpenIDConnectProviderCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OpenIDConnectProviderCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -5724,6 +6170,7 @@ func (iter *OpenIDConnectProviderCollectionIterator) NextWithContext(ctx context
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5731,16 +6178,19 @@ func (iter *OpenIDConnectProviderCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OpenIDConnectProviderCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter OpenIDConnectProviderCollectionIterator) Response() OpenIDConnectProviderCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OpenIDConnectProviderCollectionIterator) Value() OpenidConnectProviderContract {
@@ -5750,6 +6200,7 @@ func (iter OpenIDConnectProviderCollectionIterator) Value() OpenidConnectProvide
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (oicpc OpenIDConnectProviderCollection) IsEmpty() bool {
 	return oicpc.Value == nil || len(*oicpc.Value) == 0
@@ -5767,12 +6218,14 @@ func (oicpc OpenIDConnectProviderCollection) openIDConnectProviderCollectionPrep
 		autorest.WithBaseURL(to.String(oicpc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenIDConnectProviderCollectionPage contains a page of OpenidConnectProviderContract values.
 type OpenIDConnectProviderCollectionPage struct {
 	fn    func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)
 	oicpc OpenIDConnectProviderCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OpenIDConnectProviderCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -5794,6 +6247,7 @@ func (page *OpenIDConnectProviderCollectionPage) NextWithContext(ctx context.Con
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -5801,16 +6255,19 @@ func (page *OpenIDConnectProviderCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OpenIDConnectProviderCollectionPage) NotDone() bool {
 	return !page.oicpc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page OpenIDConnectProviderCollectionPage) Response() OpenIDConnectProviderCollection {
 	return page.oicpc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProviderContract {
 	if page.oicpc.IsEmpty() {
@@ -5819,6 +6276,7 @@ func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProvider
 	return *page.oicpc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenidConnectProviderContract openId Connect Provider details.
 type OpenidConnectProviderContract struct {
 	autorest.Response `json:"-"`
@@ -5832,6 +6290,7 @@ type OpenidConnectProviderContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for OpenidConnectProviderContract.
 func (ocpc OpenidConnectProviderContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5850,6 +6309,7 @@ func (ocpc OpenidConnectProviderContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for OpenidConnectProviderContract struct.
 func (ocpc *OpenidConnectProviderContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5901,6 +6361,7 @@ func (ocpc *OpenidConnectProviderContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenidConnectProviderContractProperties openID Connect Providers Contract.
 type OpenidConnectProviderContractProperties struct {
 	// DisplayName - User-friendly OpenID Connect Provider name.
@@ -5915,12 +6376,14 @@ type OpenidConnectProviderContractProperties struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenidConnectProviderUpdateContract parameters supplied to the Update OpenID Connect Provider operation.
 type OpenidConnectProviderUpdateContract struct {
 	// OpenidConnectProviderUpdateContractProperties - OpenId Connect Provider Update contract properties.
 	*OpenidConnectProviderUpdateContractProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for OpenidConnectProviderUpdateContract.
 func (ocpuc OpenidConnectProviderUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5930,6 +6393,7 @@ func (ocpuc OpenidConnectProviderUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for OpenidConnectProviderUpdateContract struct.
 func (ocpuc *OpenidConnectProviderUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5954,6 +6418,7 @@ func (ocpuc *OpenidConnectProviderUpdateContract) UnmarshalJSON(body []byte) err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OpenidConnectProviderUpdateContractProperties parameters supplied to the Update OpenID Connect Provider
 // operation.
 type OpenidConnectProviderUpdateContractProperties struct {
@@ -5969,6 +6434,7 @@ type OpenidConnectProviderUpdateContractProperties struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -5981,6 +6447,7 @@ type Operation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationCollection paged Operation list representation.
 type OperationCollection struct {
 	autorest.Response `json:"-"`
@@ -5990,12 +6457,14 @@ type OperationCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationCollectionIterator provides access to a complete listing of OperationContract values.
 type OperationCollectionIterator struct {
 	i    int
 	page OperationCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -6022,6 +6491,7 @@ func (iter *OperationCollectionIterator) NextWithContext(ctx context.Context) (e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -6029,16 +6499,19 @@ func (iter *OperationCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationCollectionIterator) Response() OperationCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationCollectionIterator) Value() OperationContract {
@@ -6048,6 +6521,7 @@ func (iter OperationCollectionIterator) Value() OperationContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (oc OperationCollection) IsEmpty() bool {
 	return oc.Value == nil || len(*oc.Value) == 0
@@ -6065,12 +6539,14 @@ func (oc OperationCollection) operationCollectionPreparer(ctx context.Context) (
 		autorest.WithBaseURL(to.String(oc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationCollectionPage contains a page of OperationContract values.
 type OperationCollectionPage struct {
 	fn func(context.Context, OperationCollection) (OperationCollection, error)
 	oc OperationCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -6092,6 +6568,7 @@ func (page *OperationCollectionPage) NextWithContext(ctx context.Context) (err e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -6099,16 +6576,19 @@ func (page *OperationCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationCollectionPage) NotDone() bool {
 	return !page.oc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page OperationCollectionPage) Response() OperationCollection {
 	return page.oc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationCollectionPage) Values() []OperationContract {
 	if page.oc.IsEmpty() {
@@ -6117,6 +6597,7 @@ func (page OperationCollectionPage) Values() []OperationContract {
 	return *page.oc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationContract api Operation details.
 type OperationContract struct {
 	autorest.Response `json:"-"`
@@ -6130,6 +6611,7 @@ type OperationContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for OperationContract.
 func (oc OperationContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6148,6 +6630,7 @@ func (oc OperationContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for OperationContract struct.
 func (oc *OperationContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6199,6 +6682,7 @@ func (oc *OperationContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationContractProperties operation Contract Properties
 type OperationContractProperties struct {
 	// DisplayName - Operation Name.
@@ -6219,6 +6703,7 @@ type OperationContractProperties struct {
 	Policies *string `json:"policies,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationDisplay the object that describes the operation.
 type OperationDisplay struct {
 	// Provider - Friendly name of the resource provider
@@ -6231,6 +6716,7 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationEntityBaseContract api Operation Entity Base Contract details.
 type OperationEntityBaseContract struct {
 	// TemplateParameters - Collection of URL template parameters.
@@ -6245,6 +6731,7 @@ type OperationEntityBaseContract struct {
 	Policies *string `json:"policies,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationListResult result of the request to list REST API operations. It contains a list of operations
 // and a URL nextLink to get the next set of results.
 type OperationListResult struct {
@@ -6255,12 +6742,14 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationListResultIterator provides access to a complete listing of Operation values.
 type OperationListResultIterator struct {
 	i    int
 	page OperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
@@ -6287,6 +6776,7 @@ func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -6294,16 +6784,19 @@ func (iter *OperationListResultIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListResultIterator) Response() OperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListResultIterator) Value() Operation {
@@ -6313,6 +6806,7 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -6330,12 +6824,14 @@ func (olr OperationListResult) operationListResultPreparer(ctx context.Context) 
 		autorest.WithBaseURL(to.String(olr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
 	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
@@ -6357,6 +6853,7 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -6364,16 +6861,19 @@ func (page *OperationListResultPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListResultPage) NotDone() bool {
 	return !page.olr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListResultPage) Response() OperationListResult {
 	return page.olr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListResultPage) Values() []Operation {
 	if page.olr.IsEmpty() {
@@ -6382,6 +6882,7 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationResultContract operation Result.
 type OperationResultContract struct {
 	autorest.Response `json:"-"`
@@ -6401,6 +6902,7 @@ type OperationResultContract struct {
 	ActionLog *[]OperationResultLogItemContract `json:"actionLog,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationResultLogItemContract log of the entity being created, updated or deleted.
 type OperationResultLogItemContract struct {
 	// ObjectType - The type of entity contract.
@@ -6411,6 +6913,7 @@ type OperationResultLogItemContract struct {
 	ObjectKey *string `json:"objectKey,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationTagResourceContractProperties operation Entity contract Properties.
 type OperationTagResourceContractProperties struct {
 	// ID - Identifier of the operation in form /operations/{operationId}.
@@ -6431,12 +6934,14 @@ type OperationTagResourceContractProperties struct {
 	URLTemplate *string `json:"urlTemplate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationUpdateContract api Operation Update Contract details.
 type OperationUpdateContract struct {
 	// OperationUpdateContractProperties - Properties of the API Operation entity that can be updated.
 	*OperationUpdateContractProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for OperationUpdateContract.
 func (ouc OperationUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6446,6 +6951,7 @@ func (ouc OperationUpdateContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for OperationUpdateContract struct.
 func (ouc *OperationUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6470,6 +6976,7 @@ func (ouc *OperationUpdateContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // OperationUpdateContractProperties operation Update Contract Properties.
 type OperationUpdateContractProperties struct {
 	// DisplayName - Operation Name.
@@ -6490,6 +6997,7 @@ type OperationUpdateContractProperties struct {
 	Policies *string `json:"policies,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ParameterContract operation parameters details.
 type ParameterContract struct {
 	// Name - Parameter name.
@@ -6506,6 +7014,7 @@ type ParameterContract struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicyCollection the response of the list policy operation.
 type PolicyCollection struct {
 	autorest.Response `json:"-"`
@@ -6515,6 +7024,7 @@ type PolicyCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicyContract policy Contract details.
 type PolicyContract struct {
 	autorest.Response `json:"-"`
@@ -6528,6 +7038,7 @@ type PolicyContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PolicyContract.
 func (pc PolicyContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6546,6 +7057,7 @@ func (pc PolicyContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PolicyContract struct.
 func (pc *PolicyContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6597,6 +7109,7 @@ func (pc *PolicyContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicyContractProperties policy contract Properties.
 type PolicyContractProperties struct {
 	// PolicyContent - Json escaped Xml Encoded contents of the Policy.
@@ -6605,6 +7118,7 @@ type PolicyContractProperties struct {
 	ContentFormat PolicyContentFormat `json:"contentFormat,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicySnippetContract policy snippet.
 type PolicySnippetContract struct {
 	// Name - Snippet name.
@@ -6617,6 +7131,7 @@ type PolicySnippetContract struct {
 	Scope *int32 `json:"scope,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PolicySnippetsCollection the response of the list policy snippets operation.
 type PolicySnippetsCollection struct {
 	autorest.Response `json:"-"`
@@ -6624,6 +7139,7 @@ type PolicySnippetsCollection struct {
 	Value *[]PolicySnippetContract `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalDelegationSettings delegation settings for a developer portal.
 type PortalDelegationSettings struct {
 	autorest.Response `json:"-"`
@@ -6637,6 +7153,7 @@ type PortalDelegationSettings struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PortalDelegationSettings.
 func (pds PortalDelegationSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6655,6 +7172,7 @@ func (pds PortalDelegationSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PortalDelegationSettings struct.
 func (pds *PortalDelegationSettings) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6706,6 +7224,7 @@ func (pds *PortalDelegationSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalDelegationSettingsProperties delegation settings contract properties.
 type PortalDelegationSettingsProperties struct {
 	// URL - A delegation Url.
@@ -6718,12 +7237,14 @@ type PortalDelegationSettingsProperties struct {
 	UserRegistration *RegistrationDelegationSettingsProperties `json:"userRegistration,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalSigninSettingProperties sign-in settings contract properties.
 type PortalSigninSettingProperties struct {
 	// Enabled - Redirect Anonymous users to the Sign-In page.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalSigninSettings sign-In settings for the Developer Portal.
 type PortalSigninSettings struct {
 	autorest.Response `json:"-"`
@@ -6737,6 +7258,7 @@ type PortalSigninSettings struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PortalSigninSettings.
 func (pss PortalSigninSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6755,6 +7277,7 @@ func (pss PortalSigninSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PortalSigninSettings struct.
 func (pss *PortalSigninSettings) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6806,6 +7329,7 @@ func (pss *PortalSigninSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalSignupSettings sign-Up settings for a developer portal.
 type PortalSignupSettings struct {
 	autorest.Response `json:"-"`
@@ -6819,6 +7343,7 @@ type PortalSignupSettings struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PortalSignupSettings.
 func (pss PortalSignupSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6837,6 +7362,7 @@ func (pss PortalSignupSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PortalSignupSettings struct.
 func (pss *PortalSignupSettings) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6888,6 +7414,7 @@ func (pss *PortalSignupSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PortalSignupSettingsProperties sign-up settings contract properties.
 type PortalSignupSettingsProperties struct {
 	// Enabled - Allow users to sign up on a developer portal.
@@ -6896,6 +7423,7 @@ type PortalSignupSettingsProperties struct {
 	TermsOfService *TermsOfServiceProperties `json:"termsOfService,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductCollection paged Products list representation.
 type ProductCollection struct {
 	autorest.Response `json:"-"`
@@ -6905,12 +7433,14 @@ type ProductCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductCollectionIterator provides access to a complete listing of ProductContract values.
 type ProductCollectionIterator struct {
 	i    int
 	page ProductCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ProductCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -6937,6 +7467,7 @@ func (iter *ProductCollectionIterator) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -6944,16 +7475,19 @@ func (iter *ProductCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ProductCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter ProductCollectionIterator) Response() ProductCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ProductCollectionIterator) Value() ProductContract {
@@ -6963,6 +7497,7 @@ func (iter ProductCollectionIterator) Value() ProductContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (pc ProductCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -6980,12 +7515,14 @@ func (pc ProductCollection) productCollectionPreparer(ctx context.Context) (*htt
 		autorest.WithBaseURL(to.String(pc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductCollectionPage contains a page of ProductContract values.
 type ProductCollectionPage struct {
 	fn func(context.Context, ProductCollection) (ProductCollection, error)
 	pc ProductCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ProductCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -7007,6 +7544,7 @@ func (page *ProductCollectionPage) NextWithContext(ctx context.Context) (err err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7014,16 +7552,19 @@ func (page *ProductCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ProductCollectionPage) NotDone() bool {
 	return !page.pc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page ProductCollectionPage) Response() ProductCollection {
 	return page.pc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ProductCollectionPage) Values() []ProductContract {
 	if page.pc.IsEmpty() {
@@ -7032,6 +7573,7 @@ func (page ProductCollectionPage) Values() []ProductContract {
 	return *page.pc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductContract product details.
 type ProductContract struct {
 	autorest.Response `json:"-"`
@@ -7045,6 +7587,7 @@ type ProductContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ProductContract.
 func (pc ProductContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7063,6 +7606,7 @@ func (pc ProductContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for ProductContract struct.
 func (pc *ProductContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7114,6 +7658,7 @@ func (pc *ProductContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductContractProperties product profile.
 type ProductContractProperties struct {
 	// DisplayName - Product name.
@@ -7132,6 +7677,7 @@ type ProductContractProperties struct {
 	State ProductState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductEntityBaseParameters product Entity Base Parameters
 type ProductEntityBaseParameters struct {
 	// Description - Product description. May include HTML formatting tags.
@@ -7148,6 +7694,7 @@ type ProductEntityBaseParameters struct {
 	State ProductState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductTagResourceContractProperties product profile.
 type ProductTagResourceContractProperties struct {
 	// ID - Identifier of the product in the form of /products/{productId}
@@ -7168,12 +7715,14 @@ type ProductTagResourceContractProperties struct {
 	State ProductState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductUpdateParameters product Update parameters.
 type ProductUpdateParameters struct {
 	// ProductUpdateProperties - Product entity Update contract properties.
 	*ProductUpdateProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ProductUpdateParameters.
 func (pup ProductUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7183,6 +7732,7 @@ func (pup ProductUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for ProductUpdateParameters struct.
 func (pup *ProductUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7207,6 +7757,7 @@ func (pup *ProductUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductUpdateProperties parameters supplied to the Update Product operation.
 type ProductUpdateProperties struct {
 	// DisplayName - Product name.
@@ -7225,6 +7776,7 @@ type ProductUpdateProperties struct {
 	State ProductState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyCollection paged Property list representation.
 type PropertyCollection struct {
 	autorest.Response `json:"-"`
@@ -7234,12 +7786,14 @@ type PropertyCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyCollectionIterator provides access to a complete listing of PropertyContract values.
 type PropertyCollectionIterator struct {
 	i    int
 	page PropertyCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *PropertyCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -7266,6 +7820,7 @@ func (iter *PropertyCollectionIterator) NextWithContext(ctx context.Context) (er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7273,16 +7828,19 @@ func (iter *PropertyCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter PropertyCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter PropertyCollectionIterator) Response() PropertyCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter PropertyCollectionIterator) Value() PropertyContract {
@@ -7292,6 +7850,7 @@ func (iter PropertyCollectionIterator) Value() PropertyContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (pc PropertyCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -7309,12 +7868,14 @@ func (pc PropertyCollection) propertyCollectionPreparer(ctx context.Context) (*h
 		autorest.WithBaseURL(to.String(pc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyCollectionPage contains a page of PropertyContract values.
 type PropertyCollectionPage struct {
 	fn func(context.Context, PropertyCollection) (PropertyCollection, error)
 	pc PropertyCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *PropertyCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -7336,6 +7897,7 @@ func (page *PropertyCollectionPage) NextWithContext(ctx context.Context) (err er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7343,16 +7905,19 @@ func (page *PropertyCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page PropertyCollectionPage) NotDone() bool {
 	return !page.pc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page PropertyCollectionPage) Response() PropertyCollection {
 	return page.pc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page PropertyCollectionPage) Values() []PropertyContract {
 	if page.pc.IsEmpty() {
@@ -7361,6 +7926,7 @@ func (page PropertyCollectionPage) Values() []PropertyContract {
 	return *page.pc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyContract property details.
 type PropertyContract struct {
 	autorest.Response `json:"-"`
@@ -7374,6 +7940,7 @@ type PropertyContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PropertyContract.
 func (pc PropertyContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7392,6 +7959,7 @@ func (pc PropertyContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PropertyContract struct.
 func (pc *PropertyContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7443,6 +8011,7 @@ func (pc *PropertyContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyContractProperties property Contract properties.
 type PropertyContractProperties struct {
 	// DisplayName - Unique name of Property. It may contain only letters, digits, period, dash, and underscore characters.
@@ -7455,6 +8024,7 @@ type PropertyContractProperties struct {
 	Secret *bool `json:"secret,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyEntityBaseParameters property Entity Base Parameters set.
 type PropertyEntityBaseParameters struct {
 	// Tags - Optional tags that when provided can be used to filter the property list.
@@ -7463,6 +8033,7 @@ type PropertyEntityBaseParameters struct {
 	Secret *bool `json:"secret,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyUpdateParameterProperties property Contract properties.
 type PropertyUpdateParameterProperties struct {
 	// DisplayName - Unique name of Property. It may contain only letters, digits, period, dash, and underscore characters.
@@ -7475,12 +8046,14 @@ type PropertyUpdateParameterProperties struct {
 	Secret *bool `json:"secret,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // PropertyUpdateParameters property update Parameters.
 type PropertyUpdateParameters struct {
 	// PropertyUpdateParameterProperties - Property entity Update contract properties.
 	*PropertyUpdateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for PropertyUpdateParameters.
 func (pup PropertyUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7490,6 +8063,7 @@ func (pup PropertyUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for PropertyUpdateParameters struct.
 func (pup *PropertyUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7514,6 +8088,7 @@ func (pup *PropertyUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // QuotaCounterCollection paged Quota Counter list representation.
 type QuotaCounterCollection struct {
 	autorest.Response `json:"-"`
@@ -7525,6 +8100,7 @@ type QuotaCounterCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // QuotaCounterContract quota counter details.
 type QuotaCounterContract struct {
 	autorest.Response `json:"-"`
@@ -7540,12 +8116,14 @@ type QuotaCounterContract struct {
 	Value *QuotaCounterValueContractProperties `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // QuotaCounterValueContract quota counter value details.
 type QuotaCounterValueContract struct {
 	// QuotaCounterValueContractProperties - Quota counter Value Properties.
 	*QuotaCounterValueContractProperties `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for QuotaCounterValueContract.
 func (qcvc QuotaCounterValueContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7555,6 +8133,7 @@ func (qcvc QuotaCounterValueContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for QuotaCounterValueContract struct.
 func (qcvc *QuotaCounterValueContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7579,6 +8158,7 @@ func (qcvc *QuotaCounterValueContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // QuotaCounterValueContractProperties quota counter value details.
 type QuotaCounterValueContractProperties struct {
 	// CallsCount - Number of times Counter was called.
@@ -7587,6 +8167,7 @@ type QuotaCounterValueContractProperties struct {
 	KbTransferred *float64 `json:"kbTransferred,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientEmailCollection paged Recipient User list representation.
 type RecipientEmailCollection struct {
 	autorest.Response `json:"-"`
@@ -7596,6 +8177,7 @@ type RecipientEmailCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientEmailContract recipient Email details.
 type RecipientEmailContract struct {
 	autorest.Response `json:"-"`
@@ -7609,6 +8191,7 @@ type RecipientEmailContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for RecipientEmailContract.
 func (rec RecipientEmailContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7627,6 +8210,7 @@ func (rec RecipientEmailContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for RecipientEmailContract struct.
 func (rec *RecipientEmailContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7678,12 +8262,14 @@ func (rec *RecipientEmailContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientEmailContractProperties recipient Email Contract Properties.
 type RecipientEmailContractProperties struct {
 	// Email - User Email subscribed to notification.
 	Email *string `json:"email,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientsContractProperties notification Parameter contract.
 type RecipientsContractProperties struct {
 	// Emails - List of Emails subscribed for the notification.
@@ -7692,6 +8278,7 @@ type RecipientsContractProperties struct {
 	Users *[]string `json:"users,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientUserCollection paged Recipient User list representation.
 type RecipientUserCollection struct {
 	autorest.Response `json:"-"`
@@ -7701,6 +8288,7 @@ type RecipientUserCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientUserContract recipient User details.
 type RecipientUserContract struct {
 	autorest.Response `json:"-"`
@@ -7714,6 +8302,7 @@ type RecipientUserContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for RecipientUserContract.
 func (ruc RecipientUserContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7732,6 +8321,7 @@ func (ruc RecipientUserContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for RecipientUserContract struct.
 func (ruc *RecipientUserContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7783,12 +8373,14 @@ func (ruc *RecipientUserContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RecipientUsersContractProperties recipient User Contract Properties.
 type RecipientUsersContractProperties struct {
 	// UserID - API Management UserId subscribed to notification.
 	UserID *string `json:"userId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegionContract region profile.
 type RegionContract struct {
 	// Name - Region name.
@@ -7799,6 +8391,7 @@ type RegionContract struct {
 	IsDeleted *bool `json:"isDeleted,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegionListResult lists Regions operation response details.
 type RegionListResult struct {
 	autorest.Response `json:"-"`
@@ -7810,12 +8403,14 @@ type RegionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegionListResultIterator provides access to a complete listing of RegionContract values.
 type RegionListResultIterator struct {
 	i    int
 	page RegionListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *RegionListResultIterator) NextWithContext(ctx context.Context) (err error) {
@@ -7842,6 +8437,7 @@ func (iter *RegionListResultIterator) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7849,16 +8445,19 @@ func (iter *RegionListResultIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter RegionListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter RegionListResultIterator) Response() RegionListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter RegionListResultIterator) Value() RegionContract {
@@ -7868,6 +8467,7 @@ func (iter RegionListResultIterator) Value() RegionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RegionListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -7885,12 +8485,14 @@ func (rlr RegionListResult) regionListResultPreparer(ctx context.Context) (*http
 		autorest.WithBaseURL(to.String(rlr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegionListResultPage contains a page of RegionContract values.
 type RegionListResultPage struct {
 	fn  func(context.Context, RegionListResult) (RegionListResult, error)
 	rlr RegionListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *RegionListResultPage) NextWithContext(ctx context.Context) (err error) {
@@ -7912,6 +8514,7 @@ func (page *RegionListResultPage) NextWithContext(ctx context.Context) (err erro
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7919,16 +8522,19 @@ func (page *RegionListResultPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page RegionListResultPage) NotDone() bool {
 	return !page.rlr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page RegionListResultPage) Response() RegionListResult {
 	return page.rlr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page RegionListResultPage) Values() []RegionContract {
 	if page.rlr.IsEmpty() {
@@ -7937,12 +8543,14 @@ func (page RegionListResultPage) Values() []RegionContract {
 	return *page.rlr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegistrationDelegationSettingsProperties user registration delegation settings properties.
 type RegistrationDelegationSettingsProperties struct {
 	// Enabled - Enable or disable delegation for user registration.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ReportCollection paged Report records list representation.
 type ReportCollection struct {
 	autorest.Response `json:"-"`
@@ -7954,12 +8562,14 @@ type ReportCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ReportCollectionIterator provides access to a complete listing of ReportRecordContract values.
 type ReportCollectionIterator struct {
 	i    int
 	page ReportCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ReportCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -7986,6 +8596,7 @@ func (iter *ReportCollectionIterator) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -7993,16 +8604,19 @@ func (iter *ReportCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ReportCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter ReportCollectionIterator) Response() ReportCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ReportCollectionIterator) Value() ReportRecordContract {
@@ -8012,6 +8626,7 @@ func (iter ReportCollectionIterator) Value() ReportRecordContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (rc ReportCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
@@ -8029,12 +8644,14 @@ func (rc ReportCollection) reportCollectionPreparer(ctx context.Context) (*http.
 		autorest.WithBaseURL(to.String(rc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ReportCollectionPage contains a page of ReportRecordContract values.
 type ReportCollectionPage struct {
 	fn func(context.Context, ReportCollection) (ReportCollection, error)
 	rc ReportCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ReportCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -8056,6 +8673,7 @@ func (page *ReportCollectionPage) NextWithContext(ctx context.Context) (err erro
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -8063,16 +8681,19 @@ func (page *ReportCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ReportCollectionPage) NotDone() bool {
 	return !page.rc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page ReportCollectionPage) Response() ReportCollection {
 	return page.rc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ReportCollectionPage) Values() []ReportRecordContract {
 	if page.rc.IsEmpty() {
@@ -8081,6 +8702,7 @@ func (page ReportCollectionPage) Values() []ReportRecordContract {
 	return *page.rc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ReportRecordContract report data.
 type ReportRecordContract struct {
 	// Name - Name depending on report endpoint specifies product, API, operation or developer name.
@@ -8137,6 +8759,7 @@ type ReportRecordContract struct {
 	ServiceTimeMax *float64 `json:"serviceTimeMax,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RepresentationContract operation request/response representation details.
 type RepresentationContract struct {
 	// ContentType - Specifies a registered or custom content type for this representation, e.g. application/xml.
@@ -8151,6 +8774,7 @@ type RepresentationContract struct {
 	FormParameters *[]ParameterContract `json:"formParameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RequestContract operation request details.
 type RequestContract struct {
 	// Description - Operation request description.
@@ -8163,6 +8787,7 @@ type RequestContract struct {
 	Representations *[]RepresentationContract `json:"representations,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RequestReportCollection paged Report records list representation.
 type RequestReportCollection struct {
 	autorest.Response `json:"-"`
@@ -8172,6 +8797,7 @@ type RequestReportCollection struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RequestReportRecordContract request Report data.
 type RequestReportRecordContract struct {
 	// APIID - API identifier path. /apis/{apiId}
@@ -8212,6 +8838,7 @@ type RequestReportRecordContract struct {
 	RequestSize *int32 `json:"requestSize,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Resource the Resource definition.
 type Resource struct {
 	// ID - Resource ID.
@@ -8222,6 +8849,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ResponseContract operation response details.
 type ResponseContract struct {
 	// StatusCode - Operation response HTTP status code.
@@ -8234,6 +8862,7 @@ type ResponseContract struct {
 	Headers *[]ParameterContract `json:"headers,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SaveConfigurationParameter parameters supplied to the Save Tenant Configuration operation.
 type SaveConfigurationParameter struct {
 	// Branch - The name of the Git branch in which to commit the current configuration snapshot.
@@ -8242,6 +8871,7 @@ type SaveConfigurationParameter struct {
 	Force *bool `json:"force,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaCollection the response of the list schema operation.
 type SchemaCollection struct {
 	autorest.Response `json:"-"`
@@ -8251,12 +8881,14 @@ type SchemaCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaCollectionIterator provides access to a complete listing of SchemaContract values.
 type SchemaCollectionIterator struct {
 	i    int
 	page SchemaCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SchemaCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -8283,6 +8915,7 @@ func (iter *SchemaCollectionIterator) NextWithContext(ctx context.Context) (err 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -8290,16 +8923,19 @@ func (iter *SchemaCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SchemaCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter SchemaCollectionIterator) Response() SchemaCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SchemaCollectionIterator) Value() SchemaContract {
@@ -8309,6 +8945,7 @@ func (iter SchemaCollectionIterator) Value() SchemaContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sc SchemaCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -8326,12 +8963,14 @@ func (sc SchemaCollection) schemaCollectionPreparer(ctx context.Context) (*http.
 		autorest.WithBaseURL(to.String(sc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaCollectionPage contains a page of SchemaContract values.
 type SchemaCollectionPage struct {
 	fn func(context.Context, SchemaCollection) (SchemaCollection, error)
 	sc SchemaCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SchemaCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -8353,6 +8992,7 @@ func (page *SchemaCollectionPage) NextWithContext(ctx context.Context) (err erro
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -8360,16 +9000,19 @@ func (page *SchemaCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SchemaCollectionPage) NotDone() bool {
 	return !page.sc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page SchemaCollectionPage) Response() SchemaCollection {
 	return page.sc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SchemaCollectionPage) Values() []SchemaContract {
 	if page.sc.IsEmpty() {
@@ -8378,6 +9021,7 @@ func (page SchemaCollectionPage) Values() []SchemaContract {
 	return *page.sc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaContract schema Contract details.
 type SchemaContract struct {
 	autorest.Response `json:"-"`
@@ -8391,6 +9035,7 @@ type SchemaContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for SchemaContract.
 func (sc SchemaContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8409,6 +9054,7 @@ func (sc SchemaContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for SchemaContract struct.
 func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8460,6 +9106,7 @@ func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaContractProperties schema contract Properties.
 type SchemaContractProperties struct {
 	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml).
@@ -8468,6 +9115,7 @@ type SchemaContractProperties struct {
 	*SchemaDocumentProperties `json:"document,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for SchemaContractProperties.
 func (scp SchemaContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8480,6 +9128,7 @@ func (scp SchemaContractProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for SchemaContractProperties struct.
 func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8513,12 +9162,14 @@ func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SchemaDocumentProperties schema Document Properties.
 type SchemaDocumentProperties struct {
 	// Value - Json escaped string defining the document representing the Schema.
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceApplyNetworkConfigurationParameters parameter supplied to the Apply Network configuration
 // operation.
 type ServiceApplyNetworkConfigurationParameters struct {
@@ -8526,12 +9177,14 @@ type ServiceApplyNetworkConfigurationParameters struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceApplyNetworkConfigurationUpdatesFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type ServiceApplyNetworkConfigurationUpdatesFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceApplyNetworkConfigurationUpdatesFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -8555,12 +9208,14 @@ func (future *ServiceApplyNetworkConfigurationUpdatesFuture) Result(client Servi
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceBackupFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServiceBackupFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceBackupFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -8584,6 +9239,7 @@ func (future *ServiceBackupFuture) Result(client ServiceClient) (sr ServiceResou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceBackupRestoreParameters parameters supplied to the Backup/Restore of an API Management service
 // operation.
 type ServiceBackupRestoreParameters struct {
@@ -8597,6 +9253,7 @@ type ServiceBackupRestoreParameters struct {
 	BackupName *string `json:"backupName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceBaseProperties base Properties of an API Management service resource description.
 type ServiceBaseProperties struct {
 	// NotificationSenderEmail - Email address from which the notification will be sent.
@@ -8635,6 +9292,7 @@ type ServiceBaseProperties struct {
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ServiceBaseProperties.
 func (sbp ServiceBaseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8692,18 +9350,21 @@ func (sbp ServiceBaseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceCheckNameAvailabilityParameters parameters supplied to the CheckNameAvailability operation.
 type ServiceCheckNameAvailabilityParameters struct {
 	// Name - The name to check for availability.
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServiceCreateOrUpdateFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -8727,6 +9388,7 @@ func (future *ServiceCreateOrUpdateFuture) Result(client ServiceClient) (sr Serv
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceGetSsoTokenResult the response of the GetSsoToken operation.
 type ServiceGetSsoTokenResult struct {
 	autorest.Response `json:"-"`
@@ -8734,6 +9396,7 @@ type ServiceGetSsoTokenResult struct {
 	RedirectURI *string `json:"redirectUri,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceIdentity identity properties of the Api Management service resource.
 type ServiceIdentity struct {
 	// Type - The identity type. Currently the only supported type is 'SystemAssigned'.
@@ -8744,6 +9407,7 @@ type ServiceIdentity struct {
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceListResult the response of the List API Management services operation.
 type ServiceListResult struct {
 	autorest.Response `json:"-"`
@@ -8753,12 +9417,14 @@ type ServiceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceListResultIterator provides access to a complete listing of ServiceResource values.
 type ServiceListResultIterator struct {
 	i    int
 	page ServiceListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ServiceListResultIterator) NextWithContext(ctx context.Context) (err error) {
@@ -8785,6 +9451,7 @@ func (iter *ServiceListResultIterator) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -8792,16 +9459,19 @@ func (iter *ServiceListResultIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ServiceListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter ServiceListResultIterator) Response() ServiceListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ServiceListResultIterator) Value() ServiceResource {
@@ -8811,6 +9481,7 @@ func (iter ServiceListResultIterator) Value() ServiceResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (slr ServiceListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
@@ -8828,12 +9499,14 @@ func (slr ServiceListResult) serviceListResultPreparer(ctx context.Context) (*ht
 		autorest.WithBaseURL(to.String(slr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceListResultPage contains a page of ServiceResource values.
 type ServiceListResultPage struct {
 	fn  func(context.Context, ServiceListResult) (ServiceListResult, error)
 	slr ServiceListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ServiceListResultPage) NextWithContext(ctx context.Context) (err error) {
@@ -8855,6 +9528,7 @@ func (page *ServiceListResultPage) NextWithContext(ctx context.Context) (err err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -8862,16 +9536,19 @@ func (page *ServiceListResultPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ServiceListResultPage) NotDone() bool {
 	return !page.slr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page ServiceListResultPage) Response() ServiceListResult {
 	return page.slr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ServiceListResultPage) Values() []ServiceResource {
 	if page.slr.IsEmpty() {
@@ -8880,6 +9557,7 @@ func (page ServiceListResultPage) Values() []ServiceResource {
 	return *page.slr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceNameAvailabilityResult response of the CheckNameAvailability operation.
 type ServiceNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
@@ -8891,6 +9569,7 @@ type ServiceNameAvailabilityResult struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceProperties properties of an API Management service resource description.
 type ServiceProperties struct {
 	// PublisherEmail - Publisher email.
@@ -8933,6 +9612,7 @@ type ServiceProperties struct {
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ServiceProperties.
 func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8996,6 +9676,7 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceResource a single API Management service resource in List or Get response.
 type ServiceResource struct {
 	autorest.Response `json:"-"`
@@ -9019,6 +9700,7 @@ type ServiceResource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ServiceResource.
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9052,6 +9734,7 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceResource struct.
 func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9148,12 +9831,14 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServiceRestoreFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -9177,6 +9862,7 @@ func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceReso
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceSkuProperties API Management service resource SKU properties.
 type ServiceSkuProperties struct {
 	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic'
@@ -9185,12 +9871,14 @@ type ServiceSkuProperties struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServiceUpdateFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceUpdateFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -9214,12 +9902,14 @@ func (future *ServiceUpdateFuture) Result(client ServiceClient) (sr ServiceResou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUpdateHostnameFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServiceUpdateHostnameFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *ServiceUpdateHostnameFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -9243,6 +9933,7 @@ func (future *ServiceUpdateHostnameFuture) Result(client ServiceClient) (sr Serv
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUpdateHostnameParameters parameters supplied to the UpdateHostname operation.
 type ServiceUpdateHostnameParameters struct {
 	// Update - Hostnames to create or update.
@@ -9251,6 +9942,7 @@ type ServiceUpdateHostnameParameters struct {
 	Delete *[]HostnameType `json:"delete,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUpdateParameters parameter supplied to Update Api Management Service.
 type ServiceUpdateParameters struct {
 	// ServiceUpdateProperties - Properties of the API Management service.
@@ -9271,6 +9963,7 @@ type ServiceUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ServiceUpdateParameters.
 func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9301,6 +9994,7 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceUpdateParameters struct.
 func (sup *ServiceUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9388,6 +10082,7 @@ func (sup *ServiceUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUpdateProperties properties of an API Management service resource description.
 type ServiceUpdateProperties struct {
 	// PublisherEmail - Publisher email.
@@ -9430,6 +10125,7 @@ type ServiceUpdateProperties struct {
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9493,6 +10189,7 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API
 // Management service operation.
 type ServiceUploadCertificateParameters struct {
@@ -9504,6 +10201,7 @@ type ServiceUploadCertificateParameters struct {
 	CertificatePassword *string `json:"certificate_password,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionCollection paged Subscriptions list representation.
 type SubscriptionCollection struct {
 	autorest.Response `json:"-"`
@@ -9513,12 +10211,14 @@ type SubscriptionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionCollectionIterator provides access to a complete listing of SubscriptionContract values.
 type SubscriptionCollectionIterator struct {
 	i    int
 	page SubscriptionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SubscriptionCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -9545,6 +10245,7 @@ func (iter *SubscriptionCollectionIterator) NextWithContext(ctx context.Context)
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -9552,16 +10253,19 @@ func (iter *SubscriptionCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SubscriptionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter SubscriptionCollectionIterator) Response() SubscriptionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SubscriptionCollectionIterator) Value() SubscriptionContract {
@@ -9571,6 +10275,7 @@ func (iter SubscriptionCollectionIterator) Value() SubscriptionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sc SubscriptionCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -9588,12 +10293,14 @@ func (sc SubscriptionCollection) subscriptionCollectionPreparer(ctx context.Cont
 		autorest.WithBaseURL(to.String(sc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionCollectionPage contains a page of SubscriptionContract values.
 type SubscriptionCollectionPage struct {
 	fn func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)
 	sc SubscriptionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SubscriptionCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -9615,6 +10322,7 @@ func (page *SubscriptionCollectionPage) NextWithContext(ctx context.Context) (er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -9622,16 +10330,19 @@ func (page *SubscriptionCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SubscriptionCollectionPage) NotDone() bool {
 	return !page.sc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page SubscriptionCollectionPage) Response() SubscriptionCollection {
 	return page.sc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 	if page.sc.IsEmpty() {
@@ -9640,6 +10351,7 @@ func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 	return *page.sc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionContract subscription details.
 type SubscriptionContract struct {
 	autorest.Response `json:"-"`
@@ -9653,6 +10365,7 @@ type SubscriptionContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for SubscriptionContract.
 func (sc SubscriptionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9671,6 +10384,7 @@ func (sc SubscriptionContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for SubscriptionContract struct.
 func (sc *SubscriptionContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9722,6 +10436,7 @@ func (sc *SubscriptionContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionContractProperties subscription details.
 type SubscriptionContractProperties struct {
 	// UserID - The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{uid} where {uid} is a user identifier.
@@ -9750,6 +10465,7 @@ type SubscriptionContractProperties struct {
 	StateComment *string `json:"stateComment,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionCreateParameterProperties parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameterProperties struct {
 	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
@@ -9766,12 +10482,14 @@ type SubscriptionCreateParameterProperties struct {
 	State SubscriptionState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionCreateParameters subscription create details.
 type SubscriptionCreateParameters struct {
 	// SubscriptionCreateParameterProperties - Subscription contract properties.
 	*SubscriptionCreateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for SubscriptionCreateParameters.
 func (scp SubscriptionCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9781,6 +10499,7 @@ func (scp SubscriptionCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for SubscriptionCreateParameters struct.
 func (scp *SubscriptionCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9805,6 +10524,7 @@ func (scp *SubscriptionCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionKeyParameterNamesContract subscription key parameter names details.
 type SubscriptionKeyParameterNamesContract struct {
 	// Header - Subscription key header name.
@@ -9813,12 +10533,14 @@ type SubscriptionKeyParameterNamesContract struct {
 	Query *string `json:"query,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionsDelegationSettingsProperties subscriptions delegation settings properties.
 type SubscriptionsDelegationSettingsProperties struct {
 	// Enabled - Enable or disable delegation for subscriptions.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionUpdateParameterProperties parameters supplied to the Update subscription operation.
 type SubscriptionUpdateParameterProperties struct {
 	// UserID - User identifier path: /users/{uid}
@@ -9839,12 +10561,14 @@ type SubscriptionUpdateParameterProperties struct {
 	StateComment *string `json:"stateComment,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionUpdateParameters subscription update details.
 type SubscriptionUpdateParameters struct {
 	// SubscriptionUpdateParameterProperties - Subscription Update contract properties.
 	*SubscriptionUpdateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for SubscriptionUpdateParameters.
 func (sup SubscriptionUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9854,6 +10578,7 @@ func (sup SubscriptionUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for SubscriptionUpdateParameters struct.
 func (sup *SubscriptionUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9878,6 +10603,7 @@ func (sup *SubscriptionUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagCollection paged Tag list representation.
 type TagCollection struct {
 	autorest.Response `json:"-"`
@@ -9887,12 +10613,14 @@ type TagCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagCollectionIterator provides access to a complete listing of TagContract values.
 type TagCollectionIterator struct {
 	i    int
 	page TagCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *TagCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -9919,6 +10647,7 @@ func (iter *TagCollectionIterator) NextWithContext(ctx context.Context) (err err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -9926,16 +10655,19 @@ func (iter *TagCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter TagCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter TagCollectionIterator) Response() TagCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter TagCollectionIterator) Value() TagContract {
@@ -9945,6 +10677,7 @@ func (iter TagCollectionIterator) Value() TagContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (tc TagCollection) IsEmpty() bool {
 	return tc.Value == nil || len(*tc.Value) == 0
@@ -9962,12 +10695,14 @@ func (tc TagCollection) tagCollectionPreparer(ctx context.Context) (*http.Reques
 		autorest.WithBaseURL(to.String(tc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagCollectionPage contains a page of TagContract values.
 type TagCollectionPage struct {
 	fn func(context.Context, TagCollection) (TagCollection, error)
 	tc TagCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *TagCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -9989,6 +10724,7 @@ func (page *TagCollectionPage) NextWithContext(ctx context.Context) (err error) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -9996,16 +10732,19 @@ func (page *TagCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page TagCollectionPage) NotDone() bool {
 	return !page.tc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page TagCollectionPage) Response() TagCollection {
 	return page.tc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page TagCollectionPage) Values() []TagContract {
 	if page.tc.IsEmpty() {
@@ -10014,6 +10753,7 @@ func (page TagCollectionPage) Values() []TagContract {
 	return *page.tc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagContract tag Contract details.
 type TagContract struct {
 	autorest.Response `json:"-"`
@@ -10027,6 +10767,7 @@ type TagContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for TagContract.
 func (tc TagContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10045,6 +10786,7 @@ func (tc TagContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for TagContract struct.
 func (tc *TagContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10096,18 +10838,21 @@ func (tc *TagContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagContractProperties tag contract Properties.
 type TagContractProperties struct {
 	// DisplayName - Tag name.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagCreateUpdateParameters parameters supplied to Create/Update Tag operations.
 type TagCreateUpdateParameters struct {
 	// TagContractProperties - Properties supplied to Create Tag operation.
 	*TagContractProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for TagCreateUpdateParameters.
 func (tcup TagCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10117,6 +10862,7 @@ func (tcup TagCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for TagCreateUpdateParameters struct.
 func (tcup *TagCreateUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10141,6 +10887,7 @@ func (tcup *TagCreateUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionBaseProperties parameters supplied to the Create TagDescription operation.
 type TagDescriptionBaseProperties struct {
 	// Description - Description of the Tag.
@@ -10151,6 +10898,7 @@ type TagDescriptionBaseProperties struct {
 	ExternalDocsDescription *string `json:"externalDocsDescription,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionCollection paged TagDescription list representation.
 type TagDescriptionCollection struct {
 	autorest.Response `json:"-"`
@@ -10160,12 +10908,14 @@ type TagDescriptionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionCollectionIterator provides access to a complete listing of TagDescriptionContract values.
 type TagDescriptionCollectionIterator struct {
 	i    int
 	page TagDescriptionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *TagDescriptionCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -10192,6 +10942,7 @@ func (iter *TagDescriptionCollectionIterator) NextWithContext(ctx context.Contex
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10199,16 +10950,19 @@ func (iter *TagDescriptionCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter TagDescriptionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter TagDescriptionCollectionIterator) Response() TagDescriptionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter TagDescriptionCollectionIterator) Value() TagDescriptionContract {
@@ -10218,6 +10972,7 @@ func (iter TagDescriptionCollectionIterator) Value() TagDescriptionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (tdc TagDescriptionCollection) IsEmpty() bool {
 	return tdc.Value == nil || len(*tdc.Value) == 0
@@ -10235,12 +10990,14 @@ func (tdc TagDescriptionCollection) tagDescriptionCollectionPreparer(ctx context
 		autorest.WithBaseURL(to.String(tdc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionCollectionPage contains a page of TagDescriptionContract values.
 type TagDescriptionCollectionPage struct {
 	fn  func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)
 	tdc TagDescriptionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *TagDescriptionCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -10262,6 +11019,7 @@ func (page *TagDescriptionCollectionPage) NextWithContext(ctx context.Context) (
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10269,16 +11027,19 @@ func (page *TagDescriptionCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page TagDescriptionCollectionPage) NotDone() bool {
 	return !page.tdc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page TagDescriptionCollectionPage) Response() TagDescriptionCollection {
 	return page.tdc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page TagDescriptionCollectionPage) Values() []TagDescriptionContract {
 	if page.tdc.IsEmpty() {
@@ -10287,6 +11048,7 @@ func (page TagDescriptionCollectionPage) Values() []TagDescriptionContract {
 	return *page.tdc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionContract contract details.
 type TagDescriptionContract struct {
 	autorest.Response `json:"-"`
@@ -10300,6 +11062,7 @@ type TagDescriptionContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for TagDescriptionContract.
 func (tdc TagDescriptionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10318,6 +11081,7 @@ func (tdc TagDescriptionContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for TagDescriptionContract struct.
 func (tdc *TagDescriptionContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10369,6 +11133,7 @@ func (tdc *TagDescriptionContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionContractProperties tagDescription contract Properties.
 type TagDescriptionContractProperties struct {
 	// DisplayName - Tag name.
@@ -10381,12 +11146,14 @@ type TagDescriptionContractProperties struct {
 	ExternalDocsDescription *string `json:"externalDocsDescription,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagDescriptionCreateParameters parameters supplied to the Create TagDescription operation.
 type TagDescriptionCreateParameters struct {
 	// TagDescriptionBaseProperties - Properties supplied to Create TagDescription operation.
 	*TagDescriptionBaseProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for TagDescriptionCreateParameters.
 func (tdcp TagDescriptionCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10396,6 +11163,7 @@ func (tdcp TagDescriptionCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for TagDescriptionCreateParameters struct.
 func (tdcp *TagDescriptionCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10420,6 +11188,7 @@ func (tdcp *TagDescriptionCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagResourceCollection paged Tag list representation.
 type TagResourceCollection struct {
 	autorest.Response `json:"-"`
@@ -10431,12 +11200,14 @@ type TagResourceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagResourceCollectionIterator provides access to a complete listing of TagResourceContract values.
 type TagResourceCollectionIterator struct {
 	i    int
 	page TagResourceCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *TagResourceCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -10463,6 +11234,7 @@ func (iter *TagResourceCollectionIterator) NextWithContext(ctx context.Context) 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10470,16 +11242,19 @@ func (iter *TagResourceCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter TagResourceCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter TagResourceCollectionIterator) Response() TagResourceCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter TagResourceCollectionIterator) Value() TagResourceContract {
@@ -10489,6 +11264,7 @@ func (iter TagResourceCollectionIterator) Value() TagResourceContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (trc TagResourceCollection) IsEmpty() bool {
 	return trc.Value == nil || len(*trc.Value) == 0
@@ -10506,12 +11282,14 @@ func (trc TagResourceCollection) tagResourceCollectionPreparer(ctx context.Conte
 		autorest.WithBaseURL(to.String(trc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagResourceCollectionPage contains a page of TagResourceContract values.
 type TagResourceCollectionPage struct {
 	fn  func(context.Context, TagResourceCollection) (TagResourceCollection, error)
 	trc TagResourceCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *TagResourceCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -10533,6 +11311,7 @@ func (page *TagResourceCollectionPage) NextWithContext(ctx context.Context) (err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10540,16 +11319,19 @@ func (page *TagResourceCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page TagResourceCollectionPage) NotDone() bool {
 	return !page.trc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page TagResourceCollectionPage) Response() TagResourceCollection {
 	return page.trc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page TagResourceCollectionPage) Values() []TagResourceContract {
 	if page.trc.IsEmpty() {
@@ -10558,6 +11340,7 @@ func (page TagResourceCollectionPage) Values() []TagResourceContract {
 	return *page.trc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagResourceContract tagResource contract properties.
 type TagResourceContract struct {
 	// Tag - Tag associated with the resource.
@@ -10570,6 +11353,7 @@ type TagResourceContract struct {
 	Product *ProductTagResourceContractProperties `json:"product,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TagTagResourceContractProperties contract defining the Tag property in the Tag Resource Contract
 type TagTagResourceContractProperties struct {
 	// ID - Tag identifier
@@ -10578,12 +11362,14 @@ type TagTagResourceContractProperties struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type TenantConfigurationDeployFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationDeployFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
@@ -10607,12 +11393,14 @@ func (future *TenantConfigurationDeployFuture) Result(client TenantConfiguration
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantConfigurationSaveFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type TenantConfigurationSaveFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
@@ -10636,6 +11424,7 @@ func (future *TenantConfigurationSaveFuture) Result(client TenantConfigurationCl
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantConfigurationSyncStateContract tenant Configuration Synchronization State.
 type TenantConfigurationSyncStateContract struct {
 	autorest.Response `json:"-"`
@@ -10655,12 +11444,14 @@ type TenantConfigurationSyncStateContract struct {
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type TenantConfigurationValidateFuture struct {
 	azure.Future
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurationClient) (orc OperationResultContract, err error) {
@@ -10684,6 +11475,7 @@ func (future *TenantConfigurationValidateFuture) Result(client TenantConfigurati
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TermsOfServiceProperties terms of service contract properties.
 type TermsOfServiceProperties struct {
 	// Text - A terms of service text.
@@ -10694,6 +11486,7 @@ type TermsOfServiceProperties struct {
 	ConsentRequired *bool `json:"consentRequired,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TokenBodyParameterContract oAuth acquire token request body parameter (www-url-form-encoded).
 type TokenBodyParameterContract struct {
 	// Name - body parameter name.
@@ -10702,6 +11495,7 @@ type TokenBodyParameterContract struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserCollection paged Users list representation.
 type UserCollection struct {
 	autorest.Response `json:"-"`
@@ -10711,12 +11505,14 @@ type UserCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserCollectionIterator provides access to a complete listing of UserContract values.
 type UserCollectionIterator struct {
 	i    int
 	page UserCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *UserCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -10743,6 +11539,7 @@ func (iter *UserCollectionIterator) NextWithContext(ctx context.Context) (err er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10750,16 +11547,19 @@ func (iter *UserCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter UserCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter UserCollectionIterator) Response() UserCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter UserCollectionIterator) Value() UserContract {
@@ -10769,6 +11569,7 @@ func (iter UserCollectionIterator) Value() UserContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (uc UserCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
@@ -10786,12 +11587,14 @@ func (uc UserCollection) userCollectionPreparer(ctx context.Context) (*http.Requ
 		autorest.WithBaseURL(to.String(uc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserCollectionPage contains a page of UserContract values.
 type UserCollectionPage struct {
 	fn func(context.Context, UserCollection) (UserCollection, error)
 	uc UserCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *UserCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -10813,6 +11616,7 @@ func (page *UserCollectionPage) NextWithContext(ctx context.Context) (err error)
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -10820,16 +11624,19 @@ func (page *UserCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page UserCollectionPage) NotDone() bool {
 	return !page.uc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page UserCollectionPage) Response() UserCollection {
 	return page.uc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page UserCollectionPage) Values() []UserContract {
 	if page.uc.IsEmpty() {
@@ -10838,6 +11645,7 @@ func (page UserCollectionPage) Values() []UserContract {
 	return *page.uc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserContract user details.
 type UserContract struct {
 	autorest.Response `json:"-"`
@@ -10851,6 +11659,7 @@ type UserContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for UserContract.
 func (uc UserContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10869,6 +11678,7 @@ func (uc UserContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for UserContract struct.
 func (uc *UserContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10920,6 +11730,7 @@ func (uc *UserContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserContractProperties user profile.
 type UserContractProperties struct {
 	// FirstName - First name.
@@ -10940,6 +11751,7 @@ type UserContractProperties struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserCreateParameterProperties parameters supplied to the Create User operation.
 type UserCreateParameterProperties struct {
 	// Email - Email address. Must not be empty and must be unique within the service instance.
@@ -10960,12 +11772,14 @@ type UserCreateParameterProperties struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserCreateParameters user create details.
 type UserCreateParameters struct {
 	// UserCreateParameterProperties - User entity create contract properties.
 	*UserCreateParameterProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for UserCreateParameters.
 func (ucp UserCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10975,6 +11789,7 @@ func (ucp UserCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for UserCreateParameters struct.
 func (ucp *UserCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10999,6 +11814,7 @@ func (ucp *UserCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserEntityBaseParameters user Entity Base Parameters set.
 type UserEntityBaseParameters struct {
 	// State - Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal or call any APIs of subscribed products. Default state is Active. Possible values include: 'UserStateActive', 'UserStateBlocked', 'UserStatePending', 'UserStateDeleted'
@@ -11009,6 +11825,7 @@ type UserEntityBaseParameters struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserIdentityCollection list of Users Identity list representation.
 type UserIdentityCollection struct {
 	autorest.Response `json:"-"`
@@ -11020,12 +11837,14 @@ type UserIdentityCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserIdentityCollectionIterator provides access to a complete listing of UserIdentityContract values.
 type UserIdentityCollectionIterator struct {
 	i    int
 	page UserIdentityCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *UserIdentityCollectionIterator) NextWithContext(ctx context.Context) (err error) {
@@ -11052,6 +11871,7 @@ func (iter *UserIdentityCollectionIterator) NextWithContext(ctx context.Context)
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -11059,16 +11879,19 @@ func (iter *UserIdentityCollectionIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter UserIdentityCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (iter UserIdentityCollectionIterator) Response() UserIdentityCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter UserIdentityCollectionIterator) Value() UserIdentityContract {
@@ -11078,6 +11901,7 @@ func (iter UserIdentityCollectionIterator) Value() UserIdentityContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (uic UserIdentityCollection) IsEmpty() bool {
 	return uic.Value == nil || len(*uic.Value) == 0
@@ -11095,12 +11919,14 @@ func (uic UserIdentityCollection) userIdentityCollectionPreparer(ctx context.Con
 		autorest.WithBaseURL(to.String(uic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserIdentityCollectionPage contains a page of UserIdentityContract values.
 type UserIdentityCollectionPage struct {
 	fn  func(context.Context, UserIdentityCollection) (UserIdentityCollection, error)
 	uic UserIdentityCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *UserIdentityCollectionPage) NextWithContext(ctx context.Context) (err error) {
@@ -11122,6 +11948,7 @@ func (page *UserIdentityCollectionPage) NextWithContext(ctx context.Context) (er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
@@ -11129,16 +11956,19 @@ func (page *UserIdentityCollectionPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page UserIdentityCollectionPage) NotDone() bool {
 	return !page.uic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Response returns the raw server response from the last page request.
 func (page UserIdentityCollectionPage) Response() UserIdentityCollection {
 	return page.uic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page UserIdentityCollectionPage) Values() []UserIdentityContract {
 	if page.uic.IsEmpty() {
@@ -11147,6 +11977,7 @@ func (page UserIdentityCollectionPage) Values() []UserIdentityContract {
 	return *page.uic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserIdentityContract user identity details.
 type UserIdentityContract struct {
 	// Provider - Identity provider name.
@@ -11155,6 +11986,7 @@ type UserIdentityContract struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserTokenParameters parameters supplied to the Get User Token operation.
 type UserTokenParameters struct {
 	// KeyType - The Key to be used to generate token for user. Possible values include: 'Primary', 'Secondary'
@@ -11163,6 +11995,7 @@ type UserTokenParameters struct {
 	Expiry *date.Time `json:"expiry,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserTokenResult get User Token response details.
 type UserTokenResult struct {
 	autorest.Response `json:"-"`
@@ -11170,12 +12003,14 @@ type UserTokenResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserUpdateParameters user update parameters.
 type UserUpdateParameters struct {
 	// UserUpdateParametersProperties - User entity update contract properties.
 	*UserUpdateParametersProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // MarshalJSON is the custom marshaler for UserUpdateParameters.
 func (uup UserUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -11185,6 +12020,7 @@ func (uup UserUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UnmarshalJSON is the custom unmarshaler for UserUpdateParameters struct.
 func (uup *UserUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -11209,6 +12045,7 @@ func (uup *UserUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UserUpdateParametersProperties parameters supplied to the Update User operation.
 type UserUpdateParametersProperties struct {
 	// Email - Email address. Must not be empty and must be unique within the service instance.
@@ -11227,6 +12064,7 @@ type UserUpdateParametersProperties struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // VirtualNetworkConfiguration configuration of a virtual network to which API Management service is
 // deployed.
 type VirtualNetworkConfiguration struct {
@@ -11238,6 +12076,7 @@ type VirtualNetworkConfiguration struct {
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // X509CertificateName properties of server X509Names.
 type X509CertificateName struct {
 	// Name - Common Name of the Certificate.

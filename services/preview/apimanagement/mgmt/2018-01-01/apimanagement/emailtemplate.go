@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // EmailTemplateClient is the apiManagement Client
 type EmailTemplateClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewEmailTemplateClient creates an instance of the EmailTemplateClient client.
 func NewEmailTemplateClient(subscriptionID string) EmailTemplateClient {
 	return NewEmailTemplateClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewEmailTemplateClientWithBaseURI creates an instance of the EmailTemplateClient client.
 func NewEmailTemplateClientWithBaseURI(baseURI string, subscriptionID string) EmailTemplateClient {
 	return EmailTemplateClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate updates an Email Template.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -97,6 +101,7 @@ func (client EmailTemplateClient) CreateOrUpdate(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client EmailTemplateClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, parameters EmailTemplateUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -125,6 +130,7 @@ func (client EmailTemplateClient) CreateOrUpdatePreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -132,6 +138,7 @@ func (client EmailTemplateClient) CreateOrUpdateSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) CreateOrUpdateResponder(resp *http.Response) (result EmailTemplateContract, err error) {
@@ -145,6 +152,7 @@ func (client EmailTemplateClient) CreateOrUpdateResponder(resp *http.Response) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete reset the Email Template to default template provided by the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -192,6 +200,7 @@ func (client EmailTemplateClient) Delete(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client EmailTemplateClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -215,6 +224,7 @@ func (client EmailTemplateClient) DeletePreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -222,6 +232,7 @@ func (client EmailTemplateClient) DeleteSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -234,6 +245,7 @@ func (client EmailTemplateClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the email template specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -279,6 +291,7 @@ func (client EmailTemplateClient) Get(ctx context.Context, resourceGroupName str
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client EmailTemplateClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -301,6 +314,7 @@ func (client EmailTemplateClient) GetPreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -308,6 +322,7 @@ func (client EmailTemplateClient) GetSender(req *http.Request) (*http.Response, 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) GetResponder(resp *http.Response) (result EmailTemplateContract, err error) {
@@ -321,6 +336,7 @@ func (client EmailTemplateClient) GetResponder(resp *http.Response) (result Emai
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the email template specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -366,6 +382,7 @@ func (client EmailTemplateClient) GetEntityTag(ctx context.Context, resourceGrou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client EmailTemplateClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -388,6 +405,7 @@ func (client EmailTemplateClient) GetEntityTagPreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -395,6 +413,7 @@ func (client EmailTemplateClient) GetEntityTagSender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -407,6 +426,7 @@ func (client EmailTemplateClient) GetEntityTagResponder(resp *http.Response) (re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of properties defined within a service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -460,6 +480,7 @@ func (client EmailTemplateClient) ListByService(ctx context.Context, resourceGro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client EmailTemplateClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -487,6 +508,7 @@ func (client EmailTemplateClient) ListByServicePreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -494,6 +516,7 @@ func (client EmailTemplateClient) ListByServiceSender(req *http.Request) (*http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) ListByServiceResponder(resp *http.Response) (result EmailTemplateCollection, err error) {
@@ -528,6 +551,7 @@ func (client EmailTemplateClient) listByServiceNextResults(ctx context.Context, 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client EmailTemplateClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result EmailTemplateCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -544,6 +568,7 @@ func (client EmailTemplateClient) ListByServiceComplete(ctx context.Context, res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates the specific Email Template.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -590,6 +615,7 @@ func (client EmailTemplateClient) Update(ctx context.Context, resourceGroupName 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client EmailTemplateClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, templateName TemplateName, parameters EmailTemplateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -614,6 +640,7 @@ func (client EmailTemplateClient) UpdatePreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client EmailTemplateClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -621,6 +648,7 @@ func (client EmailTemplateClient) UpdateSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client EmailTemplateClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

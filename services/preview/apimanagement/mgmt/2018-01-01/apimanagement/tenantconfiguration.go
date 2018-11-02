@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantConfigurationClient is the apiManagement Client
 type TenantConfigurationClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTenantConfigurationClient creates an instance of the TenantConfigurationClient client.
 func NewTenantConfigurationClient(subscriptionID string) TenantConfigurationClient {
 	return NewTenantConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTenantConfigurationClientWithBaseURI creates an instance of the TenantConfigurationClient client.
 func NewTenantConfigurationClientWithBaseURI(baseURI string, subscriptionID string) TenantConfigurationClient {
 	return TenantConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Deploy this operation applies changes from the specified Git branch to the configuration database. This is a long
 // running operation and could take several minutes to complete.
 // Parameters:
@@ -83,6 +87,7 @@ func (client TenantConfigurationClient) Deploy(ctx context.Context, resourceGrou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeployPreparer prepares the Deploy request.
 func (client TenantConfigurationClient) DeployPreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters DeployConfigurationParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -107,6 +112,7 @@ func (client TenantConfigurationClient) DeployPreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeploySender sends the Deploy request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) DeploySender(req *http.Request) (future TenantConfigurationDeployFuture, err error) {
@@ -120,6 +126,7 @@ func (client TenantConfigurationClient) DeploySender(req *http.Request) (future 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeployResponder handles the response to the Deploy request. The method always
 // closes the http.Response Body.
 func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (result OperationResultContract, err error) {
@@ -133,6 +140,7 @@ func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSyncState gets the status of the most recent synchronization between the configuration database and the Git
 // repository.
 // Parameters:
@@ -178,6 +186,7 @@ func (client TenantConfigurationClient) GetSyncState(ctx context.Context, resour
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSyncStatePreparer prepares the GetSyncState request.
 func (client TenantConfigurationClient) GetSyncStatePreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -200,6 +209,7 @@ func (client TenantConfigurationClient) GetSyncStatePreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSyncStateSender sends the GetSyncState request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) GetSyncStateSender(req *http.Request) (*http.Response, error) {
@@ -207,6 +217,7 @@ func (client TenantConfigurationClient) GetSyncStateSender(req *http.Request) (*
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSyncStateResponder handles the response to the GetSyncState request. The method always
 // closes the http.Response Body.
 func (client TenantConfigurationClient) GetSyncStateResponder(resp *http.Response) (result TenantConfigurationSyncStateContract, err error) {
@@ -220,6 +231,7 @@ func (client TenantConfigurationClient) GetSyncStateResponder(resp *http.Respons
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Save this operation creates a commit with the current configuration snapshot to the specified branch in the
 // repository. This is a long running operation and could take several minutes to complete.
 // Parameters:
@@ -262,6 +274,7 @@ func (client TenantConfigurationClient) Save(ctx context.Context, resourceGroupN
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SavePreparer prepares the Save request.
 func (client TenantConfigurationClient) SavePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters SaveConfigurationParameter) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -286,6 +299,7 @@ func (client TenantConfigurationClient) SavePreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SaveSender sends the Save request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) SaveSender(req *http.Request) (future TenantConfigurationSaveFuture, err error) {
@@ -299,6 +313,7 @@ func (client TenantConfigurationClient) SaveSender(req *http.Request) (future Te
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SaveResponder handles the response to the Save request. The method always
 // closes the http.Response Body.
 func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (result OperationResultContract, err error) {
@@ -312,6 +327,7 @@ func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (resu
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Validate this operation validates the changes in the specified Git branch. This is a long running operation and
 // could take several minutes to complete.
 // Parameters:
@@ -354,6 +370,7 @@ func (client TenantConfigurationClient) Validate(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ValidatePreparer prepares the Validate request.
 func (client TenantConfigurationClient) ValidatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters DeployConfigurationParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -378,6 +395,7 @@ func (client TenantConfigurationClient) ValidatePreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) ValidateSender(req *http.Request) (future TenantConfigurationValidateFuture, err error) {
@@ -391,6 +409,7 @@ func (client TenantConfigurationClient) ValidateSender(req *http.Request) (futur
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
 func (client TenantConfigurationClient) ValidateResponder(resp *http.Response) (result OperationResultContract, err error) {

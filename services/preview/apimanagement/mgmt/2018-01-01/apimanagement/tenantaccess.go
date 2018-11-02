@@ -26,21 +26,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // TenantAccessClient is the apiManagement Client
 type TenantAccessClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTenantAccessClient creates an instance of the TenantAccessClient client.
 func NewTenantAccessClient(subscriptionID string) TenantAccessClient {
 	return NewTenantAccessClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewTenantAccessClientWithBaseURI creates an instance of the TenantAccessClient client.
 func NewTenantAccessClientWithBaseURI(baseURI string, subscriptionID string) TenantAccessClient {
 	return TenantAccessClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get get tenant access information details.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -85,6 +89,7 @@ func (client TenantAccessClient) Get(ctx context.Context, resourceGroupName stri
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client TenantAccessClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -107,6 +112,7 @@ func (client TenantAccessClient) GetPreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -114,6 +120,7 @@ func (client TenantAccessClient) GetSender(req *http.Request) (*http.Response, e
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client TenantAccessClient) GetResponder(resp *http.Response) (result AccessInformationContract, err error) {
@@ -127,6 +134,7 @@ func (client TenantAccessClient) GetResponder(resp *http.Response) (result Acces
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKey regenerate primary access key.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -171,6 +179,7 @@ func (client TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, resou
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeyPreparer prepares the RegeneratePrimaryKey request.
 func (client TenantAccessClient) RegeneratePrimaryKeyPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -193,6 +202,7 @@ func (client TenantAccessClient) RegeneratePrimaryKeyPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeySender sends the RegeneratePrimaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) RegeneratePrimaryKeySender(req *http.Request) (*http.Response, error) {
@@ -200,6 +210,7 @@ func (client TenantAccessClient) RegeneratePrimaryKeySender(req *http.Request) (
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeyResponder handles the response to the RegeneratePrimaryKey request. The method always
 // closes the http.Response Body.
 func (client TenantAccessClient) RegeneratePrimaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -212,6 +223,7 @@ func (client TenantAccessClient) RegeneratePrimaryKeyResponder(resp *http.Respon
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKey regenerate secondary access key.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -256,6 +268,7 @@ func (client TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeyPreparer prepares the RegenerateSecondaryKey request.
 func (client TenantAccessClient) RegenerateSecondaryKeyPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -278,6 +291,7 @@ func (client TenantAccessClient) RegenerateSecondaryKeyPreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeySender sends the RegenerateSecondaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) RegenerateSecondaryKeySender(req *http.Request) (*http.Response, error) {
@@ -285,6 +299,7 @@ func (client TenantAccessClient) RegenerateSecondaryKeySender(req *http.Request)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeyResponder handles the response to the RegenerateSecondaryKey request. The method always
 // closes the http.Response Body.
 func (client TenantAccessClient) RegenerateSecondaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -297,6 +312,7 @@ func (client TenantAccessClient) RegenerateSecondaryKeyResponder(resp *http.Resp
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update update tenant access information details.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -344,6 +360,7 @@ func (client TenantAccessClient) Update(ctx context.Context, resourceGroupName s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client TenantAccessClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, parameters AccessInformationUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -369,6 +386,7 @@ func (client TenantAccessClient) UpdatePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -376,6 +394,7 @@ func (client TenantAccessClient) UpdateSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client TenantAccessClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

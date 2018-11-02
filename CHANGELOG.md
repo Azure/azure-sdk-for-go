@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v22.1.0`
+
+Fixed a regression in the regex used for verifying resource group names.
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2018-01-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerinstance | 2018-10-01 |
+| documentdb | 2015-04-08 |
+| storage | 2018-07-01 |
+
 ## `v22.0.0`
 
 All packages now support tracing, see the [README](./README.md) section `Tracing and Metrics` for more details.

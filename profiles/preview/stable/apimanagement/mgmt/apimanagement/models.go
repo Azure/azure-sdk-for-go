@@ -19,7 +19,7 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement"
+import original "github.com/Azure/azure-sdk-for-go/services/stable/apimanagement/mgmt/2018-01-01/apimanagement"
 
 type APIClient = original.APIClient
 type APIDiagnosticClient = original.APIDiagnosticClient

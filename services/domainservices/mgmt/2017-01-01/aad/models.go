@@ -421,18 +421,6 @@ func (page DomainServiceListResultPage) Values() []DomainService {
 	return *page.dslr.Value
 }
 
-// DomainServicePatchProperties update Properties of the Domain Service.
-type DomainServicePatchProperties struct {
-	// LdapsSettings - Secure LDAP Settings
-	LdapsSettings *LdapsSettings `json:"ldapsSettings,omitempty"`
-	// NotificationSettings - Notification Settings
-	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
-	// DomainSecuritySettings - DomainSecurity Settings
-	DomainSecuritySettings *DomainSecuritySettings `json:"domainSecuritySettings,omitempty"`
-	// FilteredSync - Enabled or Disabled flag to turn on Group-based filtered sync. Possible values include: 'FilteredSyncEnabled', 'FilteredSyncDisabled'
-	FilteredSync FilteredSync `json:"filteredSync,omitempty"`
-}
-
 // DomainServiceProperties properties of the Domain Service.
 type DomainServiceProperties struct {
 	// TenantID - Azure Active Directory tenant id

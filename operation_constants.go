@@ -4,8 +4,10 @@ const vendorPrefix = "com.microsoft:"
 
 // Operations
 const (
-	lockRenewalOperationName = vendorPrefix + "renew-lock"
-	peekMessageOperationID   = vendorPrefix + "peek-message"
+	lockRenewalOperationName   = vendorPrefix + "renew-lock"
+	peekMessageOperationID     = vendorPrefix + "peek-message"
+	scheduleMessageOperationID = vendorPrefix + "schedule-message"
+	cancelScheduledOperationID = vendorPrefix + "cancel-scheduled-message"
 )
 
 // Field Descriptions

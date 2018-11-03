@@ -46,6 +46,12 @@ resource "azurerm_servicebus_queue" "scheduledMessages" {
   namespace_name = "${azurerm_servicebus_namespace.test.name}"
 }
 
+resource "azurerm_servicebus_queue" "queueSchedule" {
+  name = "schedulewithqueue"
+  resource_group_name = "${azurerm_resource_group.test.name}"
+  namespace_name = "${azurerm_servicebus_namespace.test.name}"
+}
+
 resource "azurerm_servicebus_queue" "helloworld" {
   name = "helloworld"
   resource_group_name = "${azurerm_resource_group.test.name}"

@@ -21,7 +21,7 @@ func ExampleMessage_ScheduleAt() {
 	// Create a client to communicate with a Service Bus Namespace.
 	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("FATAL: ", err)
 		return
 	}
 
@@ -33,10 +33,10 @@ func ExampleMessage_ScheduleAt() {
 	}
 
 	// The delay that we should schedule a message for.
-	const waitTime = time.Duration(1 * time.Minute)
+	const waitTime = 1 * time.Minute
 	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll buffer our expectations
 	// on either side.
-	const buffer = time.Duration(20 * time.Second)
+	const buffer = 20 * time.Second
 
 	expectedTime := time.Now().Add(waitTime)
 	msg := servicebus.NewMessageFromString("to the future!!")

@@ -25,11 +25,16 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-amqp-common-go/rpc"
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
+	"pack.ag/amqp"
 )
 
 type (
@@ -148,6 +153,139 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 		return err
 	}
 	return q.sender.Send(ctx, event)
+}
+
+// ScheduleAt will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
+// that can be used to cancel each message.
+func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages ...*Message) ([]int64, error) {
+	if len(messages) <= 0 {
+		return nil, errors.New("expected one or more messages")
+	}
+
+	transformed := make([]interface{}, 0, len(messages))
+	for i := range messages {
+		messages[i].ScheduleAt(enqueueTime)
+
+		if messages[i].ID == "" {
+			id, err := uuid.NewV4()
+			if err != nil {
+				return nil, err
+			}
+			messages[i].ID = id.String()
+		}
+
+		rawAmqp, err := messages[i].toMsg()
+		if err != nil {
+			return nil, err
+		}
+		encoded, err := rawAmqp.MarshalBinary()
+		if err != nil {
+			return nil, err
+		}
+
+		individualMessage := map[string]interface{}{
+			"message-id": messages[i].ID,
+			"message":    encoded,
+		}
+		if messages[i].GroupID != nil {
+			individualMessage["session-id"] = *messages[i].GroupID
+		}
+		if partitionKey := messages[i].SystemProperties.PartitionKey; partitionKey != nil {
+			individualMessage["partition-key"] = *partitionKey
+		}
+		if viaPartitionKey := messages[i].SystemProperties.ViaPartitionKey; viaPartitionKey != nil {
+			individualMessage["via-partition-key"] = *viaPartitionKey
+		}
+
+		transformed = append(transformed, individualMessage)
+	}
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			operationFieldName: scheduleMessageOperationID,
+		},
+		Value: map[string]interface{}{
+			"messages": transformed,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties[serverTimeoutFieldName] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	err := q.ensureSender(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	link, err := rpc.NewLink(q.sender.connection, q.ManagementPath())
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	retval := make([]int64, 0, len(messages))
+
+	if rawVal, ok := resp.Message.Value.(map[string]interface{}); ok {
+		const sequenceFieldName = "sequence-numbers"
+		if rawArr, ok := rawVal[sequenceFieldName]; ok {
+			if arr, ok := rawArr.([]int64); ok {
+				for i := range arr {
+					retval = append(retval, arr[i])
+				}
+				return retval, nil
+			}
+			return nil, newErrIncorrectType(sequenceFieldName, []int64{}, rawArr)
+		}
+		return nil, ErrMissingField(sequenceFieldName)
+	}
+	return nil, newErrIncorrectType("value", map[string]interface{}{}, resp.Message.Value)
+}
+
+// CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
+// but have not yet ben enqueued.
+func (q *Queue) CancelScheduled(ctx context.Context, seq ...int64) error {
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			operationFieldName: cancelScheduledOperationID,
+		},
+		Value: map[string]interface{}{
+			"sequence-numbers": seq,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties[serverTimeoutFieldName] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	err := q.ensureSender(ctx)
+	if err != nil {
+		return err
+	}
+
+	link, err := rpc.NewLink(q.sender.connection, q.ManagementPath())
+	if err != nil {
+		return err
+	}
+
+	resp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
+	}
+
+	return nil
 }
 
 // Peek fetches a list of Messages from the Service Bus broker without acquiring a lock or committing to a disposition.

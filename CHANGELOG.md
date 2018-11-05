@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v22.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| datamigration | 2018-04-19<br/>2018-07-15-preview |
+| reservations | 2018-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerregistry | 2018-09-01 |
+| visualstudio | 2014-04-01-preview |
+
 ## `v22.1.0`
 
 Fixed a regression in the regex used for verifying resource group names.

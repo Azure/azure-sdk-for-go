@@ -502,6 +502,7 @@ type RequestHistory = original.RequestHistory
 type RequestHistoryListResult = original.RequestHistoryListResult
 type RequestHistoryListResultIterator = original.RequestHistoryListResultIterator
 type RequestHistoryListResultPage = original.RequestHistoryListResultPage
+type RequestHistoryProperties = original.RequestHistoryProperties
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
 type Response = original.Response

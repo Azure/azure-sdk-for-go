@@ -3689,14 +3689,8 @@ type Request struct {
 // RequestHistory the request history.
 type RequestHistory struct {
 	autorest.Response `json:"-"`
-	// StartTime - The time the request started.
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - The time the request ended.
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// Request - The request.
-	Request *Request `json:"request,omitempty"`
-	// Response - The response.
-	Response *Response `json:"response,omitempty"`
+	// Properties - The request history properties.
+	Properties *RequestHistoryProperties `json:"properties,omitempty"`
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the resource name.
@@ -3712,17 +3706,8 @@ type RequestHistory struct {
 // MarshalJSON is the custom marshaler for RequestHistory.
 func (rh RequestHistory) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rh.StartTime != nil {
-		objectMap["startTime"] = rh.StartTime
-	}
-	if rh.EndTime != nil {
-		objectMap["endTime"] = rh.EndTime
-	}
-	if rh.Request != nil {
-		objectMap["request"] = rh.Request
-	}
-	if rh.Response != nil {
-		objectMap["response"] = rh.Response
+	if rh.Properties != nil {
+		objectMap["properties"] = rh.Properties
 	}
 	if rh.ID != nil {
 		objectMap["id"] = rh.ID
@@ -3876,6 +3861,18 @@ func (page RequestHistoryListResultPage) Values() []RequestHistory {
 		return nil
 	}
 	return *page.rhlr.Value
+}
+
+// RequestHistoryProperties the request history.
+type RequestHistoryProperties struct {
+	// StartTime - The time the request started.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The time the request ended.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Request - The request.
+	Request *Request `json:"request,omitempty"`
+	// Response - The response.
+	Response *Response `json:"response,omitempty"`
 }
 
 // Resource the base resource type.

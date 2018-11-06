@@ -2150,9 +2150,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -2169,9 +2169,10 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -4717,9 +4718,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4736,9 +4737,10 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -4915,9 +4917,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4934,9 +4936,10 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -10137,9 +10140,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -10156,9 +10159,10 @@ type ServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)

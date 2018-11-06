@@ -966,7 +966,9 @@ func (ae APIEntityProperties) MarshalJSON() ([]byte, error) {
 	if ae.APIDefinitionURL != nil {
 		objectMap["apiDefinitionUrl"] = ae.APIDefinitionURL
 	}
-	objectMap["metadata"] = ae.Metadata
+	if ae.Metadata != nil {
+		objectMap["metadata"] = ae.Metadata
+	}
 	if ae.Capabilities != nil {
 		objectMap["capabilities"] = ae.Capabilities
 	}
@@ -1018,7 +1020,9 @@ func (aoas APIOAuthSettings) MarshalJSON() ([]byte, error) {
 	if aoas.RedirectURL != nil {
 		objectMap["redirectUrl"] = aoas.RedirectURL
 	}
-	objectMap["properties"] = aoas.Properties
+	if aoas.Properties != nil {
+		objectMap["properties"] = aoas.Properties
+	}
 	if aoas.CustomParameters != nil {
 		objectMap["customParameters"] = aoas.CustomParameters
 	}
@@ -4208,7 +4212,9 @@ func (c ConnectionProperties) MarshalJSON() ([]byte, error) {
 	if c.NonSecretParameterValues != nil {
 		objectMap["nonSecretParameterValues"] = c.NonSecretParameterValues
 	}
-	objectMap["metadata"] = c.Metadata
+	if c.Metadata != nil {
+		objectMap["metadata"] = c.Metadata
+	}
 	if c.FirstExpirationTime != nil {
 		objectMap["firstExpirationTime"] = c.FirstExpirationTime
 	}
@@ -8979,7 +8985,9 @@ func (paor PremierAddOnRequest) MarshalJSON() ([]byte, error) {
 	if paor.Plan != nil {
 		objectMap["plan"] = paor.Plan
 	}
-	objectMap["properties"] = paor.Properties
+	if paor.Properties != nil {
+		objectMap["properties"] = paor.Properties
+	}
 	if paor.Sku != nil {
 		objectMap["sku"] = paor.Sku
 	}

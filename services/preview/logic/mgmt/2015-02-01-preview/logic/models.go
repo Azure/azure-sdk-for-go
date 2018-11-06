@@ -865,7 +865,9 @@ func (wp WorkflowProperties) MarshalJSON() ([]byte, error) {
 	if wp.DefinitionLink != nil {
 		objectMap["definitionLink"] = wp.DefinitionLink
 	}
-	objectMap["definition"] = wp.Definition
+	if wp.Definition != nil {
+		objectMap["definition"] = wp.Definition
+	}
 	if wp.ParametersLink != nil {
 		objectMap["parametersLink"] = wp.ParametersLink
 	}
@@ -1380,7 +1382,9 @@ func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	if wrp.Code != nil {
 		objectMap["code"] = wrp.Code
 	}
-	objectMap["error"] = wrp.Error
+	if wrp.Error != nil {
+		objectMap["error"] = wrp.Error
+	}
 	if wrp.CorrelationID != nil {
 		objectMap["correlationId"] = wrp.CorrelationID
 	}
@@ -2124,7 +2128,9 @@ func (wvp WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
 	if wvp.DefinitionLink != nil {
 		objectMap["definitionLink"] = wvp.DefinitionLink
 	}
-	objectMap["definition"] = wvp.Definition
+	if wvp.Definition != nil {
+		objectMap["definition"] = wvp.Definition
+	}
 	if wvp.ParametersLink != nil {
 		objectMap["parametersLink"] = wvp.ParametersLink
 	}

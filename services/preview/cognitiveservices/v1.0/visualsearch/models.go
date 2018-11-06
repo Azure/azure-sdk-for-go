@@ -4466,7 +4466,7 @@ type ImageObject struct {
 	HostPageURL *string `json:"hostPageUrl,omitempty"`
 	// ContentSize - Size of the media object content. Use format "value unit" (e.g., "1024 B").
 	ContentSize *string `json:"contentSize,omitempty"`
-	// EncodingFormat - Encoding format (e.g., mp3, mp4, jpeg, etc).
+	// EncodingFormat - Encoding format (e.g., png, gif, jpeg, etc).
 	EncodingFormat *string `json:"encodingFormat,omitempty"`
 	// HostPageDisplayURL - Display URL of the page that hosts the media object.
 	HostPageDisplayURL *string `json:"hostPageDisplayUrl,omitempty"`
@@ -7241,7 +7241,7 @@ type MediaObject struct {
 	HostPageURL *string `json:"hostPageUrl,omitempty"`
 	// ContentSize - Size of the media object content. Use format "value unit" (e.g., "1024 B").
 	ContentSize *string `json:"contentSize,omitempty"`
-	// EncodingFormat - Encoding format (e.g., mp3, mp4, jpeg, etc).
+	// EncodingFormat - Encoding format (e.g., png, gif, jpeg, etc).
 	EncodingFormat *string `json:"encodingFormat,omitempty"`
 	// HostPageDisplayURL - Display URL of the page that hosts the media object.
 	HostPageDisplayURL *string `json:"hostPageDisplayUrl,omitempty"`

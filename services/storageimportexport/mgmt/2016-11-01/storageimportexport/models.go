@@ -683,7 +683,9 @@ type UpdateJobParameters struct {
 // MarshalJSON is the custom marshaler for UpdateJobParameters.
 func (ujp UpdateJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["tags"] = ujp.Tags
+	if ujp.Tags != nil {
+		objectMap["tags"] = ujp.Tags
+	}
 	if ujp.UpdateJobParametersProperties != nil {
 		objectMap["properties"] = ujp.UpdateJobParametersProperties
 	}

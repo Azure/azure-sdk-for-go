@@ -3963,8 +3963,12 @@ func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
 	if mc.MetricNamespace != nil {
 		objectMap["metricNamespace"] = mc.MetricNamespace
 	}
-	objectMap["operator"] = mc.Operator
-	objectMap["timeAggregation"] = mc.TimeAggregation
+	if mc.Operator != nil {
+		objectMap["operator"] = mc.Operator
+	}
+	if mc.TimeAggregation != nil {
+		objectMap["timeAggregation"] = mc.TimeAggregation
+	}
 	if mc.Threshold != nil {
 		objectMap["threshold"] = mc.Threshold
 	}

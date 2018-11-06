@@ -10172,7 +10172,9 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.Href != nil {
 		objectMap["href"] = fe.Href
 	}
-	objectMap["config"] = fe.Config
+	if fe.Config != nil {
+		objectMap["config"] = fe.Config
+	}
 	if fe.Files != nil {
 		objectMap["files"] = fe.Files
 	}

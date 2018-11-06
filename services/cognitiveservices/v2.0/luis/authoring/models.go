@@ -1978,7 +1978,9 @@ func (vi VersionInfo) MarshalJSON() ([]byte, error) {
 	if vi.AssignedEndpointKey != nil {
 		objectMap["assignedEndpointKey"] = vi.AssignedEndpointKey
 	}
-	objectMap["externalApiKeys"] = vi.ExternalAPIKeys
+	if vi.ExternalAPIKeys != nil {
+		objectMap["externalApiKeys"] = vi.ExternalAPIKeys
+	}
 	if vi.IntentsCount != nil {
 		objectMap["intentsCount"] = vi.IntentsCount
 	}

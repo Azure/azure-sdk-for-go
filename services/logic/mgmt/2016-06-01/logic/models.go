@@ -1574,7 +1574,9 @@ type IntegrationAccount struct {
 // MarshalJSON is the custom marshaler for IntegrationAccount.
 func (ia IntegrationAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = ia.Properties
+	if ia.Properties != nil {
+		objectMap["properties"] = ia.Properties
+	}
 	if ia.Sku != nil {
 		objectMap["sku"] = ia.Sku
 	}
@@ -4133,7 +4135,9 @@ func (wp WorkflowProperties) MarshalJSON() ([]byte, error) {
 	if wp.IntegrationAccount != nil {
 		objectMap["integrationAccount"] = wp.IntegrationAccount
 	}
-	objectMap["definition"] = wp.Definition
+	if wp.Definition != nil {
+		objectMap["definition"] = wp.Definition
+	}
 	if wp.Parameters != nil {
 		objectMap["parameters"] = wp.Parameters
 	}
@@ -4808,7 +4812,9 @@ func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	if wrp.Code != nil {
 		objectMap["code"] = wrp.Code
 	}
-	objectMap["error"] = wrp.Error
+	if wrp.Error != nil {
+		objectMap["error"] = wrp.Error
+	}
 	if wrp.CorrelationID != nil {
 		objectMap["correlationId"] = wrp.CorrelationID
 	}
@@ -5698,7 +5704,9 @@ func (wvp WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
 	if wvp.IntegrationAccount != nil {
 		objectMap["integrationAccount"] = wvp.IntegrationAccount
 	}
-	objectMap["definition"] = wvp.Definition
+	if wvp.Definition != nil {
+		objectMap["definition"] = wvp.Definition
+	}
 	if wvp.Parameters != nil {
 		objectMap["parameters"] = wvp.Parameters
 	}

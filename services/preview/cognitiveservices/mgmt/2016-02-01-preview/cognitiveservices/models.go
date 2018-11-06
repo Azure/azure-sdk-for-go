@@ -333,7 +333,9 @@ func (acp AccountCreateParameters) MarshalJSON() ([]byte, error) {
 	if acp.Tags != nil {
 		objectMap["tags"] = acp.Tags
 	}
-	objectMap["properties"] = acp.Properties
+	if acp.Properties != nil {
+		objectMap["properties"] = acp.Properties
+	}
 	return json.Marshal(objectMap)
 }
 

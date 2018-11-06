@@ -1678,7 +1678,9 @@ func (scp ServiceCreateParameters) MarshalJSON() ([]byte, error) {
 	if scp.Tags != nil {
 		objectMap["tags"] = scp.Tags
 	}
-	objectMap["properties"] = scp.Properties
+	if scp.Properties != nil {
+		objectMap["properties"] = scp.Properties
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -1704,7 +1706,9 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	if sup.Tags != nil {
 		objectMap["tags"] = sup.Tags
 	}
-	objectMap["properties"] = sup.Properties
+	if sup.Properties != nil {
+		objectMap["properties"] = sup.Properties
+	}
 	return json.Marshal(objectMap)
 }
 

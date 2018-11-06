@@ -863,7 +863,9 @@ func (vVar Volume) MarshalJSON() ([]byte, error) {
 	if vVar.AzureFile != nil {
 		objectMap["azureFile"] = vVar.AzureFile
 	}
-	objectMap["emptyDir"] = vVar.EmptyDir
+	if vVar.EmptyDir != nil {
+		objectMap["emptyDir"] = vVar.EmptyDir
+	}
 	if vVar.Secret != nil {
 		objectMap["secret"] = vVar.Secret
 	}

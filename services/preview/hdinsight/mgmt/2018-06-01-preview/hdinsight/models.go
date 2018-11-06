@@ -531,7 +531,9 @@ func (cd ClusterDefinition) MarshalJSON() ([]byte, error) {
 	if cd.ComponentVersion != nil {
 		objectMap["componentVersion"] = cd.ComponentVersion
 	}
-	objectMap["configurations"] = cd.Configurations
+	if cd.Configurations != nil {
+		objectMap["configurations"] = cd.Configurations
+	}
 	return json.Marshal(objectMap)
 }
 

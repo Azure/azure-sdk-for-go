@@ -1027,7 +1027,9 @@ func (pd ParameterDefinition) MarshalJSON() ([]byte, error) {
 	if pd.ParameterDefinitionMetadata != nil {
 		objectMap["metadata"] = pd.ParameterDefinitionMetadata
 	}
-	objectMap["defaultValue"] = pd.DefaultValue
+	if pd.DefaultValue != nil {
+		objectMap["defaultValue"] = pd.DefaultValue
+	}
 	if pd.AllowedValues != nil {
 		objectMap["allowedValues"] = pd.AllowedValues
 	}
@@ -1293,8 +1295,12 @@ type Properties struct {
 // MarshalJSON is the custom marshaler for Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["versions"] = p.Versions
-	objectMap["layout"] = p.Layout
+	if p.Versions != nil {
+		objectMap["versions"] = p.Versions
+	}
+	if p.Layout != nil {
+		objectMap["layout"] = p.Layout
+	}
 	if p.Status != nil {
 		objectMap["status"] = p.Status
 	}
@@ -2068,7 +2074,9 @@ func (tap TemplateArtifactProperties) MarshalJSON() ([]byte, error) {
 	if tap.DependsOn != nil {
 		objectMap["dependsOn"] = tap.DependsOn
 	}
-	objectMap["template"] = tap.Template
+	if tap.Template != nil {
+		objectMap["template"] = tap.Template
+	}
 	if tap.ResourceGroup != nil {
 		objectMap["resourceGroup"] = tap.ResourceGroup
 	}

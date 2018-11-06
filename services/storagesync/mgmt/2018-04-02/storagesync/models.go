@@ -1643,7 +1643,9 @@ func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	if sup.Tags != nil {
 		objectMap["tags"] = sup.Tags
 	}
-	objectMap["properties"] = sup.Properties
+	if sup.Properties != nil {
+		objectMap["properties"] = sup.Properties
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -1765,7 +1767,9 @@ func (sgcp SyncGroupCreateParameters) MarshalJSON() ([]byte, error) {
 	if sgcp.Tags != nil {
 		objectMap["tags"] = sgcp.Tags
 	}
-	objectMap["properties"] = sgcp.Properties
+	if sgcp.Properties != nil {
+		objectMap["properties"] = sgcp.Properties
+	}
 	return json.Marshal(objectMap)
 }
 

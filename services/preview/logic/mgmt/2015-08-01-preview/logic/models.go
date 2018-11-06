@@ -885,7 +885,9 @@ type IntegrationAccount struct {
 // MarshalJSON is the custom marshaler for IntegrationAccount.
 func (ia IntegrationAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = ia.Properties
+	if ia.Properties != nil {
+		objectMap["properties"] = ia.Properties
+	}
 	if ia.Sku != nil {
 		objectMap["sku"] = ia.Sku
 	}

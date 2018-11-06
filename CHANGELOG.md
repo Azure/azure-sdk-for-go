@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v22.2.1`
+
+Marshalling a nil object no longer includes a `null` in the JSON body for the object's field.
+
 ## `v22.2.0`
 
 ### New Packages

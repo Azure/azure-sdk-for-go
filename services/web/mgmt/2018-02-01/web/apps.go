@@ -3115,6 +3115,97 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionResponder(re
 	return
 }
 
+// CreateOrUpdateSwiftVirtualNetworkConnection1 integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
+// in use by another App Service Plan other than the one this App is in.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// connectionEnvelope - properties of the Virtual Network connection. See example.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnection1(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSwiftVirtualNetworkConnection1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnection1", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateSwiftVirtualNetworkConnection1Preparer(ctx, resourceGroupName, name, connectionEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnection1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSwiftVirtualNetworkConnection1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnection1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateSwiftVirtualNetworkConnection1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnection1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnection1Preparer prepares the CreateOrUpdateSwiftVirtualNetworkConnection1 request.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnection1Preparer(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithJSON(connectionEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnection1Sender sends the CreateOrUpdateSwiftVirtualNetworkConnection1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnection1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnection1Responder handles the response to the CreateOrUpdateSwiftVirtualNetworkConnection1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnection1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that
 // 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not
@@ -3199,6 +3290,100 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlotSender(r
 // CreateOrUpdateSwiftVirtualNetworkConnectionSlotResponder handles the response to the CreateOrUpdateSwiftVirtualNetworkConnectionSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlotResponder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot1 integrates this Web App with a Virtual Network. This requires that
+// 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
+// in use by another App Service Plan other than the one this App is in.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// connectionEnvelope - properties of the Virtual Network connection. See example.
+// slot - name of the deployment slot. If a slot is not specified, the API will add or update connections for
+// the production slot.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlot1(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, slot string) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionSlot1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionSlot1", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Preparer(ctx, resourceGroupName, name, connectionEnvelope, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSwiftVirtualNetworkConnectionSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Preparer prepares the CreateOrUpdateSwiftVirtualNetworkConnectionSlot1 request.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Preparer(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithJSON(connectionEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Sender sends the CreateOrUpdateSwiftVirtualNetworkConnectionSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Responder handles the response to the CreateOrUpdateSwiftVirtualNetworkConnectionSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlot1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -6489,6 +6674,90 @@ func (client AppsClient) DeleteSwiftVirtualNetworkResponder(resp *http.Response)
 	return
 }
 
+// DeleteSwiftVirtualNetwork1 deletes a Swift Virtual Network connection from an app (or deployment slot).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) DeleteSwiftVirtualNetwork1(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteSwiftVirtualNetwork1")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteSwiftVirtualNetwork1", err.Error())
+	}
+
+	req, err := client.DeleteSwiftVirtualNetwork1Preparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSwiftVirtualNetwork1Sender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteSwiftVirtualNetwork1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteSwiftVirtualNetwork1Preparer prepares the DeleteSwiftVirtualNetwork1 request.
+func (client AppsClient) DeleteSwiftVirtualNetwork1Preparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSwiftVirtualNetwork1Sender sends the DeleteSwiftVirtualNetwork1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteSwiftVirtualNetwork1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteSwiftVirtualNetwork1Responder handles the response to the DeleteSwiftVirtualNetwork1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteSwiftVirtualNetwork1Responder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // DeleteSwiftVirtualNetworkSlot deletes a Swift Virtual Network connection from an app (or deployment slot).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -6567,6 +6836,93 @@ func (client AppsClient) DeleteSwiftVirtualNetworkSlotSender(req *http.Request) 
 // DeleteSwiftVirtualNetworkSlotResponder handles the response to the DeleteSwiftVirtualNetworkSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) DeleteSwiftVirtualNetworkSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteSwiftVirtualNetworkSlot1 deletes a Swift Virtual Network connection from an app (or deployment slot).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will delete the connection for the
+// production slot.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlot1(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteSwiftVirtualNetworkSlot1")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteSwiftVirtualNetworkSlot1", err.Error())
+	}
+
+	req, err := client.DeleteSwiftVirtualNetworkSlot1Preparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSwiftVirtualNetworkSlot1Sender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteSwiftVirtualNetworkSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteSwiftVirtualNetworkSlot1Preparer prepares the DeleteSwiftVirtualNetworkSlot1 request.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlot1Preparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSwiftVirtualNetworkSlot1Sender sends the DeleteSwiftVirtualNetworkSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteSwiftVirtualNetworkSlot1Responder handles the response to the DeleteSwiftVirtualNetworkSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlot1Responder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -14265,6 +14621,91 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionResponder(resp *http.Re
 	return
 }
 
+// GetSwiftVirtualNetworkConnection1 gets a Swift Virtual Network connection.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) GetSwiftVirtualNetworkConnection1(ctx context.Context, resourceGroupName string, name string) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetSwiftVirtualNetworkConnection1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetSwiftVirtualNetworkConnection1", err.Error())
+	}
+
+	req, err := client.GetSwiftVirtualNetworkConnection1Preparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnection1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSwiftVirtualNetworkConnection1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnection1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSwiftVirtualNetworkConnection1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnection1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSwiftVirtualNetworkConnection1Preparer prepares the GetSwiftVirtualNetworkConnection1 request.
+func (client AppsClient) GetSwiftVirtualNetworkConnection1Preparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSwiftVirtualNetworkConnection1Sender sends the GetSwiftVirtualNetworkConnection1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetSwiftVirtualNetworkConnection1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetSwiftVirtualNetworkConnection1Responder handles the response to the GetSwiftVirtualNetworkConnection1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetSwiftVirtualNetworkConnection1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetSwiftVirtualNetworkConnectionSlot gets a Swift Virtual Network connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -14343,6 +14784,94 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionSlotSender(req *http.Re
 // GetSwiftVirtualNetworkConnectionSlotResponder handles the response to the GetSwiftVirtualNetworkConnectionSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetSwiftVirtualNetworkConnectionSlotResponder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSwiftVirtualNetworkConnectionSlot1 gets a Swift Virtual Network connection.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will get a gateway for the
+// production slot's Virtual Network.
+func (client AppsClient) GetSwiftVirtualNetworkConnectionSlot1(ctx context.Context, resourceGroupName string, name string, slot string) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetSwiftVirtualNetworkConnectionSlot1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetSwiftVirtualNetworkConnectionSlot1", err.Error())
+	}
+
+	req, err := client.GetSwiftVirtualNetworkConnectionSlot1Preparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnectionSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSwiftVirtualNetworkConnectionSlot1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnectionSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSwiftVirtualNetworkConnectionSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSwiftVirtualNetworkConnectionSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSwiftVirtualNetworkConnectionSlot1Preparer prepares the GetSwiftVirtualNetworkConnectionSlot1 request.
+func (client AppsClient) GetSwiftVirtualNetworkConnectionSlot1Preparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSwiftVirtualNetworkConnectionSlot1Sender sends the GetSwiftVirtualNetworkConnectionSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetSwiftVirtualNetworkConnectionSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetSwiftVirtualNetworkConnectionSlot1Responder handles the response to the GetSwiftVirtualNetworkConnectionSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetSwiftVirtualNetworkConnectionSlot1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -24298,6 +24827,254 @@ func (client AppsClient) ListSnapshotsComplete(ctx context.Context, resourceGrou
 	return
 }
 
+// ListSnapshotsFromDRSecondary returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+func (client AppsClient) ListSnapshotsFromDRSecondary(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondary")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondary", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondaryNextResults
+	req, err := client.ListSnapshotsFromDRSecondaryPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondaryPreparer prepares the ListSnapshotsFromDRSecondary request.
+func (client AppsClient) ListSnapshotsFromDRSecondaryPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySender sends the ListSnapshotsFromDRSecondary request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondaryResponder handles the response to the ListSnapshotsFromDRSecondary request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondaryResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondaryNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondaryNextResults(ctx context.Context, lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondaryComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondaryComplete(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondary")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSnapshotsFromDRSecondary(ctx, resourceGroupName, name)
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlot returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+// slot - website Slot.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondarySlot")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondarySlot", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondarySlotNextResults
+	req, err := client.ListSnapshotsFromDRSecondarySlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotPreparer prepares the ListSnapshotsFromDRSecondarySlot request.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySlotSender sends the ListSnapshotsFromDRSecondarySlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondarySlotResponder handles the response to the ListSnapshotsFromDRSecondarySlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondarySlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondarySlotNextResults(ctx context.Context, lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondarySlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSnapshotsFromDRSecondarySlot(ctx, resourceGroupName, name, slot)
+	return
+}
+
 // ListSnapshotsSlot returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -32683,6 +33460,97 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionResponder(resp *http
 	return
 }
 
+// UpdateSwiftVirtualNetworkConnection1 integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
+// in use by another App Service Plan other than the one this App is in.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// connectionEnvelope - properties of the Virtual Network connection. See example.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnection1(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSwiftVirtualNetworkConnection1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateSwiftVirtualNetworkConnection1", err.Error())
+	}
+
+	req, err := client.UpdateSwiftVirtualNetworkConnection1Preparer(ctx, resourceGroupName, name, connectionEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnection1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSwiftVirtualNetworkConnection1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnection1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateSwiftVirtualNetworkConnection1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnection1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateSwiftVirtualNetworkConnection1Preparer prepares the UpdateSwiftVirtualNetworkConnection1 request.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnection1Preparer(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithJSON(connectionEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSwiftVirtualNetworkConnection1Sender sends the UpdateSwiftVirtualNetworkConnection1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnection1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateSwiftVirtualNetworkConnection1Responder handles the response to the UpdateSwiftVirtualNetworkConnection1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnection1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // UpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that 1)
 // "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
 // delegated, and is not
@@ -32767,6 +33635,100 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlotSender(req *http
 // UpdateSwiftVirtualNetworkConnectionSlotResponder handles the response to the UpdateSwiftVirtualNetworkConnectionSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlotResponder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateSwiftVirtualNetworkConnectionSlot1 integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
+// in use by another App Service Plan other than the one this App is in.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// connectionEnvelope - properties of the Virtual Network connection. See example.
+// slot - name of the deployment slot. If a slot is not specified, the API will add or update connections for
+// the production slot.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlot1(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, slot string) (result SwiftVirtualNetwork, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSwiftVirtualNetworkConnectionSlot1")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateSwiftVirtualNetworkConnectionSlot1", err.Error())
+	}
+
+	req, err := client.UpdateSwiftVirtualNetworkConnectionSlot1Preparer(ctx, resourceGroupName, name, connectionEnvelope, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnectionSlot1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSwiftVirtualNetworkConnectionSlot1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnectionSlot1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateSwiftVirtualNetworkConnectionSlot1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSwiftVirtualNetworkConnectionSlot1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateSwiftVirtualNetworkConnectionSlot1Preparer prepares the UpdateSwiftVirtualNetworkConnectionSlot1 request.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlot1Preparer(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", pathParameters),
+		autorest.WithJSON(connectionEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSwiftVirtualNetworkConnectionSlot1Sender sends the UpdateSwiftVirtualNetworkConnectionSlot1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlot1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateSwiftVirtualNetworkConnectionSlot1Responder handles the response to the UpdateSwiftVirtualNetworkConnectionSlot1 request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlot1Responder(resp *http.Response) (result SwiftVirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

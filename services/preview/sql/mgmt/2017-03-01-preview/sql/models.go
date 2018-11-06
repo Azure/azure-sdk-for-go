@@ -2150,9 +2150,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -2169,9 +2169,10 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -3021,13 +3022,150 @@ func (dva *DatabaseVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DatabaseVulnerabilityAssessmentListResult a list of the database's vulnerability assessments.
+type DatabaseVulnerabilityAssessmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]DatabaseVulnerabilityAssessment `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentListResultIterator provides access to a complete listing of
+// DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultIterator struct {
+	i    int
+	page DatabaseVulnerabilityAssessmentListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Response() DatabaseVulnerabilityAssessmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Value() DatabaseVulnerabilityAssessment {
+	if !iter.page.NotDone() {
+		return DatabaseVulnerabilityAssessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) IsEmpty() bool {
+	return dvalr.Value == nil || len(*dvalr.Value) == 0
+}
+
+// databaseVulnerabilityAssessmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) databaseVulnerabilityAssessmentListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if dvalr.NextLink == nil || len(to.String(dvalr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dvalr.NextLink)))
+}
+
+// DatabaseVulnerabilityAssessmentListResultPage contains a page of DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultPage struct {
+	fn    func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)
+	dvalr DatabaseVulnerabilityAssessmentListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dvalr)
+	if err != nil {
+		return err
+	}
+	page.dvalr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatabaseVulnerabilityAssessmentListResultPage) NotDone() bool {
+	return !page.dvalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Response() DatabaseVulnerabilityAssessmentListResult {
+	return page.dvalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Values() []DatabaseVulnerabilityAssessment {
+	if page.dvalr.IsEmpty() {
+		return nil
+	}
+	return *page.dvalr.Value
+}
+
 // DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
 type DatabaseVulnerabilityAssessmentProperties struct {
-	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
+	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).  It is required if server level vulnerability assessment policy doesn't set
 	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
 	// StorageContainerSasKey - A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter. If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is required.
 	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
-	// StorageAccountAccessKey - Specifies the identifier key of the vulnerability assessment storage account. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
+	// StorageAccountAccessKey - Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RecurringScans - The recurring scans settings
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
@@ -4580,9 +4718,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4599,9 +4737,10 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -4778,9 +4917,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4797,9 +4936,10 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -10000,9 +10140,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -10019,9 +10159,10 @@ type ServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)

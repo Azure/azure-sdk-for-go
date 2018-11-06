@@ -1797,7 +1797,9 @@ func (p Project) MarshalJSON() ([]byte, error) {
 	if p.Location != nil {
 		objectMap["location"] = p.Location
 	}
-	objectMap["tags"] = p.Tags
+	if p.Tags != nil {
+		objectMap["tags"] = p.Tags
+	}
 	if p.ProjectProperties != nil {
 		objectMap["properties"] = p.ProjectProperties
 	}

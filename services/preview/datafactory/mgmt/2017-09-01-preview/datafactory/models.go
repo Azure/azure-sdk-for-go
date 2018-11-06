@@ -2193,8 +2193,12 @@ type ActivityPolicy struct {
 // MarshalJSON is the custom marshaler for ActivityPolicy.
 func (ap ActivityPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["timeout"] = ap.Timeout
-	objectMap["retry"] = ap.Retry
+	if ap.Timeout != nil {
+		objectMap["timeout"] = ap.Timeout
+	}
+	if ap.Retry != nil {
+		objectMap["retry"] = ap.Retry
+	}
 	if ap.RetryIntervalInSeconds != nil {
 		objectMap["retryIntervalInSeconds"] = ap.RetryIntervalInSeconds
 	}
@@ -2335,9 +2339,15 @@ func (ar ActivityRun) MarshalJSON() ([]byte, error) {
 	if ar.DurationInMs != nil {
 		objectMap["durationInMs"] = ar.DurationInMs
 	}
-	objectMap["input"] = ar.Input
-	objectMap["output"] = ar.Output
-	objectMap["error"] = ar.Error
+	if ar.Input != nil {
+		objectMap["input"] = ar.Input
+	}
+	if ar.Output != nil {
+		objectMap["output"] = ar.Output
+	}
+	if ar.Error != nil {
+		objectMap["error"] = ar.Error
+	}
 	for k, v := range ar.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -3263,7 +3273,9 @@ func (amod AmazonMWSObjectDataset) MarshalJSON() ([]byte, error) {
 	if amod.Description != nil {
 		objectMap["description"] = amod.Description
 	}
-	objectMap["structure"] = amod.Structure
+	if amod.Structure != nil {
+		objectMap["structure"] = amod.Structure
+	}
 	if amod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = amod.LinkedServiceName
 	}
@@ -3656,9 +3668,15 @@ type AmazonMWSSource struct {
 func (ams AmazonMWSSource) MarshalJSON() ([]byte, error) {
 	ams.Type = TypeAmazonMWSSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ams.Query
-	objectMap["sourceRetryCount"] = ams.SourceRetryCount
-	objectMap["sourceRetryWait"] = ams.SourceRetryWait
+	if ams.Query != nil {
+		objectMap["query"] = ams.Query
+	}
+	if ams.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ams.SourceRetryCount
+	}
+	if ams.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ams.SourceRetryWait
+	}
 	if ams.Type != "" {
 		objectMap["type"] = ams.Type
 	}
@@ -4582,12 +4600,18 @@ type AmazonRedshiftSource struct {
 func (ars AmazonRedshiftSource) MarshalJSON() ([]byte, error) {
 	ars.Type = TypeAmazonRedshiftSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ars.Query
+	if ars.Query != nil {
+		objectMap["query"] = ars.Query
+	}
 	if ars.RedshiftUnloadSettings != nil {
 		objectMap["redshiftUnloadSettings"] = ars.RedshiftUnloadSettings
 	}
-	objectMap["sourceRetryCount"] = ars.SourceRetryCount
-	objectMap["sourceRetryWait"] = ars.SourceRetryWait
+	if ars.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ars.SourceRetryCount
+	}
+	if ars.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ars.SourceRetryWait
+	}
 	if ars.Type != "" {
 		objectMap["type"] = ars.Type
 	}
@@ -4959,7 +4983,9 @@ func (asd AmazonS3Dataset) MarshalJSON() ([]byte, error) {
 	if asd.Description != nil {
 		objectMap["description"] = asd.Description
 	}
-	objectMap["structure"] = asd.Structure
+	if asd.Structure != nil {
+		objectMap["structure"] = asd.Structure
+	}
 	if asd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = asd.LinkedServiceName
 	}
@@ -5980,8 +6006,12 @@ type AvroFormat struct {
 func (af AvroFormat) MarshalJSON() ([]byte, error) {
 	af.Type = TypeAvroFormat
 	objectMap := make(map[string]interface{})
-	objectMap["serializer"] = af.Serializer
-	objectMap["deserializer"] = af.Deserializer
+	if af.Serializer != nil {
+		objectMap["serializer"] = af.Serializer
+	}
+	if af.Deserializer != nil {
+		objectMap["deserializer"] = af.Deserializer
+	}
 	if af.Type != "" {
 		objectMap["type"] = af.Type
 	}
@@ -6681,7 +6711,9 @@ func (abd AzureBlobDataset) MarshalJSON() ([]byte, error) {
 	if abd.Description != nil {
 		objectMap["description"] = abd.Description
 	}
-	objectMap["structure"] = abd.Structure
+	if abd.Structure != nil {
+		objectMap["structure"] = abd.Structure
+	}
 	if abd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = abd.LinkedServiceName
 	}
@@ -7647,16 +7679,28 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 // MarshalJSON is the custom marshaler for AzureDatabricksLinkedServiceTypeProperties.
 func (adlstp AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["domain"] = adlstp.Domain
+	if adlstp.Domain != nil {
+		objectMap["domain"] = adlstp.Domain
+	}
 	objectMap["accessToken"] = adlstp.AccessToken
-	objectMap["existingClusterId"] = adlstp.ExistingClusterID
-	objectMap["newClusterVersion"] = adlstp.NewClusterVersion
-	objectMap["newClusterNumOfWorker"] = adlstp.NewClusterNumOfWorker
-	objectMap["newClusterNodeType"] = adlstp.NewClusterNodeType
+	if adlstp.ExistingClusterID != nil {
+		objectMap["existingClusterId"] = adlstp.ExistingClusterID
+	}
+	if adlstp.NewClusterVersion != nil {
+		objectMap["newClusterVersion"] = adlstp.NewClusterVersion
+	}
+	if adlstp.NewClusterNumOfWorker != nil {
+		objectMap["newClusterNumOfWorker"] = adlstp.NewClusterNumOfWorker
+	}
+	if adlstp.NewClusterNodeType != nil {
+		objectMap["newClusterNodeType"] = adlstp.NewClusterNodeType
+	}
 	if adlstp.NewClusterSparkConf != nil {
 		objectMap["newClusterSparkConf"] = adlstp.NewClusterSparkConf
 	}
-	objectMap["encryptedCredential"] = adlstp.EncryptedCredential
+	if adlstp.EncryptedCredential != nil {
+		objectMap["encryptedCredential"] = adlstp.EncryptedCredential
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -8369,7 +8413,9 @@ func (adlsd AzureDataLakeStoreDataset) MarshalJSON() ([]byte, error) {
 	if adlsd.Description != nil {
 		objectMap["description"] = adlsd.Description
 	}
-	objectMap["structure"] = adlsd.Structure
+	if adlsd.Structure != nil {
+		objectMap["structure"] = adlsd.Structure
+	}
 	if adlsd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = adlsd.LinkedServiceName
 	}
@@ -9432,10 +9478,18 @@ func (adlss AzureDataLakeStoreSink) MarshalJSON() ([]byte, error) {
 	if adlss.CopyBehavior != "" {
 		objectMap["copyBehavior"] = adlss.CopyBehavior
 	}
-	objectMap["writeBatchSize"] = adlss.WriteBatchSize
-	objectMap["writeBatchTimeout"] = adlss.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = adlss.SinkRetryCount
-	objectMap["sinkRetryWait"] = adlss.SinkRetryWait
+	if adlss.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = adlss.WriteBatchSize
+	}
+	if adlss.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = adlss.WriteBatchTimeout
+	}
+	if adlss.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = adlss.SinkRetryCount
+	}
+	if adlss.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = adlss.SinkRetryWait
+	}
 	if adlss.Type != "" {
 		objectMap["type"] = adlss.Type
 	}
@@ -9624,9 +9678,15 @@ type AzureDataLakeStoreSource struct {
 func (adlss AzureDataLakeStoreSource) MarshalJSON() ([]byte, error) {
 	adlss.Type = TypeAzureDataLakeStoreSource
 	objectMap := make(map[string]interface{})
-	objectMap["recursive"] = adlss.Recursive
-	objectMap["sourceRetryCount"] = adlss.SourceRetryCount
-	objectMap["sourceRetryWait"] = adlss.SourceRetryWait
+	if adlss.Recursive != nil {
+		objectMap["recursive"] = adlss.Recursive
+	}
+	if adlss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = adlss.SourceRetryCount
+	}
+	if adlss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = adlss.SourceRetryWait
+	}
 	if adlss.Type != "" {
 		objectMap["type"] = adlss.Type
 	}
@@ -10471,8 +10531,12 @@ func (akvsr AzureKeyVaultSecretReference) MarshalJSON() ([]byte, error) {
 	if akvsr.Store != nil {
 		objectMap["store"] = akvsr.Store
 	}
-	objectMap["secretName"] = akvsr.SecretName
-	objectMap["secretVersion"] = akvsr.SecretVersion
+	if akvsr.SecretName != nil {
+		objectMap["secretName"] = akvsr.SecretName
+	}
+	if akvsr.SecretVersion != nil {
+		objectMap["secretVersion"] = akvsr.SecretVersion
+	}
 	if akvsr.Type != "" {
 		objectMap["type"] = akvsr.Type
 	}
@@ -12198,9 +12262,15 @@ type AzureMySQLSource struct {
 func (amss AzureMySQLSource) MarshalJSON() ([]byte, error) {
 	amss.Type = TypeAzureMySQLSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = amss.Query
-	objectMap["sourceRetryCount"] = amss.SourceRetryCount
-	objectMap["sourceRetryWait"] = amss.SourceRetryWait
+	if amss.Query != nil {
+		objectMap["query"] = amss.Query
+	}
+	if amss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = amss.SourceRetryCount
+	}
+	if amss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = amss.SourceRetryWait
+	}
 	if amss.Type != "" {
 		objectMap["type"] = amss.Type
 	}
@@ -12563,7 +12633,9 @@ func (amstd AzureMySQLTableDataset) MarshalJSON() ([]byte, error) {
 	if amstd.Description != nil {
 		objectMap["description"] = amstd.Description
 	}
-	objectMap["structure"] = amstd.Structure
+	if amstd.Structure != nil {
+		objectMap["structure"] = amstd.Structure
+	}
 	if amstd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = amstd.LinkedServiceName
 	}
@@ -13466,9 +13538,15 @@ type AzurePostgreSQLSource struct {
 func (apss AzurePostgreSQLSource) MarshalJSON() ([]byte, error) {
 	apss.Type = TypeAzurePostgreSQLSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = apss.Query
-	objectMap["sourceRetryCount"] = apss.SourceRetryCount
-	objectMap["sourceRetryWait"] = apss.SourceRetryWait
+	if apss.Query != nil {
+		objectMap["query"] = apss.Query
+	}
+	if apss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = apss.SourceRetryCount
+	}
+	if apss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = apss.SourceRetryWait
+	}
 	if apss.Type != "" {
 		objectMap["type"] = apss.Type
 	}
@@ -13826,7 +13904,9 @@ func (apstd AzurePostgreSQLTableDataset) MarshalJSON() ([]byte, error) {
 	if apstd.Description != nil {
 		objectMap["description"] = apstd.Description
 	}
-	objectMap["structure"] = apstd.Structure
+	if apstd.Structure != nil {
+		objectMap["structure"] = apstd.Structure
+	}
 	if apstd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = apstd.LinkedServiceName
 	}
@@ -14221,10 +14301,18 @@ type AzureQueueSink struct {
 func (aqs AzureQueueSink) MarshalJSON() ([]byte, error) {
 	aqs.Type = TypeAzureQueueSink
 	objectMap := make(map[string]interface{})
-	objectMap["writeBatchSize"] = aqs.WriteBatchSize
-	objectMap["writeBatchTimeout"] = aqs.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = aqs.SinkRetryCount
-	objectMap["sinkRetryWait"] = aqs.SinkRetryWait
+	if aqs.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = aqs.WriteBatchSize
+	}
+	if aqs.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = aqs.WriteBatchTimeout
+	}
+	if aqs.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = aqs.SinkRetryCount
+	}
+	if aqs.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = aqs.SinkRetryWait
+	}
 	if aqs.Type != "" {
 		objectMap["type"] = aqs.Type
 	}
@@ -14416,7 +14504,9 @@ func (asid AzureSearchIndexDataset) MarshalJSON() ([]byte, error) {
 	if asid.Description != nil {
 		objectMap["description"] = asid.Description
 	}
-	objectMap["structure"] = asid.Structure
+	if asid.Structure != nil {
+		objectMap["structure"] = asid.Structure
+	}
 	if asid.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = asid.LinkedServiceName
 	}
@@ -14831,10 +14921,18 @@ func (asis AzureSearchIndexSink) MarshalJSON() ([]byte, error) {
 	if asis.WriteBehavior != "" {
 		objectMap["writeBehavior"] = asis.WriteBehavior
 	}
-	objectMap["writeBatchSize"] = asis.WriteBatchSize
-	objectMap["writeBatchTimeout"] = asis.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = asis.SinkRetryCount
-	objectMap["sinkRetryWait"] = asis.SinkRetryWait
+	if asis.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = asis.WriteBatchSize
+	}
+	if asis.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = asis.WriteBatchTimeout
+	}
+	if asis.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = asis.SinkRetryCount
+	}
+	if asis.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = asis.SinkRetryWait
+	}
 	if asis.Type != "" {
 		objectMap["type"] = asis.Type
 	}
@@ -16693,7 +16791,9 @@ func (asdtd AzureSQLDWTableDataset) MarshalJSON() ([]byte, error) {
 	if asdtd.Description != nil {
 		objectMap["description"] = asdtd.Description
 	}
-	objectMap["structure"] = asdtd.Structure
+	if asdtd.Structure != nil {
+		objectMap["structure"] = asdtd.Structure
+	}
 	if asdtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = asdtd.LinkedServiceName
 	}
@@ -17113,7 +17213,9 @@ func (astd AzureSQLTableDataset) MarshalJSON() ([]byte, error) {
 	if astd.Description != nil {
 		objectMap["description"] = astd.Description
 	}
-	objectMap["structure"] = astd.Structure
+	if astd.Structure != nil {
+		objectMap["structure"] = astd.Structure
+	}
 	if astd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = astd.LinkedServiceName
 	}
@@ -18071,7 +18173,9 @@ func (atd AzureTableDataset) MarshalJSON() ([]byte, error) {
 	if atd.Description != nil {
 		objectMap["description"] = atd.Description
 	}
-	objectMap["structure"] = atd.Structure
+	if atd.Structure != nil {
+		objectMap["structure"] = atd.Structure
+	}
 	if atd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = atd.LinkedServiceName
 	}
@@ -18489,14 +18593,30 @@ type AzureTableSink struct {
 func (ats AzureTableSink) MarshalJSON() ([]byte, error) {
 	ats.Type = TypeAzureTableSink
 	objectMap := make(map[string]interface{})
-	objectMap["azureTableDefaultPartitionKeyValue"] = ats.AzureTableDefaultPartitionKeyValue
-	objectMap["azureTablePartitionKeyName"] = ats.AzureTablePartitionKeyName
-	objectMap["azureTableRowKeyName"] = ats.AzureTableRowKeyName
-	objectMap["azureTableInsertType"] = ats.AzureTableInsertType
-	objectMap["writeBatchSize"] = ats.WriteBatchSize
-	objectMap["writeBatchTimeout"] = ats.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = ats.SinkRetryCount
-	objectMap["sinkRetryWait"] = ats.SinkRetryWait
+	if ats.AzureTableDefaultPartitionKeyValue != nil {
+		objectMap["azureTableDefaultPartitionKeyValue"] = ats.AzureTableDefaultPartitionKeyValue
+	}
+	if ats.AzureTablePartitionKeyName != nil {
+		objectMap["azureTablePartitionKeyName"] = ats.AzureTablePartitionKeyName
+	}
+	if ats.AzureTableRowKeyName != nil {
+		objectMap["azureTableRowKeyName"] = ats.AzureTableRowKeyName
+	}
+	if ats.AzureTableInsertType != nil {
+		objectMap["azureTableInsertType"] = ats.AzureTableInsertType
+	}
+	if ats.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = ats.WriteBatchSize
+	}
+	if ats.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = ats.WriteBatchTimeout
+	}
+	if ats.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = ats.SinkRetryCount
+	}
+	if ats.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = ats.SinkRetryWait
+	}
 	if ats.Type != "" {
 		objectMap["type"] = ats.Type
 	}
@@ -18714,10 +18834,18 @@ type AzureTableSource struct {
 func (ats AzureTableSource) MarshalJSON() ([]byte, error) {
 	ats.Type = TypeAzureTableSource
 	objectMap := make(map[string]interface{})
-	objectMap["azureTableSourceQuery"] = ats.AzureTableSourceQuery
-	objectMap["azureTableSourceIgnoreTableNotFound"] = ats.AzureTableSourceIgnoreTableNotFound
-	objectMap["sourceRetryCount"] = ats.SourceRetryCount
-	objectMap["sourceRetryWait"] = ats.SourceRetryWait
+	if ats.AzureTableSourceQuery != nil {
+		objectMap["azureTableSourceQuery"] = ats.AzureTableSourceQuery
+	}
+	if ats.AzureTableSourceIgnoreTableNotFound != nil {
+		objectMap["azureTableSourceIgnoreTableNotFound"] = ats.AzureTableSourceIgnoreTableNotFound
+	}
+	if ats.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ats.SourceRetryCount
+	}
+	if ats.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ats.SourceRetryWait
+	}
 	if ats.Type != "" {
 		objectMap["type"] = ats.Type
 	}
@@ -19252,16 +19380,30 @@ type BlobSink struct {
 func (bs BlobSink) MarshalJSON() ([]byte, error) {
 	bs.Type = TypeBlobSink
 	objectMap := make(map[string]interface{})
-	objectMap["blobWriterOverwriteFiles"] = bs.BlobWriterOverwriteFiles
-	objectMap["blobWriterDateTimeFormat"] = bs.BlobWriterDateTimeFormat
-	objectMap["blobWriterAddHeader"] = bs.BlobWriterAddHeader
+	if bs.BlobWriterOverwriteFiles != nil {
+		objectMap["blobWriterOverwriteFiles"] = bs.BlobWriterOverwriteFiles
+	}
+	if bs.BlobWriterDateTimeFormat != nil {
+		objectMap["blobWriterDateTimeFormat"] = bs.BlobWriterDateTimeFormat
+	}
+	if bs.BlobWriterAddHeader != nil {
+		objectMap["blobWriterAddHeader"] = bs.BlobWriterAddHeader
+	}
 	if bs.CopyBehavior != "" {
 		objectMap["copyBehavior"] = bs.CopyBehavior
 	}
-	objectMap["writeBatchSize"] = bs.WriteBatchSize
-	objectMap["writeBatchTimeout"] = bs.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = bs.SinkRetryCount
-	objectMap["sinkRetryWait"] = bs.SinkRetryWait
+	if bs.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = bs.WriteBatchSize
+	}
+	if bs.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = bs.WriteBatchTimeout
+	}
+	if bs.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = bs.SinkRetryCount
+	}
+	if bs.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = bs.SinkRetryWait
+	}
 	if bs.Type != "" {
 		objectMap["type"] = bs.Type
 	}
@@ -19481,11 +19623,21 @@ type BlobSource struct {
 func (bs BlobSource) MarshalJSON() ([]byte, error) {
 	bs.Type = TypeBlobSource
 	objectMap := make(map[string]interface{})
-	objectMap["treatEmptyAsNull"] = bs.TreatEmptyAsNull
-	objectMap["skipHeaderLineCount"] = bs.SkipHeaderLineCount
-	objectMap["recursive"] = bs.Recursive
-	objectMap["sourceRetryCount"] = bs.SourceRetryCount
-	objectMap["sourceRetryWait"] = bs.SourceRetryWait
+	if bs.TreatEmptyAsNull != nil {
+		objectMap["treatEmptyAsNull"] = bs.TreatEmptyAsNull
+	}
+	if bs.SkipHeaderLineCount != nil {
+		objectMap["skipHeaderLineCount"] = bs.SkipHeaderLineCount
+	}
+	if bs.Recursive != nil {
+		objectMap["recursive"] = bs.Recursive
+	}
+	if bs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = bs.SourceRetryCount
+	}
+	if bs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = bs.SourceRetryWait
+	}
 	if bs.Type != "" {
 		objectMap["type"] = bs.Type
 	}
@@ -20590,12 +20742,18 @@ type CassandraSource struct {
 func (cs CassandraSource) MarshalJSON() ([]byte, error) {
 	cs.Type = TypeCassandraSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = cs.Query
+	if cs.Query != nil {
+		objectMap["query"] = cs.Query
+	}
 	if cs.ConsistencyLevel != "" {
 		objectMap["consistencyLevel"] = cs.ConsistencyLevel
 	}
-	objectMap["sourceRetryCount"] = cs.SourceRetryCount
-	objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	if cs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = cs.SourceRetryCount
+	}
+	if cs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	}
 	if cs.Type != "" {
 		objectMap["type"] = cs.Type
 	}
@@ -20967,7 +21125,9 @@ func (ctd CassandraTableDataset) MarshalJSON() ([]byte, error) {
 	if ctd.Description != nil {
 		objectMap["description"] = ctd.Description
 	}
-	objectMap["structure"] = ctd.Structure
+	if ctd.Structure != nil {
+		objectMap["structure"] = ctd.Structure
+	}
 	if ctd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ctd.LinkedServiceName
 	}
@@ -21966,7 +22126,9 @@ func (cod ConcurObjectDataset) MarshalJSON() ([]byte, error) {
 	if cod.Description != nil {
 		objectMap["description"] = cod.Description
 	}
-	objectMap["structure"] = cod.Structure
+	if cod.Structure != nil {
+		objectMap["structure"] = cod.Structure
+	}
 	if cod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = cod.LinkedServiceName
 	}
@@ -22359,9 +22521,15 @@ type ConcurSource struct {
 func (cs ConcurSource) MarshalJSON() ([]byte, error) {
 	cs.Type = TypeConcurSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = cs.Query
-	objectMap["sourceRetryCount"] = cs.SourceRetryCount
-	objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	if cs.Query != nil {
+		objectMap["query"] = cs.Query
+	}
+	if cs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = cs.SourceRetryCount
+	}
+	if cs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	}
 	if cs.Type != "" {
 		objectMap["type"] = cs.Type
 	}
@@ -23553,10 +23721,18 @@ func unmarshalBasicCopySinkArray(body []byte) ([]BasicCopySink, error) {
 func (cs CopySink) MarshalJSON() ([]byte, error) {
 	cs.Type = TypeCopySink
 	objectMap := make(map[string]interface{})
-	objectMap["writeBatchSize"] = cs.WriteBatchSize
-	objectMap["writeBatchTimeout"] = cs.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = cs.SinkRetryCount
-	objectMap["sinkRetryWait"] = cs.SinkRetryWait
+	if cs.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = cs.WriteBatchSize
+	}
+	if cs.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = cs.WriteBatchTimeout
+	}
+	if cs.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = cs.SinkRetryCount
+	}
+	if cs.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = cs.SinkRetryWait
+	}
 	if cs.Type != "" {
 		objectMap["type"] = cs.Type
 	}
@@ -24022,8 +24198,12 @@ func unmarshalBasicCopySourceArray(body []byte) ([]BasicCopySource, error) {
 func (cs CopySource) MarshalJSON() ([]byte, error) {
 	cs.Type = TypeCopySource
 	objectMap := make(map[string]interface{})
-	objectMap["sourceRetryCount"] = cs.SourceRetryCount
-	objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	if cs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = cs.SourceRetryCount
+	}
+	if cs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	}
 	if cs.Type != "" {
 		objectMap["type"] = cs.Type
 	}
@@ -25470,9 +25650,15 @@ type CouchbaseSource struct {
 func (cs CouchbaseSource) MarshalJSON() ([]byte, error) {
 	cs.Type = TypeCouchbaseSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = cs.Query
-	objectMap["sourceRetryCount"] = cs.SourceRetryCount
-	objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	if cs.Query != nil {
+		objectMap["query"] = cs.Query
+	}
+	if cs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = cs.SourceRetryCount
+	}
+	if cs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = cs.SourceRetryWait
+	}
 	if cs.Type != "" {
 		objectMap["type"] = cs.Type
 	}
@@ -25830,7 +26016,9 @@ func (ctd CouchbaseTableDataset) MarshalJSON() ([]byte, error) {
 	if ctd.Description != nil {
 		objectMap["description"] = ctd.Description
 	}
-	objectMap["structure"] = ctd.Structure
+	if ctd.Structure != nil {
+		objectMap["structure"] = ctd.Structure
+	}
 	if ctd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ctd.LinkedServiceName
 	}
@@ -26518,11 +26706,15 @@ type CustomActivityTypeProperties struct {
 // MarshalJSON is the custom marshaler for CustomActivityTypeProperties.
 func (catp CustomActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["command"] = catp.Command
+	if catp.Command != nil {
+		objectMap["command"] = catp.Command
+	}
 	if catp.ResourceLinkedService != nil {
 		objectMap["resourceLinkedService"] = catp.ResourceLinkedService
 	}
-	objectMap["folderPath"] = catp.FolderPath
+	if catp.FolderPath != nil {
+		objectMap["folderPath"] = catp.FolderPath
+	}
 	if catp.ReferenceObjects != nil {
 		objectMap["referenceObjects"] = catp.ReferenceObjects
 	}
@@ -26556,11 +26748,15 @@ type CustomDataset struct {
 func (cd CustomDataset) MarshalJSON() ([]byte, error) {
 	cd.Type = TypeCustomDataset
 	objectMap := make(map[string]interface{})
-	objectMap["typeProperties"] = cd.TypeProperties
+	if cd.TypeProperties != nil {
+		objectMap["typeProperties"] = cd.TypeProperties
+	}
 	if cd.Description != nil {
 		objectMap["description"] = cd.Description
 	}
-	objectMap["structure"] = cd.Structure
+	if cd.Structure != nil {
+		objectMap["structure"] = cd.Structure
+	}
 	if cd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = cd.LinkedServiceName
 	}
@@ -26966,7 +27162,9 @@ type CustomDataSourceLinkedService struct {
 func (cdsls CustomDataSourceLinkedService) MarshalJSON() ([]byte, error) {
 	cdsls.Type = TypeCustomDataSource
 	objectMap := make(map[string]interface{})
-	objectMap["typeProperties"] = cdsls.TypeProperties
+	if cdsls.TypeProperties != nil {
+		objectMap["typeProperties"] = cdsls.TypeProperties
+	}
 	if cdsls.ConnectVia != nil {
 		objectMap["connectVia"] = cdsls.ConnectVia
 	}
@@ -27721,7 +27919,9 @@ type DatabricksNotebookActivityTypeProperties struct {
 // MarshalJSON is the custom marshaler for DatabricksNotebookActivityTypeProperties.
 func (dnatp DatabricksNotebookActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["notebookPath"] = dnatp.NotebookPath
+	if dnatp.NotebookPath != nil {
+		objectMap["notebookPath"] = dnatp.NotebookPath
+	}
 	if dnatp.BaseParameters != nil {
 		objectMap["baseParameters"] = dnatp.BaseParameters
 	}
@@ -28030,17 +28230,27 @@ type DataLakeAnalyticsUSQLActivityTypeProperties struct {
 // MarshalJSON is the custom marshaler for DataLakeAnalyticsUSQLActivityTypeProperties.
 func (dlauatp DataLakeAnalyticsUSQLActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["scriptPath"] = dlauatp.ScriptPath
+	if dlauatp.ScriptPath != nil {
+		objectMap["scriptPath"] = dlauatp.ScriptPath
+	}
 	if dlauatp.ScriptLinkedService != nil {
 		objectMap["scriptLinkedService"] = dlauatp.ScriptLinkedService
 	}
-	objectMap["degreeOfParallelism"] = dlauatp.DegreeOfParallelism
-	objectMap["priority"] = dlauatp.Priority
+	if dlauatp.DegreeOfParallelism != nil {
+		objectMap["degreeOfParallelism"] = dlauatp.DegreeOfParallelism
+	}
+	if dlauatp.Priority != nil {
+		objectMap["priority"] = dlauatp.Priority
+	}
 	if dlauatp.Parameters != nil {
 		objectMap["parameters"] = dlauatp.Parameters
 	}
-	objectMap["runtimeVersion"] = dlauatp.RuntimeVersion
-	objectMap["compilationMode"] = dlauatp.CompilationMode
+	if dlauatp.RuntimeVersion != nil {
+		objectMap["runtimeVersion"] = dlauatp.RuntimeVersion
+	}
+	if dlauatp.CompilationMode != nil {
+		objectMap["compilationMode"] = dlauatp.CompilationMode
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -28374,7 +28584,9 @@ func (d Dataset) MarshalJSON() ([]byte, error) {
 	if d.Description != nil {
 		objectMap["description"] = d.Description
 	}
-	objectMap["structure"] = d.Structure
+	if d.Structure != nil {
+		objectMap["structure"] = d.Structure
+	}
 	if d.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = d.LinkedServiceName
 	}
@@ -29497,8 +29709,12 @@ func unmarshalBasicDatasetStorageFormatArray(body []byte) ([]BasicDatasetStorage
 func (dsf DatasetStorageFormat) MarshalJSON() ([]byte, error) {
 	dsf.Type = TypeDatasetStorageFormat
 	objectMap := make(map[string]interface{})
-	objectMap["serializer"] = dsf.Serializer
-	objectMap["deserializer"] = dsf.Deserializer
+	if dsf.Serializer != nil {
+		objectMap["serializer"] = dsf.Serializer
+	}
+	if dsf.Deserializer != nil {
+		objectMap["deserializer"] = dsf.Deserializer
+	}
 	if dsf.Type != "" {
 		objectMap["type"] = dsf.Type
 	}
@@ -30309,7 +30525,9 @@ func (ddcd DocumentDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	if ddcd.Description != nil {
 		objectMap["description"] = ddcd.Description
 	}
-	objectMap["structure"] = ddcd.Structure
+	if ddcd.Structure != nil {
+		objectMap["structure"] = ddcd.Structure
+	}
 	if ddcd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ddcd.LinkedServiceName
 	}
@@ -30721,11 +30939,21 @@ type DocumentDbCollectionSink struct {
 func (ddcs DocumentDbCollectionSink) MarshalJSON() ([]byte, error) {
 	ddcs.Type = TypeDocumentDbCollectionSink
 	objectMap := make(map[string]interface{})
-	objectMap["nestingSeparator"] = ddcs.NestingSeparator
-	objectMap["writeBatchSize"] = ddcs.WriteBatchSize
-	objectMap["writeBatchTimeout"] = ddcs.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = ddcs.SinkRetryCount
-	objectMap["sinkRetryWait"] = ddcs.SinkRetryWait
+	if ddcs.NestingSeparator != nil {
+		objectMap["nestingSeparator"] = ddcs.NestingSeparator
+	}
+	if ddcs.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = ddcs.WriteBatchSize
+	}
+	if ddcs.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = ddcs.WriteBatchTimeout
+	}
+	if ddcs.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = ddcs.SinkRetryCount
+	}
+	if ddcs.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = ddcs.SinkRetryWait
+	}
 	if ddcs.Type != "" {
 		objectMap["type"] = ddcs.Type
 	}
@@ -30916,10 +31144,18 @@ type DocumentDbCollectionSource struct {
 func (ddcs DocumentDbCollectionSource) MarshalJSON() ([]byte, error) {
 	ddcs.Type = TypeDocumentDbCollectionSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ddcs.Query
-	objectMap["nestingSeparator"] = ddcs.NestingSeparator
-	objectMap["sourceRetryCount"] = ddcs.SourceRetryCount
-	objectMap["sourceRetryWait"] = ddcs.SourceRetryWait
+	if ddcs.Query != nil {
+		objectMap["query"] = ddcs.Query
+	}
+	if ddcs.NestingSeparator != nil {
+		objectMap["nestingSeparator"] = ddcs.NestingSeparator
+	}
+	if ddcs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ddcs.SourceRetryCount
+	}
+	if ddcs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ddcs.SourceRetryWait
+	}
 	if ddcs.Type != "" {
 		objectMap["type"] = ddcs.Type
 	}
@@ -31774,9 +32010,15 @@ type DrillSource struct {
 func (ds DrillSource) MarshalJSON() ([]byte, error) {
 	ds.Type = TypeDrillSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ds.Query
-	objectMap["sourceRetryCount"] = ds.SourceRetryCount
-	objectMap["sourceRetryWait"] = ds.SourceRetryWait
+	if ds.Query != nil {
+		objectMap["query"] = ds.Query
+	}
+	if ds.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ds.SourceRetryCount
+	}
+	if ds.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ds.SourceRetryWait
+	}
 	if ds.Type != "" {
 		objectMap["type"] = ds.Type
 	}
@@ -32134,7 +32376,9 @@ func (dtd DrillTableDataset) MarshalJSON() ([]byte, error) {
 	if dtd.Description != nil {
 		objectMap["description"] = dtd.Description
 	}
-	objectMap["structure"] = dtd.Structure
+	if dtd.Structure != nil {
+		objectMap["structure"] = dtd.Structure
+	}
 	if dtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = dtd.LinkedServiceName
 	}
@@ -32539,7 +32783,9 @@ func (ded DynamicsEntityDataset) MarshalJSON() ([]byte, error) {
 	if ded.Description != nil {
 		objectMap["description"] = ded.Description
 	}
-	objectMap["structure"] = ded.Structure
+	if ded.Structure != nil {
+		objectMap["structure"] = ded.Structure
+	}
 	if ded.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ded.LinkedServiceName
 	}
@@ -33560,11 +33806,21 @@ func (ds DynamicsSink) MarshalJSON() ([]byte, error) {
 	if ds.WriteBehavior != nil {
 		objectMap["writeBehavior"] = ds.WriteBehavior
 	}
-	objectMap["ignoreNullValues"] = ds.IgnoreNullValues
-	objectMap["writeBatchSize"] = ds.WriteBatchSize
-	objectMap["writeBatchTimeout"] = ds.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = ds.SinkRetryCount
-	objectMap["sinkRetryWait"] = ds.SinkRetryWait
+	if ds.IgnoreNullValues != nil {
+		objectMap["ignoreNullValues"] = ds.IgnoreNullValues
+	}
+	if ds.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = ds.WriteBatchSize
+	}
+	if ds.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = ds.WriteBatchTimeout
+	}
+	if ds.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = ds.SinkRetryCount
+	}
+	if ds.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = ds.SinkRetryWait
+	}
 	if ds.Type != "" {
 		objectMap["type"] = ds.Type
 	}
@@ -33762,9 +34018,15 @@ type DynamicsSource struct {
 func (ds DynamicsSource) MarshalJSON() ([]byte, error) {
 	ds.Type = TypeDynamicsSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ds.Query
-	objectMap["sourceRetryCount"] = ds.SourceRetryCount
-	objectMap["sourceRetryWait"] = ds.SourceRetryWait
+	if ds.Query != nil {
+		objectMap["query"] = ds.Query
+	}
+	if ds.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ds.SourceRetryCount
+	}
+	if ds.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ds.SourceRetryWait
+	}
 	if ds.Type != "" {
 		objectMap["type"] = ds.Type
 	}
@@ -34704,7 +34966,9 @@ func (eod EloquaObjectDataset) MarshalJSON() ([]byte, error) {
 	if eod.Description != nil {
 		objectMap["description"] = eod.Description
 	}
-	objectMap["structure"] = eod.Structure
+	if eod.Structure != nil {
+		objectMap["structure"] = eod.Structure
+	}
 	if eod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = eod.LinkedServiceName
 	}
@@ -35097,9 +35361,15 @@ type EloquaSource struct {
 func (es EloquaSource) MarshalJSON() ([]byte, error) {
 	es.Type = TypeEloquaSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = es.Query
-	objectMap["sourceRetryCount"] = es.SourceRetryCount
-	objectMap["sourceRetryWait"] = es.SourceRetryWait
+	if es.Query != nil {
+		objectMap["query"] = es.Query
+	}
+	if es.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = es.SourceRetryCount
+	}
+	if es.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = es.SourceRetryWait
+	}
 	if es.Type != "" {
 		objectMap["type"] = es.Type
 	}
@@ -37382,7 +37652,9 @@ func (fsd FileShareDataset) MarshalJSON() ([]byte, error) {
 	if fsd.Description != nil {
 		objectMap["description"] = fsd.Description
 	}
-	objectMap["structure"] = fsd.Structure
+	if fsd.Structure != nil {
+		objectMap["structure"] = fsd.Structure
+	}
 	if fsd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = fsd.LinkedServiceName
 	}
@@ -37863,10 +38135,18 @@ func (fss FileSystemSink) MarshalJSON() ([]byte, error) {
 	if fss.CopyBehavior != "" {
 		objectMap["copyBehavior"] = fss.CopyBehavior
 	}
-	objectMap["writeBatchSize"] = fss.WriteBatchSize
-	objectMap["writeBatchTimeout"] = fss.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = fss.SinkRetryCount
-	objectMap["sinkRetryWait"] = fss.SinkRetryWait
+	if fss.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = fss.WriteBatchSize
+	}
+	if fss.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = fss.WriteBatchTimeout
+	}
+	if fss.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = fss.SinkRetryCount
+	}
+	if fss.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = fss.SinkRetryWait
+	}
 	if fss.Type != "" {
 		objectMap["type"] = fss.Type
 	}
@@ -38055,9 +38335,15 @@ type FileSystemSource struct {
 func (fss FileSystemSource) MarshalJSON() ([]byte, error) {
 	fss.Type = TypeFileSystemSource
 	objectMap := make(map[string]interface{})
-	objectMap["recursive"] = fss.Recursive
-	objectMap["sourceRetryCount"] = fss.SourceRetryCount
-	objectMap["sourceRetryWait"] = fss.SourceRetryWait
+	if fss.Recursive != nil {
+		objectMap["recursive"] = fss.Recursive
+	}
+	if fss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = fss.SourceRetryCount
+	}
+	if fss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = fss.SourceRetryWait
+	}
 	if fss.Type != "" {
 		objectMap["type"] = fss.Type
 	}
@@ -40508,7 +40794,9 @@ func (gbqod GoogleBigQueryObjectDataset) MarshalJSON() ([]byte, error) {
 	if gbqod.Description != nil {
 		objectMap["description"] = gbqod.Description
 	}
-	objectMap["structure"] = gbqod.Structure
+	if gbqod.Structure != nil {
+		objectMap["structure"] = gbqod.Structure
+	}
 	if gbqod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = gbqod.LinkedServiceName
 	}
@@ -40901,9 +41189,15 @@ type GoogleBigQuerySource struct {
 func (gbqs GoogleBigQuerySource) MarshalJSON() ([]byte, error) {
 	gbqs.Type = TypeGoogleBigQuerySource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = gbqs.Query
-	objectMap["sourceRetryCount"] = gbqs.SourceRetryCount
-	objectMap["sourceRetryWait"] = gbqs.SourceRetryWait
+	if gbqs.Query != nil {
+		objectMap["query"] = gbqs.Query
+	}
+	if gbqs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = gbqs.SourceRetryCount
+	}
+	if gbqs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = gbqs.SourceRetryWait
+	}
 	if gbqs.Type != "" {
 		objectMap["type"] = gbqs.Type
 	}
@@ -41749,9 +42043,15 @@ type GreenplumSource struct {
 func (gs GreenplumSource) MarshalJSON() ([]byte, error) {
 	gs.Type = TypeGreenplumSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = gs.Query
-	objectMap["sourceRetryCount"] = gs.SourceRetryCount
-	objectMap["sourceRetryWait"] = gs.SourceRetryWait
+	if gs.Query != nil {
+		objectMap["query"] = gs.Query
+	}
+	if gs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = gs.SourceRetryCount
+	}
+	if gs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = gs.SourceRetryWait
+	}
 	if gs.Type != "" {
 		objectMap["type"] = gs.Type
 	}
@@ -42109,7 +42409,9 @@ func (gtd GreenplumTableDataset) MarshalJSON() ([]byte, error) {
 	if gtd.Description != nil {
 		objectMap["description"] = gtd.Description
 	}
-	objectMap["structure"] = gtd.Structure
+	if gtd.Structure != nil {
+		objectMap["structure"] = gtd.Structure
+	}
 	if gtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = gtd.LinkedServiceName
 	}
@@ -43135,7 +43437,9 @@ func (hbod HBaseObjectDataset) MarshalJSON() ([]byte, error) {
 	if hbod.Description != nil {
 		objectMap["description"] = hbod.Description
 	}
-	objectMap["structure"] = hbod.Structure
+	if hbod.Structure != nil {
+		objectMap["structure"] = hbod.Structure
+	}
 	if hbod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = hbod.LinkedServiceName
 	}
@@ -43528,9 +43832,15 @@ type HBaseSource struct {
 func (hbs HBaseSource) MarshalJSON() ([]byte, error) {
 	hbs.Type = TypeHBaseSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = hbs.Query
-	objectMap["sourceRetryCount"] = hbs.SourceRetryCount
-	objectMap["sourceRetryWait"] = hbs.SourceRetryWait
+	if hbs.Query != nil {
+		objectMap["query"] = hbs.Query
+	}
+	if hbs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = hbs.SourceRetryCount
+	}
+	if hbs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = hbs.SourceRetryWait
+	}
 	if hbs.Type != "" {
 		objectMap["type"] = hbs.Type
 	}
@@ -44443,12 +44753,18 @@ type HdfsSource struct {
 func (hs HdfsSource) MarshalJSON() ([]byte, error) {
 	hs.Type = TypeHdfsSource
 	objectMap := make(map[string]interface{})
-	objectMap["recursive"] = hs.Recursive
+	if hs.Recursive != nil {
+		objectMap["recursive"] = hs.Recursive
+	}
 	if hs.DistcpSettings != nil {
 		objectMap["distcpSettings"] = hs.DistcpSettings
 	}
-	objectMap["sourceRetryCount"] = hs.SourceRetryCount
-	objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	if hs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = hs.SourceRetryCount
+	}
+	if hs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	}
 	if hs.Type != "" {
 		objectMap["type"] = hs.Type
 	}
@@ -45099,7 +45415,9 @@ func (hihatp HDInsightHiveActivityTypeProperties) MarshalJSON() ([]byte, error) 
 	if hihatp.GetDebugInfo != "" {
 		objectMap["getDebugInfo"] = hihatp.GetDebugInfo
 	}
-	objectMap["scriptPath"] = hihatp.ScriptPath
+	if hihatp.ScriptPath != nil {
+		objectMap["scriptPath"] = hihatp.ScriptPath
+	}
 	if hihatp.ScriptLinkedService != nil {
 		objectMap["scriptLinkedService"] = hihatp.ScriptLinkedService
 	}
@@ -45993,8 +46311,12 @@ func (himratp HDInsightMapReduceActivityTypeProperties) MarshalJSON() ([]byte, e
 	if himratp.GetDebugInfo != "" {
 		objectMap["getDebugInfo"] = himratp.GetDebugInfo
 	}
-	objectMap["className"] = himratp.ClassName
-	objectMap["jarFilePath"] = himratp.JarFilePath
+	if himratp.ClassName != nil {
+		objectMap["className"] = himratp.ClassName
+	}
+	if himratp.JarFilePath != nil {
+		objectMap["jarFilePath"] = himratp.JarFilePath
+	}
 	if himratp.JarLinkedService != nil {
 		objectMap["jarLinkedService"] = himratp.JarLinkedService
 	}
@@ -47149,7 +47471,9 @@ func (hipatp HDInsightPigActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	if hipatp.GetDebugInfo != "" {
 		objectMap["getDebugInfo"] = hipatp.GetDebugInfo
 	}
-	objectMap["scriptPath"] = hipatp.ScriptPath
+	if hipatp.ScriptPath != nil {
+		objectMap["scriptPath"] = hipatp.ScriptPath
+	}
 	if hipatp.ScriptLinkedService != nil {
 		objectMap["scriptLinkedService"] = hipatp.ScriptLinkedService
 	}
@@ -47463,8 +47787,12 @@ type HDInsightSparkActivityTypeProperties struct {
 // MarshalJSON is the custom marshaler for HDInsightSparkActivityTypeProperties.
 func (hisatp HDInsightSparkActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["rootPath"] = hisatp.RootPath
-	objectMap["entryFilePath"] = hisatp.EntryFilePath
+	if hisatp.RootPath != nil {
+		objectMap["rootPath"] = hisatp.RootPath
+	}
+	if hisatp.EntryFilePath != nil {
+		objectMap["entryFilePath"] = hisatp.EntryFilePath
+	}
 	if hisatp.Arguments != nil {
 		objectMap["arguments"] = hisatp.Arguments
 	}
@@ -47477,7 +47805,9 @@ func (hisatp HDInsightSparkActivityTypeProperties) MarshalJSON() ([]byte, error)
 	if hisatp.ClassName != nil {
 		objectMap["className"] = hisatp.ClassName
 	}
-	objectMap["proxyUser"] = hisatp.ProxyUser
+	if hisatp.ProxyUser != nil {
+		objectMap["proxyUser"] = hisatp.ProxyUser
+	}
 	if hisatp.SparkConfig != nil {
 		objectMap["sparkConfig"] = hisatp.SparkConfig
 	}
@@ -47805,17 +48135,27 @@ func (hisatp HDInsightStreamingActivityTypeProperties) MarshalJSON() ([]byte, er
 	if hisatp.GetDebugInfo != "" {
 		objectMap["getDebugInfo"] = hisatp.GetDebugInfo
 	}
-	objectMap["mapper"] = hisatp.Mapper
-	objectMap["reducer"] = hisatp.Reducer
-	objectMap["input"] = hisatp.Input
-	objectMap["output"] = hisatp.Output
+	if hisatp.Mapper != nil {
+		objectMap["mapper"] = hisatp.Mapper
+	}
+	if hisatp.Reducer != nil {
+		objectMap["reducer"] = hisatp.Reducer
+	}
+	if hisatp.Input != nil {
+		objectMap["input"] = hisatp.Input
+	}
+	if hisatp.Output != nil {
+		objectMap["output"] = hisatp.Output
+	}
 	if hisatp.FilePaths != nil {
 		objectMap["filePaths"] = hisatp.FilePaths
 	}
 	if hisatp.FileLinkedService != nil {
 		objectMap["fileLinkedService"] = hisatp.FileLinkedService
 	}
-	objectMap["combiner"] = hisatp.Combiner
+	if hisatp.Combiner != nil {
+		objectMap["combiner"] = hisatp.Combiner
+	}
 	if hisatp.CommandEnvironment != nil {
 		objectMap["commandEnvironment"] = hisatp.CommandEnvironment
 	}
@@ -48542,7 +48882,9 @@ func (hod HiveObjectDataset) MarshalJSON() ([]byte, error) {
 	if hod.Description != nil {
 		objectMap["description"] = hod.Description
 	}
-	objectMap["structure"] = hod.Structure
+	if hod.Structure != nil {
+		objectMap["structure"] = hod.Structure
+	}
 	if hod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = hod.LinkedServiceName
 	}
@@ -48935,9 +49277,15 @@ type HiveSource struct {
 func (hs HiveSource) MarshalJSON() ([]byte, error) {
 	hs.Type = TypeHiveSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = hs.Query
-	objectMap["sourceRetryCount"] = hs.SourceRetryCount
-	objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	if hs.Query != nil {
+		objectMap["query"] = hs.Query
+	}
+	if hs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = hs.SourceRetryCount
+	}
+	if hs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	}
 	if hs.Type != "" {
 		objectMap["type"] = hs.Type
 	}
@@ -49300,7 +49648,9 @@ func (hd HTTPDataset) MarshalJSON() ([]byte, error) {
 	if hd.Description != nil {
 		objectMap["description"] = hd.Description
 	}
-	objectMap["structure"] = hd.Structure
+	if hd.Structure != nil {
+		objectMap["structure"] = hd.Structure
+	}
 	if hd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = hd.LinkedServiceName
 	}
@@ -50380,9 +50730,15 @@ type HTTPSource struct {
 func (hs HTTPSource) MarshalJSON() ([]byte, error) {
 	hs.Type = TypeHTTPSource
 	objectMap := make(map[string]interface{})
-	objectMap["httpRequestTimeout"] = hs.HTTPRequestTimeout
-	objectMap["sourceRetryCount"] = hs.SourceRetryCount
-	objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	if hs.HTTPRequestTimeout != nil {
+		objectMap["httpRequestTimeout"] = hs.HTTPRequestTimeout
+	}
+	if hs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = hs.SourceRetryCount
+	}
+	if hs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	}
 	if hs.Type != "" {
 		objectMap["type"] = hs.Type
 	}
@@ -51331,7 +51687,9 @@ func (hod HubspotObjectDataset) MarshalJSON() ([]byte, error) {
 	if hod.Description != nil {
 		objectMap["description"] = hod.Description
 	}
-	objectMap["structure"] = hod.Structure
+	if hod.Structure != nil {
+		objectMap["structure"] = hod.Structure
+	}
 	if hod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = hod.LinkedServiceName
 	}
@@ -51724,9 +52082,15 @@ type HubspotSource struct {
 func (hs HubspotSource) MarshalJSON() ([]byte, error) {
 	hs.Type = TypeHubspotSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = hs.Query
-	objectMap["sourceRetryCount"] = hs.SourceRetryCount
-	objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	if hs.Query != nil {
+		objectMap["query"] = hs.Query
+	}
+	if hs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = hs.SourceRetryCount
+	}
+	if hs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = hs.SourceRetryWait
+	}
 	if hs.Type != "" {
 		objectMap["type"] = hs.Type
 	}
@@ -53015,7 +53379,9 @@ func (iod ImpalaObjectDataset) MarshalJSON() ([]byte, error) {
 	if iod.Description != nil {
 		objectMap["description"] = iod.Description
 	}
-	objectMap["structure"] = iod.Structure
+	if iod.Structure != nil {
+		objectMap["structure"] = iod.Structure
+	}
 	if iod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = iod.LinkedServiceName
 	}
@@ -53408,9 +53774,15 @@ type ImpalaSource struct {
 func (is ImpalaSource) MarshalJSON() ([]byte, error) {
 	is.Type = TypeImpalaSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = is.Query
-	objectMap["sourceRetryCount"] = is.SourceRetryCount
-	objectMap["sourceRetryWait"] = is.SourceRetryWait
+	if is.Query != nil {
+		objectMap["query"] = is.Query
+	}
+	if is.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = is.SourceRetryCount
+	}
+	if is.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = is.SourceRetryWait
+	}
 	if is.Type != "" {
 		objectMap["type"] = is.Type
 	}
@@ -55746,7 +56118,9 @@ func (jod JiraObjectDataset) MarshalJSON() ([]byte, error) {
 	if jod.Description != nil {
 		objectMap["description"] = jod.Description
 	}
-	objectMap["structure"] = jod.Structure
+	if jod.Structure != nil {
+		objectMap["structure"] = jod.Structure
+	}
 	if jod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = jod.LinkedServiceName
 	}
@@ -56139,9 +56513,15 @@ type JiraSource struct {
 func (js JiraSource) MarshalJSON() ([]byte, error) {
 	js.Type = TypeJiraSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = js.Query
-	objectMap["sourceRetryCount"] = js.SourceRetryCount
-	objectMap["sourceRetryWait"] = js.SourceRetryWait
+	if js.Query != nil {
+		objectMap["query"] = js.Query
+	}
+	if js.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = js.SourceRetryCount
+	}
+	if js.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = js.SourceRetryWait
+	}
 	if js.Type != "" {
 		objectMap["type"] = js.Type
 	}
@@ -56503,12 +56883,24 @@ func (jf JSONFormat) MarshalJSON() ([]byte, error) {
 	if jf.FilePattern != "" {
 		objectMap["filePattern"] = jf.FilePattern
 	}
-	objectMap["nestingSeparator"] = jf.NestingSeparator
-	objectMap["encodingName"] = jf.EncodingName
-	objectMap["jsonNodeReference"] = jf.JSONNodeReference
-	objectMap["jsonPathDefinition"] = jf.JSONPathDefinition
-	objectMap["serializer"] = jf.Serializer
-	objectMap["deserializer"] = jf.Deserializer
+	if jf.NestingSeparator != nil {
+		objectMap["nestingSeparator"] = jf.NestingSeparator
+	}
+	if jf.EncodingName != nil {
+		objectMap["encodingName"] = jf.EncodingName
+	}
+	if jf.JSONNodeReference != nil {
+		objectMap["jsonNodeReference"] = jf.JSONNodeReference
+	}
+	if jf.JSONPathDefinition != nil {
+		objectMap["jsonPathDefinition"] = jf.JSONPathDefinition
+	}
+	if jf.Serializer != nil {
+		objectMap["serializer"] = jf.Serializer
+	}
+	if jf.Deserializer != nil {
+		objectMap["deserializer"] = jf.Deserializer
+	}
 	if jf.Type != "" {
 		objectMap["type"] = jf.Type
 	}
@@ -58886,7 +59278,9 @@ func (mod MagentoObjectDataset) MarshalJSON() ([]byte, error) {
 	if mod.Description != nil {
 		objectMap["description"] = mod.Description
 	}
-	objectMap["structure"] = mod.Structure
+	if mod.Structure != nil {
+		objectMap["structure"] = mod.Structure
+	}
 	if mod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = mod.LinkedServiceName
 	}
@@ -59279,9 +59673,15 @@ type MagentoSource struct {
 func (ms MagentoSource) MarshalJSON() ([]byte, error) {
 	ms.Type = TypeMagentoSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ms.Query
-	objectMap["sourceRetryCount"] = ms.SourceRetryCount
-	objectMap["sourceRetryWait"] = ms.SourceRetryWait
+	if ms.Query != nil {
+		objectMap["query"] = ms.Query
+	}
+	if ms.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ms.SourceRetryCount
+	}
+	if ms.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ms.SourceRetryWait
+	}
 	if ms.Type != "" {
 		objectMap["type"] = ms.Type
 	}
@@ -60424,9 +60824,15 @@ type MariaDBSource struct {
 func (mds MariaDBSource) MarshalJSON() ([]byte, error) {
 	mds.Type = TypeMariaDBSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = mds.Query
-	objectMap["sourceRetryCount"] = mds.SourceRetryCount
-	objectMap["sourceRetryWait"] = mds.SourceRetryWait
+	if mds.Query != nil {
+		objectMap["query"] = mds.Query
+	}
+	if mds.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = mds.SourceRetryCount
+	}
+	if mds.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = mds.SourceRetryWait
+	}
 	if mds.Type != "" {
 		objectMap["type"] = mds.Type
 	}
@@ -60784,7 +61190,9 @@ func (mdtd MariaDBTableDataset) MarshalJSON() ([]byte, error) {
 	if mdtd.Description != nil {
 		objectMap["description"] = mdtd.Description
 	}
-	objectMap["structure"] = mdtd.Structure
+	if mdtd.Structure != nil {
+		objectMap["structure"] = mdtd.Structure
+	}
 	if mdtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = mdtd.LinkedServiceName
 	}
@@ -61766,7 +62174,9 @@ func (mod MarketoObjectDataset) MarshalJSON() ([]byte, error) {
 	if mod.Description != nil {
 		objectMap["description"] = mod.Description
 	}
-	objectMap["structure"] = mod.Structure
+	if mod.Structure != nil {
+		objectMap["structure"] = mod.Structure
+	}
 	if mod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = mod.LinkedServiceName
 	}
@@ -62159,9 +62569,15 @@ type MarketoSource struct {
 func (ms MarketoSource) MarshalJSON() ([]byte, error) {
 	ms.Type = TypeMarketoSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ms.Query
-	objectMap["sourceRetryCount"] = ms.SourceRetryCount
-	objectMap["sourceRetryWait"] = ms.SourceRetryWait
+	if ms.Query != nil {
+		objectMap["query"] = ms.Query
+	}
+	if ms.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ms.SourceRetryCount
+	}
+	if ms.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ms.SourceRetryWait
+	}
 	if ms.Type != "" {
 		objectMap["type"] = ms.Type
 	}
@@ -62524,7 +62940,9 @@ func (mdcd MongoDbCollectionDataset) MarshalJSON() ([]byte, error) {
 	if mdcd.Description != nil {
 		objectMap["description"] = mdcd.Description
 	}
-	objectMap["structure"] = mdcd.Structure
+	if mdcd.Structure != nil {
+		objectMap["structure"] = mdcd.Structure
+	}
 	if mdcd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = mdcd.LinkedServiceName
 	}
@@ -63547,9 +63965,15 @@ type MongoDbSource struct {
 func (mds MongoDbSource) MarshalJSON() ([]byte, error) {
 	mds.Type = TypeMongoDbSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = mds.Query
-	objectMap["sourceRetryCount"] = mds.SourceRetryCount
-	objectMap["sourceRetryWait"] = mds.SourceRetryWait
+	if mds.Query != nil {
+		objectMap["query"] = mds.Query
+	}
+	if mds.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = mds.SourceRetryCount
+	}
+	if mds.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = mds.SourceRetryWait
+	}
 	if mds.Type != "" {
 		objectMap["type"] = mds.Type
 	}
@@ -65114,9 +65538,15 @@ type NetezzaSource struct {
 func (ns NetezzaSource) MarshalJSON() ([]byte, error) {
 	ns.Type = TypeNetezzaSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ns.Query
-	objectMap["sourceRetryCount"] = ns.SourceRetryCount
-	objectMap["sourceRetryWait"] = ns.SourceRetryWait
+	if ns.Query != nil {
+		objectMap["query"] = ns.Query
+	}
+	if ns.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ns.SourceRetryCount
+	}
+	if ns.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ns.SourceRetryWait
+	}
 	if ns.Type != "" {
 		objectMap["type"] = ns.Type
 	}
@@ -65474,7 +65904,9 @@ func (ntd NetezzaTableDataset) MarshalJSON() ([]byte, error) {
 	if ntd.Description != nil {
 		objectMap["description"] = ntd.Description
 	}
-	objectMap["structure"] = ntd.Structure
+	if ntd.Structure != nil {
+		objectMap["structure"] = ntd.Structure
+	}
 	if ntd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ntd.LinkedServiceName
 	}
@@ -66439,7 +66871,9 @@ func (odrd ODataResourceDataset) MarshalJSON() ([]byte, error) {
 	if odrd.Description != nil {
 		objectMap["description"] = odrd.Description
 	}
-	objectMap["structure"] = odrd.Structure
+	if odrd.Structure != nil {
+		objectMap["structure"] = odrd.Structure
+	}
 	if odrd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = odrd.LinkedServiceName
 	}
@@ -67421,11 +67855,21 @@ type OdbcSink struct {
 func (osVar OdbcSink) MarshalJSON() ([]byte, error) {
 	osVar.Type = TypeOdbcSink
 	objectMap := make(map[string]interface{})
-	objectMap["preCopyScript"] = osVar.PreCopyScript
-	objectMap["writeBatchSize"] = osVar.WriteBatchSize
-	objectMap["writeBatchTimeout"] = osVar.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = osVar.SinkRetryCount
-	objectMap["sinkRetryWait"] = osVar.SinkRetryWait
+	if osVar.PreCopyScript != nil {
+		objectMap["preCopyScript"] = osVar.PreCopyScript
+	}
+	if osVar.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = osVar.WriteBatchSize
+	}
+	if osVar.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = osVar.WriteBatchTimeout
+	}
+	if osVar.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = osVar.SinkRetryCount
+	}
+	if osVar.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = osVar.SinkRetryWait
+	}
 	if osVar.Type != "" {
 		objectMap["type"] = osVar.Type
 	}
@@ -68269,11 +68713,21 @@ type OracleSink struct {
 func (osVar OracleSink) MarshalJSON() ([]byte, error) {
 	osVar.Type = TypeOracleSink
 	objectMap := make(map[string]interface{})
-	objectMap["preCopyScript"] = osVar.PreCopyScript
-	objectMap["writeBatchSize"] = osVar.WriteBatchSize
-	objectMap["writeBatchTimeout"] = osVar.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = osVar.SinkRetryCount
-	objectMap["sinkRetryWait"] = osVar.SinkRetryWait
+	if osVar.PreCopyScript != nil {
+		objectMap["preCopyScript"] = osVar.PreCopyScript
+	}
+	if osVar.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = osVar.WriteBatchSize
+	}
+	if osVar.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = osVar.WriteBatchTimeout
+	}
+	if osVar.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = osVar.SinkRetryCount
+	}
+	if osVar.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = osVar.SinkRetryWait
+	}
 	if osVar.Type != "" {
 		objectMap["type"] = osVar.Type
 	}
@@ -68464,10 +68918,18 @@ type OracleSource struct {
 func (osVar OracleSource) MarshalJSON() ([]byte, error) {
 	osVar.Type = TypeOracleSource
 	objectMap := make(map[string]interface{})
-	objectMap["oracleReaderQuery"] = osVar.OracleReaderQuery
-	objectMap["queryTimeout"] = osVar.QueryTimeout
-	objectMap["sourceRetryCount"] = osVar.SourceRetryCount
-	objectMap["sourceRetryWait"] = osVar.SourceRetryWait
+	if osVar.OracleReaderQuery != nil {
+		objectMap["oracleReaderQuery"] = osVar.OracleReaderQuery
+	}
+	if osVar.QueryTimeout != nil {
+		objectMap["queryTimeout"] = osVar.QueryTimeout
+	}
+	if osVar.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = osVar.SourceRetryCount
+	}
+	if osVar.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = osVar.SourceRetryWait
+	}
 	if osVar.Type != "" {
 		objectMap["type"] = osVar.Type
 	}
@@ -68839,7 +69301,9 @@ func (otd OracleTableDataset) MarshalJSON() ([]byte, error) {
 	if otd.Description != nil {
 		objectMap["description"] = otd.Description
 	}
-	objectMap["structure"] = otd.Structure
+	if otd.Structure != nil {
+		objectMap["structure"] = otd.Structure
+	}
 	if otd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = otd.LinkedServiceName
 	}
@@ -69245,8 +69709,12 @@ type OrcFormat struct {
 func (of OrcFormat) MarshalJSON() ([]byte, error) {
 	of.Type = TypeOrcFormat
 	objectMap := make(map[string]interface{})
-	objectMap["serializer"] = of.Serializer
-	objectMap["deserializer"] = of.Deserializer
+	if of.Serializer != nil {
+		objectMap["serializer"] = of.Serializer
+	}
+	if of.Deserializer != nil {
+		objectMap["deserializer"] = of.Deserializer
+	}
 	if of.Type != "" {
 		objectMap["type"] = of.Type
 	}
@@ -69369,8 +69837,12 @@ type ParquetFormat struct {
 func (pf ParquetFormat) MarshalJSON() ([]byte, error) {
 	pf.Type = TypeParquetFormat
 	objectMap := make(map[string]interface{})
-	objectMap["serializer"] = pf.Serializer
-	objectMap["deserializer"] = pf.Deserializer
+	if pf.Serializer != nil {
+		objectMap["serializer"] = pf.Serializer
+	}
+	if pf.Deserializer != nil {
+		objectMap["deserializer"] = pf.Deserializer
+	}
 	if pf.Type != "" {
 		objectMap["type"] = pf.Type
 	}
@@ -70076,7 +70548,9 @@ func (pod PaypalObjectDataset) MarshalJSON() ([]byte, error) {
 	if pod.Description != nil {
 		objectMap["description"] = pod.Description
 	}
-	objectMap["structure"] = pod.Structure
+	if pod.Structure != nil {
+		objectMap["structure"] = pod.Structure
+	}
 	if pod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = pod.LinkedServiceName
 	}
@@ -70469,9 +70943,15 @@ type PaypalSource struct {
 func (ps PaypalSource) MarshalJSON() ([]byte, error) {
 	ps.Type = TypePaypalSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ps.Query
-	objectMap["sourceRetryCount"] = ps.SourceRetryCount
-	objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	if ps.Query != nil {
+		objectMap["query"] = ps.Query
+	}
+	if ps.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ps.SourceRetryCount
+	}
+	if ps.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	}
 	if ps.Type != "" {
 		objectMap["type"] = ps.Type
 	}
@@ -71466,7 +71946,9 @@ func (pod PhoenixObjectDataset) MarshalJSON() ([]byte, error) {
 	if pod.Description != nil {
 		objectMap["description"] = pod.Description
 	}
-	objectMap["structure"] = pod.Structure
+	if pod.Structure != nil {
+		objectMap["structure"] = pod.Structure
+	}
 	if pod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = pod.LinkedServiceName
 	}
@@ -71859,9 +72341,15 @@ type PhoenixSource struct {
 func (ps PhoenixSource) MarshalJSON() ([]byte, error) {
 	ps.Type = TypePhoenixSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ps.Query
-	objectMap["sourceRetryCount"] = ps.SourceRetryCount
-	objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	if ps.Query != nil {
+		objectMap["query"] = ps.Query
+	}
+	if ps.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ps.SourceRetryCount
+	}
+	if ps.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	}
 	if ps.Type != "" {
 		objectMap["type"] = ps.Type
 	}
@@ -72799,9 +73287,15 @@ func (ps PolybaseSettings) MarshalJSON() ([]byte, error) {
 	if ps.RejectType != "" {
 		objectMap["rejectType"] = ps.RejectType
 	}
-	objectMap["rejectValue"] = ps.RejectValue
-	objectMap["rejectSampleValue"] = ps.RejectSampleValue
-	objectMap["useTypeDefault"] = ps.UseTypeDefault
+	if ps.RejectValue != nil {
+		objectMap["rejectValue"] = ps.RejectValue
+	}
+	if ps.RejectSampleValue != nil {
+		objectMap["rejectSampleValue"] = ps.RejectSampleValue
+	}
+	if ps.UseTypeDefault != nil {
+		objectMap["useTypeDefault"] = ps.UseTypeDefault
+	}
 	for k, v := range ps.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -74082,7 +74576,9 @@ func (pod PrestoObjectDataset) MarshalJSON() ([]byte, error) {
 	if pod.Description != nil {
 		objectMap["description"] = pod.Description
 	}
-	objectMap["structure"] = pod.Structure
+	if pod.Structure != nil {
+		objectMap["structure"] = pod.Structure
+	}
 	if pod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = pod.LinkedServiceName
 	}
@@ -74475,9 +74971,15 @@ type PrestoSource struct {
 func (ps PrestoSource) MarshalJSON() ([]byte, error) {
 	ps.Type = TypePrestoSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ps.Query
-	objectMap["sourceRetryCount"] = ps.SourceRetryCount
-	objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	if ps.Query != nil {
+		objectMap["query"] = ps.Query
+	}
+	if ps.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ps.SourceRetryCount
+	}
+	if ps.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ps.SourceRetryWait
+	}
 	if ps.Type != "" {
 		objectMap["type"] = ps.Type
 	}
@@ -75426,7 +75928,9 @@ func (qbod QuickBooksObjectDataset) MarshalJSON() ([]byte, error) {
 	if qbod.Description != nil {
 		objectMap["description"] = qbod.Description
 	}
-	objectMap["structure"] = qbod.Structure
+	if qbod.Structure != nil {
+		objectMap["structure"] = qbod.Structure
+	}
 	if qbod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = qbod.LinkedServiceName
 	}
@@ -75819,9 +76323,15 @@ type QuickBooksSource struct {
 func (qbs QuickBooksSource) MarshalJSON() ([]byte, error) {
 	qbs.Type = TypeQuickBooksSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = qbs.Query
-	objectMap["sourceRetryCount"] = qbs.SourceRetryCount
-	objectMap["sourceRetryWait"] = qbs.SourceRetryWait
+	if qbs.Query != nil {
+		objectMap["query"] = qbs.Query
+	}
+	if qbs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = qbs.SourceRetryCount
+	}
+	if qbs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = qbs.SourceRetryWait
+	}
 	if qbs.Type != "" {
 		objectMap["type"] = qbs.Type
 	}
@@ -76349,8 +76859,12 @@ type RedirectIncompatibleRowSettings struct {
 // MarshalJSON is the custom marshaler for RedirectIncompatibleRowSettings.
 func (rirs RedirectIncompatibleRowSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["linkedServiceName"] = rirs.LinkedServiceName
-	objectMap["path"] = rirs.Path
+	if rirs.LinkedServiceName != nil {
+		objectMap["linkedServiceName"] = rirs.LinkedServiceName
+	}
+	if rirs.Path != nil {
+		objectMap["path"] = rirs.Path
+	}
 	for k, v := range rirs.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -76430,9 +76944,15 @@ type RelationalSource struct {
 func (rs RelationalSource) MarshalJSON() ([]byte, error) {
 	rs.Type = TypeRelationalSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = rs.Query
-	objectMap["sourceRetryCount"] = rs.SourceRetryCount
-	objectMap["sourceRetryWait"] = rs.SourceRetryWait
+	if rs.Query != nil {
+		objectMap["query"] = rs.Query
+	}
+	if rs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = rs.SourceRetryCount
+	}
+	if rs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = rs.SourceRetryWait
+	}
 	if rs.Type != "" {
 		objectMap["type"] = rs.Type
 	}
@@ -76795,7 +77315,9 @@ func (rtd RelationalTableDataset) MarshalJSON() ([]byte, error) {
 	if rtd.Description != nil {
 		objectMap["description"] = rtd.Description
 	}
-	objectMap["structure"] = rtd.Structure
+	if rtd.Structure != nil {
+		objectMap["structure"] = rtd.Structure
+	}
 	if rtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = rtd.LinkedServiceName
 	}
@@ -77827,7 +78349,9 @@ func (rod ResponsysObjectDataset) MarshalJSON() ([]byte, error) {
 	if rod.Description != nil {
 		objectMap["description"] = rod.Description
 	}
-	objectMap["structure"] = rod.Structure
+	if rod.Structure != nil {
+		objectMap["structure"] = rod.Structure
+	}
 	if rod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = rod.LinkedServiceName
 	}
@@ -78220,9 +78744,15 @@ type ResponsysSource struct {
 func (rs ResponsysSource) MarshalJSON() ([]byte, error) {
 	rs.Type = TypeResponsysSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = rs.Query
-	objectMap["sourceRetryCount"] = rs.SourceRetryCount
-	objectMap["sourceRetryWait"] = rs.SourceRetryWait
+	if rs.Query != nil {
+		objectMap["query"] = rs.Query
+	}
+	if rs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = rs.SourceRetryCount
+	}
+	if rs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = rs.SourceRetryWait
+	}
 	if rs.Type != "" {
 		objectMap["type"] = rs.Type
 	}
@@ -79719,7 +80249,9 @@ func (smcod SalesforceMarketingCloudObjectDataset) MarshalJSON() ([]byte, error)
 	if smcod.Description != nil {
 		objectMap["description"] = smcod.Description
 	}
-	objectMap["structure"] = smcod.Structure
+	if smcod.Structure != nil {
+		objectMap["structure"] = smcod.Structure
+	}
 	if smcod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = smcod.LinkedServiceName
 	}
@@ -80112,9 +80644,15 @@ type SalesforceMarketingCloudSource struct {
 func (smcs SalesforceMarketingCloudSource) MarshalJSON() ([]byte, error) {
 	smcs.Type = TypeSalesforceMarketingCloudSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = smcs.Query
-	objectMap["sourceRetryCount"] = smcs.SourceRetryCount
-	objectMap["sourceRetryWait"] = smcs.SourceRetryWait
+	if smcs.Query != nil {
+		objectMap["query"] = smcs.Query
+	}
+	if smcs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = smcs.SourceRetryCount
+	}
+	if smcs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = smcs.SourceRetryWait
+	}
 	if smcs.Type != "" {
 		objectMap["type"] = smcs.Type
 	}
@@ -80477,7 +81015,9 @@ func (sod SalesforceObjectDataset) MarshalJSON() ([]byte, error) {
 	if sod.Description != nil {
 		objectMap["description"] = sod.Description
 	}
-	objectMap["structure"] = sod.Structure
+	if sod.Structure != nil {
+		objectMap["structure"] = sod.Structure
+	}
 	if sod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = sod.LinkedServiceName
 	}
@@ -80896,12 +81436,24 @@ func (ss SalesforceSink) MarshalJSON() ([]byte, error) {
 	if ss.WriteBehavior != "" {
 		objectMap["writeBehavior"] = ss.WriteBehavior
 	}
-	objectMap["externalIdFieldName"] = ss.ExternalIDFieldName
-	objectMap["ignoreNullValues"] = ss.IgnoreNullValues
-	objectMap["writeBatchSize"] = ss.WriteBatchSize
-	objectMap["writeBatchTimeout"] = ss.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = ss.SinkRetryCount
-	objectMap["sinkRetryWait"] = ss.SinkRetryWait
+	if ss.ExternalIDFieldName != nil {
+		objectMap["externalIdFieldName"] = ss.ExternalIDFieldName
+	}
+	if ss.IgnoreNullValues != nil {
+		objectMap["ignoreNullValues"] = ss.IgnoreNullValues
+	}
+	if ss.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = ss.WriteBatchSize
+	}
+	if ss.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = ss.WriteBatchTimeout
+	}
+	if ss.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = ss.SinkRetryCount
+	}
+	if ss.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = ss.SinkRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -81110,12 +81662,18 @@ type SalesforceSource struct {
 func (ss SalesforceSource) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeSalesforceSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ss.Query
+	if ss.Query != nil {
+		objectMap["query"] = ss.Query
+	}
 	if ss.ReadBehavior != "" {
 		objectMap["readBehavior"] = ss.ReadBehavior
 	}
-	objectMap["sourceRetryCount"] = ss.SourceRetryCount
-	objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	if ss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ss.SourceRetryCount
+	}
+	if ss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -82607,7 +83165,9 @@ func (scfcrd SapCloudForCustomerResourceDataset) MarshalJSON() ([]byte, error) {
 	if scfcrd.Description != nil {
 		objectMap["description"] = scfcrd.Description
 	}
-	objectMap["structure"] = scfcrd.Structure
+	if scfcrd.Structure != nil {
+		objectMap["structure"] = scfcrd.Structure
+	}
 	if scfcrd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = scfcrd.LinkedServiceName
 	}
@@ -83023,10 +83583,18 @@ func (scfcs SapCloudForCustomerSink) MarshalJSON() ([]byte, error) {
 	if scfcs.WriteBehavior != "" {
 		objectMap["writeBehavior"] = scfcs.WriteBehavior
 	}
-	objectMap["writeBatchSize"] = scfcs.WriteBatchSize
-	objectMap["writeBatchTimeout"] = scfcs.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = scfcs.SinkRetryCount
-	objectMap["sinkRetryWait"] = scfcs.SinkRetryWait
+	if scfcs.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = scfcs.WriteBatchSize
+	}
+	if scfcs.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = scfcs.WriteBatchTimeout
+	}
+	if scfcs.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = scfcs.SinkRetryCount
+	}
+	if scfcs.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = scfcs.SinkRetryWait
+	}
 	if scfcs.Type != "" {
 		objectMap["type"] = scfcs.Type
 	}
@@ -83215,9 +83783,15 @@ type SapCloudForCustomerSource struct {
 func (scfcs SapCloudForCustomerSource) MarshalJSON() ([]byte, error) {
 	scfcs.Type = TypeSapCloudForCustomerSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = scfcs.Query
-	objectMap["sourceRetryCount"] = scfcs.SourceRetryCount
-	objectMap["sourceRetryWait"] = scfcs.SourceRetryWait
+	if scfcs.Query != nil {
+		objectMap["query"] = scfcs.Query
+	}
+	if scfcs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = scfcs.SourceRetryCount
+	}
+	if scfcs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = scfcs.SourceRetryWait
+	}
 	if scfcs.Type != "" {
 		objectMap["type"] = scfcs.Type
 	}
@@ -84129,7 +84703,9 @@ func (serd SapEccResourceDataset) MarshalJSON() ([]byte, error) {
 	if serd.Description != nil {
 		objectMap["description"] = serd.Description
 	}
-	objectMap["structure"] = serd.Structure
+	if serd.Structure != nil {
+		objectMap["structure"] = serd.Structure
+	}
 	if serd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = serd.LinkedServiceName
 	}
@@ -84540,8 +85116,12 @@ func (ses SapEccSource) MarshalJSON() ([]byte, error) {
 	if ses.Query != nil {
 		objectMap["query"] = ses.Query
 	}
-	objectMap["sourceRetryCount"] = ses.SourceRetryCount
-	objectMap["sourceRetryWait"] = ses.SourceRetryWait
+	if ses.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ses.SourceRetryCount
+	}
+	if ses.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ses.SourceRetryWait
+	}
 	if ses.Type != "" {
 		objectMap["type"] = ses.Type
 	}
@@ -86884,7 +87464,9 @@ func (snod ServiceNowObjectDataset) MarshalJSON() ([]byte, error) {
 	if snod.Description != nil {
 		objectMap["description"] = snod.Description
 	}
-	objectMap["structure"] = snod.Structure
+	if snod.Structure != nil {
+		objectMap["structure"] = snod.Structure
+	}
 	if snod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = snod.LinkedServiceName
 	}
@@ -87277,9 +87859,15 @@ type ServiceNowSource struct {
 func (sns ServiceNowSource) MarshalJSON() ([]byte, error) {
 	sns.Type = TypeServiceNowSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = sns.Query
-	objectMap["sourceRetryCount"] = sns.SourceRetryCount
-	objectMap["sourceRetryWait"] = sns.SourceRetryWait
+	if sns.Query != nil {
+		objectMap["query"] = sns.Query
+	}
+	if sns.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = sns.SourceRetryCount
+	}
+	if sns.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = sns.SourceRetryWait
+	}
 	if sns.Type != "" {
 		objectMap["type"] = sns.Type
 	}
@@ -88832,7 +89420,9 @@ func (sod ShopifyObjectDataset) MarshalJSON() ([]byte, error) {
 	if sod.Description != nil {
 		objectMap["description"] = sod.Description
 	}
-	objectMap["structure"] = sod.Structure
+	if sod.Structure != nil {
+		objectMap["structure"] = sod.Structure
+	}
 	if sod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = sod.LinkedServiceName
 	}
@@ -89225,9 +89815,15 @@ type ShopifySource struct {
 func (ss ShopifySource) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeShopifySource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ss.Query
-	objectMap["sourceRetryCount"] = ss.SourceRetryCount
-	objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	if ss.Query != nil {
+		objectMap["query"] = ss.Query
+	}
+	if ss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ss.SourceRetryCount
+	}
+	if ss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -90244,7 +90840,9 @@ func (sod SparkObjectDataset) MarshalJSON() ([]byte, error) {
 	if sod.Description != nil {
 		objectMap["description"] = sod.Description
 	}
-	objectMap["structure"] = sod.Structure
+	if sod.Structure != nil {
+		objectMap["structure"] = sod.Structure
+	}
 	if sod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = sod.LinkedServiceName
 	}
@@ -90637,9 +91235,15 @@ type SparkSource struct {
 func (ss SparkSource) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeSparkSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ss.Query
-	objectMap["sourceRetryCount"] = ss.SourceRetryCount
-	objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	if ss.Query != nil {
+		objectMap["query"] = ss.Query
+	}
+	if ss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ss.SourceRetryCount
+	}
+	if ss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -90998,15 +91602,27 @@ type SQLDWSink struct {
 func (sds SQLDWSink) MarshalJSON() ([]byte, error) {
 	sds.Type = TypeSQLDWSink
 	objectMap := make(map[string]interface{})
-	objectMap["preCopyScript"] = sds.PreCopyScript
-	objectMap["allowPolyBase"] = sds.AllowPolyBase
+	if sds.PreCopyScript != nil {
+		objectMap["preCopyScript"] = sds.PreCopyScript
+	}
+	if sds.AllowPolyBase != nil {
+		objectMap["allowPolyBase"] = sds.AllowPolyBase
+	}
 	if sds.PolyBaseSettings != nil {
 		objectMap["polyBaseSettings"] = sds.PolyBaseSettings
 	}
-	objectMap["writeBatchSize"] = sds.WriteBatchSize
-	objectMap["writeBatchTimeout"] = sds.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = sds.SinkRetryCount
-	objectMap["sinkRetryWait"] = sds.SinkRetryWait
+	if sds.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = sds.WriteBatchSize
+	}
+	if sds.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = sds.WriteBatchTimeout
+	}
+	if sds.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = sds.SinkRetryCount
+	}
+	if sds.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = sds.SinkRetryWait
+	}
 	if sds.Type != "" {
 		objectMap["type"] = sds.Type
 	}
@@ -91217,11 +91833,21 @@ type SQLDWSource struct {
 func (sds SQLDWSource) MarshalJSON() ([]byte, error) {
 	sds.Type = TypeSQLDWSource
 	objectMap := make(map[string]interface{})
-	objectMap["sqlReaderQuery"] = sds.SQLReaderQuery
-	objectMap["sqlReaderStoredProcedureName"] = sds.SQLReaderStoredProcedureName
-	objectMap["storedProcedureParameters"] = sds.StoredProcedureParameters
-	objectMap["sourceRetryCount"] = sds.SourceRetryCount
-	objectMap["sourceRetryWait"] = sds.SourceRetryWait
+	if sds.SQLReaderQuery != nil {
+		objectMap["sqlReaderQuery"] = sds.SQLReaderQuery
+	}
+	if sds.SQLReaderStoredProcedureName != nil {
+		objectMap["sqlReaderStoredProcedureName"] = sds.SQLReaderStoredProcedureName
+	}
+	if sds.StoredProcedureParameters != nil {
+		objectMap["storedProcedureParameters"] = sds.StoredProcedureParameters
+	}
+	if sds.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = sds.SourceRetryCount
+	}
+	if sds.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = sds.SourceRetryWait
+	}
 	if sds.Type != "" {
 		objectMap["type"] = sds.Type
 	}
@@ -92413,7 +93039,9 @@ type SQLServerStoredProcedureActivityTypeProperties struct {
 // MarshalJSON is the custom marshaler for SQLServerStoredProcedureActivityTypeProperties.
 func (ssspatp SQLServerStoredProcedureActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["storedProcedureName"] = ssspatp.StoredProcedureName
+	if ssspatp.StoredProcedureName != nil {
+		objectMap["storedProcedureName"] = ssspatp.StoredProcedureName
+	}
 	if ssspatp.StoredProcedureParameters != nil {
 		objectMap["storedProcedureParameters"] = ssspatp.StoredProcedureParameters
 	}
@@ -92450,7 +93078,9 @@ func (sstd SQLServerTableDataset) MarshalJSON() ([]byte, error) {
 	if sstd.Description != nil {
 		objectMap["description"] = sstd.Description
 	}
-	objectMap["structure"] = sstd.Structure
+	if sstd.Structure != nil {
+		objectMap["structure"] = sstd.Structure
+	}
 	if sstd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = sstd.LinkedServiceName
 	}
@@ -92868,16 +93498,30 @@ type SQLSink struct {
 func (ss SQLSink) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeSQLSink
 	objectMap := make(map[string]interface{})
-	objectMap["sqlWriterStoredProcedureName"] = ss.SQLWriterStoredProcedureName
-	objectMap["sqlWriterTableType"] = ss.SQLWriterTableType
-	objectMap["preCopyScript"] = ss.PreCopyScript
+	if ss.SQLWriterStoredProcedureName != nil {
+		objectMap["sqlWriterStoredProcedureName"] = ss.SQLWriterStoredProcedureName
+	}
+	if ss.SQLWriterTableType != nil {
+		objectMap["sqlWriterTableType"] = ss.SQLWriterTableType
+	}
+	if ss.PreCopyScript != nil {
+		objectMap["preCopyScript"] = ss.PreCopyScript
+	}
 	if ss.StoredProcedureParameters != nil {
 		objectMap["storedProcedureParameters"] = ss.StoredProcedureParameters
 	}
-	objectMap["writeBatchSize"] = ss.WriteBatchSize
-	objectMap["writeBatchTimeout"] = ss.WriteBatchTimeout
-	objectMap["sinkRetryCount"] = ss.SinkRetryCount
-	objectMap["sinkRetryWait"] = ss.SinkRetryWait
+	if ss.WriteBatchSize != nil {
+		objectMap["writeBatchSize"] = ss.WriteBatchSize
+	}
+	if ss.WriteBatchTimeout != nil {
+		objectMap["writeBatchTimeout"] = ss.WriteBatchTimeout
+	}
+	if ss.SinkRetryCount != nil {
+		objectMap["sinkRetryCount"] = ss.SinkRetryCount
+	}
+	if ss.SinkRetryWait != nil {
+		objectMap["sinkRetryWait"] = ss.SinkRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -93097,13 +93741,21 @@ type SQLSource struct {
 func (ss SQLSource) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeSQLSource
 	objectMap := make(map[string]interface{})
-	objectMap["sqlReaderQuery"] = ss.SQLReaderQuery
-	objectMap["sqlReaderStoredProcedureName"] = ss.SQLReaderStoredProcedureName
+	if ss.SQLReaderQuery != nil {
+		objectMap["sqlReaderQuery"] = ss.SQLReaderQuery
+	}
+	if ss.SQLReaderStoredProcedureName != nil {
+		objectMap["sqlReaderStoredProcedureName"] = ss.SQLReaderStoredProcedureName
+	}
 	if ss.StoredProcedureParameters != nil {
 		objectMap["storedProcedureParameters"] = ss.StoredProcedureParameters
 	}
-	objectMap["sourceRetryCount"] = ss.SourceRetryCount
-	objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	if ss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ss.SourceRetryCount
+	}
+	if ss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -94072,7 +94724,9 @@ func (sod SquareObjectDataset) MarshalJSON() ([]byte, error) {
 	if sod.Description != nil {
 		objectMap["description"] = sod.Description
 	}
-	objectMap["structure"] = sod.Structure
+	if sod.Structure != nil {
+		objectMap["structure"] = sod.Structure
+	}
 	if sod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = sod.LinkedServiceName
 	}
@@ -94465,9 +95119,15 @@ type SquareSource struct {
 func (ss SquareSource) MarshalJSON() ([]byte, error) {
 	ss.Type = TypeSquareSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = ss.Query
-	objectMap["sourceRetryCount"] = ss.SourceRetryCount
-	objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	if ss.Query != nil {
+		objectMap["query"] = ss.Query
+	}
+	if ss.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ss.SourceRetryCount
+	}
+	if ss.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ss.SourceRetryWait
+	}
 	if ss.Type != "" {
 		objectMap["type"] = ss.Type
 	}
@@ -94838,8 +95498,12 @@ func (ss StagingSettings) MarshalJSON() ([]byte, error) {
 	if ss.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = ss.LinkedServiceName
 	}
-	objectMap["path"] = ss.Path
-	objectMap["enableCompression"] = ss.EnableCompression
+	if ss.Path != nil {
+		objectMap["path"] = ss.Path
+	}
+	if ss.EnableCompression != nil {
+		objectMap["enableCompression"] = ss.EnableCompression
+	}
 	for k, v := range ss.AdditionalProperties {
 		objectMap[k] = v
 	}
@@ -95518,8 +96182,12 @@ type TabularTranslator struct {
 func (tt TabularTranslator) MarshalJSON() ([]byte, error) {
 	tt.Type = TypeTabularTranslator
 	objectMap := make(map[string]interface{})
-	objectMap["columnMappings"] = tt.ColumnMappings
-	objectMap["schemaMapping"] = tt.SchemaMapping
+	if tt.ColumnMappings != nil {
+		objectMap["columnMappings"] = tt.ColumnMappings
+	}
+	if tt.SchemaMapping != nil {
+		objectMap["schemaMapping"] = tt.SchemaMapping
+	}
 	if tt.Type != "" {
 		objectMap["type"] = tt.Type
 	}
@@ -96192,17 +96860,39 @@ type TextFormat struct {
 func (tf TextFormat) MarshalJSON() ([]byte, error) {
 	tf.Type = TypeTextFormat
 	objectMap := make(map[string]interface{})
-	objectMap["columnDelimiter"] = tf.ColumnDelimiter
-	objectMap["rowDelimiter"] = tf.RowDelimiter
-	objectMap["escapeChar"] = tf.EscapeChar
-	objectMap["quoteChar"] = tf.QuoteChar
-	objectMap["nullValue"] = tf.NullValue
-	objectMap["encodingName"] = tf.EncodingName
-	objectMap["treatEmptyAsNull"] = tf.TreatEmptyAsNull
-	objectMap["skipLineCount"] = tf.SkipLineCount
-	objectMap["firstRowAsHeader"] = tf.FirstRowAsHeader
-	objectMap["serializer"] = tf.Serializer
-	objectMap["deserializer"] = tf.Deserializer
+	if tf.ColumnDelimiter != nil {
+		objectMap["columnDelimiter"] = tf.ColumnDelimiter
+	}
+	if tf.RowDelimiter != nil {
+		objectMap["rowDelimiter"] = tf.RowDelimiter
+	}
+	if tf.EscapeChar != nil {
+		objectMap["escapeChar"] = tf.EscapeChar
+	}
+	if tf.QuoteChar != nil {
+		objectMap["quoteChar"] = tf.QuoteChar
+	}
+	if tf.NullValue != nil {
+		objectMap["nullValue"] = tf.NullValue
+	}
+	if tf.EncodingName != nil {
+		objectMap["encodingName"] = tf.EncodingName
+	}
+	if tf.TreatEmptyAsNull != nil {
+		objectMap["treatEmptyAsNull"] = tf.TreatEmptyAsNull
+	}
+	if tf.SkipLineCount != nil {
+		objectMap["skipLineCount"] = tf.SkipLineCount
+	}
+	if tf.FirstRowAsHeader != nil {
+		objectMap["firstRowAsHeader"] = tf.FirstRowAsHeader
+	}
+	if tf.Serializer != nil {
+		objectMap["serializer"] = tf.Serializer
+	}
+	if tf.Deserializer != nil {
+		objectMap["deserializer"] = tf.Deserializer
+	}
 	if tf.Type != "" {
 		objectMap["type"] = tf.Type
 	}
@@ -98140,9 +98830,15 @@ type VerticaSource struct {
 func (vs VerticaSource) MarshalJSON() ([]byte, error) {
 	vs.Type = TypeVerticaSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = vs.Query
-	objectMap["sourceRetryCount"] = vs.SourceRetryCount
-	objectMap["sourceRetryWait"] = vs.SourceRetryWait
+	if vs.Query != nil {
+		objectMap["query"] = vs.Query
+	}
+	if vs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = vs.SourceRetryCount
+	}
+	if vs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = vs.SourceRetryWait
+	}
 	if vs.Type != "" {
 		objectMap["type"] = vs.Type
 	}
@@ -98500,7 +99196,9 @@ func (vtd VerticaTableDataset) MarshalJSON() ([]byte, error) {
 	if vtd.Description != nil {
 		objectMap["description"] = vtd.Description
 	}
-	objectMap["structure"] = vtd.Structure
+	if vtd.Structure != nil {
+		objectMap["structure"] = vtd.Structure
+	}
 	if vtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = vtd.LinkedServiceName
 	}
@@ -99460,7 +100158,9 @@ type WebAnonymousAuthentication struct {
 func (waa WebAnonymousAuthentication) MarshalJSON() ([]byte, error) {
 	waa.AuthenticationType = AuthenticationTypeAnonymous
 	objectMap := make(map[string]interface{})
-	objectMap["url"] = waa.URL
+	if waa.URL != nil {
+		objectMap["url"] = waa.URL
+	}
 	if waa.AuthenticationType != "" {
 		objectMap["authenticationType"] = waa.AuthenticationType
 	}
@@ -99509,9 +100209,13 @@ type WebBasicAuthentication struct {
 func (wba WebBasicAuthentication) MarshalJSON() ([]byte, error) {
 	wba.AuthenticationType = AuthenticationTypeBasic
 	objectMap := make(map[string]interface{})
-	objectMap["username"] = wba.Username
+	if wba.Username != nil {
+		objectMap["username"] = wba.Username
+	}
 	objectMap["password"] = wba.Password
-	objectMap["url"] = wba.URL
+	if wba.URL != nil {
+		objectMap["url"] = wba.URL
+	}
 	if wba.AuthenticationType != "" {
 		objectMap["authenticationType"] = wba.AuthenticationType
 	}
@@ -99613,7 +100317,9 @@ func (wcca WebClientCertificateAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["pfx"] = wcca.Pfx
 	objectMap["password"] = wcca.Password
-	objectMap["url"] = wcca.URL
+	if wcca.URL != nil {
+		objectMap["url"] = wcca.URL
+	}
 	if wcca.AuthenticationType != "" {
 		objectMap["authenticationType"] = wcca.AuthenticationType
 	}
@@ -100245,7 +100951,9 @@ func unmarshalBasicWebLinkedServiceTypePropertiesArray(body []byte) ([]BasicWebL
 func (wlstp WebLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	wlstp.AuthenticationType = AuthenticationTypeWebLinkedServiceTypeProperties
 	objectMap := make(map[string]interface{})
-	objectMap["url"] = wlstp.URL
+	if wlstp.URL != nil {
+		objectMap["url"] = wlstp.URL
+	}
 	if wlstp.AuthenticationType != "" {
 		objectMap["authenticationType"] = wlstp.AuthenticationType
 	}
@@ -100293,8 +101001,12 @@ type WebSource struct {
 func (ws WebSource) MarshalJSON() ([]byte, error) {
 	ws.Type = TypeWebSource
 	objectMap := make(map[string]interface{})
-	objectMap["sourceRetryCount"] = ws.SourceRetryCount
-	objectMap["sourceRetryWait"] = ws.SourceRetryWait
+	if ws.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = ws.SourceRetryCount
+	}
+	if ws.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = ws.SourceRetryWait
+	}
 	if ws.Type != "" {
 		objectMap["type"] = ws.Type
 	}
@@ -100648,7 +101360,9 @@ func (wtd WebTableDataset) MarshalJSON() ([]byte, error) {
 	if wtd.Description != nil {
 		objectMap["description"] = wtd.Description
 	}
-	objectMap["structure"] = wtd.Structure
+	if wtd.Structure != nil {
+		objectMap["structure"] = wtd.Structure
+	}
 	if wtd.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = wtd.LinkedServiceName
 	}
@@ -101647,7 +102361,9 @@ func (xod XeroObjectDataset) MarshalJSON() ([]byte, error) {
 	if xod.Description != nil {
 		objectMap["description"] = xod.Description
 	}
-	objectMap["structure"] = xod.Structure
+	if xod.Structure != nil {
+		objectMap["structure"] = xod.Structure
+	}
 	if xod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = xod.LinkedServiceName
 	}
@@ -102040,9 +102756,15 @@ type XeroSource struct {
 func (xs XeroSource) MarshalJSON() ([]byte, error) {
 	xs.Type = TypeXeroSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = xs.Query
-	objectMap["sourceRetryCount"] = xs.SourceRetryCount
-	objectMap["sourceRetryWait"] = xs.SourceRetryWait
+	if xs.Query != nil {
+		objectMap["query"] = xs.Query
+	}
+	if xs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = xs.SourceRetryCount
+	}
+	if xs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = xs.SourceRetryWait
+	}
 	if xs.Type != "" {
 		objectMap["type"] = xs.Type
 	}
@@ -102971,7 +103693,9 @@ func (zod ZohoObjectDataset) MarshalJSON() ([]byte, error) {
 	if zod.Description != nil {
 		objectMap["description"] = zod.Description
 	}
-	objectMap["structure"] = zod.Structure
+	if zod.Structure != nil {
+		objectMap["structure"] = zod.Structure
+	}
 	if zod.LinkedServiceName != nil {
 		objectMap["linkedServiceName"] = zod.LinkedServiceName
 	}
@@ -103364,9 +104088,15 @@ type ZohoSource struct {
 func (zs ZohoSource) MarshalJSON() ([]byte, error) {
 	zs.Type = TypeZohoSource
 	objectMap := make(map[string]interface{})
-	objectMap["query"] = zs.Query
-	objectMap["sourceRetryCount"] = zs.SourceRetryCount
-	objectMap["sourceRetryWait"] = zs.SourceRetryWait
+	if zs.Query != nil {
+		objectMap["query"] = zs.Query
+	}
+	if zs.SourceRetryCount != nil {
+		objectMap["sourceRetryCount"] = zs.SourceRetryCount
+	}
+	if zs.SourceRetryWait != nil {
+		objectMap["sourceRetryWait"] = zs.SourceRetryWait
+	}
 	if zs.Type != "" {
 		objectMap["type"] = zs.Type
 	}

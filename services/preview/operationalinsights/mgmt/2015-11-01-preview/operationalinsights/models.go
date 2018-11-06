@@ -142,7 +142,9 @@ type DataSource struct {
 // MarshalJSON is the custom marshaler for DataSource.
 func (ds DataSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = ds.Properties
+	if ds.Properties != nil {
+		objectMap["properties"] = ds.Properties
+	}
 	if ds.ETag != nil {
 		objectMap["eTag"] = ds.ETag
 	}

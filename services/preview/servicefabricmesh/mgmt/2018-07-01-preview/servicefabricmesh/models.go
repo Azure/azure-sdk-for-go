@@ -496,7 +496,9 @@ func (aimpsd AzureInternalMonitoringPipelineSinkDescription) MarshalJSON() ([]by
 	if aimpsd.MaConfigURL != nil {
 		objectMap["maConfigUrl"] = aimpsd.MaConfigURL
 	}
-	objectMap["fluentdConfigUrl"] = aimpsd.FluentdConfigURL
+	if aimpsd.FluentdConfigURL != nil {
+		objectMap["fluentdConfigUrl"] = aimpsd.FluentdConfigURL
+	}
 	if aimpsd.AutoKeyConfigURL != nil {
 		objectMap["autoKeyConfigUrl"] = aimpsd.AutoKeyConfigURL
 	}

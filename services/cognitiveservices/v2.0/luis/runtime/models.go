@@ -168,7 +168,9 @@ type EntityWithResolution struct {
 // MarshalJSON is the custom marshaler for EntityWithResolution.
 func (ewr EntityWithResolution) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["resolution"] = ewr.Resolution
+	if ewr.Resolution != nil {
+		objectMap["resolution"] = ewr.Resolution
+	}
 	if ewr.Entity != nil {
 		objectMap["entity"] = ewr.Entity
 	}

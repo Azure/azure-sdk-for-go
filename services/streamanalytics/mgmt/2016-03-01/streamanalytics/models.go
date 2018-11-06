@@ -308,7 +308,9 @@ type AvroSerialization struct {
 func (as AvroSerialization) MarshalJSON() ([]byte, error) {
 	as.Type = TypeAvro
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = as.Properties
+	if as.Properties != nil {
+		objectMap["properties"] = as.Properties
+	}
 	if as.Type != "" {
 		objectMap["type"] = as.Type
 	}

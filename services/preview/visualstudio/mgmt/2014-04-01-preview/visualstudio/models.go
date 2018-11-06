@@ -98,7 +98,9 @@ func (arr AccountResourceRequest) MarshalJSON() ([]byte, error) {
 	if arr.Location != nil {
 		objectMap["location"] = arr.Location
 	}
-	objectMap["operationType"] = arr.OperationType
+	if arr.OperationType != nil {
+		objectMap["operationType"] = arr.OperationType
+	}
 	if arr.Properties != nil {
 		objectMap["properties"] = arr.Properties
 	}

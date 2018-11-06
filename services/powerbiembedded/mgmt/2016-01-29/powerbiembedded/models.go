@@ -223,7 +223,9 @@ func (wc WorkspaceCollection) MarshalJSON() ([]byte, error) {
 	if wc.Sku != nil {
 		objectMap["sku"] = wc.Sku
 	}
-	objectMap["properties"] = wc.Properties
+	if wc.Properties != nil {
+		objectMap["properties"] = wc.Properties
+	}
 	return json.Marshal(objectMap)
 }
 

@@ -583,7 +583,9 @@ func (gr GenericResource) MarshalJSON() ([]byte, error) {
 	if gr.Plan != nil {
 		objectMap["plan"] = gr.Plan
 	}
-	objectMap["properties"] = gr.Properties
+	if gr.Properties != nil {
+		objectMap["properties"] = gr.Properties
+	}
 	if gr.Kind != nil {
 		objectMap["kind"] = gr.Kind
 	}

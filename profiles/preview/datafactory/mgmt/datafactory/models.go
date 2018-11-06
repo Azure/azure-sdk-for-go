@@ -557,6 +557,7 @@ const (
 	TypeDatabricksSparkJar       TypeBasicActivity = original.TypeDatabricksSparkJar
 	TypeDatabricksSparkPython    TypeBasicActivity = original.TypeDatabricksSparkPython
 	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
+	TypeDelete                   TypeBasicActivity = original.TypeDelete
 	TypeExecutePipeline          TypeBasicActivity = original.TypeExecutePipeline
 	TypeExecuteSSISPackage       TypeBasicActivity = original.TypeExecuteSSISPackage
 	TypeExecution                TypeBasicActivity = original.TypeExecution
@@ -1022,6 +1023,8 @@ type DatasetStorageFormat = original.DatasetStorageFormat
 type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type DeleteActivity = original.DeleteActivity
+type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type BasicDependencyReference = original.BasicDependencyReference
 type DependencyReference = original.DependencyReference
 type DistcpSettings = original.DistcpSettings

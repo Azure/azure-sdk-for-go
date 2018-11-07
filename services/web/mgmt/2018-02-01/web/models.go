@@ -4311,8 +4311,6 @@ type AppServicePlanPatchResourceProperties struct {
 
 // AppServicePlanProperties appServicePlan resource specific properties
 type AppServicePlanProperties struct {
-	// Name - Name for the App Service plan.
-	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'

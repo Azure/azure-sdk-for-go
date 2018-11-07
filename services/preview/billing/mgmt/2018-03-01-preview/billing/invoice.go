@@ -31,17 +31,20 @@ type InvoiceClient struct {
 }
 
 // NewInvoiceClient creates an instance of the InvoiceClient client.
-func NewInvoiceClient(subscriptionID string, billingAccountID string, invoiceName string) InvoiceClient {
-	return NewInvoiceClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, invoiceName)
+func NewInvoiceClient(subscriptionID string) InvoiceClient {
+	return NewInvoiceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInvoiceClientWithBaseURI creates an instance of the InvoiceClient client.
-func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) InvoiceClient {
-	return InvoiceClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)}
+func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string) InvoiceClient {
+	return InvoiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Pricesheet get pricesheet data for invoice id (invoiceName).
-func (client InvoiceClient) Pricesheet(ctx context.Context) (result autorest.Response, err error) {
+// Parameters:
+// billingAccountID - azure Billing Account ID.
+// invoiceName - the name of an invoice resource.
+func (client InvoiceClient) Pricesheet(ctx context.Context, billingAccountID string, invoiceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceClient.Pricesheet")
 		defer func() {
@@ -52,7 +55,7 @@ func (client InvoiceClient) Pricesheet(ctx context.Context) (result autorest.Res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PricesheetPreparer(ctx)
+	req, err := client.PricesheetPreparer(ctx, billingAccountID, invoiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoiceClient", "Pricesheet", nil, "Failure preparing request")
 		return
@@ -74,10 +77,10 @@ func (client InvoiceClient) Pricesheet(ctx context.Context) (result autorest.Res
 }
 
 // PricesheetPreparer prepares the Pricesheet request.
-func (client InvoiceClient) PricesheetPreparer(ctx context.Context) (*http.Request, error) {
+func (client InvoiceClient) PricesheetPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
-		"invoiceName":      autorest.Encode("path", client.InvoiceName),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"invoiceName":      autorest.Encode("path", invoiceName),
 	}
 
 	const APIVersion = "2018-03-01-preview"

@@ -32,24 +32,20 @@ const (
 // BaseClient is the base client for Billing.
 type BaseClient struct {
 	autorest.Client
-	BaseURI          string
-	SubscriptionID   string
-	BillingAccountID string
-	InvoiceName      string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, billingAccountID string, invoiceName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, invoiceName)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:           autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:          baseURI,
-		SubscriptionID:   subscriptionID,
-		BillingAccountID: billingAccountID,
-		InvoiceName:      invoiceName,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

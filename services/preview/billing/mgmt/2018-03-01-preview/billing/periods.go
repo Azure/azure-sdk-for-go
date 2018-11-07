@@ -32,13 +32,13 @@ type PeriodsClient struct {
 }
 
 // NewPeriodsClient creates an instance of the PeriodsClient client.
-func NewPeriodsClient(subscriptionID string, billingAccountID string, invoiceName string) PeriodsClient {
-	return NewPeriodsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, invoiceName)
+func NewPeriodsClient(subscriptionID string) PeriodsClient {
+	return NewPeriodsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPeriodsClientWithBaseURI creates an instance of the PeriodsClient client.
-func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) PeriodsClient {
-	return PeriodsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)}
+func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
+	return PeriodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a named billing period.  This is only supported for Azure Web-Direct subscriptions. Other subscription

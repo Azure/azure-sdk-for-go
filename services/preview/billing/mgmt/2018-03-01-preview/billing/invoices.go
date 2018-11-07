@@ -32,13 +32,13 @@ type InvoicesClient struct {
 }
 
 // NewInvoicesClient creates an instance of the InvoicesClient client.
-func NewInvoicesClient(subscriptionID string, billingAccountID string, invoiceName string) InvoicesClient {
-	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, invoiceName)
+func NewInvoicesClient(subscriptionID string) InvoicesClient {
+	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInvoicesClientWithBaseURI creates an instance of the InvoicesClient client.
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) InvoicesClient {
-	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)}
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
+	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a named invoice resource. When getting a single invoice, the downloadUrl property is expanded

@@ -31,13 +31,13 @@ type EnrollmentAccountsClient struct {
 }
 
 // NewEnrollmentAccountsClient creates an instance of the EnrollmentAccountsClient client.
-func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
-	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewEnrollmentAccountsClient(subscriptionID string, billingAccountID string, invoiceName string) EnrollmentAccountsClient {
+	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, invoiceName)
 }
 
 // NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client.
-func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
-	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) EnrollmentAccountsClient {
+	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)}
 }
 
 // Get gets a enrollment account by name.

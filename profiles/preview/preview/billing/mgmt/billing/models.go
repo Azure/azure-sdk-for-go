@@ -27,6 +27,7 @@ const (
 
 type BaseClient = original.BaseClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
+type InvoiceClient = original.InvoiceClient
 type InvoicesClient = original.InvoicesClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
@@ -55,35 +56,41 @@ type Resource = original.Resource
 type OperationsClient = original.OperationsClient
 type PeriodsClient = original.PeriodsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, billingAccountID string, invoiceName string) BaseClient {
+	return original.New(subscriptionID, billingAccountID, invoiceName)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
 }
-func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
-	return original.NewEnrollmentAccountsClient(subscriptionID)
+func NewEnrollmentAccountsClient(subscriptionID string, billingAccountID string, invoiceName string) EnrollmentAccountsClient {
+	return original.NewEnrollmentAccountsClient(subscriptionID, billingAccountID, invoiceName)
 }
-func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
-	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) EnrollmentAccountsClient {
+	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
 }
-func NewInvoicesClient(subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClient(subscriptionID)
+func NewInvoiceClient(subscriptionID string, billingAccountID string, invoiceName string) InvoiceClient {
+	return original.NewInvoiceClient(subscriptionID, billingAccountID, invoiceName)
 }
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoiceClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) InvoiceClient {
+	return original.NewInvoiceClientWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewInvoicesClient(subscriptionID string, billingAccountID string, invoiceName string) InvoicesClient {
+	return original.NewInvoicesClient(subscriptionID, billingAccountID, invoiceName)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) InvoicesClient {
+	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
 }
-func NewPeriodsClient(subscriptionID string) PeriodsClient {
-	return original.NewPeriodsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, billingAccountID string, invoiceName string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, billingAccountID, invoiceName)
 }
-func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
-	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
+}
+func NewPeriodsClient(subscriptionID string, billingAccountID string, invoiceName string) PeriodsClient {
+	return original.NewPeriodsClient(subscriptionID, billingAccountID, invoiceName)
+}
+func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, invoiceName string) PeriodsClient {
+	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID, billingAccountID, invoiceName)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

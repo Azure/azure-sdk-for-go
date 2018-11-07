@@ -7714,6 +7714,290 @@ type LocationCapabilities struct {
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
+// ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp, err = client.CreateOrUpdateResponder(mbstrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedBackupShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedBackupShortTermRetentionPoliciesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedBackupShortTermRetentionPoliciesUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp, err = client.UpdateResponder(mbstrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedBackupShortTermRetentionPolicy a short term retention policy.
+type ManagedBackupShortTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// ManagedBackupShortTermRetentionPolicyProperties - Resource properties.
+	*ManagedBackupShortTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedBackupShortTermRetentionPolicy.
+func (mbstrp ManagedBackupShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mbstrp.ManagedBackupShortTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = mbstrp.ManagedBackupShortTermRetentionPolicyProperties
+	}
+	if mbstrp.ID != nil {
+		objectMap["id"] = mbstrp.ID
+	}
+	if mbstrp.Name != nil {
+		objectMap["name"] = mbstrp.Name
+	}
+	if mbstrp.Type != nil {
+		objectMap["type"] = mbstrp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedBackupShortTermRetentionPolicy struct.
+func (mbstrp *ManagedBackupShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedBackupShortTermRetentionPolicyProperties ManagedBackupShortTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &managedBackupShortTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				mbstrp.ManagedBackupShortTermRetentionPolicyProperties = &managedBackupShortTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mbstrp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mbstrp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mbstrp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedBackupShortTermRetentionPolicyListResult a list of short term retention policies.
+type ManagedBackupShortTermRetentionPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ManagedBackupShortTermRetentionPolicy `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedBackupShortTermRetentionPolicyListResultIterator provides access to a complete listing of
+// ManagedBackupShortTermRetentionPolicy values.
+type ManagedBackupShortTermRetentionPolicyListResultIterator struct {
+	i    int
+	page ManagedBackupShortTermRetentionPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedBackupShortTermRetentionPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedBackupShortTermRetentionPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedBackupShortTermRetentionPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) Response() ManagedBackupShortTermRetentionPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) Value() ManagedBackupShortTermRetentionPolicy {
+	if !iter.page.NotDone() {
+		return ManagedBackupShortTermRetentionPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mbstrplr ManagedBackupShortTermRetentionPolicyListResult) IsEmpty() bool {
+	return mbstrplr.Value == nil || len(*mbstrplr.Value) == 0
+}
+
+// managedBackupShortTermRetentionPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mbstrplr ManagedBackupShortTermRetentionPolicyListResult) managedBackupShortTermRetentionPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if mbstrplr.NextLink == nil || len(to.String(mbstrplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mbstrplr.NextLink)))
+}
+
+// ManagedBackupShortTermRetentionPolicyListResultPage contains a page of
+// ManagedBackupShortTermRetentionPolicy values.
+type ManagedBackupShortTermRetentionPolicyListResultPage struct {
+	fn       func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error)
+	mbstrplr ManagedBackupShortTermRetentionPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedBackupShortTermRetentionPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedBackupShortTermRetentionPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mbstrplr)
+	if err != nil {
+		return err
+	}
+	page.mbstrplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedBackupShortTermRetentionPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) NotDone() bool {
+	return !page.mbstrplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) Response() ManagedBackupShortTermRetentionPolicyListResult {
+	return page.mbstrplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) Values() []ManagedBackupShortTermRetentionPolicy {
+	if page.mbstrplr.IsEmpty() {
+		return nil
+	}
+	return *page.mbstrplr.Value
+}
+
+// ManagedBackupShortTermRetentionPolicyProperties properties of a short term retention policy
+type ManagedBackupShortTermRetentionPolicyProperties struct {
+	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
 // ManagedDatabase a managed database resource.
 type ManagedDatabase struct {
 	autorest.Response `json:"-"`

@@ -27,6 +27,7 @@ const (
 
 type BaseClient = original.BaseClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
+type InvoicePricesheetClient = original.InvoicePricesheetClient
 type InvoicesClient = original.InvoicesClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
@@ -66,6 +67,12 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 }
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClient(subscriptionID)
+}
+func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoicesClient(subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClient(subscriptionID)

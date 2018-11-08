@@ -121,6 +121,7 @@ type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
 type ContainerGroupsRestartFuture = original.ContainerGroupsRestartFuture
+type ContainerGroupsStartFuture = original.ContainerGroupsStartFuture
 type ContainerHTTPGet = original.ContainerHTTPGet
 type ContainerPort = original.ContainerPort
 type ContainerProbe = original.ContainerProbe

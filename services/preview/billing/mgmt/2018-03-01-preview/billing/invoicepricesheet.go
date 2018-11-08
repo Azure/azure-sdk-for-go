@@ -44,13 +44,13 @@ func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string
 // Parameters:
 // billingAccountID - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetClient) Get(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetGetFuture, err error) {
+func (client InvoicePricesheetClient) Get(ctx context.Context, billingAccountID string, invoiceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetClient.Get")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -61,10 +61,16 @@ func (client InvoicePricesheetClient) Get(ctx context.Context, billingAccountID 
 		return
 	}
 
-	result, err = client.GetSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Get", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Get", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -92,15 +98,9 @@ func (client InvoicePricesheetClient) GetPreparer(ctx context.Context, billingAc
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoicePricesheetClient) GetSender(req *http.Request) (future InvoicePricesheetGetFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client InvoicePricesheetClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // GetResponder handles the response to the Get request. The method always

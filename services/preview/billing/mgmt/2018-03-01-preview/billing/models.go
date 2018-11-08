@@ -21,7 +21,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -360,29 +359,6 @@ func (i *Invoice) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// InvoicePricesheetGetFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type InvoicePricesheetGetFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InvoicePricesheetGetFuture) Result(client InvoicePricesheetClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetGetFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetGetFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // InvoiceProperties the properties of the invoice.

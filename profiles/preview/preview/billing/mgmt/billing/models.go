@@ -38,7 +38,6 @@ type EnrollmentAccountProperties = original.EnrollmentAccountProperties
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Invoice = original.Invoice
-type InvoicePricesheetGetFuture = original.InvoicePricesheetGetFuture
 type InvoiceProperties = original.InvoiceProperties
 type InvoicesListResult = original.InvoicesListResult
 type InvoicesListResultIterator = original.InvoicesListResultIterator

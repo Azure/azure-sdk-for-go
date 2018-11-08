@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type MigrationRecoveryPointsClient = original.MigrationRecoveryPointsClient
 type A2ARpRecoveryPointType = original.A2ARpRecoveryPointType
 
 const (
@@ -73,6 +74,21 @@ const (
 	NotSpecified      DisableProtectionReason = original.NotSpecified
 )
 
+type DiskAccountType = original.DiskAccountType
+
+const (
+	PremiumLRS     DiskAccountType = original.PremiumLRS
+	StandardLRS    DiskAccountType = original.StandardLRS
+	StandardSSDLRS DiskAccountType = original.StandardSSDLRS
+)
+
+type EthernetAddressType = original.EthernetAddressType
+
+const (
+	Dynamic EthernetAddressType = original.Dynamic
+	Static  EthernetAddressType = original.Static
+)
+
 type FailoverDeploymentModel = original.FailoverDeploymentModel
 
 const (
@@ -99,12 +115,6 @@ const (
 	HyperVReplicaAzureRpRecoveryPointTypeLatest                      HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointTypeLatest
 	HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent
 	HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed             HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed
-)
-
-type IdentityProviderType = original.IdentityProviderType
-
-const (
-	RecoveryServicesActiveDirectory IdentityProviderType = original.RecoveryServicesActiveDirectory
 )
 
 type InMageV2RpRecoveryPointType = original.InMageV2RpRecoveryPointType
@@ -140,6 +150,13 @@ type InstanceTypeBasicDisableProtectionProviderSpecificInput = original.Instance
 const (
 	InstanceTypeDisableProtectionProviderSpecificInput InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeDisableProtectionProviderSpecificInput
 	InstanceTypeInMage                                 InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeInMage
+)
+
+type InstanceTypeBasicEnableMigrationProviderSpecificInput = original.InstanceTypeBasicEnableMigrationProviderSpecificInput
+
+const (
+	InstanceTypeEnableMigrationProviderSpecificInput InstanceTypeBasicEnableMigrationProviderSpecificInput = original.InstanceTypeEnableMigrationProviderSpecificInput
+	InstanceTypeVMwareCbt                            InstanceTypeBasicEnableMigrationProviderSpecificInput = original.InstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicEnableProtectionProviderSpecificInput = original.InstanceTypeBasicEnableProtectionProviderSpecificInput
@@ -229,6 +246,20 @@ const (
 	InstanceTypeTestFailoverJobDetails     InstanceTypeBasicJobDetails = original.InstanceTypeTestFailoverJobDetails
 )
 
+type InstanceTypeBasicMigrateProviderSpecificInput = original.InstanceTypeBasicMigrateProviderSpecificInput
+
+const (
+	InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput InstanceTypeBasicMigrateProviderSpecificInput = original.InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput
+	InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt                    InstanceTypeBasicMigrateProviderSpecificInput = original.InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt
+)
+
+type InstanceTypeBasicMigrationProviderSpecificSettings = original.InstanceTypeBasicMigrationProviderSpecificSettings
+
+const (
+	InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings InstanceTypeBasicMigrationProviderSpecificSettings = original.InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings
+	InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt                         InstanceTypeBasicMigrationProviderSpecificSettings = original.InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt
+)
+
 type InstanceTypeBasicNetworkMappingFabricSpecificSettings = original.InstanceTypeBasicNetworkMappingFabricSpecificSettings
 
 const (
@@ -272,6 +303,7 @@ type InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = origin
 const (
 	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A                                               InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A
 	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt                                         InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicProviderSpecificFailoverInput = original.InstanceTypeBasicProviderSpecificFailoverInput
@@ -316,8 +348,9 @@ const (
 type InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInput
 
 const (
-	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A                                               InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A
-	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A                                                                                  InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput                                    InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero
 )
 
 type InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInput
@@ -325,6 +358,7 @@ type InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = origina
 const (
 	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A                                              InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A
 	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt                                        InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettings
@@ -378,6 +412,20 @@ const (
 	InstanceTypeVMNicUpdatesTaskDetails           InstanceTypeBasicTaskTypeDetails = original.InstanceTypeVMNicUpdatesTaskDetails
 )
 
+type InstanceTypeBasicTestMigrateProviderSpecificInput = original.InstanceTypeBasicTestMigrateProviderSpecificInput
+
+const (
+	InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput InstanceTypeBasicTestMigrateProviderSpecificInput = original.InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput
+	InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt                        InstanceTypeBasicTestMigrateProviderSpecificInput = original.InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt
+)
+
+type InstanceTypeBasicUpdateMigrationItemProviderSpecificInput = original.InstanceTypeBasicUpdateMigrationItemProviderSpecificInput
+
+const (
+	InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput InstanceTypeBasicUpdateMigrationItemProviderSpecificInput = original.InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput
+	InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt                                InstanceTypeBasicUpdateMigrationItemProviderSpecificInput = original.InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt
+)
+
 type InstanceTypeBasicUpdateReplicationProtectedItemProviderInput = original.InstanceTypeBasicUpdateReplicationProtectedItemProviderInput
 
 const (
@@ -393,6 +441,24 @@ const (
 	LicenseTypeNoLicenseType LicenseType = original.LicenseTypeNoLicenseType
 	LicenseTypeNotSpecified  LicenseType = original.LicenseTypeNotSpecified
 	LicenseTypeWindowsServer LicenseType = original.LicenseTypeWindowsServer
+)
+
+type MigrationItemOperation = original.MigrationItemOperation
+
+const (
+	CompleteMigration  MigrationItemOperation = original.CompleteMigration
+	DisableMigration   MigrationItemOperation = original.DisableMigration
+	Migrate            MigrationItemOperation = original.Migrate
+	TestMigrate        MigrationItemOperation = original.TestMigrate
+	TestMigrateCleanup MigrationItemOperation = original.TestMigrateCleanup
+)
+
+type MigrationRecoveryPointType = original.MigrationRecoveryPointType
+
+const (
+	MigrationRecoveryPointTypeApplicationConsistent MigrationRecoveryPointType = original.MigrationRecoveryPointTypeApplicationConsistent
+	MigrationRecoveryPointTypeCrashConsistent       MigrationRecoveryPointType = original.MigrationRecoveryPointTypeCrashConsistent
+	MigrationRecoveryPointTypeNotSpecified          MigrationRecoveryPointType = original.MigrationRecoveryPointTypeNotSpecified
 )
 
 type MultiVMGroupCreateOption = original.MultiVMGroupCreateOption
@@ -530,6 +596,8 @@ type A2AUpdateReplicationProtectedItemInput = original.A2AUpdateReplicationProte
 type A2AVMDiskInputDetails = original.A2AVMDiskInputDetails
 type A2AVMManagedDiskInputDetails = original.A2AVMManagedDiskInputDetails
 type A2AVMManagedDiskUpdateDetails = original.A2AVMManagedDiskUpdateDetails
+type AddRecoveryServicesProviderInput = original.AddRecoveryServicesProviderInput
+type AddRecoveryServicesProviderInputProperties = original.AddRecoveryServicesProviderInputProperties
 type AddVCenterRequest = original.AddVCenterRequest
 type AddVCenterRequestProperties = original.AddVCenterRequestProperties
 type Alert = original.Alert
@@ -580,6 +648,10 @@ type DiskEncryptionInfo = original.DiskEncryptionInfo
 type DiskEncryptionKeyInfo = original.DiskEncryptionKeyInfo
 type DiskVolumeDetails = original.DiskVolumeDetails
 type Display = original.Display
+type EnableMigrationInput = original.EnableMigrationInput
+type EnableMigrationInputProperties = original.EnableMigrationInputProperties
+type BasicEnableMigrationProviderSpecificInput = original.BasicEnableMigrationProviderSpecificInput
+type EnableMigrationProviderSpecificInput = original.EnableMigrationProviderSpecificInput
 type EnableProtectionInput = original.EnableProtectionInput
 type EnableProtectionInputProperties = original.EnableProtectionInputProperties
 type BasicEnableProtectionProviderSpecificInput = original.BasicEnableProtectionProviderSpecificInput
@@ -643,7 +715,8 @@ type HyperVReplicaPolicyInput = original.HyperVReplicaPolicyInput
 type HyperVReplicaReplicationDetails = original.HyperVReplicaReplicationDetails
 type HyperVSiteDetails = original.HyperVSiteDetails
 type HyperVVirtualMachineDetails = original.HyperVVirtualMachineDetails
-type IdentityInformation = original.IdentityInformation
+type IdentityProviderDetails = original.IdentityProviderDetails
+type IdentityProviderInput = original.IdentityProviderInput
 type InconsistentVMDetails = original.InconsistentVMDetails
 type InitialReplicationDetails = original.InitialReplicationDetails
 type InlineWorkflowTaskDetails = original.InlineWorkflowTaskDetails
@@ -695,6 +768,23 @@ type LogicalNetworkCollectionPage = original.LogicalNetworkCollectionPage
 type LogicalNetworkProperties = original.LogicalNetworkProperties
 type ManualActionTaskDetails = original.ManualActionTaskDetails
 type MasterTargetServer = original.MasterTargetServer
+type MigrateInput = original.MigrateInput
+type MigrateInputProperties = original.MigrateInputProperties
+type BasicMigrateProviderSpecificInput = original.BasicMigrateProviderSpecificInput
+type MigrateProviderSpecificInput = original.MigrateProviderSpecificInput
+type MigrationItem = original.MigrationItem
+type MigrationItemCollection = original.MigrationItemCollection
+type MigrationItemCollectionIterator = original.MigrationItemCollectionIterator
+type MigrationItemCollectionPage = original.MigrationItemCollectionPage
+type MigrationItemProperties = original.MigrationItemProperties
+type MigrationItemsQueryParameter = original.MigrationItemsQueryParameter
+type BasicMigrationProviderSpecificSettings = original.BasicMigrationProviderSpecificSettings
+type MigrationProviderSpecificSettings = original.MigrationProviderSpecificSettings
+type MigrationRecoveryPoint = original.MigrationRecoveryPoint
+type MigrationRecoveryPointCollection = original.MigrationRecoveryPointCollection
+type MigrationRecoveryPointCollectionIterator = original.MigrationRecoveryPointCollectionIterator
+type MigrationRecoveryPointCollectionPage = original.MigrationRecoveryPointCollectionPage
+type MigrationRecoveryPointProperties = original.MigrationRecoveryPointProperties
 type MobilityServiceUpdate = original.MobilityServiceUpdate
 type Network = original.Network
 type NetworkCollection = original.NetworkCollection
@@ -808,6 +898,14 @@ type ReplicationJobsCancelFuture = original.ReplicationJobsCancelFuture
 type ReplicationJobsExportFuture = original.ReplicationJobsExportFuture
 type ReplicationJobsRestartFuture = original.ReplicationJobsRestartFuture
 type ReplicationJobsResumeFuture = original.ReplicationJobsResumeFuture
+type ReplicationMigrationItemsCompleteFuture = original.ReplicationMigrationItemsCompleteFuture
+type ReplicationMigrationItemsCreateFuture = original.ReplicationMigrationItemsCreateFuture
+type ReplicationMigrationItemsDeleteFuture = original.ReplicationMigrationItemsDeleteFuture
+type ReplicationMigrationItemsMigrateFuture = original.ReplicationMigrationItemsMigrateFuture
+type ReplicationMigrationItemsRemoveFuture = original.ReplicationMigrationItemsRemoveFuture
+type ReplicationMigrationItemsTestMigrateCleanupFuture = original.ReplicationMigrationItemsTestMigrateCleanupFuture
+type ReplicationMigrationItemsTestMigrateFuture = original.ReplicationMigrationItemsTestMigrateFuture
+type ReplicationMigrationItemsUpdateFuture = original.ReplicationMigrationItemsUpdateFuture
 type ReplicationNetworkMappingsCreateFuture = original.ReplicationNetworkMappingsCreateFuture
 type ReplicationNetworkMappingsDeleteFuture = original.ReplicationNetworkMappingsDeleteFuture
 type ReplicationNetworkMappingsUpdateFuture = original.ReplicationNetworkMappingsUpdateFuture
@@ -858,6 +956,7 @@ type ReplicationRecoveryPlansTestFailoverCleanupFuture = original.ReplicationRec
 type ReplicationRecoveryPlansTestFailoverFuture = original.ReplicationRecoveryPlansTestFailoverFuture
 type ReplicationRecoveryPlansUnplannedFailoverFuture = original.ReplicationRecoveryPlansUnplannedFailoverFuture
 type ReplicationRecoveryPlansUpdateFuture = original.ReplicationRecoveryPlansUpdateFuture
+type ReplicationRecoveryServicesProvidersCreateFuture = original.ReplicationRecoveryServicesProvidersCreateFuture
 type ReplicationRecoveryServicesProvidersDeleteFuture = original.ReplicationRecoveryServicesProvidersDeleteFuture
 type ReplicationRecoveryServicesProvidersPurgeFuture = original.ReplicationRecoveryServicesProvidersPurgeFuture
 type ReplicationRecoveryServicesProvidersRefreshProviderFuture = original.ReplicationRecoveryServicesProvidersRefreshProviderFuture
@@ -911,8 +1010,18 @@ type TestFailoverCleanupInputProperties = original.TestFailoverCleanupInputPrope
 type TestFailoverInput = original.TestFailoverInput
 type TestFailoverInputProperties = original.TestFailoverInputProperties
 type TestFailoverJobDetails = original.TestFailoverJobDetails
+type TestMigrateCleanupInput = original.TestMigrateCleanupInput
+type TestMigrateCleanupInputProperties = original.TestMigrateCleanupInputProperties
+type TestMigrateInput = original.TestMigrateInput
+type TestMigrateInputProperties = original.TestMigrateInputProperties
+type BasicTestMigrateProviderSpecificInput = original.BasicTestMigrateProviderSpecificInput
+type TestMigrateProviderSpecificInput = original.TestMigrateProviderSpecificInput
 type UnplannedFailoverInput = original.UnplannedFailoverInput
 type UnplannedFailoverInputProperties = original.UnplannedFailoverInputProperties
+type UpdateMigrationItemInput = original.UpdateMigrationItemInput
+type UpdateMigrationItemInputProperties = original.UpdateMigrationItemInputProperties
+type BasicUpdateMigrationItemProviderSpecificInput = original.BasicUpdateMigrationItemProviderSpecificInput
+type UpdateMigrationItemProviderSpecificInput = original.UpdateMigrationItemProviderSpecificInput
 type UpdateMobilityServiceRequest = original.UpdateMobilityServiceRequest
 type UpdateMobilityServiceRequestProperties = original.UpdateMobilityServiceRequestProperties
 type UpdateNetworkMappingInput = original.UpdateNetworkMappingInput
@@ -949,8 +1058,20 @@ type VmmVirtualMachineDetails = original.VmmVirtualMachineDetails
 type VMNicDetails = original.VMNicDetails
 type VMNicInputDetails = original.VMNicInputDetails
 type VMNicUpdatesTaskDetails = original.VMNicUpdatesTaskDetails
+type VMwareCbtContainerCreationInput = original.VMwareCbtContainerCreationInput
+type VMwareCbtContainerMappingInput = original.VMwareCbtContainerMappingInput
+type VMwareCbtDiskInput = original.VMwareCbtDiskInput
+type VMwareCbtEnableMigrationInput = original.VMwareCbtEnableMigrationInput
+type VMwareCbtMigrateInput = original.VMwareCbtMigrateInput
+type VMwareCbtMigrationDetails = original.VMwareCbtMigrationDetails
+type VMwareCbtNicDetails = original.VMwareCbtNicDetails
+type VMwareCbtNicInput = original.VMwareCbtNicInput
 type VMwareCbtPolicyCreationInput = original.VMwareCbtPolicyCreationInput
 type VmwareCbtPolicyDetails = original.VmwareCbtPolicyDetails
+type VMwareCbtProtectedDiskDetails = original.VMwareCbtProtectedDiskDetails
+type VMwareCbtProtectionContainerMappingDetails = original.VMwareCbtProtectionContainerMappingDetails
+type VMwareCbtTestMigrateInput = original.VMwareCbtTestMigrateInput
+type VMwareCbtUpdateMigrationItemInput = original.VMwareCbtUpdateMigrationItemInput
 type VMwareDetails = original.VMwareDetails
 type VMwareV2FabricCreationInput = original.VMwareV2FabricCreationInput
 type VMwareV2FabricSpecificDetails = original.VMwareV2FabricSpecificDetails
@@ -962,6 +1083,7 @@ type ReplicationEventsClient = original.ReplicationEventsClient
 type ReplicationFabricsClient = original.ReplicationFabricsClient
 type ReplicationJobsClient = original.ReplicationJobsClient
 type ReplicationLogicalNetworksClient = original.ReplicationLogicalNetworksClient
+type ReplicationMigrationItemsClient = original.ReplicationMigrationItemsClient
 type ReplicationNetworkMappingsClient = original.ReplicationNetworkMappingsClient
 type ReplicationNetworksClient = original.ReplicationNetworksClient
 type ReplicationPoliciesClient = original.ReplicationPoliciesClient
@@ -983,6 +1105,12 @@ func New(subscriptionID string, resourceGroupName string, resourceName string) B
 func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
+func NewMigrationRecoveryPointsClient(subscriptionID string, resourceGroupName string, resourceName string) MigrationRecoveryPointsClient {
+	return original.NewMigrationRecoveryPointsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewMigrationRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) MigrationRecoveryPointsClient {
+	return original.NewMigrationRecoveryPointsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
 func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
 	return original.PossibleA2ARpRecoveryPointTypeValues()
 }
@@ -1001,6 +1129,12 @@ func PossibleDataSyncStatusValues() []DataSyncStatus {
 func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
 	return original.PossibleDisableProtectionReasonValues()
 }
+func PossibleDiskAccountTypeValues() []DiskAccountType {
+	return original.PossibleDiskAccountTypeValues()
+}
+func PossibleEthernetAddressTypeValues() []EthernetAddressType {
+	return original.PossibleEthernetAddressTypeValues()
+}
 func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
 	return original.PossibleFailoverDeploymentModelValues()
 }
@@ -1009,9 +1143,6 @@ func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
 }
 func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
 	return original.PossibleHyperVReplicaAzureRpRecoveryPointTypeValues()
-}
-func PossibleIdentityProviderTypeValues() []IdentityProviderType {
-	return original.PossibleIdentityProviderTypeValues()
 }
 func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
 	return original.PossibleInMageV2RpRecoveryPointTypeValues()
@@ -1024,6 +1155,9 @@ func PossibleInstanceTypeBasicConfigurationSettingsValues() []InstanceTypeBasicC
 }
 func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicEnableMigrationProviderSpecificInputValues() []InstanceTypeBasicEnableMigrationProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicEnableMigrationProviderSpecificInputValues()
 }
 func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() []InstanceTypeBasicEnableProtectionProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues()
@@ -1051,6 +1185,12 @@ func PossibleInstanceTypeBasicGroupTaskDetailsValues() []InstanceTypeBasicGroupT
 }
 func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
 	return original.PossibleInstanceTypeBasicJobDetailsValues()
+}
+func PossibleInstanceTypeBasicMigrateProviderSpecificInputValues() []InstanceTypeBasicMigrateProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicMigrateProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicMigrationProviderSpecificSettingsValues() []InstanceTypeBasicMigrationProviderSpecificSettings {
+	return original.PossibleInstanceTypeBasicMigrationProviderSpecificSettingsValues()
 }
 func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() []InstanceTypeBasicNetworkMappingFabricSpecificSettings {
 	return original.PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues()
@@ -1097,11 +1237,23 @@ func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() []In
 func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTypeDetails {
 	return original.PossibleInstanceTypeBasicTaskTypeDetailsValues()
 }
+func PossibleInstanceTypeBasicTestMigrateProviderSpecificInputValues() []InstanceTypeBasicTestMigrateProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicTestMigrateProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicUpdateMigrationItemProviderSpecificInputValues() []InstanceTypeBasicUpdateMigrationItemProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicUpdateMigrationItemProviderSpecificInputValues()
+}
 func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
 	return original.PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues()
 }
 func PossibleLicenseTypeValues() []LicenseType {
 	return original.PossibleLicenseTypeValues()
+}
+func PossibleMigrationItemOperationValues() []MigrationItemOperation {
+	return original.PossibleMigrationItemOperationValues()
+}
+func PossibleMigrationRecoveryPointTypeValues() []MigrationRecoveryPointType {
+	return original.PossibleMigrationRecoveryPointTypeValues()
 }
 func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
 	return original.PossibleMultiVMGroupCreateOptionValues()
@@ -1186,6 +1338,12 @@ func NewReplicationLogicalNetworksClient(subscriptionID string, resourceGroupNam
 }
 func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
 	return original.NewReplicationLogicalNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationMigrationItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationMigrationItemsClient {
+	return original.NewReplicationMigrationItemsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationMigrationItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationMigrationItemsClient {
+	return original.NewReplicationMigrationItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationNetworkMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworkMappingsClient {
 	return original.NewReplicationNetworkMappingsClient(subscriptionID, resourceGroupName, resourceName)

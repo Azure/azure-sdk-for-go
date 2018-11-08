@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -41,6 +42,110 @@ func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, resour
 // ReplicationRecoveryServicesProvidersClient client.
 func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
 	return ReplicationRecoveryServicesProvidersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
+}
+
+// Create the operation to add a recovery services provider.
+// Parameters:
+// fabricName - fabric name.
+// providerName - recovery services provider name.
+// addProviderInput - add provider input.
+func (client ReplicationRecoveryServicesProvidersClient) Create(ctx context.Context, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput) (result ReplicationRecoveryServicesProvidersCreateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationRecoveryServicesProvidersClient.Create")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: addProviderInput,
+			Constraints: []validation.Constraint{{Target: "addProviderInput.Properties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "addProviderInput.Properties.MachineName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "addProviderInput.Properties.AuthenticationIdentityInput", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "addProviderInput.Properties.AuthenticationIdentityInput.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.AuthenticationIdentityInput.ApplicationID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.AuthenticationIdentityInput.ObjectID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.AuthenticationIdentityInput.Audience", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.AuthenticationIdentityInput.AadAuthority", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					{Target: "addProviderInput.Properties.ResourceAccessIdentityInput", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.ApplicationID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.ObjectID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.Audience", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.AadAuthority", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}}}}}); err != nil {
+		return result, validation.NewError("siterecovery.ReplicationRecoveryServicesProvidersClient", "Create", err.Error())
+	}
+
+	req, err := client.CreatePreparer(ctx, fabricName, providerName, addProviderInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "Create", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersClient", "Create", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreatePreparer prepares the Create request.
+func (client ReplicationRecoveryServicesProvidersClient) CreatePreparer(ctx context.Context, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"fabricName":        autorest.Encode("path", fabricName),
+		"providerName":      autorest.Encode("path", providerName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-10"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationRecoveryServicesProviders/{providerName}", pathParameters),
+		autorest.WithJSON(addProviderInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateSender sends the Create request. The method will close the
+// http.Response Body if it receives an error.
+func (client ReplicationRecoveryServicesProvidersClient) CreateSender(req *http.Request) (future ReplicationRecoveryServicesProvidersCreateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateResponder handles the response to the Create request. The method always
+// closes the http.Response Body.
+func (client ReplicationRecoveryServicesProvidersClient) CreateResponder(resp *http.Response) (result RecoveryServicesProvider, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete the operation to removes/delete(unregister) a recovery services provider from the vault

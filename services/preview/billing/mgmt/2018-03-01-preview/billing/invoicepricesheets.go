@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// InvoicePricesheetClient is the billing client provides access to billing resources for Azure subscriptions.
-type InvoicePricesheetClient struct {
+// InvoicePricesheetsClient is the billing client provides access to billing resources for Azure subscriptions.
+type InvoicePricesheetsClient struct {
 	BaseClient
 }
 
-// NewInvoicePricesheetClient creates an instance of the InvoicePricesheetClient client.
-func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
-	return NewInvoicePricesheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewInvoicePricesheetsClient creates an instance of the InvoicePricesheetsClient client.
+func NewInvoicePricesheetsClient(subscriptionID string) InvoicePricesheetsClient {
+	return NewInvoicePricesheetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoicePricesheetClientWithBaseURI creates an instance of the InvoicePricesheetClient client.
-func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
-	return InvoicePricesheetClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvoicePricesheetsClientWithBaseURI creates an instance of the InvoicePricesheetsClient client.
+func NewInvoicePricesheetsClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetsClient {
+	return InvoicePricesheetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Post get pricesheet data for invoice id (invoiceName).
 // Parameters:
 // billingAccountID - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetClient) Post(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetPostFuture, err error) {
+func (client InvoicePricesheetsClient) Post(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetsPostFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetClient.Post")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetsClient.Post")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -57,13 +57,13 @@ func (client InvoicePricesheetClient) Post(ctx context.Context, billingAccountID
 	}
 	req, err := client.PostPreparer(ctx, billingAccountID, invoiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Post", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Post", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PostSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Post", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Post", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -71,7 +71,7 @@ func (client InvoicePricesheetClient) Post(ctx context.Context, billingAccountID
 }
 
 // PostPreparer prepares the Post request.
-func (client InvoicePricesheetClient) PostPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
+func (client InvoicePricesheetsClient) PostPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"invoiceName":      autorest.Encode("path", invoiceName),
@@ -92,7 +92,7 @@ func (client InvoicePricesheetClient) PostPreparer(ctx context.Context, billingA
 
 // PostSender sends the Post request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoicePricesheetClient) PostSender(req *http.Request) (future InvoicePricesheetPostFuture, err error) {
+func (client InvoicePricesheetsClient) PostSender(req *http.Request) (future InvoicePricesheetsPostFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -105,7 +105,7 @@ func (client InvoicePricesheetClient) PostSender(req *http.Request) (future Invo
 
 // PostResponder handles the response to the Post request. The method always
 // closes the http.Response Body.
-func (client InvoicePricesheetClient) PostResponder(resp *http.Response) (result DownloadURL, err error) {
+func (client InvoicePricesheetsClient) PostResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

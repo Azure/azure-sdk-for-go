@@ -363,30 +363,30 @@ func (i *Invoice) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InvoicePricesheetPostFuture an abstraction for monitoring and retrieving the results of a long-running
+// InvoicePricesheetsPostFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type InvoicePricesheetPostFuture struct {
+type InvoicePricesheetsPostFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *InvoicePricesheetPostFuture) Result(client InvoicePricesheetClient) (du DownloadURL, err error) {
+func (future *InvoicePricesheetsPostFuture) Result(client InvoicePricesheetsClient) (du DownloadURL, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetPostFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsPostFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetPostFuture")
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetsPostFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 		du, err = client.PostResponder(du.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetPostFuture", "Result", du.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsPostFuture", "Result", du.Response.Response, "Failure responding to request")
 		}
 	}
 	return

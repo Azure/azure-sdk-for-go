@@ -40,13 +40,13 @@ func NewInvoicePricesheetsClientWithBaseURI(baseURI string, subscriptionID strin
 	return InvoicePricesheetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Post get pricesheet data for invoice id (invoiceName).
+// Download get pricesheet data for invoice id (invoiceName).
 // Parameters:
 // billingAccountID - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetsClient) Post(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetsPostFuture, err error) {
+func (client InvoicePricesheetsClient) Download(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetsDownloadFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetsClient.Post")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetsClient.Download")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -55,23 +55,23 @@ func (client InvoicePricesheetsClient) Post(ctx context.Context, billingAccountI
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PostPreparer(ctx, billingAccountID, invoiceName)
+	req, err := client.DownloadPreparer(ctx, billingAccountID, invoiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Post", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Download", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.PostSender(req)
+	result, err = client.DownloadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Post", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Download", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// PostPreparer prepares the Post request.
-func (client InvoicePricesheetsClient) PostPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
+// DownloadPreparer prepares the Download request.
+func (client InvoicePricesheetsClient) DownloadPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"invoiceName":      autorest.Encode("path", invoiceName),
@@ -90,9 +90,9 @@ func (client InvoicePricesheetsClient) PostPreparer(ctx context.Context, billing
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PostSender sends the Post request. The method will close the
+// DownloadSender sends the Download request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoicePricesheetsClient) PostSender(req *http.Request) (future InvoicePricesheetsPostFuture, err error) {
+func (client InvoicePricesheetsClient) DownloadSender(req *http.Request) (future InvoicePricesheetsDownloadFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -103,9 +103,9 @@ func (client InvoicePricesheetsClient) PostSender(req *http.Request) (future Inv
 	return
 }
 
-// PostResponder handles the response to the Post request. The method always
+// DownloadResponder handles the response to the Download request. The method always
 // closes the http.Response Body.
-func (client InvoicePricesheetsClient) PostResponder(resp *http.Response) (result DownloadURL, err error) {
+func (client InvoicePricesheetsClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -363,30 +363,30 @@ func (i *Invoice) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InvoicePricesheetsPostFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type InvoicePricesheetsPostFuture struct {
+// InvoicePricesheetsDownloadFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type InvoicePricesheetsDownloadFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *InvoicePricesheetsPostFuture) Result(client InvoicePricesheetsClient) (du DownloadURL, err error) {
+func (future *InvoicePricesheetsDownloadFuture) Result(client InvoicePricesheetsClient) (du DownloadURL, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsPostFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsDownloadFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetsPostFuture")
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetsDownloadFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
-		du, err = client.PostResponder(du.Response.Response)
+		du, err = client.DownloadResponder(du.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsPostFuture", "Result", du.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
 		}
 	}
 	return

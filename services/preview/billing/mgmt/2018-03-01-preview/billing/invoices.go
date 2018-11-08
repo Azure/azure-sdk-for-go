@@ -335,3 +335,78 @@ func (client InvoicesClient) ListComplete(ctx context.Context, expand string, fi
 	result.page, err = client.List(ctx, expand, filter, skiptoken, top)
 	return
 }
+
+// Pricesheet get pricesheet data for invoice id (invoiceName).
+// Parameters:
+// billingAccountID - azure Billing Account ID.
+// invoiceName - the name of an invoice resource.
+func (client InvoicesClient) Pricesheet(ctx context.Context, billingAccountID string, invoiceName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.Pricesheet")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PricesheetPreparer(ctx, billingAccountID, invoiceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Pricesheet", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PricesheetSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Pricesheet", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PricesheetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Pricesheet", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PricesheetPreparer prepares the Pricesheet request.
+func (client InvoicesClient) PricesheetPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"invoiceName":      autorest.Encode("path", invoiceName),
+	}
+
+	const APIVersion = "2018-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheet/download", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PricesheetSender sends the Pricesheet request. The method will close the
+// http.Response Body if it receives an error.
+func (client InvoicesClient) PricesheetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// PricesheetResponder handles the response to the Pricesheet request. The method always
+// closes the http.Response Body.
+func (client InvoicesClient) PricesheetResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

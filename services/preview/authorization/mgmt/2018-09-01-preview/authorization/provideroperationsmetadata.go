@@ -83,7 +83,7 @@ func (client ProviderOperationsMetadataClient) GetPreparer(ctx context.Context, 
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -159,7 +159,7 @@ func (client ProviderOperationsMetadataClient) List(ctx context.Context, expand 
 
 // ListPreparer prepares the List request.
 func (client ProviderOperationsMetadataClient) ListPreparer(ctx context.Context, expand string) (*http.Request, error) {
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -84,7 +84,7 @@ func (client RoleDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"scope":            scope,
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -162,7 +162,7 @@ func (client RoleDefinitionsClient) DeletePreparer(ctx context.Context, scope st
 		"scope":            scope,
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -238,7 +238,7 @@ func (client RoleDefinitionsClient) GetPreparer(ctx context.Context, scope strin
 		"scope":            scope,
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -315,7 +315,7 @@ func (client RoleDefinitionsClient) GetByIDPreparer(ctx context.Context, roleID 
 		"roleId": roleID,
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -392,7 +392,7 @@ func (client RoleDefinitionsClient) ListPreparer(ctx context.Context, scope stri
 		"scope": scope,
 	}
 
-	const APIVersion = "2018-09-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

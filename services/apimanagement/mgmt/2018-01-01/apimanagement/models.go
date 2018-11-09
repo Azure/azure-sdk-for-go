@@ -5077,20 +5077,85 @@ func (ic *IssueContract) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// IssueContractBaseProperties issue contract Base Properties.
+type IssueContractBaseProperties struct {
+	// CreatedDate - Date and time when the issue was created.
+	CreatedDate *date.Time `json:"createdDate,omitempty"`
+	// State - Status of the issue. Possible values include: 'Proposed', 'Open', 'Removed', 'Resolved', 'Closed'
+	State State `json:"state,omitempty"`
+	// APIID - A resource identifier for the API the issue was created for.
+	APIID *string `json:"apiId,omitempty"`
+}
+
 // IssueContractProperties issue contract Properties.
 type IssueContractProperties struct {
 	// Title - The issue title.
 	Title *string `json:"title,omitempty"`
 	// Description - Text describing the issue.
 	Description *string `json:"description,omitempty"`
+	// UserID - A resource identifier for the user created the issue.
+	UserID *string `json:"userId,omitempty"`
 	// CreatedDate - Date and time when the issue was created.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// State - Status of the issue. Possible values include: 'Proposed', 'Open', 'Removed', 'Resolved', 'Closed'
 	State State `json:"state,omitempty"`
-	// UserID - A resource identifier for the user created the issue.
-	UserID *string `json:"userId,omitempty"`
 	// APIID - A resource identifier for the API the issue was created for.
 	APIID *string `json:"apiId,omitempty"`
+}
+
+// IssueContractUpdateProperties issue contract Update Properties.
+type IssueContractUpdateProperties struct {
+	// Title - The issue title.
+	Title *string `json:"title,omitempty"`
+	// Description - Text describing the issue.
+	Description *string `json:"description,omitempty"`
+	// UserID - A resource identifier for the user created the issue.
+	UserID *string `json:"userId,omitempty"`
+	// CreatedDate - Date and time when the issue was created.
+	CreatedDate *date.Time `json:"createdDate,omitempty"`
+	// State - Status of the issue. Possible values include: 'Proposed', 'Open', 'Removed', 'Resolved', 'Closed'
+	State State `json:"state,omitempty"`
+	// APIID - A resource identifier for the API the issue was created for.
+	APIID *string `json:"apiId,omitempty"`
+}
+
+// IssueUpdateContract issue update Parameters.
+type IssueUpdateContract struct {
+	// IssueContractUpdateProperties - Issue entity Update contract properties.
+	*IssueContractUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IssueUpdateContract.
+func (iuc IssueUpdateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iuc.IssueContractUpdateProperties != nil {
+		objectMap["properties"] = iuc.IssueContractUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IssueUpdateContract struct.
+func (iuc *IssueUpdateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var issueContractUpdateProperties IssueContractUpdateProperties
+				err = json.Unmarshal(*v, &issueContractUpdateProperties)
+				if err != nil {
+					return err
+				}
+				iuc.IssueContractUpdateProperties = &issueContractUpdateProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // ListNetworkStatusContractByLocation ...

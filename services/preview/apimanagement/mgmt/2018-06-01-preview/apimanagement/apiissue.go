@@ -605,7 +605,7 @@ func (client APIIssueClient) ListByServiceComplete(ctx context.Context, resource
 // parameters - update parameters.
 // ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
 // the GET request or it should be * for unconditional update.
-func (client APIIssueClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (result autorest.Response, err error) {
+func (client APIIssueClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/APIIssueClient.Update")
 		defer func() {
@@ -654,7 +654,7 @@ func (client APIIssueClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client APIIssueClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (*http.Request, error) {
+func (client APIIssueClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueUpdateContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"issueId":           autorest.Encode("path", issueID),

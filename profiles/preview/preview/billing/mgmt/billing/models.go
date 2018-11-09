@@ -27,7 +27,7 @@ const (
 
 type BaseClient = original.BaseClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
-type InvoicePricesheetsClient = original.InvoicePricesheetsClient
+type InvoicePricesheetClient = original.InvoicePricesheetClient
 type InvoicesClient = original.InvoicesClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
@@ -38,7 +38,7 @@ type EnrollmentAccountProperties = original.EnrollmentAccountProperties
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Invoice = original.Invoice
-type InvoicePricesheetsDownloadFuture = original.InvoicePricesheetsDownloadFuture
+type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
 type InvoiceProperties = original.InvoiceProperties
 type InvoicesListResult = original.InvoicesListResult
 type InvoicesListResultIterator = original.InvoicesListResultIterator
@@ -69,11 +69,11 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInvoicePricesheetsClient(subscriptionID string) InvoicePricesheetsClient {
-	return original.NewInvoicePricesheetsClient(subscriptionID)
+func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClient(subscriptionID)
 }
-func NewInvoicePricesheetsClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetsClient {
-	return original.NewInvoicePricesheetsClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
+	return original.NewInvoicePricesheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoicesClient(subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClient(subscriptionID)

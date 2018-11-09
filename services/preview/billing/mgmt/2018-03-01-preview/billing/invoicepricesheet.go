@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// InvoicePricesheetsClient is the billing client provides access to billing resources for Azure subscriptions.
-type InvoicePricesheetsClient struct {
+// InvoicePricesheetClient is the billing client provides access to billing resources for Azure subscriptions.
+type InvoicePricesheetClient struct {
 	BaseClient
 }
 
-// NewInvoicePricesheetsClient creates an instance of the InvoicePricesheetsClient client.
-func NewInvoicePricesheetsClient(subscriptionID string) InvoicePricesheetsClient {
-	return NewInvoicePricesheetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewInvoicePricesheetClient creates an instance of the InvoicePricesheetClient client.
+func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
+	return NewInvoicePricesheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewInvoicePricesheetsClientWithBaseURI creates an instance of the InvoicePricesheetsClient client.
-func NewInvoicePricesheetsClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetsClient {
-	return InvoicePricesheetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvoicePricesheetClientWithBaseURI creates an instance of the InvoicePricesheetClient client.
+func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
+	return InvoicePricesheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Download get pricesheet data for invoice id (invoiceName).
 // Parameters:
 // billingAccountID - azure Billing Account ID.
 // invoiceName - the name of an invoice resource.
-func (client InvoicePricesheetsClient) Download(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetsDownloadFuture, err error) {
+func (client InvoicePricesheetClient) Download(ctx context.Context, billingAccountID string, invoiceName string) (result InvoicePricesheetDownloadFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetsClient.Download")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicePricesheetClient.Download")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -57,13 +57,13 @@ func (client InvoicePricesheetsClient) Download(ctx context.Context, billingAcco
 	}
 	req, err := client.DownloadPreparer(ctx, billingAccountID, invoiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Download", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Download", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DownloadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetsClient", "Download", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetClient", "Download", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -71,7 +71,7 @@ func (client InvoicePricesheetsClient) Download(ctx context.Context, billingAcco
 }
 
 // DownloadPreparer prepares the Download request.
-func (client InvoicePricesheetsClient) DownloadPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
+func (client InvoicePricesheetClient) DownloadPreparer(ctx context.Context, billingAccountID string, invoiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"invoiceName":      autorest.Encode("path", invoiceName),
@@ -85,14 +85,14 @@ func (client InvoicePricesheetsClient) DownloadPreparer(ctx context.Context, bil
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheets/default/download", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheet/default/download", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DownloadSender sends the Download request. The method will close the
 // http.Response Body if it receives an error.
-func (client InvoicePricesheetsClient) DownloadSender(req *http.Request) (future InvoicePricesheetsDownloadFuture, err error) {
+func (client InvoicePricesheetClient) DownloadSender(req *http.Request) (future InvoicePricesheetDownloadFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -105,7 +105,7 @@ func (client InvoicePricesheetsClient) DownloadSender(req *http.Request) (future
 
 // DownloadResponder handles the response to the Download request. The method always
 // closes the http.Response Body.
-func (client InvoicePricesheetsClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
+func (client InvoicePricesheetClient) DownloadResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

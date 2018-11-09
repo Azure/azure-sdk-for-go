@@ -7413,6 +7413,8 @@ type DeletedAppRestoreRequestProperties struct {
 	// SnapshotTime - Point in time to restore the deleted app from, formatted as a DateTime string.
 	// If unspecified, default value is the time that the app was deleted.
 	SnapshotTime *string `json:"snapshotTime,omitempty"`
+	// UseDRSecondary - If true, the snapshot is retrieved from DRSecondary endpoint.
+	UseDRSecondary *bool `json:"useDRSecondary,omitempty"`
 }
 
 // DeletedSite a deleted app.
@@ -19884,6 +19886,8 @@ type SnapshotRestoreRequestProperties struct {
 	// IgnoreConflictingHostNames - If true, custom hostname conflicts will be ignored when recovering to a target web app.
 	// This setting is only necessary when RecoverConfiguration is enabled.
 	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
+	// UseDRSecondary - If true, the snapshot is retrieved from DRSecondary endpoint.
+	UseDRSecondary *bool `json:"useDRSecondary,omitempty"`
 }
 
 // Solution class Representing Solution for problems detected.

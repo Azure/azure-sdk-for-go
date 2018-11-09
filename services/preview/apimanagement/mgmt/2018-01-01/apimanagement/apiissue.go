@@ -26,25 +26,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APIIssueClient is the apiManagement Client
 type APIIssueClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIIssueClient creates an instance of the APIIssueClient client.
 func NewAPIIssueClient(subscriptionID string) APIIssueClient {
 	return NewAPIIssueClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPIIssueClientWithBaseURI creates an instance of the APIIssueClient client.
 func NewAPIIssueClientWithBaseURI(baseURI string, subscriptionID string) APIIssueClient {
 	return APIIssueClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates a new Issue for an API or updates an existing one.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -108,7 +104,6 @@ func (client APIIssueClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIIssueClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -138,7 +133,6 @@ func (client APIIssueClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -146,7 +140,6 @@ func (client APIIssueClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client APIIssueClient) CreateOrUpdateResponder(resp *http.Response) (result IssueContract, err error) {
@@ -160,7 +153,6 @@ func (client APIIssueClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the specified Issue from an API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -217,7 +209,6 @@ func (client APIIssueClient) Delete(ctx context.Context, resourceGroupName strin
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client APIIssueClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -242,7 +233,6 @@ func (client APIIssueClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -250,7 +240,6 @@ func (client APIIssueClient) DeleteSender(req *http.Request) (*http.Response, er
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client APIIssueClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -263,7 +252,6 @@ func (client APIIssueClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the Issue for an API specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -318,7 +306,6 @@ func (client APIIssueClient) Get(ctx context.Context, resourceGroupName string, 
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client APIIssueClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -342,7 +329,6 @@ func (client APIIssueClient) GetPreparer(ctx context.Context, resourceGroupName 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -350,7 +336,6 @@ func (client APIIssueClient) GetSender(req *http.Request) (*http.Response, error
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client APIIssueClient) GetResponder(resp *http.Response) (result IssueContract, err error) {
@@ -364,7 +349,6 @@ func (client APIIssueClient) GetResponder(resp *http.Response) (result IssueCont
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the Issue for an API specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -419,7 +403,6 @@ func (client APIIssueClient) GetEntityTag(ctx context.Context, resourceGroupName
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client APIIssueClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -443,7 +426,6 @@ func (client APIIssueClient) GetEntityTagPreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -451,7 +433,6 @@ func (client APIIssueClient) GetEntityTagSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client APIIssueClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -464,7 +445,6 @@ func (client APIIssueClient) GetEntityTagResponder(resp *http.Response) (result 
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists all issues assosiated with the specified API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -528,7 +508,6 @@ func (client APIIssueClient) ListByService(ctx context.Context, resourceGroupNam
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client APIIssueClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -560,7 +539,6 @@ func (client APIIssueClient) ListByServicePreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -568,7 +546,6 @@ func (client APIIssueClient) ListByServiceSender(req *http.Request) (*http.Respo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client APIIssueClient) ListByServiceResponder(resp *http.Response) (result IssueCollection, err error) {
@@ -603,7 +580,6 @@ func (client APIIssueClient) listByServiceNextResults(ctx context.Context, lastR
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client APIIssueClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result IssueCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -617,5 +593,111 @@ func (client APIIssueClient) ListByServiceComplete(ctx context.Context, resource
 		}()
 	}
 	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	return
+}
+
+// Update updates an existing issue for an API.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
+func (client APIIssueClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (result IssueContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/APIIssueClient.Update")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: apiid,
+			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+		{TargetValue: issueID,
+			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "issueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.APIIssueClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, apiid, issueID, parameters, ifMatch)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client APIIssueClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"apiId":             autorest.Encode("path", apiid),
+		"issueId":           autorest.Encode("path", issueID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client APIIssueClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client APIIssueClient) UpdateResponder(resp *http.Response) (result IssueContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

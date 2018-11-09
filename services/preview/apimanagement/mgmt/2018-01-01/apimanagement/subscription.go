@@ -26,25 +26,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // SubscriptionClient is the apiManagement Client
 type SubscriptionClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewSubscriptionClient creates an instance of the SubscriptionClient client.
 func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
 	return NewSubscriptionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewSubscriptionClientWithBaseURI creates an instance of the SubscriptionClient client.
 func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
 	return SubscriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or updates the subscription of specified user to the specified product.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -116,7 +112,6 @@ func (client SubscriptionClient) CreateOrUpdate(ctx context.Context, resourceGro
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client SubscriptionClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionCreateParameters, notify *bool, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -148,7 +143,6 @@ func (client SubscriptionClient) CreateOrUpdatePreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -156,7 +150,6 @@ func (client SubscriptionClient) CreateOrUpdateSender(req *http.Request) (*http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) CreateOrUpdateResponder(resp *http.Response) (result SubscriptionContract, err error) {
@@ -170,7 +163,6 @@ func (client SubscriptionClient) CreateOrUpdateResponder(resp *http.Response) (r
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the specified subscription.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -222,7 +214,6 @@ func (client SubscriptionClient) Delete(ctx context.Context, resourceGroupName s
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client SubscriptionClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -246,7 +237,6 @@ func (client SubscriptionClient) DeletePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -254,7 +244,6 @@ func (client SubscriptionClient) DeleteSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -267,7 +256,6 @@ func (client SubscriptionClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the specified Subscription entity.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -317,7 +305,6 @@ func (client SubscriptionClient) Get(ctx context.Context, resourceGroupName stri
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client SubscriptionClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -340,7 +327,6 @@ func (client SubscriptionClient) GetPreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -348,7 +334,6 @@ func (client SubscriptionClient) GetSender(req *http.Request) (*http.Response, e
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) GetResponder(resp *http.Response) (result SubscriptionContract, err error) {
@@ -362,7 +347,6 @@ func (client SubscriptionClient) GetResponder(resp *http.Response) (result Subsc
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -412,7 +396,6 @@ func (client SubscriptionClient) GetEntityTag(ctx context.Context, resourceGroup
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client SubscriptionClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -435,7 +418,6 @@ func (client SubscriptionClient) GetEntityTagPreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -443,7 +425,6 @@ func (client SubscriptionClient) GetEntityTagSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -456,7 +437,6 @@ func (client SubscriptionClient) GetEntityTagResponder(resp *http.Response) (res
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // List lists all subscriptions of the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -518,7 +498,6 @@ func (client SubscriptionClient) List(ctx context.Context, resourceGroupName str
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListPreparer prepares the List request.
 func (client SubscriptionClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -549,7 +528,6 @@ func (client SubscriptionClient) ListPreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -557,7 +535,6 @@ func (client SubscriptionClient) ListSender(req *http.Request) (*http.Response, 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) ListResponder(resp *http.Response) (result SubscriptionCollection, err error) {
@@ -592,7 +569,6 @@ func (client SubscriptionClient) listNextResults(ctx context.Context, lastResult
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client SubscriptionClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result SubscriptionCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -609,7 +585,6 @@ func (client SubscriptionClient) ListComplete(ctx context.Context, resourceGroup
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKey regenerates primary key of existing subscription of the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -659,7 +634,6 @@ func (client SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, resou
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeyPreparer prepares the RegeneratePrimaryKey request.
 func (client SubscriptionClient) RegeneratePrimaryKeyPreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -682,7 +656,6 @@ func (client SubscriptionClient) RegeneratePrimaryKeyPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeySender sends the RegeneratePrimaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) RegeneratePrimaryKeySender(req *http.Request) (*http.Response, error) {
@@ -690,7 +663,6 @@ func (client SubscriptionClient) RegeneratePrimaryKeySender(req *http.Request) (
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegeneratePrimaryKeyResponder handles the response to the RegeneratePrimaryKey request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) RegeneratePrimaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -703,7 +675,6 @@ func (client SubscriptionClient) RegeneratePrimaryKeyResponder(resp *http.Respon
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKey regenerates secondary key of existing subscription of the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -753,7 +724,6 @@ func (client SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, res
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeyPreparer prepares the RegenerateSecondaryKey request.
 func (client SubscriptionClient) RegenerateSecondaryKeyPreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -776,7 +746,6 @@ func (client SubscriptionClient) RegenerateSecondaryKeyPreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeySender sends the RegenerateSecondaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) RegenerateSecondaryKeySender(req *http.Request) (*http.Response, error) {
@@ -784,7 +753,6 @@ func (client SubscriptionClient) RegenerateSecondaryKeySender(req *http.Request)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // RegenerateSecondaryKeyResponder handles the response to the RegenerateSecondaryKey request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) RegenerateSecondaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -797,7 +765,6 @@ func (client SubscriptionClient) RegenerateSecondaryKeyResponder(resp *http.Resp
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update updates the details of a subscription specificied by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -853,7 +820,6 @@ func (client SubscriptionClient) Update(ctx context.Context, resourceGroupName s
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client SubscriptionClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, sid string, parameters SubscriptionUpdateParameters, ifMatch string, notify *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -882,7 +848,6 @@ func (client SubscriptionClient) UpdatePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -890,7 +855,6 @@ func (client SubscriptionClient) UpdateSender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client SubscriptionClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

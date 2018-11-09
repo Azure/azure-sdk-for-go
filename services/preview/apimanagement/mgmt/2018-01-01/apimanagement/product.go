@@ -26,25 +26,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ProductClient is the apiManagement Client
 type ProductClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewProductClient creates an instance of the ProductClient client.
 func NewProductClient(subscriptionID string) ProductClient {
 	return NewProductClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewProductClientWithBaseURI creates an instance of the ProductClient client.
 func NewProductClientWithBaseURI(baseURI string, subscriptionID string) ProductClient {
 	return ProductClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or Updates a product.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -103,7 +99,6 @@ func (client ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ProductClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -132,7 +127,6 @@ func (client ProductClient) CreateOrUpdatePreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -140,7 +134,6 @@ func (client ProductClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result ProductContract, err error) {
@@ -154,7 +147,6 @@ func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete delete product.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -207,7 +199,6 @@ func (client ProductClient) Delete(ctx context.Context, resourceGroupName string
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client ProductClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, deleteSubscriptions *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -234,7 +225,6 @@ func (client ProductClient) DeletePreparer(ctx context.Context, resourceGroupNam
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -242,7 +232,6 @@ func (client ProductClient) DeleteSender(req *http.Request) (*http.Response, err
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client ProductClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -255,7 +244,6 @@ func (client ProductClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the product specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -305,7 +293,6 @@ func (client ProductClient) Get(ctx context.Context, resourceGroupName string, s
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client ProductClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -328,7 +315,6 @@ func (client ProductClient) GetPreparer(ctx context.Context, resourceGroupName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -336,7 +322,6 @@ func (client ProductClient) GetSender(req *http.Request) (*http.Response, error)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ProductClient) GetResponder(resp *http.Response) (result ProductContract, err error) {
@@ -350,7 +335,6 @@ func (client ProductClient) GetResponder(resp *http.Response) (result ProductCon
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the product specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -400,7 +384,6 @@ func (client ProductClient) GetEntityTag(ctx context.Context, resourceGroupName 
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client ProductClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -423,7 +406,6 @@ func (client ProductClient) GetEntityTagPreparer(ctx context.Context, resourceGr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -431,7 +413,6 @@ func (client ProductClient) GetEntityTagSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client ProductClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -444,7 +425,6 @@ func (client ProductClient) GetEntityTagResponder(resp *http.Response) (result a
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of products in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -507,7 +487,6 @@ func (client ProductClient) ListByService(ctx context.Context, resourceGroupName
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client ProductClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -541,7 +520,6 @@ func (client ProductClient) ListByServicePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -549,7 +527,6 @@ func (client ProductClient) ListByServiceSender(req *http.Request) (*http.Respon
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client ProductClient) ListByServiceResponder(resp *http.Response) (result ProductCollection, err error) {
@@ -584,7 +561,6 @@ func (client ProductClient) listByServiceNextResults(ctx context.Context, lastRe
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result ProductCollectionIterator, err error) {
 	if tracing.IsEnabled() {
@@ -601,7 +577,6 @@ func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceG
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Update update product.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -654,7 +629,6 @@ func (client ProductClient) Update(ctx context.Context, resourceGroupName string
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdatePreparer prepares the Update request.
 func (client ProductClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -680,7 +654,6 @@ func (client ProductClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) UpdateSender(req *http.Request) (*http.Response, error) {
@@ -688,7 +661,6 @@ func (client ProductClient) UpdateSender(req *http.Request) (*http.Response, err
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client ProductClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {

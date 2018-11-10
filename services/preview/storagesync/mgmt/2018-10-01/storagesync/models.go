@@ -30,19 +30,34 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-10-01/storagesync"
 
+// CloudSeededData enumerates the values for cloud seeded data.
+type CloudSeededData string
+
+const (
+	// Off ...
+	Off CloudSeededData = "off"
+	// On ...
+	On CloudSeededData = "on"
+)
+
+// PossibleCloudSeededDataValues returns an array of possible values for the CloudSeededData const type.
+func PossibleCloudSeededDataValues() []CloudSeededData {
+	return []CloudSeededData{Off, On}
+}
+
 // CloudTiering enumerates the values for cloud tiering.
 type CloudTiering string
 
 const (
-	// Off ...
-	Off CloudTiering = "off"
-	// On ...
-	On CloudTiering = "on"
+	// CloudTieringOff ...
+	CloudTieringOff CloudTiering = "off"
+	// CloudTieringOn ...
+	CloudTieringOn CloudTiering = "on"
 )
 
 // PossibleCloudTieringValues returns an array of possible values for the CloudTiering const type.
 func PossibleCloudTieringValues() []CloudTiering {
-	return []CloudTiering{Off, On}
+	return []CloudTiering{CloudTieringOff, CloudTieringOn}
 }
 
 // CloudTiering1 enumerates the values for cloud tiering 1.
@@ -88,6 +103,36 @@ const (
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return []NameAvailabilityReason{AlreadyExists, Invalid}
+}
+
+// OfflineDataTransfer enumerates the values for offline data transfer.
+type OfflineDataTransfer string
+
+const (
+	// OfflineDataTransferOff ...
+	OfflineDataTransferOff OfflineDataTransfer = "off"
+	// OfflineDataTransferOn ...
+	OfflineDataTransferOn OfflineDataTransfer = "on"
+)
+
+// PossibleOfflineDataTransferValues returns an array of possible values for the OfflineDataTransfer const type.
+func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
+	return []OfflineDataTransfer{OfflineDataTransferOff, OfflineDataTransferOn}
+}
+
+// OfflineDataTransfer1 enumerates the values for offline data transfer 1.
+type OfflineDataTransfer1 string
+
+const (
+	// OfflineDataTransfer1Off ...
+	OfflineDataTransfer1Off OfflineDataTransfer1 = "off"
+	// OfflineDataTransfer1On ...
+	OfflineDataTransfer1On OfflineDataTransfer1 = "on"
+)
+
+// PossibleOfflineDataTransfer1Values returns an array of possible values for the OfflineDataTransfer1 const type.
+func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
+	return []OfflineDataTransfer1{OfflineDataTransfer1Off, OfflineDataTransfer1On}
 }
 
 // Operation enumerates the values for operation.
@@ -1354,7 +1399,7 @@ func (secp *ServerEndpointCreateParameters) UnmarshalJSON(body []byte) error {
 type ServerEndpointCreateParametersProperties struct {
 	// ServerLocalPath - Server Local path.
 	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
-	// CloudTiering - Cloud Tiering. Possible values include: 'On', 'Off'
+	// CloudTiering - Cloud Tiering. Possible values include: 'CloudTieringOn', 'CloudTieringOff'
 	CloudTiering CloudTiering `json:"cloudTiering,omitempty"`
 	// VolumeFreeSpacePercent - Level of free space to be maintained by Cloud Tiering if it is enabled.
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
@@ -1364,6 +1409,14 @@ type ServerEndpointCreateParametersProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ServerResourceID - Server Resource Id.
 	ServerResourceID *string `json:"serverResourceId,omitempty"`
+	// OfflineDataTransfer - Offline data transfer status. Possible values include: 'OfflineDataTransferOn', 'OfflineDataTransferOff'
+	OfflineDataTransfer OfflineDataTransfer `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferStorageAccountResourceID - Offline Data Transfer Storage Account ResourceId.
+	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty"`
+	// OfflineDataTransferStorageAccountTenantID - Offline Data Transfer Storage Account TenantId.
+	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty"`
+	// OfflineDataTransferShareName - Offline Data Transfer Share Name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // ServerEndpointProperties serverEndpoint Properties object.
@@ -1388,6 +1441,10 @@ type ServerEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 	// SyncStatus - Sync Health Status
 	SyncStatus interface{} `json:"syncStatus,omitempty"`
+	// CloudSeededData - Use cloud seeded data. Possible values include: 'On', 'Off'
+	CloudSeededData CloudSeededData `json:"cloudSeededData,omitempty"`
+	// CloudSeededDataFileShareURI - URI for seeded Azure file share.
+	CloudSeededDataFileShareURI *string `json:"cloudSeededDataFileShareUri,omitempty"`
 }
 
 // ServerEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1541,6 +1598,10 @@ type ServerEndpointUpdateProperties struct {
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
 	// TierFilesOlderThanDays - Tier files older than days.
 	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
+	// OfflineDataTransfer - Offline data transfer status. Possible values include: 'OfflineDataTransfer1On', 'OfflineDataTransfer1Off'
+	OfflineDataTransfer OfflineDataTransfer1 `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferShareName - Offline Data Transfer Share Name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // Service storage Sync Service object.

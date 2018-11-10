@@ -27,11 +27,18 @@ const (
 
 type BaseClient = original.BaseClient
 type CloudEndpointsClient = original.CloudEndpointsClient
+type CloudSeededData = original.CloudSeededData
+
+const (
+	Off CloudSeededData = original.Off
+	On  CloudSeededData = original.On
+)
+
 type CloudTiering = original.CloudTiering
 
 const (
-	Off CloudTiering = original.Off
-	On  CloudTiering = original.On
+	CloudTieringOff CloudTiering = original.CloudTieringOff
+	CloudTieringOn  CloudTiering = original.CloudTieringOn
 )
 
 type CloudTiering1 = original.CloudTiering1
@@ -53,6 +60,20 @@ type NameAvailabilityReason = original.NameAvailabilityReason
 const (
 	AlreadyExists NameAvailabilityReason = original.AlreadyExists
 	Invalid       NameAvailabilityReason = original.Invalid
+)
+
+type OfflineDataTransfer = original.OfflineDataTransfer
+
+const (
+	OfflineDataTransferOff OfflineDataTransfer = original.OfflineDataTransferOff
+	OfflineDataTransferOn  OfflineDataTransfer = original.OfflineDataTransferOn
+)
+
+type OfflineDataTransfer1 = original.OfflineDataTransfer1
+
+const (
+	OfflineDataTransfer1Off OfflineDataTransfer1 = original.OfflineDataTransfer1Off
+	OfflineDataTransfer1On  OfflineDataTransfer1 = original.OfflineDataTransfer1On
 )
 
 type Operation = original.Operation
@@ -169,6 +190,9 @@ func NewCloudEndpointsClient(subscriptionID string) CloudEndpointsClient {
 func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsClient {
 	return original.NewCloudEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCloudSeededDataValues() []CloudSeededData {
+	return original.PossibleCloudSeededDataValues()
+}
 func PossibleCloudTieringValues() []CloudTiering {
 	return original.PossibleCloudTieringValues()
 }
@@ -180,6 +204,12 @@ func PossibleCloudTiering2Values() []CloudTiering2 {
 }
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
+}
+func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
+	return original.PossibleOfflineDataTransferValues()
+}
+func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
+	return original.PossibleOfflineDataTransfer1Values()
 }
 func PossibleOperationValues() []Operation {
 	return original.PossibleOperationValues()

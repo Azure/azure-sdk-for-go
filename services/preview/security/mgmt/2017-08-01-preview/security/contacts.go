@@ -61,9 +61,7 @@ func (client ContactsClient) Create(ctx context.Context, securityContactName str
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
 		{TargetValue: securityContact,
 			Constraints: []validation.Constraint{{Target: "securityContact.ContactProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "securityContact.ContactProperties.Email", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "securityContact.ContactProperties.Phone", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "securityContact.ContactProperties.Email", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("security.ContactsClient", "Create", err.Error())
 	}
 

@@ -684,6 +684,29 @@ func (future *ContainerGroupsRestartFuture) Result(client ContainerGroupsClient)
 	return
 }
 
+// ContainerGroupsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ContainerGroupsStartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ContainerGroupsStartFuture) Result(client ContainerGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsStartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsStartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ContainerHTTPGet the container Http Get settings, for liveness or readiness probe
 type ContainerHTTPGet struct {
 	// Path - The path to probe.

@@ -1,7 +1,9 @@
 # Azure SDK for Go
 
 [![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
+
 [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go)
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-sdk-for-go)](https://goreportcard.com/report/github.com/Azure/azure-sdk-for-go)
 
 azure-sdk-for-go provides Go packages for managing and using Azure services.
@@ -34,7 +36,7 @@ To more reliably manage dependencies like the Azure SDK in your applications we
 recommend [golang/dep](https://github.com/golang/dep).
 
 Packages that are still in public preview can be found under the ./services/preview
-directory.  Please be aware that since these packages are in preview they are subject
+directory. Please be aware that since these packages are in preview they are subject
 to change, including breaking changes outside of a major semver bump.
 
 ## Other Azure Go Packages
@@ -440,7 +442,7 @@ All packages and the runtime are instrumented using [OpenCensus](https://opencen
 
 As of now, tracing is disabled by default. There are 2 ways to enable tracing:
 
-- set the environment variable `AZURE_SDK_TRACING_ENABELD` (_Recommended_)
+- set the environment variable `AZURE_SDK_TRACING_ENABLED` (_Recommended_)
 - alternatively, import the `github.com/Azure/go-autorest/tracing` package and call the `tracing.Enable()` function or `tracing.EnableWithAIForwarding()` if using the [App Insights Forwarder](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder).
 
 **Note**: In future major releases of the SDK, tracing may become enabled by default.

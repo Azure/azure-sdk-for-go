@@ -180,6 +180,7 @@ func (client NotificationSettingsClient) ListByResourceComplete(ctx context.Cont
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
+// body - body of the NotificationSetting PUT object.
 func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body NotificationSettingProperties) (result NotificationSettingsCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Update")

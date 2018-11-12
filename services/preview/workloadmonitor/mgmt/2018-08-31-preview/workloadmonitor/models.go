@@ -1266,8 +1266,8 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 
 // NotificationSettingProperties model for properties of a NotificationSetting.
 type NotificationSettingProperties struct {
-	// ActionGroups - List of action group resource ids to be notified
-	ActionGroups *[]string `json:"actionGroups,omitempty"`
+	// ActionGroupResourceIds - List of action group resource ids to be notified
+	ActionGroupResourceIds *[]string `json:"ActionGroupResourceIds,omitempty"`
 }
 
 // NotificationSettingsCollection model for collection of notificationSettings.

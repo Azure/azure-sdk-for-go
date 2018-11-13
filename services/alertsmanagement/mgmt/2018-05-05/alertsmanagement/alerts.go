@@ -83,7 +83,7 @@ func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID stri
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"newState":    autorest.Encode("query", newState),
@@ -185,7 +185,7 @@ func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource st
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -348,7 +348,7 @@ func (client AlertsClient) GetByIDPreparer(ctx context.Context, alertID string) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -424,7 +424,7 @@ func (client AlertsClient) GetHistoryPreparer(ctx context.Context, alertID strin
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -514,7 +514,7 @@ func (client AlertsClient) GetSummaryPreparer(ctx context.Context, groupby Alert
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"groupby":     autorest.Encode("query", groupby),

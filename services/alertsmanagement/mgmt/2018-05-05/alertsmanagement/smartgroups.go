@@ -83,7 +83,7 @@ func (client SmartGroupsClient) ChangeStatePreparer(ctx context.Context, smartGr
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"newState":    autorest.Encode("query", newState),
@@ -171,7 +171,7 @@ func (client SmartGroupsClient) GetAllPreparer(ctx context.Context, targetResour
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -279,7 +279,7 @@ func (client SmartGroupsClient) GetByIDPreparer(ctx context.Context, smartGroupI
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -354,7 +354,7 @@ func (client SmartGroupsClient) GetHistoryPreparer(ctx context.Context, smartGro
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-05"
+	const APIVersion = "2018-05-05T00:00:00.000Z"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

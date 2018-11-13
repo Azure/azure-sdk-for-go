@@ -10,7 +10,7 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:a1d029504b24da57f19540d571b0dc4cf5c213f271be6188ef1d387ce53c3a24"
+  digest = "1:597d79297997cdf9f13427b0644558c6b845451607a6893c9b00b3625ab1f4f3"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -26,8 +26,8 @@
     "version",
   ]
   pruneopts = ""
-  revision = "4e5fffdf007df29ed0862f9e01fafabf4396e851"
-  version = "v11.2.6"
+  revision = "528b76fd0ebec0682f3e3da7c808cd472b999615"
+  version = "v11.2.7"
 
 [[projects]]
   digest = "1:e0a4505d5cf7ac6b5d92e3aee79d838b5f1ae8e9641ec7fa5d1e9b01d7a7ea95"

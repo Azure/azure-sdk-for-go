@@ -30,34 +30,19 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-10-01/storagesync"
 
-// CloudSeededData enumerates the values for cloud seeded data.
-type CloudSeededData string
-
-const (
-	// Off ...
-	Off CloudSeededData = "off"
-	// On ...
-	On CloudSeededData = "on"
-)
-
-// PossibleCloudSeededDataValues returns an array of possible values for the CloudSeededData const type.
-func PossibleCloudSeededDataValues() []CloudSeededData {
-	return []CloudSeededData{Off, On}
-}
-
 // CloudTiering enumerates the values for cloud tiering.
 type CloudTiering string
 
 const (
-	// CloudTieringOff ...
-	CloudTieringOff CloudTiering = "off"
-	// CloudTieringOn ...
-	CloudTieringOn CloudTiering = "on"
+	// Off ...
+	Off CloudTiering = "off"
+	// On ...
+	On CloudTiering = "on"
 )
 
 // PossibleCloudTieringValues returns an array of possible values for the CloudTiering const type.
 func PossibleCloudTieringValues() []CloudTiering {
-	return []CloudTiering{CloudTieringOff, CloudTieringOn}
+	return []CloudTiering{Off, On}
 }
 
 // CloudTiering1 enumerates the values for cloud tiering 1.
@@ -133,6 +118,21 @@ const (
 // PossibleOfflineDataTransfer1Values returns an array of possible values for the OfflineDataTransfer1 const type.
 func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
 	return []OfflineDataTransfer1{OfflineDataTransfer1Off, OfflineDataTransfer1On}
+}
+
+// OfflineDataTransfer2 enumerates the values for offline data transfer 2.
+type OfflineDataTransfer2 string
+
+const (
+	// OfflineDataTransfer2Off ...
+	OfflineDataTransfer2Off OfflineDataTransfer2 = "off"
+	// OfflineDataTransfer2On ...
+	OfflineDataTransfer2On OfflineDataTransfer2 = "on"
+)
+
+// PossibleOfflineDataTransfer2Values returns an array of possible values for the OfflineDataTransfer2 const type.
+func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
+	return []OfflineDataTransfer2{OfflineDataTransfer2Off, OfflineDataTransfer2On}
 }
 
 // Operation enumerates the values for operation.
@@ -1399,7 +1399,7 @@ func (secp *ServerEndpointCreateParameters) UnmarshalJSON(body []byte) error {
 type ServerEndpointCreateParametersProperties struct {
 	// ServerLocalPath - Server Local path.
 	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
-	// CloudTiering - Cloud Tiering. Possible values include: 'CloudTieringOn', 'CloudTieringOff'
+	// CloudTiering - Cloud Tiering. Possible values include: 'On', 'Off'
 	CloudTiering CloudTiering `json:"cloudTiering,omitempty"`
 	// VolumeFreeSpacePercent - Level of free space to be maintained by Cloud Tiering if it is enabled.
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
@@ -1409,13 +1409,9 @@ type ServerEndpointCreateParametersProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ServerResourceID - Server Resource Id.
 	ServerResourceID *string `json:"serverResourceId,omitempty"`
-	// OfflineDataTransfer - Offline data transfer status. Possible values include: 'OfflineDataTransferOn', 'OfflineDataTransferOff'
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransferOn', 'OfflineDataTransferOff'
 	OfflineDataTransfer OfflineDataTransfer `json:"offlineDataTransfer,omitempty"`
-	// OfflineDataTransferStorageAccountResourceID - Offline Data Transfer Storage Account ResourceId.
-	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty"`
-	// OfflineDataTransferStorageAccountTenantID - Offline Data Transfer Storage Account TenantId.
-	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty"`
-	// OfflineDataTransferShareName - Offline Data Transfer Share Name
+	// OfflineDataTransferShareName - Offline data transfer share name
 	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
@@ -1441,10 +1437,14 @@ type ServerEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 	// SyncStatus - Sync Health Status
 	SyncStatus interface{} `json:"syncStatus,omitempty"`
-	// CloudSeededData - Use cloud seeded data. Possible values include: 'On', 'Off'
-	CloudSeededData CloudSeededData `json:"cloudSeededData,omitempty"`
-	// CloudSeededDataFileShareURI - URI for seeded Azure file share.
-	CloudSeededDataFileShareURI *string `json:"cloudSeededDataFileShareUri,omitempty"`
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer2On', 'OfflineDataTransfer2Off'
+	OfflineDataTransfer OfflineDataTransfer2 `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferStorageAccountResourceID - Offline data transfer storage account resource ID
+	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty"`
+	// OfflineDataTransferStorageAccountTenantID - Offline data transfer storage account tenant ID
+	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty"`
+	// OfflineDataTransferShareName - Offline data transfer share name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // ServerEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1598,9 +1598,9 @@ type ServerEndpointUpdateProperties struct {
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
 	// TierFilesOlderThanDays - Tier files older than days.
 	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
-	// OfflineDataTransfer - Offline data transfer status. Possible values include: 'OfflineDataTransfer1On', 'OfflineDataTransfer1Off'
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer1On', 'OfflineDataTransfer1Off'
 	OfflineDataTransfer OfflineDataTransfer1 `json:"offlineDataTransfer,omitempty"`
-	// OfflineDataTransferShareName - Offline Data Transfer Share Name
+	// OfflineDataTransferShareName - Offline data transfer share name
 	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 

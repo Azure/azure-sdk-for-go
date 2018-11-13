@@ -27,18 +27,11 @@ const (
 
 type BaseClient = original.BaseClient
 type CloudEndpointsClient = original.CloudEndpointsClient
-type CloudSeededData = original.CloudSeededData
-
-const (
-	Off CloudSeededData = original.Off
-	On  CloudSeededData = original.On
-)
-
 type CloudTiering = original.CloudTiering
 
 const (
-	CloudTieringOff CloudTiering = original.CloudTieringOff
-	CloudTieringOn  CloudTiering = original.CloudTieringOn
+	Off CloudTiering = original.Off
+	On  CloudTiering = original.On
 )
 
 type CloudTiering1 = original.CloudTiering1
@@ -74,6 +67,13 @@ type OfflineDataTransfer1 = original.OfflineDataTransfer1
 const (
 	OfflineDataTransfer1Off OfflineDataTransfer1 = original.OfflineDataTransfer1Off
 	OfflineDataTransfer1On  OfflineDataTransfer1 = original.OfflineDataTransfer1On
+)
+
+type OfflineDataTransfer2 = original.OfflineDataTransfer2
+
+const (
+	OfflineDataTransfer2Off OfflineDataTransfer2 = original.OfflineDataTransfer2Off
+	OfflineDataTransfer2On  OfflineDataTransfer2 = original.OfflineDataTransfer2On
 )
 
 type Operation = original.Operation
@@ -190,9 +190,6 @@ func NewCloudEndpointsClient(subscriptionID string) CloudEndpointsClient {
 func NewCloudEndpointsClientWithBaseURI(baseURI string, subscriptionID string) CloudEndpointsClient {
 	return original.NewCloudEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleCloudSeededDataValues() []CloudSeededData {
-	return original.PossibleCloudSeededDataValues()
-}
 func PossibleCloudTieringValues() []CloudTiering {
 	return original.PossibleCloudTieringValues()
 }
@@ -210,6 +207,9 @@ func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
 }
 func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
 	return original.PossibleOfflineDataTransfer1Values()
+}
+func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
+	return original.PossibleOfflineDataTransfer2Values()
 }
 func PossibleOperationValues() []Operation {
 	return original.PossibleOperationValues()

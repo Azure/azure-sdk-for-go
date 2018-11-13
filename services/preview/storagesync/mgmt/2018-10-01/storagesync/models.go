@@ -436,7 +436,7 @@ type CloudEndpointProperties struct {
 	// FriendlyName - Friendly Name
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// BackupEnabled - Backup Enabled
-	BackupEnabled *bool `json:"backupEnabled,omitempty"`
+	BackupEnabled *string `json:"backupEnabled,omitempty"`
 	// ProvisioningState - CloudEndpoint Provisioning State
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// LastWorkflowID - CloudEndpoint lastWorkflowId

@@ -19,7 +19,11 @@
 
 package services
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2018-03-01-preview/services"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2018-03-01-preview/services"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -159,6 +163,18 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func NewPaginatedComputeResourcesListIterator(page PaginatedComputeResourcesListPage) PaginatedComputeResourcesListIterator {
+	return original.NewPaginatedComputeResourcesListIterator(page)
+}
+func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
+	return original.NewPaginatedComputeResourcesListPage(getNextPage)
+}
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return original.NewWorkspaceListResultIterator(page)
+}
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return original.NewWorkspaceListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

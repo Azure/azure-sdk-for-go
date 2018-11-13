@@ -1169,12 +1169,10 @@ func (page MonitorsCollectionPage) Values() []Monitor {
 	return *page.mc.Value
 }
 
-// NotificationSetting model for component.
+// NotificationSetting model for properties of a NotificationSetting.
 type NotificationSetting struct {
-	// Etag - For optimistic concurrency control.
-	Etag *string `json:"etag,omitempty"`
-	// NotificationSettingProperties - Properties of the component.
-	*NotificationSettingProperties `json:"properties,omitempty"`
+	// ActionGroupResourceIds - List of action group resource ids to be notified
+	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -1183,29 +1181,38 @@ type NotificationSetting struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for NotificationSetting.
-func (ns NotificationSetting) MarshalJSON() ([]byte, error) {
+// NotificationSettingsCollection model for collection of notificationSettings.
+type NotificationSettingsCollection struct {
+	autorest.Response    `json:"-"`
+	*NotificationSetting `json:"properties,omitempty"`
+	// Name - Resource name of NotificationSettings
+	Name *string `json:"name,omitempty"`
+	// ID - ARM resource ID of notification settings
+	ID *string `json:"id,omitempty"`
+	// Type - Resource type of NotificationSettings
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotificationSettingsCollection.
+func (nsc NotificationSettingsCollection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ns.Etag != nil {
-		objectMap["etag"] = ns.Etag
+	if nsc.NotificationSetting != nil {
+		objectMap["properties"] = nsc.NotificationSetting
 	}
-	if ns.NotificationSettingProperties != nil {
-		objectMap["properties"] = ns.NotificationSettingProperties
+	if nsc.Name != nil {
+		objectMap["name"] = nsc.Name
 	}
-	if ns.ID != nil {
-		objectMap["id"] = ns.ID
+	if nsc.ID != nil {
+		objectMap["id"] = nsc.ID
 	}
-	if ns.Name != nil {
-		objectMap["name"] = ns.Name
-	}
-	if ns.Type != nil {
-		objectMap["type"] = ns.Type
+	if nsc.Type != nil {
+		objectMap["type"] = nsc.Type
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for NotificationSetting struct.
-func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for NotificationSettingsCollection struct.
+func (nsc *NotificationSettingsCollection) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1213,32 +1220,14 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				ns.Etag = &etag
-			}
 		case "properties":
 			if v != nil {
-				var notificationSettingProperties NotificationSettingProperties
-				err = json.Unmarshal(*v, &notificationSettingProperties)
+				var notificationSetting NotificationSetting
+				err = json.Unmarshal(*v, &notificationSetting)
 				if err != nil {
 					return err
 				}
-				ns.NotificationSettingProperties = &notificationSettingProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ns.ID = &ID
+				nsc.NotificationSetting = &notificationSetting
 			}
 		case "name":
 			if v != nil {
@@ -1247,7 +1236,16 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ns.Name = &name
+				nsc.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nsc.ID = &ID
 			}
 		case "type":
 			if v != nil {
@@ -1256,153 +1254,12 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ns.Type = &typeVar
+				nsc.Type = &typeVar
 			}
 		}
 	}
 
 	return nil
-}
-
-// NotificationSettingProperties model for properties of a NotificationSetting.
-type NotificationSettingProperties struct {
-	// ActionGroupResourceIds - List of action group resource ids to be notified
-	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
-}
-
-// NotificationSettingsCollection model for collection of notificationSettings.
-type NotificationSettingsCollection struct {
-	autorest.Response `json:"-"`
-	// Value - Collection of components.
-	Value *[]NotificationSetting `json:"value,omitempty"`
-}
-
-// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting
-// values.
-type NotificationSettingsCollectionIterator struct {
-	i    int
-	page NotificationSettingsCollectionPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *NotificationSettingsCollectionIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsCollectionIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *NotificationSettingsCollectionIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter NotificationSettingsCollectionIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter NotificationSettingsCollectionIterator) Response() NotificationSettingsCollection {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter NotificationSettingsCollectionIterator) Value() NotificationSetting {
-	if !iter.page.NotDone() {
-		return NotificationSetting{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (nsc NotificationSettingsCollection) IsEmpty() bool {
-	return nsc.Value == nil || len(*nsc.Value) == 0
-}
-
-// notificationSettingsCollectionPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (nsc NotificationSettingsCollection) notificationSettingsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if nsc.NextLink == nil || len(to.String(nsc.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(nsc.NextLink)))
-}
-
-// NotificationSettingsCollectionPage contains a page of NotificationSetting values.
-type NotificationSettingsCollectionPage struct {
-	fn  func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)
-	nsc NotificationSettingsCollection
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *NotificationSettingsCollectionPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsCollectionPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.nsc)
-	if err != nil {
-		return err
-	}
-	page.nsc = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *NotificationSettingsCollectionPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page NotificationSettingsCollectionPage) NotDone() bool {
-	return !page.nsc.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page NotificationSettingsCollectionPage) Response() NotificationSettingsCollection {
-	return page.nsc
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page NotificationSettingsCollectionPage) Values() []NotificationSetting {
-	if page.nsc.IsEmpty() {
-		return nil
-	}
-	return *page.nsc.Value
 }
 
 // Operation operation supported by the resource provider.

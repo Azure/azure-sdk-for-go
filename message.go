@@ -318,6 +318,13 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		msg.TTL = &amqpMsg.Header.TTL
 	}
 
+	if amqpMsg.ApplicationProperties != nil {
+		msg.UserProperties = make(map[string]interface{}, len(amqpMsg.ApplicationProperties))
+		for key, value := range amqpMsg.ApplicationProperties {
+			msg.UserProperties[key] = value
+		}
+	}
+
 	if amqpMsg.Annotations != nil {
 		if err := mapstructure.Decode(amqpMsg.Annotations, &msg.SystemProperties); err != nil {
 			return msg, err

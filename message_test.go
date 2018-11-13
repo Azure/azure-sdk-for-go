@@ -101,6 +101,10 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 				suite.Equal(val, aMsg.Annotations[key], key)
 			}
 		}
+
+		for key, val := range msg.UserProperties {
+			suite.Equal(val, aMsg.ApplicationProperties[key], key)
+		}
 	}
 }
 
@@ -175,5 +179,8 @@ func (suite *serviceBusSuite) TestAMQPMessageToMessage() {
 			}
 		}
 
+		for key, val := range aMsg.ApplicationProperties {
+			suite.Equal(val, msg.UserProperties[key], key)
+		}
 	}
 }

@@ -1134,6 +1134,23 @@ type CallbackURL struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// CloudError an error response from the Logic App service.
+type CloudError struct {
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the Logic App service.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+}
+
 // ContentHash the content hash.
 type ContentHash struct {
 	// Algorithm - The algorithm of the content hash.

@@ -19,7 +19,11 @@
 
 package hdinsight
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight"
+)
 
 type ApplicationsClient = original.ApplicationsClient
 
@@ -54,6 +58,14 @@ type DirectoryType = original.DirectoryType
 
 const (
 	ActiveDirectory DirectoryType = original.ActiveDirectory
+)
+
+type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
+
+const (
+	RSA15      JSONWebKeyEncryptionAlgorithm = original.RSA15
+	RSAOAEP    JSONWebKeyEncryptionAlgorithm = original.RSAOAEP
+	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.RSAOAEP256
 )
 
 type OSType = original.OSType
@@ -92,6 +104,7 @@ type Cluster = original.Cluster
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
 type ClusterCreateProperties = original.ClusterCreateProperties
 type ClusterDefinition = original.ClusterDefinition
+type ClusterDiskEncryptionParameters = original.ClusterDiskEncryptionParameters
 type ClusterGetProperties = original.ClusterGetProperties
 type ClusterIdentity = original.ClusterIdentity
 type ClusterIdentityUserAssignedIdentitiesValue = original.ClusterIdentityUserAssignedIdentitiesValue
@@ -108,10 +121,12 @@ type ClustersCreateFuture = original.ClustersCreateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersExecuteScriptActionsFuture = original.ClustersExecuteScriptActionsFuture
 type ClustersResizeFuture = original.ClustersResizeFuture
+type ClustersRotateDiskEncryptionKeyFuture = original.ClustersRotateDiskEncryptionKeyFuture
 type ComputeProfile = original.ComputeProfile
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
 type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
+type DiskEncryptionProperties = original.DiskEncryptionProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
@@ -204,6 +219,9 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 func PossibleDirectoryTypeValues() []DirectoryType {
 	return original.PossibleDirectoryTypeValues()
 }
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()
+}
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
 }
@@ -212,6 +230,36 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleTierValues() []Tier {
 	return original.PossibleTierValues()
+}
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return original.NewApplicationListResultIterator(page)
+}
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(getNextPage)
+}
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewScriptActionExecutionHistoryListIterator(page ScriptActionExecutionHistoryListPage) ScriptActionExecutionHistoryListIterator {
+	return original.NewScriptActionExecutionHistoryListIterator(page)
+}
+func NewScriptActionExecutionHistoryListPage(getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
+	return original.NewScriptActionExecutionHistoryListPage(getNextPage)
+}
+func NewScriptActionsListIterator(page ScriptActionsListPage) ScriptActionsListIterator {
+	return original.NewScriptActionsListIterator(page)
+}
+func NewScriptActionsListPage(getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
+	return original.NewScriptActionsListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

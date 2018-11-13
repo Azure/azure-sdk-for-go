@@ -81,6 +81,23 @@ func PossibleDirectoryTypeValues() []DirectoryType {
 	return []DirectoryType{ActiveDirectory}
 }
 
+// JSONWebKeyEncryptionAlgorithm enumerates the values for json web key encryption algorithm.
+type JSONWebKeyEncryptionAlgorithm string
+
+const (
+	// RSA15 ...
+	RSA15 JSONWebKeyEncryptionAlgorithm = "RSA1_5"
+	// RSAOAEP ...
+	RSAOAEP JSONWebKeyEncryptionAlgorithm = "RSA-OAEP"
+	// RSAOAEP256 ...
+	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = "RSA-OAEP-256"
+)
+
+// PossibleJSONWebKeyEncryptionAlgorithmValues returns an array of possible values for the JSONWebKeyEncryptionAlgorithm const type.
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return []JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
+}
+
 // OSType enumerates the values for os type.
 type OSType string
 
@@ -261,6 +278,11 @@ func (iter ApplicationListResultIterator) Value() Application {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationListResultIterator type.
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return ApplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -328,6 +350,11 @@ func (page ApplicationListResultPage) Values() []Application {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the ApplicationListResultPage type.
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{fn: getNextPage}
 }
 
 // ApplicationProperties the HDInsight cluster application GET response.
@@ -546,6 +573,8 @@ type ClusterCreateProperties struct {
 	ComputeProfile *ComputeProfile `json:"computeProfile,omitempty"`
 	// StorageProfile - The storage profile.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// DiskEncryptionProperties - The disk encryption properties.
+	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 }
 
 // ClusterDefinition the cluster definition.
@@ -578,6 +607,16 @@ func (cd ClusterDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ClusterDiskEncryptionParameters the Disk Encryption Cluster request parameters.
+type ClusterDiskEncryptionParameters struct {
+	// VaultURI - Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
+	VaultURI *string `json:"vaultUri,omitempty"`
+	// KeyName - Key name that is used for enabling disk encryption.
+	KeyName *string `json:"keyName,omitempty"`
+	// KeyVersion - Specific key version that is used for enabling disk encryption.
+	KeyVersion *string `json:"keyVersion,omitempty"`
+}
+
 // ClusterGetProperties the properties of cluster.
 type ClusterGetProperties struct {
 	// ClusterVersion - The version of the cluster.
@@ -604,6 +643,8 @@ type ClusterGetProperties struct {
 	Errors *[]Errors `json:"errors,omitempty"`
 	// ConnectivityEndpoints - The list of connectivity endpoints.
 	ConnectivityEndpoints *[]ConnectivityEndpoint `json:"connectivityEndpoints,omitempty"`
+	// DiskEncryptionProperties - The disk encryption properties.
+	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 }
 
 // ClusterIdentity identity for the cluster.
@@ -719,6 +760,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -786,6 +832,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
 }
 
 // ClusterListRuntimeScriptActionDetailResult the list runtime script action detail response.
@@ -932,6 +983,29 @@ func (future *ClustersResizeFuture) Result(client ClustersClient) (ar autorest.R
 	return
 }
 
+// ClustersRotateDiskEncryptionKeyFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ClustersRotateDiskEncryptionKeyFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ClustersRotateDiskEncryptionKeyFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ClustersRotateDiskEncryptionKeyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ClustersRotateDiskEncryptionKeyFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ComputeProfile describes the compute profile.
 type ComputeProfile struct {
 	// Roles - The list of roles in the cluster.
@@ -981,6 +1055,20 @@ type DataDisksGroups struct {
 	StorageAccountType *string `json:"storageAccountType,omitempty"`
 	// DiskSizeGB - ReadOnly. The DiskSize in GB. Do not set this value.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+}
+
+// DiskEncryptionProperties the disk encryption properties
+type DiskEncryptionProperties struct {
+	// VaultURI - Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
+	VaultURI *string `json:"vaultUri,omitempty"`
+	// KeyName - Key name that is used for enabling disk encryption.
+	KeyName *string `json:"keyName,omitempty"`
+	// KeyVersion - Specific key version that is used for enabling disk encryption.
+	KeyVersion *string `json:"keyVersion,omitempty"`
+	// EncryptionAlgorithm - Algorithm identifier for encryption, default RSA-OAEP. Possible values include: 'RSAOAEP', 'RSAOAEP256', 'RSA15'
+	EncryptionAlgorithm JSONWebKeyEncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	// MsiResourceID - Resource ID of Managed Identity that is used to access the key vault.
+	MsiResourceID *string `json:"msiResourceId,omitempty"`
 }
 
 // ErrorResponse describes the format of Error response.
@@ -1172,6 +1260,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1239,6 +1332,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResource the azure async operation response.
@@ -1445,6 +1543,11 @@ func (iter ScriptActionExecutionHistoryListIterator) Value() RuntimeScriptAction
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ScriptActionExecutionHistoryListIterator type.
+func NewScriptActionExecutionHistoryListIterator(page ScriptActionExecutionHistoryListPage) ScriptActionExecutionHistoryListIterator {
+	return ScriptActionExecutionHistoryListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (saehl ScriptActionExecutionHistoryList) IsEmpty() bool {
 	return saehl.Value == nil || len(*saehl.Value) == 0
@@ -1512,6 +1615,11 @@ func (page ScriptActionExecutionHistoryListPage) Values() []RuntimeScriptActionD
 		return nil
 	}
 	return *page.saehl.Value
+}
+
+// Creates a new instance of the ScriptActionExecutionHistoryListPage type.
+func NewScriptActionExecutionHistoryListPage(getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
+	return ScriptActionExecutionHistoryListPage{fn: getNextPage}
 }
 
 // ScriptActionExecutionSummary the execution summary of a script action.
@@ -1603,6 +1711,11 @@ func (iter ScriptActionsListIterator) Value() RuntimeScriptActionDetail {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ScriptActionsListIterator type.
+func NewScriptActionsListIterator(page ScriptActionsListPage) ScriptActionsListIterator {
+	return ScriptActionsListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sal ScriptActionsList) IsEmpty() bool {
 	return sal.Value == nil || len(*sal.Value) == 0
@@ -1670,6 +1783,11 @@ func (page ScriptActionsListPage) Values() []RuntimeScriptActionDetail {
 		return nil
 	}
 	return *page.sal.Value
+}
+
+// Creates a new instance of the ScriptActionsListPage type.
+func NewScriptActionsListPage(getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
+	return ScriptActionsListPage{fn: getNextPage}
 }
 
 // SecurityProfile the security profile which contains Ssh public key for the HDInsight cluster.

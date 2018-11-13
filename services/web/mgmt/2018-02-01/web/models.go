@@ -7528,6 +7528,8 @@ type DeletedSiteProperties struct {
 	Slot *string `json:"slot,omitempty"`
 	// Kind - Kind of site that was deleted
 	Kind *string `json:"kind,omitempty"`
+	// GeoRegionName - Geo Region of the deleted site
+	GeoRegionName *string `json:"geoRegionName,omitempty"`
 }
 
 // DeletedWebAppCollection collection of deleted apps.

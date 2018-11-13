@@ -19,7 +19,11 @@
 
 package scheduler
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -239,6 +243,24 @@ func PossibleServiceBusTransportTypeValues() []ServiceBusTransportType {
 }
 func PossibleSkuDefinitionValues() []SkuDefinition {
 	return original.PossibleSkuDefinitionValues()
+}
+func NewJobCollectionListResultIterator(page JobCollectionListResultPage) JobCollectionListResultIterator {
+	return original.NewJobCollectionListResultIterator(page)
+}
+func NewJobCollectionListResultPage(getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
+	return original.NewJobCollectionListResultPage(getNextPage)
+}
+func NewJobHistoryListResultIterator(page JobHistoryListResultPage) JobHistoryListResultIterator {
+	return original.NewJobHistoryListResultIterator(page)
+}
+func NewJobHistoryListResultPage(getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
+	return original.NewJobHistoryListResultPage(getNextPage)
+}
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return original.NewJobListResultIterator(page)
+}
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

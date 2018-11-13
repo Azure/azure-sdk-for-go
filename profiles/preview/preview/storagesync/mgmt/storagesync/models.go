@@ -19,7 +19,11 @@
 
 package storagesync
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-10-01/storagesync"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/storagesync/mgmt/2018-10-01/storagesync"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -189,6 +193,12 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return original.NewOperationEntityListResultIterator(page)
+}
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

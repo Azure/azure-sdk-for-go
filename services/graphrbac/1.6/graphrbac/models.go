@@ -813,6 +813,11 @@ func (iter ApplicationListResultIterator) Value() Application {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationListResultIterator type.
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return ApplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -868,6 +873,11 @@ func (page ApplicationListResultPage) Values() []Application {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the ApplicationListResultPage type.
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{fn: getNextPage}
 }
 
 // ApplicationUpdateParameters request parameters for updating an existing application.
@@ -1467,6 +1477,11 @@ func (iter DirectoryObjectListResultIterator) Value() BasicDirectoryObject {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DirectoryObjectListResultIterator type.
+func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
+	return DirectoryObjectListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DirectoryObjectListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -1534,6 +1549,11 @@ func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
 		return nil
 	}
 	return *page.dolr.Value
+}
+
+// Creates a new instance of the DirectoryObjectListResultPage type.
+func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return DirectoryObjectListResultPage{fn: getNextPage}
 }
 
 // Domain active Directory Domain information.
@@ -2055,6 +2075,11 @@ func (iter GroupListResultIterator) Value() ADGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the GroupListResultIterator type.
+func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
+	return GroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (glr GroupListResult) IsEmpty() bool {
 	return glr.Value == nil || len(*glr.Value) == 0
@@ -2110,6 +2135,11 @@ func (page GroupListResultPage) Values() []ADGroup {
 		return nil
 	}
 	return *page.glr.Value
+}
+
+// Creates a new instance of the GroupListResultPage type.
+func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{fn: getNextPage}
 }
 
 // KeyCredential active Directory Key Credential information.
@@ -3125,6 +3155,11 @@ func (iter ServicePrincipalListResultIterator) Value() ServicePrincipal {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServicePrincipalListResultIterator type.
+func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
+	return ServicePrincipalListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (splr ServicePrincipalListResult) IsEmpty() bool {
 	return splr.Value == nil || len(*splr.Value) == 0
@@ -3180,6 +3215,11 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 		return nil
 	}
 	return *page.splr.Value
+}
+
+// Creates a new instance of the ServicePrincipalListResultPage type.
+func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return ServicePrincipalListResultPage{fn: getNextPage}
 }
 
 // ServicePrincipalUpdateParameters request parameters for creating a new service principal.
@@ -4182,6 +4222,11 @@ func (iter UserListResultIterator) Value() User {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UserListResultIterator type.
+func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
+	return UserListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ulr UserListResult) IsEmpty() bool {
 	return ulr.Value == nil || len(*ulr.Value) == 0
@@ -4237,6 +4282,11 @@ func (page UserListResultPage) Values() []User {
 		return nil
 	}
 	return *page.ulr.Value
+}
+
+// Creates a new instance of the UserListResultPage type.
+func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
+	return UserListResultPage{fn: getNextPage}
 }
 
 // UserUpdateParameters request parameters for updating an existing work or school account user.

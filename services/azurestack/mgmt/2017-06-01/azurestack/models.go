@@ -265,6 +265,11 @@ func (iter CustomerSubscriptionListIterator) Value() CustomerSubscription {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CustomerSubscriptionListIterator type.
+func NewCustomerSubscriptionListIterator(page CustomerSubscriptionListPage) CustomerSubscriptionListIterator {
+	return CustomerSubscriptionListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (csl CustomerSubscriptionList) IsEmpty() bool {
 	return csl.Value == nil || len(*csl.Value) == 0
@@ -332,6 +337,11 @@ func (page CustomerSubscriptionListPage) Values() []CustomerSubscription {
 		return nil
 	}
 	return *page.csl.Value
+}
+
+// Creates a new instance of the CustomerSubscriptionListPage type.
+func NewCustomerSubscriptionListPage(getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
+	return CustomerSubscriptionListPage{fn: getNextPage}
 }
 
 // CustomerSubscriptionProperties customer subscription properties.
@@ -687,6 +697,11 @@ func (iter OperationListIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -754,6 +769,11 @@ func (page OperationListPage) Values() []Operation {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // OsDiskImage OS disk image.
@@ -935,6 +955,11 @@ func (iter ProductListIterator) Value() Product {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProductListIterator type.
+func NewProductListIterator(page ProductListPage) ProductListIterator {
+	return ProductListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pl ProductList) IsEmpty() bool {
 	return pl.Value == nil || len(*pl.Value) == 0
@@ -1002,6 +1027,11 @@ func (page ProductListPage) Values() []Product {
 		return nil
 	}
 	return *page.pl.Value
+}
+
+// Creates a new instance of the ProductListPage type.
+func NewProductListPage(getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
+	return ProductListPage{fn: getNextPage}
 }
 
 // ProductNestedProperties properties portion of the product resource.
@@ -1239,6 +1269,11 @@ func (iter RegistrationListIterator) Value() Registration {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RegistrationListIterator type.
+func NewRegistrationListIterator(page RegistrationListPage) RegistrationListIterator {
+	return RegistrationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rl RegistrationList) IsEmpty() bool {
 	return rl.Value == nil || len(*rl.Value) == 0
@@ -1306,6 +1341,11 @@ func (page RegistrationListPage) Values() []Registration {
 		return nil
 	}
 	return *page.rl.Value
+}
+
+// Creates a new instance of the RegistrationListPage type.
+func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
+	return RegistrationListPage{fn: getNextPage}
 }
 
 // RegistrationParameter registration resource

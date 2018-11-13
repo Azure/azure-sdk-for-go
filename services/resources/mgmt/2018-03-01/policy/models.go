@@ -226,6 +226,11 @@ func (iter AssignmentListResultIterator) Value() Assignment {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AssignmentListResultIterator type.
+func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
+	return AssignmentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AssignmentListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -293,6 +298,11 @@ func (page AssignmentListResultPage) Values() []Assignment {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AssignmentListResultPage type.
+func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return AssignmentListResultPage{fn: getNextPage}
 }
 
 // AssignmentProperties the policy assignment properties.
@@ -462,6 +472,11 @@ func (iter DefinitionListResultIterator) Value() Definition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DefinitionListResultIterator type.
+func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
+	return DefinitionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DefinitionListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -529,6 +544,11 @@ func (page DefinitionListResultPage) Values() []Definition {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DefinitionListResultPage type.
+func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return DefinitionListResultPage{fn: getNextPage}
 }
 
 // DefinitionProperties the policy definition properties.
@@ -717,6 +737,11 @@ func (iter SetDefinitionListResultIterator) Value() SetDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SetDefinitionListResultIterator type.
+func NewSetDefinitionListResultIterator(page SetDefinitionListResultPage) SetDefinitionListResultIterator {
+	return SetDefinitionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sdlr SetDefinitionListResult) IsEmpty() bool {
 	return sdlr.Value == nil || len(*sdlr.Value) == 0
@@ -784,6 +809,11 @@ func (page SetDefinitionListResultPage) Values() []SetDefinition {
 		return nil
 	}
 	return *page.sdlr.Value
+}
+
+// Creates a new instance of the SetDefinitionListResultPage type.
+func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
+	return SetDefinitionListResultPage{fn: getNextPage}
 }
 
 // SetDefinitionProperties the policy set definition properties.

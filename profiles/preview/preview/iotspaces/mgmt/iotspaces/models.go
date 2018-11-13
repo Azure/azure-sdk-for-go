@@ -20,6 +20,8 @@
 package iotspaces
 
 import (
+	"context"
+
 	original "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
 	uuid "github.com/satori/go.uuid"
 )
@@ -98,6 +100,18 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleSkuValues() []Sku {
 	return original.PossibleSkuValues()
+}
+func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
+	return original.NewDescriptionListResultIterator(page)
+}
+func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return original.NewDescriptionListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

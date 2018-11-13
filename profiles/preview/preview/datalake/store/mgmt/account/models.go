@@ -19,7 +19,11 @@
 
 package account
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/mgmt/2015-10-01-preview/account"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/mgmt/2015-10-01-preview/account"
+)
 
 type Client = original.Client
 
@@ -137,6 +141,18 @@ func PossibleEncryptionStateValues() []EncryptionState {
 }
 func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
+}
+func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
+	return original.NewDataLakeStoreAccountListResultIterator(page)
+}
+func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return original.NewDataLakeStoreAccountListResultPage(getNextPage)
+}
+func NewDataLakeStoreFirewallRuleListResultIterator(page DataLakeStoreFirewallRuleListResultPage) DataLakeStoreFirewallRuleListResultIterator {
+	return original.NewDataLakeStoreFirewallRuleListResultIterator(page)
+}
+func NewDataLakeStoreFirewallRuleListResultPage(getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
+	return original.NewDataLakeStoreFirewallRuleListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

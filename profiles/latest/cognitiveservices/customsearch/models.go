@@ -22,7 +22,7 @@ package customsearch
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch"
 
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	DefaultEndpoint = original.DefaultEndpoint
 )
 
 type BaseClient = original.BaseClient
@@ -111,14 +111,11 @@ type WebWebAnswer = original.WebWebAnswer
 func New() BaseClient {
 	return original.New()
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func NewCustomInstanceClient() CustomInstanceClient {
 	return original.NewCustomInstanceClient()
-}
-func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
-	return original.NewCustomInstanceClientWithBaseURI(baseURI)
 }
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()

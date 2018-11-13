@@ -380,6 +380,11 @@ func (iter DeletedVaultListResultIterator) Value() DeletedVault {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DeletedVaultListResultIterator type.
+func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
+	return DeletedVaultListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dvlr DeletedVaultListResult) IsEmpty() bool {
 	return dvlr.Value == nil || len(*dvlr.Value) == 0
@@ -447,6 +452,11 @@ func (page DeletedVaultListResultPage) Values() []DeletedVault {
 		return nil
 	}
 	return *page.dvlr.Value
+}
+
+// Creates a new instance of the DeletedVaultListResultPage type.
+func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return DeletedVaultListResultPage{fn: getNextPage}
 }
 
 // DeletedVaultProperties properties of the deleted vault.
@@ -673,6 +683,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -740,6 +755,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationProperties properties of operation, include metric specifications.
@@ -862,6 +882,11 @@ func (iter ResourceListResultIterator) Value() Resource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceListResultIterator type.
+func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
+	return ResourceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr ResourceListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -929,6 +954,11 @@ func (page ResourceListResultPage) Values() []Resource {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the ResourceListResultPage type.
+func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{fn: getNextPage}
 }
 
 // ServiceSpecification one property of operation, include log specifications.
@@ -1107,6 +1137,11 @@ func (iter VaultListResultIterator) Value() Vault {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VaultListResultIterator type.
+func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterator {
+	return VaultListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vlr VaultListResult) IsEmpty() bool {
 	return vlr.Value == nil || len(*vlr.Value) == 0
@@ -1174,6 +1209,11 @@ func (page VaultListResultPage) Values() []Vault {
 		return nil
 	}
 	return *page.vlr.Value
+}
+
+// Creates a new instance of the VaultListResultPage type.
+func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return VaultListResultPage{fn: getNextPage}
 }
 
 // VaultPatchParameters parameters for creating or updating a vault

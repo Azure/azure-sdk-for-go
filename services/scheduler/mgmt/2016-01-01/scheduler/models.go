@@ -468,6 +468,11 @@ func (iter JobCollectionListResultIterator) Value() JobCollectionDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobCollectionListResultIterator type.
+func NewJobCollectionListResultIterator(page JobCollectionListResultPage) JobCollectionListResultIterator {
+	return JobCollectionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jclr JobCollectionListResult) IsEmpty() bool {
 	return jclr.Value == nil || len(*jclr.Value) == 0
@@ -535,6 +540,11 @@ func (page JobCollectionListResultPage) Values() []JobCollectionDefinition {
 		return nil
 	}
 	return *page.jclr.Value
+}
+
+// Creates a new instance of the JobCollectionListResultPage type.
+func NewJobCollectionListResultPage(getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
+	return JobCollectionListResultPage{fn: getNextPage}
 }
 
 // JobCollectionProperties ...
@@ -691,6 +701,11 @@ func (iter JobHistoryListResultIterator) Value() JobHistoryDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobHistoryListResultIterator type.
+func NewJobHistoryListResultIterator(page JobHistoryListResultPage) JobHistoryListResultIterator {
+	return JobHistoryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jhlr JobHistoryListResult) IsEmpty() bool {
 	return jhlr.Value == nil || len(*jhlr.Value) == 0
@@ -760,6 +775,11 @@ func (page JobHistoryListResultPage) Values() []JobHistoryDefinition {
 	return *page.jhlr.Value
 }
 
+// Creates a new instance of the JobHistoryListResultPage type.
+func NewJobHistoryListResultPage(getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
+	return JobHistoryListResultPage{fn: getNextPage}
+}
+
 // JobListResult ...
 type JobListResult struct {
 	autorest.Response `json:"-"`
@@ -825,6 +845,11 @@ func (iter JobListResultIterator) Value() JobDefinition {
 		return JobDefinition{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -894,6 +919,11 @@ func (page JobListResultPage) Values() []JobDefinition {
 		return nil
 	}
 	return *page.jlr.Value
+}
+
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
 }
 
 // JobMaxRecurrence ...

@@ -1949,6 +1949,11 @@ func (iter FunctionListResultIterator) Value() Function {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FunctionListResultIterator type.
+func NewFunctionListResultIterator(page FunctionListResultPage) FunctionListResultIterator {
+	return FunctionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FunctionListResult) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -2016,6 +2021,11 @@ func (page FunctionListResultPage) Values() []Function {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FunctionListResultPage type.
+func NewFunctionListResultPage(getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
+	return FunctionListResultPage{fn: getNextPage}
 }
 
 // FunctionOutput describes the output of a function.
@@ -2349,6 +2359,11 @@ func (iter InputListResultIterator) Value() Input {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InputListResultIterator type.
+func NewInputListResultIterator(page InputListResultPage) InputListResultIterator {
+	return InputListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InputListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -2416,6 +2431,11 @@ func (page InputListResultPage) Values() []Input {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the InputListResultPage type.
+func NewInputListResultPage(getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
+	return InputListResultPage{fn: getNextPage}
 }
 
 // BasicInputProperties the properties that are associated with an input.
@@ -3038,6 +3058,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -3105,6 +3130,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Output an output object, containing all information associated with the named output. All outputs are
@@ -3411,6 +3441,11 @@ func (iter OutputListResultIterator) Value() Output {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OutputListResultIterator type.
+func NewOutputListResultIterator(page OutputListResultPage) OutputListResultIterator {
+	return OutputListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OutputListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -3478,6 +3513,11 @@ func (page OutputListResultPage) Values() []Output {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OutputListResultPage type.
+func NewOutputListResultPage(getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
+	return OutputListResultPage{fn: getNextPage}
 }
 
 // OutputProperties the properties that are associated with an output.
@@ -4613,6 +4653,11 @@ func (iter StreamingJobListResultIterator) Value() StreamingJob {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StreamingJobListResultIterator type.
+func NewStreamingJobListResultIterator(page StreamingJobListResultPage) StreamingJobListResultIterator {
+	return StreamingJobListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sjlr StreamingJobListResult) IsEmpty() bool {
 	return sjlr.Value == nil || len(*sjlr.Value) == 0
@@ -4680,6 +4725,11 @@ func (page StreamingJobListResultPage) Values() []StreamingJob {
 		return nil
 	}
 	return *page.sjlr.Value
+}
+
+// Creates a new instance of the StreamingJobListResultPage type.
+func NewStreamingJobListResultPage(getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
+	return StreamingJobListResultPage{fn: getNextPage}
 }
 
 // StreamingJobProperties the properties that are associated with a streaming job.

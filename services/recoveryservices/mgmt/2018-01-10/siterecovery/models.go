@@ -2410,6 +2410,11 @@ func (iter AlertCollectionIterator) Value() Alert {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AlertCollectionIterator type.
+func NewAlertCollectionIterator(page AlertCollectionPage) AlertCollectionIterator {
+	return AlertCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ac AlertCollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -2477,6 +2482,11 @@ func (page AlertCollectionPage) Values() []Alert {
 		return nil
 	}
 	return *page.ac.Value
+}
+
+// Creates a new instance of the AlertCollectionPage type.
+func NewAlertCollectionPage(getNextPage func(context.Context, AlertCollection) (AlertCollection, error)) AlertCollectionPage {
+	return AlertCollectionPage{fn: getNextPage}
 }
 
 // AlertProperties the proprties of an alert.
@@ -4110,6 +4120,11 @@ func (iter EventCollectionIterator) Value() Event {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EventCollectionIterator type.
+func NewEventCollectionIterator(page EventCollectionPage) EventCollectionIterator {
+	return EventCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ec EventCollection) IsEmpty() bool {
 	return ec.Value == nil || len(*ec.Value) == 0
@@ -4177,6 +4192,11 @@ func (page EventCollectionPage) Values() []Event {
 		return nil
 	}
 	return *page.ec.Value
+}
+
+// Creates a new instance of the EventCollectionPage type.
+func NewEventCollectionPage(getNextPage func(context.Context, EventCollection) (EventCollection, error)) EventCollectionPage {
+	return EventCollectionPage{fn: getNextPage}
 }
 
 // EventProperties the properties of a monitoring event.
@@ -4670,6 +4690,11 @@ func (iter FabricCollectionIterator) Value() Fabric {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FabricCollectionIterator type.
+func NewFabricCollectionIterator(page FabricCollectionPage) FabricCollectionIterator {
+	return FabricCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fc FabricCollection) IsEmpty() bool {
 	return fc.Value == nil || len(*fc.Value) == 0
@@ -4737,6 +4762,11 @@ func (page FabricCollectionPage) Values() []Fabric {
 		return nil
 	}
 	return *page.fc.Value
+}
+
+// Creates a new instance of the FabricCollectionPage type.
+func NewFabricCollectionPage(getNextPage func(context.Context, FabricCollection) (FabricCollection, error)) FabricCollectionPage {
+	return FabricCollectionPage{fn: getNextPage}
 }
 
 // FabricCreationInput site details provided during the time of site creation
@@ -9896,6 +9926,11 @@ func (iter JobCollectionIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobCollectionIterator type.
+func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
+	return JobCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jc JobCollection) IsEmpty() bool {
 	return jc.Value == nil || len(*jc.Value) == 0
@@ -9963,6 +9998,11 @@ func (page JobCollectionPage) Values() []Job {
 		return nil
 	}
 	return *page.jc.Value
+}
+
+// Creates a new instance of the JobCollectionPage type.
+func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{fn: getNextPage}
 }
 
 // BasicJobDetails job details based on specific job type.
@@ -10513,6 +10553,11 @@ func (iter LogicalNetworkCollectionIterator) Value() LogicalNetwork {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LogicalNetworkCollectionIterator type.
+func NewLogicalNetworkCollectionIterator(page LogicalNetworkCollectionPage) LogicalNetworkCollectionIterator {
+	return LogicalNetworkCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lnc LogicalNetworkCollection) IsEmpty() bool {
 	return lnc.Value == nil || len(*lnc.Value) == 0
@@ -10580,6 +10625,11 @@ func (page LogicalNetworkCollectionPage) Values() []LogicalNetwork {
 		return nil
 	}
 	return *page.lnc.Value
+}
+
+// Creates a new instance of the LogicalNetworkCollectionPage type.
+func NewLogicalNetworkCollectionPage(getNextPage func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error)) LogicalNetworkCollectionPage {
+	return LogicalNetworkCollectionPage{fn: getNextPage}
 }
 
 // LogicalNetworkProperties logical Network Properties.
@@ -10807,6 +10857,11 @@ func (iter NetworkCollectionIterator) Value() Network {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the NetworkCollectionIterator type.
+func NewNetworkCollectionIterator(page NetworkCollectionPage) NetworkCollectionIterator {
+	return NetworkCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (nc NetworkCollection) IsEmpty() bool {
 	return nc.Value == nil || len(*nc.Value) == 0
@@ -10874,6 +10929,11 @@ func (page NetworkCollectionPage) Values() []Network {
 		return nil
 	}
 	return *page.nc.Value
+}
+
+// Creates a new instance of the NetworkCollectionPage type.
+func NewNetworkCollectionPage(getNextPage func(context.Context, NetworkCollection) (NetworkCollection, error)) NetworkCollectionPage {
+	return NetworkCollectionPage{fn: getNextPage}
 }
 
 // NetworkMapping network Mapping model. Ideally it should have been possible to inherit this class from
@@ -10965,6 +11025,11 @@ func (iter NetworkMappingCollectionIterator) Value() NetworkMapping {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the NetworkMappingCollectionIterator type.
+func NewNetworkMappingCollectionIterator(page NetworkMappingCollectionPage) NetworkMappingCollectionIterator {
+	return NetworkMappingCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (nmc NetworkMappingCollection) IsEmpty() bool {
 	return nmc.Value == nil || len(*nmc.Value) == 0
@@ -11032,6 +11097,11 @@ func (page NetworkMappingCollectionPage) Values() []NetworkMapping {
 		return nil
 	}
 	return *page.nmc.Value
+}
+
+// Creates a new instance of the NetworkMappingCollectionPage type.
+func NewNetworkMappingCollectionPage(getNextPage func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error)) NetworkMappingCollectionPage {
+	return NetworkMappingCollectionPage{fn: getNextPage}
 }
 
 // BasicNetworkMappingFabricSpecificSettings network Mapping fabric specific settings.
@@ -11337,6 +11407,11 @@ func (iter OperationsDiscoveryCollectionIterator) Value() OperationsDiscovery {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationsDiscoveryCollectionIterator type.
+func NewOperationsDiscoveryCollectionIterator(page OperationsDiscoveryCollectionPage) OperationsDiscoveryCollectionIterator {
+	return OperationsDiscoveryCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (odc OperationsDiscoveryCollection) IsEmpty() bool {
 	return odc.Value == nil || len(*odc.Value) == 0
@@ -11404,6 +11479,11 @@ func (page OperationsDiscoveryCollectionPage) Values() []OperationsDiscovery {
 		return nil
 	}
 	return *page.odc.Value
+}
+
+// Creates a new instance of the OperationsDiscoveryCollectionPage type.
+func NewOperationsDiscoveryCollectionPage(getNextPage func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error)) OperationsDiscoveryCollectionPage {
+	return OperationsDiscoveryCollectionPage{fn: getNextPage}
 }
 
 // OSDetails disk Details.
@@ -11560,6 +11640,11 @@ func (iter PolicyCollectionIterator) Value() Policy {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PolicyCollectionIterator type.
+func NewPolicyCollectionIterator(page PolicyCollectionPage) PolicyCollectionIterator {
+	return PolicyCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pc PolicyCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -11627,6 +11712,11 @@ func (page PolicyCollectionPage) Values() []Policy {
 		return nil
 	}
 	return *page.pc.Value
+}
+
+// Creates a new instance of the PolicyCollectionPage type.
+func NewPolicyCollectionPage(getNextPage func(context.Context, PolicyCollection) (PolicyCollection, error)) PolicyCollectionPage {
+	return PolicyCollectionPage{fn: getNextPage}
 }
 
 // PolicyProperties protection profile custom data details.
@@ -12109,6 +12199,11 @@ func (iter ProtectableItemCollectionIterator) Value() ProtectableItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectableItemCollectionIterator type.
+func NewProtectableItemCollectionIterator(page ProtectableItemCollectionPage) ProtectableItemCollectionIterator {
+	return ProtectableItemCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pic ProtectableItemCollection) IsEmpty() bool {
 	return pic.Value == nil || len(*pic.Value) == 0
@@ -12176,6 +12271,11 @@ func (page ProtectableItemCollectionPage) Values() []ProtectableItem {
 		return nil
 	}
 	return *page.pic.Value
+}
+
+// Creates a new instance of the ProtectableItemCollectionPage type.
+func NewProtectableItemCollectionPage(getNextPage func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error)) ProtectableItemCollectionPage {
+	return ProtectableItemCollectionPage{fn: getNextPage}
 }
 
 // ProtectableItemProperties replication protected item custom data details.
@@ -12376,6 +12476,11 @@ func (iter ProtectionContainerCollectionIterator) Value() ProtectionContainer {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectionContainerCollectionIterator type.
+func NewProtectionContainerCollectionIterator(page ProtectionContainerCollectionPage) ProtectionContainerCollectionIterator {
+	return ProtectionContainerCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pcc ProtectionContainerCollection) IsEmpty() bool {
 	return pcc.Value == nil || len(*pcc.Value) == 0
@@ -12443,6 +12548,11 @@ func (page ProtectionContainerCollectionPage) Values() []ProtectionContainer {
 		return nil
 	}
 	return *page.pcc.Value
+}
+
+// Creates a new instance of the ProtectionContainerCollectionPage type.
+func NewProtectionContainerCollectionPage(getNextPage func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error)) ProtectionContainerCollectionPage {
+	return ProtectionContainerCollectionPage{fn: getNextPage}
 }
 
 // ProtectionContainerFabricSpecificDetails base class for fabric specific details of container.
@@ -12534,6 +12644,11 @@ func (iter ProtectionContainerMappingCollectionIterator) Value() ProtectionConta
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectionContainerMappingCollectionIterator type.
+func NewProtectionContainerMappingCollectionIterator(page ProtectionContainerMappingCollectionPage) ProtectionContainerMappingCollectionIterator {
+	return ProtectionContainerMappingCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pcmc ProtectionContainerMappingCollection) IsEmpty() bool {
 	return pcmc.Value == nil || len(*pcmc.Value) == 0
@@ -12601,6 +12716,11 @@ func (page ProtectionContainerMappingCollectionPage) Values() []ProtectionContai
 		return nil
 	}
 	return *page.pcmc.Value
+}
+
+// Creates a new instance of the ProtectionContainerMappingCollectionPage type.
+func NewProtectionContainerMappingCollectionPage(getNextPage func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error)) ProtectionContainerMappingCollectionPage {
+	return ProtectionContainerMappingCollectionPage{fn: getNextPage}
 }
 
 // ProtectionContainerMappingProperties protection container mapping properties.
@@ -13507,6 +13627,11 @@ func (iter RecoveryPlanCollectionIterator) Value() RecoveryPlan {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecoveryPlanCollectionIterator type.
+func NewRecoveryPlanCollectionIterator(page RecoveryPlanCollectionPage) RecoveryPlanCollectionIterator {
+	return RecoveryPlanCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (RPCVar RecoveryPlanCollection) IsEmpty() bool {
 	return RPCVar.Value == nil || len(*RPCVar.Value) == 0
@@ -13574,6 +13699,11 @@ func (page RecoveryPlanCollectionPage) Values() []RecoveryPlan {
 		return nil
 	}
 	return *page.RPCVar.Value
+}
+
+// Creates a new instance of the RecoveryPlanCollectionPage type.
+func NewRecoveryPlanCollectionPage(getNextPage func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error)) RecoveryPlanCollectionPage {
+	return RecoveryPlanCollectionPage{fn: getNextPage}
 }
 
 // RecoveryPlanGroup recovery plan group details.
@@ -14499,6 +14629,11 @@ func (iter RecoveryPointCollectionIterator) Value() RecoveryPoint {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecoveryPointCollectionIterator type.
+func NewRecoveryPointCollectionIterator(page RecoveryPointCollectionPage) RecoveryPointCollectionIterator {
+	return RecoveryPointCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (RPCVar RecoveryPointCollection) IsEmpty() bool {
 	return RPCVar.Value == nil || len(*RPCVar.Value) == 0
@@ -14566,6 +14701,11 @@ func (page RecoveryPointCollectionPage) Values() []RecoveryPoint {
 		return nil
 	}
 	return *page.RPCVar.Value
+}
+
+// Creates a new instance of the RecoveryPointCollectionPage type.
+func NewRecoveryPointCollectionPage(getNextPage func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error)) RecoveryPointCollectionPage {
+	return RecoveryPointCollectionPage{fn: getNextPage}
 }
 
 // RecoveryPointProperties recovery point properties.
@@ -14702,6 +14842,11 @@ func (iter RecoveryServicesProviderCollectionIterator) Value() RecoveryServicesP
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecoveryServicesProviderCollectionIterator type.
+func NewRecoveryServicesProviderCollectionIterator(page RecoveryServicesProviderCollectionPage) RecoveryServicesProviderCollectionIterator {
+	return RecoveryServicesProviderCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rspc RecoveryServicesProviderCollection) IsEmpty() bool {
 	return rspc.Value == nil || len(*rspc.Value) == 0
@@ -14769,6 +14914,11 @@ func (page RecoveryServicesProviderCollectionPage) Values() []RecoveryServicesPr
 		return nil
 	}
 	return *page.rspc.Value
+}
+
+// Creates a new instance of the RecoveryServicesProviderCollectionPage type.
+func NewRecoveryServicesProviderCollectionPage(getNextPage func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error)) RecoveryServicesProviderCollectionPage {
+	return RecoveryServicesProviderCollectionPage{fn: getNextPage}
 }
 
 // RecoveryServicesProviderProperties recovery services provider properties.
@@ -15421,6 +15571,11 @@ func (iter ReplicationProtectedItemCollectionIterator) Value() ReplicationProtec
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReplicationProtectedItemCollectionIterator type.
+func NewReplicationProtectedItemCollectionIterator(page ReplicationProtectedItemCollectionPage) ReplicationProtectedItemCollectionIterator {
+	return ReplicationProtectedItemCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rpic ReplicationProtectedItemCollection) IsEmpty() bool {
 	return rpic.Value == nil || len(*rpic.Value) == 0
@@ -15488,6 +15643,11 @@ func (page ReplicationProtectedItemCollectionPage) Values() []ReplicationProtect
 		return nil
 	}
 	return *page.rpic.Value
+}
+
+// Creates a new instance of the ReplicationProtectedItemCollectionPage type.
+func NewReplicationProtectedItemCollectionPage(getNextPage func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error)) ReplicationProtectedItemCollectionPage {
+	return ReplicationProtectedItemCollectionPage{fn: getNextPage}
 }
 
 // ReplicationProtectedItemProperties replication protected item custom data details.
@@ -17690,6 +17850,11 @@ func (iter StorageClassificationCollectionIterator) Value() StorageClassificatio
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StorageClassificationCollectionIterator type.
+func NewStorageClassificationCollectionIterator(page StorageClassificationCollectionPage) StorageClassificationCollectionIterator {
+	return StorageClassificationCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (scc StorageClassificationCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
@@ -17757,6 +17922,11 @@ func (page StorageClassificationCollectionPage) Values() []StorageClassification
 		return nil
 	}
 	return *page.scc.Value
+}
+
+// Creates a new instance of the StorageClassificationCollectionPage type.
+func NewStorageClassificationCollectionPage(getNextPage func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error)) StorageClassificationCollectionPage {
+	return StorageClassificationCollectionPage{fn: getNextPage}
 }
 
 // StorageClassificationMapping storage mapping object.
@@ -17842,6 +18012,11 @@ func (iter StorageClassificationMappingCollectionIterator) Value() StorageClassi
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StorageClassificationMappingCollectionIterator type.
+func NewStorageClassificationMappingCollectionIterator(page StorageClassificationMappingCollectionPage) StorageClassificationMappingCollectionIterator {
+	return StorageClassificationMappingCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (scmc StorageClassificationMappingCollection) IsEmpty() bool {
 	return scmc.Value == nil || len(*scmc.Value) == 0
@@ -17909,6 +18084,11 @@ func (page StorageClassificationMappingCollectionPage) Values() []StorageClassif
 		return nil
 	}
 	return *page.scmc.Value
+}
+
+// Creates a new instance of the StorageClassificationMappingCollectionPage type.
+func NewStorageClassificationMappingCollectionPage(getNextPage func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error)) StorageClassificationMappingCollectionPage {
+	return StorageClassificationMappingCollectionPage{fn: getNextPage}
 }
 
 // StorageClassificationMappingInput storage mapping input.
@@ -18205,6 +18385,11 @@ func (iter TargetComputeSizeCollectionIterator) Value() TargetComputeSize {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TargetComputeSizeCollectionIterator type.
+func NewTargetComputeSizeCollectionIterator(page TargetComputeSizeCollectionPage) TargetComputeSizeCollectionIterator {
+	return TargetComputeSizeCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tcsc TargetComputeSizeCollection) IsEmpty() bool {
 	return tcsc.Value == nil || len(*tcsc.Value) == 0
@@ -18272,6 +18457,11 @@ func (page TargetComputeSizeCollectionPage) Values() []TargetComputeSize {
 		return nil
 	}
 	return *page.tcsc.Value
+}
+
+// Creates a new instance of the TargetComputeSizeCollectionPage type.
+func NewTargetComputeSizeCollectionPage(getNextPage func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error)) TargetComputeSizeCollectionPage {
+	return TargetComputeSizeCollectionPage{fn: getNextPage}
 }
 
 // TargetComputeSizeProperties represents applicable recovery vm sizes properties.
@@ -19169,6 +19359,11 @@ func (iter VCenterCollectionIterator) Value() VCenter {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VCenterCollectionIterator type.
+func NewVCenterCollectionIterator(page VCenterCollectionPage) VCenterCollectionIterator {
+	return VCenterCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vcc VCenterCollection) IsEmpty() bool {
 	return vcc.Value == nil || len(*vcc.Value) == 0
@@ -19236,6 +19431,11 @@ func (page VCenterCollectionPage) Values() []VCenter {
 		return nil
 	}
 	return *page.vcc.Value
+}
+
+// Creates a new instance of the VCenterCollectionPage type.
+func NewVCenterCollectionPage(getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
+	return VCenterCollectionPage{fn: getNextPage}
 }
 
 // VCenterProperties vCenter properties.

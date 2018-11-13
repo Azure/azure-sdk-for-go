@@ -19,7 +19,11 @@
 
 package operationalinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -100,6 +104,12 @@ func PossibleSearchSortEnumValues() []SearchSortEnum {
 }
 func PossibleStorageInsightStateValues() []StorageInsightState {
 	return original.PossibleStorageInsightStateValues()
+}
+func NewStorageInsightListResultIterator(page StorageInsightListResultPage) StorageInsightListResultIterator {
+	return original.NewStorageInsightListResultIterator(page)
+}
+func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return original.NewStorageInsightListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, purgeID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, purgeID)

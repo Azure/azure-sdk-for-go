@@ -19,7 +19,11 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption"
+)
 
 type BudgetsClient = original.BudgetsClient
 
@@ -77,6 +81,12 @@ func PossibleOperatorTypeValues() []OperatorType {
 }
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, name string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, name)

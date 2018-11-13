@@ -19,7 +19,11 @@
 
 package graphrbac
 
-import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
+)
 
 type ApplicationsClient = original.ApplicationsClient
 
@@ -144,6 +148,36 @@ func PossibleObjectTypeValues() []ObjectType {
 }
 func PossibleUserTypeValues() []UserType {
 	return original.PossibleUserTypeValues()
+}
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return original.NewApplicationListResultIterator(page)
+}
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(getNextPage)
+}
+func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
+	return original.NewDirectoryObjectListResultIterator(page)
+}
+func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return original.NewDirectoryObjectListResultPage(getNextPage)
+}
+func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
+	return original.NewGroupListResultIterator(page)
+}
+func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(getNextPage)
+}
+func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
+	return original.NewServicePrincipalListResultIterator(page)
+}
+func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return original.NewServicePrincipalListResultPage(getNextPage)
+}
+func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
+	return original.NewUserListResultIterator(page)
+}
+func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
+	return original.NewUserListResultPage(getNextPage)
 }
 func NewOAuth2Client(tenantID string) OAuth2Client {
 	return original.NewOAuth2Client(tenantID)

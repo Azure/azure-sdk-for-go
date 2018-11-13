@@ -19,7 +19,11 @@
 
 package managementgroups
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -185,6 +189,24 @@ func PossibleType1Values() []Type1 {
 }
 func PossibleType2Values() []Type2 {
 	return original.PossibleType2Values()
+}
+func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
+	return original.NewEntityListResultIterator(page)
+}
+func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return original.NewEntityListResultPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

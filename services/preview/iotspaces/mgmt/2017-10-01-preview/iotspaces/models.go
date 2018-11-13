@@ -255,6 +255,11 @@ func (iter DescriptionListResultIterator) Value() Description {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DescriptionListResultIterator type.
+func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
+	return DescriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DescriptionListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -322,6 +327,11 @@ func (page DescriptionListResultPage) Values() []Description {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DescriptionListResultPage type.
+func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return DescriptionListResultPage{fn: getNextPage}
 }
 
 // ErrorDetails error details.
@@ -438,6 +448,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -505,6 +520,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PatchDescription the description of the IoTSpaces service.

@@ -29,26 +29,26 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Spellcheck
-	DefaultBaseURI = "https://api.cognitive.microsoft.com/bing/v7.0"
+	// DefaultEndpoint is the default value for endpoint
+	DefaultEndpoint = "https://api.cognitive.microsoft.com"
 )
 
 // BaseClient is the base client for Spellcheck.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
 func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+	return NewWithoutDefaults(DefaultEndpoint)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+// NewWithoutDefaults creates an instance of the BaseClient client.
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }
 
@@ -212,6 +212,10 @@ func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter s
 
 // SpellCheckerMethodPreparer prepares the SpellCheckerMethod request.
 func (client BaseClient) SpellCheckerMethodPreparer(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode string, preContextText string, postContextText string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{}
 	if len(string(actionType)) > 0 {
 		queryParameters["ActionType"] = autorest.Encode("query", actionType)
@@ -256,7 +260,7 @@ func (client BaseClient) SpellCheckerMethodPreparer(ctx context.Context, textPar
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/spellcheck"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithFormData(autorest.MapToValues(formDataParameters)),

@@ -694,6 +694,11 @@ func (iter AccountListNodeAgentSkusResultIterator) Value() NodeAgentSku {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AccountListNodeAgentSkusResultIterator type.
+func NewAccountListNodeAgentSkusResultIterator(page AccountListNodeAgentSkusResultPage) AccountListNodeAgentSkusResultIterator {
+	return AccountListNodeAgentSkusResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alnasr AccountListNodeAgentSkusResult) IsEmpty() bool {
 	return alnasr.Value == nil || len(*alnasr.Value) == 0
@@ -761,6 +766,11 @@ func (page AccountListNodeAgentSkusResultPage) Values() []NodeAgentSku {
 		return nil
 	}
 	return *page.alnasr.Value
+}
+
+// Creates a new instance of the AccountListNodeAgentSkusResultPage type.
+func NewAccountListNodeAgentSkusResultPage(getNextPage func(context.Context, AccountListNodeAgentSkusResult) (AccountListNodeAgentSkusResult, error)) AccountListNodeAgentSkusResultPage {
+	return AccountListNodeAgentSkusResultPage{fn: getNextPage}
 }
 
 // AffinityInformation ...
@@ -834,6 +844,11 @@ func (iter ApplicationListResultIterator) Value() ApplicationSummary {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationListResultIterator type.
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return ApplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -901,6 +916,11 @@ func (page ApplicationListResultPage) Values() []ApplicationSummary {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the ApplicationListResultPage type.
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{fn: getNextPage}
 }
 
 // ApplicationPackageReference ...
@@ -1054,6 +1074,11 @@ func (iter CertificateListResultIterator) Value() Certificate {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CertificateListResultIterator type.
+func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
+	return CertificateListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr CertificateListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -1121,6 +1146,11 @@ func (page CertificateListResultPage) Values() []Certificate {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the CertificateListResultPage type.
+func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{fn: getNextPage}
 }
 
 // CertificateReference ...
@@ -1241,6 +1271,11 @@ func (iter CloudJobListPreparationAndReleaseTaskStatusResultIterator) Value() Jo
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CloudJobListPreparationAndReleaseTaskStatusResultIterator type.
+func NewCloudJobListPreparationAndReleaseTaskStatusResultIterator(page CloudJobListPreparationAndReleaseTaskStatusResultPage) CloudJobListPreparationAndReleaseTaskStatusResultIterator {
+	return CloudJobListPreparationAndReleaseTaskStatusResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) IsEmpty() bool {
 	return cjlpartsr.Value == nil || len(*cjlpartsr.Value) == 0
@@ -1311,6 +1346,11 @@ func (page CloudJobListPreparationAndReleaseTaskStatusResultPage) Values() []Job
 	return *page.cjlpartsr.Value
 }
 
+// Creates a new instance of the CloudJobListPreparationAndReleaseTaskStatusResultPage type.
+func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
+	return CloudJobListPreparationAndReleaseTaskStatusResultPage{fn: getNextPage}
+}
+
 // CloudJobListResult ...
 type CloudJobListResult struct {
 	autorest.Response `json:"-"`
@@ -1374,6 +1414,11 @@ func (iter CloudJobListResultIterator) Value() CloudJob {
 		return CloudJob{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CloudJobListResultIterator type.
+func NewCloudJobListResultIterator(page CloudJobListResultPage) CloudJobListResultIterator {
+	return CloudJobListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -1443,6 +1488,11 @@ func (page CloudJobListResultPage) Values() []CloudJob {
 		return nil
 	}
 	return *page.cjlr.Value
+}
+
+// Creates a new instance of the CloudJobListResultPage type.
+func NewCloudJobListResultPage(getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
+	return CloudJobListResultPage{fn: getNextPage}
 }
 
 // CloudJobSchedule ...
@@ -1537,6 +1587,11 @@ func (iter CloudJobScheduleListResultIterator) Value() CloudJobSchedule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CloudJobScheduleListResultIterator type.
+func NewCloudJobScheduleListResultIterator(page CloudJobScheduleListResultPage) CloudJobScheduleListResultIterator {
+	return CloudJobScheduleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cjslr CloudJobScheduleListResult) IsEmpty() bool {
 	return cjslr.Value == nil || len(*cjslr.Value) == 0
@@ -1604,6 +1659,11 @@ func (page CloudJobScheduleListResultPage) Values() []CloudJobSchedule {
 		return nil
 	}
 	return *page.cjslr.Value
+}
+
+// Creates a new instance of the CloudJobScheduleListResultPage type.
+func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
+	return CloudJobScheduleListResultPage{fn: getNextPage}
 }
 
 // CloudPool ...
@@ -1729,6 +1789,11 @@ func (iter CloudPoolListResultIterator) Value() CloudPool {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CloudPoolListResultIterator type.
+func NewCloudPoolListResultIterator(page CloudPoolListResultPage) CloudPoolListResultIterator {
+	return CloudPoolListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cplr CloudPoolListResult) IsEmpty() bool {
 	return cplr.Value == nil || len(*cplr.Value) == 0
@@ -1796,6 +1861,11 @@ func (page CloudPoolListResultPage) Values() []CloudPool {
 		return nil
 	}
 	return *page.cplr.Value
+}
+
+// Creates a new instance of the CloudPoolListResultPage type.
+func NewCloudPoolListResultPage(getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
+	return CloudPoolListResultPage{fn: getNextPage}
 }
 
 // CloudServiceConfiguration ...
@@ -1916,6 +1986,11 @@ func (iter CloudTaskListResultIterator) Value() CloudTask {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CloudTaskListResultIterator type.
+func NewCloudTaskListResultIterator(page CloudTaskListResultPage) CloudTaskListResultIterator {
+	return CloudTaskListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ctlr CloudTaskListResult) IsEmpty() bool {
 	return ctlr.Value == nil || len(*ctlr.Value) == 0
@@ -1983,6 +2058,11 @@ func (page CloudTaskListResultPage) Values() []CloudTask {
 		return nil
 	}
 	return *page.ctlr.Value
+}
+
+// Creates a new instance of the CloudTaskListResultPage type.
+func NewCloudTaskListResultPage(getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
+	return CloudTaskListResultPage{fn: getNextPage}
 }
 
 // CloudTaskListSubtasksResult ...
@@ -2111,6 +2191,11 @@ func (iter ComputeNodeListResultIterator) Value() ComputeNode {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ComputeNodeListResultIterator type.
+func NewComputeNodeListResultIterator(page ComputeNodeListResultPage) ComputeNodeListResultIterator {
+	return ComputeNodeListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cnlr ComputeNodeListResult) IsEmpty() bool {
 	return cnlr.Value == nil || len(*cnlr.Value) == 0
@@ -2178,6 +2263,11 @@ func (page ComputeNodeListResultPage) Values() []ComputeNode {
 		return nil
 	}
 	return *page.cnlr.Value
+}
+
+// Creates a new instance of the ComputeNodeListResultPage type.
+func NewComputeNodeListResultPage(getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
+	return ComputeNodeListResultPage{fn: getNextPage}
 }
 
 // ComputeNodeUser ...
@@ -2724,6 +2814,11 @@ func (iter NodeFileListResultIterator) Value() NodeFile {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the NodeFileListResultIterator type.
+func NewNodeFileListResultIterator(page NodeFileListResultPage) NodeFileListResultIterator {
+	return NodeFileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (nflr NodeFileListResult) IsEmpty() bool {
 	return nflr.Value == nil || len(*nflr.Value) == 0
@@ -2791,6 +2886,11 @@ func (page NodeFileListResultPage) Values() []NodeFile {
 		return nil
 	}
 	return *page.nflr.Value
+}
+
+// Creates a new instance of the NodeFileListResultPage type.
+func NewNodeFileListResultPage(getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
+	return NodeFileListResultPage{fn: getNextPage}
 }
 
 // NodeRebootParameter ...
@@ -2989,6 +3089,11 @@ func (iter PoolListUsageMetricsResultIterator) Value() PoolUsageMetrics {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PoolListUsageMetricsResultIterator type.
+func NewPoolListUsageMetricsResultIterator(page PoolListUsageMetricsResultPage) PoolListUsageMetricsResultIterator {
+	return PoolListUsageMetricsResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plumr PoolListUsageMetricsResult) IsEmpty() bool {
 	return plumr.Value == nil || len(*plumr.Value) == 0
@@ -3056,6 +3161,11 @@ func (page PoolListUsageMetricsResultPage) Values() []PoolUsageMetrics {
 		return nil
 	}
 	return *page.plumr.Value
+}
+
+// Creates a new instance of the PoolListUsageMetricsResultPage type.
+func NewPoolListUsageMetricsResultPage(getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
+	return PoolListUsageMetricsResultPage{fn: getNextPage}
 }
 
 // PoolPatchParameter ...

@@ -1782,6 +1782,11 @@ func (iter IntegrationAccountAgreementListResultIterator) Value() IntegrationAcc
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountAgreementListResultIterator type.
+func NewIntegrationAccountAgreementListResultIterator(page IntegrationAccountAgreementListResultPage) IntegrationAccountAgreementListResultIterator {
+	return IntegrationAccountAgreementListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iaalr IntegrationAccountAgreementListResult) IsEmpty() bool {
 	return iaalr.Value == nil || len(*iaalr.Value) == 0
@@ -1849,6 +1854,11 @@ func (page IntegrationAccountAgreementListResultPage) Values() []IntegrationAcco
 		return nil
 	}
 	return *page.iaalr.Value
+}
+
+// Creates a new instance of the IntegrationAccountAgreementListResultPage type.
+func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
+	return IntegrationAccountAgreementListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountAgreementProperties the integration account agreement properties.
@@ -2051,6 +2061,11 @@ func (iter IntegrationAccountCertificateListResultIterator) Value() IntegrationA
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountCertificateListResultIterator type.
+func NewIntegrationAccountCertificateListResultIterator(page IntegrationAccountCertificateListResultPage) IntegrationAccountCertificateListResultIterator {
+	return IntegrationAccountCertificateListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iaclr IntegrationAccountCertificateListResult) IsEmpty() bool {
 	return iaclr.Value == nil || len(*iaclr.Value) == 0
@@ -2118,6 +2133,11 @@ func (page IntegrationAccountCertificateListResultPage) Values() []IntegrationAc
 		return nil
 	}
 	return *page.iaclr.Value
+}
+
+// Creates a new instance of the IntegrationAccountCertificateListResultPage type.
+func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
+	return IntegrationAccountCertificateListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountCertificateProperties the integration account certificate properties.
@@ -2201,6 +2221,11 @@ func (iter IntegrationAccountListResultIterator) Value() IntegrationAccount {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountListResultIterator type.
+func NewIntegrationAccountListResultIterator(page IntegrationAccountListResultPage) IntegrationAccountListResultIterator {
+	return IntegrationAccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ialr IntegrationAccountListResult) IsEmpty() bool {
 	return ialr.Value == nil || len(*ialr.Value) == 0
@@ -2268,6 +2293,11 @@ func (page IntegrationAccountListResultPage) Values() []IntegrationAccount {
 		return nil
 	}
 	return *page.ialr.Value
+}
+
+// Creates a new instance of the IntegrationAccountListResultPage type.
+func NewIntegrationAccountListResultPage(getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
+	return IntegrationAccountListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountMap the integration account map.
@@ -2454,6 +2484,11 @@ func (iter IntegrationAccountMapListResultIterator) Value() IntegrationAccountMa
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountMapListResultIterator type.
+func NewIntegrationAccountMapListResultIterator(page IntegrationAccountMapListResultPage) IntegrationAccountMapListResultIterator {
+	return IntegrationAccountMapListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iamlr IntegrationAccountMapListResult) IsEmpty() bool {
 	return iamlr.Value == nil || len(*iamlr.Value) == 0
@@ -2521,6 +2556,11 @@ func (page IntegrationAccountMapListResultPage) Values() []IntegrationAccountMap
 		return nil
 	}
 	return *page.iamlr.Value
+}
+
+// Creates a new instance of the IntegrationAccountMapListResultPage type.
+func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
+	return IntegrationAccountMapListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountMapProperties the integration account map.
@@ -2733,6 +2773,11 @@ func (iter IntegrationAccountPartnerListResultIterator) Value() IntegrationAccou
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountPartnerListResultIterator type.
+func NewIntegrationAccountPartnerListResultIterator(page IntegrationAccountPartnerListResultPage) IntegrationAccountPartnerListResultIterator {
+	return IntegrationAccountPartnerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iaplr IntegrationAccountPartnerListResult) IsEmpty() bool {
 	return iaplr.Value == nil || len(*iaplr.Value) == 0
@@ -2800,6 +2845,11 @@ func (page IntegrationAccountPartnerListResultPage) Values() []IntegrationAccoun
 		return nil
 	}
 	return *page.iaplr.Value
+}
+
+// Creates a new instance of the IntegrationAccountPartnerListResultPage type.
+func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
+	return IntegrationAccountPartnerListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountPartnerProperties the integration account partner properties.
@@ -3000,6 +3050,11 @@ func (iter IntegrationAccountSchemaListResultIterator) Value() IntegrationAccoun
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountSchemaListResultIterator type.
+func NewIntegrationAccountSchemaListResultIterator(page IntegrationAccountSchemaListResultPage) IntegrationAccountSchemaListResultIterator {
+	return IntegrationAccountSchemaListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iaslr IntegrationAccountSchemaListResult) IsEmpty() bool {
 	return iaslr.Value == nil || len(*iaslr.Value) == 0
@@ -3067,6 +3122,11 @@ func (page IntegrationAccountSchemaListResultPage) Values() []IntegrationAccount
 		return nil
 	}
 	return *page.iaslr.Value
+}
+
+// Creates a new instance of the IntegrationAccountSchemaListResultPage type.
+func NewIntegrationAccountSchemaListResultPage(getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
+	return IntegrationAccountSchemaListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountSchemaProperties the integration account schema properties.
@@ -3277,6 +3337,11 @@ func (iter IntegrationAccountSessionListResultIterator) Value() IntegrationAccou
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationAccountSessionListResultIterator type.
+func NewIntegrationAccountSessionListResultIterator(page IntegrationAccountSessionListResultPage) IntegrationAccountSessionListResultIterator {
+	return IntegrationAccountSessionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (iaslr IntegrationAccountSessionListResult) IsEmpty() bool {
 	return iaslr.Value == nil || len(*iaslr.Value) == 0
@@ -3344,6 +3409,11 @@ func (page IntegrationAccountSessionListResultPage) Values() []IntegrationAccoun
 		return nil
 	}
 	return *page.iaslr.Value
+}
+
+// Creates a new instance of the IntegrationAccountSessionListResultPage type.
+func NewIntegrationAccountSessionListResultPage(getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
+	return IntegrationAccountSessionListResultPage{fn: getNextPage}
 }
 
 // IntegrationAccountSessionProperties the integration account session properties.
@@ -3522,6 +3592,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -3589,6 +3664,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResult the operation result definition.
@@ -3989,6 +4069,11 @@ func (iter WorkflowListResultIterator) Value() Workflow {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowListResultIterator type.
+func NewWorkflowListResultIterator(page WorkflowListResultPage) WorkflowListResultIterator {
+	return WorkflowListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkflowListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -4056,6 +4141,11 @@ func (page WorkflowListResultPage) Values() []Workflow {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WorkflowListResultPage type.
+func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return WorkflowListResultPage{fn: getNextPage}
 }
 
 // WorkflowOutputParameter the workflow output parameter.
@@ -4381,6 +4471,11 @@ func (iter WorkflowRunActionListResultIterator) Value() WorkflowRunAction {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowRunActionListResultIterator type.
+func NewWorkflowRunActionListResultIterator(page WorkflowRunActionListResultPage) WorkflowRunActionListResultIterator {
+	return WorkflowRunActionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wralr WorkflowRunActionListResult) IsEmpty() bool {
 	return wralr.Value == nil || len(*wralr.Value) == 0
@@ -4448,6 +4543,11 @@ func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 		return nil
 	}
 	return *page.wralr.Value
+}
+
+// Creates a new instance of the WorkflowRunActionListResultPage type.
+func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return WorkflowRunActionListResultPage{fn: getNextPage}
 }
 
 // WorkflowRunActionProperties the workflow run action properties.
@@ -4697,6 +4797,11 @@ func (iter WorkflowRunListResultIterator) Value() WorkflowRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowRunListResultIterator type.
+func NewWorkflowRunListResultIterator(page WorkflowRunListResultPage) WorkflowRunListResultIterator {
+	return WorkflowRunListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wrlr WorkflowRunListResult) IsEmpty() bool {
 	return wrlr.Value == nil || len(*wrlr.Value) == 0
@@ -4764,6 +4869,11 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 		return nil
 	}
 	return *page.wrlr.Value
+}
+
+// Creates a new instance of the WorkflowRunListResultPage type.
+func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return WorkflowRunListResultPage{fn: getNextPage}
 }
 
 // WorkflowRunProperties the workflow run properties.
@@ -5129,6 +5239,11 @@ func (iter WorkflowTriggerHistoryListResultIterator) Value() WorkflowTriggerHist
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowTriggerHistoryListResultIterator type.
+func NewWorkflowTriggerHistoryListResultIterator(page WorkflowTriggerHistoryListResultPage) WorkflowTriggerHistoryListResultIterator {
+	return WorkflowTriggerHistoryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wthlr WorkflowTriggerHistoryListResult) IsEmpty() bool {
 	return wthlr.Value == nil || len(*wthlr.Value) == 0
@@ -5196,6 +5311,11 @@ func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHisto
 		return nil
 	}
 	return *page.wthlr.Value
+}
+
+// Creates a new instance of the WorkflowTriggerHistoryListResultPage type.
+func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return WorkflowTriggerHistoryListResultPage{fn: getNextPage}
 }
 
 // WorkflowTriggerHistoryProperties the workflow trigger history properties.
@@ -5305,6 +5425,11 @@ func (iter WorkflowTriggerListResultIterator) Value() WorkflowTrigger {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowTriggerListResultIterator type.
+func NewWorkflowTriggerListResultIterator(page WorkflowTriggerListResultPage) WorkflowTriggerListResultIterator {
+	return WorkflowTriggerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WorkflowTriggerListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -5372,6 +5497,11 @@ func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 		return nil
 	}
 	return *page.wtlr.Value
+}
+
+// Creates a new instance of the WorkflowTriggerListResultPage type.
+func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return WorkflowTriggerListResultPage{fn: getNextPage}
 }
 
 // WorkflowTriggerProperties the workflow trigger properties.
@@ -5589,6 +5719,11 @@ func (iter WorkflowVersionListResultIterator) Value() WorkflowVersion {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowVersionListResultIterator type.
+func NewWorkflowVersionListResultIterator(page WorkflowVersionListResultPage) WorkflowVersionListResultIterator {
+	return WorkflowVersionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wvlr WorkflowVersionListResult) IsEmpty() bool {
 	return wvlr.Value == nil || len(*wvlr.Value) == 0
@@ -5656,6 +5791,11 @@ func (page WorkflowVersionListResultPage) Values() []WorkflowVersion {
 		return nil
 	}
 	return *page.wvlr.Value
+}
+
+// Creates a new instance of the WorkflowVersionListResultPage type.
+func NewWorkflowVersionListResultPage(getNextPage func(context.Context, WorkflowVersionListResult) (WorkflowVersionListResult, error)) WorkflowVersionListResultPage {
+	return WorkflowVersionListResultPage{fn: getNextPage}
 }
 
 // WorkflowVersionProperties the workflow version properties.

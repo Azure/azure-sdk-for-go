@@ -739,6 +739,11 @@ func (iter ApplicationInsightsComponentListResultIterator) Value() ApplicationIn
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationInsightsComponentListResultIterator type.
+func NewApplicationInsightsComponentListResultIterator(page ApplicationInsightsComponentListResultPage) ApplicationInsightsComponentListResultIterator {
+	return ApplicationInsightsComponentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (aiclr ApplicationInsightsComponentListResult) IsEmpty() bool {
 	return aiclr.Value == nil || len(*aiclr.Value) == 0
@@ -806,6 +811,11 @@ func (page ApplicationInsightsComponentListResultPage) Values() []ApplicationIns
 		return nil
 	}
 	return *page.aiclr.Value
+}
+
+// Creates a new instance of the ApplicationInsightsComponentListResultPage type.
+func NewApplicationInsightsComponentListResultPage(getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
+	return ApplicationInsightsComponentListResultPage{fn: getNextPage}
 }
 
 // ApplicationInsightsComponentProactiveDetectionConfiguration properties that define a ProactiveDetection
@@ -1126,6 +1136,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1193,6 +1208,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // SetObject ...
@@ -1415,6 +1435,11 @@ func (iter WebTestListResultIterator) Value() WebTest {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WebTestListResultIterator type.
+func NewWebTestListResultIterator(page WebTestListResultPage) WebTestListResultIterator {
+	return WebTestListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WebTestListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -1482,6 +1507,11 @@ func (page WebTestListResultPage) Values() []WebTest {
 		return nil
 	}
 	return *page.wtlr.Value
+}
+
+// Creates a new instance of the WebTestListResultPage type.
+func NewWebTestListResultPage(getNextPage func(context.Context, WebTestListResult) (WebTestListResult, error)) WebTestListResultPage {
+	return WebTestListResultPage{fn: getNextPage}
 }
 
 // WebTestProperties metadata describing a web test for an Azure resource.

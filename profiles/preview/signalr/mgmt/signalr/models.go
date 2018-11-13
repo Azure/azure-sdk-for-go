@@ -19,7 +19,11 @@
 
 package signalr
 
-import original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2018-10-01/signalr"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2018-10-01/signalr"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -107,6 +111,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
+}
+func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
+	return original.NewResourceListIterator(page)
+}
+func NewResourceListPage(getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
+	return original.NewResourceListPage(getNextPage)
+}
+func NewUsageListIterator(page UsageListPage) UsageListIterator {
+	return original.NewUsageListIterator(page)
+}
+func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
+	return original.NewUsageListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

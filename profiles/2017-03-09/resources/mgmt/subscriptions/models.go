@@ -19,7 +19,11 @@
 
 package subscriptions
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -75,6 +79,24 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
+	return original.NewTenantListResultIterator(page)
+}
+func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return original.NewTenantListResultPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

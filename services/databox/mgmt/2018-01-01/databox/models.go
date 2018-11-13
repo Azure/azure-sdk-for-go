@@ -510,6 +510,11 @@ func (iter AvailableSkusResultIterator) Value() SkuInformation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AvailableSkusResultIterator type.
+func NewAvailableSkusResultIterator(page AvailableSkusResultPage) AvailableSkusResultIterator {
+	return AvailableSkusResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (asr AvailableSkusResult) IsEmpty() bool {
 	return asr.Value == nil || len(*asr.Value) == 0
@@ -577,6 +582,11 @@ func (page AvailableSkusResultPage) Values() []SkuInformation {
 		return nil
 	}
 	return *page.asr.Value
+}
+
+// Creates a new instance of the AvailableSkusResultPage type.
+func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return AvailableSkusResultPage{fn: getNextPage}
 }
 
 // CancellationReason reason for cancellation.
@@ -2346,6 +2356,11 @@ func (iter JobResourceListIterator) Value() JobResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobResourceListIterator type.
+func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
+	return JobResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jrl JobResourceList) IsEmpty() bool {
 	return jrl.Value == nil || len(*jrl.Value) == 0
@@ -2413,6 +2428,11 @@ func (page JobResourceListPage) Values() []JobResource {
 		return nil
 	}
 	return *page.jrl.Value
+}
+
+// Creates a new instance of the JobResourceListPage type.
+func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{fn: getNextPage}
 }
 
 // JobResourceUpdateParameter the JobResourceUpdateParameter.
@@ -2801,6 +2821,11 @@ func (iter OperationListIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -2868,6 +2893,11 @@ func (page OperationListPage) Values() []Operation {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // PackageShippingDetails shipping details.

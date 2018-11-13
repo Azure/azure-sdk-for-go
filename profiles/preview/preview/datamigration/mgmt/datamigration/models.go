@@ -19,7 +19,11 @@
 
 package datamigration
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-07-15-preview/datamigration"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-07-15-preview/datamigration"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -967,6 +971,54 @@ func PossibleUpdateActionTypeValues() []UpdateActionType {
 }
 func PossibleValidationStatusValues() []ValidationStatus {
 	return original.PossibleValidationStatusValues()
+}
+func NewFileListIterator(page FileListPage) FileListIterator {
+	return original.NewFileListIterator(page)
+}
+func NewFileListPage(getNextPage func(context.Context, FileList) (FileList, error)) FileListPage {
+	return original.NewFileListPage(getNextPage)
+}
+func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
+	return original.NewProjectListIterator(page)
+}
+func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return original.NewProjectListPage(getNextPage)
+}
+func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
+	return original.NewQuotaListIterator(page)
+}
+func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return original.NewQuotaListPage(getNextPage)
+}
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return original.NewResourceSkusResultIterator(page)
+}
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(getNextPage)
+}
+func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
+	return original.NewServiceListIterator(page)
+}
+func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return original.NewServiceListPage(getNextPage)
+}
+func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
+	return original.NewServiceOperationListIterator(page)
+}
+func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return original.NewServiceOperationListPage(getNextPage)
+}
+func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
+	return original.NewServiceSkuListIterator(page)
+}
+func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return original.NewServiceSkuListPage(getNextPage)
+}
+func NewTaskListIterator(page TaskListPage) TaskListIterator {
+	return original.NewTaskListIterator(page)
+}
+func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

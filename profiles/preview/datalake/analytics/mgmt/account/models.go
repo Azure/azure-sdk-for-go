@@ -19,7 +19,11 @@
 
 package account
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account"
+)
 
 type AccountsClient = original.AccountsClient
 
@@ -245,6 +249,48 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 }
 func PossibleTierTypeValues() []TierType {
 	return original.PossibleTierTypeValues()
+}
+func NewComputePolicyListResultIterator(page ComputePolicyListResultPage) ComputePolicyListResultIterator {
+	return original.NewComputePolicyListResultIterator(page)
+}
+func NewComputePolicyListResultPage(getNextPage func(context.Context, ComputePolicyListResult) (ComputePolicyListResult, error)) ComputePolicyListResultPage {
+	return original.NewComputePolicyListResultPage(getNextPage)
+}
+func NewDataLakeAnalyticsAccountListResultIterator(page DataLakeAnalyticsAccountListResultPage) DataLakeAnalyticsAccountListResultIterator {
+	return original.NewDataLakeAnalyticsAccountListResultIterator(page)
+}
+func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return original.NewDataLakeAnalyticsAccountListResultPage(getNextPage)
+}
+func NewDataLakeStoreAccountInformationListResultIterator(page DataLakeStoreAccountInformationListResultPage) DataLakeStoreAccountInformationListResultIterator {
+	return original.NewDataLakeStoreAccountInformationListResultIterator(page)
+}
+func NewDataLakeStoreAccountInformationListResultPage(getNextPage func(context.Context, DataLakeStoreAccountInformationListResult) (DataLakeStoreAccountInformationListResult, error)) DataLakeStoreAccountInformationListResultPage {
+	return original.NewDataLakeStoreAccountInformationListResultPage(getNextPage)
+}
+func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
+	return original.NewFirewallRuleListResultIterator(page)
+}
+func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(getNextPage)
+}
+func NewSasTokenInformationListResultIterator(page SasTokenInformationListResultPage) SasTokenInformationListResultIterator {
+	return original.NewSasTokenInformationListResultIterator(page)
+}
+func NewSasTokenInformationListResultPage(getNextPage func(context.Context, SasTokenInformationListResult) (SasTokenInformationListResult, error)) SasTokenInformationListResultPage {
+	return original.NewSasTokenInformationListResultPage(getNextPage)
+}
+func NewStorageAccountInformationListResultIterator(page StorageAccountInformationListResultPage) StorageAccountInformationListResultIterator {
+	return original.NewStorageAccountInformationListResultIterator(page)
+}
+func NewStorageAccountInformationListResultPage(getNextPage func(context.Context, StorageAccountInformationListResult) (StorageAccountInformationListResult, error)) StorageAccountInformationListResultPage {
+	return original.NewStorageAccountInformationListResultPage(getNextPage)
+}
+func NewStorageContainerListResultIterator(page StorageContainerListResultPage) StorageContainerListResultIterator {
+	return original.NewStorageContainerListResultIterator(page)
+}
+func NewStorageContainerListResultPage(getNextPage func(context.Context, StorageContainerListResult) (StorageContainerListResult, error)) StorageContainerListResultPage {
+	return original.NewStorageContainerListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

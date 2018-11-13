@@ -1609,6 +1609,11 @@ func (iter AutoscaleSettingResourceCollectionIterator) Value() AutoscaleSettingR
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AutoscaleSettingResourceCollectionIterator type.
+func NewAutoscaleSettingResourceCollectionIterator(page AutoscaleSettingResourceCollectionPage) AutoscaleSettingResourceCollectionIterator {
+	return AutoscaleSettingResourceCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (asrc AutoscaleSettingResourceCollection) IsEmpty() bool {
 	return asrc.Value == nil || len(*asrc.Value) == 0
@@ -1676,6 +1681,11 @@ func (page AutoscaleSettingResourceCollectionPage) Values() []AutoscaleSettingRe
 		return nil
 	}
 	return *page.asrc.Value
+}
+
+// Creates a new instance of the AutoscaleSettingResourceCollectionPage type.
+func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return AutoscaleSettingResourceCollectionPage{fn: getNextPage}
 }
 
 // AutoscaleSettingResourcePatch the autoscale setting object for patch operations.
@@ -2348,6 +2358,11 @@ func (iter EventDataCollectionIterator) Value() EventData {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EventDataCollectionIterator type.
+func NewEventDataCollectionIterator(page EventDataCollectionPage) EventDataCollectionIterator {
+	return EventDataCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (edc EventDataCollection) IsEmpty() bool {
 	return edc.Value == nil || len(*edc.Value) == 0
@@ -2415,6 +2430,11 @@ func (page EventDataCollectionPage) Values() []EventData {
 		return nil
 	}
 	return *page.edc.Value
+}
+
+// Creates a new instance of the EventDataCollectionPage type.
+func NewEventDataCollectionPage(getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
+	return EventDataCollectionPage{fn: getNextPage}
 }
 
 // HTTPRequestInfo the Http request info.

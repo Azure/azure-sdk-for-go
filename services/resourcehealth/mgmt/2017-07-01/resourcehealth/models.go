@@ -143,6 +143,11 @@ func (iter AvailabilityStatusListResultIterator) Value() AvailabilityStatus {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AvailabilityStatusListResultIterator type.
+func NewAvailabilityStatusListResultIterator(page AvailabilityStatusListResultPage) AvailabilityStatusListResultIterator {
+	return AvailabilityStatusListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (aslr AvailabilityStatusListResult) IsEmpty() bool {
 	return aslr.Value == nil || len(*aslr.Value) == 0
@@ -210,6 +215,11 @@ func (page AvailabilityStatusListResultPage) Values() []AvailabilityStatus {
 		return nil
 	}
 	return *page.aslr.Value
+}
+
+// Creates a new instance of the AvailabilityStatusListResultPage type.
+func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return AvailabilityStatusListResultPage{fn: getNextPage}
 }
 
 // AvailabilityStatusProperties properties of availability state.

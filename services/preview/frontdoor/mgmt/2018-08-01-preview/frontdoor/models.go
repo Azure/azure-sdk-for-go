@@ -717,6 +717,11 @@ func (iter BackendPoolListResultIterator) Value() BackendPool {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BackendPoolListResultIterator type.
+func NewBackendPoolListResultIterator(page BackendPoolListResultPage) BackendPoolListResultIterator {
+	return BackendPoolListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bplr BackendPoolListResult) IsEmpty() bool {
 	return bplr.Value == nil || len(*bplr.Value) == 0
@@ -784,6 +789,11 @@ func (page BackendPoolListResultPage) Values() []BackendPool {
 		return nil
 	}
 	return *page.bplr.Value
+}
+
+// Creates a new instance of the BackendPoolListResultPage type.
+func NewBackendPoolListResultPage(getNextPage func(context.Context, BackendPoolListResult) (BackendPoolListResult, error)) BackendPoolListResultPage {
+	return BackendPoolListResultPage{fn: getNextPage}
 }
 
 // BackendPoolProperties the JSON object that contains the properties required to create a routing rule.
@@ -1483,6 +1493,11 @@ func (iter FrontendEndpointsListResultIterator) Value() FrontendEndpoint {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FrontendEndpointsListResultIterator type.
+func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
+	return FrontendEndpointsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (felr FrontendEndpointsListResult) IsEmpty() bool {
 	return felr.Value == nil || len(*felr.Value) == 0
@@ -1550,6 +1565,11 @@ func (page FrontendEndpointsListResultPage) Values() []FrontendEndpoint {
 		return nil
 	}
 	return *page.felr.Value
+}
+
+// Creates a new instance of the FrontendEndpointsListResultPage type.
+func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return FrontendEndpointsListResultPage{fn: getNextPage}
 }
 
 // FrontendEndpointUpdateParameters frontend endpoint used in routing rule
@@ -1692,6 +1712,11 @@ func (iter HealthProbeSettingsListResultIterator) Value() HealthProbeSettingsMod
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the HealthProbeSettingsListResultIterator type.
+func NewHealthProbeSettingsListResultIterator(page HealthProbeSettingsListResultPage) HealthProbeSettingsListResultIterator {
+	return HealthProbeSettingsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (hpslr HealthProbeSettingsListResult) IsEmpty() bool {
 	return hpslr.Value == nil || len(*hpslr.Value) == 0
@@ -1759,6 +1784,11 @@ func (page HealthProbeSettingsListResultPage) Values() []HealthProbeSettingsMode
 		return nil
 	}
 	return *page.hpslr.Value
+}
+
+// Creates a new instance of the HealthProbeSettingsListResultPage type.
+func NewHealthProbeSettingsListResultPage(getNextPage func(context.Context, HealthProbeSettingsListResult) (HealthProbeSettingsListResult, error)) HealthProbeSettingsListResultPage {
+	return HealthProbeSettingsListResultPage{fn: getNextPage}
 }
 
 // HealthProbeSettingsModel load balancing settings for a backend pool
@@ -1950,6 +1980,11 @@ func (iter ListResultIterator) Value() FrontDoor {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -2017,6 +2052,11 @@ func (page ListResultPage) Values() []FrontDoor {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // LoadBalancingSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2140,6 +2180,11 @@ func (iter LoadBalancingSettingsListResultIterator) Value() LoadBalancingSetting
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LoadBalancingSettingsListResultIterator type.
+func NewLoadBalancingSettingsListResultIterator(page LoadBalancingSettingsListResultPage) LoadBalancingSettingsListResultIterator {
+	return LoadBalancingSettingsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lbslr LoadBalancingSettingsListResult) IsEmpty() bool {
 	return lbslr.Value == nil || len(*lbslr.Value) == 0
@@ -2207,6 +2252,11 @@ func (page LoadBalancingSettingsListResultPage) Values() []LoadBalancingSettings
 		return nil
 	}
 	return *page.lbslr.Value
+}
+
+// Creates a new instance of the LoadBalancingSettingsListResultPage type.
+func NewLoadBalancingSettingsListResultPage(getNextPage func(context.Context, LoadBalancingSettingsListResult) (LoadBalancingSettingsListResult, error)) LoadBalancingSettingsListResultPage {
+	return LoadBalancingSettingsListResultPage{fn: getNextPage}
 }
 
 // LoadBalancingSettingsModel load balancing settings for a backend pool
@@ -2688,6 +2738,11 @@ func (iter RoutingRuleListResultIterator) Value() RoutingRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RoutingRuleListResultIterator type.
+func NewRoutingRuleListResultIterator(page RoutingRuleListResultPage) RoutingRuleListResultIterator {
+	return RoutingRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rrlr RoutingRuleListResult) IsEmpty() bool {
 	return rrlr.Value == nil || len(*rrlr.Value) == 0
@@ -2755,6 +2810,11 @@ func (page RoutingRuleListResultPage) Values() []RoutingRule {
 		return nil
 	}
 	return *page.rrlr.Value
+}
+
+// Creates a new instance of the RoutingRuleListResultPage type.
+func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleListResult) (RoutingRuleListResult, error)) RoutingRuleListResultPage {
+	return RoutingRuleListResultPage{fn: getNextPage}
 }
 
 // RoutingRuleProperties the JSON object that contains the properties required to create a routing rule.
@@ -3101,6 +3161,11 @@ func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicatio
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WebApplicationFirewallPolicyListResultIterator type.
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return WebApplicationFirewallPolicyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
 	return wafplr.Value == nil || len(*wafplr.Value) == 0
@@ -3168,6 +3233,11 @@ func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplication
 		return nil
 	}
 	return *page.wafplr.Value
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
 }
 
 // WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties

@@ -212,6 +212,11 @@ func (iter CommitmentAssociationListResultIterator) Value() CommitmentAssociatio
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CommitmentAssociationListResultIterator type.
+func NewCommitmentAssociationListResultIterator(page CommitmentAssociationListResultPage) CommitmentAssociationListResultIterator {
+	return CommitmentAssociationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (calr CommitmentAssociationListResult) IsEmpty() bool {
 	return calr.Value == nil || len(*calr.Value) == 0
@@ -279,6 +284,11 @@ func (page CommitmentAssociationListResultPage) Values() []CommitmentAssociation
 		return nil
 	}
 	return *page.calr.Value
+}
+
+// Creates a new instance of the CommitmentAssociationListResultPage type.
+func NewCommitmentAssociationListResultPage(getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
+	return CommitmentAssociationListResultPage{fn: getNextPage}
 }
 
 // CommitmentAssociationProperties properties of an Azure ML commitment association.
@@ -409,6 +419,11 @@ func (iter ListResultIterator) Value() CommitmentPlan {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -476,6 +491,11 @@ func (page ListResultPage) Values() []CommitmentPlan {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // MoveCommitmentAssociationRequest specifies the destination Azure ML commitment plan for a move
@@ -630,6 +650,11 @@ func (iter PlanUsageHistoryListResultIterator) Value() PlanUsageHistory {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PlanUsageHistoryListResultIterator type.
+func NewPlanUsageHistoryListResultIterator(page PlanUsageHistoryListResultPage) PlanUsageHistoryListResultIterator {
+	return PlanUsageHistoryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (puhlr PlanUsageHistoryListResult) IsEmpty() bool {
 	return puhlr.Value == nil || len(*puhlr.Value) == 0
@@ -697,6 +722,11 @@ func (page PlanUsageHistoryListResultPage) Values() []PlanUsageHistory {
 		return nil
 	}
 	return *page.puhlr.Value
+}
+
+// Creates a new instance of the PlanUsageHistoryListResultPage type.
+func NewPlanUsageHistoryListResultPage(getNextPage func(context.Context, PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)) PlanUsageHistoryListResultPage {
+	return PlanUsageHistoryListResultPage{fn: getNextPage}
 }
 
 // Properties properties of an Azure ML commitment plan.

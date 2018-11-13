@@ -19,7 +19,11 @@
 
 package advisor
 
-import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -99,6 +103,30 @@ func PossibleImpactValues() []Impact {
 }
 func PossibleRiskValues() []Risk {
 	return original.PossibleRiskValues()
+}
+func NewConfigurationListResultIterator(page ConfigurationListResultPage) ConfigurationListResultIterator {
+	return original.NewConfigurationListResultIterator(page)
+}
+func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return original.NewConfigurationListResultPage(getNextPage)
+}
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return original.NewOperationEntityListResultIterator(page)
+}
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(getNextPage)
+}
+func NewResourceRecommendationBaseListResultIterator(page ResourceRecommendationBaseListResultPage) ResourceRecommendationBaseListResultIterator {
+	return original.NewResourceRecommendationBaseListResultIterator(page)
+}
+func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
+	return original.NewResourceRecommendationBaseListResultPage(getNextPage)
+}
+func NewSuppressionContractListResultIterator(page SuppressionContractListResultPage) SuppressionContractListResultIterator {
+	return original.NewSuppressionContractListResultIterator(page)
+}
+func NewSuppressionContractListResultPage(getNextPage func(context.Context, SuppressionContractListResult) (SuppressionContractListResult, error)) SuppressionContractListResultPage {
+	return original.NewSuppressionContractListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

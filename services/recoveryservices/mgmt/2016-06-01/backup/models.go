@@ -2795,6 +2795,11 @@ func (iter EngineBaseResourceListIterator) Value() EngineBaseResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EngineBaseResourceListIterator type.
+func NewEngineBaseResourceListIterator(page EngineBaseResourceListPage) EngineBaseResourceListIterator {
+	return EngineBaseResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ebrl EngineBaseResourceList) IsEmpty() bool {
 	return ebrl.Value == nil || len(*ebrl.Value) == 0
@@ -2862,6 +2867,11 @@ func (page EngineBaseResourceListPage) Values() []EngineBaseResource {
 		return nil
 	}
 	return *page.ebrl.Value
+}
+
+// Creates a new instance of the EngineBaseResourceListPage type.
+func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return EngineBaseResourceListPage{fn: getNextPage}
 }
 
 // ExportJobsOperationResultInfo this class is used to send blob details after exporting jobs.
@@ -4021,6 +4031,11 @@ func (iter JobResourceListIterator) Value() JobResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobResourceListIterator type.
+func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
+	return JobResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jrl JobResourceList) IsEmpty() bool {
 	return jrl.Value == nil || len(*jrl.Value) == 0
@@ -4088,6 +4103,11 @@ func (page JobResourceListPage) Values() []JobResource {
 		return nil
 	}
 	return *page.jrl.Value
+}
+
+// Creates a new instance of the JobResourceListPage type.
+func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{fn: getNextPage}
 }
 
 // KEKDetails the Key Encryption Key (KEK) is the encryption key for the Bitlocker Encryption Key (BEK).
@@ -5613,6 +5633,11 @@ func (iter ProtectedItemResourceListIterator) Value() ProtectedItemResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectedItemResourceListIterator type.
+func NewProtectedItemResourceListIterator(page ProtectedItemResourceListPage) ProtectedItemResourceListIterator {
+	return ProtectedItemResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pirl ProtectedItemResourceList) IsEmpty() bool {
 	return pirl.Value == nil || len(*pirl.Value) == 0
@@ -5680,6 +5705,11 @@ func (page ProtectedItemResourceListPage) Values() []ProtectedItemResource {
 		return nil
 	}
 	return *page.pirl.Value
+}
+
+// Creates a new instance of the ProtectedItemResourceListPage type.
+func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return ProtectedItemResourceListPage{fn: getNextPage}
 }
 
 // BasicProtectionContainer the base class for a container with backup items. Containers with specific workloads are
@@ -7443,6 +7473,11 @@ func (iter WorkloadProtectableItemResourceListIterator) Value() WorkloadProtecta
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkloadProtectableItemResourceListIterator type.
+func NewWorkloadProtectableItemResourceListIterator(page WorkloadProtectableItemResourceListPage) WorkloadProtectableItemResourceListIterator {
+	return WorkloadProtectableItemResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wpirl WorkloadProtectableItemResourceList) IsEmpty() bool {
 	return wpirl.Value == nil || len(*wpirl.Value) == 0
@@ -7510,6 +7545,11 @@ func (page WorkloadProtectableItemResourceListPage) Values() []WorkloadProtectab
 		return nil
 	}
 	return *page.wpirl.Value
+}
+
+// Creates a new instance of the WorkloadProtectableItemResourceListPage type.
+func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
+	return WorkloadProtectableItemResourceListPage{fn: getNextPage}
 }
 
 // YearlyRetentionSchedule yearly retention schedule.

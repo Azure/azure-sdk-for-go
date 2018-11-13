@@ -19,7 +19,11 @@
 
 package streamanalytics
 
-import original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -336,6 +340,36 @@ func PossibleTypeBasicStreamInputDataSourceValues() []TypeBasicStreamInputDataSo
 }
 func PossibleUdfTypeValues() []UdfType {
 	return original.PossibleUdfTypeValues()
+}
+func NewFunctionListResultIterator(page FunctionListResultPage) FunctionListResultIterator {
+	return original.NewFunctionListResultIterator(page)
+}
+func NewFunctionListResultPage(getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
+	return original.NewFunctionListResultPage(getNextPage)
+}
+func NewInputListResultIterator(page InputListResultPage) InputListResultIterator {
+	return original.NewInputListResultIterator(page)
+}
+func NewInputListResultPage(getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
+	return original.NewInputListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOutputListResultIterator(page OutputListResultPage) OutputListResultIterator {
+	return original.NewOutputListResultIterator(page)
+}
+func NewOutputListResultPage(getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
+	return original.NewOutputListResultPage(getNextPage)
+}
+func NewStreamingJobListResultIterator(page StreamingJobListResultPage) StreamingJobListResultIterator {
+	return original.NewStreamingJobListResultIterator(page)
+}
+func NewStreamingJobListResultPage(getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
+	return original.NewStreamingJobListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

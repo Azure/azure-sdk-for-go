@@ -33,12 +33,7 @@ type CustomInstanceClient struct {
 
 // NewCustomInstanceClient creates an instance of the CustomInstanceClient client.
 func NewCustomInstanceClient() CustomInstanceClient {
-	return NewCustomInstanceClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewCustomInstanceClientWithBaseURI creates an instance of the CustomInstanceClient client.
-func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
-	return CustomInstanceClient{NewWithBaseURI(baseURI)}
+	return CustomInstanceClient{New()}
 }
 
 // ImageSearch sends the image search request.
@@ -286,6 +281,10 @@ func (client CustomInstanceClient) ImageSearch(ctx context.Context, customConfig
 
 // ImageSearchPreparer prepares the ImageSearch request.
 func (client CustomInstanceClient) ImageSearchPreparer(ctx context.Context, customConfig string, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"customConfig": autorest.Encode("query", customConfig),
 		"q":            autorest.Encode("query", query),
@@ -359,7 +358,7 @@ func (client CustomInstanceClient) ImageSearchPreparer(ctx context.Context, cust
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bingcustomsearch/v7.0", urlParameters),
 		autorest.WithPath("/images/search"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

@@ -677,6 +677,11 @@ func (iter EntityListResultIterator) Value() EntityInfo {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EntityListResultIterator type.
+func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
+	return EntityListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (elr EntityListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
@@ -744,6 +749,11 @@ func (page EntityListResultPage) Values() []EntityInfo {
 		return nil
 	}
 	return *page.elr.Value
+}
+
+// Creates a new instance of the EntityListResultPage type.
+func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return EntityListResultPage{fn: getNextPage}
 }
 
 // EntityParentGroupInfo (Optional) The ID of the parent management group.
@@ -922,6 +932,11 @@ func (iter ListResultIterator) Value() Info {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -989,6 +1004,11 @@ func (page ListResultPage) Values() []Info {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // ManagementGroup the management group details.
@@ -1158,6 +1178,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1225,6 +1250,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResults the results of an asynchronous operation.

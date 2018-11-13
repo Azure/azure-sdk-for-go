@@ -519,6 +519,11 @@ func (iter ContainerGroupListResultIterator) Value() ContainerGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ContainerGroupListResultIterator type.
+func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
+	return ContainerGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
@@ -586,6 +591,11 @@ func (page ContainerGroupListResultPage) Values() []ContainerGroup {
 		return nil
 	}
 	return *page.cglr.Value
+}
+
+// Creates a new instance of the ContainerGroupListResultPage type.
+func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return ContainerGroupListResultPage{fn: getNextPage}
 }
 
 // ContainerGroupNetworkProfile container group network profile information.
@@ -678,6 +688,29 @@ func (future *ContainerGroupsRestartFuture) Result(client ContainerGroupsClient)
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsRestartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ContainerGroupsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ContainerGroupsStartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ContainerGroupsStartFuture) Result(client ContainerGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsStartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsStartFuture")
 		return
 	}
 	ar.Response = future.Response()

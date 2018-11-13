@@ -363,6 +363,11 @@ func (iter ArmDisasterRecoveryListResultIterator) Value() ArmDisasterRecovery {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ArmDisasterRecoveryListResultIterator type.
+func NewArmDisasterRecoveryListResultIterator(page ArmDisasterRecoveryListResultPage) ArmDisasterRecoveryListResultIterator {
+	return ArmDisasterRecoveryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (adrlr ArmDisasterRecoveryListResult) IsEmpty() bool {
 	return adrlr.Value == nil || len(*adrlr.Value) == 0
@@ -430,6 +435,11 @@ func (page ArmDisasterRecoveryListResultPage) Values() []ArmDisasterRecovery {
 		return nil
 	}
 	return *page.adrlr.Value
+}
+
+// Creates a new instance of the ArmDisasterRecoveryListResultPage type.
+func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return ArmDisasterRecoveryListResultPage{fn: getNextPage}
 }
 
 // ArmDisasterRecoveryProperties properties required to the Create Or Update Alias(Disaster Recovery
@@ -596,6 +606,11 @@ func (iter AuthorizationRuleListResultIterator) Value() AuthorizationRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AuthorizationRuleListResultIterator type.
+func NewAuthorizationRuleListResultIterator(page AuthorizationRuleListResultPage) AuthorizationRuleListResultIterator {
+	return AuthorizationRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (arlr AuthorizationRuleListResult) IsEmpty() bool {
 	return arlr.Value == nil || len(*arlr.Value) == 0
@@ -663,6 +678,11 @@ func (page AuthorizationRuleListResultPage) Values() []AuthorizationRule {
 		return nil
 	}
 	return *page.arlr.Value
+}
+
+// Creates a new instance of the AuthorizationRuleListResultPage type.
+func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return AuthorizationRuleListResultPage{fn: getNextPage}
 }
 
 // AuthorizationRuleProperties properties supplied to create or update AuthorizationRule
@@ -851,6 +871,11 @@ func (iter ConsumerGroupListResultIterator) Value() ConsumerGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ConsumerGroupListResultIterator type.
+func NewConsumerGroupListResultIterator(page ConsumerGroupListResultPage) ConsumerGroupListResultIterator {
+	return ConsumerGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cglr ConsumerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
@@ -918,6 +943,11 @@ func (page ConsumerGroupListResultPage) Values() []ConsumerGroup {
 		return nil
 	}
 	return *page.cglr.Value
+}
+
+// Creates a new instance of the ConsumerGroupListResultPage type.
+func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
+	return ConsumerGroupListResultPage{fn: getNextPage}
 }
 
 // ConsumerGroupProperties single item in List or Get Consumer group operation
@@ -1185,6 +1215,11 @@ func (iter EHNamespaceListResultIterator) Value() EHNamespace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EHNamespaceListResultIterator type.
+func NewEHNamespaceListResultIterator(page EHNamespaceListResultPage) EHNamespaceListResultIterator {
+	return EHNamespaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (enlr EHNamespaceListResult) IsEmpty() bool {
 	return enlr.Value == nil || len(*enlr.Value) == 0
@@ -1252,6 +1287,11 @@ func (page EHNamespaceListResultPage) Values() []EHNamespace {
 		return nil
 	}
 	return *page.enlr.Value
+}
+
+// Creates a new instance of the EHNamespaceListResultPage type.
+func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
+	return EHNamespaceListResultPage{fn: getNextPage}
 }
 
 // EHNamespaceProperties namespace properties supplied for create namespace operation.
@@ -1350,6 +1390,11 @@ func (iter ListResultIterator) Value() Model {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -1417,6 +1462,11 @@ func (page ListResultPage) Values() []Model {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // MessagingPlan messaging Plan for the namespace
@@ -1646,6 +1696,11 @@ func (iter MessagingRegionsListResultIterator) Value() MessagingRegions {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the MessagingRegionsListResultIterator type.
+func NewMessagingRegionsListResultIterator(page MessagingRegionsListResultPage) MessagingRegionsListResultIterator {
+	return MessagingRegionsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mrlr MessagingRegionsListResult) IsEmpty() bool {
 	return mrlr.Value == nil || len(*mrlr.Value) == 0
@@ -1713,6 +1768,11 @@ func (page MessagingRegionsListResultPage) Values() []MessagingRegions {
 		return nil
 	}
 	return *page.mrlr.Value
+}
+
+// Creates a new instance of the MessagingRegionsListResultPage type.
+func NewMessagingRegionsListResultPage(getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
+	return MessagingRegionsListResultPage{fn: getNextPage}
 }
 
 // MessagingRegionsProperties ...
@@ -1943,6 +2003,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2010,6 +2075,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Properties properties supplied to the Create Or Update Event Hub operation.

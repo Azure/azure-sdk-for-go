@@ -19,7 +19,11 @@
 
 package operationalinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -129,6 +133,18 @@ func PossibleEntityStatusValues() []EntityStatus {
 }
 func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
+}
+func NewDataSourceListResultIterator(page DataSourceListResultPage) DataSourceListResultIterator {
+	return original.NewDataSourceListResultIterator(page)
+}
+func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return original.NewDataSourceListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

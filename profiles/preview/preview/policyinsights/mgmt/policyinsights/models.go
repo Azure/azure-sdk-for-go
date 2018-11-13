@@ -19,7 +19,11 @@
 
 package policyinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -82,6 +86,24 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()
+}
+func NewPolicyTrackedResourcesQueryResultsIterator(page PolicyTrackedResourcesQueryResultsPage) PolicyTrackedResourcesQueryResultsIterator {
+	return original.NewPolicyTrackedResourcesQueryResultsIterator(page)
+}
+func NewPolicyTrackedResourcesQueryResultsPage(getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
+	return original.NewPolicyTrackedResourcesQueryResultsPage(getNextPage)
+}
+func NewRemediationDeploymentsListResultIterator(page RemediationDeploymentsListResultPage) RemediationDeploymentsListResultIterator {
+	return original.NewRemediationDeploymentsListResultIterator(page)
+}
+func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
+	return original.NewRemediationDeploymentsListResultPage(getNextPage)
+}
+func NewRemediationListResultIterator(page RemediationListResultPage) RemediationListResultIterator {
+	return original.NewRemediationListResultIterator(page)
+}
+func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
+	return original.NewRemediationListResultPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

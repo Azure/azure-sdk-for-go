@@ -19,7 +19,11 @@
 
 package policy
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
+)
 
 type AssignmentsClient = original.AssignmentsClient
 
@@ -79,6 +83,18 @@ func PossibleModeValues() []Mode {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
+	return original.NewAssignmentListResultIterator(page)
+}
+func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return original.NewAssignmentListResultPage(getNextPage)
+}
+func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
+	return original.NewDefinitionListResultIterator(page)
+}
+func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return original.NewDefinitionListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

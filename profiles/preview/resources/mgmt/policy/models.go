@@ -19,7 +19,11 @@
 
 package policy
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy"
+)
 
 type AssignmentsClient = original.AssignmentsClient
 
@@ -99,6 +103,24 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
+	return original.NewAssignmentListResultIterator(page)
+}
+func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return original.NewAssignmentListResultPage(getNextPage)
+}
+func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
+	return original.NewDefinitionListResultIterator(page)
+}
+func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return original.NewDefinitionListResultPage(getNextPage)
+}
+func NewSetDefinitionListResultIterator(page SetDefinitionListResultPage) SetDefinitionListResultIterator {
+	return original.NewSetDefinitionListResultIterator(page)
+}
+func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
+	return original.NewSetDefinitionListResultPage(getNextPage)
 }
 func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
 	return original.NewSetDefinitionsClient(subscriptionID)

@@ -19,7 +19,11 @@
 
 package reservations
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2018-06-01/reservations"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2018-06-01/reservations"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -197,6 +201,24 @@ func PossibleReservedResourceTypeValues() []ReservedResourceType {
 }
 func PossibleStatusCodeValues() []StatusCode {
 	return original.PossibleStatusCodeValues()
+}
+func NewListIterator(page ListPage) ListIterator {
+	return original.NewListIterator(page)
+}
+func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
+	return original.NewListPage(getNextPage)
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
+}
+func NewOrderListIterator(page OrderListPage) OrderListIterator {
+	return original.NewOrderListIterator(page)
+}
+func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return original.NewOrderListPage(getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()

@@ -228,6 +228,11 @@ func (iter AccountListResultIterator) Value() Account {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AccountListResultIterator type.
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return AccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -295,6 +300,11 @@ func (page AccountListResultPage) Values() []Account {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AccountListResultPage type.
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{fn: getNextPage}
 }
 
 // AccountProperties the properties of a machine learning team account.
@@ -599,6 +609,11 @@ func (iter ProjectListResultIterator) Value() Project {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProjectListResultIterator type.
+func NewProjectListResultIterator(page ProjectListResultPage) ProjectListResultIterator {
+	return ProjectListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr ProjectListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -666,6 +681,11 @@ func (page ProjectListResultPage) Values() []Project {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the ProjectListResultPage type.
+func NewProjectListResultPage(getNextPage func(context.Context, ProjectListResult) (ProjectListResult, error)) ProjectListResultPage {
+	return ProjectListResultPage{fn: getNextPage}
 }
 
 // ProjectProperties the properties of a machine learning project.
@@ -971,6 +991,11 @@ func (iter WorkspaceListResultIterator) Value() Workspace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkspaceListResultIterator type.
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return WorkspaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -1038,6 +1063,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WorkspaceListResultPage type.
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{fn: getNextPage}
 }
 
 // WorkspaceProperties the properties of a machine learning team account workspace.

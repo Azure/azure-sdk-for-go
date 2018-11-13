@@ -19,7 +19,11 @@
 
 package redis
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -202,6 +206,36 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleTLSVersionValues() []TLSVersion {
 	return original.PossibleTLSVersionValues()
+}
+func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
+	return original.NewFirewallRuleListResultIterator(page)
+}
+func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(getNextPage)
+}
+func NewLinkedServerWithPropertiesListIterator(page LinkedServerWithPropertiesListPage) LinkedServerWithPropertiesListIterator {
+	return original.NewLinkedServerWithPropertiesListIterator(page)
+}
+func NewLinkedServerWithPropertiesListPage(getNextPage func(context.Context, LinkedServerWithPropertiesList) (LinkedServerWithPropertiesList, error)) LinkedServerWithPropertiesListPage {
+	return original.NewLinkedServerWithPropertiesListPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewPatchScheduleListResultIterator(page PatchScheduleListResultPage) PatchScheduleListResultIterator {
+	return original.NewPatchScheduleListResultIterator(page)
+}
+func NewPatchScheduleListResultPage(getNextPage func(context.Context, PatchScheduleListResult) (PatchScheduleListResult, error)) PatchScheduleListResultPage {
+	return original.NewPatchScheduleListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

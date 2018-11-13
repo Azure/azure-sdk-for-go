@@ -19,7 +19,11 @@
 
 package dns
 
-import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -82,6 +86,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleRecordTypeValues() []RecordType {
 	return original.PossibleRecordTypeValues()
+}
+func NewRecordSetListResultIterator(page RecordSetListResultPage) RecordSetListResultIterator {
+	return original.NewRecordSetListResultIterator(page)
+}
+func NewRecordSetListResultPage(getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
+	return original.NewRecordSetListResultPage(getNextPage)
+}
+func NewZoneListResultIterator(page ZoneListResultPage) ZoneListResultIterator {
+	return original.NewZoneListResultIterator(page)
+}
+func NewZoneListResultPage(getNextPage func(context.Context, ZoneListResult) (ZoneListResult, error)) ZoneListResultPage {
+	return original.NewZoneListResultPage(getNextPage)
 }
 func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
 	return original.NewRecordSetsClient(subscriptionID)

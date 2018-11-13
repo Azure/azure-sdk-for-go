@@ -343,6 +343,11 @@ func (iter OperationListIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -410,6 +415,11 @@ func (page OperationListPage) Values() []Operation {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // OperationProperties extra Operation properties.
@@ -551,6 +561,11 @@ func (iter ResourceListIterator) Value() ResourceType {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceListIterator type.
+func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
+	return ResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rl ResourceList) IsEmpty() bool {
 	return rl.Value == nil || len(*rl.Value) == 0
@@ -618,6 +633,11 @@ func (page ResourceListPage) Values() []ResourceType {
 		return nil
 	}
 	return *page.rl.Value
+}
+
+// Creates a new instance of the ResourceListPage type.
+func NewResourceListPage(getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
+	return ResourceListPage{fn: getNextPage}
 }
 
 // ResourceSku the billing information of the resource.(e.g. basic vs. standard)
@@ -935,6 +955,11 @@ func (iter UsageListIterator) Value() Usage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UsageListIterator type.
+func NewUsageListIterator(page UsageListPage) UsageListIterator {
+	return UsageListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ul UsageList) IsEmpty() bool {
 	return ul.Value == nil || len(*ul.Value) == 0
@@ -1002,6 +1027,11 @@ func (page UsageListPage) Values() []Usage {
 		return nil
 	}
 	return *page.ul.Value
+}
+
+// Creates a new instance of the UsageListPage type.
+func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
+	return UsageListPage{fn: getNextPage}
 }
 
 // UsageName localizable String object containing the name and a localized value.

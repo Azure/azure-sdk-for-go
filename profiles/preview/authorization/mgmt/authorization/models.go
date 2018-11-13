@@ -19,7 +19,11 @@
 
 package authorization
 
-import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
+)
 
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
@@ -73,6 +77,36 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewClassicAdministratorListResultIterator(page ClassicAdministratorListResultPage) ClassicAdministratorListResultIterator {
+	return original.NewClassicAdministratorListResultIterator(page)
+}
+func NewClassicAdministratorListResultPage(getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
+	return original.NewClassicAdministratorListResultPage(getNextPage)
+}
+func NewPermissionGetResultIterator(page PermissionGetResultPage) PermissionGetResultIterator {
+	return original.NewPermissionGetResultIterator(page)
+}
+func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
+	return original.NewPermissionGetResultPage(getNextPage)
+}
+func NewProviderOperationsMetadataListResultIterator(page ProviderOperationsMetadataListResultPage) ProviderOperationsMetadataListResultIterator {
+	return original.NewProviderOperationsMetadataListResultIterator(page)
+}
+func NewProviderOperationsMetadataListResultPage(getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
+	return original.NewProviderOperationsMetadataListResultPage(getNextPage)
+}
+func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
+	return original.NewRoleAssignmentListResultIterator(page)
+}
+func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(getNextPage)
+}
+func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) RoleDefinitionListResultIterator {
+	return original.NewRoleDefinitionListResultIterator(page)
+}
+func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return original.NewRoleDefinitionListResultPage(getNextPage)
 }
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClient(subscriptionID)

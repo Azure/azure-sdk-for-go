@@ -19,7 +19,11 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -66,6 +70,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleDatagrainValues() []Datagrain {
 	return original.PossibleDatagrainValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
+	return original.NewUsageDetailsListResultIterator(page)
+}
+func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
+	return original.NewUsageDetailsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

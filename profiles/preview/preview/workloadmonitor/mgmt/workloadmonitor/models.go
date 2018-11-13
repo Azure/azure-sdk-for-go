@@ -19,7 +19,11 @@
 
 package workloadmonitor
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -177,6 +181,36 @@ func PossibleOperatorValues() []Operator {
 }
 func PossibleWorkloadTypeValues() []WorkloadType {
 	return original.PossibleWorkloadTypeValues()
+}
+func NewComponentsCollectionIterator(page ComponentsCollectionPage) ComponentsCollectionIterator {
+	return original.NewComponentsCollectionIterator(page)
+}
+func NewComponentsCollectionPage(getNextPage func(context.Context, ComponentsCollection) (ComponentsCollection, error)) ComponentsCollectionPage {
+	return original.NewComponentsCollectionPage(getNextPage)
+}
+func NewMonitorInstancesCollectionIterator(page MonitorInstancesCollectionPage) MonitorInstancesCollectionIterator {
+	return original.NewMonitorInstancesCollectionIterator(page)
+}
+func NewMonitorInstancesCollectionPage(getNextPage func(context.Context, MonitorInstancesCollection) (MonitorInstancesCollection, error)) MonitorInstancesCollectionPage {
+	return original.NewMonitorInstancesCollectionPage(getNextPage)
+}
+func NewMonitorsCollectionIterator(page MonitorsCollectionPage) MonitorsCollectionIterator {
+	return original.NewMonitorsCollectionIterator(page)
+}
+func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
+	return original.NewMonitorsCollectionPage(getNextPage)
+}
+func NewNotificationSettingsCollectionIterator(page NotificationSettingsCollectionPage) NotificationSettingsCollectionIterator {
+	return original.NewNotificationSettingsCollectionIterator(page)
+}
+func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
+	return original.NewNotificationSettingsCollectionPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewMonitorInstancesClient(subscriptionID string) MonitorInstancesClient {
 	return original.NewMonitorInstancesClient(subscriptionID)

@@ -19,7 +19,11 @@
 
 package account
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
+)
 
 type Client = original.Client
 
@@ -111,6 +115,36 @@ func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountSt
 }
 func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
+}
+func NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page DataLakeAnalyticsAccountListDataLakeStoreResultPage) DataLakeAnalyticsAccountListDataLakeStoreResultIterator {
+	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page)
+}
+func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
+	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage)
+}
+func NewDataLakeAnalyticsAccountListResultIterator(page DataLakeAnalyticsAccountListResultPage) DataLakeAnalyticsAccountListResultIterator {
+	return original.NewDataLakeAnalyticsAccountListResultIterator(page)
+}
+func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return original.NewDataLakeAnalyticsAccountListResultPage(getNextPage)
+}
+func NewDataLakeAnalyticsAccountListStorageAccountsResultIterator(page DataLakeAnalyticsAccountListStorageAccountsResultPage) DataLakeAnalyticsAccountListStorageAccountsResultIterator {
+	return original.NewDataLakeAnalyticsAccountListStorageAccountsResultIterator(page)
+}
+func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
+	return original.NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage)
+}
+func NewListBlobContainersResultIterator(page ListBlobContainersResultPage) ListBlobContainersResultIterator {
+	return original.NewListBlobContainersResultIterator(page)
+}
+func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
+	return original.NewListBlobContainersResultPage(getNextPage)
+}
+func NewListSasTokensResultIterator(page ListSasTokensResultPage) ListSasTokensResultIterator {
+	return original.NewListSasTokensResultIterator(page)
+}
+func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
+	return original.NewListSasTokensResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

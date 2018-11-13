@@ -19,7 +19,11 @@
 
 package locks
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
+)
 
 type AuthorizationOperationsClient = original.AuthorizationOperationsClient
 
@@ -69,6 +73,18 @@ func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func PossibleLockLevelValues() []LockLevel {
 	return original.PossibleLockLevelValues()
+}
+func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
+	return original.NewManagementLockListResultIterator(page)
+}
+func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
+	return original.NewManagementLockListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

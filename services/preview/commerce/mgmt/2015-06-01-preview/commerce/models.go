@@ -637,6 +637,11 @@ func (iter UsageAggregationListResultIterator) Value() UsageAggregation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UsageAggregationListResultIterator type.
+func NewUsageAggregationListResultIterator(page UsageAggregationListResultPage) UsageAggregationListResultIterator {
+	return UsageAggregationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ualr UsageAggregationListResult) IsEmpty() bool {
 	return ualr.Value == nil || len(*ualr.Value) == 0
@@ -704,6 +709,11 @@ func (page UsageAggregationListResultPage) Values() []UsageAggregation {
 		return nil
 	}
 	return *page.ualr.Value
+}
+
+// Creates a new instance of the UsageAggregationListResultPage type.
+func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
+	return UsageAggregationListResultPage{fn: getNextPage}
 }
 
 // UsageSample describes a sample of the usageAggregation.

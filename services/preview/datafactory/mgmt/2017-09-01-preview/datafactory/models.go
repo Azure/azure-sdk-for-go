@@ -2565,6 +2565,11 @@ func (iter ActivityRunsListResponseIterator) Value() ActivityRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ActivityRunsListResponseIterator type.
+func NewActivityRunsListResponseIterator(page ActivityRunsListResponsePage) ActivityRunsListResponseIterator {
+	return ActivityRunsListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (arlr ActivityRunsListResponse) IsEmpty() bool {
 	return arlr.Value == nil || len(*arlr.Value) == 0
@@ -2632,6 +2637,11 @@ func (page ActivityRunsListResponsePage) Values() []ActivityRun {
 		return nil
 	}
 	return *page.arlr.Value
+}
+
+// Creates a new instance of the ActivityRunsListResponsePage type.
+func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return ActivityRunsListResponsePage{fn: getNextPage}
 }
 
 // AmazonMWSLinkedService amazon Marketplace Web Service linked service.
@@ -29462,6 +29472,11 @@ func (iter DatasetListResponseIterator) Value() DatasetResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DatasetListResponseIterator type.
+func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
+	return DatasetListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DatasetListResponse) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -29529,6 +29544,11 @@ func (page DatasetListResponsePage) Values() []DatasetResource {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DatasetListResponsePage type.
+func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return DatasetListResponsePage{fn: getNextPage}
 }
 
 // DatasetReference dataset reference type.
@@ -36944,6 +36964,11 @@ func (iter FactoryListResponseIterator) Value() Factory {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FactoryListResponseIterator type.
+func NewFactoryListResponseIterator(page FactoryListResponsePage) FactoryListResponseIterator {
+	return FactoryListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FactoryListResponse) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -37011,6 +37036,11 @@ func (page FactoryListResponsePage) Values() []Factory {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FactoryListResponsePage type.
+func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return FactoryListResponsePage{fn: getNextPage}
 }
 
 // FactoryProperties factory resource properties.
@@ -54580,6 +54610,11 @@ func (iter IntegrationRuntimeListResponseIterator) Value() IntegrationRuntimeRes
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationRuntimeListResponseIterator type.
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return IntegrationRuntimeListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (irlr IntegrationRuntimeListResponse) IsEmpty() bool {
 	return irlr.Value == nil || len(*irlr.Value) == 0
@@ -54647,6 +54682,11 @@ func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeReso
 		return nil
 	}
 	return *page.irlr.Value
+}
+
+// Creates a new instance of the IntegrationRuntimeListResponsePage type.
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{fn: getNextPage}
 }
 
 // IntegrationRuntimeMonitoringData get monitoring data response.
@@ -58182,6 +58222,11 @@ func (iter LinkedServiceListResponseIterator) Value() LinkedServiceResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LinkedServiceListResponseIterator type.
+func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
+	return LinkedServiceListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lslr LinkedServiceListResponse) IsEmpty() bool {
 	return lslr.Value == nil || len(*lslr.Value) == 0
@@ -58249,6 +58294,11 @@ func (page LinkedServiceListResponsePage) Values() []LinkedServiceResource {
 		return nil
 	}
 	return *page.lslr.Value
+}
+
+// Creates a new instance of the LinkedServiceListResponsePage type.
+func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return LinkedServiceListResponsePage{fn: getNextPage}
 }
 
 // LinkedServiceReference linked service reference type.
@@ -72843,6 +72893,11 @@ func (iter PipelineListResponseIterator) Value() PipelineResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PipelineListResponseIterator type.
+func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
+	return PipelineListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr PipelineListResponse) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -72910,6 +72965,11 @@ func (page PipelineListResponsePage) Values() []PipelineResource {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the PipelineListResponsePage type.
+func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return PipelineListResponsePage{fn: getNextPage}
 }
 
 // PipelineReference pipeline reference type.
@@ -97328,6 +97388,11 @@ func (iter TriggerListResponseIterator) Value() TriggerResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TriggerListResponseIterator type.
+func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
+	return TriggerListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tlr TriggerListResponse) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
@@ -97395,6 +97460,11 @@ func (page TriggerListResponsePage) Values() []TriggerResource {
 		return nil
 	}
 	return *page.tlr.Value
+}
+
+// Creates a new instance of the TriggerListResponsePage type.
+func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return TriggerListResponsePage{fn: getNextPage}
 }
 
 // TriggerPipelineReference pipeline that needs to be triggered with the given parameters.
@@ -97712,6 +97782,11 @@ func (iter TriggerRunListResponseIterator) Value() TriggerRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TriggerRunListResponseIterator type.
+func NewTriggerRunListResponseIterator(page TriggerRunListResponsePage) TriggerRunListResponseIterator {
+	return TriggerRunListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (trlr TriggerRunListResponse) IsEmpty() bool {
 	return trlr.Value == nil || len(*trlr.Value) == 0
@@ -97779,6 +97854,11 @@ func (page TriggerRunListResponsePage) Values() []TriggerRun {
 		return nil
 	}
 	return *page.trlr.Value
+}
+
+// Creates a new instance of the TriggerRunListResponsePage type.
+func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
+	return TriggerRunListResponsePage{fn: getNextPage}
 }
 
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running

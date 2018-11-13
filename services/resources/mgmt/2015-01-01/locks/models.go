@@ -113,6 +113,11 @@ func (iter ManagementLockListResultIterator) Value() ManagementLockObject {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagementLockListResultIterator type.
+func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
+	return ManagementLockListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mllr ManagementLockListResult) IsEmpty() bool {
 	return mllr.Value == nil || len(*mllr.Value) == 0
@@ -180,6 +185,11 @@ func (page ManagementLockListResultPage) Values() []ManagementLockObject {
 		return nil
 	}
 	return *page.mllr.Value
+}
+
+// Creates a new instance of the ManagementLockListResultPage type.
+func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
+	return ManagementLockListResultPage{fn: getNextPage}
 }
 
 // ManagementLockObject management lock information.

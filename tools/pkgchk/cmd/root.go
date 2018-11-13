@@ -162,15 +162,26 @@ func getPkgs(rootDir string) ([]pkg, error) {
 				return err
 			}
 			hasSubDirs := false
+			interfacesDir := false
 			for _, f := range fi {
 				if f.IsDir() {
 					hasSubDirs = true
 					break
 				}
+				if f.Name() == "interfaces.go" {
+					interfacesDir = true
+				}
 			}
 			if !hasSubDirs {
 				fs := token.NewFileSet()
-				packages, err := parser.ParseDir(fs, path, nil, parser.PackageClauseOnly)
+				// with interfaces codegen the majority of leaf directories are now the
+				// *api packages. when this is the case parse from the parent directory.
+				if interfacesDir {
+					path = filepath.Dir(path)
+				}
+				packages, err := parser.ParseDir(fs, path, func(fi os.FileInfo) bool {
+					return fi.Name() != "interfaces.go"
+				}, parser.PackageClauseOnly)
 				if err != nil {
 					return err
 				}

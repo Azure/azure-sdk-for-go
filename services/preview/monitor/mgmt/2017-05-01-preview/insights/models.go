@@ -1215,6 +1215,11 @@ func (iter AutoscaleSettingResourceCollectionIterator) Value() AutoscaleSettingR
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AutoscaleSettingResourceCollectionIterator type.
+func NewAutoscaleSettingResourceCollectionIterator(page AutoscaleSettingResourceCollectionPage) AutoscaleSettingResourceCollectionIterator {
+	return AutoscaleSettingResourceCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (asrc AutoscaleSettingResourceCollection) IsEmpty() bool {
 	return asrc.Value == nil || len(*asrc.Value) == 0
@@ -1282,6 +1287,11 @@ func (page AutoscaleSettingResourceCollectionPage) Values() []AutoscaleSettingRe
 		return nil
 	}
 	return *page.asrc.Value
+}
+
+// Creates a new instance of the AutoscaleSettingResourceCollectionPage type.
+func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return AutoscaleSettingResourceCollectionPage{fn: getNextPage}
 }
 
 // AutoscaleSettingResourcePatch the autoscale setting object for patch operations.

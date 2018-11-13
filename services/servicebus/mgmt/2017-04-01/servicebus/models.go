@@ -414,6 +414,11 @@ func (iter ArmDisasterRecoveryListResultIterator) Value() ArmDisasterRecovery {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ArmDisasterRecoveryListResultIterator type.
+func NewArmDisasterRecoveryListResultIterator(page ArmDisasterRecoveryListResultPage) ArmDisasterRecoveryListResultIterator {
+	return ArmDisasterRecoveryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (adrlr ArmDisasterRecoveryListResult) IsEmpty() bool {
 	return adrlr.Value == nil || len(*adrlr.Value) == 0
@@ -481,6 +486,11 @@ func (page ArmDisasterRecoveryListResultPage) Values() []ArmDisasterRecovery {
 		return nil
 	}
 	return *page.adrlr.Value
+}
+
+// Creates a new instance of the ArmDisasterRecoveryListResultPage type.
+func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return ArmDisasterRecoveryListResultPage{fn: getNextPage}
 }
 
 // ArmDisasterRecoveryProperties properties required to the Create Or Update Alias(Disaster Recovery
@@ -816,6 +826,11 @@ func (iter EventHubListResultIterator) Value() Eventhub {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EventHubListResultIterator type.
+func NewEventHubListResultIterator(page EventHubListResultPage) EventHubListResultIterator {
+	return EventHubListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ehlr EventHubListResult) IsEmpty() bool {
 	return ehlr.Value == nil || len(*ehlr.Value) == 0
@@ -883,6 +898,11 @@ func (page EventHubListResultPage) Values() []Eventhub {
 		return nil
 	}
 	return *page.ehlr.Value
+}
+
+// Creates a new instance of the EventHubListResultPage type.
+func NewEventHubListResultPage(getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
+	return EventHubListResultPage{fn: getNextPage}
 }
 
 // EventhubProperties properties supplied to the Create Or Update Event Hub operation.
@@ -985,6 +1005,11 @@ func (iter MigrationConfigListResultIterator) Value() MigrationConfigProperties 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the MigrationConfigListResultIterator type.
+func NewMigrationConfigListResultIterator(page MigrationConfigListResultPage) MigrationConfigListResultIterator {
+	return MigrationConfigListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mclr MigrationConfigListResult) IsEmpty() bool {
 	return mclr.Value == nil || len(*mclr.Value) == 0
@@ -1052,6 +1077,11 @@ func (page MigrationConfigListResultPage) Values() []MigrationConfigProperties {
 		return nil
 	}
 	return *page.mclr.Value
+}
+
+// Creates a new instance of the MigrationConfigListResultPage type.
+func NewMigrationConfigListResultPage(getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
+	return MigrationConfigListResultPage{fn: getNextPage}
 }
 
 // MigrationConfigProperties single item in List or Get Migration Config operation
@@ -1317,6 +1347,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1384,6 +1419,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PremiumMessagingRegions premium Messaging Region
@@ -1493,6 +1533,11 @@ func (iter PremiumMessagingRegionsListResultIterator) Value() PremiumMessagingRe
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PremiumMessagingRegionsListResultIterator type.
+func NewPremiumMessagingRegionsListResultIterator(page PremiumMessagingRegionsListResultPage) PremiumMessagingRegionsListResultIterator {
+	return PremiumMessagingRegionsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pmrlr PremiumMessagingRegionsListResult) IsEmpty() bool {
 	return pmrlr.Value == nil || len(*pmrlr.Value) == 0
@@ -1560,6 +1605,11 @@ func (page PremiumMessagingRegionsListResultPage) Values() []PremiumMessagingReg
 		return nil
 	}
 	return *page.pmrlr.Value
+}
+
+// Creates a new instance of the PremiumMessagingRegionsListResultPage type.
+func NewPremiumMessagingRegionsListResultPage(getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
+	return PremiumMessagingRegionsListResultPage{fn: getNextPage}
 }
 
 // PremiumMessagingRegionsProperties ...
@@ -1773,6 +1823,11 @@ func (iter RuleListResultIterator) Value() Rule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RuleListResultIterator type.
+func NewRuleListResultIterator(page RuleListResultPage) RuleListResultIterator {
+	return RuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RuleListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -1840,6 +1895,11 @@ func (page RuleListResultPage) Values() []Rule {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the RuleListResultPage type.
+func NewRuleListResultPage(getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
+	return RuleListResultPage{fn: getNextPage}
 }
 
 // Ruleproperties description of Rule Resource.
@@ -2004,6 +2064,11 @@ func (iter SBAuthorizationRuleListResultIterator) Value() SBAuthorizationRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SBAuthorizationRuleListResultIterator type.
+func NewSBAuthorizationRuleListResultIterator(page SBAuthorizationRuleListResultPage) SBAuthorizationRuleListResultIterator {
+	return SBAuthorizationRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sarlr SBAuthorizationRuleListResult) IsEmpty() bool {
 	return sarlr.Value == nil || len(*sarlr.Value) == 0
@@ -2071,6 +2136,11 @@ func (page SBAuthorizationRuleListResultPage) Values() []SBAuthorizationRule {
 		return nil
 	}
 	return *page.sarlr.Value
+}
+
+// Creates a new instance of the SBAuthorizationRuleListResultPage type.
+func NewSBAuthorizationRuleListResultPage(getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
+	return SBAuthorizationRuleListResultPage{fn: getNextPage}
 }
 
 // SBAuthorizationRuleProperties authorizationRule properties.
@@ -2270,6 +2340,11 @@ func (iter SBNamespaceListResultIterator) Value() SBNamespace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SBNamespaceListResultIterator type.
+func NewSBNamespaceListResultIterator(page SBNamespaceListResultPage) SBNamespaceListResultIterator {
+	return SBNamespaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (snlr SBNamespaceListResult) IsEmpty() bool {
 	return snlr.Value == nil || len(*snlr.Value) == 0
@@ -2337,6 +2412,11 @@ func (page SBNamespaceListResultPage) Values() []SBNamespace {
 		return nil
 	}
 	return *page.snlr.Value
+}
+
+// Creates a new instance of the SBNamespaceListResultPage type.
+func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return SBNamespaceListResultPage{fn: getNextPage}
 }
 
 // SBNamespaceMigrate namespace Migrate Object
@@ -2631,6 +2711,11 @@ func (iter SBQueueListResultIterator) Value() SBQueue {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SBQueueListResultIterator type.
+func NewSBQueueListResultIterator(page SBQueueListResultPage) SBQueueListResultIterator {
+	return SBQueueListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sqlr SBQueueListResult) IsEmpty() bool {
 	return sqlr.Value == nil || len(*sqlr.Value) == 0
@@ -2698,6 +2783,11 @@ func (page SBQueueListResultPage) Values() []SBQueue {
 		return nil
 	}
 	return *page.sqlr.Value
+}
+
+// Creates a new instance of the SBQueueListResultPage type.
+func NewSBQueueListResultPage(getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
+	return SBQueueListResultPage{fn: getNextPage}
 }
 
 // SBQueueProperties the Queue Properties definition.
@@ -2905,6 +2995,11 @@ func (iter SBSubscriptionListResultIterator) Value() SBSubscription {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SBSubscriptionListResultIterator type.
+func NewSBSubscriptionListResultIterator(page SBSubscriptionListResultPage) SBSubscriptionListResultIterator {
+	return SBSubscriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sslr SBSubscriptionListResult) IsEmpty() bool {
 	return sslr.Value == nil || len(*sslr.Value) == 0
@@ -2972,6 +3067,11 @@ func (page SBSubscriptionListResultPage) Values() []SBSubscription {
 		return nil
 	}
 	return *page.sslr.Value
+}
+
+// Creates a new instance of the SBSubscriptionListResultPage type.
+func NewSBSubscriptionListResultPage(getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
+	return SBSubscriptionListResultPage{fn: getNextPage}
 }
 
 // SBSubscriptionProperties description of Subscription Resource.
@@ -3161,6 +3261,11 @@ func (iter SBTopicListResultIterator) Value() SBTopic {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SBTopicListResultIterator type.
+func NewSBTopicListResultIterator(page SBTopicListResultPage) SBTopicListResultIterator {
+	return SBTopicListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (stlr SBTopicListResult) IsEmpty() bool {
 	return stlr.Value == nil || len(*stlr.Value) == 0
@@ -3228,6 +3333,11 @@ func (page SBTopicListResultPage) Values() []SBTopic {
 		return nil
 	}
 	return *page.stlr.Value
+}
+
+// Creates a new instance of the SBTopicListResultPage type.
+func NewSBTopicListResultPage(getNextPage func(context.Context, SBTopicListResult) (SBTopicListResult, error)) SBTopicListResultPage {
+	return SBTopicListResultPage{fn: getNextPage}
 }
 
 // SBTopicProperties the Tpoic Properties definition.

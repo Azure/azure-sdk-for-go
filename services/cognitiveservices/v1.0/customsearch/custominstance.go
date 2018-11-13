@@ -33,12 +33,7 @@ type CustomInstanceClient struct {
 
 // NewCustomInstanceClient creates an instance of the CustomInstanceClient client.
 func NewCustomInstanceClient() CustomInstanceClient {
-	return NewCustomInstanceClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewCustomInstanceClientWithBaseURI creates an instance of the CustomInstanceClient client.
-func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
-	return CustomInstanceClient{NewWithBaseURI(baseURI)}
+	return CustomInstanceClient{New()}
 }
 
 // Search sends the search request.
@@ -196,6 +191,10 @@ func (client CustomInstanceClient) Search(ctx context.Context, customConfig stri
 
 // SearchPreparer prepares the Search request.
 func (client CustomInstanceClient) SearchPreparer(ctx context.Context, customConfig string, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, market string, offset *int32, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"customConfig": autorest.Encode("query", customConfig),
 		"q":            autorest.Encode("query", query),
@@ -229,7 +228,7 @@ func (client CustomInstanceClient) SearchPreparer(ctx context.Context, customCon
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bingcustomsearch/v7.0", urlParameters),
 		autorest.WithPath("/search"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

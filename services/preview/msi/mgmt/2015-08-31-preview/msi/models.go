@@ -270,6 +270,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -339,6 +344,11 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
+}
+
 // UserAssignedIdentitiesListResult values returned by the List operation.
 type UserAssignedIdentitiesListResult struct {
 	autorest.Response `json:"-"`
@@ -404,6 +414,11 @@ func (iter UserAssignedIdentitiesListResultIterator) Value() Identity {
 		return Identity{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the UserAssignedIdentitiesListResultIterator type.
+func NewUserAssignedIdentitiesListResultIterator(page UserAssignedIdentitiesListResultPage) UserAssignedIdentitiesListResultIterator {
+	return UserAssignedIdentitiesListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -473,4 +488,9 @@ func (page UserAssignedIdentitiesListResultPage) Values() []Identity {
 		return nil
 	}
 	return *page.uailr.Value
+}
+
+// Creates a new instance of the UserAssignedIdentitiesListResultPage type.
+func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
+	return UserAssignedIdentitiesListResultPage{fn: getNextPage}
 }

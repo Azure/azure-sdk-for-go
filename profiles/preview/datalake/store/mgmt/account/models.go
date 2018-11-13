@@ -19,7 +19,11 @@
 
 package account
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
+)
 
 type AccountsClient = original.AccountsClient
 
@@ -245,6 +249,30 @@ func PossibleTierTypeValues() []TierType {
 }
 func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
 	return original.PossibleTrustedIDProviderStateValues()
+}
+func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
+	return original.NewDataLakeStoreAccountListResultIterator(page)
+}
+func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return original.NewDataLakeStoreAccountListResultPage(getNextPage)
+}
+func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
+	return original.NewFirewallRuleListResultIterator(page)
+}
+func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(getNextPage)
+}
+func NewTrustedIDProviderListResultIterator(page TrustedIDProviderListResultPage) TrustedIDProviderListResultIterator {
+	return original.NewTrustedIDProviderListResultIterator(page)
+}
+func NewTrustedIDProviderListResultPage(getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
+	return original.NewTrustedIDProviderListResultPage(getNextPage)
+}
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return original.NewVirtualNetworkRuleListResultIterator(page)
+}
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

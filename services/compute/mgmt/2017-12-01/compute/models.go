@@ -992,6 +992,11 @@ func (iter AvailabilitySetListResultIterator) Value() AvailabilitySet {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AvailabilitySetListResultIterator type.
+func NewAvailabilitySetListResultIterator(page AvailabilitySetListResultPage) AvailabilitySetListResultIterator {
+	return AvailabilitySetListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (aslr AvailabilitySetListResult) IsEmpty() bool {
 	return aslr.Value == nil || len(*aslr.Value) == 0
@@ -1059,6 +1064,11 @@ func (page AvailabilitySetListResultPage) Values() []AvailabilitySet {
 		return nil
 	}
 	return *page.aslr.Value
+}
+
+// Creates a new instance of the AvailabilitySetListResultPage type.
+func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return AvailabilitySetListResultPage{fn: getNextPage}
 }
 
 // AvailabilitySetProperties the instance view of a resource.
@@ -1415,6 +1425,11 @@ func (iter ImageListResultIterator) Value() Image {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ImageListResultIterator type.
+func NewImageListResultIterator(page ImageListResultPage) ImageListResultIterator {
+	return ImageListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr ImageListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -1482,6 +1497,11 @@ func (page ImageListResultPage) Values() []Image {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the ImageListResultPage type.
+func NewImageListResultPage(getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
+	return ImageListResultPage{fn: getNextPage}
 }
 
 // ImageOSDisk describes an Operating System disk.
@@ -1795,6 +1815,11 @@ func (iter ListUsagesResultIterator) Value() Usage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListUsagesResultIterator type.
+func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
+	return ListUsagesResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lur ListUsagesResult) IsEmpty() bool {
 	return lur.Value == nil || len(*lur.Value) == 0
@@ -1862,6 +1887,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 		return nil
 	}
 	return *page.lur.Value
+}
+
+// Creates a new instance of the ListUsagesResultPage type.
+func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{fn: getNextPage}
 }
 
 // ListVirtualMachineExtensionImage ...
@@ -2593,6 +2623,11 @@ func (iter RunCommandListResultIterator) Value() RunCommandDocumentBase {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RunCommandListResultIterator type.
+func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
+	return RunCommandListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rclr RunCommandListResult) IsEmpty() bool {
 	return rclr.Value == nil || len(*rclr.Value) == 0
@@ -2660,6 +2695,11 @@ func (page RunCommandListResultPage) Values() []RunCommandDocumentBase {
 		return nil
 	}
 	return *page.rclr.Value
+}
+
+// Creates a new instance of the RunCommandListResultPage type.
+func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
+	return RunCommandListResultPage{fn: getNextPage}
 }
 
 // RunCommandParameterDefinition describes the properties of a run command parameter.
@@ -3891,6 +3931,11 @@ func (iter VirtualMachineListResultIterator) Value() VirtualMachine {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualMachineListResultIterator type.
+func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) VirtualMachineListResultIterator {
+	return VirtualMachineListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vmlr VirtualMachineListResult) IsEmpty() bool {
 	return vmlr.Value == nil || len(*vmlr.Value) == 0
@@ -3958,6 +4003,11 @@ func (page VirtualMachineListResultPage) Values() []VirtualMachine {
 		return nil
 	}
 	return *page.vmlr.Value
+}
+
+// Creates a new instance of the VirtualMachineListResultPage type.
+func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return VirtualMachineListResultPage{fn: getNextPage}
 }
 
 // VirtualMachineProperties describes the properties of a Virtual Machine.
@@ -4302,6 +4352,11 @@ func (iter VirtualMachineScaleSetExtensionListResultIterator) Value() VirtualMac
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualMachineScaleSetExtensionListResultIterator type.
+func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
+	return VirtualMachineScaleSetExtensionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vmsselr VirtualMachineScaleSetExtensionListResult) IsEmpty() bool {
 	return vmsselr.Value == nil || len(*vmsselr.Value) == 0
@@ -4369,6 +4424,11 @@ func (page VirtualMachineScaleSetExtensionListResultPage) Values() []VirtualMach
 		return nil
 	}
 	return *page.vmsselr.Value
+}
+
+// Creates a new instance of the VirtualMachineScaleSetExtensionListResultPage type.
+func NewVirtualMachineScaleSetExtensionListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
+	return VirtualMachineScaleSetExtensionListResultPage{fn: getNextPage}
 }
 
 // VirtualMachineScaleSetExtensionProfile describes a virtual machine scale set extension profile.
@@ -4641,6 +4701,11 @@ func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Value() UpgradeOp
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualMachineScaleSetListOSUpgradeHistoryIterator type.
+func NewVirtualMachineScaleSetListOSUpgradeHistoryIterator(page VirtualMachineScaleSetListOSUpgradeHistoryPage) VirtualMachineScaleSetListOSUpgradeHistoryIterator {
+	return VirtualMachineScaleSetListOSUpgradeHistoryIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) IsEmpty() bool {
 	return vmsslouh.Value == nil || len(*vmsslouh.Value) == 0
@@ -4711,6 +4776,11 @@ func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOpe
 	return *page.vmsslouh.Value
 }
 
+// Creates a new instance of the VirtualMachineScaleSetListOSUpgradeHistoryPage type.
+func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
+	return VirtualMachineScaleSetListOSUpgradeHistoryPage{fn: getNextPage}
+}
+
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.
 type VirtualMachineScaleSetListResult struct {
 	autorest.Response `json:"-"`
@@ -4777,6 +4847,11 @@ func (iter VirtualMachineScaleSetListResultIterator) Value() VirtualMachineScale
 		return VirtualMachineScaleSet{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the VirtualMachineScaleSetListResultIterator type.
+func NewVirtualMachineScaleSetListResultIterator(page VirtualMachineScaleSetListResultPage) VirtualMachineScaleSetListResultIterator {
+	return VirtualMachineScaleSetListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -4848,6 +4923,11 @@ func (page VirtualMachineScaleSetListResultPage) Values() []VirtualMachineScaleS
 	return *page.vmsslr.Value
 }
 
+// Creates a new instance of the VirtualMachineScaleSetListResultPage type.
+func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return VirtualMachineScaleSetListResultPage{fn: getNextPage}
+}
+
 // VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
 type VirtualMachineScaleSetListSkusResult struct {
 	autorest.Response `json:"-"`
@@ -4914,6 +4994,11 @@ func (iter VirtualMachineScaleSetListSkusResultIterator) Value() VirtualMachineS
 		return VirtualMachineScaleSetSku{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the VirtualMachineScaleSetListSkusResultIterator type.
+func NewVirtualMachineScaleSetListSkusResultIterator(page VirtualMachineScaleSetListSkusResultPage) VirtualMachineScaleSetListSkusResultIterator {
+	return VirtualMachineScaleSetListSkusResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -4985,6 +5070,11 @@ func (page VirtualMachineScaleSetListSkusResultPage) Values() []VirtualMachineSc
 	return *page.vmsslsr.Value
 }
 
+// Creates a new instance of the VirtualMachineScaleSetListSkusResultPage type.
+func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return VirtualMachineScaleSetListSkusResultPage{fn: getNextPage}
+}
+
 // VirtualMachineScaleSetListWithLinkResult the List Virtual Machine operation response.
 type VirtualMachineScaleSetListWithLinkResult struct {
 	autorest.Response `json:"-"`
@@ -5051,6 +5141,11 @@ func (iter VirtualMachineScaleSetListWithLinkResultIterator) Value() VirtualMach
 		return VirtualMachineScaleSet{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the VirtualMachineScaleSetListWithLinkResultIterator type.
+func NewVirtualMachineScaleSetListWithLinkResultIterator(page VirtualMachineScaleSetListWithLinkResultPage) VirtualMachineScaleSetListWithLinkResultIterator {
+	return VirtualMachineScaleSetListWithLinkResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -5120,6 +5215,11 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 		return nil
 	}
 	return *page.vmsslwlr.Value
+}
+
+// Creates a new instance of the VirtualMachineScaleSetListWithLinkResultPage type.
+func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return VirtualMachineScaleSetListWithLinkResultPage{fn: getNextPage}
 }
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
@@ -6502,6 +6602,11 @@ func (iter VirtualMachineScaleSetVMListResultIterator) Value() VirtualMachineSca
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualMachineScaleSetVMListResultIterator type.
+func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
+	return VirtualMachineScaleSetVMListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vmssvlr VirtualMachineScaleSetVMListResult) IsEmpty() bool {
 	return vmssvlr.Value == nil || len(*vmssvlr.Value) == 0
@@ -6569,6 +6674,11 @@ func (page VirtualMachineScaleSetVMListResultPage) Values() []VirtualMachineScal
 		return nil
 	}
 	return *page.vmssvlr.Value
+}
+
+// Creates a new instance of the VirtualMachineScaleSetVMListResultPage type.
+func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
+	return VirtualMachineScaleSetVMListResultPage{fn: getNextPage}
 }
 
 // VirtualMachineScaleSetVMProfile describes a virtual machine scale set virtual machine profile.

@@ -19,7 +19,11 @@
 
 package links
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -54,6 +58,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleFilterValues() []Filter {
 	return original.PossibleFilterValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewResourceLinkResultIterator(page ResourceLinkResultPage) ResourceLinkResultIterator {
+	return original.NewResourceLinkResultIterator(page)
+}
+func NewResourceLinkResultPage(getNextPage func(context.Context, ResourceLinkResult) (ResourceLinkResult, error)) ResourceLinkResultPage {
+	return original.NewResourceLinkResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

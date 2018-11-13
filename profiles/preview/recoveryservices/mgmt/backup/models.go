@@ -19,7 +19,11 @@
 
 package backup
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup"
+)
 
 type BackupsClient = original.BackupsClient
 
@@ -1377,6 +1381,72 @@ func PossibleWorkloadItemTypeBasicWorkloadItemValues() []WorkloadItemTypeBasicWo
 }
 func PossibleWorkloadTypeValues() []WorkloadType {
 	return original.PossibleWorkloadTypeValues()
+}
+func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
+	return original.NewClientDiscoveryResponseIterator(page)
+}
+func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return original.NewClientDiscoveryResponsePage(getNextPage)
+}
+func NewEngineBaseResourceListIterator(page EngineBaseResourceListPage) EngineBaseResourceListIterator {
+	return original.NewEngineBaseResourceListIterator(page)
+}
+func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return original.NewEngineBaseResourceListPage(getNextPage)
+}
+func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
+	return original.NewJobResourceListIterator(page)
+}
+func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return original.NewJobResourceListPage(getNextPage)
+}
+func NewProtectableContainerResourceListIterator(page ProtectableContainerResourceListPage) ProtectableContainerResourceListIterator {
+	return original.NewProtectableContainerResourceListIterator(page)
+}
+func NewProtectableContainerResourceListPage(getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
+	return original.NewProtectableContainerResourceListPage(getNextPage)
+}
+func NewProtectedItemResourceListIterator(page ProtectedItemResourceListPage) ProtectedItemResourceListIterator {
+	return original.NewProtectedItemResourceListIterator(page)
+}
+func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return original.NewProtectedItemResourceListPage(getNextPage)
+}
+func NewProtectionContainerResourceListIterator(page ProtectionContainerResourceListPage) ProtectionContainerResourceListIterator {
+	return original.NewProtectionContainerResourceListIterator(page)
+}
+func NewProtectionContainerResourceListPage(getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
+	return original.NewProtectionContainerResourceListPage(getNextPage)
+}
+func NewProtectionIntentResourceListIterator(page ProtectionIntentResourceListPage) ProtectionIntentResourceListIterator {
+	return original.NewProtectionIntentResourceListIterator(page)
+}
+func NewProtectionIntentResourceListPage(getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
+	return original.NewProtectionIntentResourceListPage(getNextPage)
+}
+func NewProtectionPolicyResourceListIterator(page ProtectionPolicyResourceListPage) ProtectionPolicyResourceListIterator {
+	return original.NewProtectionPolicyResourceListIterator(page)
+}
+func NewProtectionPolicyResourceListPage(getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
+	return original.NewProtectionPolicyResourceListPage(getNextPage)
+}
+func NewRecoveryPointResourceListIterator(page RecoveryPointResourceListPage) RecoveryPointResourceListIterator {
+	return original.NewRecoveryPointResourceListIterator(page)
+}
+func NewRecoveryPointResourceListPage(getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
+	return original.NewRecoveryPointResourceListPage(getNextPage)
+}
+func NewWorkloadItemResourceListIterator(page WorkloadItemResourceListPage) WorkloadItemResourceListIterator {
+	return original.NewWorkloadItemResourceListIterator(page)
+}
+func NewWorkloadItemResourceListPage(getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
+	return original.NewWorkloadItemResourceListPage(getNextPage)
+}
+func NewWorkloadProtectableItemResourceListIterator(page WorkloadProtectableItemResourceListPage) WorkloadProtectableItemResourceListIterator {
+	return original.NewWorkloadProtectableItemResourceListIterator(page)
+}
+func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
+	return original.NewWorkloadProtectableItemResourceListPage(getNextPage)
 }
 func NewOperationClient(subscriptionID string) OperationClient {
 	return original.NewOperationClient(subscriptionID)

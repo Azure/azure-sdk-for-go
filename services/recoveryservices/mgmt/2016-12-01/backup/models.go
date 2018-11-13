@@ -9006,6 +9006,11 @@ func (iter EngineBaseResourceListIterator) Value() EngineBaseResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EngineBaseResourceListIterator type.
+func NewEngineBaseResourceListIterator(page EngineBaseResourceListPage) EngineBaseResourceListIterator {
+	return EngineBaseResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ebrl EngineBaseResourceList) IsEmpty() bool {
 	return ebrl.Value == nil || len(*ebrl.Value) == 0
@@ -9073,6 +9078,11 @@ func (page EngineBaseResourceListPage) Values() []EngineBaseResource {
 		return nil
 	}
 	return *page.ebrl.Value
+}
+
+// Creates a new instance of the EngineBaseResourceListPage type.
+func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return EngineBaseResourceListPage{fn: getNextPage}
 }
 
 // EngineExtendedInfo additional information on backup engine.
@@ -11852,6 +11862,11 @@ func (iter ProtectableContainerResourceListIterator) Value() ProtectableContaine
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectableContainerResourceListIterator type.
+func NewProtectableContainerResourceListIterator(page ProtectableContainerResourceListPage) ProtectableContainerResourceListIterator {
+	return ProtectableContainerResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pcrl ProtectableContainerResourceList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
@@ -11919,6 +11934,11 @@ func (page ProtectableContainerResourceListPage) Values() []ProtectableContainer
 		return nil
 	}
 	return *page.pcrl.Value
+}
+
+// Creates a new instance of the ProtectableContainerResourceListPage type.
+func NewProtectableContainerResourceListPage(getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
+	return ProtectableContainerResourceListPage{fn: getNextPage}
 }
 
 // BasicProtectedItem base class for backup items.
@@ -12676,6 +12696,11 @@ func (iter ProtectionContainerResourceListIterator) Value() ProtectionContainerR
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProtectionContainerResourceListIterator type.
+func NewProtectionContainerResourceListIterator(page ProtectionContainerResourceListPage) ProtectionContainerResourceListIterator {
+	return ProtectionContainerResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pcrl ProtectionContainerResourceList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
@@ -12743,6 +12768,11 @@ func (page ProtectionContainerResourceListPage) Values() []ProtectionContainerRe
 		return nil
 	}
 	return *page.pcrl.Value
+}
+
+// Creates a new instance of the ProtectionContainerResourceListPage type.
+func NewProtectionContainerResourceListPage(getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
+	return ProtectionContainerResourceListPage{fn: getNextPage}
 }
 
 // BasicProtectionPolicy base class for backup policy. Workload-specific backup policies are derived from this class.
@@ -13348,6 +13378,11 @@ func (iter RecoveryPointResourceListIterator) Value() RecoveryPointResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecoveryPointResourceListIterator type.
+func NewRecoveryPointResourceListIterator(page RecoveryPointResourceListPage) RecoveryPointResourceListIterator {
+	return RecoveryPointResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rprl RecoveryPointResourceList) IsEmpty() bool {
 	return rprl.Value == nil || len(*rprl.Value) == 0
@@ -13415,6 +13450,11 @@ func (page RecoveryPointResourceListPage) Values() []RecoveryPointResource {
 		return nil
 	}
 	return *page.rprl.Value
+}
+
+// Creates a new instance of the RecoveryPointResourceListPage type.
+func NewRecoveryPointResourceListPage(getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
+	return RecoveryPointResourceListPage{fn: getNextPage}
 }
 
 // RecoveryPointTierInformation recovery point tier information.
@@ -14841,6 +14881,11 @@ func (iter WorkloadItemResourceListIterator) Value() WorkloadItemResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkloadItemResourceListIterator type.
+func NewWorkloadItemResourceListIterator(page WorkloadItemResourceListPage) WorkloadItemResourceListIterator {
+	return WorkloadItemResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wirl WorkloadItemResourceList) IsEmpty() bool {
 	return wirl.Value == nil || len(*wirl.Value) == 0
@@ -14908,6 +14953,11 @@ func (page WorkloadItemResourceListPage) Values() []WorkloadItemResource {
 		return nil
 	}
 	return *page.wirl.Value
+}
+
+// Creates a new instance of the WorkloadItemResourceListPage type.
+func NewWorkloadItemResourceListPage(getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
+	return WorkloadItemResourceListPage{fn: getNextPage}
 }
 
 // BasicWorkloadProtectableItem base class for backup item. Workload-specific backup items are derived from this class.
@@ -15296,6 +15346,11 @@ func (iter WorkloadProtectableItemResourceListIterator) Value() WorkloadProtecta
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkloadProtectableItemResourceListIterator type.
+func NewWorkloadProtectableItemResourceListIterator(page WorkloadProtectableItemResourceListPage) WorkloadProtectableItemResourceListIterator {
+	return WorkloadProtectableItemResourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wpirl WorkloadProtectableItemResourceList) IsEmpty() bool {
 	return wpirl.Value == nil || len(*wpirl.Value) == 0
@@ -15363,6 +15418,11 @@ func (page WorkloadProtectableItemResourceListPage) Values() []WorkloadProtectab
 		return nil
 	}
 	return *page.wpirl.Value
+}
+
+// Creates a new instance of the WorkloadProtectableItemResourceListPage type.
+func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
+	return WorkloadProtectableItemResourceListPage{fn: getNextPage}
 }
 
 // YearlyRetentionSchedule yearly retention schedule.

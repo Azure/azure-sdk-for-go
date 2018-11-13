@@ -645,6 +645,11 @@ func (iter FirewallRuleListResultIterator) Value() FirewallRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FirewallRuleListResultIterator type.
+func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
+	return FirewallRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (frlr FirewallRuleListResult) IsEmpty() bool {
 	return frlr.Value == nil || len(*frlr.Value) == 0
@@ -712,6 +717,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 		return nil
 	}
 	return *page.frlr.Value
+}
+
+// Creates a new instance of the FirewallRuleListResultPage type.
+func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{fn: getNextPage}
 }
 
 // FirewallRuleProperties specifies a range of IP addresses permitted to connect to the cache
@@ -1005,6 +1015,11 @@ func (iter LinkedServerWithPropertiesListIterator) Value() LinkedServerWithPrope
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LinkedServerWithPropertiesListIterator type.
+func NewLinkedServerWithPropertiesListIterator(page LinkedServerWithPropertiesListPage) LinkedServerWithPropertiesListIterator {
+	return LinkedServerWithPropertiesListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lswpl LinkedServerWithPropertiesList) IsEmpty() bool {
 	return lswpl.Value == nil || len(*lswpl.Value) == 0
@@ -1074,6 +1089,11 @@ func (page LinkedServerWithPropertiesListPage) Values() []LinkedServerWithProper
 	return *page.lswpl.Value
 }
 
+// Creates a new instance of the LinkedServerWithPropertiesListPage type.
+func NewLinkedServerWithPropertiesListPage(getNextPage func(context.Context, LinkedServerWithPropertiesList) (LinkedServerWithPropertiesList, error)) LinkedServerWithPropertiesListPage {
+	return LinkedServerWithPropertiesListPage{fn: getNextPage}
+}
+
 // ListResult the response of list Redis operation.
 type ListResult struct {
 	autorest.Response `json:"-"`
@@ -1139,6 +1159,11 @@ func (iter ListResultIterator) Value() ResourceType {
 		return ResourceType{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -1208,6 +1233,11 @@ func (page ListResultPage) Values() []ResourceType {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // NotificationListResponse the response of listUpgradeNotifications.
@@ -1307,6 +1337,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1374,6 +1409,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PatchSchedule response to put/get patch schedules for Redis cache.
@@ -1525,6 +1565,11 @@ func (iter PatchScheduleListResultIterator) Value() PatchSchedule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PatchScheduleListResultIterator type.
+func NewPatchScheduleListResultIterator(page PatchScheduleListResultPage) PatchScheduleListResultIterator {
+	return PatchScheduleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pslr PatchScheduleListResult) IsEmpty() bool {
 	return pslr.Value == nil || len(*pslr.Value) == 0
@@ -1592,6 +1637,11 @@ func (page PatchScheduleListResultPage) Values() []PatchSchedule {
 		return nil
 	}
 	return *page.pslr.Value
+}
+
+// Creates a new instance of the PatchScheduleListResultPage type.
+func NewPatchScheduleListResultPage(getNextPage func(context.Context, PatchScheduleListResult) (PatchScheduleListResult, error)) PatchScheduleListResultPage {
+	return PatchScheduleListResultPage{fn: getNextPage}
 }
 
 // Properties properties of the redis cache.

@@ -19,7 +19,11 @@
 
 package siterecovery
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -1144,6 +1148,126 @@ func PossibleSeverityValues() []Severity {
 }
 func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
 	return original.PossibleSourceSiteOperationsValues()
+}
+func NewAlertCollectionIterator(page AlertCollectionPage) AlertCollectionIterator {
+	return original.NewAlertCollectionIterator(page)
+}
+func NewAlertCollectionPage(getNextPage func(context.Context, AlertCollection) (AlertCollection, error)) AlertCollectionPage {
+	return original.NewAlertCollectionPage(getNextPage)
+}
+func NewEventCollectionIterator(page EventCollectionPage) EventCollectionIterator {
+	return original.NewEventCollectionIterator(page)
+}
+func NewEventCollectionPage(getNextPage func(context.Context, EventCollection) (EventCollection, error)) EventCollectionPage {
+	return original.NewEventCollectionPage(getNextPage)
+}
+func NewFabricCollectionIterator(page FabricCollectionPage) FabricCollectionIterator {
+	return original.NewFabricCollectionIterator(page)
+}
+func NewFabricCollectionPage(getNextPage func(context.Context, FabricCollection) (FabricCollection, error)) FabricCollectionPage {
+	return original.NewFabricCollectionPage(getNextPage)
+}
+func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
+	return original.NewJobCollectionIterator(page)
+}
+func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return original.NewJobCollectionPage(getNextPage)
+}
+func NewLogicalNetworkCollectionIterator(page LogicalNetworkCollectionPage) LogicalNetworkCollectionIterator {
+	return original.NewLogicalNetworkCollectionIterator(page)
+}
+func NewLogicalNetworkCollectionPage(getNextPage func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error)) LogicalNetworkCollectionPage {
+	return original.NewLogicalNetworkCollectionPage(getNextPage)
+}
+func NewNetworkCollectionIterator(page NetworkCollectionPage) NetworkCollectionIterator {
+	return original.NewNetworkCollectionIterator(page)
+}
+func NewNetworkCollectionPage(getNextPage func(context.Context, NetworkCollection) (NetworkCollection, error)) NetworkCollectionPage {
+	return original.NewNetworkCollectionPage(getNextPage)
+}
+func NewNetworkMappingCollectionIterator(page NetworkMappingCollectionPage) NetworkMappingCollectionIterator {
+	return original.NewNetworkMappingCollectionIterator(page)
+}
+func NewNetworkMappingCollectionPage(getNextPage func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error)) NetworkMappingCollectionPage {
+	return original.NewNetworkMappingCollectionPage(getNextPage)
+}
+func NewOperationsDiscoveryCollectionIterator(page OperationsDiscoveryCollectionPage) OperationsDiscoveryCollectionIterator {
+	return original.NewOperationsDiscoveryCollectionIterator(page)
+}
+func NewOperationsDiscoveryCollectionPage(getNextPage func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error)) OperationsDiscoveryCollectionPage {
+	return original.NewOperationsDiscoveryCollectionPage(getNextPage)
+}
+func NewPolicyCollectionIterator(page PolicyCollectionPage) PolicyCollectionIterator {
+	return original.NewPolicyCollectionIterator(page)
+}
+func NewPolicyCollectionPage(getNextPage func(context.Context, PolicyCollection) (PolicyCollection, error)) PolicyCollectionPage {
+	return original.NewPolicyCollectionPage(getNextPage)
+}
+func NewProtectableItemCollectionIterator(page ProtectableItemCollectionPage) ProtectableItemCollectionIterator {
+	return original.NewProtectableItemCollectionIterator(page)
+}
+func NewProtectableItemCollectionPage(getNextPage func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error)) ProtectableItemCollectionPage {
+	return original.NewProtectableItemCollectionPage(getNextPage)
+}
+func NewProtectionContainerCollectionIterator(page ProtectionContainerCollectionPage) ProtectionContainerCollectionIterator {
+	return original.NewProtectionContainerCollectionIterator(page)
+}
+func NewProtectionContainerCollectionPage(getNextPage func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error)) ProtectionContainerCollectionPage {
+	return original.NewProtectionContainerCollectionPage(getNextPage)
+}
+func NewProtectionContainerMappingCollectionIterator(page ProtectionContainerMappingCollectionPage) ProtectionContainerMappingCollectionIterator {
+	return original.NewProtectionContainerMappingCollectionIterator(page)
+}
+func NewProtectionContainerMappingCollectionPage(getNextPage func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error)) ProtectionContainerMappingCollectionPage {
+	return original.NewProtectionContainerMappingCollectionPage(getNextPage)
+}
+func NewRecoveryPlanCollectionIterator(page RecoveryPlanCollectionPage) RecoveryPlanCollectionIterator {
+	return original.NewRecoveryPlanCollectionIterator(page)
+}
+func NewRecoveryPlanCollectionPage(getNextPage func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error)) RecoveryPlanCollectionPage {
+	return original.NewRecoveryPlanCollectionPage(getNextPage)
+}
+func NewRecoveryPointCollectionIterator(page RecoveryPointCollectionPage) RecoveryPointCollectionIterator {
+	return original.NewRecoveryPointCollectionIterator(page)
+}
+func NewRecoveryPointCollectionPage(getNextPage func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error)) RecoveryPointCollectionPage {
+	return original.NewRecoveryPointCollectionPage(getNextPage)
+}
+func NewRecoveryServicesProviderCollectionIterator(page RecoveryServicesProviderCollectionPage) RecoveryServicesProviderCollectionIterator {
+	return original.NewRecoveryServicesProviderCollectionIterator(page)
+}
+func NewRecoveryServicesProviderCollectionPage(getNextPage func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error)) RecoveryServicesProviderCollectionPage {
+	return original.NewRecoveryServicesProviderCollectionPage(getNextPage)
+}
+func NewReplicationProtectedItemCollectionIterator(page ReplicationProtectedItemCollectionPage) ReplicationProtectedItemCollectionIterator {
+	return original.NewReplicationProtectedItemCollectionIterator(page)
+}
+func NewReplicationProtectedItemCollectionPage(getNextPage func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error)) ReplicationProtectedItemCollectionPage {
+	return original.NewReplicationProtectedItemCollectionPage(getNextPage)
+}
+func NewStorageClassificationCollectionIterator(page StorageClassificationCollectionPage) StorageClassificationCollectionIterator {
+	return original.NewStorageClassificationCollectionIterator(page)
+}
+func NewStorageClassificationCollectionPage(getNextPage func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error)) StorageClassificationCollectionPage {
+	return original.NewStorageClassificationCollectionPage(getNextPage)
+}
+func NewStorageClassificationMappingCollectionIterator(page StorageClassificationMappingCollectionPage) StorageClassificationMappingCollectionIterator {
+	return original.NewStorageClassificationMappingCollectionIterator(page)
+}
+func NewStorageClassificationMappingCollectionPage(getNextPage func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error)) StorageClassificationMappingCollectionPage {
+	return original.NewStorageClassificationMappingCollectionPage(getNextPage)
+}
+func NewTargetComputeSizeCollectionIterator(page TargetComputeSizeCollectionPage) TargetComputeSizeCollectionIterator {
+	return original.NewTargetComputeSizeCollectionIterator(page)
+}
+func NewTargetComputeSizeCollectionPage(getNextPage func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error)) TargetComputeSizeCollectionPage {
+	return original.NewTargetComputeSizeCollectionPage(getNextPage)
+}
+func NewVCenterCollectionIterator(page VCenterCollectionPage) VCenterCollectionIterator {
+	return original.NewVCenterCollectionIterator(page)
+}
+func NewVCenterCollectionPage(getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
+	return original.NewVCenterCollectionPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, resourceGroupName, resourceName)

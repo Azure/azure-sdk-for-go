@@ -261,6 +261,11 @@ func (iter ApplicationListResultIterator) Value() Application {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationListResultIterator type.
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return ApplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -328,6 +333,11 @@ func (page ApplicationListResultPage) Values() []Application {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the ApplicationListResultPage type.
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{fn: getNextPage}
 }
 
 // ApplicationProperties the HDInsight cluster application GET response.
@@ -719,6 +729,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -786,6 +801,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
 }
 
 // ClusterListRuntimeScriptActionDetailResult the list runtime script action detail response.
@@ -1172,6 +1192,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1239,6 +1264,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResource the azure async operation response.
@@ -1445,6 +1475,11 @@ func (iter ScriptActionExecutionHistoryListIterator) Value() RuntimeScriptAction
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ScriptActionExecutionHistoryListIterator type.
+func NewScriptActionExecutionHistoryListIterator(page ScriptActionExecutionHistoryListPage) ScriptActionExecutionHistoryListIterator {
+	return ScriptActionExecutionHistoryListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (saehl ScriptActionExecutionHistoryList) IsEmpty() bool {
 	return saehl.Value == nil || len(*saehl.Value) == 0
@@ -1512,6 +1547,11 @@ func (page ScriptActionExecutionHistoryListPage) Values() []RuntimeScriptActionD
 		return nil
 	}
 	return *page.saehl.Value
+}
+
+// Creates a new instance of the ScriptActionExecutionHistoryListPage type.
+func NewScriptActionExecutionHistoryListPage(getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
+	return ScriptActionExecutionHistoryListPage{fn: getNextPage}
 }
 
 // ScriptActionExecutionSummary the execution summary of a script action.
@@ -1603,6 +1643,11 @@ func (iter ScriptActionsListIterator) Value() RuntimeScriptActionDetail {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ScriptActionsListIterator type.
+func NewScriptActionsListIterator(page ScriptActionsListPage) ScriptActionsListIterator {
+	return ScriptActionsListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sal ScriptActionsList) IsEmpty() bool {
 	return sal.Value == nil || len(*sal.Value) == 0
@@ -1670,6 +1715,11 @@ func (page ScriptActionsListPage) Values() []RuntimeScriptActionDetail {
 		return nil
 	}
 	return *page.sal.Value
+}
+
+// Creates a new instance of the ScriptActionsListPage type.
+func NewScriptActionsListPage(getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
+	return ScriptActionsListPage{fn: getNextPage}
 }
 
 // SecurityProfile the security profile which contains Ssh public key for the HDInsight cluster.

@@ -19,7 +19,11 @@
 
 package compute
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-04-01/compute"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-04-01/compute"
+)
 
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 
@@ -789,6 +793,84 @@ func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSet
 }
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return original.PossibleVirtualMachineSizeTypesValues()
+}
+func NewAvailabilitySetListResultIterator(page AvailabilitySetListResultPage) AvailabilitySetListResultIterator {
+	return original.NewAvailabilitySetListResultIterator(page)
+}
+func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return original.NewAvailabilitySetListResultPage(getNextPage)
+}
+func NewDiskListIterator(page DiskListPage) DiskListIterator {
+	return original.NewDiskListIterator(page)
+}
+func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return original.NewDiskListPage(getNextPage)
+}
+func NewImageListResultIterator(page ImageListResultPage) ImageListResultIterator {
+	return original.NewImageListResultIterator(page)
+}
+func NewImageListResultPage(getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
+	return original.NewImageListResultPage(getNextPage)
+}
+func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
+	return original.NewListUsagesResultIterator(page)
+}
+func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return original.NewListUsagesResultPage(getNextPage)
+}
+func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
+	return original.NewRunCommandListResultIterator(page)
+}
+func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
+	return original.NewRunCommandListResultPage(getNextPage)
+}
+func NewSnapshotListIterator(page SnapshotListPage) SnapshotListIterator {
+	return original.NewSnapshotListIterator(page)
+}
+func NewSnapshotListPage(getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
+	return original.NewSnapshotListPage(getNextPage)
+}
+func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) VirtualMachineListResultIterator {
+	return original.NewVirtualMachineListResultIterator(page)
+}
+func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return original.NewVirtualMachineListResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
+	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)
+}
+func NewVirtualMachineScaleSetExtensionListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
+	return original.NewVirtualMachineScaleSetExtensionListResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetListOSUpgradeHistoryIterator(page VirtualMachineScaleSetListOSUpgradeHistoryPage) VirtualMachineScaleSetListOSUpgradeHistoryIterator {
+	return original.NewVirtualMachineScaleSetListOSUpgradeHistoryIterator(page)
+}
+func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
+	return original.NewVirtualMachineScaleSetListOSUpgradeHistoryPage(getNextPage)
+}
+func NewVirtualMachineScaleSetListResultIterator(page VirtualMachineScaleSetListResultPage) VirtualMachineScaleSetListResultIterator {
+	return original.NewVirtualMachineScaleSetListResultIterator(page)
+}
+func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return original.NewVirtualMachineScaleSetListResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetListSkusResultIterator(page VirtualMachineScaleSetListSkusResultPage) VirtualMachineScaleSetListSkusResultIterator {
+	return original.NewVirtualMachineScaleSetListSkusResultIterator(page)
+}
+func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return original.NewVirtualMachineScaleSetListSkusResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetListWithLinkResultIterator(page VirtualMachineScaleSetListWithLinkResultPage) VirtualMachineScaleSetListWithLinkResultIterator {
+	return original.NewVirtualMachineScaleSetListWithLinkResultIterator(page)
+}
+func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return original.NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
+	return original.NewVirtualMachineScaleSetVMListResultIterator(page)
+}
+func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
+	return original.NewVirtualMachineScaleSetVMListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

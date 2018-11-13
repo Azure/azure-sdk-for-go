@@ -980,6 +980,11 @@ func (iter AlertListIterator) Value() Alert {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AlertListIterator type.
+func NewAlertListIterator(page AlertListPage) AlertListIterator {
+	return AlertListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (al AlertList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
@@ -1047,6 +1052,11 @@ func (page AlertListPage) Values() []Alert {
 		return nil
 	}
 	return *page.al.Value
+}
+
+// Creates a new instance of the AlertListPage type.
+func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{fn: getNextPage}
 }
 
 // AlertProperties properties of alert
@@ -1359,6 +1369,11 @@ func (iter AvailableProviderOperationsIterator) Value() AvailableProviderOperati
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AvailableProviderOperationsIterator type.
+func NewAvailableProviderOperationsIterator(page AvailableProviderOperationsPage) AvailableProviderOperationsIterator {
+	return AvailableProviderOperationsIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (apo AvailableProviderOperations) IsEmpty() bool {
 	return apo.Value == nil || len(*apo.Value) == 0
@@ -1426,6 +1441,11 @@ func (page AvailableProviderOperationsPage) Values() []AvailableProviderOperatio
 		return nil
 	}
 	return *page.apo.Value
+}
+
+// Creates a new instance of the AvailableProviderOperationsPage type.
+func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return AvailableProviderOperationsPage{fn: getNextPage}
 }
 
 // Backup the backup.
@@ -1675,6 +1695,11 @@ func (iter BackupListIterator) Value() Backup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BackupListIterator type.
+func NewBackupListIterator(page BackupListPage) BackupListIterator {
+	return BackupListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bl BackupList) IsEmpty() bool {
 	return bl.Value == nil || len(*bl.Value) == 0
@@ -1742,6 +1767,11 @@ func (page BackupListPage) Values() []Backup {
 		return nil
 	}
 	return *page.bl.Value
+}
+
+// Creates a new instance of the BackupListPage type.
+func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return BackupListPage{fn: getNextPage}
 }
 
 // BackupProperties class represents Backup properties
@@ -3588,6 +3618,11 @@ func (iter JobListIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobListIterator type.
+func NewJobListIterator(page JobListPage) JobListIterator {
+	return JobListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jl JobList) IsEmpty() bool {
 	return jl.Value == nil || len(*jl.Value) == 0
@@ -3655,6 +3690,11 @@ func (page JobListPage) Values() []Job {
 		return nil
 	}
 	return *page.jl.Value
+}
+
+// Creates a new instance of the JobListPage type.
+func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return JobListPage{fn: getNextPage}
 }
 
 // JobProperties properties for the job

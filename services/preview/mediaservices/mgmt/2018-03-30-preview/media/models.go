@@ -1205,6 +1205,11 @@ func (iter AssetCollectionIterator) Value() Asset {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AssetCollectionIterator type.
+func NewAssetCollectionIterator(page AssetCollectionPage) AssetCollectionIterator {
+	return AssetCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ac AssetCollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -1272,6 +1277,11 @@ func (page AssetCollectionPage) Values() []Asset {
 		return nil
 	}
 	return *page.ac.Value
+}
+
+// Creates a new instance of the AssetCollectionPage type.
+func NewAssetCollectionPage(getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
+	return AssetCollectionPage{fn: getNextPage}
 }
 
 // AssetContainerSas the Asset Storage container SAS URLs.
@@ -2110,6 +2120,11 @@ func (iter ContentKeyPolicyCollectionIterator) Value() ContentKeyPolicy {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ContentKeyPolicyCollectionIterator type.
+func NewContentKeyPolicyCollectionIterator(page ContentKeyPolicyCollectionPage) ContentKeyPolicyCollectionIterator {
+	return ContentKeyPolicyCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ckpc ContentKeyPolicyCollection) IsEmpty() bool {
 	return ckpc.Value == nil || len(*ckpc.Value) == 0
@@ -2177,6 +2192,11 @@ func (page ContentKeyPolicyCollectionPage) Values() []ContentKeyPolicy {
 		return nil
 	}
 	return *page.ckpc.Value
+}
+
+// Creates a new instance of the ContentKeyPolicyCollectionPage type.
+func NewContentKeyPolicyCollectionPage(getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
+	return ContentKeyPolicyCollectionPage{fn: getNextPage}
 }
 
 // BasicContentKeyPolicyConfiguration base class for Content Key Policy configuration. A derived class must be used to
@@ -4673,6 +4693,11 @@ func (iter JobCollectionIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobCollectionIterator type.
+func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
+	return JobCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jc JobCollection) IsEmpty() bool {
 	return jc.Value == nil || len(*jc.Value) == 0
@@ -4740,6 +4765,11 @@ func (page JobCollectionPage) Values() []Job {
 		return nil
 	}
 	return *page.jc.Value
+}
+
+// Creates a new instance of the JobCollectionPage type.
+func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{fn: getNextPage}
 }
 
 // JobError details of JobOutput errors.
@@ -6085,6 +6115,11 @@ func (iter LiveEventListResultIterator) Value() LiveEvent {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LiveEventListResultIterator type.
+func NewLiveEventListResultIterator(page LiveEventListResultPage) LiveEventListResultIterator {
+	return LiveEventListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lelr LiveEventListResult) IsEmpty() bool {
 	return lelr.Value == nil || len(*lelr.Value) == 0
@@ -6152,6 +6187,11 @@ func (page LiveEventListResultPage) Values() []LiveEvent {
 		return nil
 	}
 	return *page.lelr.Value
+}
+
+// Creates a new instance of the LiveEventListResultPage type.
+func NewLiveEventListResultPage(getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
+	return LiveEventListResultPage{fn: getNextPage}
 }
 
 // LiveEventPreview the Live Event preview.
@@ -6499,6 +6539,11 @@ func (iter LiveOutputListResultIterator) Value() LiveOutput {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LiveOutputListResultIterator type.
+func NewLiveOutputListResultIterator(page LiveOutputListResultPage) LiveOutputListResultIterator {
+	return LiveOutputListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lolr LiveOutputListResult) IsEmpty() bool {
 	return lolr.Value == nil || len(*lolr.Value) == 0
@@ -6566,6 +6611,11 @@ func (page LiveOutputListResultPage) Values() []LiveOutput {
 		return nil
 	}
 	return *page.lolr.Value
+}
+
+// Creates a new instance of the LiveOutputListResultPage type.
+func NewLiveOutputListResultPage(getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
+	return LiveOutputListResultPage{fn: getNextPage}
 }
 
 // LiveOutputProperties the JSON object that contains the properties required to create a Live Output.
@@ -6946,6 +6996,11 @@ func (iter OperationCollectionIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationCollectionIterator type.
+func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
+	return OperationCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oc OperationCollection) IsEmpty() bool {
 	return oc.Value == nil || len(*oc.Value) == 0
@@ -7013,6 +7068,11 @@ func (page OperationCollectionPage) Values() []Operation {
 		return nil
 	}
 	return *page.oc.Value
+}
+
+// Creates a new instance of the OperationCollectionPage type.
+func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{fn: getNextPage}
 }
 
 // OperationDisplay operation details.
@@ -7733,6 +7793,11 @@ func (iter ServiceCollectionIterator) Value() Service {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServiceCollectionIterator type.
+func NewServiceCollectionIterator(page ServiceCollectionPage) ServiceCollectionIterator {
+	return ServiceCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sc ServiceCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -7800,6 +7865,11 @@ func (page ServiceCollectionPage) Values() []Service {
 		return nil
 	}
 	return *page.sc.Value
+}
+
+// Creates a new instance of the ServiceCollectionPage type.
+func NewServiceCollectionPage(getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
+	return ServiceCollectionPage{fn: getNextPage}
 }
 
 // ServiceProperties properties of the Media Services account.
@@ -8121,6 +8191,11 @@ func (iter StreamingEndpointListResultIterator) Value() StreamingEndpoint {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StreamingEndpointListResultIterator type.
+func NewStreamingEndpointListResultIterator(page StreamingEndpointListResultPage) StreamingEndpointListResultIterator {
+	return StreamingEndpointListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (selr StreamingEndpointListResult) IsEmpty() bool {
 	return selr.Value == nil || len(*selr.Value) == 0
@@ -8188,6 +8263,11 @@ func (page StreamingEndpointListResultPage) Values() []StreamingEndpoint {
 		return nil
 	}
 	return *page.selr.Value
+}
+
+// Creates a new instance of the StreamingEndpointListResultPage type.
+func NewStreamingEndpointListResultPage(getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
+	return StreamingEndpointListResultPage{fn: getNextPage}
 }
 
 // StreamingEndpointProperties the StreamingEndpoint properties.
@@ -8530,6 +8610,11 @@ func (iter StreamingLocatorCollectionIterator) Value() StreamingLocator {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StreamingLocatorCollectionIterator type.
+func NewStreamingLocatorCollectionIterator(page StreamingLocatorCollectionPage) StreamingLocatorCollectionIterator {
+	return StreamingLocatorCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (slc StreamingLocatorCollection) IsEmpty() bool {
 	return slc.Value == nil || len(*slc.Value) == 0
@@ -8597,6 +8682,11 @@ func (page StreamingLocatorCollectionPage) Values() []StreamingLocator {
 		return nil
 	}
 	return *page.slc.Value
+}
+
+// Creates a new instance of the StreamingLocatorCollectionPage type.
+func NewStreamingLocatorCollectionPage(getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
+	return StreamingLocatorCollectionPage{fn: getNextPage}
 }
 
 // StreamingLocatorContentKey class for content key in Streaming Locator
@@ -8804,6 +8894,11 @@ func (iter StreamingPolicyCollectionIterator) Value() StreamingPolicy {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StreamingPolicyCollectionIterator type.
+func NewStreamingPolicyCollectionIterator(page StreamingPolicyCollectionPage) StreamingPolicyCollectionIterator {
+	return StreamingPolicyCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (spc StreamingPolicyCollection) IsEmpty() bool {
 	return spc.Value == nil || len(*spc.Value) == 0
@@ -8871,6 +8966,11 @@ func (page StreamingPolicyCollectionPage) Values() []StreamingPolicy {
 		return nil
 	}
 	return *page.spc.Value
+}
+
+// Creates a new instance of the StreamingPolicyCollectionPage type.
+func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
+	return StreamingPolicyCollectionPage{fn: getNextPage}
 }
 
 // StreamingPolicyContentKey class to specify properties of content key
@@ -9107,6 +9207,11 @@ func (iter SubscriptionMediaServiceCollectionIterator) Value() SubscriptionMedia
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SubscriptionMediaServiceCollectionIterator type.
+func NewSubscriptionMediaServiceCollectionIterator(page SubscriptionMediaServiceCollectionPage) SubscriptionMediaServiceCollectionIterator {
+	return SubscriptionMediaServiceCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (smsc SubscriptionMediaServiceCollection) IsEmpty() bool {
 	return smsc.Value == nil || len(*smsc.Value) == 0
@@ -9174,6 +9279,11 @@ func (page SubscriptionMediaServiceCollectionPage) Values() []SubscriptionMediaS
 		return nil
 	}
 	return *page.smsc.Value
+}
+
+// Creates a new instance of the SubscriptionMediaServiceCollectionPage type.
+func NewSubscriptionMediaServiceCollectionPage(getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
+	return SubscriptionMediaServiceCollectionPage{fn: getNextPage}
 }
 
 // SyncStorageKeysInput the input to the sync storage keys request.
@@ -9384,6 +9494,11 @@ func (iter TransformCollectionIterator) Value() Transform {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TransformCollectionIterator type.
+func NewTransformCollectionIterator(page TransformCollectionPage) TransformCollectionIterator {
+	return TransformCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tc TransformCollection) IsEmpty() bool {
 	return tc.Value == nil || len(*tc.Value) == 0
@@ -9451,6 +9566,11 @@ func (page TransformCollectionPage) Values() []Transform {
 		return nil
 	}
 	return *page.tc.Value
+}
+
+// Creates a new instance of the TransformCollectionPage type.
+func NewTransformCollectionPage(getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
+	return TransformCollectionPage{fn: getNextPage}
 }
 
 // TransformOutput describes the properties of a TransformOutput, which are the rules to be applied while

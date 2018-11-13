@@ -414,6 +414,11 @@ func (iter IotDpsSkuDefinitionListResultIterator) Value() IotDpsSkuDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IotDpsSkuDefinitionListResultIterator type.
+func NewIotDpsSkuDefinitionListResultIterator(page IotDpsSkuDefinitionListResultPage) IotDpsSkuDefinitionListResultIterator {
+	return IotDpsSkuDefinitionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (idsdlr IotDpsSkuDefinitionListResult) IsEmpty() bool {
 	return idsdlr.Value == nil || len(*idsdlr.Value) == 0
@@ -481,6 +486,11 @@ func (page IotDpsSkuDefinitionListResultPage) Values() []IotDpsSkuDefinition {
 		return nil
 	}
 	return *page.idsdlr.Value
+}
+
+// Creates a new instance of the IotDpsSkuDefinitionListResultPage type.
+func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
+	return IotDpsSkuDefinitionListResultPage{fn: getNextPage}
 }
 
 // IotDpsSkuInfo list of possible provisoning service SKUs.
@@ -596,6 +606,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -663,6 +678,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // ProvisioningServiceDescription the description of the provisioning service.
@@ -784,6 +804,11 @@ func (iter ProvisioningServiceDescriptionListResultIterator) Value() Provisionin
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProvisioningServiceDescriptionListResultIterator type.
+func NewProvisioningServiceDescriptionListResultIterator(page ProvisioningServiceDescriptionListResultPage) ProvisioningServiceDescriptionListResultIterator {
+	return ProvisioningServiceDescriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (psdlr ProvisioningServiceDescriptionListResult) IsEmpty() bool {
 	return psdlr.Value == nil || len(*psdlr.Value) == 0
@@ -851,6 +876,11 @@ func (page ProvisioningServiceDescriptionListResultPage) Values() []Provisioning
 		return nil
 	}
 	return *page.psdlr.Value
+}
+
+// Creates a new instance of the ProvisioningServiceDescriptionListResultPage type.
+func NewProvisioningServiceDescriptionListResultPage(getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
+	return ProvisioningServiceDescriptionListResultPage{fn: getNextPage}
 }
 
 // Resource the common properties of an Azure resource.
@@ -969,6 +999,11 @@ func (iter SharedAccessSignatureAuthorizationRuleListResultIterator) Value() Sha
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultIterator type.
+func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
+	return SharedAccessSignatureAuthorizationRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) IsEmpty() bool {
 	return sasarlr.Value == nil || len(*sasarlr.Value) == 0
@@ -1037,6 +1072,11 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 		return nil
 	}
 	return *page.sasarlr.Value
+}
+
+// Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
 }
 
 // TagsResource a container holding only the Tags for a resource, allowing the user to update the tags on a

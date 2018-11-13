@@ -36,12 +36,7 @@ type VideosClient struct {
 
 // NewVideosClient creates an instance of the VideosClient client.
 func NewVideosClient() VideosClient {
-	return NewVideosClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewVideosClientWithBaseURI creates an instance of the VideosClient client.
-func NewVideosClientWithBaseURI(baseURI string) VideosClient {
-	return VideosClient{NewWithBaseURI(baseURI)}
+	return VideosClient{New()}
 }
 
 // Details sends the details request.
@@ -233,6 +228,10 @@ func (client VideosClient) Details(ctx context.Context, query string, acceptLang
 
 // DetailsPreparer prepares the Details request.
 func (client VideosClient) DetailsPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, ID string, modules []VideoInsightModule, market string, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -266,7 +265,7 @@ func (client VideosClient) DetailsPreparer(ctx context.Context, query string, ac
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/videos/details"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))
@@ -519,6 +518,10 @@ func (client VideosClient) Search(ctx context.Context, query string, acceptLangu
 
 // SearchPreparer prepares the Search request.
 func (client VideosClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, freshness Freshness, ID string, length VideoLength, market string, offset *int32, pricing VideoPricing, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -564,7 +567,7 @@ func (client VideosClient) SearchPreparer(ctx context.Context, query string, acc
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/videos/search"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))
@@ -779,6 +782,10 @@ func (client VideosClient) Trending(ctx context.Context, acceptLanguage string, 
 
 // TrendingPreparer prepares the Trending request.
 func (client VideosClient) TrendingPreparer(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{}
 	if len(countryCode) > 0 {
 		queryParameters["cc"] = autorest.Encode("query", countryCode)
@@ -801,7 +808,7 @@ func (client VideosClient) TrendingPreparer(ctx context.Context, acceptLanguage 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/videos/trending"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

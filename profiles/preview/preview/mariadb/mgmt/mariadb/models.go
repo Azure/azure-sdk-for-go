@@ -19,7 +19,11 @@
 
 package mariadb
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mariadb/mgmt/2018-06-01-preview/mariadb"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/mariadb/mgmt/2018-06-01-preview/mariadb"
+)
 
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
@@ -230,6 +234,12 @@ func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 }
 func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	return original.PossibleVirtualNetworkRuleStateValues()
+}
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return original.NewVirtualNetworkRuleListResultIterator(page)
+}
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

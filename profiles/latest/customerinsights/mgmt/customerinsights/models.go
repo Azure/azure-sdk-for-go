@@ -19,7 +19,11 @@
 
 package customerinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
+)
 
 type AuthorizationPoliciesClient = original.AuthorizationPoliciesClient
 
@@ -506,6 +510,102 @@ func PossibleRoleTypesValues() []RoleTypes {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func NewAuthorizationPolicyListResultIterator(page AuthorizationPolicyListResultPage) AuthorizationPolicyListResultIterator {
+	return original.NewAuthorizationPolicyListResultIterator(page)
+}
+func NewAuthorizationPolicyListResultPage(getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
+	return original.NewAuthorizationPolicyListResultPage(getNextPage)
+}
+func NewConnectorListResultIterator(page ConnectorListResultPage) ConnectorListResultIterator {
+	return original.NewConnectorListResultIterator(page)
+}
+func NewConnectorListResultPage(getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
+	return original.NewConnectorListResultPage(getNextPage)
+}
+func NewConnectorMappingListResultIterator(page ConnectorMappingListResultPage) ConnectorMappingListResultIterator {
+	return original.NewConnectorMappingListResultIterator(page)
+}
+func NewConnectorMappingListResultPage(getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
+	return original.NewConnectorMappingListResultPage(getNextPage)
+}
+func NewHubListResultIterator(page HubListResultPage) HubListResultIterator {
+	return original.NewHubListResultIterator(page)
+}
+func NewHubListResultPage(getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
+	return original.NewHubListResultPage(getNextPage)
+}
+func NewInteractionListResultIterator(page InteractionListResultPage) InteractionListResultIterator {
+	return original.NewInteractionListResultIterator(page)
+}
+func NewInteractionListResultPage(getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
+	return original.NewInteractionListResultPage(getNextPage)
+}
+func NewKpiListResultIterator(page KpiListResultPage) KpiListResultIterator {
+	return original.NewKpiListResultIterator(page)
+}
+func NewKpiListResultPage(getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
+	return original.NewKpiListResultPage(getNextPage)
+}
+func NewLinkListResultIterator(page LinkListResultPage) LinkListResultIterator {
+	return original.NewLinkListResultIterator(page)
+}
+func NewLinkListResultPage(getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
+	return original.NewLinkListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewPredictionListResultIterator(page PredictionListResultPage) PredictionListResultIterator {
+	return original.NewPredictionListResultIterator(page)
+}
+func NewPredictionListResultPage(getNextPage func(context.Context, PredictionListResult) (PredictionListResult, error)) PredictionListResultPage {
+	return original.NewPredictionListResultPage(getNextPage)
+}
+func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
+	return original.NewProfileListResultIterator(page)
+}
+func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return original.NewProfileListResultPage(getNextPage)
+}
+func NewRelationshipLinkListResultIterator(page RelationshipLinkListResultPage) RelationshipLinkListResultIterator {
+	return original.NewRelationshipLinkListResultIterator(page)
+}
+func NewRelationshipLinkListResultPage(getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
+	return original.NewRelationshipLinkListResultPage(getNextPage)
+}
+func NewRelationshipListResultIterator(page RelationshipListResultPage) RelationshipListResultIterator {
+	return original.NewRelationshipListResultIterator(page)
+}
+func NewRelationshipListResultPage(getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
+	return original.NewRelationshipListResultPage(getNextPage)
+}
+func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
+	return original.NewRoleAssignmentListResultIterator(page)
+}
+func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(getNextPage)
+}
+func NewRoleListResultIterator(page RoleListResultPage) RoleListResultIterator {
+	return original.NewRoleListResultIterator(page)
+}
+func NewRoleListResultPage(getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
+	return original.NewRoleListResultPage(getNextPage)
+}
+func NewViewListResultIterator(page ViewListResultPage) ViewListResultIterator {
+	return original.NewViewListResultIterator(page)
+}
+func NewViewListResultPage(getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
+	return original.NewViewListResultPage(getNextPage)
+}
+func NewWidgetTypeListResultIterator(page WidgetTypeListResultPage) WidgetTypeListResultIterator {
+	return original.NewWidgetTypeListResultIterator(page)
+}
+func NewWidgetTypeListResultPage(getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
+	return original.NewWidgetTypeListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

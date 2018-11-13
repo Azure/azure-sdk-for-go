@@ -729,6 +729,11 @@ func (iter ListResultIterator) Value() ContainerService {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -796,6 +801,11 @@ func (page ListResultPage) Values() []ContainerService {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // ManagedCluster managed cluster.
@@ -1085,6 +1095,11 @@ func (iter ManagedClusterListResultIterator) Value() ManagedCluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedClusterListResultIterator type.
+func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) ManagedClusterListResultIterator {
+	return ManagedClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mclr ManagedClusterListResult) IsEmpty() bool {
 	return mclr.Value == nil || len(*mclr.Value) == 0
@@ -1152,6 +1167,11 @@ func (page ManagedClusterListResultPage) Values() []ManagedCluster {
 		return nil
 	}
 	return *page.mclr.Value
+}
+
+// Creates a new instance of the ManagedClusterListResultPage type.
+func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
+	return ManagedClusterListResultPage{fn: getNextPage}
 }
 
 // ManagedClusterPoolUpgradeProfile the list of available upgrade versions.

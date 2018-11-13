@@ -3254,6 +3254,11 @@ func (iter EncryptionProtectorListResultIterator) Value() EncryptionProtector {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EncryptionProtectorListResultIterator type.
+func NewEncryptionProtectorListResultIterator(page EncryptionProtectorListResultPage) EncryptionProtectorListResultIterator {
+	return EncryptionProtectorListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (eplr EncryptionProtectorListResult) IsEmpty() bool {
 	return eplr.Value == nil || len(*eplr.Value) == 0
@@ -3321,6 +3326,11 @@ func (page EncryptionProtectorListResultPage) Values() []EncryptionProtector {
 		return nil
 	}
 	return *page.eplr.Value
+}
+
+// Creates a new instance of the EncryptionProtectorListResultPage type.
+func NewEncryptionProtectorListResultPage(getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
+	return EncryptionProtectorListResultPage{fn: getNextPage}
 }
 
 // EncryptionProtectorProperties properties for an encryption protector execution.
@@ -3559,6 +3569,11 @@ func (iter FailoverGroupListResultIterator) Value() FailoverGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FailoverGroupListResultIterator type.
+func NewFailoverGroupListResultIterator(page FailoverGroupListResultPage) FailoverGroupListResultIterator {
+	return FailoverGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fglr FailoverGroupListResult) IsEmpty() bool {
 	return fglr.Value == nil || len(*fglr.Value) == 0
@@ -3626,6 +3641,11 @@ func (page FailoverGroupListResultPage) Values() []FailoverGroup {
 		return nil
 	}
 	return *page.fglr.Value
+}
+
+// Creates a new instance of the FailoverGroupListResultPage type.
+func NewFailoverGroupListResultPage(getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
+	return FailoverGroupListResultPage{fn: getNextPage}
 }
 
 // FailoverGroupProperties properties of a failover group.
@@ -4541,6 +4561,11 @@ func (iter ManagedInstanceListResultIterator) Value() ManagedInstance {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedInstanceListResultIterator type.
+func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) ManagedInstanceListResultIterator {
+	return ManagedInstanceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (milr ManagedInstanceListResult) IsEmpty() bool {
 	return milr.Value == nil || len(*milr.Value) == 0
@@ -4608,6 +4633,11 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 		return nil
 	}
 	return *page.milr.Value
+}
+
+// Creates a new instance of the ManagedInstanceListResultPage type.
+func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return ManagedInstanceListResultPage{fn: getNextPage}
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -4993,6 +5023,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -5060,6 +5095,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PartnerInfo partner server information for the failover group.
@@ -6458,6 +6498,11 @@ func (iter ServerKeyListResultIterator) Value() ServerKey {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServerKeyListResultIterator type.
+func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
+	return ServerKeyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sklr ServerKeyListResult) IsEmpty() bool {
 	return sklr.Value == nil || len(*sklr.Value) == 0
@@ -6525,6 +6570,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 		return nil
 	}
 	return *page.sklr.Value
+}
+
+// Creates a new instance of the ServerKeyListResultPage type.
+func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{fn: getNextPage}
 }
 
 // ServerKeyProperties properties for a server key execution.
@@ -6660,6 +6710,11 @@ func (iter ServerListResultIterator) Value() Server {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServerListResultIterator type.
+func NewServerListResultIterator(page ServerListResultPage) ServerListResultIterator {
+	return ServerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (slr ServerListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
@@ -6727,6 +6782,11 @@ func (page ServerListResultPage) Values() []Server {
 		return nil
 	}
 	return *page.slr.Value
+}
+
+// Creates a new instance of the ServerListResultPage type.
+func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
+	return ServerListResultPage{fn: getNextPage}
 }
 
 // ServerProperties the properties of a server.
@@ -7341,6 +7401,11 @@ func (iter SubscriptionUsageListResultIterator) Value() SubscriptionUsage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SubscriptionUsageListResultIterator type.
+func NewSubscriptionUsageListResultIterator(page SubscriptionUsageListResultPage) SubscriptionUsageListResultIterator {
+	return SubscriptionUsageListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sulr SubscriptionUsageListResult) IsEmpty() bool {
 	return sulr.Value == nil || len(*sulr.Value) == 0
@@ -7408,6 +7473,11 @@ func (page SubscriptionUsageListResultPage) Values() []SubscriptionUsage {
 		return nil
 	}
 	return *page.sulr.Value
+}
+
+// Creates a new instance of the SubscriptionUsageListResultPage type.
+func NewSubscriptionUsageListResultPage(getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
+	return SubscriptionUsageListResultPage{fn: getNextPage}
 }
 
 // SubscriptionUsageProperties properties of a subscription usage.
@@ -7660,6 +7730,11 @@ func (iter SyncAgentLinkedDatabaseListResultIterator) Value() SyncAgentLinkedDat
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncAgentLinkedDatabaseListResultIterator type.
+func NewSyncAgentLinkedDatabaseListResultIterator(page SyncAgentLinkedDatabaseListResultPage) SyncAgentLinkedDatabaseListResultIterator {
+	return SyncAgentLinkedDatabaseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (saldlr SyncAgentLinkedDatabaseListResult) IsEmpty() bool {
 	return saldlr.Value == nil || len(*saldlr.Value) == 0
@@ -7727,6 +7802,11 @@ func (page SyncAgentLinkedDatabaseListResultPage) Values() []SyncAgentLinkedData
 		return nil
 	}
 	return *page.saldlr.Value
+}
+
+// Creates a new instance of the SyncAgentLinkedDatabaseListResultPage type.
+func NewSyncAgentLinkedDatabaseListResultPage(getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
+	return SyncAgentLinkedDatabaseListResultPage{fn: getNextPage}
 }
 
 // SyncAgentLinkedDatabaseProperties properties of an Azure SQL Database sync agent linked database.
@@ -7812,6 +7892,11 @@ func (iter SyncAgentListResultIterator) Value() SyncAgent {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncAgentListResultIterator type.
+func NewSyncAgentListResultIterator(page SyncAgentListResultPage) SyncAgentListResultIterator {
+	return SyncAgentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (salr SyncAgentListResult) IsEmpty() bool {
 	return salr.Value == nil || len(*salr.Value) == 0
@@ -7879,6 +7964,11 @@ func (page SyncAgentListResultPage) Values() []SyncAgent {
 		return nil
 	}
 	return *page.salr.Value
+}
+
+// Creates a new instance of the SyncAgentListResultPage type.
+func NewSyncAgentListResultPage(getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
+	return SyncAgentListResultPage{fn: getNextPage}
 }
 
 // SyncAgentProperties properties of an Azure SQL Database sync agent.
@@ -8019,6 +8109,11 @@ func (iter SyncDatabaseIDListResultIterator) Value() SyncDatabaseIDProperties {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncDatabaseIDListResultIterator type.
+func NewSyncDatabaseIDListResultIterator(page SyncDatabaseIDListResultPage) SyncDatabaseIDListResultIterator {
+	return SyncDatabaseIDListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sdilr SyncDatabaseIDListResult) IsEmpty() bool {
 	return sdilr.Value == nil || len(*sdilr.Value) == 0
@@ -8086,6 +8181,11 @@ func (page SyncDatabaseIDListResultPage) Values() []SyncDatabaseIDProperties {
 		return nil
 	}
 	return *page.sdilr.Value
+}
+
+// Creates a new instance of the SyncDatabaseIDListResultPage type.
+func NewSyncDatabaseIDListResultPage(getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
+	return SyncDatabaseIDListResultPage{fn: getNextPage}
 }
 
 // SyncDatabaseIDProperties properties of the sync database id.
@@ -8170,6 +8270,11 @@ func (iter SyncFullSchemaPropertiesListResultIterator) Value() SyncFullSchemaPro
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncFullSchemaPropertiesListResultIterator type.
+func NewSyncFullSchemaPropertiesListResultIterator(page SyncFullSchemaPropertiesListResultPage) SyncFullSchemaPropertiesListResultIterator {
+	return SyncFullSchemaPropertiesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sfsplr SyncFullSchemaPropertiesListResult) IsEmpty() bool {
 	return sfsplr.Value == nil || len(*sfsplr.Value) == 0
@@ -8237,6 +8342,11 @@ func (page SyncFullSchemaPropertiesListResultPage) Values() []SyncFullSchemaProp
 		return nil
 	}
 	return *page.sfsplr.Value
+}
+
+// Creates a new instance of the SyncFullSchemaPropertiesListResultPage type.
+func NewSyncFullSchemaPropertiesListResultPage(getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
+	return SyncFullSchemaPropertiesListResultPage{fn: getNextPage}
 }
 
 // SyncFullSchemaTable properties of the table in the database full schema.
@@ -8420,6 +8530,11 @@ func (iter SyncGroupListResultIterator) Value() SyncGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncGroupListResultIterator type.
+func NewSyncGroupListResultIterator(page SyncGroupListResultPage) SyncGroupListResultIterator {
+	return SyncGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sglr SyncGroupListResult) IsEmpty() bool {
 	return sglr.Value == nil || len(*sglr.Value) == 0
@@ -8489,6 +8604,11 @@ func (page SyncGroupListResultPage) Values() []SyncGroup {
 	return *page.sglr.Value
 }
 
+// Creates a new instance of the SyncGroupListResultPage type.
+func NewSyncGroupListResultPage(getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
+	return SyncGroupListResultPage{fn: getNextPage}
+}
+
 // SyncGroupLogListResult a list of sync group log properties.
 type SyncGroupLogListResult struct {
 	autorest.Response `json:"-"`
@@ -8554,6 +8674,11 @@ func (iter SyncGroupLogListResultIterator) Value() SyncGroupLogProperties {
 		return SyncGroupLogProperties{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SyncGroupLogListResultIterator type.
+func NewSyncGroupLogListResultIterator(page SyncGroupLogListResultPage) SyncGroupLogListResultIterator {
+	return SyncGroupLogListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -8623,6 +8748,11 @@ func (page SyncGroupLogListResultPage) Values() []SyncGroupLogProperties {
 		return nil
 	}
 	return *page.sgllr.Value
+}
+
+// Creates a new instance of the SyncGroupLogListResultPage type.
+func NewSyncGroupLogListResultPage(getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
+	return SyncGroupLogListResultPage{fn: getNextPage}
 }
 
 // SyncGroupLogProperties properties of an Azure SQL Database sync group log.
@@ -8940,6 +9070,11 @@ func (iter SyncMemberListResultIterator) Value() SyncMember {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncMemberListResultIterator type.
+func NewSyncMemberListResultIterator(page SyncMemberListResultPage) SyncMemberListResultIterator {
+	return SyncMemberListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (smlr SyncMemberListResult) IsEmpty() bool {
 	return smlr.Value == nil || len(*smlr.Value) == 0
@@ -9007,6 +9142,11 @@ func (page SyncMemberListResultPage) Values() []SyncMember {
 		return nil
 	}
 	return *page.smlr.Value
+}
+
+// Creates a new instance of the SyncMemberListResultPage type.
+func NewSyncMemberListResultPage(getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
+	return SyncMemberListResultPage{fn: getNextPage}
 }
 
 // SyncMemberProperties properties of a sync member.
@@ -9533,6 +9673,11 @@ func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualNetworkRuleListResultIterator type.
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return VirtualNetworkRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
@@ -9600,6 +9745,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 		return nil
 	}
 	return *page.vnrlr.Value
+}
+
+// Creates a new instance of the VirtualNetworkRuleListResultPage type.
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{fn: getNextPage}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.

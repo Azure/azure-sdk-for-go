@@ -433,6 +433,11 @@ func (iter AccountListResultIterator) Value() Account {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AccountListResultIterator type.
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return AccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -500,6 +505,11 @@ func (page AccountListResultPage) Values() []Account {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AccountListResultPage type.
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{fn: getNextPage}
 }
 
 // AccountProperties account specific properties.
@@ -767,6 +777,11 @@ func (iter ListApplicationsResultIterator) Value() Application {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListApplicationsResultIterator type.
+func NewListApplicationsResultIterator(page ListApplicationsResultPage) ListApplicationsResultIterator {
+	return ListApplicationsResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lar ListApplicationsResult) IsEmpty() bool {
 	return lar.Value == nil || len(*lar.Value) == 0
@@ -834,6 +849,11 @@ func (page ListApplicationsResultPage) Values() []Application {
 		return nil
 	}
 	return *page.lar.Value
+}
+
+// Creates a new instance of the ListApplicationsResultPage type.
+func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return ListApplicationsResultPage{fn: getNextPage}
 }
 
 // LocationQuota quotas associated with a Batch region for a particular subscription.
@@ -926,6 +946,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -993,6 +1018,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Resource a definition of an Azure resource.

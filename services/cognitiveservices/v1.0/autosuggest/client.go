@@ -33,26 +33,26 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Autosuggest
-	DefaultBaseURI = "https://api.cognitive.microsoft.com/bing/v7.0"
+	// DefaultEndpoint is the default value for endpoint
+	DefaultEndpoint = "https://api.cognitive.microsoft.com"
 )
 
 // BaseClient is the base client for Autosuggest.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
 func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+	return NewWithoutDefaults(DefaultEndpoint)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+// NewWithoutDefaults creates an instance of the BaseClient client.
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }
 
@@ -200,6 +200,10 @@ func (client BaseClient) AutoSuggest(ctx context.Context, query string, acceptLa
 
 // AutoSuggestPreparer prepares the AutoSuggest request.
 func (client BaseClient) AutoSuggestPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -223,7 +227,7 @@ func (client BaseClient) AutoSuggestPreparer(ctx context.Context, query string, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/Suggestions"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

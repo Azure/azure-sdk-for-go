@@ -337,6 +337,11 @@ func (iter HanaInstancesListResultIterator) Value() HanaInstance {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the HanaInstancesListResultIterator type.
+func NewHanaInstancesListResultIterator(page HanaInstancesListResultPage) HanaInstancesListResultIterator {
+	return HanaInstancesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (hilr HanaInstancesListResult) IsEmpty() bool {
 	return hilr.Value == nil || len(*hilr.Value) == 0
@@ -404,6 +409,11 @@ func (page HanaInstancesListResultPage) Values() []HanaInstance {
 		return nil
 	}
 	return *page.hilr.Value
+}
+
+// Creates a new instance of the HanaInstancesListResultPage type.
+func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
+	return HanaInstancesListResultPage{fn: getNextPage}
 }
 
 // HardwareProfile specifies the hardware settings for the HANA instance.

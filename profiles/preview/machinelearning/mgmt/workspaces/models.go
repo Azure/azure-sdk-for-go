@@ -19,7 +19,11 @@
 
 package workspaces
 
-import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-04-01/workspaces"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-04-01/workspaces"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -75,6 +79,12 @@ func PossibleStateValues() []State {
 }
 func PossibleWorkspaceTypeValues() []WorkspaceType {
 	return original.PossibleWorkspaceTypeValues()
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

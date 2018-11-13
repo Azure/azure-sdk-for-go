@@ -19,7 +19,11 @@
 
 package costmanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
+)
 
 type AlertsClient = original.AlertsClient
 type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
@@ -254,6 +258,18 @@ func PossibleStatusTypeValues() []StatusType {
 }
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()
+}
+func NewAlertListResultIterator(page AlertListResultPage) AlertListResultIterator {
+	return original.NewAlertListResultIterator(page)
+}
+func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
+	return original.NewAlertListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

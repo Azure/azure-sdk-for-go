@@ -267,6 +267,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -334,6 +339,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
 }
 
 // ClusterProperties event Hubs Cluster properties supplied in responses in List or Get operations.
@@ -590,6 +600,11 @@ func (iter EHNamespaceListResultIterator) Value() EHNamespace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EHNamespaceListResultIterator type.
+func NewEHNamespaceListResultIterator(page EHNamespaceListResultPage) EHNamespaceListResultIterator {
+	return EHNamespaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (enlr EHNamespaceListResult) IsEmpty() bool {
 	return enlr.Value == nil || len(*enlr.Value) == 0
@@ -657,6 +672,11 @@ func (page EHNamespaceListResultPage) Values() []EHNamespace {
 		return nil
 	}
 	return *page.enlr.Value
+}
+
+// Creates a new instance of the EHNamespaceListResultPage type.
+func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
+	return EHNamespaceListResultPage{fn: getNextPage}
 }
 
 // EHNamespaceProperties namespace properties supplied for create namespace operation.
@@ -839,6 +859,11 @@ func (iter IPFilterRuleListResultIterator) Value() IPFilterRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IPFilterRuleListResultIterator type.
+func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilterRuleListResultIterator {
+	return IPFilterRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ifrlr IPFilterRuleListResult) IsEmpty() bool {
 	return ifrlr.Value == nil || len(*ifrlr.Value) == 0
@@ -906,6 +931,11 @@ func (page IPFilterRuleListResultPage) Values() []IPFilterRule {
 		return nil
 	}
 	return *page.ifrlr.Value
+}
+
+// Creates a new instance of the IPFilterRuleListResultPage type.
+func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return IPFilterRuleListResultPage{fn: getNextPage}
 }
 
 // IPFilterRuleProperties properties supplied to create or update IpFilterRules
@@ -1056,6 +1086,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1123,6 +1158,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Resource the Resource definition
@@ -1329,6 +1369,11 @@ func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualNetworkRuleListResultIterator type.
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return VirtualNetworkRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
@@ -1396,6 +1441,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 		return nil
 	}
 	return *page.vnrlr.Value
+}
+
+// Creates a new instance of the VirtualNetworkRuleListResultPage type.
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{fn: getNextPage}
 }
 
 // VirtualNetworkRuleProperties properties supplied to create or update VirtualNetworkRules

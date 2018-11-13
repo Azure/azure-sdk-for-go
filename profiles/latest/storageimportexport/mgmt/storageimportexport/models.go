@@ -19,7 +19,11 @@
 
 package storageimportexport
 
-import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
+)
 
 type BitLockerKeysClient = original.BitLockerKeysClient
 
@@ -96,6 +100,12 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, accept
 }
 func PossibleDriveStateValues() []DriveState {
 	return original.PossibleDriveStateValues()
+}
+func NewListJobsResponseIterator(page ListJobsResponsePage) ListJobsResponseIterator {
+	return original.NewListJobsResponseIterator(page)
+}
+func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
+	return original.NewListJobsResponsePage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)

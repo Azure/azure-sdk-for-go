@@ -19,7 +19,11 @@
 
 package commerce
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -71,6 +75,12 @@ func PossibleAggregationGranularityValues() []AggregationGranularity {
 }
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
+}
+func NewUsageAggregationListResultIterator(page UsageAggregationListResultPage) UsageAggregationListResultIterator {
+	return original.NewUsageAggregationListResultIterator(page)
+}
+func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
+	return original.NewUsageAggregationListResultPage(getNextPage)
 }
 func NewRateCardClient(subscriptionID string) RateCardClient {
 	return original.NewRateCardClient(subscriptionID)

@@ -75,9 +75,7 @@ func BuildProfile(packageList collection.Enumerable, name, outputLocation string
 				return
 			}
 			files := token.NewFileSet()
-			parsed, err := parser.ParseDir(files, cast, func(fi os.FileInfo) bool {
-				return fi.Name() != "interfaces.go"
-			}, 0)
+			parsed, err := parser.ParseDir(files, cast, nil, 0)
 			if err != nil {
 				errLog.Printf("Couldn't open %q because: %v", cast, err)
 				return

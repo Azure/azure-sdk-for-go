@@ -424,6 +424,11 @@ func (iter CustomDomainListResultIterator) Value() CustomDomain {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CustomDomainListResultIterator type.
+func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDomainListResultIterator {
+	return CustomDomainListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cdlr CustomDomainListResult) IsEmpty() bool {
 	return cdlr.Value == nil || len(*cdlr.Value) == 0
@@ -491,6 +496,11 @@ func (page CustomDomainListResultPage) Values() []CustomDomain {
 		return nil
 	}
 	return *page.cdlr.Value
+}
+
+// Creates a new instance of the CustomDomainListResultPage type.
+func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
+	return CustomDomainListResultPage{fn: getNextPage}
 }
 
 // CustomDomainParameters the customDomain JSON object required for custom domain creation or update.
@@ -828,6 +838,11 @@ func (iter EdgenodeResultIterator) Value() EdgeNode {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EdgenodeResultIterator type.
+func NewEdgenodeResultIterator(page EdgenodeResultPage) EdgenodeResultIterator {
+	return EdgenodeResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (er EdgenodeResult) IsEmpty() bool {
 	return er.Value == nil || len(*er.Value) == 0
@@ -895,6 +910,11 @@ func (page EdgenodeResultPage) Values() []EdgeNode {
 		return nil
 	}
 	return *page.er.Value
+}
+
+// Creates a new instance of the EdgenodeResultPage type.
+func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
+	return EdgenodeResultPage{fn: getNextPage}
 }
 
 // Endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
@@ -1076,6 +1096,11 @@ func (iter EndpointListResultIterator) Value() Endpoint {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EndpointListResultIterator type.
+func NewEndpointListResultIterator(page EndpointListResultPage) EndpointListResultIterator {
+	return EndpointListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (elr EndpointListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
@@ -1143,6 +1168,11 @@ func (page EndpointListResultPage) Values() []Endpoint {
 		return nil
 	}
 	return *page.elr.Value
+}
+
+// Creates a new instance of the EndpointListResultPage type.
+func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
+	return EndpointListResultPage{fn: getNextPage}
 }
 
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
@@ -1559,6 +1589,11 @@ func (iter OperationsListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationsListResultIterator type.
+func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
+	return OperationsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationsListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1626,6 +1661,11 @@ func (page OperationsListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationsListResultPage type.
+func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return OperationsListResultPage{fn: getNextPage}
 }
 
 // Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented
@@ -1807,6 +1847,11 @@ func (iter OriginListResultIterator) Value() Origin {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OriginListResultIterator type.
+func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIterator {
+	return OriginListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OriginListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1874,6 +1919,11 @@ func (page OriginListResultPage) Values() []Origin {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OriginListResultPage type.
+func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
+	return OriginListResultPage{fn: getNextPage}
 }
 
 // OriginProperties the JSON object that contains the properties of the origin.
@@ -2159,6 +2209,11 @@ func (iter ProfileListResultIterator) Value() Profile {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProfileListResultIterator type.
+func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
+	return ProfileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr ProfileListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -2226,6 +2281,11 @@ func (page ProfileListResultPage) Values() []Profile {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the ProfileListResultPage type.
+func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{fn: getNextPage}
 }
 
 // ProfileProperties the JSON object that contains the properties required to create a profile.
@@ -2438,6 +2498,11 @@ func (iter ResourceUsageListResultIterator) Value() ResourceUsage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceUsageListResultIterator type.
+func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) ResourceUsageListResultIterator {
+	return ResourceUsageListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rulr ResourceUsageListResult) IsEmpty() bool {
 	return rulr.Value == nil || len(*rulr.Value) == 0
@@ -2505,6 +2570,11 @@ func (page ResourceUsageListResultPage) Values() []ResourceUsage {
 		return nil
 	}
 	return *page.rulr.Value
+}
+
+// Creates a new instance of the ResourceUsageListResultPage type.
+func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
+	return ResourceUsageListResultPage{fn: getNextPage}
 }
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.

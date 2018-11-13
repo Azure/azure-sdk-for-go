@@ -629,6 +629,11 @@ func (iter StorageInsightListResultIterator) Value() StorageInsight {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the StorageInsightListResultIterator type.
+func NewStorageInsightListResultIterator(page StorageInsightListResultPage) StorageInsightListResultIterator {
+	return StorageInsightListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (silr StorageInsightListResult) IsEmpty() bool {
 	return silr.Value == nil || len(*silr.Value) == 0
@@ -696,6 +701,11 @@ func (page StorageInsightListResultPage) Values() []StorageInsight {
 		return nil
 	}
 	return *page.silr.Value
+}
+
+// Creates a new instance of the StorageInsightListResultPage type.
+func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return StorageInsightListResultPage{fn: getNextPage}
 }
 
 // StorageInsightProperties storage insight properties.

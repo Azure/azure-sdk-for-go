@@ -19,7 +19,11 @@
 
 package databox
 
-import original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -278,6 +282,24 @@ func PossibleStageNameValues() []StageName {
 }
 func PossibleStageStatusValues() []StageStatus {
 	return original.PossibleStageStatusValues()
+}
+func NewAvailableSkusResultIterator(page AvailableSkusResultPage) AvailableSkusResultIterator {
+	return original.NewAvailableSkusResultIterator(page)
+}
+func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return original.NewAvailableSkusResultPage(getNextPage)
+}
+func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
+	return original.NewJobResourceListIterator(page)
+}
+func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return original.NewJobResourceListPage(getNextPage)
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -384,6 +384,11 @@ func (iter NamespaceListResultIterator) Value() NamespaceResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the NamespaceListResultIterator type.
+func NewNamespaceListResultIterator(page NamespaceListResultPage) NamespaceListResultIterator {
+	return NamespaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (nlr NamespaceListResult) IsEmpty() bool {
 	return nlr.Value == nil || len(*nlr.Value) == 0
@@ -451,6 +456,11 @@ func (page NamespaceListResultPage) Values() []NamespaceResource {
 		return nil
 	}
 	return *page.nlr.Value
+}
+
+// Creates a new instance of the NamespaceListResultPage type.
+func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{fn: getNextPage}
 }
 
 // NamespaceProperties properties of the namespace.
@@ -751,6 +761,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -818,6 +833,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // QueueCreateOrUpdateParameters parameters supplied to the Create Or Update Queue operation.
@@ -953,6 +973,11 @@ func (iter QueueListResultIterator) Value() QueueResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the QueueListResultIterator type.
+func NewQueueListResultIterator(page QueueListResultPage) QueueListResultIterator {
+	return QueueListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (qlr QueueListResult) IsEmpty() bool {
 	return qlr.Value == nil || len(*qlr.Value) == 0
@@ -1020,6 +1045,11 @@ func (page QueueListResultPage) Values() []QueueResource {
 		return nil
 	}
 	return *page.qlr.Value
+}
+
+// Creates a new instance of the QueueListResultPage type.
+func NewQueueListResultPage(getNextPage func(context.Context, QueueListResult) (QueueListResult, error)) QueueListResultPage {
+	return QueueListResultPage{fn: getNextPage}
 }
 
 // QueueProperties the Queue Properties definition.
@@ -1332,6 +1362,11 @@ func (iter SharedAccessAuthorizationRuleListResultIterator) Value() SharedAccess
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SharedAccessAuthorizationRuleListResultIterator type.
+func NewSharedAccessAuthorizationRuleListResultIterator(page SharedAccessAuthorizationRuleListResultPage) SharedAccessAuthorizationRuleListResultIterator {
+	return SharedAccessAuthorizationRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (saarlr SharedAccessAuthorizationRuleListResult) IsEmpty() bool {
 	return saarlr.Value == nil || len(*saarlr.Value) == 0
@@ -1400,6 +1435,11 @@ func (page SharedAccessAuthorizationRuleListResultPage) Values() []SharedAccessA
 		return nil
 	}
 	return *page.saarlr.Value
+}
+
+// Creates a new instance of the SharedAccessAuthorizationRuleListResultPage type.
+func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
+	return SharedAccessAuthorizationRuleListResultPage{fn: getNextPage}
 }
 
 // SharedAccessAuthorizationRuleProperties sharedAccessAuthorizationRule properties.
@@ -1646,6 +1686,11 @@ func (iter SubscriptionListResultIterator) Value() SubscriptionResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SubscriptionListResultIterator type.
+func NewSubscriptionListResultIterator(page SubscriptionListResultPage) SubscriptionListResultIterator {
+	return SubscriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (slr SubscriptionListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
@@ -1713,6 +1758,11 @@ func (page SubscriptionListResultPage) Values() []SubscriptionResource {
 		return nil
 	}
 	return *page.slr.Value
+}
+
+// Creates a new instance of the SubscriptionListResultPage type.
+func NewSubscriptionListResultPage(getNextPage func(context.Context, SubscriptionListResult) (SubscriptionListResult, error)) SubscriptionListResultPage {
+	return SubscriptionListResultPage{fn: getNextPage}
 }
 
 // SubscriptionProperties description of Subscription Resource.
@@ -1978,6 +2028,11 @@ func (iter TopicListResultIterator) Value() TopicResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TopicListResultIterator type.
+func NewTopicListResultIterator(page TopicListResultPage) TopicListResultIterator {
+	return TopicListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tlr TopicListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
@@ -2045,6 +2100,11 @@ func (page TopicListResultPage) Values() []TopicResource {
 		return nil
 	}
 	return *page.tlr.Value
+}
+
+// Creates a new instance of the TopicListResultPage type.
+func NewTopicListResultPage(getNextPage func(context.Context, TopicListResult) (TopicListResult, error)) TopicListResultPage {
+	return TopicListResultPage{fn: getNextPage}
 }
 
 // TopicProperties the Tpoic Properties definition.

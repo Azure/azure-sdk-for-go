@@ -19,7 +19,11 @@
 
 package mysql
 
-import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql"
+)
 
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
@@ -233,6 +237,12 @@ func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 }
 func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	return original.PossibleVirtualNetworkRuleStateValues()
+}
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return original.NewVirtualNetworkRuleListResultIterator(page)
+}
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

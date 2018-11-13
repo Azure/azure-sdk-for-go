@@ -38,6 +38,12 @@ const (
 	Hot  AccessTier = original.Hot
 )
 
+type AccountExpand = original.AccountExpand
+
+const (
+	AccountExpandGeoReplicationStats AccountExpand = original.AccountExpandGeoReplicationStats
+)
+
 type AccountStatus = original.AccountStatus
 
 const (
@@ -65,6 +71,14 @@ type DefaultAction = original.DefaultAction
 const (
 	DefaultActionAllow DefaultAction = original.DefaultActionAllow
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
+)
+
+type GeoReplicationStatus = original.GeoReplicationStatus
+
+const (
+	GeoReplicationStatusBootstrap   GeoReplicationStatus = original.GeoReplicationStatusBootstrap
+	GeoReplicationStatusLive        GeoReplicationStatus = original.GeoReplicationStatusLive
+	GeoReplicationStatusUnavailable GeoReplicationStatus = original.GeoReplicationStatusUnavailable
 )
 
 type HTTPProtocol = original.HTTPProtocol
@@ -275,6 +289,7 @@ type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
+type GeoReplicationStats = original.GeoReplicationStats
 type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
@@ -347,6 +362,9 @@ func NewManagementPoliciesClientWithBaseURI(baseURI string, subscriptionID strin
 func PossibleAccessTierValues() []AccessTier {
 	return original.PossibleAccessTierValues()
 }
+func PossibleAccountExpandValues() []AccountExpand {
+	return original.PossibleAccountExpandValues()
+}
 func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
 }
@@ -358,6 +376,9 @@ func PossibleBypassValues() []Bypass {
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
+}
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
+	return original.PossibleGeoReplicationStatusValues()
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()

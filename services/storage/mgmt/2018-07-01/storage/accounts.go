@@ -332,7 +332,9 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result Account, err error) {
+// expand - may be used to expand the properties within account's properties. By default, data is not included
+// when fecthing properties. Currently we only support geoReplicationStats.
+func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand AccountExpand) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetProperties")
 		defer func() {
@@ -356,7 +358,7 @@ func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupNam
 		return result, validation.NewError("storage.AccountsClient", "GetProperties", err.Error())
 	}
 
-	req, err := client.GetPropertiesPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.GetPropertiesPreparer(ctx, resourceGroupName, accountName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "GetProperties", nil, "Failure preparing request")
 		return
@@ -378,7 +380,7 @@ func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupNam
 }
 
 // GetPropertiesPreparer prepares the GetProperties request.
-func (client AccountsClient) GetPropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client AccountsClient) GetPropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, expand AccountExpand) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -388,6 +390,9 @@ func (client AccountsClient) GetPropertiesPreparer(ctx context.Context, resource
 	const APIVersion = "2018-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(expand)) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(

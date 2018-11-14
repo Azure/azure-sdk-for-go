@@ -44,7 +44,8 @@ func NewClient() Client {
 // Parameters:
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // directFilePath - the Data Lake Store path (starting with '/') of the file to which to append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // offset - the optional offset in the stream to begin the append operation. Default is to append at the end of
 // the stream.
 func (client Client) Append(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, offset *int64) (result autorest.Response, err error) {
@@ -313,7 +314,8 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // filePath - the Data Lake Store path (starting with '/') of the file to which to append using concurrent
 // append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // appendMode - indicates the concurrent append call should create the file if it doesn't exist or just open
 // the existing file for append
 func (client Client) ConcurrentAppend(ctx context.Context, accountName string, filePath string, streamContents io.ReadCloser, appendMode AppendModeType) (result autorest.Response, err error) {
@@ -403,7 +405,8 @@ func (client Client) ConcurrentAppendResponder(resp *http.Response) (result auto
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // directFilePath - the Data Lake Store path (starting with '/') of the file to create.
 // streamContents - the file contents to include when creating the file. This parameter is optional, resulting
-// in an empty file if not specified.
+// in an empty file if not specified.  The maximum content size is 4MB.  For content larger than 4MB you must
+// append the content in 4MB chunks.
 // overwrite - the indication of if the file should be overwritten.
 func (client Client) Create(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, overwrite *bool) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {

@@ -248,6 +248,14 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
+type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
+
+const (
+	Automatic ResourceSkuCapacityScaleType = original.Automatic
+	Manual    ResourceSkuCapacityScaleType = original.Manual
+	None      ResourceSkuCapacityScaleType = original.None
+)
+
 type SkuType = original.SkuType
 
 const (
@@ -565,6 +573,12 @@ type RequestContract = original.RequestContract
 type RequestReportCollection = original.RequestReportCollection
 type RequestReportRecordContract = original.RequestReportRecordContract
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapacity = original.ResourceSkuCapacity
+type ResourceSkuResult = original.ResourceSkuResult
+type ResourceSkuResults = original.ResourceSkuResults
+type ResourceSkuResultsIterator = original.ResourceSkuResultsIterator
+type ResourceSkuResultsPage = original.ResourceSkuResultsPage
 type ResponseContract = original.ResponseContract
 type SaveConfigurationParameter = original.SaveConfigurationParameter
 type SchemaCollection = original.SchemaCollection
@@ -669,6 +683,7 @@ type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
 type RegionsClient = original.RegionsClient
 type ReportsClient = original.ReportsClient
 type ServiceClient = original.ServiceClient
+type ServiceSkusClient = original.ServiceSkusClient
 type SignInSettingsClient = original.SignInSettingsClient
 type SignUpSettingsClient = original.SignUpSettingsClient
 type SubscriptionClient = original.SubscriptionClient
@@ -914,6 +929,9 @@ func PossibleProductStateValues() []ProductState {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return original.PossibleResourceSkuCapacityScaleTypeValues()
+}
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
 }
@@ -1063,6 +1081,12 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 }
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceSkusClient(subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClient(subscriptionID)
+}
+func NewServiceSkusClientWithBaseURI(baseURI string, subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSignInSettingsClient(subscriptionID string) SignInSettingsClient {
 	return original.NewSignInSettingsClient(subscriptionID)

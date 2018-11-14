@@ -457,6 +457,23 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
 }
 
+// ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
+type ResourceSkuCapacityScaleType string
+
+const (
+	// Automatic ...
+	Automatic ResourceSkuCapacityScaleType = "Automatic"
+	// Manual ...
+	Manual ResourceSkuCapacityScaleType = "Manual"
+	// None ...
+	None ResourceSkuCapacityScaleType = "None"
+)
+
+// PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return []ResourceSkuCapacityScaleType{Automatic, Manual, None}
+}
+
 // SkuType enumerates the values for sku type.
 type SkuType string
 
@@ -8292,6 +8309,170 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// ResourceSku describes an available API Management SKU.
+type ResourceSku struct {
+	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic'
+	Name SkuType `json:"name,omitempty"`
+}
+
+// ResourceSkuCapacity describes scaling information of a SKU.
+type ResourceSkuCapacity struct {
+	// Minimum - The minimum capacity.
+	Minimum *int64 `json:"minimum,omitempty"`
+	// Maximum - The maximum capacity that can be set.
+	Maximum *int64 `json:"maximum,omitempty"`
+	// Default - The default capacity.
+	Default *int64 `json:"default,omitempty"`
+	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
+	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
+}
+
+// ResourceSkuResult describes an available API Management service SKU.
+type ResourceSkuResult struct {
+	// ResourceType - The type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Sku - Specifies API Management SKU.
+	Sku *ResourceSku `json:"sku,omitempty"`
+	// Capacity - Specifies the number of API Management units.
+	Capacity *ResourceSkuCapacity `json:"capacity,omitempty"`
+}
+
+// ResourceSkuResults the API Management service SKUs operation response.
+type ResourceSkuResults struct {
+	autorest.Response `json:"-"`
+	// Value - The list of skus available for the service.
+	Value *[]ResourceSkuResult `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of API Management service Skus.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ResourceSkuResultsIterator provides access to a complete listing of ResourceSkuResult values.
+type ResourceSkuResultsIterator struct {
+	i    int
+	page ResourceSkuResultsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ResourceSkuResultsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuResultsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ResourceSkuResultsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ResourceSkuResultsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ResourceSkuResultsIterator) Response() ResourceSkuResults {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ResourceSkuResultsIterator) Value() ResourceSkuResult {
+	if !iter.page.NotDone() {
+		return ResourceSkuResult{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rsr ResourceSkuResults) IsEmpty() bool {
+	return rsr.Value == nil || len(*rsr.Value) == 0
+}
+
+// resourceSkuResultsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rsr ResourceSkuResults) resourceSkuResultsPreparer(ctx context.Context) (*http.Request, error) {
+	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rsr.NextLink)))
+}
+
+// ResourceSkuResultsPage contains a page of ResourceSkuResult values.
+type ResourceSkuResultsPage struct {
+	fn  func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)
+	rsr ResourceSkuResults
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ResourceSkuResultsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuResultsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rsr)
+	if err != nil {
+		return err
+	}
+	page.rsr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ResourceSkuResultsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ResourceSkuResultsPage) NotDone() bool {
+	return !page.rsr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ResourceSkuResultsPage) Response() ResourceSkuResults {
+	return page.rsr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ResourceSkuResultsPage) Values() []ResourceSkuResult {
+	if page.rsr.IsEmpty() {
+		return nil
+	}
+	return *page.rsr.Value
 }
 
 // ResponseContract operation response details.

@@ -26,25 +26,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CertificateClient is the apiManagement Client
 type CertificateClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewCertificateClient creates an instance of the CertificateClient client.
 func NewCertificateClient(subscriptionID string) CertificateClient {
 	return NewCertificateClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewCertificateClientWithBaseURI creates an instance of the CertificateClient client.
 func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
 	return CertificateClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or updates the certificate being used for authentication with the backend.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -102,7 +98,6 @@ func (client CertificateClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client CertificateClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, parameters CertificateCreateOrUpdateParameters, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -131,7 +126,6 @@ func (client CertificateClient) CreateOrUpdatePreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -139,7 +133,6 @@ func (client CertificateClient) CreateOrUpdateSender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client CertificateClient) CreateOrUpdateResponder(resp *http.Response) (result CertificateContract, err error) {
@@ -153,7 +146,6 @@ func (client CertificateClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes specific certificate.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -206,7 +198,6 @@ func (client CertificateClient) Delete(ctx context.Context, resourceGroupName st
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client CertificateClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, certificateID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -230,7 +221,6 @@ func (client CertificateClient) DeletePreparer(ctx context.Context, resourceGrou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -238,7 +228,6 @@ func (client CertificateClient) DeleteSender(req *http.Request) (*http.Response,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client CertificateClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -251,7 +240,6 @@ func (client CertificateClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get gets the details of the certificate specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -302,7 +290,6 @@ func (client CertificateClient) Get(ctx context.Context, resourceGroupName strin
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client CertificateClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, certificateID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -325,7 +312,6 @@ func (client CertificateClient) GetPreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -333,7 +319,6 @@ func (client CertificateClient) GetSender(req *http.Request) (*http.Response, er
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client CertificateClient) GetResponder(resp *http.Response) (result CertificateContract, err error) {
@@ -347,7 +332,6 @@ func (client CertificateClient) GetResponder(resp *http.Response) (result Certif
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the certificate specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -398,7 +382,6 @@ func (client CertificateClient) GetEntityTag(ctx context.Context, resourceGroupN
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client CertificateClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, certificateID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -421,7 +404,6 @@ func (client CertificateClient) GetEntityTagPreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -429,7 +411,6 @@ func (client CertificateClient) GetEntityTagSender(req *http.Request) (*http.Res
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client CertificateClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -442,7 +423,6 @@ func (client CertificateClient) GetEntityTagResponder(resp *http.Response) (resu
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByService lists a collection of all certificates in the specified service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -502,7 +482,6 @@ func (client CertificateClient) ListByService(ctx context.Context, resourceGroup
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServicePreparer prepares the ListByService request.
 func (client CertificateClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -533,7 +512,6 @@ func (client CertificateClient) ListByServicePreparer(ctx context.Context, resou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
@@ -541,7 +519,6 @@ func (client CertificateClient) ListByServiceSender(req *http.Request) (*http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
 func (client CertificateClient) ListByServiceResponder(resp *http.Response) (result CertificateCollection, err error) {
@@ -576,7 +553,6 @@ func (client CertificateClient) listByServiceNextResults(ctx context.Context, la
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
 func (client CertificateClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result CertificateCollectionIterator, err error) {
 	if tracing.IsEnabled() {

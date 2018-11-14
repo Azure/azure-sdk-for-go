@@ -26,25 +26,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // APISchemaClient is the apiManagement Client
 type APISchemaClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPISchemaClient creates an instance of the APISchemaClient client.
 func NewAPISchemaClient(subscriptionID string) APISchemaClient {
 	return NewAPISchemaClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // NewAPISchemaClientWithBaseURI creates an instance of the APISchemaClient client.
 func NewAPISchemaClientWithBaseURI(baseURI string, subscriptionID string) APISchemaClient {
 	return APISchemaClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdate creates or updates schema configuration for the API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -105,7 +101,6 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -135,7 +130,6 @@ func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resour
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -143,7 +137,6 @@ func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (*http.Res
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (result SchemaContract, err error) {
@@ -157,7 +150,6 @@ func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (resu
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Delete deletes the schema configuration at the Api.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -215,7 +207,6 @@ func (client APISchemaClient) Delete(ctx context.Context, resourceGroupName stri
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeletePreparer prepares the Delete request.
 func (client APISchemaClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -240,7 +231,6 @@ func (client APISchemaClient) DeletePreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APISchemaClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -248,7 +238,6 @@ func (client APISchemaClient) DeleteSender(req *http.Request) (*http.Response, e
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -261,7 +250,6 @@ func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // Get get the schema configuration at the API level.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -317,7 +305,6 @@ func (client APISchemaClient) Get(ctx context.Context, resourceGroupName string,
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetPreparer prepares the Get request.
 func (client APISchemaClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -341,7 +328,6 @@ func (client APISchemaClient) GetPreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APISchemaClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -349,7 +335,6 @@ func (client APISchemaClient) GetSender(req *http.Request) (*http.Response, erro
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaContract, err error) {
@@ -363,7 +348,6 @@ func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaCo
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTag gets the entity state (Etag) version of the schema specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -419,7 +403,6 @@ func (client APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNam
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagPreparer prepares the GetEntityTag request.
 func (client APISchemaClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -443,7 +426,6 @@ func (client APISchemaClient) GetEntityTagPreparer(ctx context.Context, resource
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APISchemaClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
@@ -451,7 +433,6 @@ func (client APISchemaClient) GetEntityTagSender(req *http.Request) (*http.Respo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
 func (client APISchemaClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -464,7 +445,6 @@ func (client APISchemaClient) GetEntityTagResponder(resp *http.Response) (result
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPI get the schema configuration at the API level.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -516,7 +496,6 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName s
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIPreparer prepares the ListByAPI request.
 func (client APISchemaClient) ListByAPIPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -539,7 +518,6 @@ func (client APISchemaClient) ListByAPIPreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client APISchemaClient) ListByAPISender(req *http.Request) (*http.Response, error) {
@@ -547,7 +525,6 @@ func (client APISchemaClient) ListByAPISender(req *http.Request) (*http.Response
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
 // closes the http.Response Body.
 func (client APISchemaClient) ListByAPIResponder(resp *http.Response) (result SchemaCollection, err error) {
@@ -582,7 +559,6 @@ func (client APISchemaClient) listByAPINextResults(ctx context.Context, lastResu
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement instead.
 // ListByAPIComplete enumerates all values, automatically crossing page boundaries as required.
 func (client APISchemaClient) ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result SchemaCollectionIterator, err error) {
 	if tracing.IsEnabled() {

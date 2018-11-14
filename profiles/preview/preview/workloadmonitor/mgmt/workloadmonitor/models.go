@@ -118,6 +118,7 @@ type MonitorsCollection = original.MonitorsCollection
 type MonitorsCollectionIterator = original.MonitorsCollectionIterator
 type MonitorsCollectionPage = original.MonitorsCollectionPage
 type NotificationSetting = original.NotificationSetting
+type NotificationSettingProperties = original.NotificationSettingProperties
 type NotificationSettingsCollection = original.NotificationSettingsCollection
 type Operation = original.Operation
 type OperationListResult = original.OperationListResult

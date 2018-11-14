@@ -1169,16 +1169,91 @@ func (page MonitorsCollectionPage) Values() []Monitor {
 	return *page.mc.Value
 }
 
-// NotificationSetting model for properties of a NotificationSetting.
+// NotificationSetting model for NotificationSetting.
 type NotificationSetting struct {
-	// ActionGroupResourceIds - List of action group resource ids to be notified
-	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
+	// NotificationSettingProperties - Properties of Notification Settings
+	*NotificationSettingProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotificationSetting.
+func (ns NotificationSetting) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ns.NotificationSettingProperties != nil {
+		objectMap["properties"] = ns.NotificationSettingProperties
+	}
+	if ns.ID != nil {
+		objectMap["id"] = ns.ID
+	}
+	if ns.Name != nil {
+		objectMap["name"] = ns.Name
+	}
+	if ns.Type != nil {
+		objectMap["type"] = ns.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NotificationSetting struct.
+func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var notificationSettingProperties NotificationSettingProperties
+				err = json.Unmarshal(*v, &notificationSettingProperties)
+				if err != nil {
+					return err
+				}
+				ns.NotificationSettingProperties = &notificationSettingProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ns.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ns.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ns.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NotificationSettingProperties model for properties of a NotificationSetting.
+type NotificationSettingProperties struct {
+	// ActionGroupResourceIds - List of action group resource ids to be notified
+	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 }
 
 // NotificationSettingsCollection model for collection of notificationSettings.

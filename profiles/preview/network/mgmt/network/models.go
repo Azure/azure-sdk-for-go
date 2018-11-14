@@ -55,7 +55,6 @@ type InboundNatRulesClient = original.InboundNatRulesClient
 type InterfaceEndpointsClient = original.InterfaceEndpointsClient
 type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
 type InterfaceLoadBalancersClient = original.InterfaceLoadBalancersClient
-type InterfacesClient = original.InterfacesClient
 type InterfaceTapConfigurationsClient = original.InterfaceTapConfigurationsClient
 type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
 type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
@@ -1764,12 +1763,6 @@ func NewInterfaceLoadBalancersClient(subscriptionID string) InterfaceLoadBalance
 }
 func NewInterfaceLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) InterfaceLoadBalancersClient {
 	return original.NewInterfaceLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
-}
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInterfaceTapConfigurationsClient(subscriptionID string) InterfaceTapConfigurationsClient {
 	return original.NewInterfaceTapConfigurationsClient(subscriptionID)

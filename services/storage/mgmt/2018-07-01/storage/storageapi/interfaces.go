@@ -42,6 +42,7 @@ type AccountsClientAPI interface {
 	CheckNameAvailability(ctx context.Context, accountName storage.AccountCheckNameAvailabilityParameters) (result storage.CheckNameAvailabilityResult, err error)
 	Create(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountCreateParameters) (result storage.AccountsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
+	Failover(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountsFailoverFuture, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand AccountExpand) (result storage.Account, err error)
 	List(ctx context.Context) (result storage.AccountListResult, err error)
 	ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountSasParameters) (result storage.ListAccountSasResponse, err error)

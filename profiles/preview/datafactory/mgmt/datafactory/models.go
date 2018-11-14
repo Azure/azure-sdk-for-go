@@ -1081,6 +1081,7 @@ type ForEachActivity = original.ForEachActivity
 type ForEachActivityTypeProperties = original.ForEachActivityTypeProperties
 type FtpServerLinkedService = original.FtpServerLinkedService
 type FtpServerLinkedServiceTypeProperties = original.FtpServerLinkedServiceTypeProperties
+type GenericDatasetTypeProperties = original.GenericDatasetTypeProperties
 type GetMetadataActivity = original.GetMetadataActivity
 type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypeProperties
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest

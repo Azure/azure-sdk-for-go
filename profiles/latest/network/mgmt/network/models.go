@@ -40,7 +40,6 @@ type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersC
 type InboundNatRulesClient = original.InboundNatRulesClient
 type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
 type InterfaceLoadBalancersClient = original.InterfaceLoadBalancersClient
-type InterfacesClient = original.InterfacesClient
 type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
 type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
 type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
@@ -1179,12 +1178,6 @@ func NewInterfaceLoadBalancersClient(subscriptionID string) InterfaceLoadBalance
 }
 func NewInterfaceLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) InterfaceLoadBalancersClient {
 	return original.NewInterfaceLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
-}
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string) LoadBalancerBackendAddressPoolsClient {
 	return original.NewLoadBalancerBackendAddressPoolsClient(subscriptionID)

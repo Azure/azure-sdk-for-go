@@ -32,7 +32,6 @@ type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAutho
 type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
 type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
-type InterfacesClient = original.InterfacesClient
 type LoadBalancersClient = original.LoadBalancersClient
 type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
 type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBasedAffinity
@@ -512,12 +511,6 @@ func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteSe
 }
 func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
 	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
-}
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClient(subscriptionID)

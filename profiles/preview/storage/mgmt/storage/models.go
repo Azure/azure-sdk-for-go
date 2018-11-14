@@ -259,6 +259,7 @@ type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParamet
 type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
 type AccountsCreateFuture = original.AccountsCreateFuture
+type AccountsFailoverFuture = original.AccountsFailoverFuture
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AzureEntityResource = original.AzureEntityResource
 type BlobContainer = original.BlobContainer

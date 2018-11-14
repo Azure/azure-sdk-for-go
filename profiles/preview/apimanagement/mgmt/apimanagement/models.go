@@ -415,6 +415,7 @@ type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdatePar
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
 type CertificateInformation = original.CertificateInformation
 type ConnectivityStatusContract = original.ConnectivityStatusContract
+type CurrentUserIdentity = original.CurrentUserIdentity
 type DeployConfigurationParameters = original.DeployConfigurationParameters
 type DiagnosticCollection = original.DiagnosticCollection
 type DiagnosticCollectionIterator = original.DiagnosticCollectionIterator

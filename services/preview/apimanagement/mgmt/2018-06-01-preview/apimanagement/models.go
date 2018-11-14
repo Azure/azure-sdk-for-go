@@ -3170,6 +3170,13 @@ type ConnectivityStatusContract struct {
 	LastStatusChange *date.Time `json:"lastStatusChange,omitempty"`
 }
 
+// CurrentUserIdentity ...
+type CurrentUserIdentity struct {
+	autorest.Response `json:"-"`
+	// ID - API Management service user id.
+	ID *string `json:"id,omitempty"`
+}
+
 // DeployConfigurationParameters parameters supplied to the Deploy Configuration operation.
 type DeployConfigurationParameters struct {
 	// Branch - The name of the Git branch from which the configuration is to be deployed to the configuration database.

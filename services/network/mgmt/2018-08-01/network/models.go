@@ -7271,7 +7271,7 @@ type ContainerNetworkInterfaceConfigurationPropertiesFormat struct {
 	// IPConfigurations - A list of ip configurations of the container network interface configuration.
 	IPConfigurations *[]IPConfigurationProfile `json:"ipConfigurations,omitempty"`
 	// ContainerNetworkInterfaces - A list of container network interfaces created from this container network interface configuration.
-	ContainerNetworkInterfaces *[]ContainerNetworkInterface `json:"containerNetworkInterfaces,omitempty"`
+	ContainerNetworkInterfaces *[]SubResource `json:"containerNetworkInterfaces,omitempty"`
 	// ProvisioningState - The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }

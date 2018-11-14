@@ -19,7 +19,11 @@
 
 package blueprint
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2017-11-11-preview/blueprint"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2017-11-11-preview/blueprint"
+)
 
 type ArtifactsClient = original.ArtifactsClient
 type AssignmentsClient = original.AssignmentsClient
@@ -182,6 +186,30 @@ func PossibleTargetScopeValues() []TargetScope {
 }
 func PossibleTemplateParameterTypeValues() []TemplateParameterType {
 	return original.PossibleTemplateParameterTypeValues()
+}
+func NewArtifactListIterator(page ArtifactListPage) ArtifactListIterator {
+	return original.NewArtifactListIterator(page)
+}
+func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return original.NewArtifactListPage(getNextPage)
+}
+func NewAssignmentListIterator(page AssignmentListPage) AssignmentListIterator {
+	return original.NewAssignmentListIterator(page)
+}
+func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
+	return original.NewAssignmentListPage(getNextPage)
+}
+func NewListIterator(page ListPage) ListIterator {
+	return original.NewListIterator(page)
+}
+func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
+	return original.NewListPage(getNextPage)
+}
+func NewPublishedBlueprintListIterator(page PublishedBlueprintListPage) PublishedBlueprintListIterator {
+	return original.NewPublishedBlueprintListIterator(page)
+}
+func NewPublishedBlueprintListPage(getNextPage func(context.Context, PublishedBlueprintList) (PublishedBlueprintList, error)) PublishedBlueprintListPage {
+	return original.NewPublishedBlueprintListPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

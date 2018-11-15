@@ -27,6 +27,7 @@ const (
 
 type BaseClient = original.BaseClient
 type ErrorsClient = original.ErrorsClient
+type EventsClient = original.EventsClient
 type MachinesClient = original.MachinesClient
 type ContainerElementKind = original.ContainerElementKind
 
@@ -114,6 +115,12 @@ const (
 	ExpressionKind1TimeOfDayConstant          ExpressionKind1 = original.ExpressionKind1TimeOfDayConstant
 )
 
+type Goal = original.Goal
+
+const (
+	Servers Goal = original.Servers
+)
+
 type Kind = original.Kind
 
 const (
@@ -193,6 +200,25 @@ const (
 	PropertyKind2Structural PropertyKind2 = original.PropertyKind2Structural
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Accepted  ProvisioningState = original.Accepted
+	Creating  ProvisioningState = original.Creating
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Moving    ProvisioningState = original.Moving
+	Succeeded ProvisioningState = original.Succeeded
+)
+
+type Purpose = original.Purpose
+
+const (
+	Assessment Purpose = original.Assessment
+	Discovery  Purpose = original.Discovery
+	Migration  Purpose = original.Migration
+)
+
 type SchemaElementKind = original.SchemaElementKind
 
 const (
@@ -224,6 +250,37 @@ const (
 	SchemaElementKind2None            SchemaElementKind2 = original.SchemaElementKind2None
 	SchemaElementKind2Term            SchemaElementKind2 = original.SchemaElementKind2Term
 	SchemaElementKind2TypeDefinition  SchemaElementKind2 = original.SchemaElementKind2TypeDefinition
+)
+
+type Status = original.Status
+
+const (
+	Active   Status = original.Active
+	Inactive Status = original.Inactive
+)
+
+type Tool = original.Tool
+
+const (
+	Cloudamize       Tool = original.Cloudamize
+	CloudEndure      Tool = original.CloudEndure
+	CorentTech       Tool = original.CorentTech
+	ServerAssessment Tool = original.ServerAssessment
+	ServerDiscovery  Tool = original.ServerDiscovery
+	ServerMigration  Tool = original.ServerMigration
+	Zerto            Tool = original.Zerto
+)
+
+type Tool1 = original.Tool1
+
+const (
+	Tool1Cloudamize       Tool1 = original.Tool1Cloudamize
+	Tool1CloudEndure      Tool1 = original.Tool1CloudEndure
+	Tool1CorentTech       Tool1 = original.Tool1CorentTech
+	Tool1ServerAssessment Tool1 = original.Tool1ServerAssessment
+	Tool1ServerDiscovery  Tool1 = original.Tool1ServerDiscovery
+	Tool1ServerMigration  Tool1 = original.Tool1ServerMigration
+	Tool1Zerto            Tool1 = original.Tool1Zerto
 )
 
 type TypeKind = original.TypeKind
@@ -263,9 +320,9 @@ type CountQueryOption = original.CountQueryOption
 type DefaultQuerySettings = original.DefaultQuerySettings
 type DiscoveryDetails = original.DiscoveryDetails
 type EdmReferentialConstraintPropertyPair = original.EdmReferentialConstraintPropertyPair
-type Error = original.Error
-type ErrorCollection = original.ErrorCollection
-type ErrorProperties = original.ErrorProperties
+type Event = original.Event
+type EventCollection = original.EventCollection
+type EventProperties = original.EventProperties
 type FilterClause = original.FilterClause
 type FilterQueryOption = original.FilterQueryOption
 type GoalSummary = original.GoalSummary
@@ -335,6 +392,12 @@ func NewErrorsClient(subscriptionID string, acceptLanguage string) ErrorsClient 
 func NewErrorsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ErrorsClient {
 	return original.NewErrorsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
+func NewEventsClient(subscriptionID string, acceptLanguage string) EventsClient {
+	return original.NewEventsClient(subscriptionID, acceptLanguage)
+}
+func NewEventsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) EventsClient {
+	return original.NewEventsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
 func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
 	return original.NewMachinesClient(subscriptionID, acceptLanguage)
 }
@@ -356,6 +419,9 @@ func PossibleExpressionKindValues() []ExpressionKind {
 func PossibleExpressionKind1Values() []ExpressionKind1 {
 	return original.PossibleExpressionKind1Values()
 }
+func PossibleGoalValues() []Goal {
+	return original.PossibleGoalValues()
+}
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
@@ -374,6 +440,12 @@ func PossiblePropertyKind1Values() []PropertyKind1 {
 func PossiblePropertyKind2Values() []PropertyKind2 {
 	return original.PossiblePropertyKind2Values()
 }
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossiblePurposeValues() []Purpose {
+	return original.PossiblePurposeValues()
+}
 func PossibleSchemaElementKindValues() []SchemaElementKind {
 	return original.PossibleSchemaElementKindValues()
 }
@@ -382,6 +454,15 @@ func PossibleSchemaElementKind1Values() []SchemaElementKind1 {
 }
 func PossibleSchemaElementKind2Values() []SchemaElementKind2 {
 	return original.PossibleSchemaElementKind2Values()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleToolValues() []Tool {
+	return original.PossibleToolValues()
+}
+func PossibleTool1Values() []Tool1 {
+	return original.PossibleTool1Values()
 }
 func PossibleTypeKindValues() []TypeKind {
 	return original.PossibleTypeKindValues()

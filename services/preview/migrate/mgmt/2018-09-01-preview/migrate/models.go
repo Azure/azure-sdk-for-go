@@ -20,6 +20,7 @@ package migrate
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // The package's fully qualified name.
@@ -202,6 +203,19 @@ func PossibleExpressionKind1Values() []ExpressionKind1 {
 	return []ExpressionKind1{ExpressionKind1AnnotationPath, ExpressionKind1BinaryConstant, ExpressionKind1BooleanConstant, ExpressionKind1Cast, ExpressionKind1Collection, ExpressionKind1DateConstant, ExpressionKind1DateTimeOffsetConstant, ExpressionKind1DecimalConstant, ExpressionKind1DurationConstant, ExpressionKind1EnumMember, ExpressionKind1FloatingConstant, ExpressionKind1FunctionApplication, ExpressionKind1GUIDConstant, ExpressionKind1If, ExpressionKind1IntegerConstant, ExpressionKind1IsType, ExpressionKind1Labeled, ExpressionKind1LabeledExpressionReference, ExpressionKind1NavigationPropertyPath, ExpressionKind1None, ExpressionKind1Null, ExpressionKind1Path, ExpressionKind1PropertyPath, ExpressionKind1Record, ExpressionKind1StringConstant, ExpressionKind1TimeOfDayConstant}
 }
 
+// Goal enumerates the values for goal.
+type Goal string
+
+const (
+	// Servers ...
+	Servers Goal = "Servers"
+)
+
+// PossibleGoalValues returns an array of possible values for the Goal const type.
+func PossibleGoalValues() []Goal {
+	return []Goal{Servers}
+}
+
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -366,6 +380,46 @@ func PossiblePropertyKind2Values() []PropertyKind2 {
 	return []PropertyKind2{PropertyKind2Navigation, PropertyKind2None, PropertyKind2Structural}
 }
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Accepted ...
+	Accepted ProvisioningState = "Accepted"
+	// Creating ...
+	Creating ProvisioningState = "Creating"
+	// Deleting ...
+	Deleting ProvisioningState = "Deleting"
+	// Failed ...
+	Failed ProvisioningState = "Failed"
+	// Moving ...
+	Moving ProvisioningState = "Moving"
+	// Succeeded ...
+	Succeeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Accepted, Creating, Deleting, Failed, Moving, Succeeded}
+}
+
+// Purpose enumerates the values for purpose.
+type Purpose string
+
+const (
+	// Assessment ...
+	Assessment Purpose = "Assessment"
+	// Discovery ...
+	Discovery Purpose = "Discovery"
+	// Migration ...
+	Migration Purpose = "Migration"
+)
+
+// PossiblePurposeValues returns an array of possible values for the Purpose const type.
+func PossiblePurposeValues() []Purpose {
+	return []Purpose{Assessment, Discovery, Migration}
+}
+
 // SchemaElementKind enumerates the values for schema element kind.
 type SchemaElementKind string
 
@@ -433,6 +487,71 @@ const (
 // PossibleSchemaElementKind2Values returns an array of possible values for the SchemaElementKind2 const type.
 func PossibleSchemaElementKind2Values() []SchemaElementKind2 {
 	return []SchemaElementKind2{SchemaElementKind2Action, SchemaElementKind2EntityContainer, SchemaElementKind2Function, SchemaElementKind2None, SchemaElementKind2Term, SchemaElementKind2TypeDefinition}
+}
+
+// Status enumerates the values for status.
+type Status string
+
+const (
+	// Active ...
+	Active Status = "Active"
+	// Inactive ...
+	Inactive Status = "Inactive"
+)
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{Active, Inactive}
+}
+
+// Tool enumerates the values for tool.
+type Tool string
+
+const (
+	// Cloudamize ...
+	Cloudamize Tool = "Cloudamize"
+	// CloudEndure ...
+	CloudEndure Tool = "CloudEndure"
+	// CorentTech ...
+	CorentTech Tool = "CorentTech"
+	// ServerAssessment ...
+	ServerAssessment Tool = "ServerAssessment"
+	// ServerDiscovery ...
+	ServerDiscovery Tool = "ServerDiscovery"
+	// ServerMigration ...
+	ServerMigration Tool = "ServerMigration"
+	// Zerto ...
+	Zerto Tool = "Zerto"
+)
+
+// PossibleToolValues returns an array of possible values for the Tool const type.
+func PossibleToolValues() []Tool {
+	return []Tool{Cloudamize, CloudEndure, CorentTech, ServerAssessment, ServerDiscovery, ServerMigration, Zerto}
+}
+
+// Tool1 enumerates the values for tool 1.
+type Tool1 string
+
+const (
+	// Tool1Cloudamize ...
+	Tool1Cloudamize Tool1 = "Cloudamize"
+	// Tool1CloudEndure ...
+	Tool1CloudEndure Tool1 = "CloudEndure"
+	// Tool1CorentTech ...
+	Tool1CorentTech Tool1 = "CorentTech"
+	// Tool1ServerAssessment ...
+	Tool1ServerAssessment Tool1 = "ServerAssessment"
+	// Tool1ServerDiscovery ...
+	Tool1ServerDiscovery Tool1 = "ServerDiscovery"
+	// Tool1ServerMigration ...
+	Tool1ServerMigration Tool1 = "ServerMigration"
+	// Tool1Zerto ...
+	Tool1Zerto Tool1 = "Zerto"
+)
+
+// PossibleTool1Values returns an array of possible values for the Tool1 const type.
+func PossibleTool1Values() []Tool1 {
+	return []Tool1{Tool1Cloudamize, Tool1CloudEndure, Tool1CorentTech, Tool1ServerAssessment, Tool1ServerDiscovery, Tool1ServerMigration, Tool1Zerto}
 }
 
 // TypeKind enumerates the values for type kind.
@@ -530,6 +649,15 @@ type AssessmentDetails struct {
 	MachineManagerID *string `json:"machineManagerId,omitempty"`
 	// MachineName - Gets or sets the name of the machine.
 	MachineName *string `json:"machineName,omitempty"`
+	// IPAddresses - Gets or sets the list of IP addresses of the machine.
+	//             IP addresses could be IP V4 or IP V6.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// Fqdn - Gets or sets the FQDN of the machine.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// BiosID - Gets or sets the BIOS ID of the machine.
+	BiosID *string `json:"biosId,omitempty"`
+	// MacAddresses - Gets or sets the list of MAC addresses of the machine.
+	MacAddresses *[]string `json:"macAddresses,omitempty"`
 	// ExtendedInfo - Gets or sets the ISV specific extended information.
 	ExtendedInfo map[string]*string `json:"extendedInfo"`
 }
@@ -563,6 +691,18 @@ func (ad AssessmentDetails) MarshalJSON() ([]byte, error) {
 	}
 	if ad.MachineName != nil {
 		objectMap["machineName"] = ad.MachineName
+	}
+	if ad.IPAddresses != nil {
+		objectMap["ipAddresses"] = ad.IPAddresses
+	}
+	if ad.Fqdn != nil {
+		objectMap["fqdn"] = ad.Fqdn
+	}
+	if ad.BiosID != nil {
+		objectMap["biosId"] = ad.BiosID
+	}
+	if ad.MacAddresses != nil {
+		objectMap["macAddresses"] = ad.MacAddresses
 	}
 	if ad.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = ad.ExtendedInfo
@@ -606,6 +746,15 @@ type DiscoveryDetails struct {
 	MachineManagerID *string `json:"machineManagerId,omitempty"`
 	// MachineName - Gets or sets the name of the machine.
 	MachineName *string `json:"machineName,omitempty"`
+	// IPAddresses - Gets or sets the list of IP addresses of the machine.
+	//             IP addresses could be IP V4 or IP V6.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// Fqdn - Gets or sets the FQDN of the machine.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// BiosID - Gets or sets the BIOS ID of the machine.
+	BiosID *string `json:"biosId,omitempty"`
+	// MacAddresses - Gets or sets the list of MAC addresses of the machine.
+	MacAddresses *[]string `json:"macAddresses,omitempty"`
 	// ExtendedInfo - Gets or sets the ISV specific extended information.
 	ExtendedInfo map[string]*string `json:"extendedInfo"`
 }
@@ -637,6 +786,18 @@ func (dd DiscoveryDetails) MarshalJSON() ([]byte, error) {
 	if dd.MachineName != nil {
 		objectMap["machineName"] = dd.MachineName
 	}
+	if dd.IPAddresses != nil {
+		objectMap["ipAddresses"] = dd.IPAddresses
+	}
+	if dd.Fqdn != nil {
+		objectMap["fqdn"] = dd.Fqdn
+	}
+	if dd.BiosID != nil {
+		objectMap["biosId"] = dd.BiosID
+	}
+	if dd.MacAddresses != nil {
+		objectMap["macAddresses"] = dd.MacAddresses
+	}
 	if dd.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = dd.ExtendedInfo
 	}
@@ -649,8 +810,8 @@ type EdmReferentialConstraintPropertyPair struct {
 	PrincipalProperty *IEdmStructuralProperty `json:"principalProperty,omitempty"`
 }
 
-// Error error REST resource.
-type Error struct {
+// Event migrateEvent REST resource.
+type Event struct {
 	autorest.Response `json:"-"`
 	// ID - Gets or sets the relative URL to get to this REST resource.
 	ID *string `json:"id,omitempty"`
@@ -658,21 +819,21 @@ type Error struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Gets the type of this REST resource.
 	Type *string `json:"type,omitempty"`
-	// Properties - Gets or sets the properties of the error.
-	Properties *ErrorProperties `json:"properties,omitempty"`
+	// Properties - Gets or sets the properties of the event.
+	Properties *EventProperties `json:"properties,omitempty"`
 }
 
-// ErrorCollection collection of errors.
-type ErrorCollection struct {
+// EventCollection collection of errors.
+type EventCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the machines.
-	Value *[]Error `json:"value,omitempty"`
+	Value *[]Event `json:"value,omitempty"`
 	// NextLink - Gets or sets the value of nextLink.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ErrorProperties properties of the error resource.
-type ErrorProperties struct {
+// EventProperties properties of the error resource.
+type EventProperties struct {
 	// ErrorCode - Gets or sets the error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// ErrorMessage - Gets or sets the error message.
@@ -909,6 +1070,15 @@ type MigrationDetails struct {
 	MachineManagerID *string `json:"machineManagerId,omitempty"`
 	// MachineName - Gets or sets the name of the machine.
 	MachineName *string `json:"machineName,omitempty"`
+	// IPAddresses - Gets or sets the list of IP addresses of the machine.
+	//             IP addresses could be IP V4 or IP V6.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// Fqdn - Gets or sets the FQDN of the machine.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// BiosID - Gets or sets the BIOS ID of the machine.
+	BiosID *string `json:"biosId,omitempty"`
+	// MacAddresses - Gets or sets the list of MAC addresses of the machine.
+	MacAddresses *[]string `json:"macAddresses,omitempty"`
 	// ExtendedInfo - Gets or sets the ISV specific extended information.
 	ExtendedInfo map[string]*string `json:"extendedInfo"`
 }
@@ -942,6 +1112,18 @@ func (md MigrationDetails) MarshalJSON() ([]byte, error) {
 	}
 	if md.MachineName != nil {
 		objectMap["machineName"] = md.MachineName
+	}
+	if md.IPAddresses != nil {
+		objectMap["ipAddresses"] = md.IPAddresses
+	}
+	if md.Fqdn != nil {
+		objectMap["fqdn"] = md.Fqdn
+	}
+	if md.BiosID != nil {
+		objectMap["biosId"] = md.BiosID
+	}
+	if md.MacAddresses != nil {
+		objectMap["macAddresses"] = md.MacAddresses
 	}
 	if md.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = md.ExtendedInfo
@@ -1072,7 +1254,7 @@ type Project struct {
 	Properties *ProjectProperties `json:"properties,omitempty"`
 	// ID - Gets the relative URL to get this migrate project.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of the migrate project.
+	// Name - Gets the name of the migrate project.
 	Name *string `json:"name,omitempty"`
 	// Type - Handled by resource provider. Type = Microsoft.Migrate/MigrateProject.
 	Type *string `json:"type,omitempty"`
@@ -1085,6 +1267,10 @@ type ProjectProperties struct {
 	// Summary - Gets or sets the goals summary of the migrate Project.
 	//             It maps the goal to its summary object.
 	Summary map[string]*GoalSummary `json:"summary"`
+	// LastSummaryRefreshedTime - Gets the last time the project summary was refreshed.
+	LastSummaryRefreshedTime *date.Time `json:"lastSummaryRefreshedTime,omitempty"`
+	// ProvisioningState - Provisioning state of the migrate project. Possible values include: 'Accepted', 'Creating', 'Deleting', 'Failed', 'Moving', 'Succeeded'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProjectProperties.
@@ -1095,6 +1281,12 @@ func (pp ProjectProperties) MarshalJSON() ([]byte, error) {
 	}
 	if pp.Summary != nil {
 		objectMap["summary"] = pp.Summary
+	}
+	if pp.LastSummaryRefreshedTime != nil {
+		objectMap["lastSummaryRefreshedTime"] = pp.LastSummaryRefreshedTime
+	}
+	if pp.ProvisioningState != "" {
+		objectMap["provisioningState"] = pp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -1115,8 +1307,8 @@ type RefreshSummaryResult struct {
 
 // RegisterToolInput class representing the register tool input.
 type RegisterToolInput struct {
-	// Tool - Gets or sets the tool to be registered.
-	Tool *string `json:"tool,omitempty"`
+	// Tool - Gets or sets the tool to be registered. Possible values include: 'ServerDiscovery', 'ServerAssessment', 'ServerMigration', 'Cloudamize', 'CloudEndure', 'Zerto', 'CorentTech'
+	Tool Tool `json:"tool,omitempty"`
 }
 
 // RegistrationResult class representing the registration status of a tool with the migrate project.
@@ -1160,9 +1352,9 @@ type SkipQueryOption struct {
 // Solution solution REST Resource.
 type Solution struct {
 	autorest.Response `json:"-"`
-	// ID - Gets or sets the relative URL to get to this REST resource.
+	// ID - Gets the relative URL to get to this REST resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of this REST resource.
+	// Name - Gets the name of this REST resource.
 	Name *string `json:"name,omitempty"`
 	// Type - Gets the type of this REST resource.
 	Type *string `json:"type,omitempty"`
@@ -1204,14 +1396,14 @@ func (sd SolutionDetails) MarshalJSON() ([]byte, error) {
 
 // SolutionProperties class for solution properties.
 type SolutionProperties struct {
-	// Tool - Gets or sets the tool being used in the solution.
-	Tool *string `json:"tool,omitempty"`
-	// Purpose - Gets or sets the purpose of the solution.
-	Purpose *string `json:"purpose,omitempty"`
-	// Goal - Gets or sets the goal of the solution.
-	Goal *string `json:"goal,omitempty"`
-	// IsInactive - Gets or sets a value indicating whether the solution is active or not.
-	IsInactive *bool `json:"isInactive,omitempty"`
+	// Tool - Gets or sets the tool being used in the solution. Possible values include: 'Tool1ServerDiscovery', 'Tool1ServerAssessment', 'Tool1ServerMigration', 'Tool1Cloudamize', 'Tool1CloudEndure', 'Tool1Zerto', 'Tool1CorentTech'
+	Tool Tool1 `json:"tool,omitempty"`
+	// Purpose - Gets or sets the purpose of the solution. Possible values include: 'Discovery', 'Assessment', 'Migration'
+	Purpose Purpose `json:"purpose,omitempty"`
+	// Goal - Gets or sets the goal of the solution. Possible values include: 'Servers'
+	Goal Goal `json:"goal,omitempty"`
+	// Status - Gets or sets the current status of the solution. Possible values include: 'Inactive', 'Active'
+	Status Status `json:"status,omitempty"`
 	// Summary - Gets or sets the summary of the solution.
 	Summary *SolutionSummary `json:"summary,omitempty"`
 	// Details - Gets or sets the details of the solution.

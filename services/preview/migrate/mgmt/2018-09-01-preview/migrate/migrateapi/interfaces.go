@@ -25,12 +25,18 @@ import (
 
 // ErrorsClientAPI contains the set of methods on the ErrorsClient type.
 type ErrorsClientAPI interface {
-	DeleteError(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (result autorest.Response, err error)
-	EnumerateErrors(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result migrate.ErrorCollection, err error)
-	GetError(ctx context.Context, resourceGroupName string, migrateProjectName string, errorName string) (result migrate.Error, err error)
+	EnumerateEvents(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result migrate.EventCollection, err error)
 }
 
 var _ ErrorsClientAPI = (*migrate.ErrorsClient)(nil)
+
+// EventsClientAPI contains the set of methods on the EventsClient type.
+type EventsClientAPI interface {
+	DeleteEvent(ctx context.Context, resourceGroupName string, migrateProjectName string, eventName string) (result autorest.Response, err error)
+	GetEvent(ctx context.Context, resourceGroupName string, migrateProjectName string, eventName string) (result migrate.Event, err error)
+}
+
+var _ EventsClientAPI = (*migrate.EventsClient)(nil)
 
 // MachinesClientAPI contains the set of methods on the MachinesClient type.
 type MachinesClientAPI interface {

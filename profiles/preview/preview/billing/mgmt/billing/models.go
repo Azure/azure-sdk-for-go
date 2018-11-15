@@ -31,7 +31,6 @@ const (
 
 type BaseClient = original.BaseClient
 type EnrollmentAccountsClient = original.EnrollmentAccountsClient
-type InvoicePricesheetClient = original.InvoicePricesheetClient
 type InvoicesClient = original.InvoicesClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
@@ -42,7 +41,6 @@ type EnrollmentAccountProperties = original.EnrollmentAccountProperties
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Invoice = original.Invoice
-type InvoicePricesheetDownloadFuture = original.InvoicePricesheetDownloadFuture
 type InvoiceProperties = original.InvoiceProperties
 type InvoicesListResult = original.InvoicesListResult
 type InvoicesListResultIterator = original.InvoicesListResultIterator
@@ -72,12 +70,6 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 }
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInvoicePricesheetClient(subscriptionID string) InvoicePricesheetClient {
-	return original.NewInvoicePricesheetClient(subscriptionID)
-}
-func NewInvoicePricesheetClientWithBaseURI(baseURI string, subscriptionID string) InvoicePricesheetClient {
-	return original.NewInvoicePricesheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInvoicesClient(subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClient(subscriptionID)

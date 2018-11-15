@@ -216,6 +216,7 @@ func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.
 }
 
 // Concat concatenates the list of source files into the destination file, removing all source files upon success.
+// This operation has been deprecated, please use operation FileSystem_MsConcat instead.
 // Parameters:
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // destinationPath - the Data Lake Store path (starting with '/') of the destination file resulting from the

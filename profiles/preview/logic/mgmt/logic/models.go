@@ -391,6 +391,8 @@ const (
 
 type AccessKeyRegenerateActionDefinition = original.AccessKeyRegenerateActionDefinition
 type AgreementContent = original.AgreementContent
+type APIError = original.APIError
+type APIErrorBody = original.APIErrorBody
 type ArtifactContentPropertiesDefinition = original.ArtifactContentPropertiesDefinition
 type ArtifactProperties = original.ArtifactProperties
 type AS2AcknowledgementConnectionSettings = original.AS2AcknowledgementConnectionSettings
@@ -414,8 +416,6 @@ type BatchConfigurationProperties = original.BatchConfigurationProperties
 type BatchReleaseCriteria = original.BatchReleaseCriteria
 type BusinessIdentity = original.BusinessIdentity
 type CallbackURL = original.CallbackURL
-type CloudError = original.CloudError
-type CloudErrorBody = original.CloudErrorBody
 type ContentHash = original.ContentHash
 type ContentLink = original.ContentLink
 type Correlation = original.Correlation

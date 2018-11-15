@@ -628,13 +628,6 @@ const (
 	X86   ProcessorArchitecture = original.X86
 )
 
-type ProtectionCoverage = original.ProtectionCoverage
-
-const (
-	ProtectionCoverageBasic    ProtectionCoverage = original.ProtectionCoverageBasic
-	ProtectionCoverageStandard ProtectionCoverage = original.ProtectionCoverageStandard
-)
-
 type Protocol = original.Protocol
 
 const (
@@ -1031,7 +1024,6 @@ type DdosProtectionPlanListResultPage = original.DdosProtectionPlanListResultPag
 type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesFormat
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
-type DdoSSettings = original.DdoSSettings
 type Delegation = original.Delegation
 type DeviceProperties = original.DeviceProperties
 type DhcpOptions = original.DhcpOptions
@@ -2024,9 +2016,6 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 }
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
-}
-func PossibleProtectionCoverageValues() []ProtectionCoverage {
-	return original.PossibleProtectionCoverageValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

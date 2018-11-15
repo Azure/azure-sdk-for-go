@@ -1226,21 +1226,6 @@ func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return []ProcessorArchitecture{Amd64, X86}
 }
 
-// ProtectionCoverage enumerates the values for protection coverage.
-type ProtectionCoverage string
-
-const (
-	// ProtectionCoverageBasic ...
-	ProtectionCoverageBasic ProtectionCoverage = "Basic"
-	// ProtectionCoverageStandard ...
-	ProtectionCoverageStandard ProtectionCoverage = "Standard"
-)
-
-// PossibleProtectionCoverageValues returns an array of possible values for the ProtectionCoverage const type.
-func PossibleProtectionCoverageValues() []ProtectionCoverage {
-	return []ProtectionCoverage{ProtectionCoverageBasic, ProtectionCoverageStandard}
-}
-
 // Protocol enumerates the values for protocol.
 type Protocol string
 
@@ -7271,7 +7256,7 @@ type ContainerNetworkInterfaceConfigurationPropertiesFormat struct {
 	// IPConfigurations - A list of ip configurations of the container network interface configuration.
 	IPConfigurations *[]IPConfigurationProfile `json:"ipConfigurations,omitempty"`
 	// ContainerNetworkInterfaces - A list of container network interfaces created from this container network interface configuration.
-	ContainerNetworkInterfaces *[]SubResource `json:"containerNetworkInterfaces,omitempty"`
+	ContainerNetworkInterfaces *[]ContainerNetworkInterface `json:"containerNetworkInterfaces,omitempty"`
 	// ProvisioningState - The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -7696,20 +7681,6 @@ func (future *DdosProtectionPlansDeleteFuture) Result(client DdosProtectionPlans
 	}
 	ar.Response = future.Response()
 	return
-}
-
-// DdoSSettings contains FQDN of the DNS record associated with the public IP address
-type DdoSSettings struct {
-	// DdosCustomPolicy - The DDoS custom policy associated with the public IP.
-	DdosCustomPolicy *string `json:"ddosCustomPolicy,omitempty"`
-	// ProtectionCoverage - The type of the DDoS protection plan associated with the public IP. Possible values include: 'ProtectionCoverageBasic', 'ProtectionCoverageStandard'
-	ProtectionCoverage ProtectionCoverage `json:"protectionCoverage,omitempty"`
-	// DomainNameLabel - Gets or sets the Domain name label.The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
-	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
-	// Fqdn - Gets the FQDN, Fully qualified domain name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.
-	Fqdn *string `json:"fqdn,omitempty"`
-	// ReverseFqdn - Gets or Sets the Reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
-	ReverseFqdn *string `json:"reverseFqdn,omitempty"`
 }
 
 // Delegation details the service to which the subnet is delegated.
@@ -19092,8 +19063,6 @@ type PublicIPAddressPropertiesFormat struct {
 	IPConfiguration *IPConfiguration `json:"ipConfiguration,omitempty"`
 	// DNSSettings - The FQDN of the DNS record associated with the public IP address.
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
-	// DdosSettings - The DDoS protection custom policy associated with the public IP address.
-	DdosSettings *DdoSSettings `json:"ddosSettings,omitempty"`
 	// IPTags - The list of tags associated with the public IP address.
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
 	// IPAddress - The IP address associated with the public IP address resource.

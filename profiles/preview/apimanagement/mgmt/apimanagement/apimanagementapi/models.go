@@ -41,6 +41,7 @@ type AuthorizationServerClientAPI = original.AuthorizationServerClientAPI
 type BackendClientAPI = original.BackendClientAPI
 type CertificateClientAPI = original.CertificateClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ServiceSkusClientAPI = original.ServiceSkusClientAPI
 type ServiceClientAPI = original.ServiceClientAPI
 type DiagnosticClientAPI = original.DiagnosticClientAPI
 type DiagnosticLoggerClientAPI = original.DiagnosticLoggerClientAPI

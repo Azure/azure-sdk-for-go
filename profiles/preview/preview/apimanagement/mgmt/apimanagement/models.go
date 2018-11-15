@@ -256,6 +256,14 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
+type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
+
+const (
+	Automatic ResourceSkuCapacityScaleType = original.Automatic
+	Manual    ResourceSkuCapacityScaleType = original.Manual
+	None      ResourceSkuCapacityScaleType = original.None
+)
+
 type SamplingType = original.SamplingType
 
 const (
@@ -265,10 +273,11 @@ const (
 type SkuType = original.SkuType
 
 const (
-	SkuTypeBasic     SkuType = original.SkuTypeBasic
-	SkuTypeDeveloper SkuType = original.SkuTypeDeveloper
-	SkuTypePremium   SkuType = original.SkuTypePremium
-	SkuTypeStandard  SkuType = original.SkuTypeStandard
+	SkuTypeBasic       SkuType = original.SkuTypeBasic
+	SkuTypeConsumption SkuType = original.SkuTypeConsumption
+	SkuTypeDeveloper   SkuType = original.SkuTypeDeveloper
+	SkuTypePremium     SkuType = original.SkuTypePremium
+	SkuTypeStandard    SkuType = original.SkuTypeStandard
 )
 
 type SoapAPIType = original.SoapAPIType
@@ -430,6 +439,7 @@ type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdatePar
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
 type CertificateInformation = original.CertificateInformation
 type ConnectivityStatusContract = original.ConnectivityStatusContract
+type CurrentUserIdentity = original.CurrentUserIdentity
 type DeployConfigurationParameters = original.DeployConfigurationParameters
 type DiagnosticCollection = original.DiagnosticCollection
 type DiagnosticCollectionIterator = original.DiagnosticCollectionIterator
@@ -482,7 +492,10 @@ type IssueCommentCollectionPage = original.IssueCommentCollectionPage
 type IssueCommentContract = original.IssueCommentContract
 type IssueCommentContractProperties = original.IssueCommentContractProperties
 type IssueContract = original.IssueContract
+type IssueContractBaseProperties = original.IssueContractBaseProperties
 type IssueContractProperties = original.IssueContractProperties
+type IssueUpdateContract = original.IssueUpdateContract
+type IssueUpdateContractProperties = original.IssueUpdateContractProperties
 type ListNetworkStatusContractByLocation = original.ListNetworkStatusContractByLocation
 type LoggerCollection = original.LoggerCollection
 type LoggerCollectionIterator = original.LoggerCollectionIterator
@@ -578,6 +591,12 @@ type RequestContract = original.RequestContract
 type RequestReportCollection = original.RequestReportCollection
 type RequestReportRecordContract = original.RequestReportRecordContract
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapacity = original.ResourceSkuCapacity
+type ResourceSkuResult = original.ResourceSkuResult
+type ResourceSkuResults = original.ResourceSkuResults
+type ResourceSkuResultsIterator = original.ResourceSkuResultsIterator
+type ResourceSkuResultsPage = original.ResourceSkuResultsPage
 type ResponseContract = original.ResponseContract
 type SamplingSettings = original.SamplingSettings
 type SaveConfigurationParameter = original.SaveConfigurationParameter
@@ -683,6 +702,7 @@ type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
 type RegionsClient = original.RegionsClient
 type ReportsClient = original.ReportsClient
 type ServiceClient = original.ServiceClient
+type ServiceSkusClient = original.ServiceSkusClient
 type SignInSettingsClient = original.SignInSettingsClient
 type SignUpSettingsClient = original.SignUpSettingsClient
 type SubscriptionClient = original.SubscriptionClient
@@ -919,6 +939,9 @@ func PossibleProductStateValues() []ProductState {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return original.PossibleResourceSkuCapacityScaleTypeValues()
+}
 func PossibleSamplingTypeValues() []SamplingType {
 	return original.PossibleSamplingTypeValues()
 }
@@ -1090,6 +1113,12 @@ func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIter
 func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
 	return original.NewReportCollectionPage(getNextPage)
 }
+func NewResourceSkuResultsIterator(page ResourceSkuResultsPage) ResourceSkuResultsIterator {
+	return original.NewResourceSkuResultsIterator(page)
+}
+func NewResourceSkuResultsPage(getNextPage func(context.Context, ResourceSkuResults) (ResourceSkuResults, error)) ResourceSkuResultsPage {
+	return original.NewResourceSkuResultsPage(getNextPage)
+}
 func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
 	return original.NewSchemaCollectionIterator(page)
 }
@@ -1257,6 +1286,12 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 }
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceSkusClient(subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClient(subscriptionID)
+}
+func NewServiceSkusClientWithBaseURI(baseURI string, subscriptionID string) ServiceSkusClient {
+	return original.NewServiceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSignInSettingsClient(subscriptionID string) SignInSettingsClient {
 	return original.NewSignInSettingsClient(subscriptionID)

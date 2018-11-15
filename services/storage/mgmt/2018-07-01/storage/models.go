@@ -43,6 +43,19 @@ func PossibleAccessTierValues() []AccessTier {
 	return []AccessTier{Cool, Hot}
 }
 
+// AccountExpand enumerates the values for account expand.
+type AccountExpand string
+
+const (
+	// AccountExpandGeoReplicationStats ...
+	AccountExpandGeoReplicationStats AccountExpand = "geoReplicationStats"
+)
+
+// PossibleAccountExpandValues returns an array of possible values for the AccountExpand const type.
+func PossibleAccountExpandValues() []AccountExpand {
+	return []AccountExpand{AccountExpandGeoReplicationStats}
+}
+
 // AccountStatus enumerates the values for account status.
 type AccountStatus string
 
@@ -103,6 +116,23 @@ const (
 // PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
 func PossibleDefaultActionValues() []DefaultAction {
 	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
+}
+
+// GeoReplicationStatus enumerates the values for geo replication status.
+type GeoReplicationStatus string
+
+const (
+	// GeoReplicationStatusBootstrap ...
+	GeoReplicationStatusBootstrap GeoReplicationStatus = "Bootstrap"
+	// GeoReplicationStatusLive ...
+	GeoReplicationStatusLive GeoReplicationStatus = "Live"
+	// GeoReplicationStatusUnavailable ...
+	GeoReplicationStatusUnavailable GeoReplicationStatus = "Unavailable"
+)
+
+// PossibleGeoReplicationStatusValues returns an array of possible values for the GeoReplicationStatus const type.
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
+	return []GeoReplicationStatus{GeoReplicationStatusBootstrap, GeoReplicationStatusLive, GeoReplicationStatusUnavailable}
 }
 
 // HTTPProtocol enumerates the values for http protocol.
@@ -900,6 +930,10 @@ type AccountProperties struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
+	// GeoReplicationStats - Geo Replication Stats
+	GeoReplicationStats *GeoReplicationStats `json:"geoReplicationStats,omitempty"`
+	// FailoverInProgress - If the failover is in progress, the value will be true, otherwise, it will be null.
+	FailoverInProgress *bool `json:"failoverInProgress,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -988,6 +1022,29 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccountsFailoverFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1447,6 +1504,15 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+}
+
+// GeoReplicationStats statistics related to replication for storage account's Blob, Table, Queue and File
+// services. It is only available when geo-redundant replication is enabled for the storage account.
+type GeoReplicationStats struct {
+	// Status - The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is active and operational. - Bootstrap: Indicates initial synchronization from the primary location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable: Indicates that the secondary location is temporarily unavailable. Possible values include: 'GeoReplicationStatusLive', 'GeoReplicationStatusBootstrap', 'GeoReplicationStatusUnavailable'
+	Status GeoReplicationStatus `json:"status,omitempty"`
+	// LastSyncTime - All primary writes preceding this UTC date/time value are guaranteed to be available for read operations. Primary writes following this point in time may or may not be available for reads. Element may be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
+	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
 }
 
 // Identity identity for the resource.

@@ -3758,6 +3758,215 @@ type RepetitionIndex struct {
 	ItemIndex *int32 `json:"itemIndex,omitempty"`
 }
 
+// Request a request.
+type Request struct {
+	// Headers - A list of all the headers attached to the request.
+	Headers interface{} `json:"headers,omitempty"`
+	// URI - The destination for the request.
+	URI *string `json:"uri,omitempty"`
+	// Method - The HTTP method used for the request.
+	Method *string `json:"method,omitempty"`
+}
+
+// RequestHistory the request history.
+type RequestHistory struct {
+	autorest.Response `json:"-"`
+	// Properties - The request history properties.
+	Properties *RequestHistoryProperties `json:"properties,omitempty"`
+	// ID - The resource id.
+	ID *string `json:"id,omitempty"`
+	// Name - Gets the resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Gets the resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - The resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for RequestHistory.
+func (rh RequestHistory) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rh.Properties != nil {
+		objectMap["properties"] = rh.Properties
+	}
+	if rh.ID != nil {
+		objectMap["id"] = rh.ID
+	}
+	if rh.Name != nil {
+		objectMap["name"] = rh.Name
+	}
+	if rh.Type != nil {
+		objectMap["type"] = rh.Type
+	}
+	if rh.Location != nil {
+		objectMap["location"] = rh.Location
+	}
+	if rh.Tags != nil {
+		objectMap["tags"] = rh.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// RequestHistoryListResult the list of workflow request histories.
+type RequestHistoryListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of workflow request histories.
+	Value *[]RequestHistory `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RequestHistoryListResultIterator provides access to a complete listing of RequestHistory values.
+type RequestHistoryListResultIterator struct {
+	i    int
+	page RequestHistoryListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RequestHistoryListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RequestHistoryListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RequestHistoryListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RequestHistoryListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RequestHistoryListResultIterator) Response() RequestHistoryListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RequestHistoryListResultIterator) Value() RequestHistory {
+	if !iter.page.NotDone() {
+		return RequestHistory{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RequestHistoryListResultIterator type.
+func NewRequestHistoryListResultIterator(page RequestHistoryListResultPage) RequestHistoryListResultIterator {
+	return RequestHistoryListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rhlr RequestHistoryListResult) IsEmpty() bool {
+	return rhlr.Value == nil || len(*rhlr.Value) == 0
+}
+
+// requestHistoryListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rhlr RequestHistoryListResult) requestHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rhlr.NextLink == nil || len(to.String(rhlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rhlr.NextLink)))
+}
+
+// RequestHistoryListResultPage contains a page of RequestHistory values.
+type RequestHistoryListResultPage struct {
+	fn   func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)
+	rhlr RequestHistoryListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RequestHistoryListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RequestHistoryListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rhlr)
+	if err != nil {
+		return err
+	}
+	page.rhlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RequestHistoryListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RequestHistoryListResultPage) NotDone() bool {
+	return !page.rhlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RequestHistoryListResultPage) Response() RequestHistoryListResult {
+	return page.rhlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RequestHistoryListResultPage) Values() []RequestHistory {
+	if page.rhlr.IsEmpty() {
+		return nil
+	}
+	return *page.rhlr.Value
+}
+
+// Creates a new instance of the RequestHistoryListResultPage type.
+func NewRequestHistoryListResultPage(getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
+	return RequestHistoryListResultPage{fn: getNextPage}
+}
+
+// RequestHistoryProperties the request history.
+type RequestHistoryProperties struct {
+	// StartTime - The time the request started.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The time the request ended.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Request - The request.
+	Request *Request `json:"request,omitempty"`
+	// Response - The response.
+	Response *Response `json:"response,omitempty"`
+}
+
 // Resource the base resource type.
 type Resource struct {
 	// ID - The resource id.
@@ -3801,6 +4010,16 @@ type ResourceReference struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Gets the resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// Response a response.
+type Response struct {
+	// Headers - A list of all the headers attached to the response.
+	Headers interface{} `json:"headers,omitempty"`
+	// StatusCode - The status code of the response.
+	StatusCode *int32 `json:"statusCode,omitempty"`
+	// BodyLink - Details on the location of the body content.
+	BodyLink *ContentLink `json:"bodyLink,omitempty"`
 }
 
 // RetryHistory the retry history.

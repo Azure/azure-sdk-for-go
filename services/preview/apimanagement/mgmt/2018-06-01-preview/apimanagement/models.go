@@ -474,11 +474,11 @@ func PossibleProtocolValues() []Protocol {
 type ResourceSkuCapacityScaleType string
 
 const (
-	// Automatic ...
+	// Automatic Supported scale type automatic.
 	Automatic ResourceSkuCapacityScaleType = "Automatic"
-	// Manual ...
+	// Manual Supported scale type manual.
 	Manual ResourceSkuCapacityScaleType = "Manual"
-	// None ...
+	// None Scaling not supported.
 	None ResourceSkuCapacityScaleType = "None"
 )
 
@@ -8395,11 +8395,11 @@ type ResourceSku struct {
 // ResourceSkuCapacity describes scaling information of a SKU.
 type ResourceSkuCapacity struct {
 	// Minimum - The minimum capacity.
-	Minimum *int64 `json:"minimum,omitempty"`
+	Minimum *int32 `json:"minimum,omitempty"`
 	// Maximum - The maximum capacity that can be set.
-	Maximum *int64 `json:"maximum,omitempty"`
+	Maximum *int32 `json:"maximum,omitempty"`
 	// Default - The default capacity.
-	Default *int64 `json:"default,omitempty"`
+	Default *int32 `json:"default,omitempty"`
 	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }

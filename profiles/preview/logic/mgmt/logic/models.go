@@ -504,8 +504,15 @@ type RecurrenceSchedule = original.RecurrenceSchedule
 type RecurrenceScheduleOccurrence = original.RecurrenceScheduleOccurrence
 type RegenerateActionParameter = original.RegenerateActionParameter
 type RepetitionIndex = original.RepetitionIndex
+type Request = original.Request
+type RequestHistory = original.RequestHistory
+type RequestHistoryListResult = original.RequestHistoryListResult
+type RequestHistoryListResultIterator = original.RequestHistoryListResultIterator
+type RequestHistoryListResultPage = original.RequestHistoryListResultPage
+type RequestHistoryProperties = original.RequestHistoryProperties
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
+type Response = original.Response
 type RetryHistory = original.RetryHistory
 type RunActionCorrelation = original.RunActionCorrelation
 type RunCorrelation = original.RunCorrelation
@@ -579,6 +586,8 @@ type PartnersClient = original.PartnersClient
 type SchemasClient = original.SchemasClient
 type SessionsClient = original.SessionsClient
 type WorkflowRunActionRepetitionsClient = original.WorkflowRunActionRepetitionsClient
+type WorkflowRunActionRepetitionsRequestHistoriesClient = original.WorkflowRunActionRepetitionsRequestHistoriesClient
+type WorkflowRunActionRequestHistoriesClient = original.WorkflowRunActionRequestHistoriesClient
 type WorkflowRunActionsClient = original.WorkflowRunActionsClient
 type WorkflowRunActionScopedRepetitionsClient = original.WorkflowRunActionScopedRepetitionsClient
 type WorkflowRunOperationsClient = original.WorkflowRunOperationsClient
@@ -771,6 +780,12 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
+func NewRequestHistoryListResultIterator(page RequestHistoryListResultPage) RequestHistoryListResultIterator {
+	return original.NewRequestHistoryListResultIterator(page)
+}
+func NewRequestHistoryListResultPage(getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
+	return original.NewRequestHistoryListResultPage(getNextPage)
+}
 func NewWorkflowListResultIterator(page WorkflowListResultPage) WorkflowListResultIterator {
 	return original.NewWorkflowListResultIterator(page)
 }
@@ -836,6 +851,18 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string) WorkflowRunAct
 }
 func NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsClient {
 	return original.NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClient(subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClient(subscriptionID)

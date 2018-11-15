@@ -108,6 +108,22 @@ type WorkflowRunActionRepetitionsClientAPI interface {
 
 var _ WorkflowRunActionRepetitionsClientAPI = (*logic.WorkflowRunActionRepetitionsClient)(nil)
 
+// WorkflowRunActionRepetitionsRequestHistoriesClientAPI contains the set of methods on the WorkflowRunActionRepetitionsRequestHistoriesClient type.
+type WorkflowRunActionRepetitionsRequestHistoriesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, requestHistoryName string) (result logic.RequestHistory, err error)
+	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result logic.RequestHistoryListResultPage, err error)
+}
+
+var _ WorkflowRunActionRepetitionsRequestHistoriesClientAPI = (*logic.WorkflowRunActionRepetitionsRequestHistoriesClient)(nil)
+
+// WorkflowRunActionRequestHistoriesClientAPI contains the set of methods on the WorkflowRunActionRequestHistoriesClient type.
+type WorkflowRunActionRequestHistoriesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, requestHistoryName string) (result logic.RequestHistory, err error)
+	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.RequestHistoryListResultPage, err error)
+}
+
+var _ WorkflowRunActionRequestHistoriesClientAPI = (*logic.WorkflowRunActionRequestHistoriesClient)(nil)
+
 // WorkflowRunActionScopeRepetitionsClientAPI contains the set of methods on the WorkflowRunActionScopeRepetitionsClient type.
 type WorkflowRunActionScopeRepetitionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result logic.WorkflowRunActionRepetitionDefinition, err error)

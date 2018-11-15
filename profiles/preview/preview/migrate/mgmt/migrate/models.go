@@ -26,7 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ErrorsClient = original.ErrorsClient
 type EventsClient = original.EventsClient
 type MachinesClient = original.MachinesClient
 type ContainerElementKind = original.ContainerElementKind
@@ -385,12 +384,6 @@ func New(subscriptionID string, acceptLanguage string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewErrorsClient(subscriptionID string, acceptLanguage string) ErrorsClient {
-	return original.NewErrorsClient(subscriptionID, acceptLanguage)
-}
-func NewErrorsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ErrorsClient {
-	return original.NewErrorsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func NewEventsClient(subscriptionID string, acceptLanguage string) EventsClient {
 	return original.NewEventsClient(subscriptionID, acceptLanguage)

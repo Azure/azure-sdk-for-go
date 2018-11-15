@@ -823,7 +823,7 @@ type Event struct {
 	Properties *EventProperties `json:"properties,omitempty"`
 }
 
-// EventCollection collection of errors.
+// EventCollection collection of events.
 type EventCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the machines.
@@ -832,19 +832,19 @@ type EventCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// EventProperties properties of the error resource.
+// EventProperties properties of the event resource.
 type EventProperties struct {
 	// ErrorCode - Gets or sets the error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// ErrorMessage - Gets or sets the error message.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// Recommendation - Gets or sets the recommendation for the error.
+	// Recommendation - Gets or sets the recommendation for the event.
 	Recommendation *string `json:"recommendation,omitempty"`
-	// PossibleCauses - Gets or sets the possible causes for the error.
+	// PossibleCauses - Gets or sets the possible causes for the event.
 	PossibleCauses *string `json:"possibleCauses,omitempty"`
-	// Solution - Gets or sets the solution for which the error is being reported.
+	// Solution - Gets or sets the solution for which the event is being reported.
 	Solution *string `json:"solution,omitempty"`
-	// Machine - Gets or sets the machine for which the error is being reported.
+	// Machine - Gets or sets the machine for which the event is being reported.
 	Machine *string `json:"machine,omitempty"`
 }
 

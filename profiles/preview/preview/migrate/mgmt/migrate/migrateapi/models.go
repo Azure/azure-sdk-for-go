@@ -21,7 +21,6 @@ package migrateapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate/migrateapi"
 
-type ErrorsClientAPI = original.ErrorsClientAPI
 type EventsClientAPI = original.EventsClientAPI
 type MachinesClientAPI = original.MachinesClientAPI
 type ProjectsClientAPI = original.ProjectsClientAPI

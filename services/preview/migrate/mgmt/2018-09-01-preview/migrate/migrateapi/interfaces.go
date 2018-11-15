@@ -23,16 +23,10 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// ErrorsClientAPI contains the set of methods on the ErrorsClient type.
-type ErrorsClientAPI interface {
-	EnumerateEvents(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result migrate.EventCollection, err error)
-}
-
-var _ ErrorsClientAPI = (*migrate.ErrorsClient)(nil)
-
 // EventsClientAPI contains the set of methods on the EventsClient type.
 type EventsClientAPI interface {
 	DeleteEvent(ctx context.Context, resourceGroupName string, migrateProjectName string, eventName string) (result autorest.Response, err error)
+	EnumerateEvents(ctx context.Context, resourceGroupName string, migrateProjectName string, continuationToken string) (result migrate.EventCollection, err error)
 	GetEvent(ctx context.Context, resourceGroupName string, migrateProjectName string, eventName string) (result migrate.Event, err error)
 }
 

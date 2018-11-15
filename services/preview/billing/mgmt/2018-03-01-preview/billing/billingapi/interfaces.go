@@ -47,6 +47,13 @@ type InvoicesClientAPI interface {
 
 var _ InvoicesClientAPI = (*billing.InvoicesClient)(nil)
 
+// InvoicePricesheetClientAPI contains the set of methods on the InvoicePricesheetClient type.
+type InvoicePricesheetClientAPI interface {
+	Download(ctx context.Context, billingAccountID string, invoiceName string) (result billing.InvoicePricesheetDownloadFuture, err error)
+}
+
+var _ InvoicePricesheetClientAPI = (*billing.InvoicePricesheetClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result billing.OperationListResultPage, err error)

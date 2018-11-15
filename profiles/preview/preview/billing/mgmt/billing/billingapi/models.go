@@ -24,4 +24,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt
 type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
 type PeriodsClientAPI = original.PeriodsClientAPI
 type InvoicesClientAPI = original.InvoicesClientAPI
+type InvoicePricesheetClientAPI = original.InvoicePricesheetClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

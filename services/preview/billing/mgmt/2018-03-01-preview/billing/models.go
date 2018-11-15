@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -30,8 +31,9 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
 
-// DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
+// DownloadURL a secure URL that can be used to download a an entity until the URL expires.
 type DownloadURL struct {
+	autorest.Response `json:"-"`
 	// ExpiryTime - The time in UTC at which this download URL will expire.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
 	// URL - The URL to the PDF file.
@@ -369,6 +371,35 @@ func (i *Invoice) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// InvoicePricesheetDownloadFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type InvoicePricesheetDownloadFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InvoicePricesheetDownloadFuture) Result(client InvoicePricesheetClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetDownloadFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicePricesheetDownloadFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicePricesheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // InvoiceProperties the properties of the invoice.

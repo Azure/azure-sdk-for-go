@@ -81,6 +81,23 @@ func PossibleDirectoryTypeValues() []DirectoryType {
 	return []DirectoryType{ActiveDirectory}
 }
 
+// JSONWebKeyEncryptionAlgorithm enumerates the values for json web key encryption algorithm.
+type JSONWebKeyEncryptionAlgorithm string
+
+const (
+	// RSA15 ...
+	RSA15 JSONWebKeyEncryptionAlgorithm = "RSA1_5"
+	// RSAOAEP ...
+	RSAOAEP JSONWebKeyEncryptionAlgorithm = "RSA-OAEP"
+	// RSAOAEP256 ...
+	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = "RSA-OAEP-256"
+)
+
+// PossibleJSONWebKeyEncryptionAlgorithmValues returns an array of possible values for the JSONWebKeyEncryptionAlgorithm const type.
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return []JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
+}
+
 // OSType enumerates the values for os type.
 type OSType string
 
@@ -515,6 +532,8 @@ type ClusterCreateProperties struct {
 	ComputeProfile *ComputeProfile `json:"computeProfile,omitempty"`
 	// StorageProfile - The storage profile.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// DiskEncryptionProperties - The disk encryption properties.
+	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 }
 
 // ClusterDefinition the cluster definition.
@@ -547,6 +566,16 @@ func (cd ClusterDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ClusterDiskEncryptionParameters the Disk Encryption Cluster request parameters.
+type ClusterDiskEncryptionParameters struct {
+	// VaultURI - Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
+	VaultURI *string `json:"vaultUri,omitempty"`
+	// KeyName - Key name that is used for enabling disk encryption.
+	KeyName *string `json:"keyName,omitempty"`
+	// KeyVersion - Specific key version that is used for enabling disk encryption.
+	KeyVersion *string `json:"keyVersion,omitempty"`
+}
+
 // ClusterGetProperties the properties of cluster.
 type ClusterGetProperties struct {
 	// ClusterVersion - The version of the cluster.
@@ -573,6 +602,8 @@ type ClusterGetProperties struct {
 	Errors *[]Errors `json:"errors,omitempty"`
 	// ConnectivityEndpoints - The list of connectivity endpoints.
 	ConnectivityEndpoints *[]ConnectivityEndpoint `json:"connectivityEndpoints,omitempty"`
+	// DiskEncryptionProperties - The disk encryption properties.
+	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 }
 
 // ClusterIdentity identity for the cluster.
@@ -911,6 +942,29 @@ func (future *ClustersResizeFuture) Result(client ClustersClient) (ar autorest.R
 	return
 }
 
+// ClustersRotateDiskEncryptionKeyFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ClustersRotateDiskEncryptionKeyFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ClustersRotateDiskEncryptionKeyFuture) Result(client ClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ClustersRotateDiskEncryptionKeyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ClustersRotateDiskEncryptionKeyFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ComputeProfile describes the compute profile.
 type ComputeProfile struct {
 	// Roles - The list of roles in the cluster.
@@ -960,6 +1014,20 @@ type DataDisksGroups struct {
 	StorageAccountType *string `json:"storageAccountType,omitempty"`
 	// DiskSizeGB - ReadOnly. The DiskSize in GB. Do not set this value.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+}
+
+// DiskEncryptionProperties the disk encryption properties
+type DiskEncryptionProperties struct {
+	// VaultURI - Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
+	VaultURI *string `json:"vaultUri,omitempty"`
+	// KeyName - Key name that is used for enabling disk encryption.
+	KeyName *string `json:"keyName,omitempty"`
+	// KeyVersion - Specific key version that is used for enabling disk encryption.
+	KeyVersion *string `json:"keyVersion,omitempty"`
+	// EncryptionAlgorithm - Algorithm identifier for encryption, default RSA-OAEP. Possible values include: 'RSAOAEP', 'RSAOAEP256', 'RSA15'
+	EncryptionAlgorithm JSONWebKeyEncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	// MsiResourceID - Resource ID of Managed Identity that is used to access the key vault.
+	MsiResourceID *string `json:"msiResourceId,omitempty"`
 }
 
 // ErrorResponse describes the format of Error response.

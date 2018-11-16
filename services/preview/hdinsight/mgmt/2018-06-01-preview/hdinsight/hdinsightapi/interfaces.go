@@ -32,6 +32,7 @@ type ClustersClientAPI interface {
 	List(ctx context.Context) (result hdinsight.ClusterListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result hdinsight.ClusterListResultPage, err error)
 	Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterResizeParameters) (result hdinsight.ClustersResizeFuture, err error)
+	RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterDiskEncryptionParameters) (result hdinsight.ClustersRotateDiskEncryptionKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
 }
 

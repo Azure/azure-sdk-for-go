@@ -60,6 +60,14 @@ const (
 	ActiveDirectory DirectoryType = original.ActiveDirectory
 )
 
+type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
+
+const (
+	RSA15      JSONWebKeyEncryptionAlgorithm = original.RSA15
+	RSAOAEP    JSONWebKeyEncryptionAlgorithm = original.RSAOAEP
+	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.RSAOAEP256
+)
+
 type OSType = original.OSType
 
 const (
@@ -96,6 +104,7 @@ type Cluster = original.Cluster
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
 type ClusterCreateProperties = original.ClusterCreateProperties
 type ClusterDefinition = original.ClusterDefinition
+type ClusterDiskEncryptionParameters = original.ClusterDiskEncryptionParameters
 type ClusterGetProperties = original.ClusterGetProperties
 type ClusterIdentity = original.ClusterIdentity
 type ClusterIdentityUserAssignedIdentitiesValue = original.ClusterIdentityUserAssignedIdentitiesValue
@@ -112,10 +121,12 @@ type ClustersCreateFuture = original.ClustersCreateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersExecuteScriptActionsFuture = original.ClustersExecuteScriptActionsFuture
 type ClustersResizeFuture = original.ClustersResizeFuture
+type ClustersRotateDiskEncryptionKeyFuture = original.ClustersRotateDiskEncryptionKeyFuture
 type ComputeProfile = original.ComputeProfile
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
 type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
+type DiskEncryptionProperties = original.DiskEncryptionProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
@@ -207,6 +218,9 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 }
 func PossibleDirectoryTypeValues() []DirectoryType {
 	return original.PossibleDirectoryTypeValues()
+}
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()

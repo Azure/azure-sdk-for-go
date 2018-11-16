@@ -1469,6 +1469,8 @@ type ConnectToMongoDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -1491,6 +1493,9 @@ func (ctmdtp ConnectToMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ctmdtp.Commands != nil {
 		objectMap["commands"] = ctmdtp.Commands
+	}
+	if ctmdtp.ClientData != nil {
+		objectMap["clientData"] = ctmdtp.ClientData
 	}
 	if ctmdtp.TaskType != "" {
 		objectMap["taskType"] = ctmdtp.TaskType
@@ -1666,6 +1671,15 @@ func (ctmdtp *ConnectToMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
 				}
 				ctmdtp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				ctmdtp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -1703,6 +1717,8 @@ type ConnectToSourceMySQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -1725,6 +1741,9 @@ func (ctsmstp ConnectToSourceMySQLTaskProperties) MarshalJSON() ([]byte, error) 
 	}
 	if ctsmstp.Commands != nil {
 		objectMap["commands"] = ctsmstp.Commands
+	}
+	if ctsmstp.ClientData != nil {
+		objectMap["clientData"] = ctsmstp.ClientData
 	}
 	if ctsmstp.TaskType != "" {
 		objectMap["taskType"] = ctsmstp.TaskType
@@ -1900,6 +1919,15 @@ func (ctsmstp *ConnectToSourceMySQLTaskProperties) UnmarshalJSON(body []byte) er
 				}
 				ctsmstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				ctsmstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -1942,6 +1970,8 @@ type ConnectToSourceSQLServerSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -1964,6 +1994,9 @@ func (ctsssstp ConnectToSourceSQLServerSyncTaskProperties) MarshalJSON() ([]byte
 	}
 	if ctsssstp.Commands != nil {
 		objectMap["commands"] = ctsssstp.Commands
+	}
+	if ctsssstp.ClientData != nil {
+		objectMap["clientData"] = ctsssstp.ClientData
 	}
 	if ctsssstp.TaskType != "" {
 		objectMap["taskType"] = ctsssstp.TaskType
@@ -2137,6 +2170,15 @@ func (ctsssstp *ConnectToSourceSQLServerSyncTaskProperties) UnmarshalJSON(body [
 					return err
 				}
 				ctsssstp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				ctsssstp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -2620,6 +2662,8 @@ type ConnectToSourceSQLServerTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -2642,6 +2686,9 @@ func (ctssstp ConnectToSourceSQLServerTaskProperties) MarshalJSON() ([]byte, err
 	}
 	if ctssstp.Commands != nil {
 		objectMap["commands"] = ctssstp.Commands
+	}
+	if ctssstp.ClientData != nil {
+		objectMap["clientData"] = ctssstp.ClientData
 	}
 	if ctssstp.TaskType != "" {
 		objectMap["taskType"] = ctssstp.TaskType
@@ -2816,6 +2863,15 @@ func (ctssstp *ConnectToSourceSQLServerTaskProperties) UnmarshalJSON(body []byte
 				}
 				ctssstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				ctssstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -2868,6 +2924,8 @@ type ConnectToTargetAzureDbForMySQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -2890,6 +2948,9 @@ func (cttadfmstp ConnectToTargetAzureDbForMySQLTaskProperties) MarshalJSON() ([]
 	}
 	if cttadfmstp.Commands != nil {
 		objectMap["commands"] = cttadfmstp.Commands
+	}
+	if cttadfmstp.ClientData != nil {
+		objectMap["clientData"] = cttadfmstp.ClientData
 	}
 	if cttadfmstp.TaskType != "" {
 		objectMap["taskType"] = cttadfmstp.TaskType
@@ -3065,6 +3126,15 @@ func (cttadfmstp *ConnectToTargetAzureDbForMySQLTaskProperties) UnmarshalJSON(bo
 				}
 				cttadfmstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				cttadfmstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -3131,6 +3201,8 @@ type ConnectToTargetSQLDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -3153,6 +3225,9 @@ func (cttsdtp ConnectToTargetSQLDbTaskProperties) MarshalJSON() ([]byte, error) 
 	}
 	if cttsdtp.Commands != nil {
 		objectMap["commands"] = cttsdtp.Commands
+	}
+	if cttsdtp.ClientData != nil {
+		objectMap["clientData"] = cttsdtp.ClientData
 	}
 	if cttsdtp.TaskType != "" {
 		objectMap["taskType"] = cttsdtp.TaskType
@@ -3328,6 +3403,15 @@ func (cttsdtp *ConnectToTargetSQLDbTaskProperties) UnmarshalJSON(body []byte) er
 				}
 				cttsdtp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				cttsdtp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -3380,6 +3464,8 @@ type ConnectToTargetSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -3402,6 +3488,9 @@ func (cttsmtp ConnectToTargetSQLMITaskProperties) MarshalJSON() ([]byte, error) 
 	}
 	if cttsmtp.Commands != nil {
 		objectMap["commands"] = cttsmtp.Commands
+	}
+	if cttsmtp.ClientData != nil {
+		objectMap["clientData"] = cttsmtp.ClientData
 	}
 	if cttsmtp.TaskType != "" {
 		objectMap["taskType"] = cttsmtp.TaskType
@@ -3577,6 +3666,15 @@ func (cttsmtp *ConnectToTargetSQLMITaskProperties) UnmarshalJSON(body []byte) er
 				}
 				cttsmtp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				cttsmtp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -3614,6 +3712,8 @@ type ConnectToTargetSQLSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -3636,6 +3736,9 @@ func (cttssdstp ConnectToTargetSQLSQLDbSyncTaskProperties) MarshalJSON() ([]byte
 	}
 	if cttssdstp.Commands != nil {
 		objectMap["commands"] = cttssdstp.Commands
+	}
+	if cttssdstp.ClientData != nil {
+		objectMap["clientData"] = cttssdstp.ClientData
 	}
 	if cttssdstp.TaskType != "" {
 		objectMap["taskType"] = cttssdstp.TaskType
@@ -3810,6 +3913,15 @@ func (cttssdstp *ConnectToTargetSQLSQLDbSyncTaskProperties) UnmarshalJSON(body [
 					return err
 				}
 				cttssdstp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				cttssdstp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -4283,6 +4395,8 @@ type GetTdeCertificatesSQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -4305,6 +4419,9 @@ func (gtcstp GetTdeCertificatesSQLTaskProperties) MarshalJSON() ([]byte, error) 
 	}
 	if gtcstp.Commands != nil {
 		objectMap["commands"] = gtcstp.Commands
+	}
+	if gtcstp.ClientData != nil {
+		objectMap["clientData"] = gtcstp.ClientData
 	}
 	if gtcstp.TaskType != "" {
 		objectMap["taskType"] = gtcstp.TaskType
@@ -4480,6 +4597,15 @@ func (gtcstp *GetTdeCertificatesSQLTaskProperties) UnmarshalJSON(body []byte) er
 				}
 				gtcstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				gtcstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -4552,6 +4678,8 @@ type GetUserTablesSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -4574,6 +4702,9 @@ func (gutsstp GetUserTablesSQLSyncTaskProperties) MarshalJSON() ([]byte, error) 
 	}
 	if gutsstp.Commands != nil {
 		objectMap["commands"] = gutsstp.Commands
+	}
+	if gutsstp.ClientData != nil {
+		objectMap["clientData"] = gutsstp.ClientData
 	}
 	if gutsstp.TaskType != "" {
 		objectMap["taskType"] = gutsstp.TaskType
@@ -4749,6 +4880,15 @@ func (gutsstp *GetUserTablesSQLSyncTaskProperties) UnmarshalJSON(body []byte) er
 				}
 				gutsstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				gutsstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -4810,6 +4950,8 @@ type GetUserTablesSQLTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -4832,6 +4974,9 @@ func (gutstp GetUserTablesSQLTaskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if gutstp.Commands != nil {
 		objectMap["commands"] = gutstp.Commands
+	}
+	if gutstp.ClientData != nil {
+		objectMap["clientData"] = gutstp.ClientData
 	}
 	if gutstp.TaskType != "" {
 		objectMap["taskType"] = gutstp.TaskType
@@ -5007,6 +5152,15 @@ func (gutstp *GetUserTablesSQLTaskProperties) UnmarshalJSON(body []byte) error {
 				}
 				gutstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				gutstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -5032,6 +5186,8 @@ type MigrateMongoDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -5054,6 +5210,9 @@ func (mmdtp MigrateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mmdtp.Commands != nil {
 		objectMap["commands"] = mmdtp.Commands
+	}
+	if mmdtp.ClientData != nil {
+		objectMap["clientData"] = mmdtp.ClientData
 	}
 	if mmdtp.TaskType != "" {
 		objectMap["taskType"] = mmdtp.TaskType
@@ -5228,6 +5387,15 @@ func (mmdtp *MigrateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mmdtp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				mmdtp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -5863,6 +6031,8 @@ type MigrateMySQLAzureDbForMySQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -5885,6 +6055,9 @@ func (mmsadfmsstp MigrateMySQLAzureDbForMySQLSyncTaskProperties) MarshalJSON() (
 	}
 	if mmsadfmsstp.Commands != nil {
 		objectMap["commands"] = mmsadfmsstp.Commands
+	}
+	if mmsadfmsstp.ClientData != nil {
+		objectMap["clientData"] = mmsadfmsstp.ClientData
 	}
 	if mmsadfmsstp.TaskType != "" {
 		objectMap["taskType"] = mmsadfmsstp.TaskType
@@ -6058,6 +6231,15 @@ func (mmsadfmsstp *MigrateMySQLAzureDbForMySQLSyncTaskProperties) UnmarshalJSON(
 					return err
 				}
 				mmsadfmsstp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				mmsadfmsstp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -6693,6 +6875,8 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -6715,6 +6899,9 @@ func (mpsadfpsstp MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) Marsh
 	}
 	if mpsadfpsstp.Commands != nil {
 		objectMap["commands"] = mpsadfpsstp.Commands
+	}
+	if mpsadfpsstp.ClientData != nil {
+		objectMap["clientData"] = mpsadfpsstp.ClientData
 	}
 	if mpsadfpsstp.TaskType != "" {
 		objectMap["taskType"] = mpsadfpsstp.TaskType
@@ -6888,6 +7075,15 @@ func (mpsadfpsstp *MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties) Unma
 					return err
 				}
 				mpsadfpsstp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				mpsadfpsstp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -7298,6 +7494,8 @@ type MigrateSchemaSQLServerSQLDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -7320,6 +7518,9 @@ func (mssssdtp MigrateSchemaSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte,
 	}
 	if mssssdtp.Commands != nil {
 		objectMap["commands"] = mssssdtp.Commands
+	}
+	if mssssdtp.ClientData != nil {
+		objectMap["clientData"] = mssssdtp.ClientData
 	}
 	if mssssdtp.TaskType != "" {
 		objectMap["taskType"] = mssssdtp.TaskType
@@ -7493,6 +7694,15 @@ func (mssssdtp *MigrateSchemaSQLServerSQLDbTaskProperties) UnmarshalJSON(body []
 					return err
 				}
 				mssssdtp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				mssssdtp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -8264,6 +8474,8 @@ type MigrateSQLServerSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -8286,6 +8498,9 @@ func (msssdstp MigrateSQLServerSQLDbSyncTaskProperties) MarshalJSON() ([]byte, e
 	}
 	if msssdstp.Commands != nil {
 		objectMap["commands"] = msssdstp.Commands
+	}
+	if msssdstp.ClientData != nil {
+		objectMap["clientData"] = msssdstp.ClientData
 	}
 	if msssdstp.TaskType != "" {
 		objectMap["taskType"] = msssdstp.TaskType
@@ -8459,6 +8674,15 @@ func (msssdstp *MigrateSQLServerSQLDbSyncTaskProperties) UnmarshalJSON(body []by
 					return err
 				}
 				msssdstp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				msssdstp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -9013,6 +9237,8 @@ type MigrateSQLServerSQLDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -9035,6 +9261,9 @@ func (msssdtp MigrateSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte, error)
 	}
 	if msssdtp.Commands != nil {
 		objectMap["commands"] = msssdtp.Commands
+	}
+	if msssdtp.ClientData != nil {
+		objectMap["clientData"] = msssdtp.ClientData
 	}
 	if msssdtp.TaskType != "" {
 		objectMap["taskType"] = msssdtp.TaskType
@@ -9208,6 +9437,15 @@ func (msssdtp *MigrateSQLServerSQLDbTaskProperties) UnmarshalJSON(body []byte) e
 					return err
 				}
 				msssdtp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				msssdtp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -9862,6 +10100,8 @@ type MigrateSQLServerSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -9884,6 +10124,9 @@ func (msssmtp MigrateSQLServerSQLMITaskProperties) MarshalJSON() ([]byte, error)
 	}
 	if msssmtp.Commands != nil {
 		objectMap["commands"] = msssmtp.Commands
+	}
+	if msssmtp.ClientData != nil {
+		objectMap["clientData"] = msssmtp.ClientData
 	}
 	if msssmtp.TaskType != "" {
 		objectMap["taskType"] = msssmtp.TaskType
@@ -10057,6 +10300,15 @@ func (msssmtp *MigrateSQLServerSQLMITaskProperties) UnmarshalJSON(body []byte) e
 					return err
 				}
 				msssmtp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				msssmtp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -11812,6 +12064,8 @@ type ProjectTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -11945,6 +12199,9 @@ func (ptp ProjectTaskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ptp.Commands != nil {
 		objectMap["commands"] = ptp.Commands
+	}
+	if ptp.ClientData != nil {
+		objectMap["clientData"] = ptp.ClientData
 	}
 	if ptp.TaskType != "" {
 		objectMap["taskType"] = ptp.TaskType
@@ -12101,6 +12358,15 @@ func (ptp *ProjectTaskProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ptp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				ptp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {
@@ -13699,6 +13965,8 @@ type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -13721,6 +13989,9 @@ func (vmisssdstp ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) Marshal
 	}
 	if vmisssdstp.Commands != nil {
 		objectMap["commands"] = vmisssdstp.Commands
+	}
+	if vmisssdstp.ClientData != nil {
+		objectMap["clientData"] = vmisssdstp.ClientData
 	}
 	if vmisssdstp.TaskType != "" {
 		objectMap["taskType"] = vmisssdstp.TaskType
@@ -13896,6 +14167,15 @@ func (vmisssdstp *ValidateMigrationInputSQLServerSQLDbSyncTaskProperties) Unmars
 				}
 				vmisssdstp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				vmisssdstp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -13964,6 +14244,8 @@ type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -13986,6 +14268,9 @@ func (vmisssmtp ValidateMigrationInputSQLServerSQLMITaskProperties) MarshalJSON(
 	}
 	if vmisssmtp.Commands != nil {
 		objectMap["commands"] = vmisssmtp.Commands
+	}
+	if vmisssmtp.ClientData != nil {
+		objectMap["clientData"] = vmisssmtp.ClientData
 	}
 	if vmisssmtp.TaskType != "" {
 		objectMap["taskType"] = vmisssmtp.TaskType
@@ -14161,6 +14446,15 @@ func (vmisssmtp *ValidateMigrationInputSQLServerSQLMITaskProperties) UnmarshalJS
 				}
 				vmisssmtp.Commands = &commands
 			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				vmisssmtp.ClientData = clientData
+			}
 		case "taskType":
 			if v != nil {
 				var taskType TaskType
@@ -14188,6 +14482,8 @@ type ValidateMongoDbTaskProperties struct {
 	State TaskState `json:"state,omitempty"`
 	// Commands - Array of command properties.
 	Commands *[]BasicCommandProperties `json:"commands,omitempty"`
+	// ClientData - Key value pairs of client data to attach meta data information to task
+	ClientData map[string]*string `json:"clientData"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeGetTDECertificatesSQL', 'TaskTypeValidateMongoDb', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeValidateMigrationInputSQLServerSQLDbSync', 'TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync', 'TaskTypeMigrateMySQLAzureDbForMySQLSync', 'TaskTypeMigrateSQLServerAzureSQLDbSync', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeMigrateMongoDb', 'TaskTypeConnectToTargetAzureDbForMySQL', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeGetUserTablesAzureSQLDbSync', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDbSync', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServerSync', 'TaskTypeConnectToSourceSQLServer', 'TaskTypeConnectMongoDb', 'TaskTypeConnectToSourceMySQL', 'TaskTypeMigrateSchemaSQLServerSQLDb'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
@@ -14210,6 +14506,9 @@ func (vmdtp ValidateMongoDbTaskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vmdtp.Commands != nil {
 		objectMap["commands"] = vmdtp.Commands
+	}
+	if vmdtp.ClientData != nil {
+		objectMap["clientData"] = vmdtp.ClientData
 	}
 	if vmdtp.TaskType != "" {
 		objectMap["taskType"] = vmdtp.TaskType
@@ -14384,6 +14683,15 @@ func (vmdtp *ValidateMongoDbTaskProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmdtp.Commands = &commands
+			}
+		case "clientData":
+			if v != nil {
+				var clientData map[string]*string
+				err = json.Unmarshal(*v, &clientData)
+				if err != nil {
+					return err
+				}
+				vmdtp.ClientData = clientData
 			}
 		case "taskType":
 			if v != nil {

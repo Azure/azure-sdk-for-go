@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v19.1.1`
+
+### Updated Services
+
+|            Package Name |      API Version      |
+| ----------------------: | :-------------------: |
+|        containerservice |       2018-03-31      |
+
 ## `v19.1.0`
 
 ### New Services

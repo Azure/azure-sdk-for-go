@@ -25,5 +25,5 @@ type BlueprintsClientAPI = original.BlueprintsClientAPI
 type ArtifactsClientAPI = original.ArtifactsClientAPI
 type PublishedBlueprintsClientAPI = original.PublishedBlueprintsClientAPI
 type PublishedArtifactsClientAPI = original.PublishedArtifactsClientAPI
-type AssignmentsClientAPI = original.AssignmentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type AssignmentsClientAPI = original.AssignmentsClientAPI

@@ -248,6 +248,8 @@ type DeploymentExtended struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the deployment.
 	Name *string `json:"name,omitempty"`
+	// Type - The type of the deployment.
+	Type *string `json:"type,omitempty"`
 	// Location - the location of the deployment.
 	Location *string `json:"location,omitempty"`
 	// Properties - Deployment properties.
@@ -835,7 +837,9 @@ type Group struct {
 	// ID - The ID of the resource group.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource group.
-	Name       *string          `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource group.
+	Type       *string          `json:"type,omitempty"`
 	Properties *GroupProperties `json:"properties,omitempty"`
 	// Location - The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
 	Location *string `json:"location,omitempty"`
@@ -853,6 +857,9 @@ func (g Group) MarshalJSON() ([]byte, error) {
 	}
 	if g.Name != nil {
 		objectMap["name"] = g.Name
+	}
+	if g.Type != nil {
+		objectMap["type"] = g.Type
 	}
 	if g.Properties != nil {
 		objectMap["properties"] = g.Properties

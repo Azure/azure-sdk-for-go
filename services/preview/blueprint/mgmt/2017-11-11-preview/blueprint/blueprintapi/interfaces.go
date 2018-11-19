@@ -60,6 +60,13 @@ type PublishedArtifactsClientAPI interface {
 
 var _ PublishedArtifactsClientAPI = (*blueprint.PublishedArtifactsClient)(nil)
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result blueprint.ResourceProviderOperationList, err error)
+}
+
+var _ OperationsClientAPI = (*blueprint.OperationsClient)(nil)
+
 // AssignmentsClientAPI contains the set of methods on the AssignmentsClient type.
 type AssignmentsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, subscriptionID string, assignmentName string, assignment blueprint.Assignment) (result blueprint.Assignment, err error)
@@ -69,10 +76,3 @@ type AssignmentsClientAPI interface {
 }
 
 var _ AssignmentsClientAPI = (*blueprint.AssignmentsClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result blueprint.ResourceProviderOperationList, err error)
-}
-
-var _ OperationsClientAPI = (*blueprint.OperationsClient)(nil)

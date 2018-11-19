@@ -90,6 +90,51 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return []NameAvailabilityReason{AlreadyExists, Invalid}
 }
 
+// OfflineDataTransfer enumerates the values for offline data transfer.
+type OfflineDataTransfer string
+
+const (
+	// OfflineDataTransferOff ...
+	OfflineDataTransferOff OfflineDataTransfer = "off"
+	// OfflineDataTransferOn ...
+	OfflineDataTransferOn OfflineDataTransfer = "on"
+)
+
+// PossibleOfflineDataTransferValues returns an array of possible values for the OfflineDataTransfer const type.
+func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
+	return []OfflineDataTransfer{OfflineDataTransferOff, OfflineDataTransferOn}
+}
+
+// OfflineDataTransfer1 enumerates the values for offline data transfer 1.
+type OfflineDataTransfer1 string
+
+const (
+	// OfflineDataTransfer1Off ...
+	OfflineDataTransfer1Off OfflineDataTransfer1 = "off"
+	// OfflineDataTransfer1On ...
+	OfflineDataTransfer1On OfflineDataTransfer1 = "on"
+)
+
+// PossibleOfflineDataTransfer1Values returns an array of possible values for the OfflineDataTransfer1 const type.
+func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
+	return []OfflineDataTransfer1{OfflineDataTransfer1Off, OfflineDataTransfer1On}
+}
+
+// OfflineDataTransfer2 enumerates the values for offline data transfer 2.
+type OfflineDataTransfer2 string
+
+const (
+	// OfflineDataTransfer2Off ...
+	OfflineDataTransfer2Off OfflineDataTransfer2 = "off"
+	// OfflineDataTransfer2On ...
+	OfflineDataTransfer2On OfflineDataTransfer2 = "on"
+)
+
+// PossibleOfflineDataTransfer2Values returns an array of possible values for the OfflineDataTransfer2 const type.
+func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
+	return []OfflineDataTransfer2{OfflineDataTransfer2Off, OfflineDataTransfer2On}
+}
+
 // Operation enumerates the values for operation.
 type Operation string
 
@@ -391,7 +436,7 @@ type CloudEndpointProperties struct {
 	// FriendlyName - Friendly Name
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// BackupEnabled - Backup Enabled
-	BackupEnabled *bool `json:"backupEnabled,omitempty"`
+	BackupEnabled *string `json:"backupEnabled,omitempty"`
 	// ProvisioningState - CloudEndpoint Provisioning State
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// LastWorkflowID - CloudEndpoint lastWorkflowId
@@ -1374,6 +1419,10 @@ type ServerEndpointCreateParametersProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ServerResourceID - Server Resource Id.
 	ServerResourceID *string `json:"serverResourceId,omitempty"`
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransferOn', 'OfflineDataTransferOff'
+	OfflineDataTransfer OfflineDataTransfer `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferShareName - Offline data transfer share name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // ServerEndpointProperties serverEndpoint Properties object.
@@ -1398,6 +1447,14 @@ type ServerEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 	// SyncStatus - Sync Health Status
 	SyncStatus interface{} `json:"syncStatus,omitempty"`
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer2On', 'OfflineDataTransfer2Off'
+	OfflineDataTransfer OfflineDataTransfer2 `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferStorageAccountResourceID - Offline data transfer storage account resource ID
+	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty"`
+	// OfflineDataTransferStorageAccountTenantID - Offline data transfer storage account tenant ID
+	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty"`
+	// OfflineDataTransferShareName - Offline data transfer share name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // ServerEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1551,6 +1608,10 @@ type ServerEndpointUpdateProperties struct {
 	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
 	// TierFilesOlderThanDays - Tier files older than days.
 	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
+	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer1On', 'OfflineDataTransfer1Off'
+	OfflineDataTransfer OfflineDataTransfer1 `json:"offlineDataTransfer,omitempty"`
+	// OfflineDataTransferShareName - Offline data transfer share name
+	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
 // Service storage Sync Service object.

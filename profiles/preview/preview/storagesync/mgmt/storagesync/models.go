@@ -59,6 +59,27 @@ const (
 	Invalid       NameAvailabilityReason = original.Invalid
 )
 
+type OfflineDataTransfer = original.OfflineDataTransfer
+
+const (
+	OfflineDataTransferOff OfflineDataTransfer = original.OfflineDataTransferOff
+	OfflineDataTransferOn  OfflineDataTransfer = original.OfflineDataTransferOn
+)
+
+type OfflineDataTransfer1 = original.OfflineDataTransfer1
+
+const (
+	OfflineDataTransfer1Off OfflineDataTransfer1 = original.OfflineDataTransfer1Off
+	OfflineDataTransfer1On  OfflineDataTransfer1 = original.OfflineDataTransfer1On
+)
+
+type OfflineDataTransfer2 = original.OfflineDataTransfer2
+
+const (
+	OfflineDataTransfer2Off OfflineDataTransfer2 = original.OfflineDataTransfer2Off
+	OfflineDataTransfer2On  OfflineDataTransfer2 = original.OfflineDataTransfer2On
+)
+
 type Operation = original.Operation
 
 const (
@@ -184,6 +205,15 @@ func PossibleCloudTiering2Values() []CloudTiering2 {
 }
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
+}
+func PossibleOfflineDataTransferValues() []OfflineDataTransfer {
+	return original.PossibleOfflineDataTransferValues()
+}
+func PossibleOfflineDataTransfer1Values() []OfflineDataTransfer1 {
+	return original.PossibleOfflineDataTransfer1Values()
+}
+func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
+	return original.PossibleOfflineDataTransfer2Values()
 }
 func PossibleOperationValues() []Operation {
 	return original.PossibleOperationValues()

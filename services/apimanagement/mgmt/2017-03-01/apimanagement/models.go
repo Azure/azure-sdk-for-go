@@ -2728,7 +2728,7 @@ type BackendReconnectProperties struct {
 type BackendServiceFabricClusterProperties struct {
 	// ClientCertificatethumbprint - The client certificate thumbprint for the management endpoint.
 	ClientCertificatethumbprint *string `json:"clientCertificatethumbprint,omitempty"`
-	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the parition.
+	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the partition.
 	MaxPartitionResolutionRetries *int32 `json:"maxPartitionResolutionRetries,omitempty"`
 	// ManagementEndpoints - The cluster management endpoint.
 	ManagementEndpoints *[]string `json:"managementEndpoints,omitempty"`

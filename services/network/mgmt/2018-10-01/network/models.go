@@ -1322,6 +1322,25 @@ func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
 	return []PublicIPPrefixSkuName{Standard}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// ResourceIdentityTypeNone ...
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeSystemAssignedUserAssigned ...
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	// ResourceIdentityTypeUserAssigned ...
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned, ResourceIdentityTypeSystemAssignedUserAssigned, ResourceIdentityTypeUserAssigned}
+}
+
 // RouteNextHopType enumerates the values for route next hop type.
 type RouteNextHopType string
 
@@ -1733,6 +1752,8 @@ type ApplicationGateway struct {
 	Etag *string `json:"etag,omitempty"`
 	// Zones - A list of availability zones denoting where the resource needs to come from.
 	Zones *[]string `json:"zones,omitempty"`
+	// Identity - The identity of the application gateway, if configured.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1756,6 +1777,9 @@ func (ag ApplicationGateway) MarshalJSON() ([]byte, error) {
 	}
 	if ag.Zones != nil {
 		objectMap["zones"] = ag.Zones
+	}
+	if ag.Identity != nil {
+		objectMap["identity"] = ag.Identity
 	}
 	if ag.ID != nil {
 		objectMap["id"] = ag.ID
@@ -1810,6 +1834,15 @@ func (ag *ApplicationGateway) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ag.Zones = &zones
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedServiceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				ag.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -4098,6 +4131,8 @@ type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	Password *string `json:"password,omitempty"`
 	// PublicCertData - Base-64 encoded Public cert data corresponding to pfx specified in data. Only applicable in GET request.
 	PublicCertData *string `json:"publicCertData,omitempty"`
+	// KeyVaultSecretID - Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+	KeyVaultSecretID *string `json:"keyVaultSecretId,omitempty"`
 	// ProvisioningState - Provisioning state of the SSL certificate resource Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -4366,8 +4401,8 @@ func (agtrc *ApplicationGatewayTrustedRootCertificate) UnmarshalJSON(body []byte
 type ApplicationGatewayTrustedRootCertificatePropertiesFormat struct {
 	// Data - Certificate public data.
 	Data *string `json:"data,omitempty"`
-	// KeyvaultSecretID - KeyVault Secret Id for certificate.
-	KeyvaultSecretID *string `json:"keyvaultSecretId,omitempty"`
+	// KeyVaultSecretID - Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+	KeyVaultSecretID *string `json:"keyVaultSecretId,omitempty"`
 	// ProvisioningState - Provisioning state of the trusted root certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -17155,6 +17190,44 @@ type LogSpecification struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// BlobDuration - Duration of the blob.
 	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
+// ManagedServiceIdentity identity for the resource.
+type ManagedServiceIdentity struct {
+	// PrincipalID - The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant id of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the virtual machine. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
+	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*ManagedServiceIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentity.
+func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msi.PrincipalID != nil {
+		objectMap["principalId"] = msi.PrincipalID
+	}
+	if msi.TenantID != nil {
+		objectMap["tenantId"] = msi.TenantID
+	}
+	if msi.Type != "" {
+		objectMap["type"] = msi.Type
+	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
+// ManagedServiceIdentityUserAssignedIdentitiesValue ...
+type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // MatchedRule matched rule.

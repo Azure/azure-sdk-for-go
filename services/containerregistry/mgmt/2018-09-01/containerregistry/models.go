@@ -3158,14 +3158,14 @@ type RunProperties struct {
 	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
 	// SourceTrigger - The source trigger that caused the run.
 	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
-	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
-	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 	// Platform - The platform properties against which the run will happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
 	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
+	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 }
 
 // BasicRunRequest the request parameters for scheduling a run.
@@ -3473,7 +3473,7 @@ type Target struct {
 }
 
 // Task the task that has the ARM resource and task properties.
-// The  task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 type Task struct {
 	autorest.Response `json:"-"`
 	// TaskProperties - The properties of a task.

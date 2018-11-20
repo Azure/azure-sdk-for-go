@@ -2360,6 +2360,8 @@ type PasswordCredential struct {
 	KeyID *string `json:"keyId,omitempty"`
 	// Value - Key value.
 	Value *string `json:"value,omitempty"`
+	// CustomKeyIdentifier - Custom Key Identifier
+	CustomKeyIdentifier *[]byte `json:"customKeyIdentifier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PasswordCredential.
@@ -2376,6 +2378,9 @@ func (pc PasswordCredential) MarshalJSON() ([]byte, error) {
 	}
 	if pc.Value != nil {
 		objectMap["value"] = pc.Value
+	}
+	if pc.CustomKeyIdentifier != nil {
+		objectMap["customKeyIdentifier"] = pc.CustomKeyIdentifier
 	}
 	for k, v := range pc.AdditionalProperties {
 		objectMap[k] = v
@@ -2439,6 +2444,15 @@ func (pc *PasswordCredential) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pc.Value = &value
+			}
+		case "customKeyIdentifier":
+			if v != nil {
+				var customKeyIdentifier []byte
+				err = json.Unmarshal(*v, &customKeyIdentifier)
+				if err != nil {
+					return err
+				}
+				pc.CustomKeyIdentifier = &customKeyIdentifier
 			}
 		}
 	}

@@ -268,7 +268,7 @@ type CheckNameAvailabilityOutput struct {
 
 // CidrIPAddress CIDR Ip address
 type CidrIPAddress struct {
-	// BaseIPAddress - Ip adress itself.
+	// BaseIPAddress - IP address itself.
 	BaseIPAddress *string `json:"baseIpAddress,omitempty"`
 	// PrefixLength - The length of the prefix of the ip address.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
@@ -1029,7 +1029,7 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 }
 
 // EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type EndpointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN endpoints within a profile
@@ -1187,7 +1187,7 @@ type EndpointProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OriginHostHeader - The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
-	// OriginPath - A directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+	// OriginPath - A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
 	OriginPath *string `json:"originPath,omitempty"`
 	// ContentTypesToCompress - List of content types on which compression applies. The value should be a valid MIME type.
 	ContentTypesToCompress *[]string `json:"contentTypesToCompress,omitempty"`
@@ -1203,7 +1203,7 @@ type EndpointProperties struct {
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
 	// ProbePath - Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal routes for the CDN. This is relative to the origin path.
 	ProbePath *string `json:"probePath,omitempty"`
-	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1211,7 +1211,7 @@ type EndpointProperties struct {
 type EndpointPropertiesUpdateParameters struct {
 	// OriginHostHeader - The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
-	// OriginPath - A directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+	// OriginPath - A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
 	OriginPath *string `json:"originPath,omitempty"`
 	// ContentTypesToCompress - List of content types on which compression applies. The value should be a valid MIME type.
 	ContentTypesToCompress *[]string `json:"contentTypesToCompress,omitempty"`
@@ -1227,7 +1227,7 @@ type EndpointPropertiesUpdateParameters struct {
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
 	// ProbePath - Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal routes for the CDN. This is relative to the origin path.
 	ProbePath *string `json:"probePath,omitempty"`
-	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1468,7 +1468,7 @@ func (eup *EndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error reponse indicates CDN service is not able to process the incoming request. The
+// ErrorResponse error response indicates CDN service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -2142,7 +2142,7 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 }
 
 // ProfileListResult result of the request to list profiles. It contains a list of profile objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN profiles within a resource group.

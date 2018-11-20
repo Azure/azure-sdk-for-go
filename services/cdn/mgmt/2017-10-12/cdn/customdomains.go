@@ -404,7 +404,7 @@ func (client CustomDomainsClient) EnableCustomHTTPSResponder(resp *http.Response
 	return
 }
 
-// Get gets an exisitng custom domain within an endpoint.
+// Get gets an existing custom domain within an endpoint.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.

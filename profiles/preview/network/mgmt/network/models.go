@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network"
 )
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
@@ -424,6 +424,12 @@ type ExpressRoutePortsEncapsulation = original.ExpressRoutePortsEncapsulation
 const (
 	Dot1Q ExpressRoutePortsEncapsulation = original.Dot1Q
 	QinQ  ExpressRoutePortsEncapsulation = original.QinQ
+)
+
+type FlowLogFormatType = original.FlowLogFormatType
+
+const (
+	JSON FlowLogFormatType = original.JSON
 )
 
 type HTTPMethod = original.HTTPMethod
@@ -890,6 +896,7 @@ type ApplicationGatewayFrontendIPConfiguration = original.ApplicationGatewayFron
 type ApplicationGatewayFrontendIPConfigurationPropertiesFormat = original.ApplicationGatewayFrontendIPConfigurationPropertiesFormat
 type ApplicationGatewayFrontendPort = original.ApplicationGatewayFrontendPort
 type ApplicationGatewayFrontendPortPropertiesFormat = original.ApplicationGatewayFrontendPortPropertiesFormat
+type ApplicationGatewayHeaderConfiguration = original.ApplicationGatewayHeaderConfiguration
 type ApplicationGatewayHTTPListener = original.ApplicationGatewayHTTPListener
 type ApplicationGatewayHTTPListenerPropertiesFormat = original.ApplicationGatewayHTTPListenerPropertiesFormat
 type ApplicationGatewayIPConfiguration = original.ApplicationGatewayIPConfiguration
@@ -907,6 +914,10 @@ type ApplicationGatewayRedirectConfiguration = original.ApplicationGatewayRedire
 type ApplicationGatewayRedirectConfigurationPropertiesFormat = original.ApplicationGatewayRedirectConfigurationPropertiesFormat
 type ApplicationGatewayRequestRoutingRule = original.ApplicationGatewayRequestRoutingRule
 type ApplicationGatewayRequestRoutingRulePropertiesFormat = original.ApplicationGatewayRequestRoutingRulePropertiesFormat
+type ApplicationGatewayRewriteRule = original.ApplicationGatewayRewriteRule
+type ApplicationGatewayRewriteRuleActionSet = original.ApplicationGatewayRewriteRuleActionSet
+type ApplicationGatewayRewriteRuleSet = original.ApplicationGatewayRewriteRuleSet
+type ApplicationGatewayRewriteRuleSetPropertiesFormat = original.ApplicationGatewayRewriteRuleSetPropertiesFormat
 type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
 type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreateOrUpdateFuture
 type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
@@ -1142,6 +1153,7 @@ type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProvide
 type ExpressRouteServiceProviderListResultIterator = original.ExpressRouteServiceProviderListResultIterator
 type ExpressRouteServiceProviderListResultPage = original.ExpressRouteServiceProviderListResultPage
 type ExpressRouteServiceProviderPropertiesFormat = original.ExpressRouteServiceProviderPropertiesFormat
+type FlowLogFormatParameters = original.FlowLogFormatParameters
 type FlowLogInformation = original.FlowLogInformation
 type FlowLogProperties = original.FlowLogProperties
 type FlowLogStatusParameters = original.FlowLogStatusParameters
@@ -1954,6 +1966,9 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 }
 func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
 	return original.PossibleExpressRoutePortsEncapsulationValues()
+}
+func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
+	return original.PossibleFlowLogFormatTypeValues()
 }
 func PossibleHTTPMethodValues() []HTTPMethod {
 	return original.PossibleHTTPMethodValues()

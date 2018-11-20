@@ -529,6 +529,91 @@ func (client UserClient) GetEntityTagResponder(resp *http.Response) (result auto
 	return
 }
 
+// GetIdentity returns calling user identity information.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+func (client UserClient) GetIdentity(ctx context.Context, resourceGroupName string, serviceName string) (result CurrentUserIdentity, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/UserClient.GetIdentity")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.UserClient", "GetIdentity", err.Error())
+	}
+
+	req, err := client.GetIdentityPreparer(ctx, resourceGroupName, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetIdentity", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetIdentitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetIdentity", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetIdentityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "GetIdentity", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetIdentityPreparer prepares the GetIdentity request.
+func (client UserClient) GetIdentityPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/identity", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetIdentitySender sends the GetIdentity request. The method will close the
+// http.Response Body if it receives an error.
+func (client UserClient) GetIdentitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetIdentityResponder handles the response to the GetIdentity request. The method always
+// closes the http.Response Body.
+func (client UserClient) GetIdentityResponder(resp *http.Response) (result CurrentUserIdentity, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetSharedAccessToken gets the Shared Access Authorization Token for the User.
 // Parameters:
 // resourceGroupName - the name of the resource group.

@@ -161,6 +161,7 @@ type APIIssueClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result apimanagement.IssueContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result autorest.Response, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result apimanagement.IssueCollectionPage, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters apimanagement.IssueUpdateContract, ifMatch string) (result autorest.Response, err error)
 }
 
 var _ APIIssueClientAPI = (*apimanagement.APIIssueClient)(nil)
@@ -602,6 +603,7 @@ type UserClientAPI interface {
 	GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result apimanagement.GenerateSsoURLResult, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result apimanagement.UserContract, err error)
 	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result autorest.Response, err error)
+	GetIdentity(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.CurrentUserIdentity, err error)
 	GetSharedAccessToken(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters apimanagement.UserTokenParameters) (result apimanagement.UserTokenResult, err error)
 	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.UserCollectionPage, err error)
 	Update(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters apimanagement.UserUpdateParameters, ifMatch string) (result autorest.Response, err error)

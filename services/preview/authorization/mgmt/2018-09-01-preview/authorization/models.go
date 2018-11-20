@@ -1217,6 +1217,8 @@ type RoleAssignmentPropertiesWithScope struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID.
 	PrincipalID *string `json:"principalId,omitempty"`
+	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
+	PrincipalType PrincipalType `json:"principalType,omitempty"`
 	// CanDelegate - The Delegation flag for the roleassignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
 }

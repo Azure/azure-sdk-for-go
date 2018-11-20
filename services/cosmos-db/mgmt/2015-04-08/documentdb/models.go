@@ -1075,7 +1075,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // PartitionMetric the metric values for a single partition.
 type PartitionMetric struct {
-	// PartitionID - The parition id (GUID identifier) of the metric values.
+	// PartitionID - The partition id (GUID identifier) of the metric values.
 	PartitionID *string `json:"partitionId,omitempty"`
 	// PartitionKeyRangeID - The partition key range id (integer identifier) of the metric values.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
@@ -1102,7 +1102,7 @@ type PartitionMetricListResult struct {
 
 // PartitionUsage the partition level usage data for a usage request.
 type PartitionUsage struct {
-	// PartitionID - The parition id (GUID identifier) of the usages.
+	// PartitionID - The partition id (GUID identifier) of the usages.
 	PartitionID *string `json:"partitionId,omitempty"`
 	// PartitionKeyRangeID - The partition key range id (integer identifier) of the usages.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`

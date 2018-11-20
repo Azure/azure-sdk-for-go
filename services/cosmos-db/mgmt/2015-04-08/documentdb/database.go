@@ -41,7 +41,7 @@ func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) Databas
 	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListMetricDefinitions retrieves metric defintions for the given database.
+// ListMetricDefinitions retrieves metric definitions for the given database.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.

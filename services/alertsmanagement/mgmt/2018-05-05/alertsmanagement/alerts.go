@@ -126,7 +126,7 @@ func (client AlertsClient) ChangeStateResponder(resp *http.Response) (result Ale
 // monitorService - filter by monitor service which generates the alert instance. Default value is select all.
 // monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
 // select all.
-// severity - filter by severity.  Defaut value is select all.
+// severity - filter by severity.  Default value is select all.
 // alertState - filter by state of the alert instance. Default value is to select all.
 // alertRule - filter by specific alert rule.  Default value is to select all.
 // smartGroupID - filter the alerts list by the Smart Group Id. Default value is none.
@@ -139,9 +139,9 @@ func (client AlertsClient) ChangeStateResponder(resp *http.Response) (result Ale
 // sortBy - sort the query results by input field,  Default value is 'lastModifiedDateTime'.
 // sortOrder - sort the query results order in either ascending or descending.  Default value is 'desc' for
 // time fields and 'asc' for others.
-// selectParameter - this filter allows to selection of the fields(comma seperated) which would  be part of the
-// the essential section. This would allow to project only the  required fields rather than getting entire
-// content.  Default is to fetch all the fields in the essentials section.
+// selectParameter - this filter allows to selection of the fields(comma separated) which would  be part of the
+// essential section. This would allow to project only the  required fields rather than getting entire content.
+// Default is to fetch all the fields in the essentials section.
 // timeRange - filter by time range by below listed values. Default value is 1 day.
 // customTimeRange - filter by custom time range in the format <start-time>/<end-time>  where time is in
 // (ISO-8601 format)'. Permissible values is within 30 days from  query time. Either timeRange or
@@ -469,7 +469,7 @@ func (client AlertsClient) GetHistoryResponder(resp *http.Response) (result Aler
 // monitorService - filter by monitor service which generates the alert instance. Default value is select all.
 // monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
 // select all.
-// severity - filter by severity.  Defaut value is select all.
+// severity - filter by severity.  Default value is select all.
 // alertState - filter by state of the alert instance. Default value is to select all.
 // alertRule - filter by specific alert rule.  Default value is to select all.
 // timeRange - filter by time range by below listed values. Default value is 1 day.

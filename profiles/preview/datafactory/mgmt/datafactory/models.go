@@ -885,6 +885,7 @@ const (
 	PUT    WebActivityMethod = original.PUT
 )
 
+type AccessPolicyResponse = original.AccessPolicyResponse
 type BasicActivity = original.BasicActivity
 type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
@@ -1393,6 +1394,7 @@ type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
+type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService

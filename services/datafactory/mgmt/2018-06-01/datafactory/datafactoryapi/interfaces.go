@@ -36,6 +36,7 @@ type FactoriesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, factory datafactory.Factory, ifMatch string) (result datafactory.Factory, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, ifNoneMatch string) (result datafactory.Factory, err error)
+	GetDataPlaneAccess(ctx context.Context, resourceGroupName string, factoryName string, policy datafactory.UserAccessPolicy) (result datafactory.AccessPolicyResponse, err error)
 	GetGitHubAccessToken(ctx context.Context, resourceGroupName string, factoryName string, gitHubAccessTokenRequest datafactory.GitHubAccessTokenRequest) (result datafactory.GitHubAccessTokenResponse, err error)
 	List(ctx context.Context) (result datafactory.FactoryListResponsePage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result datafactory.FactoryListResponsePage, err error)

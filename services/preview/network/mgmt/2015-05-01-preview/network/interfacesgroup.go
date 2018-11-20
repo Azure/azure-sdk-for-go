@@ -120,7 +120,7 @@ func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 	return
 }
 
-// Delete the delete netwokInterface operation deletes the specified netwokInterface.
+// Delete the delete networkInterface operation deletes the specified networkInterface.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkInterfaceName - the name of the network interface.
@@ -196,7 +196,7 @@ func (client InterfacesClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get the Get ntework interface operation retreives information about the specified network interface.
+// Get the Get network interface operation retrieves information about the specified network interface.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkInterfaceName - the name of the network interface.
@@ -273,7 +273,7 @@ func (client InterfacesClient) GetResponder(resp *http.Response) (result Interfa
 	return
 }
 
-// GetVirtualMachineScaleSetNetworkInterface the Get ntework interface operation retreives information about the
+// GetVirtualMachineScaleSetNetworkInterface the Get network interface operation retrieves information about the
 // specified network interface in a virtual machine scale set.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -355,7 +355,7 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceResponde
 	return
 }
 
-// List the List networkInterfaces opertion retrieves all the networkInterfaces in a resource group.
+// List the List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client InterfacesClient) List(ctx context.Context, resourceGroupName string) (result InterfaceListResultPage, err error) {
@@ -468,7 +468,7 @@ func (client InterfacesClient) ListComplete(ctx context.Context, resourceGroupNa
 	return
 }
 
-// ListAll the List networkInterfaces opertion retrieves all the networkInterfaces in a subscription.
+// ListAll the List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
 func (client InterfacesClient) ListAll(ctx context.Context) (result InterfaceListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InterfacesClient.ListAll")

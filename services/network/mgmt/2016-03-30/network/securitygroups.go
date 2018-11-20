@@ -40,7 +40,7 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return SecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the Put NetworkSecurityGroup operation creates/updates a network security groupin the specified
+// CreateOrUpdate the Put NetworkSecurityGroup operation creates/updates a network security group in the specified
 // resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -121,7 +121,7 @@ func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Delete the Delete NetworkSecurityGroup operation deletes the specifed network security group
+// Delete the Delete NetworkSecurityGroup operation deletes the specified network security group
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // networkSecurityGroupName - the name of the network security group.

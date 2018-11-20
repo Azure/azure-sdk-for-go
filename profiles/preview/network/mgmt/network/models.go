@@ -677,6 +677,15 @@ const (
 	Standard PublicIPPrefixSkuName = original.Standard
 )
 
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
 type RouteNextHopType = original.RouteNextHopType
 
 const (
@@ -1276,6 +1285,8 @@ type LocalNetworkGatewaysCreateOrUpdateFuture = original.LocalNetworkGatewaysCre
 type LocalNetworkGatewaysDeleteFuture = original.LocalNetworkGatewaysDeleteFuture
 type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateTagsFuture
 type LogSpecification = original.LogSpecification
+type ManagedServiceIdentity = original.ManagedServiceIdentity
+type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type MatchedRule = original.MatchedRule
 type MetricSpecification = original.MetricSpecification
 type NextHopParameters = original.NextHopParameters
@@ -2050,6 +2061,9 @@ func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 }
 func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
 	return original.PossiblePublicIPPrefixSkuNameValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	return original.PossibleRouteNextHopTypeValues()

@@ -237,7 +237,7 @@ type CheckNameAvailabilityOutput struct {
 
 // CidrIPAddress CIDR Ip address
 type CidrIPAddress struct {
-	// BaseIPAddress - Ip adress itself.
+	// BaseIPAddress - IP address itself.
 	BaseIPAddress *string `json:"baseIpAddress,omitempty"`
 	// PrefixLength - The length of the prefix of the ip address.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
@@ -1051,7 +1051,7 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 }
 
 // EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type EndpointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN endpoints within a profile
@@ -1223,7 +1223,7 @@ type EndpointProperties struct {
 	QueryStringCachingBehavior QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// OptimizationType - Customer can specify what scenario they want this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization. Possible values include: 'GeneralWebDelivery', 'GeneralMediaStreaming', 'VideoOnDemandMediaStreaming', 'LargeFileDownload', 'DynamicSiteAcceleration'
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
-	// GeoFilters - List of rules defining user geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining user geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1246,7 +1246,7 @@ type EndpointPropertiesUpdateParameters struct {
 	QueryStringCachingBehavior QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// OptimizationType - Customer can specify what scenario they want this CDN endpoint to optimize, e.g. Download, Media services. With this information we can apply scenario driven optimization. Possible values include: 'GeneralWebDelivery', 'GeneralMediaStreaming', 'VideoOnDemandMediaStreaming', 'LargeFileDownload', 'DynamicSiteAcceleration'
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
-	// GeoFilters - List of rules defining user geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining user geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1487,7 +1487,7 @@ func (eup *EndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error reponse indicates CDN service is not able to process the incoming request. The
+// ErrorResponse error response indicates CDN service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -2162,7 +2162,7 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 }
 
 // ProfileListResult result of the request to list profiles. It contains a list of profile objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN profiles within a resource group.

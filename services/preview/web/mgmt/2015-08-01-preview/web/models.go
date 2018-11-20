@@ -4683,7 +4683,7 @@ type ConsentLinkPayload struct {
 }
 
 // Contact contact information for domain registration. If 'Domain Privacy' option is not selected then the
-// contact information will be  be made publicly available through the Whois directories as per ICANN
+// contact information will be made publicly available through the Whois directories as per ICANN
 // requirements.
 type Contact struct {
 	// AddressMailing - Mailing address
@@ -9171,7 +9171,7 @@ type RampUpRule struct {
 	ActionHostName *string `json:"actionHostName,omitempty"`
 	// ReroutePercentage - Percentage of the traffic which will be redirected to {Microsoft.Web.Hosting.Administration.RampUpRule.ActionHostName}
 	ReroutePercentage *float64 `json:"reroutePercentage,omitempty"`
-	// ChangeStep - [Optional] In auto ramp up scenario this is the step to to add/remove from {Microsoft.Web.Hosting.Administration.RampUpRule.ReroutePercentage} until it reaches
+	// ChangeStep - [Optional] In auto ramp up scenario this is the step to add/remove from {Microsoft.Web.Hosting.Administration.RampUpRule.ReroutePercentage} until it reaches
 	//             {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage} or {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}. Site metrics are checked every N minutes specificed in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
 	//             Custom decision algorithm can be provided in TiPCallback site extension which Url can be specified in {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeDecisionCallbackUrl}
 	ChangeStep *float64 `json:"changeStep,omitempty"`

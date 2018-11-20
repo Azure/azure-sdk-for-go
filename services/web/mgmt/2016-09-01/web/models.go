@@ -6704,7 +6704,7 @@ type CsmSlotEntity struct {
 
 // CsmUsageQuota usage of the quota resource.
 type CsmUsageQuota struct {
-	// Unit - Units of measurement for the quota resourse.
+	// Unit - Units of measurement for the quota resource.
 	Unit *string `json:"unit,omitempty"`
 	// NextResetTime - Next reset time for the resource counter.
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
@@ -14625,11 +14625,11 @@ type RampUpRule struct {
 	ActionHostName *string `json:"actionHostName,omitempty"`
 	// ReroutePercentage - Percentage of the traffic which will be redirected to <code>ActionHostName</code>.
 	ReroutePercentage *float64 `json:"reroutePercentage,omitempty"`
-	// ChangeStep - In auto ramp up scenario this is the step to to add/remove from <code>ReroutePercentage</code> until it reaches
-	// <code>MinReroutePercentage</code> or <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specificed in <code>ChangeIntervalInMinutes</code>.
+	// ChangeStep - In auto ramp up scenario this is the step to add/remove from <code>ReroutePercentage</code> until it reaches
+	// <code>MinReroutePercentage</code> or <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specified in <code>ChangeIntervalInMinutes</code>.
 	// Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in <code>ChangeDecisionCallbackUrl</code>.
 	ChangeStep *float64 `json:"changeStep,omitempty"`
-	// ChangeIntervalInMinutes - Specifies interval in mimuntes to reevaluate ReroutePercentage.
+	// ChangeIntervalInMinutes - Specifies interval in minutes to reevaluate ReroutePercentage.
 	ChangeIntervalInMinutes *int32 `json:"changeIntervalInMinutes,omitempty"`
 	// MinReroutePercentage - Specifies lower boundary above which ReroutePercentage will stay.
 	MinReroutePercentage *float64 `json:"minReroutePercentage,omitempty"`
@@ -19081,7 +19081,7 @@ type SlotDifferenceProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// SlotSwapStatus the status of the last successfull slot swap operation.
+// SlotSwapStatus the status of the last successful slot swap operation.
 type SlotSwapStatus struct {
 	// TimestampUtc - The time the last successful slot swap completed.
 	TimestampUtc *date.Time `json:"timestampUtc,omitempty"`
@@ -21559,7 +21559,7 @@ type UsageProperties struct {
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
-// User user crendentials used for publishing activity.
+// User user credentials used for publishing activity.
 type User struct {
 	autorest.Response `json:"-"`
 	// UserProperties - User resource specific properties

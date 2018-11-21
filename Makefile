@@ -67,9 +67,6 @@ terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(in
 	$Q terraform output > .env
 
 .terraform:
-	$Q az group list >> /dev/null ## Ensure Azure CLI Token in valid before running TF
-	## Prevents 'No valid (unexpired) Azure CLI Auth Tokens found.' error message.
-	## Fix pending in PR: https://github.com/terraform-providers/terraform-provider-azurerm/pull/1752
 	$Q terraform init
 
 # Dependency management

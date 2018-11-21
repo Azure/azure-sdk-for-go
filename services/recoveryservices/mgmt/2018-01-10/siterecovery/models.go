@@ -131,6 +131,55 @@ func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
 	return []DisableProtectionReason{MigrationComplete, NotSpecified}
 }
 
+// DiskAccountType enumerates the values for disk account type.
+type DiskAccountType string
+
+const (
+	// PremiumLRS ...
+	PremiumLRS DiskAccountType = "Premium_LRS"
+	// StandardLRS ...
+	StandardLRS DiskAccountType = "Standard_LRS"
+	// StandardSSDLRS ...
+	StandardSSDLRS DiskAccountType = "StandardSSD_LRS"
+)
+
+// PossibleDiskAccountTypeValues returns an array of possible values for the DiskAccountType const type.
+func PossibleDiskAccountTypeValues() []DiskAccountType {
+	return []DiskAccountType{PremiumLRS, StandardLRS, StandardSSDLRS}
+}
+
+// DiskType enumerates the values for disk type.
+type DiskType string
+
+const (
+	// DiskTypePremiumLRS ...
+	DiskTypePremiumLRS DiskType = "Premium_LRS"
+	// DiskTypeStandardLRS ...
+	DiskTypeStandardLRS DiskType = "Standard_LRS"
+	// DiskTypeStandardSSDLRS ...
+	DiskTypeStandardSSDLRS DiskType = "StandardSSD_LRS"
+)
+
+// PossibleDiskTypeValues returns an array of possible values for the DiskType const type.
+func PossibleDiskTypeValues() []DiskType {
+	return []DiskType{DiskTypePremiumLRS, DiskTypeStandardLRS, DiskTypeStandardSSDLRS}
+}
+
+// EthernetAddressType enumerates the values for ethernet address type.
+type EthernetAddressType string
+
+const (
+	// Dynamic ...
+	Dynamic EthernetAddressType = "Dynamic"
+	// Static ...
+	Static EthernetAddressType = "Static"
+)
+
+// PossibleEthernetAddressTypeValues returns an array of possible values for the EthernetAddressType const type.
+func PossibleEthernetAddressTypeValues() []EthernetAddressType {
+	return []EthernetAddressType{Dynamic, Static}
+}
+
 // FailoverDeploymentModel enumerates the values for failover deployment model.
 type FailoverDeploymentModel string
 
@@ -189,19 +238,6 @@ const (
 // PossibleHyperVReplicaAzureRpRecoveryPointTypeValues returns an array of possible values for the HyperVReplicaAzureRpRecoveryPointType const type.
 func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
 	return []HyperVReplicaAzureRpRecoveryPointType{HyperVReplicaAzureRpRecoveryPointTypeLatest, HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent, HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed}
-}
-
-// IdentityProviderType enumerates the values for identity provider type.
-type IdentityProviderType string
-
-const (
-	// RecoveryServicesActiveDirectory ...
-	RecoveryServicesActiveDirectory IdentityProviderType = "RecoveryServicesActiveDirectory"
-)
-
-// PossibleIdentityProviderTypeValues returns an array of possible values for the IdentityProviderType const type.
-func PossibleIdentityProviderTypeValues() []IdentityProviderType {
-	return []IdentityProviderType{RecoveryServicesActiveDirectory}
 }
 
 // InMageV2RpRecoveryPointType enumerates the values for in mage v2 rp recovery point type.
@@ -277,6 +313,22 @@ const (
 // PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicDisableProtectionProviderSpecificInput const type.
 func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
 	return []InstanceTypeBasicDisableProtectionProviderSpecificInput{InstanceTypeDisableProtectionProviderSpecificInput, InstanceTypeInMage}
+}
+
+// InstanceTypeBasicEnableMigrationProviderSpecificInput enumerates the values for instance type basic enable
+// migration provider specific input.
+type InstanceTypeBasicEnableMigrationProviderSpecificInput string
+
+const (
+	// InstanceTypeEnableMigrationProviderSpecificInput ...
+	InstanceTypeEnableMigrationProviderSpecificInput InstanceTypeBasicEnableMigrationProviderSpecificInput = "EnableMigrationProviderSpecificInput"
+	// InstanceTypeVMwareCbt ...
+	InstanceTypeVMwareCbt InstanceTypeBasicEnableMigrationProviderSpecificInput = "VMwareCbt"
+)
+
+// PossibleInstanceTypeBasicEnableMigrationProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicEnableMigrationProviderSpecificInput const type.
+func PossibleInstanceTypeBasicEnableMigrationProviderSpecificInputValues() []InstanceTypeBasicEnableMigrationProviderSpecificInput {
+	return []InstanceTypeBasicEnableMigrationProviderSpecificInput{InstanceTypeEnableMigrationProviderSpecificInput, InstanceTypeVMwareCbt}
 }
 
 // InstanceTypeBasicEnableProtectionProviderSpecificInput enumerates the values for instance type basic enable
@@ -468,6 +520,38 @@ func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
 	return []InstanceTypeBasicJobDetails{InstanceTypeAsrJobDetails, InstanceTypeExportJobDetails, InstanceTypeFailoverJobDetails, InstanceTypeJobDetails, InstanceTypeSwitchProtectionJobDetails, InstanceTypeTestFailoverJobDetails}
 }
 
+// InstanceTypeBasicMigrateProviderSpecificInput enumerates the values for instance type basic migrate provider
+// specific input.
+type InstanceTypeBasicMigrateProviderSpecificInput string
+
+const (
+	// InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput ...
+	InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput InstanceTypeBasicMigrateProviderSpecificInput = "MigrateProviderSpecificInput"
+	// InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt ...
+	InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt InstanceTypeBasicMigrateProviderSpecificInput = "VMwareCbt"
+)
+
+// PossibleInstanceTypeBasicMigrateProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicMigrateProviderSpecificInput const type.
+func PossibleInstanceTypeBasicMigrateProviderSpecificInputValues() []InstanceTypeBasicMigrateProviderSpecificInput {
+	return []InstanceTypeBasicMigrateProviderSpecificInput{InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput, InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt}
+}
+
+// InstanceTypeBasicMigrationProviderSpecificSettings enumerates the values for instance type basic migration
+// provider specific settings.
+type InstanceTypeBasicMigrationProviderSpecificSettings string
+
+const (
+	// InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings ...
+	InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings InstanceTypeBasicMigrationProviderSpecificSettings = "MigrationProviderSpecificSettings"
+	// InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt ...
+	InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt InstanceTypeBasicMigrationProviderSpecificSettings = "VMwareCbt"
+)
+
+// PossibleInstanceTypeBasicMigrationProviderSpecificSettingsValues returns an array of possible values for the InstanceTypeBasicMigrationProviderSpecificSettings const type.
+func PossibleInstanceTypeBasicMigrationProviderSpecificSettingsValues() []InstanceTypeBasicMigrationProviderSpecificSettings {
+	return []InstanceTypeBasicMigrationProviderSpecificSettings{InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings, InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt}
+}
+
 // InstanceTypeBasicNetworkMappingFabricSpecificSettings enumerates the values for instance type basic network
 // mapping fabric specific settings.
 type InstanceTypeBasicNetworkMappingFabricSpecificSettings string
@@ -559,11 +643,13 @@ const (
 	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = "A2A"
 	// InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails ...
 	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = "ProtectionContainerMappingProviderSpecificDetails"
+	// InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt ...
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = "VMwareCbt"
 )
 
 // PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails const type.
 func PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues() []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails {
-	return []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails{InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails}
+	return []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails{InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails, InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt}
 }
 
 // InstanceTypeBasicProviderSpecificFailoverInput enumerates the values for instance type basic provider
@@ -661,11 +747,13 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = "A2A"
 	// InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput ...
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = "ReplicationProviderSpecificContainerCreationInput"
+	// InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero ...
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = "6c7da455-506f-43ff-a16a-8eb101aebb70"
 )
 
 // PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificContainerCreationInput const type.
 func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
-	return []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput{InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput}
+	return []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput{InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero}
 }
 
 // InstanceTypeBasicReplicationProviderSpecificContainerMappingInput enumerates the values for instance type
@@ -677,11 +765,13 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = "A2A"
 	// InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput ...
 	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = "ReplicationProviderSpecificContainerMappingInput"
+	// InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt ...
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = "VMwareCbt"
 )
 
 // PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificContainerMappingInput const type.
 func PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput {
-	return []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput{InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput}
+	return []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput{InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput, InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt}
 }
 
 // InstanceTypeBasicReplicationProviderSpecificSettings enumerates the values for instance type basic
@@ -795,6 +885,38 @@ func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTyp
 	return []InstanceTypeBasicTaskTypeDetails{InstanceTypeAutomationRunbookTaskDetails, InstanceTypeConsistencyCheckTaskDetails, InstanceTypeFabricReplicationGroupTaskDetails, InstanceTypeJobTaskDetails, InstanceTypeManualActionTaskDetails, InstanceTypeScriptActionTaskDetails, InstanceTypeTaskTypeDetails, InstanceTypeVirtualMachineTaskDetails, InstanceTypeVMNicUpdatesTaskDetails}
 }
 
+// InstanceTypeBasicTestMigrateProviderSpecificInput enumerates the values for instance type basic test migrate
+// provider specific input.
+type InstanceTypeBasicTestMigrateProviderSpecificInput string
+
+const (
+	// InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput ...
+	InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput InstanceTypeBasicTestMigrateProviderSpecificInput = "TestMigrateProviderSpecificInput"
+	// InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt ...
+	InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt InstanceTypeBasicTestMigrateProviderSpecificInput = "VMwareCbt"
+)
+
+// PossibleInstanceTypeBasicTestMigrateProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicTestMigrateProviderSpecificInput const type.
+func PossibleInstanceTypeBasicTestMigrateProviderSpecificInputValues() []InstanceTypeBasicTestMigrateProviderSpecificInput {
+	return []InstanceTypeBasicTestMigrateProviderSpecificInput{InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput, InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt}
+}
+
+// InstanceTypeBasicUpdateMigrationItemProviderSpecificInput enumerates the values for instance type basic
+// update migration item provider specific input.
+type InstanceTypeBasicUpdateMigrationItemProviderSpecificInput string
+
+const (
+	// InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput ...
+	InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput InstanceTypeBasicUpdateMigrationItemProviderSpecificInput = "UpdateMigrationItemProviderSpecificInput"
+	// InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt ...
+	InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt InstanceTypeBasicUpdateMigrationItemProviderSpecificInput = "VMwareCbt"
+)
+
+// PossibleInstanceTypeBasicUpdateMigrationItemProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicUpdateMigrationItemProviderSpecificInput const type.
+func PossibleInstanceTypeBasicUpdateMigrationItemProviderSpecificInputValues() []InstanceTypeBasicUpdateMigrationItemProviderSpecificInput {
+	return []InstanceTypeBasicUpdateMigrationItemProviderSpecificInput{InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput, InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt}
+}
+
 // InstanceTypeBasicUpdateReplicationProtectedItemProviderInput enumerates the values for instance type basic
 // update replication protected item provider input.
 type InstanceTypeBasicUpdateReplicationProtectedItemProviderInput string
@@ -830,6 +952,75 @@ const (
 // PossibleLicenseTypeValues returns an array of possible values for the LicenseType const type.
 func PossibleLicenseTypeValues() []LicenseType {
 	return []LicenseType{LicenseTypeNoLicenseType, LicenseTypeNotSpecified, LicenseTypeWindowsServer}
+}
+
+// MigrationItemOperation enumerates the values for migration item operation.
+type MigrationItemOperation string
+
+const (
+	// DisableMigration ...
+	DisableMigration MigrationItemOperation = "DisableMigration"
+	// Migrate ...
+	Migrate MigrationItemOperation = "Migrate"
+	// TestMigrate ...
+	TestMigrate MigrationItemOperation = "TestMigrate"
+	// TestMigrateCleanup ...
+	TestMigrateCleanup MigrationItemOperation = "TestMigrateCleanup"
+)
+
+// PossibleMigrationItemOperationValues returns an array of possible values for the MigrationItemOperation const type.
+func PossibleMigrationItemOperationValues() []MigrationItemOperation {
+	return []MigrationItemOperation{DisableMigration, Migrate, TestMigrate, TestMigrateCleanup}
+}
+
+// MigrationRecoveryPointType enumerates the values for migration recovery point type.
+type MigrationRecoveryPointType string
+
+const (
+	// MigrationRecoveryPointTypeApplicationConsistent ...
+	MigrationRecoveryPointTypeApplicationConsistent MigrationRecoveryPointType = "ApplicationConsistent"
+	// MigrationRecoveryPointTypeCrashConsistent ...
+	MigrationRecoveryPointTypeCrashConsistent MigrationRecoveryPointType = "CrashConsistent"
+	// MigrationRecoveryPointTypeNotSpecified ...
+	MigrationRecoveryPointTypeNotSpecified MigrationRecoveryPointType = "NotSpecified"
+)
+
+// PossibleMigrationRecoveryPointTypeValues returns an array of possible values for the MigrationRecoveryPointType const type.
+func PossibleMigrationRecoveryPointTypeValues() []MigrationRecoveryPointType {
+	return []MigrationRecoveryPointType{MigrationRecoveryPointTypeApplicationConsistent, MigrationRecoveryPointTypeCrashConsistent, MigrationRecoveryPointTypeNotSpecified}
+}
+
+// MigrationState enumerates the values for migration state.
+type MigrationState string
+
+const (
+	// MigrationStateDisableMigrationFailed ...
+	MigrationStateDisableMigrationFailed MigrationState = "DisableMigrationFailed"
+	// MigrationStateDisableMigrationInProgress ...
+	MigrationStateDisableMigrationInProgress MigrationState = "DisableMigrationInProgress"
+	// MigrationStateEnableMigrationFailed ...
+	MigrationStateEnableMigrationFailed MigrationState = "EnableMigrationFailed"
+	// MigrationStateEnableMigrationInProgress ...
+	MigrationStateEnableMigrationInProgress MigrationState = "EnableMigrationInProgress"
+	// MigrationStateInitialSeedingFailed ...
+	MigrationStateInitialSeedingFailed MigrationState = "InitialSeedingFailed"
+	// MigrationStateInitialSeedingInProgress ...
+	MigrationStateInitialSeedingInProgress MigrationState = "InitialSeedingInProgress"
+	// MigrationStateMigrationFailed ...
+	MigrationStateMigrationFailed MigrationState = "MigrationFailed"
+	// MigrationStateMigrationInProgress ...
+	MigrationStateMigrationInProgress MigrationState = "MigrationInProgress"
+	// MigrationStateMigrationSucceeded ...
+	MigrationStateMigrationSucceeded MigrationState = "MigrationSucceeded"
+	// MigrationStateNone ...
+	MigrationStateNone MigrationState = "None"
+	// MigrationStateReplicating ...
+	MigrationStateReplicating MigrationState = "Replicating"
+)
+
+// PossibleMigrationStateValues returns an array of possible values for the MigrationState const type.
+func PossibleMigrationStateValues() []MigrationState {
+	return []MigrationState{MigrationStateDisableMigrationFailed, MigrationStateDisableMigrationInProgress, MigrationStateEnableMigrationFailed, MigrationStateEnableMigrationInProgress, MigrationStateInitialSeedingFailed, MigrationStateInitialSeedingInProgress, MigrationStateMigrationFailed, MigrationStateMigrationInProgress, MigrationStateMigrationSucceeded, MigrationStateNone, MigrationStateReplicating}
 }
 
 // MultiVMGroupCreateOption enumerates the values for multi vm group create option.
@@ -1076,6 +1267,27 @@ func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
 	return []SourceSiteOperations{NotRequired, Required}
 }
 
+// TestMigrationState enumerates the values for test migration state.
+type TestMigrationState string
+
+const (
+	// TestMigrationStateNone ...
+	TestMigrationStateNone TestMigrationState = "None"
+	// TestMigrationStateTestMigrationCleanupInProgress ...
+	TestMigrationStateTestMigrationCleanupInProgress TestMigrationState = "TestMigrationCleanupInProgress"
+	// TestMigrationStateTestMigrationFailed ...
+	TestMigrationStateTestMigrationFailed TestMigrationState = "TestMigrationFailed"
+	// TestMigrationStateTestMigrationInProgress ...
+	TestMigrationStateTestMigrationInProgress TestMigrationState = "TestMigrationInProgress"
+	// TestMigrationStateTestMigrationSucceeded ...
+	TestMigrationStateTestMigrationSucceeded TestMigrationState = "TestMigrationSucceeded"
+)
+
+// PossibleTestMigrationStateValues returns an array of possible values for the TestMigrationState const type.
+func PossibleTestMigrationStateValues() []TestMigrationState {
+	return []TestMigrationState{TestMigrationStateNone, TestMigrationStateTestMigrationCleanupInProgress, TestMigrationStateTestMigrationFailed, TestMigrationStateTestMigrationInProgress, TestMigrationStateTestMigrationSucceeded}
+}
+
 // A2AApplyRecoveryPointInput applyRecoveryPoint input specific to A2A provider.
 type A2AApplyRecoveryPointInput struct {
 	// InstanceType - Possible values include: 'InstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeA2A', 'InstanceTypeHyperVReplicaAzure', 'InstanceTypeInMageAzureV2'
@@ -1119,7 +1331,7 @@ func (aarpi A2AApplyRecoveryPointInput) AsBasicApplyRecoveryPointProviderSpecifi
 
 // A2AContainerCreationInput a2A cloud creation input.
 type A2AContainerCreationInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerCreationInput `json:"instanceType,omitempty"`
 }
 
@@ -1138,6 +1350,11 @@ func (acci A2AContainerCreationInput) AsA2AContainerCreationInput() (*A2AContain
 	return &acci, true
 }
 
+// AsVMwareCbtContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for A2AContainerCreationInput.
+func (acci A2AContainerCreationInput) AsVMwareCbtContainerCreationInput() (*VMwareCbtContainerCreationInput, bool) {
+	return nil, false
+}
+
 // AsReplicationProviderSpecificContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for A2AContainerCreationInput.
 func (acci A2AContainerCreationInput) AsReplicationProviderSpecificContainerCreationInput() (*ReplicationProviderSpecificContainerCreationInput, bool) {
 	return nil, false
@@ -1154,7 +1371,7 @@ type A2AContainerMappingInput struct {
 	AgentAutoUpdateStatus AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
 	// AutomationAccountArmID - The automation account arm id.
 	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerMappingInput `json:"instanceType,omitempty"`
 }
 
@@ -1177,6 +1394,11 @@ func (acmi A2AContainerMappingInput) MarshalJSON() ([]byte, error) {
 // AsA2AContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
 func (acmi A2AContainerMappingInput) AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool) {
 	return &acmi, true
+}
+
+// AsVMwareCbtContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
+func (acmi A2AContainerMappingInput) AsVMwareCbtContainerMappingInput() (*VMwareCbtContainerMappingInput, bool) {
+	return nil, false
 }
 
 // AsReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
@@ -1717,7 +1939,7 @@ type A2AProtectionContainerMappingDetails struct {
 	ScheduleName *string `json:"scheduleName,omitempty"`
 	// JobScheduleName - The job schedule arm name.
 	JobScheduleName *string `json:"jobScheduleName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -1746,6 +1968,11 @@ func (apcmd A2AProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) 
 // AsA2AProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
 func (apcmd A2AProtectionContainerMappingDetails) AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool) {
 	return &apcmd, true
+}
+
+// AsVMwareCbtProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
+func (apcmd A2AProtectionContainerMappingDetails) AsVMwareCbtProtectionContainerMappingDetails() (*VMwareCbtProtectionContainerMappingDetails, bool) {
+	return nil, false
 }
 
 // AsProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
@@ -2306,6 +2533,22 @@ type A2AVMManagedDiskUpdateDetails struct {
 	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
 	// RecoveryReplicaDiskAccountType - The replica disk type before failover.
 	RecoveryReplicaDiskAccountType *string `json:"recoveryReplicaDiskAccountType,omitempty"`
+}
+
+// AddRecoveryServicesProviderInput input required to add a provider.
+type AddRecoveryServicesProviderInput struct {
+	// Properties - The properties of an add provider request.
+	Properties *AddRecoveryServicesProviderInputProperties `json:"properties,omitempty"`
+}
+
+// AddRecoveryServicesProviderInputProperties the properties of an add provider request.
+type AddRecoveryServicesProviderInputProperties struct {
+	// MachineName - The name of the machine where the provider is getting added.
+	MachineName *string `json:"machineName,omitempty"`
+	// AuthenticationIdentityInput - The identity provider input for DRA authentication.
+	AuthenticationIdentityInput *IdentityProviderInput `json:"authenticationIdentityInput,omitempty"`
+	// ResourceAccessIdentityInput - The identity provider input for resource access.
+	ResourceAccessIdentityInput *IdentityProviderInput `json:"resourceAccessIdentityInput,omitempty"`
 }
 
 // AddVCenterRequest input required to add vCenter.
@@ -3647,6 +3890,16 @@ type CreateRecoveryPlanInputProperties struct {
 	Groups *[]RecoveryPlanGroup `json:"groups,omitempty"`
 }
 
+// CurrentJobDetails current job details of the migraton item.
+type CurrentJobDetails struct {
+	// JobName - The job name.
+	JobName *string `json:"jobName,omitempty"`
+	// JobID - The ARM Id of the job being executed.
+	JobID *string `json:"jobId,omitempty"`
+	// StartTime - The start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+}
+
 // CurrentScenarioDetails current scenario details of the protected entity.
 type CurrentScenarioDetails struct {
 	// ScenarioName - Scenario name.
@@ -3829,9 +4082,9 @@ type DiskEncryptionInfo struct {
 
 // DiskEncryptionKeyInfo disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows).
 type DiskEncryptionKeyInfo struct {
-	// SecretIdentifier - The secret url / identifier.
+	// SecretIdentifier - The secret url / identifier.
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// KeyVaultResourceArmID - The KeyVault resource ARM id for secret.
+	// KeyVaultResourceArmID - The KeyVault resource ARM id for secret.
 	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
 }
 
@@ -3855,6 +4108,126 @@ type Display struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - The description. The localized friendly description for the operation, as it should be shown to the user. It should be thorough, yet concise – it will be used in tool tips and detailed views. Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource Delete any 'display.provider' resource Perform any other action on any 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource' Delete any 'display.resource' 'ActionName' any 'display.resources'
 	Description *string `json:"description,omitempty"`
+}
+
+// EnableMigrationInput enable migration input.
+type EnableMigrationInput struct {
+	// Properties - Enable migration input properties.
+	Properties *EnableMigrationInputProperties `json:"properties,omitempty"`
+}
+
+// EnableMigrationInputProperties enable migration input properties.
+type EnableMigrationInputProperties struct {
+	// PolicyID - The policy Id.
+	PolicyID *string `json:"policyId,omitempty"`
+	// ProviderSpecificDetails - The provider specific details.
+	ProviderSpecificDetails BasicEnableMigrationProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EnableMigrationInputProperties struct.
+func (emip *EnableMigrationInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "policyId":
+			if v != nil {
+				var policyID string
+				err = json.Unmarshal(*v, &policyID)
+				if err != nil {
+					return err
+				}
+				emip.PolicyID = &policyID
+			}
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicEnableMigrationProviderSpecificInput(*v)
+				if err != nil {
+					return err
+				}
+				emip.ProviderSpecificDetails = providerSpecificDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicEnableMigrationProviderSpecificInput enable migration provider specific input.
+type BasicEnableMigrationProviderSpecificInput interface {
+	AsVMwareCbtEnableMigrationInput() (*VMwareCbtEnableMigrationInput, bool)
+	AsEnableMigrationProviderSpecificInput() (*EnableMigrationProviderSpecificInput, bool)
+}
+
+// EnableMigrationProviderSpecificInput enable migration provider specific input.
+type EnableMigrationProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeEnableMigrationProviderSpecificInput', 'InstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicEnableMigrationProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicEnableMigrationProviderSpecificInput(body []byte) (BasicEnableMigrationProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeVMwareCbt):
+		var vmcemi VMwareCbtEnableMigrationInput
+		err := json.Unmarshal(body, &vmcemi)
+		return vmcemi, err
+	default:
+		var empsi EnableMigrationProviderSpecificInput
+		err := json.Unmarshal(body, &empsi)
+		return empsi, err
+	}
+}
+func unmarshalBasicEnableMigrationProviderSpecificInputArray(body []byte) ([]BasicEnableMigrationProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	empsiArray := make([]BasicEnableMigrationProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		empsi, err := unmarshalBasicEnableMigrationProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		empsiArray[index] = empsi
+	}
+	return empsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for EnableMigrationProviderSpecificInput.
+func (empsi EnableMigrationProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	empsi.InstanceType = InstanceTypeEnableMigrationProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if empsi.InstanceType != "" {
+		objectMap["instanceType"] = empsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtEnableMigrationInput is the BasicEnableMigrationProviderSpecificInput implementation for EnableMigrationProviderSpecificInput.
+func (empsi EnableMigrationProviderSpecificInput) AsVMwareCbtEnableMigrationInput() (*VMwareCbtEnableMigrationInput, bool) {
+	return nil, false
+}
+
+// AsEnableMigrationProviderSpecificInput is the BasicEnableMigrationProviderSpecificInput implementation for EnableMigrationProviderSpecificInput.
+func (empsi EnableMigrationProviderSpecificInput) AsEnableMigrationProviderSpecificInput() (*EnableMigrationProviderSpecificInput, bool) {
+	return &empsi, true
+}
+
+// AsBasicEnableMigrationProviderSpecificInput is the BasicEnableMigrationProviderSpecificInput implementation for EnableMigrationProviderSpecificInput.
+func (empsi EnableMigrationProviderSpecificInput) AsBasicEnableMigrationProviderSpecificInput() (BasicEnableMigrationProviderSpecificInput, bool) {
+	return &empsi, true
 }
 
 // EnableProtectionInput enable protection input.
@@ -7779,10 +8152,8 @@ func (hvvmd HyperVVirtualMachineDetails) AsBasicConfigurationSettings() (BasicCo
 	return &hvvmd, true
 }
 
-// IdentityInformation identity details.
-type IdentityInformation struct {
-	// IdentityProviderType - The identity provider type. Value is the ToString() of a IdentityProviderType value. Possible values include: 'RecoveryServicesActiveDirectory'
-	IdentityProviderType IdentityProviderType `json:"identityProviderType,omitempty"`
+// IdentityProviderDetails identity provider details.
+type IdentityProviderDetails struct {
 	// TenantID - The tenant Id for the service principal with which the on-premise management/data plane components would communicate with our Azure services.
 	TenantID *string `json:"tenantId,omitempty"`
 	// ApplicationID - The application/client Id for the service principal with which the on-premise management/data plane components would communicate with our Azure services.
@@ -7793,8 +8164,20 @@ type IdentityInformation struct {
 	Audience *string `json:"audience,omitempty"`
 	// AadAuthority - The base authority for Azure Active Directory authentication.
 	AadAuthority *string `json:"aadAuthority,omitempty"`
-	// CertificateThumbprint - The certificate thumbprint. Applicable only if IdentityProviderType is RecoveryServicesActiveDirectory.
-	CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
+}
+
+// IdentityProviderInput identity provider input.
+type IdentityProviderInput struct {
+	// TenantID - The tenant Id for the service principal with which the on-premise management/data plane components would communicate with our Azure services.
+	TenantID *string `json:"tenantId,omitempty"`
+	// ApplicationID - The application/client Id for the service principal with which the on-premise management/data plane components would communicate with our Azure services.
+	ApplicationID *string `json:"applicationId,omitempty"`
+	// ObjectID - The object Id of the service principal with which the on-premise management/data plane components would communicate with our Azure services.
+	ObjectID *string `json:"objectId,omitempty"`
+	// Audience - The intended Audience of the service principal with which the on-premise management/data plane components would communicate with our Azure services.
+	Audience *string `json:"audience,omitempty"`
+	// AadAuthority - The base authority for Azure Active Directory authentication.
+	AadAuthority *string `json:"aadAuthority,omitempty"`
 }
 
 // InconsistentVMDetails this class stores the monitoring details for consistency check of inconsistent
@@ -10465,9 +10848,9 @@ func (jtd JobTaskDetails) AsBasicTaskTypeDetails() (BasicTaskTypeDetails, bool) 
 
 // KeyEncryptionKeyInfo key Encryption Key (KEK) information.
 type KeyEncryptionKeyInfo struct {
-	// KeyIdentifier - The key url / identifier.
+	// KeyIdentifier - The key url / identifier.
 	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
-	// KeyVaultResourceArmID - The KeyVault resource ARM id for key.
+	// KeyVaultResourceArmID - The KeyVault resource ARM id for key.
 	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
 }
 
@@ -10763,6 +11146,689 @@ type MasterTargetServer struct {
 	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
 	// MarsAgentVersionDetails - Mars agent version details.
 	MarsAgentVersionDetails *VersionDetails `json:"marsAgentVersionDetails,omitempty"`
+}
+
+// MigrateInput input for migrate.
+type MigrateInput struct {
+	// Properties - Migrate input properties.
+	Properties *MigrateInputProperties `json:"properties,omitempty"`
+}
+
+// MigrateInputProperties migrate input properties.
+type MigrateInputProperties struct {
+	// ProviderSpecificDetails - The provider specific details.
+	ProviderSpecificDetails BasicMigrateProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrateInputProperties struct.
+func (mip *MigrateInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicMigrateProviderSpecificInput(*v)
+				if err != nil {
+					return err
+				}
+				mip.ProviderSpecificDetails = providerSpecificDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicMigrateProviderSpecificInput migrate provider specific input.
+type BasicMigrateProviderSpecificInput interface {
+	AsVMwareCbtMigrateInput() (*VMwareCbtMigrateInput, bool)
+	AsMigrateProviderSpecificInput() (*MigrateProviderSpecificInput, bool)
+}
+
+// MigrateProviderSpecificInput migrate provider specific input.
+type MigrateProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput', 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicMigrateProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicMigrateProviderSpecificInput(body []byte) (BasicMigrateProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt):
+		var vmcmi VMwareCbtMigrateInput
+		err := json.Unmarshal(body, &vmcmi)
+		return vmcmi, err
+	default:
+		var mpsi MigrateProviderSpecificInput
+		err := json.Unmarshal(body, &mpsi)
+		return mpsi, err
+	}
+}
+func unmarshalBasicMigrateProviderSpecificInputArray(body []byte) ([]BasicMigrateProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mpsiArray := make([]BasicMigrateProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mpsi, err := unmarshalBasicMigrateProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mpsiArray[index] = mpsi
+	}
+	return mpsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrateProviderSpecificInput.
+func (mpsi MigrateProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	mpsi.InstanceType = InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if mpsi.InstanceType != "" {
+		objectMap["instanceType"] = mpsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtMigrateInput is the BasicMigrateProviderSpecificInput implementation for MigrateProviderSpecificInput.
+func (mpsi MigrateProviderSpecificInput) AsVMwareCbtMigrateInput() (*VMwareCbtMigrateInput, bool) {
+	return nil, false
+}
+
+// AsMigrateProviderSpecificInput is the BasicMigrateProviderSpecificInput implementation for MigrateProviderSpecificInput.
+func (mpsi MigrateProviderSpecificInput) AsMigrateProviderSpecificInput() (*MigrateProviderSpecificInput, bool) {
+	return &mpsi, true
+}
+
+// AsBasicMigrateProviderSpecificInput is the BasicMigrateProviderSpecificInput implementation for MigrateProviderSpecificInput.
+func (mpsi MigrateProviderSpecificInput) AsBasicMigrateProviderSpecificInput() (BasicMigrateProviderSpecificInput, bool) {
+	return &mpsi, true
+}
+
+// MigrationItem migration item.
+type MigrationItem struct {
+	autorest.Response `json:"-"`
+	// Properties - The migration item properties.
+	Properties *MigrationItemProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource Type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource Location
+	Location *string `json:"location,omitempty"`
+}
+
+// MigrationItemCollection migration item collection.
+type MigrationItemCollection struct {
+	autorest.Response `json:"-"`
+	// Value - The list of migration items.
+	Value *[]MigrationItem `json:"value,omitempty"`
+	// NextLink - The value of next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MigrationItemCollectionIterator provides access to a complete listing of MigrationItem values.
+type MigrationItemCollectionIterator struct {
+	i    int
+	page MigrationItemCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MigrationItemCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MigrationItemCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MigrationItemCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MigrationItemCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MigrationItemCollectionIterator) Response() MigrationItemCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MigrationItemCollectionIterator) Value() MigrationItem {
+	if !iter.page.NotDone() {
+		return MigrationItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the MigrationItemCollectionIterator type.
+func NewMigrationItemCollectionIterator(page MigrationItemCollectionPage) MigrationItemCollectionIterator {
+	return MigrationItemCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mic MigrationItemCollection) IsEmpty() bool {
+	return mic.Value == nil || len(*mic.Value) == 0
+}
+
+// migrationItemCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mic MigrationItemCollection) migrationItemCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if mic.NextLink == nil || len(to.String(mic.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mic.NextLink)))
+}
+
+// MigrationItemCollectionPage contains a page of MigrationItem values.
+type MigrationItemCollectionPage struct {
+	fn  func(context.Context, MigrationItemCollection) (MigrationItemCollection, error)
+	mic MigrationItemCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MigrationItemCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MigrationItemCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mic)
+	if err != nil {
+		return err
+	}
+	page.mic = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MigrationItemCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MigrationItemCollectionPage) NotDone() bool {
+	return !page.mic.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MigrationItemCollectionPage) Response() MigrationItemCollection {
+	return page.mic
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MigrationItemCollectionPage) Values() []MigrationItem {
+	if page.mic.IsEmpty() {
+		return nil
+	}
+	return *page.mic.Value
+}
+
+// Creates a new instance of the MigrationItemCollectionPage type.
+func NewMigrationItemCollectionPage(getNextPage func(context.Context, MigrationItemCollection) (MigrationItemCollection, error)) MigrationItemCollectionPage {
+	return MigrationItemCollectionPage{fn: getNextPage}
+}
+
+// MigrationItemProperties migration item properties.
+type MigrationItemProperties struct {
+	// MachineName - The on-premise virtual machine name.
+	MachineName *string `json:"machineName,omitempty"`
+	// PolicyID - The ARM Id of policy governing this item.
+	PolicyID *string `json:"policyId,omitempty"`
+	// PolicyFriendlyName - The name of policy governing this item.
+	PolicyFriendlyName *string `json:"policyFriendlyName,omitempty"`
+	// RecoveryServicesProviderID - The recovery services provider ARM Id.
+	RecoveryServicesProviderID *string `json:"recoveryServicesProviderId,omitempty"`
+	// MigrationState - The migration status. Possible values include: 'MigrationStateNone', 'MigrationStateEnableMigrationInProgress', 'MigrationStateEnableMigrationFailed', 'MigrationStateDisableMigrationInProgress', 'MigrationStateDisableMigrationFailed', 'MigrationStateInitialSeedingInProgress', 'MigrationStateInitialSeedingFailed', 'MigrationStateReplicating', 'MigrationStateMigrationInProgress', 'MigrationStateMigrationSucceeded', 'MigrationStateMigrationFailed'
+	MigrationState MigrationState `json:"migrationState,omitempty"`
+	// MigrationStateDescription - The migration state description.
+	MigrationStateDescription *string `json:"migrationStateDescription,omitempty"`
+	// TestMigrateState - The test migrate state. Possible values include: 'TestMigrationStateNone', 'TestMigrationStateTestMigrationInProgress', 'TestMigrationStateTestMigrationSucceeded', 'TestMigrationStateTestMigrationFailed', 'TestMigrationStateTestMigrationCleanupInProgress'
+	TestMigrateState TestMigrationState `json:"testMigrateState,omitempty"`
+	// TestMigrateStateDescription - The test migrate state description.
+	TestMigrateStateDescription *string `json:"testMigrateStateDescription,omitempty"`
+	// Health - The consolidated health.
+	Health *string `json:"health,omitempty"`
+	// HealthErrors - The list of health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
+	// AllowedOperations - The allowed operations on the migration item, based on the current migration state of the item.
+	AllowedOperations *[]MigrationItemOperation `json:"allowedOperations,omitempty"`
+	// CurrentJob - The current job details.
+	CurrentJob *CurrentJobDetails `json:"currentJob,omitempty"`
+	// ProviderSpecificDetails - The migration provider custom settings.
+	ProviderSpecificDetails BasicMigrationProviderSpecificSettings `json:"providerSpecificDetails,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrationItemProperties struct.
+func (mip *MigrationItemProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "machineName":
+			if v != nil {
+				var machineName string
+				err = json.Unmarshal(*v, &machineName)
+				if err != nil {
+					return err
+				}
+				mip.MachineName = &machineName
+			}
+		case "policyId":
+			if v != nil {
+				var policyID string
+				err = json.Unmarshal(*v, &policyID)
+				if err != nil {
+					return err
+				}
+				mip.PolicyID = &policyID
+			}
+		case "policyFriendlyName":
+			if v != nil {
+				var policyFriendlyName string
+				err = json.Unmarshal(*v, &policyFriendlyName)
+				if err != nil {
+					return err
+				}
+				mip.PolicyFriendlyName = &policyFriendlyName
+			}
+		case "recoveryServicesProviderId":
+			if v != nil {
+				var recoveryServicesProviderID string
+				err = json.Unmarshal(*v, &recoveryServicesProviderID)
+				if err != nil {
+					return err
+				}
+				mip.RecoveryServicesProviderID = &recoveryServicesProviderID
+			}
+		case "migrationState":
+			if v != nil {
+				var migrationState MigrationState
+				err = json.Unmarshal(*v, &migrationState)
+				if err != nil {
+					return err
+				}
+				mip.MigrationState = migrationState
+			}
+		case "migrationStateDescription":
+			if v != nil {
+				var migrationStateDescription string
+				err = json.Unmarshal(*v, &migrationStateDescription)
+				if err != nil {
+					return err
+				}
+				mip.MigrationStateDescription = &migrationStateDescription
+			}
+		case "testMigrateState":
+			if v != nil {
+				var testMigrateState TestMigrationState
+				err = json.Unmarshal(*v, &testMigrateState)
+				if err != nil {
+					return err
+				}
+				mip.TestMigrateState = testMigrateState
+			}
+		case "testMigrateStateDescription":
+			if v != nil {
+				var testMigrateStateDescription string
+				err = json.Unmarshal(*v, &testMigrateStateDescription)
+				if err != nil {
+					return err
+				}
+				mip.TestMigrateStateDescription = &testMigrateStateDescription
+			}
+		case "health":
+			if v != nil {
+				var health string
+				err = json.Unmarshal(*v, &health)
+				if err != nil {
+					return err
+				}
+				mip.Health = &health
+			}
+		case "healthErrors":
+			if v != nil {
+				var healthErrors []HealthError
+				err = json.Unmarshal(*v, &healthErrors)
+				if err != nil {
+					return err
+				}
+				mip.HealthErrors = &healthErrors
+			}
+		case "allowedOperations":
+			if v != nil {
+				var allowedOperations []MigrationItemOperation
+				err = json.Unmarshal(*v, &allowedOperations)
+				if err != nil {
+					return err
+				}
+				mip.AllowedOperations = &allowedOperations
+			}
+		case "currentJob":
+			if v != nil {
+				var currentJob CurrentJobDetails
+				err = json.Unmarshal(*v, &currentJob)
+				if err != nil {
+					return err
+				}
+				mip.CurrentJob = &currentJob
+			}
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicMigrationProviderSpecificSettings(*v)
+				if err != nil {
+					return err
+				}
+				mip.ProviderSpecificDetails = providerSpecificDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigrationItemsQueryParameter query parameter to enumerate migration items.
+type MigrationItemsQueryParameter struct {
+	// SourceFabricName - The source fabric name filter.
+	SourceFabricName *string `json:"sourceFabricName,omitempty"`
+	// InstanceType - The replication provider type.
+	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// BasicMigrationProviderSpecificSettings migration provider specific settings.
+type BasicMigrationProviderSpecificSettings interface {
+	AsVMwareCbtMigrationDetails() (*VMwareCbtMigrationDetails, bool)
+	AsMigrationProviderSpecificSettings() (*MigrationProviderSpecificSettings, bool)
+}
+
+// MigrationProviderSpecificSettings migration provider specific settings.
+type MigrationProviderSpecificSettings struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings', 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicMigrationProviderSpecificSettings `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicMigrationProviderSpecificSettings(body []byte) (BasicMigrationProviderSpecificSettings, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt):
+		var vmcmd VMwareCbtMigrationDetails
+		err := json.Unmarshal(body, &vmcmd)
+		return vmcmd, err
+	default:
+		var mpss MigrationProviderSpecificSettings
+		err := json.Unmarshal(body, &mpss)
+		return mpss, err
+	}
+}
+func unmarshalBasicMigrationProviderSpecificSettingsArray(body []byte) ([]BasicMigrationProviderSpecificSettings, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	mpssArray := make([]BasicMigrationProviderSpecificSettings, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		mpss, err := unmarshalBasicMigrationProviderSpecificSettings(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		mpssArray[index] = mpss
+	}
+	return mpssArray, nil
+}
+
+// MarshalJSON is the custom marshaler for MigrationProviderSpecificSettings.
+func (mpss MigrationProviderSpecificSettings) MarshalJSON() ([]byte, error) {
+	mpss.InstanceType = InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings
+	objectMap := make(map[string]interface{})
+	if mpss.InstanceType != "" {
+		objectMap["instanceType"] = mpss.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtMigrationDetails is the BasicMigrationProviderSpecificSettings implementation for MigrationProviderSpecificSettings.
+func (mpss MigrationProviderSpecificSettings) AsVMwareCbtMigrationDetails() (*VMwareCbtMigrationDetails, bool) {
+	return nil, false
+}
+
+// AsMigrationProviderSpecificSettings is the BasicMigrationProviderSpecificSettings implementation for MigrationProviderSpecificSettings.
+func (mpss MigrationProviderSpecificSettings) AsMigrationProviderSpecificSettings() (*MigrationProviderSpecificSettings, bool) {
+	return &mpss, true
+}
+
+// AsBasicMigrationProviderSpecificSettings is the BasicMigrationProviderSpecificSettings implementation for MigrationProviderSpecificSettings.
+func (mpss MigrationProviderSpecificSettings) AsBasicMigrationProviderSpecificSettings() (BasicMigrationProviderSpecificSettings, bool) {
+	return &mpss, true
+}
+
+// MigrationRecoveryPoint recovery point for a migration item.
+type MigrationRecoveryPoint struct {
+	autorest.Response `json:"-"`
+	// Properties - Recovery point properties.
+	Properties *MigrationRecoveryPointProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource Type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource Location
+	Location *string `json:"location,omitempty"`
+}
+
+// MigrationRecoveryPointCollection collection of migration recovery points.
+type MigrationRecoveryPointCollection struct {
+	autorest.Response `json:"-"`
+	// Value - The migration recovery point details.
+	Value *[]MigrationRecoveryPoint `json:"value,omitempty"`
+	// NextLink - The value of next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MigrationRecoveryPointCollectionIterator provides access to a complete listing of MigrationRecoveryPoint
+// values.
+type MigrationRecoveryPointCollectionIterator struct {
+	i    int
+	page MigrationRecoveryPointCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MigrationRecoveryPointCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MigrationRecoveryPointCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MigrationRecoveryPointCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MigrationRecoveryPointCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MigrationRecoveryPointCollectionIterator) Response() MigrationRecoveryPointCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MigrationRecoveryPointCollectionIterator) Value() MigrationRecoveryPoint {
+	if !iter.page.NotDone() {
+		return MigrationRecoveryPoint{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the MigrationRecoveryPointCollectionIterator type.
+func NewMigrationRecoveryPointCollectionIterator(page MigrationRecoveryPointCollectionPage) MigrationRecoveryPointCollectionIterator {
+	return MigrationRecoveryPointCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mrpc MigrationRecoveryPointCollection) IsEmpty() bool {
+	return mrpc.Value == nil || len(*mrpc.Value) == 0
+}
+
+// migrationRecoveryPointCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mrpc MigrationRecoveryPointCollection) migrationRecoveryPointCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if mrpc.NextLink == nil || len(to.String(mrpc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mrpc.NextLink)))
+}
+
+// MigrationRecoveryPointCollectionPage contains a page of MigrationRecoveryPoint values.
+type MigrationRecoveryPointCollectionPage struct {
+	fn   func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error)
+	mrpc MigrationRecoveryPointCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MigrationRecoveryPointCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MigrationRecoveryPointCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mrpc)
+	if err != nil {
+		return err
+	}
+	page.mrpc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MigrationRecoveryPointCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MigrationRecoveryPointCollectionPage) NotDone() bool {
+	return !page.mrpc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MigrationRecoveryPointCollectionPage) Response() MigrationRecoveryPointCollection {
+	return page.mrpc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MigrationRecoveryPointCollectionPage) Values() []MigrationRecoveryPoint {
+	if page.mrpc.IsEmpty() {
+		return nil
+	}
+	return *page.mrpc.Value
+}
+
+// Creates a new instance of the MigrationRecoveryPointCollectionPage type.
+func NewMigrationRecoveryPointCollectionPage(getNextPage func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error)) MigrationRecoveryPointCollectionPage {
+	return MigrationRecoveryPointCollectionPage{fn: getNextPage}
+}
+
+// MigrationRecoveryPointProperties migration item recovery point properties.
+type MigrationRecoveryPointProperties struct {
+	// RecoveryPointTime - The recovery point time.
+	RecoveryPointTime *date.Time `json:"recoveryPointTime,omitempty"`
+	// RecoveryPointType - The recovery point type. Possible values include: 'MigrationRecoveryPointTypeNotSpecified', 'MigrationRecoveryPointTypeApplicationConsistent', 'MigrationRecoveryPointTypeCrashConsistent'
+	RecoveryPointType MigrationRecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
 // MobilityServiceUpdate the Mobility Service update details.
@@ -12865,12 +13931,13 @@ func (pcmp *ProtectionContainerMappingProperties) UnmarshalJSON(body []byte) err
 // BasicProtectionContainerMappingProviderSpecificDetails container mapping provider specific details.
 type BasicProtectionContainerMappingProviderSpecificDetails interface {
 	AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool)
+	AsVMwareCbtProtectionContainerMappingDetails() (*VMwareCbtProtectionContainerMappingDetails, bool)
 	AsProtectionContainerMappingProviderSpecificDetails() (*ProtectionContainerMappingProviderSpecificDetails, bool)
 }
 
 // ProtectionContainerMappingProviderSpecificDetails container mapping provider specific details.
 type ProtectionContainerMappingProviderSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -12886,6 +13953,10 @@ func unmarshalBasicProtectionContainerMappingProviderSpecificDetails(body []byte
 		var apcmd A2AProtectionContainerMappingDetails
 		err := json.Unmarshal(body, &apcmd)
 		return apcmd, err
+	case string(InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt):
+		var vmcpcmd VMwareCbtProtectionContainerMappingDetails
+		err := json.Unmarshal(body, &vmcpcmd)
+		return vmcpcmd, err
 	default:
 		var pcmpsd ProtectionContainerMappingProviderSpecificDetails
 		err := json.Unmarshal(body, &pcmpsd)
@@ -12923,6 +13994,11 @@ func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) MarshalJSON() ([
 
 // AsA2AProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for ProtectionContainerMappingProviderSpecificDetails.
 func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool) {
+	return nil, false
+}
+
+// AsVMwareCbtProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) AsVMwareCbtProtectionContainerMappingDetails() (*VMwareCbtProtectionContainerMappingDetails, bool) {
 	return nil, false
 }
 
@@ -14949,8 +16025,10 @@ type RecoveryServicesProviderProperties struct {
 	HealthErrorDetails *[]HealthError `json:"healthErrorDetails,omitempty"`
 	// DraIdentifier - The DRA Id.
 	DraIdentifier *string `json:"draIdentifier,omitempty"`
-	// IdentityDetails - The identity details.
-	IdentityDetails *IdentityInformation `json:"identityDetails,omitempty"`
+	// AuthenticationIdentityDetails - The authentication identity details.
+	AuthenticationIdentityDetails *IdentityProviderDetails `json:"authenticationIdentityDetails,omitempty"`
+	// ResourceAccessIdentityDetails - The resource access identity details.
+	ResourceAccessIdentityDetails *IdentityProviderDetails `json:"resourceAccessIdentityDetails,omitempty"`
 	// ProviderVersionDetails - The provider version details.
 	ProviderVersionDetails *VersionDetails `json:"providerVersionDetails,omitempty"`
 }
@@ -15321,6 +16399,174 @@ func (future *ReplicationJobsResumeFuture) Result(client ReplicationJobsClient) 
 		j, err = client.ResumeResponder(j.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationJobsResumeFuture", "Result", j.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationMigrationItemsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationMigrationItemsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsCreateFuture) Result(client ReplicationMigrationItemsClient) (mi MigrationItem, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi, err = client.CreateResponder(mi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsCreateFuture", "Result", mi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationMigrationItemsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationMigrationItemsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsDeleteFuture) Result(client ReplicationMigrationItemsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ReplicationMigrationItemsMigrateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationMigrationItemsMigrateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsMigrateFuture) Result(client ReplicationMigrationItemsClient) (mi MigrationItem, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsMigrateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsMigrateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi, err = client.MigrateResponder(mi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsMigrateFuture", "Result", mi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationMigrationItemsTestMigrateCleanupFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ReplicationMigrationItemsTestMigrateCleanupFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsTestMigrateCleanupFuture) Result(client ReplicationMigrationItemsClient) (mi MigrationItem, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi, err = client.TestMigrateCleanupResponder(mi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture", "Result", mi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationMigrationItemsTestMigrateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationMigrationItemsTestMigrateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsTestMigrateFuture) Result(client ReplicationMigrationItemsClient) (mi MigrationItem, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsTestMigrateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi, err = client.TestMigrateResponder(mi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateFuture", "Result", mi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationMigrationItemsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationMigrationItemsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationMigrationItemsUpdateFuture) Result(client ReplicationMigrationItemsClient) (mi MigrationItem, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationMigrationItemsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi, err = client.UpdateResponder(mi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsUpdateFuture", "Result", mi.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -16553,12 +17799,13 @@ type ReplicationProviderContainerUnmappingInput struct {
 // BasicReplicationProviderSpecificContainerCreationInput provider specific input for container creation operation.
 type BasicReplicationProviderSpecificContainerCreationInput interface {
 	AsA2AContainerCreationInput() (*A2AContainerCreationInput, bool)
+	AsVMwareCbtContainerCreationInput() (*VMwareCbtContainerCreationInput, bool)
 	AsReplicationProviderSpecificContainerCreationInput() (*ReplicationProviderSpecificContainerCreationInput, bool)
 }
 
 // ReplicationProviderSpecificContainerCreationInput provider specific input for container creation operation.
 type ReplicationProviderSpecificContainerCreationInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerCreationInput `json:"instanceType,omitempty"`
 }
 
@@ -16574,6 +17821,10 @@ func unmarshalBasicReplicationProviderSpecificContainerCreationInput(body []byte
 		var acci A2AContainerCreationInput
 		err := json.Unmarshal(body, &acci)
 		return acci, err
+	case string(InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero):
+		var vmccci VMwareCbtContainerCreationInput
+		err := json.Unmarshal(body, &vmccci)
+		return vmccci, err
 	default:
 		var rpscci ReplicationProviderSpecificContainerCreationInput
 		err := json.Unmarshal(body, &rpscci)
@@ -16614,6 +17865,11 @@ func (rpscci ReplicationProviderSpecificContainerCreationInput) AsA2AContainerCr
 	return nil, false
 }
 
+// AsVMwareCbtContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for ReplicationProviderSpecificContainerCreationInput.
+func (rpscci ReplicationProviderSpecificContainerCreationInput) AsVMwareCbtContainerCreationInput() (*VMwareCbtContainerCreationInput, bool) {
+	return nil, false
+}
+
 // AsReplicationProviderSpecificContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for ReplicationProviderSpecificContainerCreationInput.
 func (rpscci ReplicationProviderSpecificContainerCreationInput) AsReplicationProviderSpecificContainerCreationInput() (*ReplicationProviderSpecificContainerCreationInput, bool) {
 	return &rpscci, true
@@ -16627,12 +17883,13 @@ func (rpscci ReplicationProviderSpecificContainerCreationInput) AsBasicReplicati
 // BasicReplicationProviderSpecificContainerMappingInput provider specific input for pairing operations.
 type BasicReplicationProviderSpecificContainerMappingInput interface {
 	AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool)
+	AsVMwareCbtContainerMappingInput() (*VMwareCbtContainerMappingInput, bool)
 	AsReplicationProviderSpecificContainerMappingInput() (*ReplicationProviderSpecificContainerMappingInput, bool)
 }
 
 // ReplicationProviderSpecificContainerMappingInput provider specific input for pairing operations.
 type ReplicationProviderSpecificContainerMappingInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerMappingInput `json:"instanceType,omitempty"`
 }
 
@@ -16648,6 +17905,10 @@ func unmarshalBasicReplicationProviderSpecificContainerMappingInput(body []byte)
 		var acmi A2AContainerMappingInput
 		err := json.Unmarshal(body, &acmi)
 		return acmi, err
+	case string(InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt):
+		var vmccmi VMwareCbtContainerMappingInput
+		err := json.Unmarshal(body, &vmccmi)
+		return vmccmi, err
 	default:
 		var rpscmi ReplicationProviderSpecificContainerMappingInput
 		err := json.Unmarshal(body, &rpscmi)
@@ -16685,6 +17946,11 @@ func (rpscmi ReplicationProviderSpecificContainerMappingInput) MarshalJSON() ([]
 
 // AsA2AContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for ReplicationProviderSpecificContainerMappingInput.
 func (rpscmi ReplicationProviderSpecificContainerMappingInput) AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsVMwareCbtContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for ReplicationProviderSpecificContainerMappingInput.
+func (rpscmi ReplicationProviderSpecificContainerMappingInput) AsVMwareCbtContainerMappingInput() (*VMwareCbtContainerMappingInput, bool) {
 	return nil, false
 }
 
@@ -17157,6 +18423,35 @@ func (future *ReplicationRecoveryPlansUpdateFuture) Result(client ReplicationRec
 		rp, err = client.UpdateResponder(rp.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryPlansUpdateFuture", "Result", rp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ReplicationRecoveryServicesProvidersCreateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ReplicationRecoveryServicesProvidersCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReplicationRecoveryServicesProvidersCreateFuture) Result(client ReplicationRecoveryServicesProvidersClient) (rsp RecoveryServicesProvider, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("siterecovery.ReplicationRecoveryServicesProvidersCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if rsp.Response.Response, err = future.GetResult(sender); err == nil && rsp.Response.Response.StatusCode != http.StatusNoContent {
+		rsp, err = client.CreateResponder(rsp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersCreateFuture", "Result", rsp.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -18805,6 +20100,127 @@ func (tfjd TestFailoverJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
 	return &tfjd, true
 }
 
+// TestMigrateCleanupInput input for test migrate cleanup.
+type TestMigrateCleanupInput struct {
+	// Properties - Test migrate cleanup input properties.
+	Properties *TestMigrateCleanupInputProperties `json:"properties,omitempty"`
+}
+
+// TestMigrateCleanupInputProperties test migrate cleanup input properties.
+type TestMigrateCleanupInputProperties struct {
+	// Comments - Test migrate cleanup comments.
+	Comments *string `json:"comments,omitempty"`
+}
+
+// TestMigrateInput input for test migrate.
+type TestMigrateInput struct {
+	// Properties - Test migrate input properties.
+	Properties *TestMigrateInputProperties `json:"properties,omitempty"`
+}
+
+// TestMigrateInputProperties test migrate input properties.
+type TestMigrateInputProperties struct {
+	// ProviderSpecificDetails - The provider specific details.
+	ProviderSpecificDetails BasicTestMigrateProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TestMigrateInputProperties struct.
+func (tmip *TestMigrateInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicTestMigrateProviderSpecificInput(*v)
+				if err != nil {
+					return err
+				}
+				tmip.ProviderSpecificDetails = providerSpecificDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicTestMigrateProviderSpecificInput test migrate provider specific input.
+type BasicTestMigrateProviderSpecificInput interface {
+	AsVMwareCbtTestMigrateInput() (*VMwareCbtTestMigrateInput, bool)
+	AsTestMigrateProviderSpecificInput() (*TestMigrateProviderSpecificInput, bool)
+}
+
+// TestMigrateProviderSpecificInput test migrate provider specific input.
+type TestMigrateProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput', 'InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicTestMigrateProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicTestMigrateProviderSpecificInput(body []byte) (BasicTestMigrateProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt):
+		var vmctmi VMwareCbtTestMigrateInput
+		err := json.Unmarshal(body, &vmctmi)
+		return vmctmi, err
+	default:
+		var tmpsi TestMigrateProviderSpecificInput
+		err := json.Unmarshal(body, &tmpsi)
+		return tmpsi, err
+	}
+}
+func unmarshalBasicTestMigrateProviderSpecificInputArray(body []byte) ([]BasicTestMigrateProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tmpsiArray := make([]BasicTestMigrateProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tmpsi, err := unmarshalBasicTestMigrateProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tmpsiArray[index] = tmpsi
+	}
+	return tmpsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TestMigrateProviderSpecificInput.
+func (tmpsi TestMigrateProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	tmpsi.InstanceType = InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if tmpsi.InstanceType != "" {
+		objectMap["instanceType"] = tmpsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtTestMigrateInput is the BasicTestMigrateProviderSpecificInput implementation for TestMigrateProviderSpecificInput.
+func (tmpsi TestMigrateProviderSpecificInput) AsVMwareCbtTestMigrateInput() (*VMwareCbtTestMigrateInput, bool) {
+	return nil, false
+}
+
+// AsTestMigrateProviderSpecificInput is the BasicTestMigrateProviderSpecificInput implementation for TestMigrateProviderSpecificInput.
+func (tmpsi TestMigrateProviderSpecificInput) AsTestMigrateProviderSpecificInput() (*TestMigrateProviderSpecificInput, bool) {
+	return &tmpsi, true
+}
+
+// AsBasicTestMigrateProviderSpecificInput is the BasicTestMigrateProviderSpecificInput implementation for TestMigrateProviderSpecificInput.
+func (tmpsi TestMigrateProviderSpecificInput) AsBasicTestMigrateProviderSpecificInput() (BasicTestMigrateProviderSpecificInput, bool) {
+	return &tmpsi, true
+}
+
 // UnplannedFailoverInput input definition for planned failover.
 type UnplannedFailoverInput struct {
 	// Properties - Planned failover input properties
@@ -18860,6 +20276,115 @@ func (ufip *UnplannedFailoverInputProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// UpdateMigrationItemInput update migration item input.
+type UpdateMigrationItemInput struct {
+	// Properties - Update migration item input properties.
+	Properties *UpdateMigrationItemInputProperties `json:"properties,omitempty"`
+}
+
+// UpdateMigrationItemInputProperties update migration item input properties.
+type UpdateMigrationItemInputProperties struct {
+	// ProviderSpecificDetails - The provider specific input to update migration item.
+	ProviderSpecificDetails BasicUpdateMigrationItemProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateMigrationItemInputProperties struct.
+func (umiip *UpdateMigrationItemInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicUpdateMigrationItemProviderSpecificInput(*v)
+				if err != nil {
+					return err
+				}
+				umiip.ProviderSpecificDetails = providerSpecificDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicUpdateMigrationItemProviderSpecificInput update migration item provider specific input.
+type BasicUpdateMigrationItemProviderSpecificInput interface {
+	AsVMwareCbtUpdateMigrationItemInput() (*VMwareCbtUpdateMigrationItemInput, bool)
+	AsUpdateMigrationItemProviderSpecificInput() (*UpdateMigrationItemProviderSpecificInput, bool)
+}
+
+// UpdateMigrationItemProviderSpecificInput update migration item provider specific input.
+type UpdateMigrationItemProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput', 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicUpdateMigrationItemProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicUpdateMigrationItemProviderSpecificInput(body []byte) (BasicUpdateMigrationItemProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt):
+		var vmcumii VMwareCbtUpdateMigrationItemInput
+		err := json.Unmarshal(body, &vmcumii)
+		return vmcumii, err
+	default:
+		var umipsi UpdateMigrationItemProviderSpecificInput
+		err := json.Unmarshal(body, &umipsi)
+		return umipsi, err
+	}
+}
+func unmarshalBasicUpdateMigrationItemProviderSpecificInputArray(body []byte) ([]BasicUpdateMigrationItemProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	umipsiArray := make([]BasicUpdateMigrationItemProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		umipsi, err := unmarshalBasicUpdateMigrationItemProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		umipsiArray[index] = umipsi
+	}
+	return umipsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for UpdateMigrationItemProviderSpecificInput.
+func (umipsi UpdateMigrationItemProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	umipsi.InstanceType = InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if umipsi.InstanceType != "" {
+		objectMap["instanceType"] = umipsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtUpdateMigrationItemInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for UpdateMigrationItemProviderSpecificInput.
+func (umipsi UpdateMigrationItemProviderSpecificInput) AsVMwareCbtUpdateMigrationItemInput() (*VMwareCbtUpdateMigrationItemInput, bool) {
+	return nil, false
+}
+
+// AsUpdateMigrationItemProviderSpecificInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for UpdateMigrationItemProviderSpecificInput.
+func (umipsi UpdateMigrationItemProviderSpecificInput) AsUpdateMigrationItemProviderSpecificInput() (*UpdateMigrationItemProviderSpecificInput, bool) {
+	return &umipsi, true
+}
+
+// AsBasicUpdateMigrationItemProviderSpecificInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for UpdateMigrationItemProviderSpecificInput.
+func (umipsi UpdateMigrationItemProviderSpecificInput) AsBasicUpdateMigrationItemProviderSpecificInput() (BasicUpdateMigrationItemProviderSpecificInput, bool) {
+	return &umipsi, true
 }
 
 // UpdateMobilityServiceRequest request to update the mobility service on a protected item.
@@ -20062,10 +21587,400 @@ func (vnutd VMNicUpdatesTaskDetails) AsBasicTaskTypeDetails() (BasicTaskTypeDeta
 	return &vnutd, true
 }
 
-// VMwareCbtPolicyCreationInput vMware Cbt Policy creation input.
+// VMwareCbtContainerCreationInput vMwareCbt container creation input.
+type VMwareCbtContainerCreationInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerCreationInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtContainerCreationInput.
+func (vmccci VMwareCbtContainerCreationInput) MarshalJSON() ([]byte, error) {
+	vmccci.InstanceType = InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero
+	objectMap := make(map[string]interface{})
+	if vmccci.InstanceType != "" {
+		objectMap["instanceType"] = vmccci.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for VMwareCbtContainerCreationInput.
+func (vmccci VMwareCbtContainerCreationInput) AsA2AContainerCreationInput() (*A2AContainerCreationInput, bool) {
+	return nil, false
+}
+
+// AsVMwareCbtContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for VMwareCbtContainerCreationInput.
+func (vmccci VMwareCbtContainerCreationInput) AsVMwareCbtContainerCreationInput() (*VMwareCbtContainerCreationInput, bool) {
+	return &vmccci, true
+}
+
+// AsReplicationProviderSpecificContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for VMwareCbtContainerCreationInput.
+func (vmccci VMwareCbtContainerCreationInput) AsReplicationProviderSpecificContainerCreationInput() (*ReplicationProviderSpecificContainerCreationInput, bool) {
+	return nil, false
+}
+
+// AsBasicReplicationProviderSpecificContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for VMwareCbtContainerCreationInput.
+func (vmccci VMwareCbtContainerCreationInput) AsBasicReplicationProviderSpecificContainerCreationInput() (BasicReplicationProviderSpecificContainerCreationInput, bool) {
+	return &vmccci, true
+}
+
+// VMwareCbtContainerMappingInput vMwareCbt container mapping input.
+type VMwareCbtContainerMappingInput struct {
+	// KeyVaultID - The target key vault ARM Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	// KeyVaultURI - The target key vault URL.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	// StorageAccountID - The storage account ARM Id.
+	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	// StorageAccountSasSecretName - The secret name of the storage account.
+	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
+	// ServiceBusConnectionStringSecretName - The secret name of the service bus connection string.
+	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty"`
+	// TargetLocation - The target location.
+	TargetLocation *string `json:"targetLocation,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerMappingInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtContainerMappingInput.
+func (vmccmi VMwareCbtContainerMappingInput) MarshalJSON() ([]byte, error) {
+	vmccmi.InstanceType = InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmccmi.KeyVaultID != nil {
+		objectMap["keyVaultId"] = vmccmi.KeyVaultID
+	}
+	if vmccmi.KeyVaultURI != nil {
+		objectMap["keyVaultUri"] = vmccmi.KeyVaultURI
+	}
+	if vmccmi.StorageAccountID != nil {
+		objectMap["storageAccountId"] = vmccmi.StorageAccountID
+	}
+	if vmccmi.StorageAccountSasSecretName != nil {
+		objectMap["storageAccountSasSecretName"] = vmccmi.StorageAccountSasSecretName
+	}
+	if vmccmi.ServiceBusConnectionStringSecretName != nil {
+		objectMap["serviceBusConnectionStringSecretName"] = vmccmi.ServiceBusConnectionStringSecretName
+	}
+	if vmccmi.TargetLocation != nil {
+		objectMap["targetLocation"] = vmccmi.TargetLocation
+	}
+	if vmccmi.InstanceType != "" {
+		objectMap["instanceType"] = vmccmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for VMwareCbtContainerMappingInput.
+func (vmccmi VMwareCbtContainerMappingInput) AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsVMwareCbtContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for VMwareCbtContainerMappingInput.
+func (vmccmi VMwareCbtContainerMappingInput) AsVMwareCbtContainerMappingInput() (*VMwareCbtContainerMappingInput, bool) {
+	return &vmccmi, true
+}
+
+// AsReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for VMwareCbtContainerMappingInput.
+func (vmccmi VMwareCbtContainerMappingInput) AsReplicationProviderSpecificContainerMappingInput() (*ReplicationProviderSpecificContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsBasicReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for VMwareCbtContainerMappingInput.
+func (vmccmi VMwareCbtContainerMappingInput) AsBasicReplicationProviderSpecificContainerMappingInput() (BasicReplicationProviderSpecificContainerMappingInput, bool) {
+	return &vmccmi, true
+}
+
+// VMwareCbtDiskInput vMwareCbt disk input.
+type VMwareCbtDiskInput struct {
+	// DiskID - The disk Id.
+	DiskID *string `json:"diskId,omitempty"`
+	// IsOSDisk - A value indicating whether the disk is the OS disk.
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	// LogStorageAccountID - The log storage account ARM Id.
+	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	// LogStorageAccountSasSecretName - The key vault secret name of the log storage account.
+	LogStorageAccountSasSecretName *string `json:"logStorageAccountSasSecretName,omitempty"`
+	// DiskType - The disk type. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
+	DiskType DiskAccountType `json:"diskType,omitempty"`
+}
+
+// VMwareCbtEnableMigrationInput vMwareCbt specific enable migration input.
+type VMwareCbtEnableMigrationInput struct {
+	// VmwareMachineID - The ARM Id of the VM discovered in VMware.
+	VmwareMachineID *string `json:"vmwareMachineId,omitempty"`
+	// DisksToInclude - The disks to include list.
+	DisksToInclude *[]VMwareCbtDiskInput `json:"disksToInclude,omitempty"`
+	// LicenseType - License type. Possible values include: 'LicenseTypeNotSpecified', 'LicenseTypeNoLicenseType', 'LicenseTypeWindowsServer'
+	LicenseType LicenseType `json:"licenseType,omitempty"`
+	// DataMoverRunAsAccountID - The data mover runas account Id.
+	DataMoverRunAsAccountID *string `json:"dataMoverRunAsAccountId,omitempty"`
+	// SnapshotRunAsAccountID - The snapshot runas account Id.
+	SnapshotRunAsAccountID *string `json:"snapshotRunAsAccountId,omitempty"`
+	// TargetVMName - The target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// TargetResourceGroupID - The target resource group ARM Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetNetworkID - The target network ARM Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// TargetSubnetName - The target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// TargetAvailabilitySetID - The target availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeEnableMigrationProviderSpecificInput', 'InstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicEnableMigrationProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtEnableMigrationInput.
+func (vmcemi VMwareCbtEnableMigrationInput) MarshalJSON() ([]byte, error) {
+	vmcemi.InstanceType = InstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmcemi.VmwareMachineID != nil {
+		objectMap["vmwareMachineId"] = vmcemi.VmwareMachineID
+	}
+	if vmcemi.DisksToInclude != nil {
+		objectMap["disksToInclude"] = vmcemi.DisksToInclude
+	}
+	if vmcemi.LicenseType != "" {
+		objectMap["licenseType"] = vmcemi.LicenseType
+	}
+	if vmcemi.DataMoverRunAsAccountID != nil {
+		objectMap["dataMoverRunAsAccountId"] = vmcemi.DataMoverRunAsAccountID
+	}
+	if vmcemi.SnapshotRunAsAccountID != nil {
+		objectMap["snapshotRunAsAccountId"] = vmcemi.SnapshotRunAsAccountID
+	}
+	if vmcemi.TargetVMName != nil {
+		objectMap["targetVmName"] = vmcemi.TargetVMName
+	}
+	if vmcemi.TargetVMSize != nil {
+		objectMap["targetVmSize"] = vmcemi.TargetVMSize
+	}
+	if vmcemi.TargetResourceGroupID != nil {
+		objectMap["targetResourceGroupId"] = vmcemi.TargetResourceGroupID
+	}
+	if vmcemi.TargetNetworkID != nil {
+		objectMap["targetNetworkId"] = vmcemi.TargetNetworkID
+	}
+	if vmcemi.TargetSubnetName != nil {
+		objectMap["targetSubnetName"] = vmcemi.TargetSubnetName
+	}
+	if vmcemi.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = vmcemi.TargetAvailabilitySetID
+	}
+	if vmcemi.TargetBootDiagnosticsStorageAccountID != nil {
+		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcemi.TargetBootDiagnosticsStorageAccountID
+	}
+	if vmcemi.InstanceType != "" {
+		objectMap["instanceType"] = vmcemi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtEnableMigrationInput is the BasicEnableMigrationProviderSpecificInput implementation for VMwareCbtEnableMigrationInput.
+func (vmcemi VMwareCbtEnableMigrationInput) AsVMwareCbtEnableMigrationInput() (*VMwareCbtEnableMigrationInput, bool) {
+	return &vmcemi, true
+}
+
+// AsEnableMigrationProviderSpecificInput is the BasicEnableMigrationProviderSpecificInput implementation for VMwareCbtEnableMigrationInput.
+func (vmcemi VMwareCbtEnableMigrationInput) AsEnableMigrationProviderSpecificInput() (*EnableMigrationProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicEnableMigrationProviderSpecificInput is the BasicEnableMigrationProviderSpecificInput implementation for VMwareCbtEnableMigrationInput.
+func (vmcemi VMwareCbtEnableMigrationInput) AsBasicEnableMigrationProviderSpecificInput() (BasicEnableMigrationProviderSpecificInput, bool) {
+	return &vmcemi, true
+}
+
+// VMwareCbtMigrateInput vMwareCbt specific migrate input.
+type VMwareCbtMigrateInput struct {
+	// PerformShutdown - A value indicating whether VM is to be shutdown.
+	PerformShutdown *string `json:"performShutdown,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput', 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicMigrateProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtMigrateInput.
+func (vmcmi VMwareCbtMigrateInput) MarshalJSON() ([]byte, error) {
+	vmcmi.InstanceType = InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmcmi.PerformShutdown != nil {
+		objectMap["performShutdown"] = vmcmi.PerformShutdown
+	}
+	if vmcmi.InstanceType != "" {
+		objectMap["instanceType"] = vmcmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtMigrateInput is the BasicMigrateProviderSpecificInput implementation for VMwareCbtMigrateInput.
+func (vmcmi VMwareCbtMigrateInput) AsVMwareCbtMigrateInput() (*VMwareCbtMigrateInput, bool) {
+	return &vmcmi, true
+}
+
+// AsMigrateProviderSpecificInput is the BasicMigrateProviderSpecificInput implementation for VMwareCbtMigrateInput.
+func (vmcmi VMwareCbtMigrateInput) AsMigrateProviderSpecificInput() (*MigrateProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicMigrateProviderSpecificInput is the BasicMigrateProviderSpecificInput implementation for VMwareCbtMigrateInput.
+func (vmcmi VMwareCbtMigrateInput) AsBasicMigrateProviderSpecificInput() (BasicMigrateProviderSpecificInput, bool) {
+	return &vmcmi, true
+}
+
+// VMwareCbtMigrationDetails vMwareCbt provider specific settings
+type VMwareCbtMigrationDetails struct {
+	// VmwareMachineID - The ARM Id of the VM discovered in VMware.
+	VmwareMachineID *string `json:"vmwareMachineId,omitempty"`
+	// OsType - The type of the OS on the VM.
+	OsType *string `json:"osType,omitempty"`
+	// LicenseType - License Type of the VM to be used.
+	LicenseType *string `json:"licenseType,omitempty"`
+	// DataMoverRunAsAccountID - The data mover runas account Id.
+	DataMoverRunAsAccountID *string `json:"dataMoverRunAsAccountId,omitempty"`
+	// SnapshotRunAsAccountID - The snapshot runas account Id.
+	SnapshotRunAsAccountID *string `json:"snapshotRunAsAccountId,omitempty"`
+	// TargetVMName - Target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// TargetLocation - The target location.
+	TargetLocation *string `json:"targetLocation,omitempty"`
+	// TargetResourceGroupID - The target resource group Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetAvailabilitySetID - The target availability set Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// ProtectedDisks - The list of protected disks.
+	ProtectedDisks *[]VMwareCbtProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	// TargetNetworkID - The target network Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// VMNics - The network details.
+	VMNics *[]VMwareCbtNicDetails `json:"vmNics,omitempty"`
+	// MigrationRecoveryPointID - The recovery point Id to which the VM was migrated.
+	MigrationRecoveryPointID *string `json:"migrationRecoveryPointId,omitempty"`
+	// LastRecoveryPointReceived - The last recovery point received time.
+	LastRecoveryPointReceived *date.Time `json:"lastRecoveryPointReceived,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings', 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicMigrationProviderSpecificSettings `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtMigrationDetails.
+func (vmcmd VMwareCbtMigrationDetails) MarshalJSON() ([]byte, error) {
+	vmcmd.InstanceType = InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmcmd.VmwareMachineID != nil {
+		objectMap["vmwareMachineId"] = vmcmd.VmwareMachineID
+	}
+	if vmcmd.OsType != nil {
+		objectMap["osType"] = vmcmd.OsType
+	}
+	if vmcmd.LicenseType != nil {
+		objectMap["licenseType"] = vmcmd.LicenseType
+	}
+	if vmcmd.DataMoverRunAsAccountID != nil {
+		objectMap["dataMoverRunAsAccountId"] = vmcmd.DataMoverRunAsAccountID
+	}
+	if vmcmd.SnapshotRunAsAccountID != nil {
+		objectMap["snapshotRunAsAccountId"] = vmcmd.SnapshotRunAsAccountID
+	}
+	if vmcmd.TargetVMName != nil {
+		objectMap["targetVmName"] = vmcmd.TargetVMName
+	}
+	if vmcmd.TargetVMSize != nil {
+		objectMap["targetVmSize"] = vmcmd.TargetVMSize
+	}
+	if vmcmd.TargetLocation != nil {
+		objectMap["targetLocation"] = vmcmd.TargetLocation
+	}
+	if vmcmd.TargetResourceGroupID != nil {
+		objectMap["targetResourceGroupId"] = vmcmd.TargetResourceGroupID
+	}
+	if vmcmd.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = vmcmd.TargetAvailabilitySetID
+	}
+	if vmcmd.TargetBootDiagnosticsStorageAccountID != nil {
+		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcmd.TargetBootDiagnosticsStorageAccountID
+	}
+	if vmcmd.ProtectedDisks != nil {
+		objectMap["protectedDisks"] = vmcmd.ProtectedDisks
+	}
+	if vmcmd.TargetNetworkID != nil {
+		objectMap["targetNetworkId"] = vmcmd.TargetNetworkID
+	}
+	if vmcmd.VMNics != nil {
+		objectMap["vmNics"] = vmcmd.VMNics
+	}
+	if vmcmd.MigrationRecoveryPointID != nil {
+		objectMap["migrationRecoveryPointId"] = vmcmd.MigrationRecoveryPointID
+	}
+	if vmcmd.LastRecoveryPointReceived != nil {
+		objectMap["lastRecoveryPointReceived"] = vmcmd.LastRecoveryPointReceived
+	}
+	if vmcmd.InstanceType != "" {
+		objectMap["instanceType"] = vmcmd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtMigrationDetails is the BasicMigrationProviderSpecificSettings implementation for VMwareCbtMigrationDetails.
+func (vmcmd VMwareCbtMigrationDetails) AsVMwareCbtMigrationDetails() (*VMwareCbtMigrationDetails, bool) {
+	return &vmcmd, true
+}
+
+// AsMigrationProviderSpecificSettings is the BasicMigrationProviderSpecificSettings implementation for VMwareCbtMigrationDetails.
+func (vmcmd VMwareCbtMigrationDetails) AsMigrationProviderSpecificSettings() (*MigrationProviderSpecificSettings, bool) {
+	return nil, false
+}
+
+// AsBasicMigrationProviderSpecificSettings is the BasicMigrationProviderSpecificSettings implementation for VMwareCbtMigrationDetails.
+func (vmcmd VMwareCbtMigrationDetails) AsBasicMigrationProviderSpecificSettings() (BasicMigrationProviderSpecificSettings, bool) {
+	return &vmcmd, true
+}
+
+// VMwareCbtNicDetails vMwareCbt NIC details.
+type VMwareCbtNicDetails struct {
+	// NicID - The NIC Id.
+	NicID *string `json:"nicId,omitempty"`
+	// IsPrimaryNic - A value indicating whether this is the primary NIC.
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	// SourceIPAddress - The source IP address.
+	SourceIPAddress *string `json:"sourceIPAddress,omitempty"`
+	// SourceIPAddressType - The source IP address type. Possible values include: 'Dynamic', 'Static'
+	SourceIPAddressType EthernetAddressType `json:"sourceIPAddressType,omitempty"`
+	// SourceNetworkID - Source network Id.
+	SourceNetworkID *string `json:"sourceNetworkId,omitempty"`
+	// TargetIPAddress - The target IP address.
+	TargetIPAddress *string `json:"targetIPAddress,omitempty"`
+	// TargetIPAddressType - The target IP address type. Possible values include: 'Dynamic', 'Static'
+	TargetIPAddressType EthernetAddressType `json:"targetIPAddressType,omitempty"`
+	// TargetSubnetName - Target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// IsSelectedForMigration - A value indicating whether this NIC is selected for migration.
+	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
+}
+
+// VMwareCbtNicInput vMwareCbt NIC input.
+type VMwareCbtNicInput struct {
+	// NicID - The NIC Id.
+	NicID *string `json:"nicId,omitempty"`
+	// IsPrimaryNic - A value indicating whether this is the primary NIC.
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	// TargetSubnetName - Target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// TargetStaticIPAddress - The static IP address.
+	TargetStaticIPAddress *string `json:"targetStaticIPAddress,omitempty"`
+	// IsSelectedForMigration - A value indicating whether this NIC is selected for migration.
+	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
+}
+
+// VMwareCbtPolicyCreationInput vMware Cbt policy creation input.
 type VMwareCbtPolicyCreationInput struct {
-	// RecoveryPointHistory - The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	// RecoveryPointHistoryInMinutes - The duration in minutes until which the recovery points need to be stored.
+	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency (in minutes).
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
 	// AppConsistentFrequencyInMinutes - The app consistent snapshot frequency (in minutes).
@@ -20078,8 +21993,8 @@ type VMwareCbtPolicyCreationInput struct {
 func (vmcpci VMwareCbtPolicyCreationInput) MarshalJSON() ([]byte, error) {
 	vmcpci.InstanceType = InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt
 	objectMap := make(map[string]interface{})
-	if vmcpci.RecoveryPointHistory != nil {
-		objectMap["recoveryPointHistory"] = vmcpci.RecoveryPointHistory
+	if vmcpci.RecoveryPointHistoryInMinutes != nil {
+		objectMap["recoveryPointHistoryInMinutes"] = vmcpci.RecoveryPointHistoryInMinutes
 	}
 	if vmcpci.CrashConsistentFrequencyInMinutes != nil {
 		objectMap["crashConsistentFrequencyInMinutes"] = vmcpci.CrashConsistentFrequencyInMinutes
@@ -20140,10 +22055,8 @@ func (vmcpci VMwareCbtPolicyCreationInput) AsBasicPolicyProviderSpecificInput() 
 
 // VmwareCbtPolicyDetails vMware Cbt specific policy details.
 type VmwareCbtPolicyDetails struct {
-	// RecoveryPointThresholdInMinutes - The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
-	// RecoveryPointHistory - The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	// RecoveryPointHistoryInMinutes - The duration in minutes until which the recovery points need to be stored.
+	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
 	// AppConsistentFrequencyInMinutes - The app consistent snapshot frequency in minutes.
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency in minutes.
@@ -20156,11 +22069,8 @@ type VmwareCbtPolicyDetails struct {
 func (vcpd VmwareCbtPolicyDetails) MarshalJSON() ([]byte, error) {
 	vcpd.InstanceType = InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt
 	objectMap := make(map[string]interface{})
-	if vcpd.RecoveryPointThresholdInMinutes != nil {
-		objectMap["recoveryPointThresholdInMinutes"] = vcpd.RecoveryPointThresholdInMinutes
-	}
-	if vcpd.RecoveryPointHistory != nil {
-		objectMap["recoveryPointHistory"] = vcpd.RecoveryPointHistory
+	if vcpd.RecoveryPointHistoryInMinutes != nil {
+		objectMap["recoveryPointHistoryInMinutes"] = vcpd.RecoveryPointHistoryInMinutes
 	}
 	if vcpd.AppConsistentFrequencyInMinutes != nil {
 		objectMap["appConsistentFrequencyInMinutes"] = vcpd.AppConsistentFrequencyInMinutes
@@ -20232,6 +22142,208 @@ func (vcpd VmwareCbtPolicyDetails) AsPolicyProviderSpecificDetails() (*PolicyPro
 // AsBasicPolicyProviderSpecificDetails is the BasicPolicyProviderSpecificDetails implementation for VmwareCbtPolicyDetails.
 func (vcpd VmwareCbtPolicyDetails) AsBasicPolicyProviderSpecificDetails() (BasicPolicyProviderSpecificDetails, bool) {
 	return &vcpd, true
+}
+
+// VMwareCbtProtectedDiskDetails vMwareCbt protected disk details.
+type VMwareCbtProtectedDiskDetails struct {
+	// DiskID - The disk id.
+	DiskID *string `json:"diskId,omitempty"`
+	// DiskName - The disk name.
+	DiskName *string `json:"diskName,omitempty"`
+	// DiskPath - The disk path.
+	DiskPath *string `json:"diskPath,omitempty"`
+	// IsOSDisk - A value indicating whether the disk is the OS disk.
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	// CapacityInBytes - The disk capacity in bytes.
+	CapacityInBytes *int64 `json:"capacityInBytes,omitempty"`
+	// LogStorageAccountID - The log storage account ARM Id.
+	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	// LogStorageAccountSasSecretName - The key vault secret name of the log storage account.
+	LogStorageAccountSasSecretName *string `json:"logStorageAccountSasSecretName,omitempty"`
+	// SeedManagedDiskID - The ARM Id of the seed managed disk.
+	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty"`
+	// TargetManagedDiskID - The ARM Id of the target managed disk.
+	TargetManagedDiskID *string `json:"targetManagedDiskId,omitempty"`
+	// DiskType - The disk type. Possible values include: 'DiskTypeStandardLRS', 'DiskTypePremiumLRS', 'DiskTypeStandardSSDLRS'
+	DiskType DiskType `json:"diskType,omitempty"`
+}
+
+// VMwareCbtProtectionContainerMappingDetails vMwareCbt provider specific container mapping details.
+type VMwareCbtProtectionContainerMappingDetails struct {
+	// KeyVaultID - The target key vault ARM Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	// KeyVaultURI - The target key vault URI.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	// StorageAccountID - The storage account ARM Id.
+	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	// StorageAccountSasSecretName - The secret name of the storage account.
+	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
+	// ServiceBusConnectionStringSecretName - The secret name of the service bus connection string.
+	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty"`
+	// TargetLocation - The target location.
+	TargetLocation *string `json:"targetLocation,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtProtectionContainerMappingDetails.
+func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
+	vmcpcmd.InstanceType = InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmcpcmd.KeyVaultID != nil {
+		objectMap["keyVaultId"] = vmcpcmd.KeyVaultID
+	}
+	if vmcpcmd.KeyVaultURI != nil {
+		objectMap["keyVaultUri"] = vmcpcmd.KeyVaultURI
+	}
+	if vmcpcmd.StorageAccountID != nil {
+		objectMap["storageAccountId"] = vmcpcmd.StorageAccountID
+	}
+	if vmcpcmd.StorageAccountSasSecretName != nil {
+		objectMap["storageAccountSasSecretName"] = vmcpcmd.StorageAccountSasSecretName
+	}
+	if vmcpcmd.ServiceBusConnectionStringSecretName != nil {
+		objectMap["serviceBusConnectionStringSecretName"] = vmcpcmd.ServiceBusConnectionStringSecretName
+	}
+	if vmcpcmd.TargetLocation != nil {
+		objectMap["targetLocation"] = vmcpcmd.TargetLocation
+	}
+	if vmcpcmd.InstanceType != "" {
+		objectMap["instanceType"] = vmcpcmd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for VMwareCbtProtectionContainerMappingDetails.
+func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool) {
+	return nil, false
+}
+
+// AsVMwareCbtProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for VMwareCbtProtectionContainerMappingDetails.
+func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) AsVMwareCbtProtectionContainerMappingDetails() (*VMwareCbtProtectionContainerMappingDetails, bool) {
+	return &vmcpcmd, true
+}
+
+// AsProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for VMwareCbtProtectionContainerMappingDetails.
+func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) AsProtectionContainerMappingProviderSpecificDetails() (*ProtectionContainerMappingProviderSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsBasicProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for VMwareCbtProtectionContainerMappingDetails.
+func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) AsBasicProtectionContainerMappingProviderSpecificDetails() (BasicProtectionContainerMappingProviderSpecificDetails, bool) {
+	return &vmcpcmd, true
+}
+
+// VMwareCbtTestMigrateInput vMwareCbt specific test migrate input.
+type VMwareCbtTestMigrateInput struct {
+	// RecoveryPointID - The recovery point Id.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// NetworkID - The test network Id.
+	NetworkID *string `json:"networkId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeTestMigrateProviderSpecificInput', 'InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicTestMigrateProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtTestMigrateInput.
+func (vmctmi VMwareCbtTestMigrateInput) MarshalJSON() ([]byte, error) {
+	vmctmi.InstanceType = InstanceTypeBasicTestMigrateProviderSpecificInputInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmctmi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = vmctmi.RecoveryPointID
+	}
+	if vmctmi.NetworkID != nil {
+		objectMap["networkId"] = vmctmi.NetworkID
+	}
+	if vmctmi.InstanceType != "" {
+		objectMap["instanceType"] = vmctmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtTestMigrateInput is the BasicTestMigrateProviderSpecificInput implementation for VMwareCbtTestMigrateInput.
+func (vmctmi VMwareCbtTestMigrateInput) AsVMwareCbtTestMigrateInput() (*VMwareCbtTestMigrateInput, bool) {
+	return &vmctmi, true
+}
+
+// AsTestMigrateProviderSpecificInput is the BasicTestMigrateProviderSpecificInput implementation for VMwareCbtTestMigrateInput.
+func (vmctmi VMwareCbtTestMigrateInput) AsTestMigrateProviderSpecificInput() (*TestMigrateProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestMigrateProviderSpecificInput is the BasicTestMigrateProviderSpecificInput implementation for VMwareCbtTestMigrateInput.
+func (vmctmi VMwareCbtTestMigrateInput) AsBasicTestMigrateProviderSpecificInput() (BasicTestMigrateProviderSpecificInput, bool) {
+	return &vmctmi, true
+}
+
+// VMwareCbtUpdateMigrationItemInput vMwareCbt specific update migration item input.
+type VMwareCbtUpdateMigrationItemInput struct {
+	// TargetVMName - The target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// TargetResourceGroupID - The target resource group ARM Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetAvailabilitySetID - The target availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// TargetNetworkID - The target network ARM Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// VMNics - The list of NIC details.
+	VMNics *[]VMwareCbtNicInput `json:"vmNics,omitempty"`
+	// LicenseType - The license type. Possible values include: 'LicenseTypeNotSpecified', 'LicenseTypeNoLicenseType', 'LicenseTypeWindowsServer'
+	LicenseType LicenseType `json:"licenseType,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput', 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicUpdateMigrationItemProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareCbtUpdateMigrationItemInput.
+func (vmcumii VMwareCbtUpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
+	vmcumii.InstanceType = InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt
+	objectMap := make(map[string]interface{})
+	if vmcumii.TargetVMName != nil {
+		objectMap["targetVmName"] = vmcumii.TargetVMName
+	}
+	if vmcumii.TargetVMSize != nil {
+		objectMap["targetVmSize"] = vmcumii.TargetVMSize
+	}
+	if vmcumii.TargetResourceGroupID != nil {
+		objectMap["targetResourceGroupId"] = vmcumii.TargetResourceGroupID
+	}
+	if vmcumii.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = vmcumii.TargetAvailabilitySetID
+	}
+	if vmcumii.TargetBootDiagnosticsStorageAccountID != nil {
+		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcumii.TargetBootDiagnosticsStorageAccountID
+	}
+	if vmcumii.TargetNetworkID != nil {
+		objectMap["targetNetworkId"] = vmcumii.TargetNetworkID
+	}
+	if vmcumii.VMNics != nil {
+		objectMap["vmNics"] = vmcumii.VMNics
+	}
+	if vmcumii.LicenseType != "" {
+		objectMap["licenseType"] = vmcumii.LicenseType
+	}
+	if vmcumii.InstanceType != "" {
+		objectMap["instanceType"] = vmcumii.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsVMwareCbtUpdateMigrationItemInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for VMwareCbtUpdateMigrationItemInput.
+func (vmcumii VMwareCbtUpdateMigrationItemInput) AsVMwareCbtUpdateMigrationItemInput() (*VMwareCbtUpdateMigrationItemInput, bool) {
+	return &vmcumii, true
+}
+
+// AsUpdateMigrationItemProviderSpecificInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for VMwareCbtUpdateMigrationItemInput.
+func (vmcumii VMwareCbtUpdateMigrationItemInput) AsUpdateMigrationItemProviderSpecificInput() (*UpdateMigrationItemProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUpdateMigrationItemProviderSpecificInput is the BasicUpdateMigrationItemProviderSpecificInput implementation for VMwareCbtUpdateMigrationItemInput.
+func (vmcumii VMwareCbtUpdateMigrationItemInput) AsBasicUpdateMigrationItemProviderSpecificInput() (BasicUpdateMigrationItemProviderSpecificInput, bool) {
+	return &vmcumii, true
 }
 
 // VMwareDetails store the fabric details specific to the VMware fabric.
@@ -20445,12 +22557,12 @@ func (vmd VMwareDetails) AsBasicFabricSpecificDetails() (BasicFabricSpecificDeta
 	return &vmd, true
 }
 
-// VMwareV2FabricCreationInput fabric provider specific settings.
+// VMwareV2FabricCreationInput vMwareV2 fabric provider specific settings.
 type VMwareV2FabricCreationInput struct {
-	// KeyVaultURL - The Key Vault URL.
-	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
-	// KeyVaultResourceArmID - The Key Vault ARM Id.
-	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
+	// VmwareSiteID - The ARM Id of the VMware site.
+	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	// MigrationSolutionID - The ARM Id of the migration solution.
+	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificCreationInput `json:"instanceType,omitempty"`
 }
@@ -20459,11 +22571,11 @@ type VMwareV2FabricCreationInput struct {
 func (vmvfci VMwareV2FabricCreationInput) MarshalJSON() ([]byte, error) {
 	vmvfci.InstanceType = InstanceTypeVMwareV2
 	objectMap := make(map[string]interface{})
-	if vmvfci.KeyVaultURL != nil {
-		objectMap["keyVaultUrl"] = vmvfci.KeyVaultURL
+	if vmvfci.VmwareSiteID != nil {
+		objectMap["vmwareSiteId"] = vmvfci.VmwareSiteID
 	}
-	if vmvfci.KeyVaultResourceArmID != nil {
-		objectMap["keyVaultResourceArmId"] = vmvfci.KeyVaultResourceArmID
+	if vmvfci.MigrationSolutionID != nil {
+		objectMap["migrationSolutionId"] = vmvfci.MigrationSolutionID
 	}
 	if vmvfci.InstanceType != "" {
 		objectMap["instanceType"] = vmvfci.InstanceType
@@ -20491,16 +22603,14 @@ func (vmvfci VMwareV2FabricCreationInput) AsBasicFabricSpecificCreationInput() (
 	return &vmvfci, true
 }
 
-// VMwareV2FabricSpecificDetails vMwareV2 fabric Specific Details.
+// VMwareV2FabricSpecificDetails vMwareV2 fabric specific details.
 type VMwareV2FabricSpecificDetails struct {
-	// SrsServiceEndpoint - The endpoint for making requests to the SRS Service.
-	SrsServiceEndpoint *string `json:"srsServiceEndpoint,omitempty"`
-	// RcmServiceEndpoint - The endpoint for making requests to the RCM Service.
-	RcmServiceEndpoint *string `json:"rcmServiceEndpoint,omitempty"`
-	// KeyVaultURL - The Key Vault URL.
-	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
-	// KeyVaultResourceArmID - The Key Vault ARM Id.
-	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
+	// VmwareSiteID - The ARM Id of the VMware site.
+	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	// MigrationSolutionID - The Migration solution ARM Id.
+	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
+	// ServiceEndpoint - The service endpoint.
+	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
@@ -20509,17 +22619,14 @@ type VMwareV2FabricSpecificDetails struct {
 func (vmvfsd VMwareV2FabricSpecificDetails) MarshalJSON() ([]byte, error) {
 	vmvfsd.InstanceType = InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2
 	objectMap := make(map[string]interface{})
-	if vmvfsd.SrsServiceEndpoint != nil {
-		objectMap["srsServiceEndpoint"] = vmvfsd.SrsServiceEndpoint
+	if vmvfsd.VmwareSiteID != nil {
+		objectMap["vmwareSiteId"] = vmvfsd.VmwareSiteID
 	}
-	if vmvfsd.RcmServiceEndpoint != nil {
-		objectMap["rcmServiceEndpoint"] = vmvfsd.RcmServiceEndpoint
+	if vmvfsd.MigrationSolutionID != nil {
+		objectMap["migrationSolutionId"] = vmvfsd.MigrationSolutionID
 	}
-	if vmvfsd.KeyVaultURL != nil {
-		objectMap["keyVaultUrl"] = vmvfsd.KeyVaultURL
-	}
-	if vmvfsd.KeyVaultResourceArmID != nil {
-		objectMap["keyVaultResourceArmId"] = vmvfsd.KeyVaultResourceArmID
+	if vmvfsd.ServiceEndpoint != nil {
+		objectMap["serviceEndpoint"] = vmvfsd.ServiceEndpoint
 	}
 	if vmvfsd.InstanceType != "" {
 		objectMap["instanceType"] = vmvfsd.InstanceType
@@ -20578,7 +22685,7 @@ type VMwareVirtualMachineDetails struct {
 	PoweredOn *string `json:"poweredOn,omitempty"`
 	// VCenterInfrastructureID - The VCenter infrastructure Id.
 	VCenterInfrastructureID *string `json:"vCenterInfrastructureId,omitempty"`
-	// DiscoveryType - A value inidicating the discovery type of the machine. Value can be vCenter or physical.
+	// DiscoveryType - A value indicating the discovery type of the machine. Value can be vCenter or physical.
 	DiscoveryType *string `json:"discoveryType,omitempty"`
 	// DiskDetails - The disk details.
 	DiskDetails *[]InMageDiskDetails `json:"diskDetails,omitempty"`

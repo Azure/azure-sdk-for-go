@@ -74,6 +74,14 @@ const (
 	NotStarted          CopyStatus = original.NotStarted
 )
 
+type DataDestinationType = original.DataDestinationType
+
+const (
+	DataDestinationTypeDestinationAccountDetails DataDestinationType = original.DataDestinationTypeDestinationAccountDetails
+	DataDestinationTypeManagedDisk               DataDestinationType = original.DataDestinationTypeManagedDisk
+	DataDestinationTypeStorageAccount            DataDestinationType = original.DataDestinationTypeStorageAccount
+)
+
 type JobDetailsTypeEnum = original.JobDetailsTypeEnum
 
 const (
@@ -109,6 +117,7 @@ const (
 	AzureFile   ShareDestinationFormatType = original.AzureFile
 	BlockBlob   ShareDestinationFormatType = original.BlockBlob
 	HCS         ShareDestinationFormatType = original.HCS
+	ManagedDisk ShareDestinationFormatType = original.ManagedDisk
 	PageBlob    ShareDestinationFormatType = original.PageBlob
 	UnknownType ShareDestinationFormatType = original.UnknownType
 )
@@ -116,11 +125,12 @@ const (
 type SkuDisabledReason = original.SkuDisabledReason
 
 const (
-	SkuDisabledReasonCountry   SkuDisabledReason = original.SkuDisabledReasonCountry
-	SkuDisabledReasonFeature   SkuDisabledReason = original.SkuDisabledReasonFeature
-	SkuDisabledReasonNone      SkuDisabledReason = original.SkuDisabledReasonNone
-	SkuDisabledReasonOfferType SkuDisabledReason = original.SkuDisabledReasonOfferType
-	SkuDisabledReasonRegion    SkuDisabledReason = original.SkuDisabledReasonRegion
+	SkuDisabledReasonCountry            SkuDisabledReason = original.SkuDisabledReasonCountry
+	SkuDisabledReasonFeature            SkuDisabledReason = original.SkuDisabledReasonFeature
+	SkuDisabledReasonNone               SkuDisabledReason = original.SkuDisabledReasonNone
+	SkuDisabledReasonNoSubscriptionInfo SkuDisabledReason = original.SkuDisabledReasonNoSubscriptionInfo
+	SkuDisabledReasonOfferType          SkuDisabledReason = original.SkuDisabledReasonOfferType
+	SkuDisabledReasonRegion             SkuDisabledReason = original.SkuDisabledReasonRegion
 )
 
 type SkuName = original.SkuName
@@ -176,7 +186,10 @@ type ContactDetails = original.ContactDetails
 type BasicCopyLogDetails = original.BasicCopyLogDetails
 type CopyLogDetails = original.CopyLogDetails
 type CopyProgress = original.CopyProgress
+type BasicDestinationAccountDetails = original.BasicDestinationAccountDetails
 type DestinationAccountDetails = original.DestinationAccountDetails
+type DestinationManagedDiskDetails = original.DestinationManagedDiskDetails
+type DestinationStorageAccountDetails = original.DestinationStorageAccountDetails
 type DestinationToServiceLocationMap = original.DestinationToServiceLocationMap
 type DiskCopyLogDetails = original.DiskCopyLogDetails
 type DiskCopyProgress = original.DiskCopyProgress
@@ -258,6 +271,9 @@ func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
 }
 func PossibleCopyStatusValues() []CopyStatus {
 	return original.PossibleCopyStatusValues()
+}
+func PossibleDataDestinationTypeValues() []DataDestinationType {
+	return original.PossibleDataDestinationTypeValues()
 }
 func PossibleJobDetailsTypeEnumValues() []JobDetailsTypeEnum {
 	return original.PossibleJobDetailsTypeEnumValues()

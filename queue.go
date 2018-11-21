@@ -408,6 +408,10 @@ func (q *Queue) ensureReceiver(ctx context.Context, opts ...receiverOption) erro
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
 
+	if q.receiver != nil {
+		return nil
+	}
+
 	opts = append(opts, receiverWithReceiveMode(q.receiveMode))
 
 	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)

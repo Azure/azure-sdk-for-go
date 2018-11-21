@@ -496,7 +496,7 @@ func (client ExpressRouteCircuitsClient) ListAllComplete(ctx context.Context) (r
 	return
 }
 
-// ListArpTable the ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table
+// ListArpTable the ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table
 // associated with the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -612,7 +612,7 @@ func (client ExpressRouteCircuitsClient) ListArpTableComplete(ctx context.Contex
 	return
 }
 
-// ListRoutesTable the ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes
+// ListRoutesTable the ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes
 // table associated with the ExpressRouteCircuits in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -728,7 +728,7 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableComplete(ctx context.Con
 	return
 }
 
-// ListStats the Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a
+// ListStats the ListStats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a
 // resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.

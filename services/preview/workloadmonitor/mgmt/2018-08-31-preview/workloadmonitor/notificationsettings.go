@@ -41,6 +41,99 @@ func NewNotificationSettingsClientWithBaseURI(baseURI string, subscriptionID str
 	return NotificationSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Get sends the get request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// resourceNamespace - the Namespace of the resource.
+// resourceType - the type of the resource.
+// resourceName - name of the resource.
+// notificationSettingName - name of the notificationSetting
+func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (result NotificationSettingsCollection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("workloadmonitor.NotificationSettingsClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client NotificationSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"notificationSettingName": autorest.Encode("path", notificationSettingName),
+		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
+		"resourceName":            autorest.Encode("path", resourceName),
+		"resourceNamespace":       autorest.Encode("path", resourceNamespace),
+		"resourceType":            autorest.Encode("path", resourceType),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-08-31-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings/{notificationSettingName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client NotificationSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client NotificationSettingsClient) GetResponder(resp *http.Response) (result NotificationSettingsCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListByResource sends the list by resource request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -138,8 +231,9 @@ func (client NotificationSettingsClient) ListByResourceResponder(resp *http.Resp
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
+// notificationSettingName - name of the notificationSetting
 // body - body of the NotificationSetting PUT object.
-func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body NotificationSetting) (result NotificationSettingsCollection, err error) {
+func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (result NotificationSettingsCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Update")
 		defer func() {
@@ -160,7 +254,7 @@ func (client NotificationSettingsClient) Update(ctx context.Context, resourceGro
 		return result, validation.NewError("workloadmonitor.NotificationSettingsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, body)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -182,13 +276,14 @@ func (client NotificationSettingsClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdatePreparer prepares the Update request.
-func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body NotificationSetting) (*http.Request, error) {
+func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"resourceName":      autorest.Encode("path", resourceName),
-		"resourceNamespace": autorest.Encode("path", resourceNamespace),
-		"resourceType":      autorest.Encode("path", resourceType),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"notificationSettingName": autorest.Encode("path", notificationSettingName),
+		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
+		"resourceName":            autorest.Encode("path", resourceName),
+		"resourceNamespace":       autorest.Encode("path", resourceNamespace),
+		"resourceType":            autorest.Encode("path", resourceType),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2018-08-31-preview"
@@ -200,7 +295,7 @@ func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, res
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings/{notificationSettingName}", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

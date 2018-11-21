@@ -75,6 +75,7 @@ output "TEST_SERVICEBUS_RESOURCE_GROUP" {
 
 output "SERVICEBUS_CONNECTION_STRING" {
   value = "Endpoint=sb://${azurerm_servicebus_namespace.test.name}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=${azurerm_servicebus_namespace.test.default_primary_key}"
+  sensitive = true
 }
 
 output "AZURE_SUBSCRIPTION_ID" {

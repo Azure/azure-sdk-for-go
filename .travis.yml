@@ -1,18 +1,16 @@
 language: go
 sudo: false
 go:
-  - 1.11
+  - 1.11.x
   - 1.x
 
-env:
-  - GO111MODULE=on
-
 before_install:
+- cd ${TRAVIS_HOME}
 - go get github.com/mattn/goveralls
 - go get golang.org/x/tools/cmd/cover
 - go get github.com/fzipp/gocyclo
-- go get honnef.co/go/tools/cmd/megacheck
-- go get -u golang.org/x/lint/golint
+- go get golang.org/x/lint/golint
+- cd ${TRAVIS_BUILD_DIR}
 
 jobs:
   include:
@@ -39,7 +37,9 @@ jobs:
     - export ARM_TENANT_ID=$(echo $AZURE_TENANT_ID)
     - export TEST_SERVICEBUS_RESOURCE_GROUP=$(echo $TF_VAR_resource_group_name)
     - export TF_VAR_location=$(echo $TEST_SERVICEBUS_LOCATION)
+    - export GO111MODULE=on
     - make test-cover
     - goveralls -coverprofile=cover.out -service=travis-ci
 script:
-- make
+  - export GO111MODULE=on
+  - make

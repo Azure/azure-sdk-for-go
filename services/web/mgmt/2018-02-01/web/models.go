@@ -3453,7 +3453,7 @@ func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, Ap
 	return AppServiceEnvironmentCollectionPage{fn: getNextPage}
 }
 
-// AppServiceEnvironmentPatchResource ARM resource for a app service enviroment.
+// AppServiceEnvironmentPatchResource ARM resource for a app service environment.
 type AppServiceEnvironmentPatchResource struct {
 	// AppServiceEnvironment - Core resource properties
 	*AppServiceEnvironment `json:"properties,omitempty"`

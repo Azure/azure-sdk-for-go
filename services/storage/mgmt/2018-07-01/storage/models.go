@@ -1513,6 +1513,8 @@ type GeoReplicationStats struct {
 	Status GeoReplicationStatus `json:"status,omitempty"`
 	// LastSyncTime - All primary writes preceding this UTC date/time value are guaranteed to be available for read operations. Primary writes following this point in time may or may not be available for reads. Element may be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
 	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
+	// CanFailover - A boolean flag which indicates whether or not account failover is supported for the account.
+	CanFailover *bool `json:"canFailover,omitempty"`
 }
 
 // Identity identity for the resource.

@@ -401,9 +401,9 @@ type AuthorizationPolicy struct {
 	PolicyName *string `json:"policyName,omitempty"`
 	// Permissions - The permissions associated with the policy.
 	Permissions *[]PermissionTypes `json:"permissions,omitempty"`
-	// PrimaryKey - Primary key assiciated with the policy.
+	// PrimaryKey - Primary key associated with the policy.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - Secondary key assiciated with the policy.
+	// SecondaryKey - Secondary key associated with the policy.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -657,7 +657,7 @@ type Connector struct {
 	ConnectorProperties map[string]interface{} `json:"connectorProperties"`
 	// Created - The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last monified time.
+	// LastModified - The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// State - State of connector. Possible values include: 'ConnectorStatesCreating', 'ConnectorStatesCreated', 'ConnectorStatesReady', 'ConnectorStatesExpiring', 'ConnectorStatesDeleting', 'ConnectorStatesFailed'
 	State ConnectorStates `json:"state,omitempty"`
@@ -860,7 +860,7 @@ type ConnectorMapping struct {
 	ConnectorType ConnectorTypes `json:"connectorType,omitempty"`
 	// Created - The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last monified time.
+	// LastModified - The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// EntityType - Defines which entity type the file should map to. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -902,7 +902,7 @@ type ConnectorMappingCompleteOperation struct {
 	DestinationFolder *string `json:"destinationFolder,omitempty"`
 }
 
-// ConnectorMappingErrorManagement the error mangement.
+// ConnectorMappingErrorManagement the error management.
 type ConnectorMappingErrorManagement struct {
 	// ErrorManagementType - The type of error management to use for the mapping. Possible values include: 'RejectAndContinue', 'StopImport', 'RejectUntilLimit'
 	ErrorManagementType ErrorManagementTypes `json:"errorManagementType,omitempty"`
@@ -1093,7 +1093,7 @@ type ConnectorMappingProperties struct {
 	CompleteOperation *ConnectorMappingCompleteOperation `json:"completeOperation,omitempty"`
 }
 
-// ConnectorMappingResourceFormat the c onnector mapping resource format.
+// ConnectorMappingResourceFormat the connector mapping resource format.
 type ConnectorMappingResourceFormat struct {
 	autorest.Response `json:"-"`
 	*ConnectorMapping `json:"properties,omitempty"`
@@ -1517,7 +1517,7 @@ func (ek EnrichingKpi) MarshalJSON() ([]byte, error) {
 
 // EntityTypeDefinition describes an entity.
 type EntityTypeDefinition struct {
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -2202,7 +2202,7 @@ type InteractionTypeDefinition struct {
 	*DataSource `json:"defaultDataSource,omitempty"`
 	// IsActivity - An interaction can be tagged as an activity only during create. This enables the interaction to be editable and can enable merging of properties from multiple data sources based on precedence, which is defined at a link level.
 	IsActivity *bool `json:"isActivity,omitempty"`
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -2995,7 +2995,7 @@ type LinkDefinition struct {
 	ParticipantPropertyReferences *[]ParticipantPropertyReference `json:"participantPropertyReferences,omitempty"`
 	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
-	// ReferenceOnly - Indicating whether the link is reference only link. This flag is ingored if the Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or update profiles.
+	// ReferenceOnly - Indicating whether the link is reference only link. This flag is ignored if the Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or update profiles.
 	ReferenceOnly *bool `json:"referenceOnly,omitempty"`
 	// OperationType - Determines whether this link is supposed to create or delete instances if Link is NOT Reference Only. Possible values include: 'Upsert', 'Delete'
 	OperationType InstanceOperationType `json:"operationType,omitempty"`
@@ -3863,7 +3863,7 @@ func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.R
 type ProfileTypeDefinition struct {
 	// StrongIds - The strong IDs.
 	StrongIds *[]StrongID `json:"strongIds,omitempty"`
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -3981,7 +3981,7 @@ type PropertyDefinition struct {
 	IsLocalizedString *bool `json:"isLocalizedString,omitempty"`
 	// IsName - Whether the property is a name or a part of name.
 	IsName *bool `json:"isName,omitempty"`
-	// IsRequired - Whether property value is required on instances, IsRequired field only for Intercation. Profile Instance will not check for required field.
+	// IsRequired - Whether property value is required on instances, IsRequired field only for Interaction. Profile Instance will not check for required field.
 	IsRequired *bool `json:"isRequired,omitempty"`
 	// PropertyID - The ID associated with the property.
 	PropertyID *string `json:"propertyId,omitempty"`

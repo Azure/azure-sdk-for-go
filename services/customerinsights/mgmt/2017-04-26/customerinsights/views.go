@@ -43,7 +43,7 @@ func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClien
 	return ViewsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates a view or updates an exisiting view in the hub.
+// CreateOrUpdate creates a view or updates an existing view in the hub.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // hubName - the name of the hub.
@@ -140,7 +140,7 @@ func (client ViewsClient) CreateOrUpdateResponder(resp *http.Response) (result V
 // resourceGroupName - the name of the resource group.
 // hubName - the name of the hub.
 // viewName - the name of the view.
-// userID - the user ID. Use * to retreive hub level view.
+// userID - the user ID. Use * to retrieve hub level view.
 func (client ViewsClient) Delete(ctx context.Context, resourceGroupName string, hubName string, viewName string, userID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ViewsClient.Delete")
@@ -220,7 +220,7 @@ func (client ViewsClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName - the name of the resource group.
 // hubName - the name of the hub.
 // viewName - the name of the view.
-// userID - the user ID. Use * to retreive hub level view.
+// userID - the user ID. Use * to retrieve hub level view.
 func (client ViewsClient) Get(ctx context.Context, resourceGroupName string, hubName string, viewName string, userID string) (result ViewResourceFormat, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ViewsClient.Get")
@@ -300,7 +300,7 @@ func (client ViewsClient) GetResponder(resp *http.Response) (result ViewResource
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // hubName - the name of the hub.
-// userID - the user ID. Use * to retreive hub level views.
+// userID - the user ID. Use * to retrieve hub level views.
 func (client ViewsClient) ListByHub(ctx context.Context, resourceGroupName string, hubName string, userID string) (result ViewListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ViewsClient.ListByHub")

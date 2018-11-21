@@ -491,8 +491,8 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 }
 
 func testQueueSend(ctx context.Context, t *testing.T, queue *Queue) {
-	err := queue.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
+	rmsg := test.RandomString("foo", 10)
+	assert.Nil(t, queue.Send(ctx, NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))))
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
@@ -604,6 +604,49 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	}
 }
 
+func (suite *serviceBusSuite) TestIssue73QueueClient() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SimpleSend200": func(ctx context.Context, t *testing.T, queue *Queue) {
+			for i := 0; i < 200; i++ {
+				testQueueSend(ctx, t, queue)
+			}
+		},
+	}
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			queueName := suite.randEntityName()
+
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+
+			window := time.Duration(20 * time.Second)
+			ttl := time.Duration(14 * 24 * time.Hour)
+			cleanup := makeQueue(ctx, t, ns, queueName,
+				QueueEntityWithMessageTimeToLive(&ttl),
+				QueueEntityWithDuplicateDetection(&window),
+				QueueEntityWithMaxDeliveryCount(10),
+				QueueEntityWithMaxSizeInMegabytes(1))
+			q, err := ns.NewQueue(queueName)
+			suite.NoError(err)
+			defer func() {
+				q.Close(ctx)
+				cleanup()
+			}()
+			testFunc(ctx, t, q)
+			if !t.Failed() {
+
+			}
+			if !t.Failed() && name != "SimpleSend200" {
+				checkZeroQueueMessages(ctx, t, ns, queueName)
+			}
+		}
+
+		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
 	qm := ns.NewQueueManager()
 	entity, err := qm.Get(ctx, name)
@@ -626,6 +669,10 @@ func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 }
 
 func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
+	checkMessageCount(ctx, t, ns, name, 0)
+}
+
+func checkMessageCount(ctx context.Context, t *testing.T, ns *Namespace, name string, count int64) {
 	qm := ns.NewQueueManager()
 	maxTries := 10
 	for i := 0; i < maxTries; i++ {
@@ -633,7 +680,7 @@ func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, na
 		if !assert.NoError(t, err) {
 			return
 		}
-		if *q.MessageCount == 0 {
+		if *q.MessageCount == count {
 			return
 		}
 		t.Logf("try %d out of %d, message count was %d, not 0", i+1, maxTries, *q.MessageCount)

@@ -3991,7 +3991,7 @@ type PredictionModelStatus struct {
 	ValidationSetCount *int32 `json:"validationSetCount,omitempty"`
 	// TrainingAccuracy - The training accuracy.
 	TrainingAccuracy *int32 `json:"trainingAccuracy,omitempty"`
-	// SignalsUsed - The singnals used.
+	// SignalsUsed - The signals used.
 	SignalsUsed *int32 `json:"signalsUsed,omitempty"`
 	// ModelVersion - Version of the model.
 	ModelVersion *string `json:"modelVersion,omitempty"`

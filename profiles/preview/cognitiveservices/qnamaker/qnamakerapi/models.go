@@ -21,7 +21,7 @@ package qnamakerapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker/qnamakerapi"
 
-type EndpointClientAPI = original.EndpointClientAPI
+type EndpointKeysClientAPI = original.EndpointKeysClientAPI
 type AlterationsClientAPI = original.AlterationsClientAPI
 type KnowledgebaseClientAPI = original.KnowledgebaseClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

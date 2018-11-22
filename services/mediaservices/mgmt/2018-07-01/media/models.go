@@ -4368,7 +4368,7 @@ type EnvelopeEncryption struct {
 	ClearTracks *[]TrackSelection `json:"clearTracks,omitempty"`
 	// ContentKeys - Representing default content key for each encryption scheme and separate content keys for specific tracks
 	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
-	// CustomKeyAcquisitionURLTemplate - KeyAcquistionUrlTemplate is used to point to user specified service to delivery content keys
+	// CustomKeyAcquisitionURLTemplate - KeyAcquisitionUrlTemplate is used to point to user specified service to delivery content keys
 	CustomKeyAcquisitionURLTemplate *string `json:"customKeyAcquisitionUrlTemplate,omitempty"`
 }
 
@@ -9422,7 +9422,7 @@ type StreamingLocatorContentKey struct {
 	Type StreamingLocatorContentKeyType `json:"type,omitempty"`
 	// LabelReferenceInStreamingPolicy - Label of Content Key as specified in the Streaming Policy
 	LabelReferenceInStreamingPolicy *string `json:"labelReferenceInStreamingPolicy,omitempty"`
-	// Value - Value of  of Content Key
+	// Value - Value of Content Key
 	Value *string `json:"value,omitempty"`
 	// PolicyName - ContentKeyPolicy used by Content Key
 	PolicyName *string `json:"policyName,omitempty"`

@@ -3747,7 +3747,7 @@ type CrossSiteAccessPolicies struct {
 
 // DefaultKey class to specify properties of default content key for each encryption scheme
 type DefaultKey struct {
-	// Label - Label can be used to specify Content Key when creating Stremaing Locator
+	// Label - Label can be used to specify Content Key when creating Streaming Locator
 	Label *string `json:"label,omitempty"`
 	// PolicyName - Policy used by Default Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -3792,7 +3792,7 @@ type EnvelopeEncryption struct {
 	ClearTracks *[]TrackSelection `json:"clearTracks,omitempty"`
 	// ContentKeys - Representing default content key for each encryption scheme and separate content keys for specific tracks
 	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
-	// CustomLicenseAcquisitionURLTemplate - LicenseAcquistionUrlTemplate is used to point to user speicified service to delivery content keys
+	// CustomLicenseAcquisitionURLTemplate - LicenseAcquisitionUrlTemplate is used to point to user specified service to delivery content keys
 	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
 }
 
@@ -8697,7 +8697,7 @@ type StreamingLocatorContentKey struct {
 	Type StreamingLocatorContentKeyType `json:"type,omitempty"`
 	// ID - ID of Content Key
 	ID *uuid.UUID `json:"id,omitempty"`
-	// Value - Value of  of Content Key
+	// Value - Value of Content Key
 	Value *string `json:"value,omitempty"`
 	// PolicyName - ContentKeyPolicy used by Content Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -8975,7 +8975,7 @@ func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, Streamin
 
 // StreamingPolicyContentKey class to specify properties of content key
 type StreamingPolicyContentKey struct {
-	// Label - Label can be used to specify Content Key when creating Stremaing Locator
+	// Label - Label can be used to specify Content Key when creating Streaming Locator
 	Label *string `json:"label,omitempty"`
 	// PolicyName - Policy used by Content Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -8987,7 +8987,7 @@ type StreamingPolicyContentKey struct {
 type StreamingPolicyContentKeys struct {
 	// DefaultKey - Default content key for an encryption scheme
 	DefaultKey *DefaultKey `json:"defaultKey,omitempty"`
-	// KeyToTrackMappings - Representing tracks needs sepearete content key
+	// KeyToTrackMappings - Representing tracks needs separate content key
 	KeyToTrackMappings *[]StreamingPolicyContentKey `json:"keyToTrackMappings,omitempty"`
 }
 
@@ -9019,7 +9019,7 @@ type StreamingPolicyProperties struct {
 	CommonEncryptionCenc *CommonEncryptionCenc `json:"commonEncryptionCenc,omitempty"`
 	// CommonEncryptionCbcs - Configuration of CommonEncryptionCbcs
 	CommonEncryptionCbcs *CommonEncryptionCbcs `json:"commonEncryptionCbcs,omitempty"`
-	// NoEncryption - Configuations of NoEncryption
+	// NoEncryption - Configuration of NoEncryption
 	NoEncryption *NoEncryption `json:"noEncryption,omitempty"`
 }
 
@@ -9333,7 +9333,7 @@ type TrackPropertyCondition struct {
 	Property TrackPropertyType `json:"property,omitempty"`
 	// Operation - Track property condition operation. Possible values include: 'TrackPropertyCompareOperationUnknown', 'TrackPropertyCompareOperationEqual'
 	Operation TrackPropertyCompareOperation `json:"operation,omitempty"`
-	// Value - Track proprty value
+	// Value - Track property value
 	Value *string `json:"value,omitempty"`
 }
 

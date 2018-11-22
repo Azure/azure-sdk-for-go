@@ -44,7 +44,8 @@ func NewClient() Client {
 // Parameters:
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // directFilePath - the Data Lake Store path (starting with '/') of the file to which to append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // offset - the optional offset in the stream to begin the append operation. Default is to append at the end of
 // the stream.
 func (client Client) Append(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, offset *int64) (result autorest.Response, err error) {
@@ -215,11 +216,12 @@ func (client Client) CheckAccessResponder(resp *http.Response) (result autorest.
 }
 
 // Concat concatenates the list of source files into the destination file, removing all source files upon success.
+// This operation has been deprecated, please use operation FileSystem_MsConcat instead.
 // Parameters:
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // destinationPath - the Data Lake Store path (starting with '/') of the destination file resulting from the
 // concatenation.
-// sources - a list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate,
+// sources - a list of comma separated Data Lake Store paths (starting with '/') of the files to concatenate,
 // in the order in which they should be concatenated.
 func (client Client) Concat(ctx context.Context, accountName string, destinationPath string, sources []string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -313,7 +315,8 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // filePath - the Data Lake Store path (starting with '/') of the file to which to append using concurrent
 // append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // appendMode - indicates the concurrent append call should create the file if it doesn't exist or just open
 // the existing file for append
 func (client Client) ConcurrentAppend(ctx context.Context, accountName string, filePath string, streamContents io.ReadCloser, appendMode AppendModeType) (result autorest.Response, err error) {
@@ -403,7 +406,8 @@ func (client Client) ConcurrentAppendResponder(resp *http.Response) (result auto
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // directFilePath - the Data Lake Store path (starting with '/') of the file to create.
 // streamContents - the file contents to include when creating the file. This parameter is optional, resulting
-// in an empty file if not specified.
+// in an empty file if not specified.  The maximum content size is 4MB.  For content larger than 4MB you must
+// append the content in 4MB chunks.
 // overwrite - the indication of if the file should be overwritten.
 func (client Client) Create(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, overwrite *bool) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -909,10 +913,10 @@ func (client Client) GetFileStatusResponder(resp *http.Response) (result FileSta
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // listFilePath - the Data Lake Store path (starting with '/') of the directory to list.
 // listSize - gets or sets the number of items to return. Optional.
-// listAfter - gets or sets the item or lexographical index after which to begin returning results. For
+// listAfter - gets or sets the item or lexicographical index after which to begin returning results. For
 // example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return
 // 'd'. Optional.
-// listBefore - gets or sets the item or lexographical index before which to begin returning results. For
+// listBefore - gets or sets the item or lexicographical index before which to begin returning results. For
 // example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also
 // return 'a','b'. Optional.
 func (client Client) ListFileStatus(ctx context.Context, accountName string, listFilePath string, listSize *int32, listAfter string, listBefore string) (result FileStatusesResult, err error) {

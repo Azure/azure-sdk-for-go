@@ -1063,7 +1063,7 @@ type ContentSummary struct {
 	DirectoryCount *int64 `json:"directoryCount,omitempty"`
 	// FileCount - the number of files.
 	FileCount *int64 `json:"fileCount,omitempty"`
-	// Length - the number of bytes used by the contet.
+	// Length - the number of bytes used by the content.
 	Length *int64 `json:"length,omitempty"`
 	// SpaceConsumed - the disk space consumed by the content.
 	SpaceConsumed *int64 `json:"spaceConsumed,omitempty"`

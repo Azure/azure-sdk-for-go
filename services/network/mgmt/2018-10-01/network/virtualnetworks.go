@@ -42,10 +42,10 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // CheckIPAddressAvailability checks whether a private IP address is available for use.
 // Parameters:
-// IPAddress - the private IP address to be verified.
 // resourceGroupName - the name of the resource group.
 // virtualNetworkName - the name of the virtual network.
-func (client VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Context, IPAddress string, resourceGroupName string, virtualNetworkName string) (result IPAddressAvailabilityResult, err error) {
+// IPAddress - the private IP address to be verified.
+func (client VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Context, resourceGroupName string, virtualNetworkName string, IPAddress string) (result IPAddressAvailabilityResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualNetworksClient.CheckIPAddressAvailability")
 		defer func() {
@@ -56,7 +56,7 @@ func (client VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CheckIPAddressAvailabilityPreparer(ctx, IPAddress, resourceGroupName, virtualNetworkName)
+	req, err := client.CheckIPAddressAvailabilityPreparer(ctx, resourceGroupName, virtualNetworkName, IPAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "CheckIPAddressAvailability", nil, "Failure preparing request")
 		return
@@ -78,7 +78,7 @@ func (client VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Conte
 }
 
 // CheckIPAddressAvailabilityPreparer prepares the CheckIPAddressAvailability request.
-func (client VirtualNetworksClient) CheckIPAddressAvailabilityPreparer(ctx context.Context, IPAddress string, resourceGroupName string, virtualNetworkName string) (*http.Request, error) {
+func (client VirtualNetworksClient) CheckIPAddressAvailabilityPreparer(ctx context.Context, resourceGroupName string, virtualNetworkName string, IPAddress string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),

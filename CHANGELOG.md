@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## `v22.2.3`
+
+Add new easykey library under keyvault/v7.0/keyvault/beta/easykey to provide a wrapper
+around keyvault that is more inline with the Go language than the autorest currently provided.
+
 ## `v22.2.2`
 
 Corrected typo in the env variable for enabling tracing for the SDK. The correct name is `AZURE_SDK_TRACING_ENABLED`.

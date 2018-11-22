@@ -1871,7 +1871,7 @@ type JobBaseProperties struct {
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	// Cluster - Resource ID of the cluster on which this job will run.
 	Cluster *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - Number of compute nodes to run the job on. The job will be gang scheduled on that many compute nodes.
 	NodeCount *int32 `json:"nodeCount,omitempty"`
@@ -2114,7 +2114,7 @@ type JobProperties struct {
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	// Cluster - Resource ID of the cluster associated with the job.
 	Cluster *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - Collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmouted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - Collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmounted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - The job will be gang scheduled on that many compute nodes
 	NodeCount *int32 `json:"nodeCount,omitempty"`
@@ -2153,7 +2153,7 @@ type JobProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - The time at which the job entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
-	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
+	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
 	ExecutionState ExecutionState `json:"executionState,omitempty"`
 	// ExecutionStateTransitionTime - The time at which the job entered its current execution state.
 	ExecutionStateTransitionTime *date.Time `json:"executionStateTransitionTime,omitempty"`
@@ -2254,7 +2254,7 @@ func (future *JobsTerminateFuture) Result(client JobsClient) (ar autorest.Respon
 
 // KeyVaultSecretReference key Vault Secret reference.
 type KeyVaultSecretReference struct {
-	// SourceVault - Fully qualified resource indentifier of the Key Vault.
+	// SourceVault - Fully qualified resource identifier of the Key Vault.
 	SourceVault *ResourceID `json:"sourceVault,omitempty"`
 	// SecretURL - The URL referencing a secret in the Key Vault.
 	SecretURL *string `json:"secretUrl,omitempty"`
@@ -2633,7 +2633,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 
 // OutputDirectory output directory for the job.
 type OutputDirectory struct {
-	// ID - The ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_<id> environment variale to find the directory path, where <id> is the value of id attribute.
+	// ID - The ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_<id> environment variable to find the directory path, where <id> is the value of id attribute.
 	ID *string `json:"id,omitempty"`
 	// PathPrefix - The prefix path where the output directory will be created. Note, this is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs. The full path to the output directory by combining pathPrefix, jobOutputDirectoryPathSegment (reported by get job) and pathSuffix.
 	PathPrefix *string `json:"pathPrefix,omitempty"`
@@ -2929,7 +2929,7 @@ type TensorFlowSettings struct {
 	ParameterServerCount *int32 `json:"parameterServerCount,omitempty"`
 }
 
-// UnmanagedFileSystemReference unmananged file system mounting configuration.
+// UnmanagedFileSystemReference unmanaged file system mounting configuration.
 type UnmanagedFileSystemReference struct {
 	// MountCommand - Mount command line. Note, Batch AI will append mount path to the command on its own.
 	MountCommand *string `json:"mountCommand,omitempty"`

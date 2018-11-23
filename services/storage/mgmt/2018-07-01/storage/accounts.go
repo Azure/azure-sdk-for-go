@@ -426,7 +426,7 @@ func (client AccountsClient) FailoverResponder(resp *http.Response) (result auto
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 // expand - may be used to expand the properties within account's properties. By default, data is not included
-// when fecthing properties. Currently we only support geoReplicationStats.
+// when fetching properties. Currently we only support geoReplicationStats.
 func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand AccountExpand) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.GetProperties")

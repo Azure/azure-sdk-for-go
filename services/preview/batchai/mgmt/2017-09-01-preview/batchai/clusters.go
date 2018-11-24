@@ -342,8 +342,8 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 
 // List gets information about the Clusters associated with the subscription.
 // Parameters:
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -477,8 +477,8 @@ func (client ClustersClient) ListComplete(ctx context.Context, filter string, se
 // ListByResourceGroup gets information about the Clusters associated within the specified resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if tracing.IsEnabled() {

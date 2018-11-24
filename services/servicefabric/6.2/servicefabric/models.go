@@ -1793,7 +1793,7 @@ type NodeStatusFilter string
 const (
 	// All This filter value will match all of the nodes.
 	All NodeStatusFilter = "all"
-	// Default This filter value will match all of the nodes excepts the ones with with status as Unknown or
+	// Default This filter value will match all of the nodes excepts the ones with status as Unknown or
 	// Removed.
 	Default NodeStatusFilter = "default"
 	// Disabled This filter value will match nodes that are Disabled.
@@ -47065,7 +47065,7 @@ type ServiceTypeHealthPolicy struct {
 	// The percentage is calculated by dividing the number of unhealthy replicas over the total number of replicas in the partition.
 	// The computation rounds up to tolerate one failure on small numbers of replicas. Default percentage is zero.
 	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
-	// MaxPercentUnhealthyServices - The maximum maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
+	// MaxPercentUnhealthyServices - The maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
 	// The percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is considered in error.
 	// If the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.
 	// This is calculated by dividing the number of unhealthy services of the specific service type over the total number of services of the specific service type.

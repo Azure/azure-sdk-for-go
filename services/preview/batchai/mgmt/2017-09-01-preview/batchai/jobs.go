@@ -343,8 +343,8 @@ func (client JobsClient) GetResponder(resp *http.Response) (result Job, err erro
 
 // List gets information about the jobs associated with the subscription.
 // Parameters:
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client JobsClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result JobListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -478,8 +478,8 @@ func (client JobsClient) ListComplete(ctx context.Context, filter string, select
 // ListByResourceGroup gets information about the Batch AI jobs associated within the specified resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result JobListResultPage, err error) {
 	if tracing.IsEnabled() {

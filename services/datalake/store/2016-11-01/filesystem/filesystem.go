@@ -44,7 +44,8 @@ func NewClient() Client {
 // Parameters:
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // pathParameter - the Data Lake Store path (starting with '/') of the file to which to append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // offset - the optional offset in the stream to begin the append operation. Default is to append at the end of
 // the stream.
 // syncFlag - optionally indicates what to do after completion of the concurrent append. DATA indicates that
@@ -333,7 +334,8 @@ func (client Client) ConcatResponder(resp *http.Response) (result autorest.Respo
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // pathParameter - the Data Lake Store path (starting with '/') of the file to which to append using concurrent
 // append.
-// streamContents - the file contents to include when appending to the file.
+// streamContents - the file contents to include when appending to the file.  The maximum content size is 4MB.
+// For content larger than 4MB you must append the content in 4MB chunks.
 // appendMode - indicates the concurrent append call should create the file if it doesn't exist or just open
 // the existing file for append
 // syncFlag - optionally indicates what to do after completion of the concurrent append. DATA indicates that
@@ -435,7 +437,8 @@ func (client Client) ConcurrentAppendResponder(resp *http.Response) (result auto
 // accountName - the Azure Data Lake Store account to execute filesystem operations on.
 // pathParameter - the Data Lake Store path (starting with '/') of the file to create.
 // streamContents - the file contents to include when creating the file. This parameter is optional, resulting
-// in an empty file if not specified.
+// in an empty file if not specified.  The maximum content size is 4MB.  For content larger than 4MB you must
+// append the content in 4MB chunks.
 // overwrite - the indication of if the file should be overwritten.
 // syncFlag - optionally indicates what to do after completion of the create. DATA indicates that more data
 // will be sent immediately by the client, the file handle should remain open/locked, and file metadata

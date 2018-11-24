@@ -1256,7 +1256,7 @@ type BackendProxyContract struct {
 type BackendServiceFabricClusterProperties struct {
 	// ClientCertificateThumbprint - The client certificate thumbprint for the management endpoint.
 	ClientCertificateThumbprint *string `json:"clientCertificateThumbprint,omitempty"`
-	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the parition.
+	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the partition.
 	MaxPartitionResolutionRetries *int32 `json:"maxPartitionResolutionRetries,omitempty"`
 	// PartitionResolutionRequestTimeout - Maximum time allowed to update partition resolution data. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
 	PartitionResolutionRequestTimeout *string `json:"partitionResolutionRequestTimeout,omitempty"`

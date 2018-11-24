@@ -411,7 +411,7 @@ func (client DisasterRecoveryConfigsClient) DeleteResponder(resp *http.Response)
 	return
 }
 
-// FailOver envokes GEO DR failover and reconfigure the alias to point to the secondary namespace
+// FailOver invokes GEO DR failover and reconfigure the alias to point to the secondary namespace
 // Parameters:
 // resourceGroupName - name of the resource group within the azure subscription.
 // namespaceName - the Namespace name

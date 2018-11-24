@@ -693,7 +693,7 @@ type EHNamespaceProperties struct {
 	MetricID *string `json:"metricId,omitempty"`
 	// IsAutoInflateEnabled - Value that indicates whether AutoInflate is enabled for eventhub namespace.
 	IsAutoInflateEnabled *bool `json:"isAutoInflateEnabled,omitempty"`
-	// MaximumThroughputUnits - Upper limit of throughput units when AutoInflate is enabled, vaule should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true)
+	// MaximumThroughputUnits - Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true)
 	MaximumThroughputUnits *int32 `json:"maximumThroughputUnits,omitempty"`
 	// KafkaEnabled - Value that indicates whether Kafka is enabled for eventhub namespace.
 	KafkaEnabled *bool `json:"kafkaEnabled,omitempty"`
@@ -1181,7 +1181,7 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Tier - The billing tier of this particular SKU. Possible values include: 'SkuTierBasic', 'SkuTierStandard'
 	Tier SkuTier `json:"tier,omitempty"`
-	// Capacity - The Event Hubs throughput units, vaule should be 0 to 20 throughput units.
+	// Capacity - The Event Hubs throughput units, value should be 0 to 20 throughput units.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

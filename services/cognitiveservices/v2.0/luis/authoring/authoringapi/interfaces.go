@@ -23,6 +23,16 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc(ctx context.Context) (result authoring.SetObject, err error)
+	FivebeThreeTwoFiveFiveFourfEightFiveNineOnedbThreeaEightSixTwoThreeTwoeOne(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
+	FivebeThreeTwoTwoTwoEighteEightFourSevenThreedeOneOneSixThreeTwoFiveFiveOneFive(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
+	FivebeThreeTwoZeroTwoEightaOnedFourEightfEightEightcfdFiveSeveneTwoZero(ctx context.Context, appID uuid.UUID) (result authoring.SetObject, err error)
+}
+
+var _ BaseClientAPI = (*authoring.BaseClient)(nil)
+
 // FeaturesClientAPI contains the set of methods on the FeaturesClient type.
 type FeaturesClientAPI interface {
 	AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject authoring.PhraselistCreateObject) (result authoring.Int32, err error)

@@ -523,6 +523,16 @@ type AvailablePrebuiltEntityModel struct {
 	Examples *string `json:"examples,omitempty"`
 }
 
+// AzureAccountInfoObject defines the azure account information object.
+type AzureAccountInfoObject struct {
+	// AzureSubscriptionID - The id for the azure subscription.
+	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
+	// ResourceGroup - The azure resource group name.
+	ResourceGroup *string `json:"resourceGroup,omitempty"`
+	// AccountName - The azure account name.
+	AccountName *string `json:"accountName,omitempty"`
+}
+
 // BatchLabelExample response when adding a batch of labeled examples.
 type BatchLabelExample struct {
 	Value    *LabelExampleResponse `json:"value,omitempty"`
@@ -1858,6 +1868,12 @@ type RegexModelUpdateObject struct {
 	RegexPattern *string `json:"regexPattern,omitempty"`
 	// Name - The model name.
 	Name *string `json:"name,omitempty"`
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // SetString ...

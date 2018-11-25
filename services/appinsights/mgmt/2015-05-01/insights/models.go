@@ -279,7 +279,7 @@ type AnnotationsListResult struct {
 	Value *[]Annotation `json:"value,omitempty"`
 }
 
-// APIKeyRequest an Application Insights component API Key createion request definition.
+// APIKeyRequest an Application Insights component API Key creation request definition.
 type APIKeyRequest struct {
 	// Name - The name of the API Key.
 	Name *string `json:"name,omitempty"`
@@ -447,7 +447,7 @@ type ApplicationInsightsComponentAnalyticsItemProperties struct {
 // Component.
 type ApplicationInsightsComponentAPIKey struct {
 	autorest.Response `json:"-"`
-	// ID - The unique ID of the API key inside an Applciation Insights component. It is auto generated when the API key is created.
+	// ID - The unique ID of the API key inside an Application Insights component. It is auto generated when the API key is created.
 	ID *string `json:"id,omitempty"`
 	// APIKey - The API key value. It will be only return once when the API Key was created.
 	APIKey *string `json:"apiKey,omitempty"`
@@ -505,7 +505,7 @@ type ApplicationInsightsComponentDataVolumeCap struct {
 // configuration.
 type ApplicationInsightsComponentExportConfiguration struct {
 	autorest.Response `json:"-"`
-	// ExportID - The unique ID of the export configuration inside an Applciation Insights component. It is auto generated when the Continuous Export configuration is created.
+	// ExportID - The unique ID of the export configuration inside an Application Insights component. It is auto generated when the Continuous Export configuration is created.
 	ExportID *string `json:"ExportId,omitempty"`
 	// InstrumentationKey - The instrumentation key of the Application Insights component.
 	InstrumentationKey *string `json:"InstrumentationKey,omitempty"`
@@ -676,7 +676,7 @@ type ApplicationInsightsComponentListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Application Insights component definitions.
 	Value *[]ApplicationInsightsComponent `json:"value,omitempty"`
-	// NextLink - The URI to get the next set of Application Insights component defintions if too many components where returned in the result set.
+	// NextLink - The URI to get the next set of Application Insights component definitions if too many components where returned in the result set.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -845,7 +845,7 @@ type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions 
 	DisplayName *string `json:"DisplayName,omitempty"`
 	// Description - The rule description
 	Description *string `json:"Description,omitempty"`
-	// HelpURL - URL which displays aditional info about the proactive detection rule
+	// HelpURL - URL which displays additional info about the proactive detection rule
 	HelpURL *string `json:"HelpUrl,omitempty"`
 	// IsHidden - A flag indicating whether the rule is hidden (from the UI)
 	IsHidden *bool `json:"IsHidden,omitempty"`
@@ -993,7 +993,7 @@ type ErrorFieldContract struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The
+// ErrorResponse error response indicates Insights service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -1816,7 +1816,7 @@ type WorkItemConfigurationsListResult struct {
 type WorkItemCreateConfiguration struct {
 	// ConnectorID - Unique connector id
 	ConnectorID *string `json:"ConnectorId,omitempty"`
-	// ConnectorDataConfiguration - Serialized JSON object for detaile d properties
+	// ConnectorDataConfiguration - Serialized JSON object for detailed properties
 	ConnectorDataConfiguration *string `json:"ConnectorDataConfiguration,omitempty"`
 	// ValidateOnly - Boolean indicating validate only
 	ValidateOnly *bool `json:"ValidateOnly,omitempty"`

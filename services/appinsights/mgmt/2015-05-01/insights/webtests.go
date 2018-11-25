@@ -285,7 +285,7 @@ func (client WebTestsClient) GetResponder(resp *http.Response) (result WebTest, 
 	return
 }
 
-// List get all Application Insights web test alerts definitioned within a subscription.
+// List get all Application Insights web test alerts definitions within a subscription.
 func (client WebTestsClient) List(ctx context.Context) (result WebTestListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WebTestsClient.List")

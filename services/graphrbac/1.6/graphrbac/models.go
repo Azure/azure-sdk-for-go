@@ -331,6 +331,10 @@ type Application struct {
 	Oauth2AllowImplicitFlow *bool `json:"oauth2AllowImplicitFlow,omitempty"`
 	// RequiredResourceAccess - Specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// ObjectID - The object ID.
@@ -374,6 +378,12 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.RequiredResourceAccess != nil {
 		objectMap["requiredResourceAccess"] = a.RequiredResourceAccess
+	}
+	if a.KeyCredentials != nil {
+		objectMap["keyCredentials"] = a.KeyCredentials
+	}
+	if a.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = a.PasswordCredentials
 	}
 	if a.ObjectID != nil {
 		objectMap["objectId"] = a.ObjectID
@@ -518,6 +528,24 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.RequiredResourceAccess = &requiredResourceAccess
+			}
+		case "keyCredentials":
+			if v != nil {
+				var keyCredentials []KeyCredential
+				err = json.Unmarshal(*v, &keyCredentials)
+				if err != nil {
+					return err
+				}
+				a.KeyCredentials = &keyCredentials
+			}
+		case "passwordCredentials":
+			if v != nil {
+				var passwordCredentials []PasswordCredential
+				err = json.Unmarshal(*v, &passwordCredentials)
+				if err != nil {
+					return err
+				}
+				a.PasswordCredentials = &passwordCredentials
 			}
 		default:
 			if v != nil {

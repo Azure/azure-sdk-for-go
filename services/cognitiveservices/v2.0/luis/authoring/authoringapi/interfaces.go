@@ -185,7 +185,7 @@ type AppsClientAPI interface {
 	ListEndpoints(ctx context.Context, appID uuid.UUID) (result authoring.SetString, err error)
 	ListSupportedCultures(ctx context.Context) (result authoring.ListAvailableCulture, err error)
 	ListUsageScenarios(ctx context.Context) (result authoring.ListString, err error)
-	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.ProductionOrStagingEndpointInfo, err error)
+	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.SetObject, err error)
 	Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject authoring.ApplicationUpdateObject) (result authoring.OperationStatus, err error)
 	UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject authoring.PublishSettingUpdateObject) (result authoring.OperationStatus, err error)
 	UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject authoring.ApplicationSettingUpdateObject) (result authoring.OperationStatus, err error)

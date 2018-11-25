@@ -661,6 +661,8 @@ type EndpointInfo struct {
 	AssignedEndpointKey *string `json:"assignedEndpointKey,omitempty"`
 	// EndpointRegion - The endpoint's region.
 	EndpointRegion *string `json:"endpointRegion,omitempty"`
+	// FailedRegions - Regions where publishing failed.
+	FailedRegions *string `json:"failedRegions,omitempty"`
 	// PublishedDateTime - Timestamp when was last published.
 	PublishedDateTime *string `json:"publishedDateTime,omitempty"`
 }
@@ -1785,7 +1787,6 @@ type PrebuiltEntityExtractor struct {
 
 // ProductionOrStagingEndpointInfo ...
 type ProductionOrStagingEndpointInfo struct {
-	autorest.Response `json:"-"`
 	// VersionID - The version ID to publish.
 	VersionID *string `json:"versionId,omitempty"`
 	// IsStaging - Indicates if the staging slot should be used, instead of the Production one.
@@ -1798,6 +1799,8 @@ type ProductionOrStagingEndpointInfo struct {
 	AssignedEndpointKey *string `json:"assignedEndpointKey,omitempty"`
 	// EndpointRegion - The endpoint's region.
 	EndpointRegion *string `json:"endpointRegion,omitempty"`
+	// FailedRegions - Regions where publishing failed.
+	FailedRegions *string `json:"failedRegions,omitempty"`
 	// PublishedDateTime - Timestamp when was last published.
 	PublishedDateTime *string `json:"publishedDateTime,omitempty"`
 }

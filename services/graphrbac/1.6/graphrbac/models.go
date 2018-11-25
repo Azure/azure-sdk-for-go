@@ -2187,7 +2187,7 @@ type KeyCredential struct {
 	// Type - Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
 	Type *string `json:"type,omitempty"`
 	// CustomKeyIdentifier - Custom Key Identifier
-	CustomKeyIdentifier *[]byte `json:"customKeyIdentifier,omitempty"`
+	CustomKeyIdentifier *string `json:"customKeyIdentifier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyCredential.
@@ -2297,7 +2297,7 @@ func (kc *KeyCredential) UnmarshalJSON(body []byte) error {
 			}
 		case "customKeyIdentifier":
 			if v != nil {
-				var customKeyIdentifier []byte
+				var customKeyIdentifier string
 				err = json.Unmarshal(*v, &customKeyIdentifier)
 				if err != nil {
 					return err

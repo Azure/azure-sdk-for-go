@@ -2378,7 +2378,7 @@ type ImportSourceCredentials struct {
 type NetworkRuleSet struct {
 	// DefaultAction - The default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
-	// VirtualNetworkRules - The virtual network rules
+	// VirtualNetworkRules - The virtual network rules.
 	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 

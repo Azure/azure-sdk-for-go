@@ -330,7 +330,7 @@ func (client StreamingPoliciesClient) GetResponder(resp *http.Response) (result 
 // filter - restricts the set of items returned.
 // top - specifies a non-negative integer n that limits the number of items returned from a collection. The
 // service returns the number of available items up to but not greater than the specified value n.
-// orderby - specifies the the key by which the result collection should be ordered.
+// orderby - specifies the key by which the result collection should be ordered.
 func (client StreamingPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result StreamingPolicyCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/StreamingPoliciesClient.List")

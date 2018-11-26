@@ -3947,7 +3947,7 @@ type TrustPolicy struct {
 
 // VirtualNetworkRule the virtual network rule for a container registry.
 type VirtualNetworkRule struct {
-	// ID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	// ID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
 	ID *string `json:"id,omitempty"`
 }
 

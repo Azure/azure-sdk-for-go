@@ -3135,7 +3135,7 @@ func (amls *AmazonMWSLinkedService) UnmarshalJSON(body []byte) error {
 type AmazonMWSLinkedServiceTypeProperties struct {
 	// Endpoint - The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
 	Endpoint interface{} `json:"endpoint,omitempty"`
-	// MarketplaceID - The Amazon Marketplace ID you want to retrieve data from. To retrive data from multiple Marketplace IDs, seperate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
+	// MarketplaceID - The Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
 	MarketplaceID interface{} `json:"marketplaceID,omitempty"`
 	// SellerID - The Amazon seller ID.
 	SellerID interface{} `json:"sellerID,omitempty"`
@@ -21529,9 +21529,9 @@ type CassandraTableDatasetTypeProperties struct {
 	Keyspace interface{} `json:"keyspace,omitempty"`
 }
 
-// ConcurLinkedService concur Serivce linked service.
+// ConcurLinkedService concur Service linked service.
 type ConcurLinkedService struct {
-	// ConcurLinkedServiceTypeProperties - Concur Serivce linked service properties.
+	// ConcurLinkedServiceTypeProperties - Concur Service linked service properties.
 	*ConcurLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -22016,7 +22016,7 @@ func (cls *ConcurLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConcurLinkedServiceTypeProperties concur Serivce linked service properties.
+// ConcurLinkedServiceTypeProperties concur Service linked service properties.
 type ConcurLinkedServiceTypeProperties struct {
 	// ClientID - Application client_id supplied by Concur App Management.
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -51101,9 +51101,9 @@ func (hs *HTTPSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotLinkedService hubspot Serivce linked service.
+// HubspotLinkedService hubspot Service linked service.
 type HubspotLinkedService struct {
-	// HubspotLinkedServiceTypeProperties - Hubspot Serivce linked service properties.
+	// HubspotLinkedServiceTypeProperties - Hubspot Service linked service properties.
 	*HubspotLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -51588,7 +51588,7 @@ func (hls *HubspotLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotLinkedServiceTypeProperties hubspot Serivce linked service properties.
+// HubspotLinkedServiceTypeProperties hubspot Service linked service properties.
 type HubspotLinkedServiceTypeProperties struct {
 	// ClientID - The client ID associated with your Hubspot application.
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -55540,9 +55540,9 @@ func (irvnp *IntegrationRuntimeVNetProperties) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// JiraLinkedService jira Serivce linked service.
+// JiraLinkedService jira Service linked service.
 type JiraLinkedService struct {
-	// JiraLinkedServiceTypeProperties - Jira Serivce linked service properties.
+	// JiraLinkedServiceTypeProperties - Jira Service linked service properties.
 	*JiraLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -56027,7 +56027,7 @@ func (jls *JiraLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraLinkedServiceTypeProperties jira Serivce linked service properties.
+// JiraLinkedServiceTypeProperties jira Service linked service properties.
 type JiraLinkedServiceTypeProperties struct {
 	// Host - The IP address or host name of the Jira service. (e.g. jira.example.com)
 	Host interface{} `json:"host,omitempty"`
@@ -69991,9 +69991,9 @@ func (pf *ParquetFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalLinkedService paypal Serivce linked service.
+// PaypalLinkedService paypal Service linked service.
 type PaypalLinkedService struct {
-	// PaypalLinkedServiceTypeProperties - Paypal Serivce linked service properties.
+	// PaypalLinkedServiceTypeProperties - Paypal Service linked service properties.
 	*PaypalLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -70478,7 +70478,7 @@ func (pls *PaypalLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalLinkedServiceTypeProperties paypal Serivce linked service properties.
+// PaypalLinkedServiceTypeProperties paypal Service linked service properties.
 type PaypalLinkedServiceTypeProperties struct {
 	// Host - The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
 	Host interface{} `json:"host,omitempty"`
@@ -88884,9 +88884,9 @@ func (sslstp *SftpServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) 
 	return nil
 }
 
-// ShopifyLinkedService shopify Serivce linked service.
+// ShopifyLinkedService shopify Service linked service.
 type ShopifyLinkedService struct {
-	// ShopifyLinkedServiceTypeProperties - Shopify Serivce linked service properties.
+	// ShopifyLinkedServiceTypeProperties - Shopify Service linked service properties.
 	*ShopifyLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -89371,7 +89371,7 @@ func (sls *ShopifyLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShopifyLinkedServiceTypeProperties shopify Serivce linked service properties.
+// ShopifyLinkedServiceTypeProperties shopify Service linked service properties.
 type ShopifyLinkedServiceTypeProperties struct {
 	// Host - The endpoint of the Shopify server. (i.e. mystore.myshopify.com)
 	Host interface{} `json:"host,omitempty"`
@@ -94166,9 +94166,9 @@ func (ss *SQLSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareLinkedService square Serivce linked service.
+// SquareLinkedService square Service linked service.
 type SquareLinkedService struct {
-	// SquareLinkedServiceTypeProperties - Square Serivce linked service properties.
+	// SquareLinkedServiceTypeProperties - Square Service linked service properties.
 	*SquareLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -94653,7 +94653,7 @@ func (sls *SquareLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareLinkedServiceTypeProperties square Serivce linked service properties.
+// SquareLinkedServiceTypeProperties square Service linked service properties.
 type SquareLinkedServiceTypeProperties struct {
 	// Host - The URL of the Square instance. (i.e. mystore.mysquare.com)
 	Host interface{} `json:"host,omitempty"`
@@ -101834,9 +101834,9 @@ type WebTableDatasetTypeProperties struct {
 	Path interface{} `json:"path,omitempty"`
 }
 
-// XeroLinkedService xero Serivce linked service.
+// XeroLinkedService xero Service linked service.
 type XeroLinkedService struct {
-	// XeroLinkedServiceTypeProperties - Xero Serivce linked service properties.
+	// XeroLinkedServiceTypeProperties - Xero Service linked service properties.
 	*XeroLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -102321,7 +102321,7 @@ func (xls *XeroLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroLinkedServiceTypeProperties xero Serivce linked service properties.
+// XeroLinkedServiceTypeProperties xero Service linked service properties.
 type XeroLinkedServiceTypeProperties struct {
 	// Host - The endpoint of the Xero server. (i.e. api.xero.com)
 	Host interface{} `json:"host,omitempty"`

@@ -1201,6 +1201,8 @@ func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollect
 
 // NotificationSetting model for NotificationSetting.
 type NotificationSetting struct {
+	// Etag - For optimistic concurrency control.
+	Etag *string `json:"etag,omitempty"`
 	// NotificationSettingProperties - Properties of Notification Settings
 	*NotificationSettingProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1214,6 +1216,9 @@ type NotificationSetting struct {
 // MarshalJSON is the custom marshaler for NotificationSetting.
 func (ns NotificationSetting) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ns.Etag != nil {
+		objectMap["etag"] = ns.Etag
+	}
 	if ns.NotificationSettingProperties != nil {
 		objectMap["properties"] = ns.NotificationSettingProperties
 	}
@@ -1238,6 +1243,15 @@ func (ns *NotificationSetting) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ns.Etag = &etag
+			}
 		case "properties":
 			if v != nil {
 				var notificationSettingProperties NotificationSettingProperties
@@ -1288,83 +1302,8 @@ type NotificationSettingProperties struct {
 
 // NotificationSettingsCollection model for collection of notificationSettings.
 type NotificationSettingsCollection struct {
-	autorest.Response    `json:"-"`
-	*NotificationSetting `json:"properties,omitempty"`
-	// Name - Resource name of NotificationSettings
-	Name *string `json:"name,omitempty"`
-	// ID - ARM resource ID of notification settings
-	ID *string `json:"id,omitempty"`
-	// Type - Resource type of NotificationSettings
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for NotificationSettingsCollection.
-func (nsc NotificationSettingsCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if nsc.NotificationSetting != nil {
-		objectMap["properties"] = nsc.NotificationSetting
-	}
-	if nsc.Name != nil {
-		objectMap["name"] = nsc.Name
-	}
-	if nsc.ID != nil {
-		objectMap["id"] = nsc.ID
-	}
-	if nsc.Type != nil {
-		objectMap["type"] = nsc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for NotificationSettingsCollection struct.
-func (nsc *NotificationSettingsCollection) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var notificationSetting NotificationSetting
-				err = json.Unmarshal(*v, &notificationSetting)
-				if err != nil {
-					return err
-				}
-				nsc.NotificationSetting = &notificationSetting
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				nsc.Name = &name
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				nsc.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				nsc.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
+	autorest.Response `json:"-"`
+	Value             *[]NotificationSetting `json:"value,omitempty"`
 }
 
 // Operation operation supported by the resource provider.

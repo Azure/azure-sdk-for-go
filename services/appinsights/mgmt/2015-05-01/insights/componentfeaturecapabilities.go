@@ -41,7 +41,7 @@ func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscripti
 	return ComponentFeatureCapabilitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get returns feature capabilites of the application insights component.
+// Get returns feature capabilities of the application insights component.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the Application Insights component resource.

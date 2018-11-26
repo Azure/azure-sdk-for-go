@@ -225,7 +225,7 @@ const (
 	// AdaptiveStreaming Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio.
 	// Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset
 	// will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output
-	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will will have video and
+	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will have video and
 	// audio in separate MP4 files, which is optimal for adaptive streaming.
 	AdaptiveStreaming EncoderNamedPreset = "AdaptiveStreaming"
 	// H264MultipleBitrate1080p Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps,
@@ -5754,7 +5754,7 @@ func (jih JobInputHTTP) AsBasicJobInput() (BasicJobInput, bool) {
 	return &jih, true
 }
 
-// JobInputs describes a list of of inputs to a Job.
+// JobInputs describes a list of inputs to a Job.
 type JobInputs struct {
 	// Inputs - List of inputs to a Job.
 	Inputs *[]BasicJobInput `json:"inputs,omitempty"`
@@ -10593,7 +10593,7 @@ func (vVar Video) AsBasicCodec() (BasicCodec, bool) {
 // VideoAnalyzerPreset a video analyzer preset that extracts insights (rich metadata) from both audio and
 // video, and outputs a JSON format file.
 type VideoAnalyzerPreset struct {
-	// InsightsToExtract - The type of insights to be extracted. If not set then based on the content the type will selected.  If the content is audi only then only audio insights are extraced and if it is video only. Possible values include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'
+	// InsightsToExtract - The type of insights to be extracted. If not set then based on the content the type will selected.  If the content is audio only then only audio insights are extracted and if it is video only. Possible values include: 'AudioInsightsOnly', 'VideoInsightsOnly', 'AllInsights'
 	InsightsToExtract InsightsType `json:"insightsToExtract,omitempty"`
 	// AudioLanguage - The language for the audio payload in the input using the BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are, 'en-US', 'en-GB', 'es-ES', 'es-MX', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR', 'zh-CN', 'de-DE', 'ar-EG', 'ru-RU', 'hi-IN'. If not specified, automatic language detection would be employed. This feature currently supports English, Chinese, French, German, Italian, Japanese, Spanish, Russian, and Portuguese. The automatic detection works best with audio recordings with clearly discernable speech. If automatic detection fails to find the language, transcription would fallback to English.
 	AudioLanguage *string `json:"audioLanguage,omitempty"`

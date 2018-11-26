@@ -19,7 +19,7 @@ package networkapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -601,18 +601,6 @@ type VirtualNetworkPeeringsClientAPI interface {
 
 var _ VirtualNetworkPeeringsClientAPI = (*network.VirtualNetworkPeeringsClient)(nil)
 
-// VirtualNetworkTapsClientAPI contains the set of methods on the VirtualNetworkTapsClient type.
-type VirtualNetworkTapsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters network.VirtualNetworkTap) (result network.VirtualNetworkTapsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTapsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTap, err error)
-	ListAll(ctx context.Context) (result network.VirtualNetworkTapListResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkTapListResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, tapName string, tapParameters network.TagsObject) (result network.VirtualNetworkTapsUpdateTagsFuture, err error)
-}
-
-var _ VirtualNetworkTapsClientAPI = (*network.VirtualNetworkTapsClient)(nil)
-
 // VirtualNetworkGatewaysClientAPI contains the set of methods on the VirtualNetworkGatewaysClient type.
 type VirtualNetworkGatewaysClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, parameters network.VirtualNetworkGateway) (result network.VirtualNetworkGatewaysCreateOrUpdateFuture, err error)
@@ -661,6 +649,18 @@ type LocalNetworkGatewaysClientAPI interface {
 }
 
 var _ LocalNetworkGatewaysClientAPI = (*network.LocalNetworkGatewaysClient)(nil)
+
+// VirtualNetworkTapsClientAPI contains the set of methods on the VirtualNetworkTapsClient type.
+type VirtualNetworkTapsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters network.VirtualNetworkTap) (result network.VirtualNetworkTapsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTapsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, tapName string) (result network.VirtualNetworkTap, err error)
+	ListAll(ctx context.Context) (result network.VirtualNetworkTapListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkTapListResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, tapName string, tapParameters network.TagsObject) (result network.VirtualNetworkTapsUpdateTagsFuture, err error)
+}
+
+var _ VirtualNetworkTapsClientAPI = (*network.VirtualNetworkTapsClient)(nil)
 
 // VirtualWansClientAPI contains the set of methods on the VirtualWansClient type.
 type VirtualWansClientAPI interface {

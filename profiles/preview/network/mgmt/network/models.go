@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network"
 )
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
@@ -426,6 +426,12 @@ const (
 	QinQ  ExpressRoutePortsEncapsulation = original.QinQ
 )
 
+type FlowLogFormatType = original.FlowLogFormatType
+
+const (
+	JSON FlowLogFormatType = original.JSON
+)
+
 type HTTPMethod = original.HTTPMethod
 
 const (
@@ -632,6 +638,13 @@ const (
 	X86   ProcessorArchitecture = original.X86
 )
 
+type ProtectionCoverage = original.ProtectionCoverage
+
+const (
+	ProtectionCoverageBasic    ProtectionCoverage = original.ProtectionCoverageBasic
+	ProtectionCoverageStandard ProtectionCoverage = original.ProtectionCoverageStandard
+)
+
 type Protocol = original.Protocol
 
 const (
@@ -669,6 +682,15 @@ type PublicIPPrefixSkuName = original.PublicIPPrefixSkuName
 
 const (
 	Standard PublicIPPrefixSkuName = original.Standard
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type RouteNextHopType = original.RouteNextHopType
@@ -890,6 +912,7 @@ type ApplicationGatewayFrontendIPConfiguration = original.ApplicationGatewayFron
 type ApplicationGatewayFrontendIPConfigurationPropertiesFormat = original.ApplicationGatewayFrontendIPConfigurationPropertiesFormat
 type ApplicationGatewayFrontendPort = original.ApplicationGatewayFrontendPort
 type ApplicationGatewayFrontendPortPropertiesFormat = original.ApplicationGatewayFrontendPortPropertiesFormat
+type ApplicationGatewayHeaderConfiguration = original.ApplicationGatewayHeaderConfiguration
 type ApplicationGatewayHTTPListener = original.ApplicationGatewayHTTPListener
 type ApplicationGatewayHTTPListenerPropertiesFormat = original.ApplicationGatewayHTTPListenerPropertiesFormat
 type ApplicationGatewayIPConfiguration = original.ApplicationGatewayIPConfiguration
@@ -907,6 +930,10 @@ type ApplicationGatewayRedirectConfiguration = original.ApplicationGatewayRedire
 type ApplicationGatewayRedirectConfigurationPropertiesFormat = original.ApplicationGatewayRedirectConfigurationPropertiesFormat
 type ApplicationGatewayRequestRoutingRule = original.ApplicationGatewayRequestRoutingRule
 type ApplicationGatewayRequestRoutingRulePropertiesFormat = original.ApplicationGatewayRequestRoutingRulePropertiesFormat
+type ApplicationGatewayRewriteRule = original.ApplicationGatewayRewriteRule
+type ApplicationGatewayRewriteRuleActionSet = original.ApplicationGatewayRewriteRuleActionSet
+type ApplicationGatewayRewriteRuleSet = original.ApplicationGatewayRewriteRuleSet
+type ApplicationGatewayRewriteRuleSetPropertiesFormat = original.ApplicationGatewayRewriteRuleSetPropertiesFormat
 type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
 type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreateOrUpdateFuture
 type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
@@ -1028,6 +1055,7 @@ type DdosProtectionPlanListResultPage = original.DdosProtectionPlanListResultPag
 type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesFormat
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
+type DdoSSettings = original.DdoSSettings
 type Delegation = original.Delegation
 type DeviceProperties = original.DeviceProperties
 type DhcpOptions = original.DhcpOptions
@@ -1142,6 +1170,7 @@ type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProvide
 type ExpressRouteServiceProviderListResultIterator = original.ExpressRouteServiceProviderListResultIterator
 type ExpressRouteServiceProviderListResultPage = original.ExpressRouteServiceProviderListResultPage
 type ExpressRouteServiceProviderPropertiesFormat = original.ExpressRouteServiceProviderPropertiesFormat
+type FlowLogFormatParameters = original.FlowLogFormatParameters
 type FlowLogInformation = original.FlowLogInformation
 type FlowLogProperties = original.FlowLogProperties
 type FlowLogStatusParameters = original.FlowLogStatusParameters
@@ -1264,6 +1293,8 @@ type LocalNetworkGatewaysCreateOrUpdateFuture = original.LocalNetworkGatewaysCre
 type LocalNetworkGatewaysDeleteFuture = original.LocalNetworkGatewaysDeleteFuture
 type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateTagsFuture
 type LogSpecification = original.LogSpecification
+type ManagedServiceIdentity = original.ManagedServiceIdentity
+type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type MatchedRule = original.MatchedRule
 type MetricSpecification = original.MetricSpecification
 type NextHopParameters = original.NextHopParameters
@@ -1955,6 +1986,9 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
 	return original.PossibleExpressRoutePortsEncapsulationValues()
 }
+func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
+	return original.PossibleFlowLogFormatTypeValues()
+}
 func PossibleHTTPMethodValues() []HTTPMethod {
 	return original.PossibleHTTPMethodValues()
 }
@@ -2021,6 +2055,9 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
 }
+func PossibleProtectionCoverageValues() []ProtectionCoverage {
+	return original.PossibleProtectionCoverageValues()
+}
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
@@ -2035,6 +2072,9 @@ func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 }
 func PossiblePublicIPPrefixSkuNameValues() []PublicIPPrefixSkuName {
 	return original.PossiblePublicIPPrefixSkuNameValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	return original.PossibleRouteNextHopTypeValues()

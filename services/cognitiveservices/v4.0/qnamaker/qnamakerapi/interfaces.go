@@ -23,13 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// EndpointClientAPI contains the set of methods on the EndpointClient type.
-type EndpointClientAPI interface {
+// EndpointKeysClientAPI contains the set of methods on the EndpointKeysClient type.
+type EndpointKeysClientAPI interface {
 	GetKeys(ctx context.Context) (result qnamaker.EndpointKeysDTO, err error)
 	RefreshKeys(ctx context.Context, keyType string) (result qnamaker.EndpointKeysDTO, err error)
 }
 
-var _ EndpointClientAPI = (*qnamaker.EndpointClient)(nil)
+var _ EndpointKeysClientAPI = (*qnamaker.EndpointKeysClient)(nil)
 
 // AlterationsClientAPI contains the set of methods on the AlterationsClient type.
 type AlterationsClientAPI interface {

@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -1518,7 +1519,7 @@ type ServerEndpointHealth struct {
 	// CombinedHealth - Combined Health Status. Possible values include: 'CombinedHealthHealthy', 'CombinedHealthError', 'CombinedHealthSyncBlockedForRestore', 'CombinedHealthSyncBlockedForChangeDetectionPostRestore', 'CombinedHealthNoActivity'
 	CombinedHealth CombinedHealth `json:"combinedHealth,omitempty"`
 	// LastUpdatedTimestamp - Last Updated Timestamp
-	LastUpdatedTimestamp *string `json:"lastUpdatedTimestamp,omitempty"`
+	LastUpdatedTimestamp *date.Time `json:"lastUpdatedTimestamp,omitempty"`
 	// UploadStatus - Upload Status
 	UploadStatus *SyncSessionStatus `json:"uploadStatus,omitempty"`
 	// DownloadStatus - Download Status
@@ -2007,7 +2008,7 @@ type SyncGroupProperties struct {
 // SyncProgressStatus sync Session status object.
 type SyncProgressStatus struct {
 	// ProgressTimestamp - Progress timestamp
-	ProgressTimestamp *string `json:"progressTimestamp,omitempty"`
+	ProgressTimestamp *date.Time `json:"progressTimestamp,omitempty"`
 	// SyncDirection - Sync direction. Possible values include: 'None', 'Initialize', 'Download', 'Upload', 'Recall'
 	SyncDirection SyncDirection `json:"syncDirection,omitempty"`
 	// PerItemErrorCount - Per item error count
@@ -2027,9 +2028,9 @@ type SyncSessionStatus struct {
 	// LastSyncResult - Last sync status
 	LastSyncResult *int32 `json:"lastSyncResult,omitempty"`
 	// LastSyncTimestamp - Last sync timestamp
-	LastSyncTimestamp *string `json:"lastSyncTimestamp,omitempty"`
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
 	// LastSyncSuccessTimestamp - Last sync success timestamp
-	LastSyncSuccessTimestamp *string `json:"lastSyncSuccessTimestamp,omitempty"`
+	LastSyncSuccessTimestamp *date.Time `json:"lastSyncSuccessTimestamp,omitempty"`
 	// LastSyncPerItemErrorCount - Last sync per item error count.
 	LastSyncPerItemErrorCount *int32 `json:"lastSyncPerItemErrorCount,omitempty"`
 }

@@ -594,7 +594,7 @@ func (client BlobContainersClient) DeleteImmutabilityPolicyResponder(resp *http.
 // ifMatch - the entity state (ETag) version of the immutability policy to update. A value of "*" can be used
 // to apply the operation only if the immutability policy already exists. If omitted, this operation will
 // always be applied.
-// parameters - the ImmutabilityPolicy Properties that will be extented for a blob container.
+// parameters - the ImmutabilityPolicy Properties that will be extended for a blob container.
 func (client BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, parameters *ImmutabilityPolicy) (result ImmutabilityPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlobContainersClient.ExtendImmutabilityPolicy")

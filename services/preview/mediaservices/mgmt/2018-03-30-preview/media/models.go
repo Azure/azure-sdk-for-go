@@ -225,7 +225,7 @@ const (
 	// AdaptiveStreaming Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio.
 	// Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset
 	// will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output
-	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will will have video and
+	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will have video and
 	// audio in separate MP4 files, which is optimal for adaptive streaming.
 	AdaptiveStreaming EncoderNamedPreset = "AdaptiveStreaming"
 	// H264MultipleBitrate1080p Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps,
@@ -5150,7 +5150,7 @@ func (jih JobInputHTTP) AsBasicJobInput() (BasicJobInput, bool) {
 	return &jih, true
 }
 
-// JobInputs describes a list of of inputs to a Job.
+// JobInputs describes a list of inputs to a Job.
 type JobInputs struct {
 	// Inputs - List of inputs to a Job.
 	Inputs *[]BasicJobInput `json:"inputs,omitempty"`

@@ -23,7 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4
 
 type AlterationsClient = original.AlterationsClient
 type BaseClient = original.BaseClient
-type EndpointClient = original.EndpointClient
+type EndpointKeysClient = original.EndpointKeysClient
 type KnowledgebaseClient = original.KnowledgebaseClient
 type EnvironmentType = original.EnvironmentType
 
@@ -106,8 +106,8 @@ func New(endpoint string) BaseClient {
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
 }
-func NewEndpointClient(endpoint string) EndpointClient {
-	return original.NewEndpointClient(endpoint)
+func NewEndpointKeysClient(endpoint string) EndpointKeysClient {
+	return original.NewEndpointKeysClient(endpoint)
 }
 func NewKnowledgebaseClient(endpoint string) KnowledgebaseClient {
 	return original.NewKnowledgebaseClient(endpoint)

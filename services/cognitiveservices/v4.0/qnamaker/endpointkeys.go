@@ -25,20 +25,20 @@ import (
 	"net/http"
 )
 
-// EndpointClient is the an API for QnAMaker Service
-type EndpointClient struct {
+// EndpointKeysClient is the an API for QnAMaker Service
+type EndpointKeysClient struct {
 	BaseClient
 }
 
-// NewEndpointClient creates an instance of the EndpointClient client.
-func NewEndpointClient(endpoint string) EndpointClient {
-	return EndpointClient{New(endpoint)}
+// NewEndpointKeysClient creates an instance of the EndpointKeysClient client.
+func NewEndpointKeysClient(endpoint string) EndpointKeysClient {
+	return EndpointKeysClient{New(endpoint)}
 }
 
 // GetKeys sends the get keys request.
-func (client EndpointClient) GetKeys(ctx context.Context) (result EndpointKeysDTO, err error) {
+func (client EndpointKeysClient) GetKeys(ctx context.Context) (result EndpointKeysDTO, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointClient.GetKeys")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointKeysClient.GetKeys")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -49,27 +49,27 @@ func (client EndpointClient) GetKeys(ctx context.Context) (result EndpointKeysDT
 	}
 	req, err := client.GetKeysPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "GetKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "GetKeys", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "GetKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "GetKeys", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "GetKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "GetKeys", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetKeysPreparer prepares the GetKeys request.
-func (client EndpointClient) GetKeysPreparer(ctx context.Context) (*http.Request, error) {
+func (client EndpointKeysClient) GetKeysPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -83,14 +83,14 @@ func (client EndpointClient) GetKeysPreparer(ctx context.Context) (*http.Request
 
 // GetKeysSender sends the GetKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointClient) GetKeysSender(req *http.Request) (*http.Response, error) {
+func (client EndpointKeysClient) GetKeysSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeysResponder handles the response to the GetKeys request. The method always
 // closes the http.Response Body.
-func (client EndpointClient) GetKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
+func (client EndpointKeysClient) GetKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -104,9 +104,9 @@ func (client EndpointClient) GetKeysResponder(resp *http.Response) (result Endpo
 // RefreshKeys sends the refresh keys request.
 // Parameters:
 // keyType - type of Key
-func (client EndpointClient) RefreshKeys(ctx context.Context, keyType string) (result EndpointKeysDTO, err error) {
+func (client EndpointKeysClient) RefreshKeys(ctx context.Context, keyType string) (result EndpointKeysDTO, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointClient.RefreshKeys")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointKeysClient.RefreshKeys")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -117,27 +117,27 @@ func (client EndpointClient) RefreshKeys(ctx context.Context, keyType string) (r
 	}
 	req, err := client.RefreshKeysPreparer(ctx, keyType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "RefreshKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "RefreshKeys", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.RefreshKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "RefreshKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "RefreshKeys", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.RefreshKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.EndpointClient", "RefreshKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "qnamaker.EndpointKeysClient", "RefreshKeys", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // RefreshKeysPreparer prepares the RefreshKeys request.
-func (client EndpointClient) RefreshKeysPreparer(ctx context.Context, keyType string) (*http.Request, error) {
+func (client EndpointKeysClient) RefreshKeysPreparer(ctx context.Context, keyType string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -155,14 +155,14 @@ func (client EndpointClient) RefreshKeysPreparer(ctx context.Context, keyType st
 
 // RefreshKeysSender sends the RefreshKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointClient) RefreshKeysSender(req *http.Request) (*http.Response, error) {
+func (client EndpointKeysClient) RefreshKeysSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RefreshKeysResponder handles the response to the RefreshKeys request. The method always
 // closes the http.Response Body.
-func (client EndpointClient) RefreshKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
+func (client EndpointKeysClient) RefreshKeysResponder(resp *http.Response) (result EndpointKeysDTO, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -472,20 +472,20 @@ type ApplicationInsightsComponentAPIKeyListResult struct {
 // ApplicationInsightsComponentAvailableFeatures an Application Insights component available features.
 type ApplicationInsightsComponentAvailableFeatures struct {
 	autorest.Response `json:"-"`
-	// Result - A list of Application Insigths component feature.
+	// Result - A list of Application Insights component feature.
 	Result *[]ApplicationInsightsComponentFeature `json:"Result,omitempty"`
 }
 
 // ApplicationInsightsComponentBillingFeatures an Application Insights component billing features
 type ApplicationInsightsComponentBillingFeatures struct {
 	autorest.Response `json:"-"`
-	// DataVolumeCap - An Application Insights component daily data volumne cap
+	// DataVolumeCap - An Application Insights component daily data volume cap
 	DataVolumeCap *ApplicationInsightsComponentDataVolumeCap `json:"DataVolumeCap,omitempty"`
 	// CurrentBillingFeatures - Current enabled pricing plan. When the component is in the Enterprise plan, this will list both 'Basic' and 'Application Insights Enterprise'.
 	CurrentBillingFeatures *[]string `json:"CurrentBillingFeatures,omitempty"`
 }
 
-// ApplicationInsightsComponentDataVolumeCap an Application Insights component daily data volumne cap
+// ApplicationInsightsComponentDataVolumeCap an Application Insights component daily data volume cap
 type ApplicationInsightsComponentDataVolumeCap struct {
 	// Cap - Daily data volume cap in GB.
 	Cap *float64 `json:"Cap,omitempty"`
@@ -602,15 +602,15 @@ type ApplicationInsightsComponentFeature struct {
 	FeatureName *string `json:"FeatureName,omitempty"`
 	// MeterID - The meter id used for the feature.
 	MeterID *string `json:"MeterId,omitempty"`
-	// MeterRateFrequency - The meter meter rate for the feature's meter.
+	// MeterRateFrequency - The meter rate for the feature's meter.
 	MeterRateFrequency *string `json:"MeterRateFrequency,omitempty"`
 	// ResouceID - Reserved, not used now.
 	ResouceID *string `json:"ResouceId,omitempty"`
 	// IsHidden - Reserved, not used now.
 	IsHidden *bool `json:"IsHidden,omitempty"`
-	// Capabilities - A list of Application Insigths component feature capability.
+	// Capabilities - A list of Application Insights component feature capability.
 	Capabilities *[]ApplicationInsightsComponentFeatureCapability `json:"Capabilities,omitempty"`
-	// Title - Desplay name of the feature.
+	// Title - Display name of the feature.
 	Title *string `json:"Title,omitempty"`
 	// IsMainFeature - Whether can apply addon feature on to it.
 	IsMainFeature *bool `json:"IsMainFeature,omitempty"`
@@ -645,7 +645,7 @@ type ApplicationInsightsComponentFeatureCapabilities struct {
 	MultipleStepWebTest *bool `json:"MultipleStepWebTest,omitempty"`
 	// APIAccessLevel - Reserved, not used now.
 	APIAccessLevel *string `json:"ApiAccessLevel,omitempty"`
-	// TrackingType - The applciation insights component used tracking type.
+	// TrackingType - The application insights component used tracking type.
 	TrackingType *string `json:"TrackingType,omitempty"`
 	// DailyCap - Daily data volume cap in GB.
 	DailyCap *float64 `json:"DailyCap,omitempty"`
@@ -661,7 +661,7 @@ type ApplicationInsightsComponentFeatureCapability struct {
 	Name *string `json:"Name,omitempty"`
 	// Description - The description of the capability.
 	Description *string `json:"Description,omitempty"`
-	// Value - The vaule of the capability.
+	// Value - The value of the capability.
 	Value *string `json:"Value,omitempty"`
 	// Unit - The unit of the capability.
 	Unit *string `json:"Unit,omitempty"`

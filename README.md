@@ -15,6 +15,12 @@ feed](https://azure.microsoft.com/updates/).
 Users may prefer to jump right in to our samples repo at
 [github.com/Azure-Samples/azure-sdk-for-go-samples][samples_repo].
 
+Questions and feedback? Chat with us in the **[#Azure SDK
+channel](https://gophers.slack.com/messages/CA7HK8EEP)** on the [Gophers
+Slack](https://gophers.slack.com/). Sign up
+[here](https://invite.slack.golangbridge.org) first if necessary.
+
+
 ## Package Updates
 
 Most packages in the SDK are generated from [Azure API specs][azure_rest_specs]

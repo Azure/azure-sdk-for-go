@@ -19,6 +19,15 @@
 
 package servicefabricapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric/servicefabricapi"
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.4/servicefabric/servicefabricapi"
 
 type BaseClientAPI = original.BaseClientAPI
+type MeshSecretClientAPI = original.MeshSecretClientAPI
+type MeshSecretValueClientAPI = original.MeshSecretValueClientAPI
+type MeshVolumeClientAPI = original.MeshVolumeClientAPI
+type MeshNetworkClientAPI = original.MeshNetworkClientAPI
+type MeshApplicationClientAPI = original.MeshApplicationClientAPI
+type MeshServiceClientAPI = original.MeshServiceClientAPI
+type MeshCodePackageClientAPI = original.MeshCodePackageClientAPI
+type MeshServiceReplicaClientAPI = original.MeshServiceReplicaClientAPI
+type MeshGatewayClientAPI = original.MeshGatewayClientAPI

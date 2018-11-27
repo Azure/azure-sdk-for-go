@@ -338,7 +338,8 @@ func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 	return q.receiver.ReceiveOne(ctx, handler)
 }
 
-// Receive subscribes for messages sent to the Queue
+// Receive subscribes for messages sent to the Queue. If the messages not within a session, messages will arrive
+// unordered.
 func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
 	defer span.Finish()
@@ -354,6 +355,7 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 }
 
 // ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
+// The session can contain multiple messages. ReceiveOneSession will receive all messages within that session.
 func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -408,9 +410,10 @@ func (q *Queue) ensureReceiver(ctx context.Context, opts ...receiverOption) erro
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
 
-	if q.receiver != nil {
-		return nil
-	}
+	// TODO: this is where the receiver connection is leaked -- fix me.
+	//if q.receiver != nil {
+	//	return nil
+	//}
 
 	opts = append(opts, receiverWithReceiveMode(q.receiveMode))
 

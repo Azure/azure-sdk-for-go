@@ -1,7 +1,7 @@
 module github.com/Azure/azure-service-bus-go
 
 require (
-	github.com/Azure/azure-amqp-common-go v1.1.2
+	github.com/Azure/azure-amqp-common-go v1.1.3
 	github.com/Azure/azure-sdk-for-go v21.3.0+incompatible
 	github.com/Azure/go-autorest v11.1.1+incompatible
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
@@ -14,5 +14,5 @@ require (
 	github.com/uber/jaeger-lib v1.5.0 // indirect
 	go.opencensus.io v0.15.0
 	go.uber.org/atomic v1.3.2 // indirect
-	pack.ag/amqp v0.10.1
+	pack.ag/amqp v0.10.2
 )

@@ -290,8 +290,13 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 	}
 
 	if r.useSessions {
-		amqp.LinkSourceFilter("com.microsoft:session-filter", uint64(0x00000137000000C), r.sessionID)
-		//r.session.SessionID = *r.sessionID
+		const name = "com.microsoft:session-filter"
+		const code = uint64(0x00000137000000C)
+		if r.sessionID == nil {
+			opts = append(opts, amqp.LinkSourceFilter(name, code, nil))
+		} else {
+			opts = append(opts, amqp.LinkSourceFilter(name, code, r.sessionID))
+		}
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)

@@ -93,6 +93,36 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	return errors.New("value not of expected type map[string]interface{}")
 }
 
+// ListSessions will list all of the sessions available
+func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
+	link, err := rpc.NewLink(ms.receiver.connection, ms.entity.ManagementPath())
+	if err != nil {
+		return nil, err
+	}
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:get-message-sessions",
+		},
+		Value: map[string]interface{}{
+			"last-updated-time":    time.Now().UTC().Add(-30*time.Minute),
+			"skip": int32(0),
+			"top": int32(100),
+		},
+	}
+
+	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	if rsp.Code != 200 {
+		return nil, fmt.Errorf("amqp error (%d): %q", rsp.Code, rsp.Description)
+	}
+
+	return rsp.Message.Data[0], nil
+}
+
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 	link, err := rpc.NewLinkWithSession(ms.receiver.connection, ms.receiver.session.Session, ms.entity.ManagementPath())
@@ -103,7 +133,6 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:set-session-state",
-			"type":      "entity-mgmt",
 		},
 		Properties: &amqp.MessageProperties{
 			GroupID: *ms.SessionID(),

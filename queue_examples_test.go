@@ -241,8 +241,8 @@ func ExampleQueue_sessionsRoundTrip() {
 	//                                                                                                                //
 	// The order the sessions are received in is not guaranteed, so the expected output must be "Unordered output".   //
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	handler := &SessionPrinter{}
 	for i := 0; i < numSessions; i++ {
+		handler := &SessionPrinter{}
 		if err := client.ReceiveOneSession(ctx, nil, handler); err != nil {
 			fmt.Println("FATAL: ", err)
 			return

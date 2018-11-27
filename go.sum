@@ -1,5 +1,5 @@
-github.com/Azure/azure-amqp-common-go v1.1.2 h1:bayvTp0bZSbs8Ql7hDdL1m33ujIZt4pTSxYpBnoBlkc=
-github.com/Azure/azure-amqp-common-go v1.1.2/go.mod h1:FhZtXirFANw40UXI2ntweO+VOkfaw8s6vZxUiRhLYW8=
+github.com/Azure/azure-amqp-common-go v1.1.3 h1:XIvnEJcC3F6y96XT5TI3o48/FrRSC+/oGH7jlAb1i1A=
+github.com/Azure/azure-amqp-common-go v1.1.3/go.mod h1:FhZtXirFANw40UXI2ntweO+VOkfaw8s6vZxUiRhLYW8=
 github.com/Azure/azure-sdk-for-go v21.3.0+incompatible h1:YFvAka2WKAl2xnJkYV1e1b7E2z88AgFszDzWU18ejMY=
 github.com/Azure/azure-sdk-for-go v21.3.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
 github.com/Azure/go-autorest v11.0.0+incompatible/go.mod h1:r+4oMnoxhatjLLJ6zxSWATqVooLgysK6ZNox3g/xq24=
@@ -44,3 +44,5 @@ pack.ag/amqp v0.8.0 h1:JT0f88Hsbo5D+s8bBdleDOHvMDoYcaBW6GplAUqtxC4=
 pack.ag/amqp v0.8.0/go.mod h1:4/cbmt4EJXSKlG6LCfWHoqmN0uFdy5i/+YFz+fTfhV4=
 pack.ag/amqp v0.10.1 h1:+NUHSIOCRt62A7+RXL/kPOlEeljIdrpte1HNgdhIn8w=
 pack.ag/amqp v0.10.1/go.mod h1:4/cbmt4EJXSKlG6LCfWHoqmN0uFdy5i/+YFz+fTfhV4=
+pack.ag/amqp v0.10.2 h1:tOg29Eqx2kmgcDJa7OAjH9N3jqGA1gHf5iIAnBMsa5U=
+pack.ag/amqp v0.10.2/go.mod h1:4/cbmt4EJXSKlG6LCfWHoqmN0uFdy5i/+YFz+fTfhV4=

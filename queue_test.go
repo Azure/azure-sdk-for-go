@@ -627,7 +627,7 @@ func (suite *serviceBusSuite) TestIssue73QueueClient() {
 				QueueEntityWithMessageTimeToLive(&ttl),
 				QueueEntityWithDuplicateDetection(&window),
 				QueueEntityWithMaxDeliveryCount(10),
-				QueueEntityWithMaxSizeInMegabytes(1))
+				QueueEntityWithMaxSizeInMegabytes(1*Megabytes))
 			q, err := ns.NewQueue(queueName)
 			suite.NoError(err)
 			defer func() {
@@ -651,13 +651,13 @@ func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, op
 	qm := ns.NewQueueManager()
 	entity, err := qm.Get(ctx, name)
 	if !assert.NoError(t, err) {
-		assert.FailNow(t, "could not GET a subscription")
+		assert.FailNow(t, "could not GET a queue entity")
 	}
 
 	if entity == nil {
 		entity, err = qm.Put(ctx, name, opts...)
 		if !assert.NoError(t, err) {
-			assert.FailNow(t, "could not PUT a subscription")
+			assert.FailNow(t, "could not PUT a queue entity")
 		}
 	}
 	return func() {

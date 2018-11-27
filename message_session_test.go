@@ -37,9 +37,7 @@ func (suite *serviceBusSuite) TestMessageSession() {
 			defer cleanup()
 
 			q, err := ns.NewQueue(queueName)
-			defer func() {
-				q.Close(context.Background())
-			}()
+			defer suite.NoError(q.Close(context.Background()))
 			suite.NoError(err)
 
 			var sessionID string
@@ -54,9 +52,8 @@ func (suite *serviceBusSuite) TestMessageSession() {
 			msg := NewMessageFromString(want)
 			msg.GroupID = &sessionID
 
-			suite.NoError(q.Send(ctx, msg))
-
-			q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
+			suite.Require().NoError(q.Send(ctx, msg))
+			err = q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
 				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
 					defer cancel()
 					assert.Equal(t, string(msg.Data), want)
@@ -67,6 +64,7 @@ func (suite *serviceBusSuite) TestMessageSession() {
 					return nil
 				},
 				func() {}))
+			assert.Error(t, err, "context canceled")
 		})
 	}
 }

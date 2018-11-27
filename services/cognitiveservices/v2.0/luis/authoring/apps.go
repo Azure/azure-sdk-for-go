@@ -1196,7 +1196,7 @@ func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (resul
 // appID - the application ID.
 // applicationPublishObject - the application publish object. The region is the target region that the
 // application is published to.
-func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result SetObject, err error) {
+func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result ProductionOrStagingEndpointInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Publish")
 		defer func() {
@@ -1256,12 +1256,12 @@ func (client AppsClient) PublishSender(req *http.Request) (*http.Response, error
 
 // PublishResponder handles the response to the Publish request. The method always
 // closes the http.Response Body.
-func (client AppsClient) PublishResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) PublishResponder(resp *http.Response) (result ProductionOrStagingEndpointInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

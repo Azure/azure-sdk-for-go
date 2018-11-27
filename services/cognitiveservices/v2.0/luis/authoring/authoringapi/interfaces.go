@@ -23,16 +23,6 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-// BaseClientAPI contains the set of methods on the BaseClient type.
-type BaseClientAPI interface {
-	FivebeThreeOneThreececOneEightOneaeSevenTwoZeroaaTwobTwoSixc(ctx context.Context) (result authoring.SetObject, err error)
-	FivebeThreeTwoFiveFiveFourfEightFiveNineOnedbThreeaEightSixTwoThreeTwoeOne(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
-	FivebeThreeTwoTwoTwoEighteEightFourSevenThreedeOneOneSixThreeTwoFiveFiveOneFive(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.SetObject, err error)
-	FivebeThreeTwoZeroTwoEightaOnedFourEightfEightEightcfdFiveSeveneTwoZero(ctx context.Context, appID uuid.UUID) (result authoring.SetObject, err error)
-}
-
-var _ BaseClientAPI = (*authoring.BaseClient)(nil)
-
 // FeaturesClientAPI contains the set of methods on the FeaturesClient type.
 type FeaturesClientAPI interface {
 	AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject authoring.PhraselistCreateObject) (result authoring.Int32, err error)
@@ -185,7 +175,7 @@ type AppsClientAPI interface {
 	ListEndpoints(ctx context.Context, appID uuid.UUID) (result authoring.SetString, err error)
 	ListSupportedCultures(ctx context.Context) (result authoring.ListAvailableCulture, err error)
 	ListUsageScenarios(ctx context.Context) (result authoring.ListString, err error)
-	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.SetObject, err error)
+	Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject authoring.ApplicationPublishObject) (result authoring.ProductionOrStagingEndpointInfo, err error)
 	Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject authoring.ApplicationUpdateObject) (result authoring.OperationStatus, err error)
 	UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject authoring.PublishSettingUpdateObject) (result authoring.OperationStatus, err error)
 	UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject authoring.ApplicationSettingUpdateObject) (result authoring.OperationStatus, err error)
@@ -246,3 +236,12 @@ type SettingsClientAPI interface {
 }
 
 var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
+
+// DispatchClientAPI contains the set of methods on the DispatchClient type.
+type DispatchClientAPI interface {
+	BatchAddConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, connectedServices []authoring.DispatchConnectedServiceObject) (result authoring.OperationStatus, err error)
+	BatchUpdateConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, connectedServices []authoring.DispatchConnectedServiceObject) (result authoring.OperationStatus, err error)
+	DeleteConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, intentNames []authoring.DispatchConnectedServiceDeleteObject) (result authoring.OperationStatus, err error)
+}
+
+var _ DispatchClientAPI = (*authoring.DispatchClient)(nil)

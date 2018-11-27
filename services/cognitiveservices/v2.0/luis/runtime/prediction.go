@@ -32,8 +32,8 @@ type PredictionClient struct {
 }
 
 // NewPredictionClient creates an instance of the PredictionClient client.
-func NewPredictionClient(endpoint string) PredictionClient {
-	return PredictionClient{New(endpoint)}
+func NewPredictionClient(endpoint string, ocpApimSubscriptionKey string) PredictionClient {
+	return PredictionClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // Resolve gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
@@ -47,7 +47,7 @@ func NewPredictionClient(endpoint string) PredictionClient {
 // spellCheck - enable spell checking.
 // bingSpellCheckSubscriptionKey - the subscription key to use when enabling bing spell check
 // logParameter - log query (default is true)
-func (client PredictionClient) Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result LuisResult, err error) {
+func (client PredictionClient) Resolve(ctx context.Context, appID string, query string, timezoneOffset *float64, verbose *bool, staging *bool, spellCheck *bool, bingSpellCheckSubscriptionKey string, logParameter *bool) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PredictionClient.Resolve")
 		defer func() {
@@ -121,7 +121,8 @@ func (client PredictionClient) ResolvePreparer(ctx context.Context, appID string
 		autorest.WithCustomBaseURL("{Endpoint}/luis/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(query),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -134,12 +135,12 @@ func (client PredictionClient) ResolveSender(req *http.Request) (*http.Response,
 
 // ResolveResponder handles the response to the Resolve request. The method always
 // closes the http.Response Body.
-func (client PredictionClient) ResolveResponder(resp *http.Response) (result LuisResult, err error) {
+func (client PredictionClient) ResolveResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusGone, http.StatusRequestURITooLong, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

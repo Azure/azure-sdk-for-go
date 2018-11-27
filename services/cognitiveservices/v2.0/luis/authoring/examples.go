@@ -33,8 +33,8 @@ type ExamplesClient struct {
 }
 
 // NewExamplesClient creates an instance of the ExamplesClient client.
-func NewExamplesClient(endpoint string) ExamplesClient {
-	return ExamplesClient{New(endpoint)}
+func NewExamplesClient(endpoint string, ocpApimSubscriptionKey string) ExamplesClient {
+	return ExamplesClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // Add adds a labeled example to the application.
@@ -42,7 +42,7 @@ func NewExamplesClient(endpoint string) ExamplesClient {
 // appID - the application ID.
 // versionID - the version ID.
 // exampleLabelObject - an example label with the expected intent and entities.
-func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (result LabelExampleResponse, err error) {
+func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Add")
 		defer func() {
@@ -90,7 +90,8 @@ func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, v
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/example", pathParameters),
-		autorest.WithJSON(exampleLabelObject))
+		autorest.WithJSON(exampleLabelObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -103,12 +104,12 @@ func (client ExamplesClient) AddSender(req *http.Request) (*http.Response, error
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client ExamplesClient) AddResponder(resp *http.Response) (result LabelExampleResponse, err error) {
+func (client ExamplesClient) AddResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -119,7 +120,7 @@ func (client ExamplesClient) AddResponder(resp *http.Response) (result LabelExam
 // appID - the application ID.
 // versionID - the version ID.
 // exampleLabelObjectArray - array of examples.
-func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (result ListBatchLabelExample, err error) {
+func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Batch")
 		defer func() {
@@ -173,7 +174,8 @@ func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID,
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
-		autorest.WithJSON(exampleLabelObjectArray))
+		autorest.WithJSON(exampleLabelObjectArray),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -186,11 +188,11 @@ func (client ExamplesClient) BatchSender(req *http.Request) (*http.Response, err
 
 // BatchResponder handles the response to the Batch request. The method always
 // closes the http.Response Body.
-func (client ExamplesClient) BatchResponder(resp *http.Response) (result ListBatchLabelExample, err error) {
+func (client ExamplesClient) BatchResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -202,7 +204,7 @@ func (client ExamplesClient) BatchResponder(resp *http.Response) (result ListBat
 // appID - the application ID.
 // versionID - the version ID.
 // exampleID - the example ID.
-func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (result OperationStatus, err error) {
+func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.Delete")
 		defer func() {
@@ -249,7 +251,8 @@ func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -262,12 +265,12 @@ func (client ExamplesClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ExamplesClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ExamplesClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -279,7 +282,7 @@ func (client ExamplesClient) DeleteResponder(resp *http.Response) (result Operat
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListLabeledUtterance, err error) {
+func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExamplesClient.List")
 		defer func() {
@@ -350,7 +353,8 @@ func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -363,11 +367,11 @@ func (client ExamplesClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ExamplesClient) ListResponder(resp *http.Response) (result ListLabeledUtterance, err error) {
+func (client ExamplesClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

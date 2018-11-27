@@ -33,8 +33,8 @@ type FeaturesClient struct {
 }
 
 // NewFeaturesClient creates an instance of the FeaturesClient client.
-func NewFeaturesClient(endpoint string) FeaturesClient {
-	return FeaturesClient{New(endpoint)}
+func NewFeaturesClient(endpoint string, ocpApimSubscriptionKey string) FeaturesClient {
+	return FeaturesClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // AddPhraseList creates a new phraselist feature.
@@ -43,7 +43,7 @@ func NewFeaturesClient(endpoint string) FeaturesClient {
 // versionID - the version ID.
 // phraselistCreateObject - a Phraselist object containing Name, comma-separated Phrases and the isExchangeable
 // boolean. Default value for isExchangeable is true.
-func (client FeaturesClient) AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (result Int32, err error) {
+func (client FeaturesClient) AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject PhraselistCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.AddPhraseList")
 		defer func() {
@@ -91,7 +91,8 @@ func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, appID uu
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
-		autorest.WithJSON(phraselistCreateObject))
+		autorest.WithJSON(phraselistCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -104,11 +105,11 @@ func (client FeaturesClient) AddPhraseListSender(req *http.Request) (*http.Respo
 
 // AddPhraseListResponder handles the response to the AddPhraseList request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result Int32, err error) {
+func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -120,7 +121,7 @@ func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistID - the ID of the feature to be deleted.
-func (client FeaturesClient) DeletePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result OperationStatus, err error) {
+func (client FeaturesClient) DeletePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.DeletePhraseList")
 		defer func() {
@@ -167,7 +168,8 @@ func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -180,12 +182,12 @@ func (client FeaturesClient) DeletePhraseListSender(req *http.Request) (*http.Re
 
 // DeletePhraseListResponder handles the response to the DeletePhraseList request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -196,7 +198,7 @@ func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (res
 // appID - the application ID.
 // versionID - the version ID.
 // phraselistID - the ID of the feature to be retrieved.
-func (client FeaturesClient) GetPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result PhraseListFeatureInfo, err error) {
+func (client FeaturesClient) GetPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.GetPhraseList")
 		defer func() {
@@ -243,7 +245,8 @@ func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -256,12 +259,12 @@ func (client FeaturesClient) GetPhraseListSender(req *http.Request) (*http.Respo
 
 // GetPhraseListResponder handles the response to the GetPhraseList request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) GetPhraseListResponder(resp *http.Response) (result PhraseListFeatureInfo, err error) {
+func (client FeaturesClient) GetPhraseListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -273,7 +276,7 @@ func (client FeaturesClient) GetPhraseListResponder(resp *http.Response) (result
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result FeaturesResponseObject, err error) {
+func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.List")
 		defer func() {
@@ -344,7 +347,8 @@ func (client FeaturesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/features", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -357,12 +361,12 @@ func (client FeaturesClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) ListResponder(resp *http.Response) (result FeaturesResponseObject, err error) {
+func (client FeaturesClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -374,7 +378,7 @@ func (client FeaturesClient) ListResponder(resp *http.Response) (result Features
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPhraseListFeatureInfo, err error) {
+func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.ListPhraseLists")
 		defer func() {
@@ -445,7 +449,8 @@ func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, appID 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -458,11 +463,11 @@ func (client FeaturesClient) ListPhraseListsSender(req *http.Request) (*http.Res
 
 // ListPhraseListsResponder handles the response to the ListPhraseLists request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (result ListPhraseListFeatureInfo, err error) {
+func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -476,7 +481,7 @@ func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (resu
 // phraselistID - the ID of the feature to be updated.
 // phraselistUpdateObject - the new values for: - Just a boolean called IsActive, in which case the status of
 // the feature will be changed. - Name, Pattern, Mode, and a boolean called IsActive to update the feature.
-func (client FeaturesClient) UpdatePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (result OperationStatus, err error) {
+func (client FeaturesClient) UpdatePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *PhraselistUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.UpdatePhraseList")
 		defer func() {
@@ -524,7 +529,8 @@ func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, appID
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	if phraselistUpdateObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(phraselistUpdateObject))
@@ -541,12 +547,12 @@ func (client FeaturesClient) UpdatePhraseListSender(req *http.Request) (*http.Re
 
 // UpdatePhraseListResponder handles the response to the UpdatePhraseList request. The method always
 // closes the http.Response Body.
-func (client FeaturesClient) UpdatePhraseListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client FeaturesClient) UpdatePhraseListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

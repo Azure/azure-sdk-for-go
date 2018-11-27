@@ -261,7 +261,6 @@ type HierarchicalChildModelUpdateObject = original.HierarchicalChildModelUpdateO
 type HierarchicalEntityExtractor = original.HierarchicalEntityExtractor
 type HierarchicalEntityModel = original.HierarchicalEntityModel
 type HierarchicalModel = original.HierarchicalModel
-type Int32 = original.Int32
 type IntentClassifier = original.IntentClassifier
 type IntentPrediction = original.IntentPrediction
 type IntentsSuggestionExample = original.IntentsSuggestionExample
@@ -272,34 +271,6 @@ type JSONUtterance = original.JSONUtterance
 type LabeledUtterance = original.LabeledUtterance
 type LabelExampleResponse = original.LabelExampleResponse
 type LabelTextObject = original.LabelTextObject
-type ListApplicationInfoResponse = original.ListApplicationInfoResponse
-type ListAppVersionSettingObject = original.ListAppVersionSettingObject
-type ListAvailableCulture = original.ListAvailableCulture
-type ListAvailablePrebuiltEntityModel = original.ListAvailablePrebuiltEntityModel
-type ListBatchLabelExample = original.ListBatchLabelExample
-type ListClosedListEntityExtractor = original.ListClosedListEntityExtractor
-type ListCompositeEntityExtractor = original.ListCompositeEntityExtractor
-type ListCustomPrebuiltModel = original.ListCustomPrebuiltModel
-type ListEntitiesSuggestionExample = original.ListEntitiesSuggestionExample
-type ListEntityExtractor = original.ListEntityExtractor
-type ListEntityRole = original.ListEntityRole
-type ListExplicitListItem = original.ListExplicitListItem
-type ListHierarchicalEntityExtractor = original.ListHierarchicalEntityExtractor
-type ListIntentClassifier = original.ListIntentClassifier
-type ListIntentsSuggestionExample = original.ListIntentsSuggestionExample
-type ListLabeledUtterance = original.ListLabeledUtterance
-type ListLabelTextObject = original.ListLabelTextObject
-type ListModelInfoResponse = original.ListModelInfoResponse
-type ListModelTrainingInfo = original.ListModelTrainingInfo
-type ListPatternAnyEntityExtractor = original.ListPatternAnyEntityExtractor
-type ListPatternRuleInfo = original.ListPatternRuleInfo
-type ListPhraseListFeatureInfo = original.ListPhraseListFeatureInfo
-type ListPrebuiltDomain = original.ListPrebuiltDomain
-type ListPrebuiltEntityExtractor = original.ListPrebuiltEntityExtractor
-type ListRegexEntityExtractor = original.ListRegexEntityExtractor
-type ListString = original.ListString
-type ListUUID = original.ListUUID
-type ListVersionInfo = original.ListVersionInfo
 type LuisApp = original.LuisApp
 type ModelCreateObject = original.ModelCreateObject
 type ModelInfo = original.ModelInfo
@@ -335,19 +306,16 @@ type PrebuiltEntityExtractor = original.PrebuiltEntityExtractor
 type ProductionOrStagingEndpointInfo = original.ProductionOrStagingEndpointInfo
 type PublishSettings = original.PublishSettings
 type PublishSettingUpdateObject = original.PublishSettingUpdateObject
-type ReadCloser = original.ReadCloser
 type RegexEntity = original.RegexEntity
 type RegexEntityExtractor = original.RegexEntityExtractor
 type RegexModelCreateObject = original.RegexModelCreateObject
 type RegexModelUpdateObject = original.RegexModelUpdateObject
-type SetString = original.SetString
-type String = original.String
+type SetObject = original.SetObject
 type SubClosedList = original.SubClosedList
 type SubClosedListResponse = original.SubClosedListResponse
 type TaskUpdateObject = original.TaskUpdateObject
 type UserAccessList = original.UserAccessList
 type UserCollaborator = original.UserCollaborator
-type UUID = original.UUID
 type VersionInfo = original.VersionInfo
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
@@ -357,23 +325,23 @@ type SettingsClient = original.SettingsClient
 type TrainClient = original.TrainClient
 type VersionsClient = original.VersionsClient
 
-func NewAppsClient(endpoint string) AppsClient {
-	return original.NewAppsClient(endpoint)
+func NewAppsClient(endpoint string, ocpApimSubscriptionKey string) AppsClient {
+	return original.NewAppsClient(endpoint, ocpApimSubscriptionKey)
 }
-func New(endpoint string) BaseClient {
-	return original.New(endpoint)
+func New(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+	return original.New(endpoint, ocpApimSubscriptionKey)
 }
-func NewWithoutDefaults(endpoint string) BaseClient {
-	return original.NewWithoutDefaults(endpoint)
+func NewWithoutDefaults(endpoint string, ocpApimSubscriptionKey string) BaseClient {
+	return original.NewWithoutDefaults(endpoint, ocpApimSubscriptionKey)
 }
-func NewExamplesClient(endpoint string) ExamplesClient {
-	return original.NewExamplesClient(endpoint)
+func NewExamplesClient(endpoint string, ocpApimSubscriptionKey string) ExamplesClient {
+	return original.NewExamplesClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewFeaturesClient(endpoint string) FeaturesClient {
-	return original.NewFeaturesClient(endpoint)
+func NewFeaturesClient(endpoint string, ocpApimSubscriptionKey string) FeaturesClient {
+	return original.NewFeaturesClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewModelClient(endpoint string) ModelClient {
-	return original.NewModelClient(endpoint)
+func NewModelClient(endpoint string, ocpApimSubscriptionKey string) ModelClient {
+	return original.NewModelClient(endpoint, ocpApimSubscriptionKey)
 }
 func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return original.PossibleOperationStatusTypeValues()
@@ -420,17 +388,17 @@ func PossibleStatus1Values() []Status1 {
 func PossibleTrainingStatusValues() []TrainingStatus {
 	return original.PossibleTrainingStatusValues()
 }
-func NewPatternClient(endpoint string) PatternClient {
-	return original.NewPatternClient(endpoint)
+func NewPatternClient(endpoint string, ocpApimSubscriptionKey string) PatternClient {
+	return original.NewPatternClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewPermissionsClient(endpoint string) PermissionsClient {
-	return original.NewPermissionsClient(endpoint)
+func NewPermissionsClient(endpoint string, ocpApimSubscriptionKey string) PermissionsClient {
+	return original.NewPermissionsClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewSettingsClient(endpoint string) SettingsClient {
-	return original.NewSettingsClient(endpoint)
+func NewSettingsClient(endpoint string, ocpApimSubscriptionKey string) SettingsClient {
+	return original.NewSettingsClient(endpoint, ocpApimSubscriptionKey)
 }
-func NewTrainClient(endpoint string) TrainClient {
-	return original.NewTrainClient(endpoint)
+func NewTrainClient(endpoint string, ocpApimSubscriptionKey string) TrainClient {
+	return original.NewTrainClient(endpoint, ocpApimSubscriptionKey)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -438,6 +406,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-func NewVersionsClient(endpoint string) VersionsClient {
-	return original.NewVersionsClient(endpoint)
+func NewVersionsClient(endpoint string, ocpApimSubscriptionKey string) VersionsClient {
+	return original.NewVersionsClient(endpoint, ocpApimSubscriptionKey)
 }

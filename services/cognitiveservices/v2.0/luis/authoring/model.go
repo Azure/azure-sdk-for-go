@@ -33,8 +33,8 @@ type ModelClient struct {
 }
 
 // NewModelClient creates an instance of the ModelClient client.
-func NewModelClient(endpoint string) ModelClient {
-	return ModelClient{New(endpoint)}
+func NewModelClient(endpoint string, ocpApimSubscriptionKey string) ModelClient {
+	return ModelClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // AddClosedList adds a closed list model to the application.
@@ -43,7 +43,7 @@ func NewModelClient(endpoint string) ModelClient {
 // versionID - the version ID.
 // closedListModelCreateObject - a model containing the name and words for the new closed list entity
 // extractor.
-func (client ModelClient) AddClosedList(ctx context.Context, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddClosedList(ctx context.Context, appID uuid.UUID, versionID string, closedListModelCreateObject ClosedListModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddClosedList")
 		defer func() {
@@ -91,7 +91,8 @@ func (client ModelClient) AddClosedListPreparer(ctx context.Context, appID uuid.
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
-		autorest.WithJSON(closedListModelCreateObject))
+		autorest.WithJSON(closedListModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -104,11 +105,11 @@ func (client ModelClient) AddClosedListSender(req *http.Request) (*http.Response
 
 // AddClosedListResponder handles the response to the AddClosedList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddClosedListResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddClosedListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -120,7 +121,7 @@ func (client ModelClient) AddClosedListResponder(resp *http.Response) (result UU
 // appID - the application ID.
 // versionID - the version ID.
 // compositeModelCreateObject - a model containing the name and children of the new entity extractor.
-func (client ModelClient) AddCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, compositeModelCreateObject CompositeEntityModel) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCompositeEntity")
 		defer func() {
@@ -168,7 +169,8 @@ func (client ModelClient) AddCompositeEntityPreparer(ctx context.Context, appID 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
-		autorest.WithJSON(compositeModelCreateObject))
+		autorest.WithJSON(compositeModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -181,11 +183,11 @@ func (client ModelClient) AddCompositeEntitySender(req *http.Request) (*http.Res
 
 // AddCompositeEntityResponder handles the response to the AddCompositeEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddCompositeEntityResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -198,7 +200,7 @@ func (client ModelClient) AddCompositeEntityResponder(resp *http.Response) (resu
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // compositeChildModelCreateObject - a model object containing the name of the new composite child model.
-func (client ModelClient) AddCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeChildModelCreateObject CompositeChildModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCompositeEntityChild")
 		defer func() {
@@ -247,7 +249,8 @@ func (client ModelClient) AddCompositeEntityChildPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children", pathParameters),
-		autorest.WithJSON(compositeChildModelCreateObject))
+		autorest.WithJSON(compositeChildModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -260,11 +263,11 @@ func (client ModelClient) AddCompositeEntityChildSender(req *http.Request) (*htt
 
 // AddCompositeEntityChildResponder handles the response to the AddCompositeEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddCompositeEntityChildResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddCompositeEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -276,7 +279,7 @@ func (client ModelClient) AddCompositeEntityChildResponder(resp *http.Response) 
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltDomainObject - a prebuilt domain create object containing the name of the domain.
-func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (result ListUUID, err error) {
+func (client ModelClient) AddCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainObject PrebuiltDomainCreateBaseObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltDomain")
 		defer func() {
@@ -324,7 +327,8 @@ func (client ModelClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains", pathParameters),
-		autorest.WithJSON(prebuiltDomainObject))
+		autorest.WithJSON(prebuiltDomainObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -337,11 +341,11 @@ func (client ModelClient) AddCustomPrebuiltDomainSender(req *http.Request) (*htt
 
 // AddCustomPrebuiltDomainResponder handles the response to the AddCustomPrebuiltDomain request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result ListUUID, err error) {
+func (client ModelClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -354,7 +358,7 @@ func (client ModelClient) AddCustomPrebuiltDomainResponder(resp *http.Response) 
 // versionID - the version ID.
 // prebuiltDomainModelCreateObject - a model object containing the name of the custom prebuilt entity and the
 // name of the domain to which this model belongs.
-func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltEntity(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltEntity")
 		defer func() {
@@ -402,7 +406,8 @@ func (client ModelClient) AddCustomPrebuiltEntityPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters),
-		autorest.WithJSON(prebuiltDomainModelCreateObject))
+		autorest.WithJSON(prebuiltDomainModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -415,11 +420,11 @@ func (client ModelClient) AddCustomPrebuiltEntitySender(req *http.Request) (*htt
 
 // AddCustomPrebuiltEntityResponder handles the response to the AddCustomPrebuiltEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddCustomPrebuiltEntityResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -432,7 +437,7 @@ func (client ModelClient) AddCustomPrebuiltEntityResponder(resp *http.Response) 
 // versionID - the version ID.
 // prebuiltDomainModelCreateObject - a model object containing the name of the custom prebuilt intent and the
 // name of the domain to which this model belongs.
-func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltIntent(ctx context.Context, appID uuid.UUID, versionID string, prebuiltDomainModelCreateObject PrebuiltDomainModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddCustomPrebuiltIntent")
 		defer func() {
@@ -480,7 +485,8 @@ func (client ModelClient) AddCustomPrebuiltIntentPreparer(ctx context.Context, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters),
-		autorest.WithJSON(prebuiltDomainModelCreateObject))
+		autorest.WithJSON(prebuiltDomainModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -493,11 +499,11 @@ func (client ModelClient) AddCustomPrebuiltIntentSender(req *http.Request) (*htt
 
 // AddCustomPrebuiltIntentResponder handles the response to the AddCustomPrebuiltIntent request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -509,7 +515,7 @@ func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) 
 // appID - the application ID.
 // versionID - the version ID.
 // modelCreateObject - a model object containing the name for the new entity extractor.
-func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddEntity(ctx context.Context, appID uuid.UUID, versionID string, modelCreateObject ModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddEntity")
 		defer func() {
@@ -557,7 +563,8 @@ func (client ModelClient) AddEntityPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
-		autorest.WithJSON(modelCreateObject))
+		autorest.WithJSON(modelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -570,11 +577,11 @@ func (client ModelClient) AddEntitySender(req *http.Request) (*http.Response, er
 
 // AddEntityResponder handles the response to the AddEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddEntityResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -587,7 +594,7 @@ func (client ModelClient) AddEntityResponder(resp *http.Response) (result UUID, 
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
 // item - the new explicit list item.
-func (client ModelClient) AddExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (result Int32, err error) {
+func (client ModelClient) AddExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, item ExplicitListItemCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddExplicitListItem")
 		defer func() {
@@ -636,7 +643,8 @@ func (client ModelClient) AddExplicitListItemPreparer(ctx context.Context, appID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters),
-		autorest.WithJSON(item))
+		autorest.WithJSON(item),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -649,11 +657,11 @@ func (client ModelClient) AddExplicitListItemSender(req *http.Request) (*http.Re
 
 // AddExplicitListItemResponder handles the response to the AddExplicitListItem request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddExplicitListItemResponder(resp *http.Response) (result Int32, err error) {
+func (client ModelClient) AddExplicitListItemResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -665,7 +673,7 @@ func (client ModelClient) AddExplicitListItemResponder(resp *http.Response) (res
 // appID - the application ID.
 // versionID - the version ID.
 // hierarchicalModelCreateObject - a model containing the name and children of the new entity extractor.
-func (client ModelClient) AddHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hierarchicalModelCreateObject HierarchicalEntityModel) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddHierarchicalEntity")
 		defer func() {
@@ -713,7 +721,8 @@ func (client ModelClient) AddHierarchicalEntityPreparer(ctx context.Context, app
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
-		autorest.WithJSON(hierarchicalModelCreateObject))
+		autorest.WithJSON(hierarchicalModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -726,11 +735,11 @@ func (client ModelClient) AddHierarchicalEntitySender(req *http.Request) (*http.
 
 // AddHierarchicalEntityResponder handles the response to the AddHierarchicalEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddHierarchicalEntityResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -743,7 +752,7 @@ func (client ModelClient) AddHierarchicalEntityResponder(resp *http.Response) (r
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hierarchicalChildModelCreateObject - a model object containing the name of the new hierarchical child model.
-func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalChildModelCreateObject HierarchicalChildModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddHierarchicalEntityChild")
 		defer func() {
@@ -792,7 +801,8 @@ func (client ModelClient) AddHierarchicalEntityChildPreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children", pathParameters),
-		autorest.WithJSON(hierarchicalChildModelCreateObject))
+		autorest.WithJSON(hierarchicalChildModelCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -805,11 +815,11 @@ func (client ModelClient) AddHierarchicalEntityChildSender(req *http.Request) (*
 
 // AddHierarchicalEntityChildResponder handles the response to the AddHierarchicalEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddHierarchicalEntityChildResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddHierarchicalEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -821,7 +831,7 @@ func (client ModelClient) AddHierarchicalEntityChildResponder(resp *http.Respons
 // appID - the application ID.
 // versionID - the version ID.
 // intentCreateObject - a model object containing the name of the new intent classifier.
-func (client ModelClient) AddIntent(ctx context.Context, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (result UUID, err error) {
+func (client ModelClient) AddIntent(ctx context.Context, appID uuid.UUID, versionID string, intentCreateObject ModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddIntent")
 		defer func() {
@@ -869,7 +879,8 @@ func (client ModelClient) AddIntentPreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
-		autorest.WithJSON(intentCreateObject))
+		autorest.WithJSON(intentCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -882,11 +893,11 @@ func (client ModelClient) AddIntentSender(req *http.Request) (*http.Response, er
 
 // AddIntentResponder handles the response to the AddIntent request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddIntentResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) AddIntentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -898,7 +909,7 @@ func (client ModelClient) AddIntentResponder(resp *http.Response) (result UUID, 
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltExtractorNames - an array of prebuilt entity extractor names.
-func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltExtractorNames []string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddPrebuilt")
 		defer func() {
@@ -952,7 +963,8 @@ func (client ModelClient) AddPrebuiltPreparer(ctx context.Context, appID uuid.UU
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
-		autorest.WithJSON(prebuiltExtractorNames))
+		autorest.WithJSON(prebuiltExtractorNames),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -965,11 +977,11 @@ func (client ModelClient) AddPrebuiltSender(req *http.Request) (*http.Response, 
 
 // AddPrebuiltResponder handles the response to the AddPrebuilt request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddPrebuiltResponder(resp *http.Response) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) AddPrebuiltResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -982,7 +994,7 @@ func (client ModelClient) AddPrebuiltResponder(resp *http.Response) (result List
 // versionID - the version ID.
 // clEntityID - the closed list entity extractor ID.
 // wordListCreateObject - words list.
-func (client ModelClient) AddSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (result Int32, err error) {
+func (client ModelClient) AddSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, wordListCreateObject WordListObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.AddSubList")
 		defer func() {
@@ -1031,7 +1043,8 @@ func (client ModelClient) AddSubListPreparer(ctx context.Context, appID uuid.UUI
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists", pathParameters),
-		autorest.WithJSON(wordListCreateObject))
+		autorest.WithJSON(wordListCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1044,11 +1057,11 @@ func (client ModelClient) AddSubListSender(req *http.Request) (*http.Response, e
 
 // AddSubListResponder handles the response to the AddSubList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) AddSubListResponder(resp *http.Response) (result Int32, err error) {
+func (client ModelClient) AddSubListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1061,7 +1074,7 @@ func (client ModelClient) AddSubListResponder(resp *http.Response) (result Int32
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateClosedListEntityRole")
 		defer func() {
@@ -1110,7 +1123,8 @@ func (client ModelClient) CreateClosedListEntityRolePreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1123,11 +1137,11 @@ func (client ModelClient) CreateClosedListEntityRoleSender(req *http.Request) (*
 
 // CreateClosedListEntityRoleResponder handles the response to the CreateClosedListEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateClosedListEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateClosedListEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1140,7 +1154,7 @@ func (client ModelClient) CreateClosedListEntityRoleResponder(resp *http.Respons
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateCompositeEntityRole")
 		defer func() {
@@ -1189,7 +1203,8 @@ func (client ModelClient) CreateCompositeEntityRolePreparer(ctx context.Context,
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1202,11 +1217,11 @@ func (client ModelClient) CreateCompositeEntityRoleSender(req *http.Request) (*h
 
 // CreateCompositeEntityRoleResponder handles the response to the CreateCompositeEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateCompositeEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateCompositeEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1219,7 +1234,7 @@ func (client ModelClient) CreateCompositeEntityRoleResponder(resp *http.Response
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateCustomPrebuiltEntityRole")
 		defer func() {
@@ -1268,7 +1283,8 @@ func (client ModelClient) CreateCustomPrebuiltEntityRolePreparer(ctx context.Con
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1281,11 +1297,11 @@ func (client ModelClient) CreateCustomPrebuiltEntityRoleSender(req *http.Request
 
 // CreateCustomPrebuiltEntityRoleResponder handles the response to the CreateCustomPrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1298,7 +1314,7 @@ func (client ModelClient) CreateCustomPrebuiltEntityRoleResponder(resp *http.Res
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateEntityRole")
 		defer func() {
@@ -1347,7 +1363,8 @@ func (client ModelClient) CreateEntityRolePreparer(ctx context.Context, appID uu
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1360,11 +1377,11 @@ func (client ModelClient) CreateEntityRoleSender(req *http.Request) (*http.Respo
 
 // CreateEntityRoleResponder handles the response to the CreateEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1377,7 +1394,7 @@ func (client ModelClient) CreateEntityRoleResponder(resp *http.Response) (result
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateHierarchicalEntityRole")
 		defer func() {
@@ -1426,7 +1443,8 @@ func (client ModelClient) CreateHierarchicalEntityRolePreparer(ctx context.Conte
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1439,11 +1457,11 @@ func (client ModelClient) CreateHierarchicalEntityRoleSender(req *http.Request) 
 
 // CreateHierarchicalEntityRoleResponder handles the response to the CreateHierarchicalEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1456,7 +1474,7 @@ func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Respo
 // versionID - the version ID.
 // extractorCreateObject - a model object containing the name and explicit list for the new Pattern.Any entity
 // extractor.
-func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePatternAnyEntityModel")
 		defer func() {
@@ -1504,7 +1522,8 @@ func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Contex
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
-		autorest.WithJSON(extractorCreateObject))
+		autorest.WithJSON(extractorCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1517,11 +1536,11 @@ func (client ModelClient) CreatePatternAnyEntityModelSender(req *http.Request) (
 
 // CreatePatternAnyEntityModelResponder handles the response to the CreatePatternAnyEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1534,7 +1553,7 @@ func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Respon
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePatternAnyEntityRole")
 		defer func() {
@@ -1583,7 +1602,8 @@ func (client ModelClient) CreatePatternAnyEntityRolePreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1596,11 +1616,11 @@ func (client ModelClient) CreatePatternAnyEntityRoleSender(req *http.Request) (*
 
 // CreatePatternAnyEntityRoleResponder handles the response to the CreatePatternAnyEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1613,7 +1633,7 @@ func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Respons
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreatePrebuiltEntityRole")
 		defer func() {
@@ -1662,7 +1682,8 @@ func (client ModelClient) CreatePrebuiltEntityRolePreparer(ctx context.Context, 
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1675,11 +1696,11 @@ func (client ModelClient) CreatePrebuiltEntityRoleSender(req *http.Request) (*ht
 
 // CreatePrebuiltEntityRoleResponder handles the response to the CreatePrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreatePrebuiltEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreatePrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1692,7 +1713,7 @@ func (client ModelClient) CreatePrebuiltEntityRoleResponder(resp *http.Response)
 // versionID - the version ID.
 // regexEntityExtractorCreateObj - a model object containing the name and regex pattern for the new regex
 // entity extractor.
-func (client ModelClient) CreateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityExtractorCreateObj RegexModelCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateRegexEntityModel")
 		defer func() {
@@ -1740,7 +1761,8 @@ func (client ModelClient) CreateRegexEntityModelPreparer(ctx context.Context, ap
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
-		autorest.WithJSON(regexEntityExtractorCreateObj))
+		autorest.WithJSON(regexEntityExtractorCreateObj),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1753,11 +1775,11 @@ func (client ModelClient) CreateRegexEntityModelSender(req *http.Request) (*http
 
 // CreateRegexEntityModelResponder handles the response to the CreateRegexEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateRegexEntityModelResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1770,7 +1792,7 @@ func (client ModelClient) CreateRegexEntityModelResponder(resp *http.Response) (
 // versionID - the version ID.
 // entityID - the entity model ID.
 // entityRoleCreateObject - an entity role object containing the name of role.
-func (client ModelClient) CreateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, entityRoleCreateObject EntityRoleCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.CreateRegexEntityRole")
 		defer func() {
@@ -1819,7 +1841,8 @@ func (client ModelClient) CreateRegexEntityRolePreparer(ctx context.Context, app
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters),
-		autorest.WithJSON(entityRoleCreateObject))
+		autorest.WithJSON(entityRoleCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1832,11 +1855,11 @@ func (client ModelClient) CreateRegexEntityRoleSender(req *http.Request) (*http.
 
 // CreateRegexEntityRoleResponder handles the response to the CreateRegexEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) CreateRegexEntityRoleResponder(resp *http.Response) (result UUID, err error) {
+func (client ModelClient) CreateRegexEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1848,7 +1871,7 @@ func (client ModelClient) CreateRegexEntityRoleResponder(resp *http.Response) (r
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the closed list model ID.
-func (client ModelClient) DeleteClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteClosedList")
 		defer func() {
@@ -1895,7 +1918,8 @@ func (client ModelClient) DeleteClosedListPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1908,12 +1932,12 @@ func (client ModelClient) DeleteClosedListSender(req *http.Request) (*http.Respo
 
 // DeleteClosedListResponder handles the response to the DeleteClosedList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1925,7 +1949,7 @@ func (client ModelClient) DeleteClosedListResponder(resp *http.Response) (result
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteClosedListEntityRole")
 		defer func() {
@@ -1973,7 +1997,8 @@ func (client ModelClient) DeleteClosedListEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1986,12 +2011,12 @@ func (client ModelClient) DeleteClosedListEntityRoleSender(req *http.Request) (*
 
 // DeleteClosedListEntityRoleResponder handles the response to the DeleteClosedListEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteClosedListEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteClosedListEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2002,7 +2027,7 @@ func (client ModelClient) DeleteClosedListEntityRoleResponder(resp *http.Respons
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) DeleteCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntity")
 		defer func() {
@@ -2049,7 +2074,8 @@ func (client ModelClient) DeleteCompositeEntityPreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2062,12 +2088,12 @@ func (client ModelClient) DeleteCompositeEntitySender(req *http.Request) (*http.
 
 // DeleteCompositeEntityResponder handles the response to the DeleteCompositeEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteCompositeEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2079,7 +2105,7 @@ func (client ModelClient) DeleteCompositeEntityResponder(resp *http.Response) (r
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // cChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityChild(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, cChildID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntityChild")
 		defer func() {
@@ -2127,7 +2153,8 @@ func (client ModelClient) DeleteCompositeEntityChildPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2140,12 +2167,12 @@ func (client ModelClient) DeleteCompositeEntityChildSender(req *http.Request) (*
 
 // DeleteCompositeEntityChildResponder handles the response to the DeleteCompositeEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteCompositeEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2157,7 +2184,7 @@ func (client ModelClient) DeleteCompositeEntityChildResponder(resp *http.Respons
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCompositeEntityRole")
 		defer func() {
@@ -2205,7 +2232,8 @@ func (client ModelClient) DeleteCompositeEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2218,12 +2246,12 @@ func (client ModelClient) DeleteCompositeEntityRoleSender(req *http.Request) (*h
 
 // DeleteCompositeEntityRoleResponder handles the response to the DeleteCompositeEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteCompositeEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCompositeEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2235,7 +2263,7 @@ func (client ModelClient) DeleteCompositeEntityRoleResponder(resp *http.Response
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCustomEntityRole")
 		defer func() {
@@ -2283,7 +2311,8 @@ func (client ModelClient) DeleteCustomEntityRolePreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2296,12 +2325,12 @@ func (client ModelClient) DeleteCustomEntityRoleSender(req *http.Request) (*http
 
 // DeleteCustomEntityRoleResponder handles the response to the DeleteCustomEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteCustomEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2312,7 +2341,7 @@ func (client ModelClient) DeleteCustomEntityRoleResponder(resp *http.Response) (
 // appID - the application ID.
 // versionID - the version ID.
 // domainName - domain name.
-func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, domainName string) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomPrebuiltDomain(ctx context.Context, appID uuid.UUID, versionID string, domainName string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteCustomPrebuiltDomain")
 		defer func() {
@@ -2359,7 +2388,8 @@ func (client ModelClient) DeleteCustomPrebuiltDomainPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2372,12 +2402,12 @@ func (client ModelClient) DeleteCustomPrebuiltDomainSender(req *http.Request) (*
 
 // DeleteCustomPrebuiltDomainResponder handles the response to the DeleteCustomPrebuiltDomain request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteCustomPrebuiltDomainResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteCustomPrebuiltDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2388,7 +2418,7 @@ func (client ModelClient) DeleteCustomPrebuiltDomainResponder(resp *http.Respons
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) DeleteEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteEntity")
 		defer func() {
@@ -2435,7 +2465,8 @@ func (client ModelClient) DeleteEntityPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2448,12 +2479,12 @@ func (client ModelClient) DeleteEntitySender(req *http.Request) (*http.Response,
 
 // DeleteEntityResponder handles the response to the DeleteEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2465,7 +2496,7 @@ func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result Ope
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteEntityRole")
 		defer func() {
@@ -2513,7 +2544,8 @@ func (client ModelClient) DeleteEntityRolePreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2526,12 +2558,12 @@ func (client ModelClient) DeleteEntityRoleSender(req *http.Request) (*http.Respo
 
 // DeleteEntityRoleResponder handles the response to the DeleteEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2543,7 +2575,7 @@ func (client ModelClient) DeleteEntityRoleResponder(resp *http.Response) (result
 // versionID - the version ID.
 // entityID - the pattern.any entity id.
 // itemID - the explicit list item which will be deleted.
-func (client ModelClient) DeleteExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result OperationStatus, err error) {
+func (client ModelClient) DeleteExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteExplicitListItem")
 		defer func() {
@@ -2591,7 +2623,8 @@ func (client ModelClient) DeleteExplicitListItemPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2604,12 +2637,12 @@ func (client ModelClient) DeleteExplicitListItemSender(req *http.Request) (*http
 
 // DeleteExplicitListItemResponder handles the response to the DeleteExplicitListItem request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteExplicitListItemResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteExplicitListItemResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2620,7 +2653,7 @@ func (client ModelClient) DeleteExplicitListItemResponder(resp *http.Response) (
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntity")
 		defer func() {
@@ -2667,7 +2700,8 @@ func (client ModelClient) DeleteHierarchicalEntityPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2680,12 +2714,12 @@ func (client ModelClient) DeleteHierarchicalEntitySender(req *http.Request) (*ht
 
 // DeleteHierarchicalEntityResponder handles the response to the DeleteHierarchicalEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteHierarchicalEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2697,7 +2731,7 @@ func (client ModelClient) DeleteHierarchicalEntityResponder(resp *http.Response)
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntityChild")
 		defer func() {
@@ -2745,7 +2779,8 @@ func (client ModelClient) DeleteHierarchicalEntityChildPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2758,12 +2793,12 @@ func (client ModelClient) DeleteHierarchicalEntityChildSender(req *http.Request)
 
 // DeleteHierarchicalEntityChildResponder handles the response to the DeleteHierarchicalEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteHierarchicalEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2775,7 +2810,7 @@ func (client ModelClient) DeleteHierarchicalEntityChildResponder(resp *http.Resp
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteHierarchicalEntityRole")
 		defer func() {
@@ -2823,7 +2858,8 @@ func (client ModelClient) DeleteHierarchicalEntityRolePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2836,12 +2872,12 @@ func (client ModelClient) DeleteHierarchicalEntityRoleSender(req *http.Request) 
 
 // DeleteHierarchicalEntityRoleResponder handles the response to the DeleteHierarchicalEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteHierarchicalEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteHierarchicalEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2854,7 +2890,7 @@ func (client ModelClient) DeleteHierarchicalEntityRoleResponder(resp *http.Respo
 // intentID - the intent classifier ID.
 // deleteUtterances - also delete the intent's utterances (true). Or move the utterances to the None intent
 // (false - the default value).
-func (client ModelClient) DeleteIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (result OperationStatus, err error) {
+func (client ModelClient) DeleteIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, deleteUtterances *bool) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteIntent")
 		defer func() {
@@ -2909,7 +2945,8 @@ func (client ModelClient) DeleteIntentPreparer(ctx context.Context, appID uuid.U
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2922,12 +2959,12 @@ func (client ModelClient) DeleteIntentSender(req *http.Request) (*http.Response,
 
 // DeleteIntentResponder handles the response to the DeleteIntent request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -2938,7 +2975,7 @@ func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result Ope
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
-func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePatternAnyEntityModel")
 		defer func() {
@@ -2985,7 +3022,8 @@ func (client ModelClient) DeletePatternAnyEntityModelPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -2998,12 +3036,12 @@ func (client ModelClient) DeletePatternAnyEntityModelSender(req *http.Request) (
 
 // DeletePatternAnyEntityModelResponder handles the response to the DeletePatternAnyEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeletePatternAnyEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3015,7 +3053,7 @@ func (client ModelClient) DeletePatternAnyEntityModelResponder(resp *http.Respon
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePatternAnyEntityRole")
 		defer func() {
@@ -3063,7 +3101,8 @@ func (client ModelClient) DeletePatternAnyEntityRolePreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3076,12 +3115,12 @@ func (client ModelClient) DeletePatternAnyEntityRoleSender(req *http.Request) (*
 
 // DeletePatternAnyEntityRoleResponder handles the response to the DeletePatternAnyEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeletePatternAnyEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeletePatternAnyEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3092,7 +3131,7 @@ func (client ModelClient) DeletePatternAnyEntityRoleResponder(resp *http.Respons
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltID - the prebuilt entity extractor ID.
-func (client ModelClient) DeletePrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePrebuilt")
 		defer func() {
@@ -3139,7 +3178,8 @@ func (client ModelClient) DeletePrebuiltPreparer(ctx context.Context, appID uuid
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3152,12 +3192,12 @@ func (client ModelClient) DeletePrebuiltSender(req *http.Request) (*http.Respons
 
 // DeletePrebuiltResponder handles the response to the DeletePrebuilt request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeletePrebuiltResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuiltResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3169,7 +3209,7 @@ func (client ModelClient) DeletePrebuiltResponder(resp *http.Response) (result O
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeletePrebuiltEntityRole")
 		defer func() {
@@ -3217,7 +3257,8 @@ func (client ModelClient) DeletePrebuiltEntityRolePreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3230,12 +3271,12 @@ func (client ModelClient) DeletePrebuiltEntityRoleSender(req *http.Request) (*ht
 
 // DeletePrebuiltEntityRoleResponder handles the response to the DeletePrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeletePrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeletePrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3246,7 +3287,7 @@ func (client ModelClient) DeletePrebuiltEntityRoleResponder(resp *http.Response)
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityID - the regex entity extractor ID.
-func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteRegexEntityModel")
 		defer func() {
@@ -3293,7 +3334,8 @@ func (client ModelClient) DeleteRegexEntityModelPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3306,12 +3348,12 @@ func (client ModelClient) DeleteRegexEntityModelSender(req *http.Request) (*http
 
 // DeleteRegexEntityModelResponder handles the response to the DeleteRegexEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteRegexEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3323,7 +3365,7 @@ func (client ModelClient) DeleteRegexEntityModelResponder(resp *http.Response) (
 // versionID - the version ID.
 // entityID - the entity ID.
 // roleID - the entity role Id.
-func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteRegexEntityRole")
 		defer func() {
@@ -3371,7 +3413,8 @@ func (client ModelClient) DeleteRegexEntityRolePreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3384,12 +3427,12 @@ func (client ModelClient) DeleteRegexEntityRoleSender(req *http.Request) (*http.
 
 // DeleteRegexEntityRoleResponder handles the response to the DeleteRegexEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteRegexEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteRegexEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3401,7 +3444,7 @@ func (client ModelClient) DeleteRegexEntityRoleResponder(resp *http.Response) (r
 // versionID - the version ID.
 // clEntityID - the closed list entity extractor ID.
 // subListID - the sublist ID.
-func (client ModelClient) DeleteSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int32) (result OperationStatus, err error) {
+func (client ModelClient) DeleteSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteSubList")
 		defer func() {
@@ -3449,7 +3492,8 @@ func (client ModelClient) DeleteSubListPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3462,12 +3506,12 @@ func (client ModelClient) DeleteSubListSender(req *http.Request) (*http.Response
 
 // DeleteSubListResponder handles the response to the DeleteSubList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) DeleteSubListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) DeleteSubListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3480,7 +3524,7 @@ func (client ModelClient) DeleteSubListResponder(resp *http.Response) (result Op
 // modelID - the ID (GUID) of the model.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ExamplesMethod(ctx context.Context, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (result ListLabelTextObject, err error) {
+func (client ModelClient) ExamplesMethod(ctx context.Context, appID uuid.UUID, versionID string, modelID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ExamplesMethod")
 		defer func() {
@@ -3552,7 +3596,8 @@ func (client ModelClient) ExamplesMethodPreparer(ctx context.Context, appID uuid
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models/{modelId}/examples", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3565,11 +3610,11 @@ func (client ModelClient) ExamplesMethodSender(req *http.Request) (*http.Respons
 
 // ExamplesMethodResponder handles the response to the ExamplesMethod request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ExamplesMethodResponder(resp *http.Response) (result ListLabelTextObject, err error) {
+func (client ModelClient) ExamplesMethodResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -3581,7 +3626,7 @@ func (client ModelClient) ExamplesMethodResponder(resp *http.Response) (result L
 // appID - the application ID.
 // versionID - the version ID.
 // clEntityID - the closed list model ID.
-func (client ModelClient) GetClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result ClosedListEntityExtractor, err error) {
+func (client ModelClient) GetClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetClosedList")
 		defer func() {
@@ -3628,7 +3673,8 @@ func (client ModelClient) GetClosedListPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3641,12 +3687,12 @@ func (client ModelClient) GetClosedListSender(req *http.Request) (*http.Response
 
 // GetClosedListResponder handles the response to the GetClosedList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetClosedListResponder(resp *http.Response) (result ClosedListEntityExtractor, err error) {
+func (client ModelClient) GetClosedListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3658,7 +3704,7 @@ func (client ModelClient) GetClosedListResponder(resp *http.Response) (result Cl
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetClosedListEntityRole")
 		defer func() {
@@ -3706,7 +3752,8 @@ func (client ModelClient) GetClosedListEntityRolePreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3719,12 +3766,12 @@ func (client ModelClient) GetClosedListEntityRoleSender(req *http.Request) (*htt
 
 // GetClosedListEntityRoleResponder handles the response to the GetClosedListEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetClosedListEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetClosedListEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3735,7 +3782,7 @@ func (client ModelClient) GetClosedListEntityRoleResponder(resp *http.Response) 
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetClosedListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetClosedListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetClosedListEntityRoles")
 		defer func() {
@@ -3782,7 +3829,8 @@ func (client ModelClient) GetClosedListEntityRolesPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3795,11 +3843,11 @@ func (client ModelClient) GetClosedListEntityRolesSender(req *http.Request) (*ht
 
 // GetClosedListEntityRolesResponder handles the response to the GetClosedListEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetClosedListEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetClosedListEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -3811,7 +3859,7 @@ func (client ModelClient) GetClosedListEntityRolesResponder(resp *http.Response)
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) GetCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result CompositeEntityExtractor, err error) {
+func (client ModelClient) GetCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCompositeEntity")
 		defer func() {
@@ -3858,7 +3906,8 @@ func (client ModelClient) GetCompositeEntityPreparer(ctx context.Context, appID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3871,12 +3920,12 @@ func (client ModelClient) GetCompositeEntitySender(req *http.Request) (*http.Res
 
 // GetCompositeEntityResponder handles the response to the GetCompositeEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetCompositeEntityResponder(resp *http.Response) (result CompositeEntityExtractor, err error) {
+func (client ModelClient) GetCompositeEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3888,7 +3937,7 @@ func (client ModelClient) GetCompositeEntityResponder(resp *http.Response) (resu
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // roleID - entity role ID.
-func (client ModelClient) GetCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCompositeEntityRole")
 		defer func() {
@@ -3936,7 +3985,8 @@ func (client ModelClient) GetCompositeEntityRolePreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -3949,12 +3999,12 @@ func (client ModelClient) GetCompositeEntityRoleSender(req *http.Request) (*http
 
 // GetCompositeEntityRoleResponder handles the response to the GetCompositeEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetCompositeEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetCompositeEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3965,7 +4015,7 @@ func (client ModelClient) GetCompositeEntityRoleResponder(resp *http.Response) (
 // appID - the application ID.
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
-func (client ModelClient) GetCompositeEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetCompositeEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCompositeEntityRoles")
 		defer func() {
@@ -4012,7 +4062,8 @@ func (client ModelClient) GetCompositeEntityRolesPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4025,11 +4076,11 @@ func (client ModelClient) GetCompositeEntityRolesSender(req *http.Request) (*htt
 
 // GetCompositeEntityRolesResponder handles the response to the GetCompositeEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetCompositeEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetCompositeEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4042,7 +4093,7 @@ func (client ModelClient) GetCompositeEntityRolesResponder(resp *http.Response) 
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetCustomEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCustomEntityRole")
 		defer func() {
@@ -4090,7 +4141,8 @@ func (client ModelClient) GetCustomEntityRolePreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4103,12 +4155,12 @@ func (client ModelClient) GetCustomEntityRoleSender(req *http.Request) (*http.Re
 
 // GetCustomEntityRoleResponder handles the response to the GetCustomEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetCustomEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetCustomEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4119,7 +4171,7 @@ func (client ModelClient) GetCustomEntityRoleResponder(resp *http.Response) (res
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetCustomPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetCustomPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetCustomPrebuiltEntityRoles")
 		defer func() {
@@ -4166,7 +4218,8 @@ func (client ModelClient) GetCustomPrebuiltEntityRolesPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4179,11 +4232,11 @@ func (client ModelClient) GetCustomPrebuiltEntityRolesSender(req *http.Request) 
 
 // GetCustomPrebuiltEntityRolesResponder handles the response to the GetCustomPrebuiltEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetCustomPrebuiltEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetCustomPrebuiltEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4195,7 +4248,7 @@ func (client ModelClient) GetCustomPrebuiltEntityRolesResponder(resp *http.Respo
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) GetEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result EntityExtractor, err error) {
+func (client ModelClient) GetEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntity")
 		defer func() {
@@ -4242,7 +4295,8 @@ func (client ModelClient) GetEntityPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4255,12 +4309,12 @@ func (client ModelClient) GetEntitySender(req *http.Request) (*http.Response, er
 
 // GetEntityResponder handles the response to the GetEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetEntityResponder(resp *http.Response) (result EntityExtractor, err error) {
+func (client ModelClient) GetEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4272,7 +4326,7 @@ func (client ModelClient) GetEntityResponder(resp *http.Response) (result Entity
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntityRole")
 		defer func() {
@@ -4320,7 +4374,8 @@ func (client ModelClient) GetEntityRolePreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4333,12 +4388,12 @@ func (client ModelClient) GetEntityRoleSender(req *http.Request) (*http.Response
 
 // GetEntityRoleResponder handles the response to the GetEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4349,7 +4404,7 @@ func (client ModelClient) GetEntityRoleResponder(resp *http.Response) (result En
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntityRoles")
 		defer func() {
@@ -4396,7 +4451,8 @@ func (client ModelClient) GetEntityRolesPreparer(ctx context.Context, appID uuid
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4409,11 +4465,11 @@ func (client ModelClient) GetEntityRolesSender(req *http.Request) (*http.Respons
 
 // GetEntityRolesResponder handles the response to the GetEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4426,7 +4482,7 @@ func (client ModelClient) GetEntityRolesResponder(resp *http.Response) (result L
 // versionID - the version ID.
 // entityID - the target entity extractor model to enhance.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) GetEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result ListEntitiesSuggestionExample, err error) {
+func (client ModelClient) GetEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntitySuggestions")
 		defer func() {
@@ -4490,7 +4546,8 @@ func (client ModelClient) GetEntitySuggestionsPreparer(ctx context.Context, appI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/suggest", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4503,11 +4560,11 @@ func (client ModelClient) GetEntitySuggestionsSender(req *http.Request) (*http.R
 
 // GetEntitySuggestionsResponder handles the response to the GetEntitySuggestions request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetEntitySuggestionsResponder(resp *http.Response) (result ListEntitiesSuggestionExample, err error) {
+func (client ModelClient) GetEntitySuggestionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4519,7 +4576,7 @@ func (client ModelClient) GetEntitySuggestionsResponder(resp *http.Response) (re
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the Pattern.Any entity id.
-func (client ModelClient) GetExplicitList(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListExplicitListItem, err error) {
+func (client ModelClient) GetExplicitList(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetExplicitList")
 		defer func() {
@@ -4566,7 +4623,8 @@ func (client ModelClient) GetExplicitListPreparer(ctx context.Context, appID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4579,11 +4637,11 @@ func (client ModelClient) GetExplicitListSender(req *http.Request) (*http.Respon
 
 // GetExplicitListResponder handles the response to the GetExplicitList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetExplicitListResponder(resp *http.Response) (result ListExplicitListItem, err error) {
+func (client ModelClient) GetExplicitListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4596,7 +4654,7 @@ func (client ModelClient) GetExplicitListResponder(resp *http.Response) (result 
 // versionID - the version ID.
 // entityID - the Pattern.Any entity Id.
 // itemID - the explicit list item Id.
-func (client ModelClient) GetExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result ExplicitListItem, err error) {
+func (client ModelClient) GetExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetExplicitListItem")
 		defer func() {
@@ -4644,7 +4702,8 @@ func (client ModelClient) GetExplicitListItemPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4657,12 +4716,12 @@ func (client ModelClient) GetExplicitListItemSender(req *http.Request) (*http.Re
 
 // GetExplicitListItemResponder handles the response to the GetExplicitListItem request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetExplicitListItemResponder(resp *http.Response) (result ExplicitListItem, err error) {
+func (client ModelClient) GetExplicitListItemResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4673,7 +4732,7 @@ func (client ModelClient) GetExplicitListItemResponder(resp *http.Response) (res
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) GetHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result HierarchicalEntityExtractor, err error) {
+func (client ModelClient) GetHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntity")
 		defer func() {
@@ -4720,7 +4779,8 @@ func (client ModelClient) GetHierarchicalEntityPreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4733,12 +4793,12 @@ func (client ModelClient) GetHierarchicalEntitySender(req *http.Request) (*http.
 
 // GetHierarchicalEntityResponder handles the response to the GetHierarchicalEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetHierarchicalEntityResponder(resp *http.Response) (result HierarchicalEntityExtractor, err error) {
+func (client ModelClient) GetHierarchicalEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4750,7 +4810,7 @@ func (client ModelClient) GetHierarchicalEntityResponder(resp *http.Response) (r
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
-func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result HierarchicalChildEntity, err error) {
+func (client ModelClient) GetHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntityChild")
 		defer func() {
@@ -4798,7 +4858,8 @@ func (client ModelClient) GetHierarchicalEntityChildPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4811,12 +4872,12 @@ func (client ModelClient) GetHierarchicalEntityChildSender(req *http.Request) (*
 
 // GetHierarchicalEntityChildResponder handles the response to the GetHierarchicalEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetHierarchicalEntityChildResponder(resp *http.Response) (result HierarchicalChildEntity, err error) {
+func (client ModelClient) GetHierarchicalEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4828,7 +4889,7 @@ func (client ModelClient) GetHierarchicalEntityChildResponder(resp *http.Respons
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - entity role ID.
-func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntityRole")
 		defer func() {
@@ -4876,7 +4937,8 @@ func (client ModelClient) GetHierarchicalEntityRolePreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4889,12 +4951,12 @@ func (client ModelClient) GetHierarchicalEntityRoleSender(req *http.Request) (*h
 
 // GetHierarchicalEntityRoleResponder handles the response to the GetHierarchicalEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetHierarchicalEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetHierarchicalEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -4905,7 +4967,7 @@ func (client ModelClient) GetHierarchicalEntityRoleResponder(resp *http.Response
 // appID - the application ID.
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
-func (client ModelClient) GetHierarchicalEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetHierarchicalEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetHierarchicalEntityRoles")
 		defer func() {
@@ -4952,7 +5014,8 @@ func (client ModelClient) GetHierarchicalEntityRolesPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -4965,11 +5028,11 @@ func (client ModelClient) GetHierarchicalEntityRolesSender(req *http.Request) (*
 
 // GetHierarchicalEntityRolesResponder handles the response to the GetHierarchicalEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetHierarchicalEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetHierarchicalEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4981,7 +5044,7 @@ func (client ModelClient) GetHierarchicalEntityRolesResponder(resp *http.Respons
 // appID - the application ID.
 // versionID - the version ID.
 // intentID - the intent classifier ID.
-func (client ModelClient) GetIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (result IntentClassifier, err error) {
+func (client ModelClient) GetIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetIntent")
 		defer func() {
@@ -5028,7 +5091,8 @@ func (client ModelClient) GetIntentPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5041,12 +5105,12 @@ func (client ModelClient) GetIntentSender(req *http.Request) (*http.Response, er
 
 // GetIntentResponder handles the response to the GetIntent request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetIntentResponder(resp *http.Response) (result IntentClassifier, err error) {
+func (client ModelClient) GetIntentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5058,7 +5122,7 @@ func (client ModelClient) GetIntentResponder(resp *http.Response) (result Intent
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) GetIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result ListIntentsSuggestionExample, err error) {
+func (client ModelClient) GetIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetIntentSuggestions")
 		defer func() {
@@ -5122,7 +5186,8 @@ func (client ModelClient) GetIntentSuggestionsPreparer(ctx context.Context, appI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/suggest", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5135,11 +5200,11 @@ func (client ModelClient) GetIntentSuggestionsSender(req *http.Request) (*http.R
 
 // GetIntentSuggestionsResponder handles the response to the GetIntentSuggestions request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetIntentSuggestionsResponder(resp *http.Response) (result ListIntentsSuggestionExample, err error) {
+func (client ModelClient) GetIntentSuggestionsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5151,7 +5216,7 @@ func (client ModelClient) GetIntentSuggestionsResponder(resp *http.Response) (re
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - the entity extractor ID.
-func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result PatternAnyEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityInfo")
 		defer func() {
@@ -5198,7 +5263,8 @@ func (client ModelClient) GetPatternAnyEntityInfoPreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5211,12 +5277,12 @@ func (client ModelClient) GetPatternAnyEntityInfoSender(req *http.Request) (*htt
 
 // GetPatternAnyEntityInfoResponder handles the response to the GetPatternAnyEntityInfo request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) (result PatternAnyEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5228,7 +5294,7 @@ func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) 
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) GetPatternAnyEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternAnyEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityInfos")
 		defer func() {
@@ -5299,7 +5365,8 @@ func (client ModelClient) GetPatternAnyEntityInfosPreparer(ctx context.Context, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5312,11 +5379,11 @@ func (client ModelClient) GetPatternAnyEntityInfosSender(req *http.Request) (*ht
 
 // GetPatternAnyEntityInfosResponder handles the response to the GetPatternAnyEntityInfos request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPatternAnyEntityInfosResponder(resp *http.Response) (result ListPatternAnyEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfosResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5329,7 +5396,7 @@ func (client ModelClient) GetPatternAnyEntityInfosResponder(resp *http.Response)
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetPatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityRole")
 		defer func() {
@@ -5377,7 +5444,8 @@ func (client ModelClient) GetPatternAnyEntityRolePreparer(ctx context.Context, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5390,12 +5458,12 @@ func (client ModelClient) GetPatternAnyEntityRoleSender(req *http.Request) (*htt
 
 // GetPatternAnyEntityRoleResponder handles the response to the GetPatternAnyEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPatternAnyEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetPatternAnyEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5406,7 +5474,7 @@ func (client ModelClient) GetPatternAnyEntityRoleResponder(resp *http.Response) 
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetPatternAnyEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetPatternAnyEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPatternAnyEntityRoles")
 		defer func() {
@@ -5453,7 +5521,8 @@ func (client ModelClient) GetPatternAnyEntityRolesPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5466,11 +5535,11 @@ func (client ModelClient) GetPatternAnyEntityRolesSender(req *http.Request) (*ht
 
 // GetPatternAnyEntityRolesResponder handles the response to the GetPatternAnyEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPatternAnyEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetPatternAnyEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5482,7 +5551,7 @@ func (client ModelClient) GetPatternAnyEntityRolesResponder(resp *http.Response)
 // appID - the application ID.
 // versionID - the version ID.
 // prebuiltID - the prebuilt entity extractor ID.
-func (client ModelClient) GetPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result PrebuiltEntityExtractor, err error) {
+func (client ModelClient) GetPrebuilt(ctx context.Context, appID uuid.UUID, versionID string, prebuiltID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPrebuilt")
 		defer func() {
@@ -5529,7 +5598,8 @@ func (client ModelClient) GetPrebuiltPreparer(ctx context.Context, appID uuid.UU
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5542,12 +5612,12 @@ func (client ModelClient) GetPrebuiltSender(req *http.Request) (*http.Response, 
 
 // GetPrebuiltResponder handles the response to the GetPrebuilt request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPrebuiltResponder(resp *http.Response) (result PrebuiltEntityExtractor, err error) {
+func (client ModelClient) GetPrebuiltResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5559,7 +5629,7 @@ func (client ModelClient) GetPrebuiltResponder(resp *http.Response) (result Preb
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPrebuiltEntityRole")
 		defer func() {
@@ -5607,7 +5677,8 @@ func (client ModelClient) GetPrebuiltEntityRolePreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5620,12 +5691,12 @@ func (client ModelClient) GetPrebuiltEntityRoleSender(req *http.Request) (*http.
 
 // GetPrebuiltEntityRoleResponder handles the response to the GetPrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPrebuiltEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetPrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5636,7 +5707,7 @@ func (client ModelClient) GetPrebuiltEntityRoleResponder(resp *http.Response) (r
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetPrebuiltEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetPrebuiltEntityRoles")
 		defer func() {
@@ -5683,7 +5754,8 @@ func (client ModelClient) GetPrebuiltEntityRolesPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5696,11 +5768,11 @@ func (client ModelClient) GetPrebuiltEntityRolesSender(req *http.Request) (*http
 
 // GetPrebuiltEntityRolesResponder handles the response to the GetPrebuiltEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPrebuiltEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetPrebuiltEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5712,7 +5784,7 @@ func (client ModelClient) GetPrebuiltEntityRolesResponder(resp *http.Response) (
 // appID - the application ID.
 // versionID - the version ID.
 // regexEntityID - the regex entity model ID.
-func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result RegexEntityExtractor, err error) {
+func (client ModelClient) GetRegexEntityEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityEntityInfo")
 		defer func() {
@@ -5759,7 +5831,8 @@ func (client ModelClient) GetRegexEntityEntityInfoPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5772,12 +5845,12 @@ func (client ModelClient) GetRegexEntityEntityInfoSender(req *http.Request) (*ht
 
 // GetRegexEntityEntityInfoResponder handles the response to the GetRegexEntityEntityInfo request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetRegexEntityEntityInfoResponder(resp *http.Response) (result RegexEntityExtractor, err error) {
+func (client ModelClient) GetRegexEntityEntityInfoResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5789,7 +5862,7 @@ func (client ModelClient) GetRegexEntityEntityInfoResponder(resp *http.Response)
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) GetRegexEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListRegexEntityExtractor, err error) {
+func (client ModelClient) GetRegexEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityInfos")
 		defer func() {
@@ -5860,7 +5933,8 @@ func (client ModelClient) GetRegexEntityInfosPreparer(ctx context.Context, appID
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5873,11 +5947,11 @@ func (client ModelClient) GetRegexEntityInfosSender(req *http.Request) (*http.Re
 
 // GetRegexEntityInfosResponder handles the response to the GetRegexEntityInfos request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetRegexEntityInfosResponder(resp *http.Response) (result ListRegexEntityExtractor, err error) {
+func (client ModelClient) GetRegexEntityInfosResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -5890,7 +5964,7 @@ func (client ModelClient) GetRegexEntityInfosResponder(resp *http.Response) (res
 // versionID - the version ID.
 // entityID - entity ID.
 // roleID - entity role ID.
-func (client ModelClient) GetRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result EntityRole, err error) {
+func (client ModelClient) GetRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityRole")
 		defer func() {
@@ -5938,7 +6012,8 @@ func (client ModelClient) GetRegexEntityRolePreparer(ctx context.Context, appID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -5951,12 +6026,12 @@ func (client ModelClient) GetRegexEntityRoleSender(req *http.Request) (*http.Res
 
 // GetRegexEntityRoleResponder handles the response to the GetRegexEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetRegexEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
+func (client ModelClient) GetRegexEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -5967,7 +6042,7 @@ func (client ModelClient) GetRegexEntityRoleResponder(resp *http.Response) (resu
 // appID - the application ID.
 // versionID - the version ID.
 // entityID - entity Id
-func (client ModelClient) GetRegexEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListEntityRole, err error) {
+func (client ModelClient) GetRegexEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetRegexEntityRoles")
 		defer func() {
@@ -6014,7 +6089,8 @@ func (client ModelClient) GetRegexEntityRolesPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6027,11 +6103,11 @@ func (client ModelClient) GetRegexEntityRolesSender(req *http.Request) (*http.Re
 
 // GetRegexEntityRolesResponder handles the response to the GetRegexEntityRoles request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetRegexEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
+func (client ModelClient) GetRegexEntityRolesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6044,7 +6120,7 @@ func (client ModelClient) GetRegexEntityRolesResponder(resp *http.Response) (res
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListClosedListEntityExtractor, err error) {
+func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListClosedLists")
 		defer func() {
@@ -6115,7 +6191,8 @@ func (client ModelClient) ListClosedListsPreparer(ctx context.Context, appID uui
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6128,11 +6205,11 @@ func (client ModelClient) ListClosedListsSender(req *http.Request) (*http.Respon
 
 // ListClosedListsResponder handles the response to the ListClosedLists request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListClosedListsResponder(resp *http.Response) (result ListClosedListEntityExtractor, err error) {
+func (client ModelClient) ListClosedListsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6145,7 +6222,7 @@ func (client ModelClient) ListClosedListsResponder(resp *http.Response) (result 
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListCompositeEntityExtractor, err error) {
+func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCompositeEntities")
 		defer func() {
@@ -6216,7 +6293,8 @@ func (client ModelClient) ListCompositeEntitiesPreparer(ctx context.Context, app
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6229,11 +6307,11 @@ func (client ModelClient) ListCompositeEntitiesSender(req *http.Request) (*http.
 
 // ListCompositeEntitiesResponder handles the response to the ListCompositeEntities request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListCompositeEntitiesResponder(resp *http.Response) (result ListCompositeEntityExtractor, err error) {
+func (client ModelClient) ListCompositeEntitiesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6244,7 +6322,7 @@ func (client ModelClient) ListCompositeEntitiesResponder(resp *http.Response) (r
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListCustomPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltEntities")
 		defer func() {
@@ -6290,7 +6368,8 @@ func (client ModelClient) ListCustomPrebuiltEntitiesPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6303,11 +6382,11 @@ func (client ModelClient) ListCustomPrebuiltEntitiesSender(req *http.Request) (*
 
 // ListCustomPrebuiltEntitiesResponder handles the response to the ListCustomPrebuiltEntities request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListCustomPrebuiltEntitiesResponder(resp *http.Response) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListCustomPrebuiltEntitiesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6318,7 +6397,7 @@ func (client ModelClient) ListCustomPrebuiltEntitiesResponder(resp *http.Respons
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, appID uuid.UUID, versionID string) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListCustomPrebuiltIntents(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltIntents")
 		defer func() {
@@ -6364,7 +6443,8 @@ func (client ModelClient) ListCustomPrebuiltIntentsPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltintents", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6377,11 +6457,11 @@ func (client ModelClient) ListCustomPrebuiltIntentsSender(req *http.Request) (*h
 
 // ListCustomPrebuiltIntentsResponder handles the response to the ListCustomPrebuiltIntents request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListCustomPrebuiltIntentsResponder(resp *http.Response) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListCustomPrebuiltIntentsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6392,7 +6472,7 @@ func (client ModelClient) ListCustomPrebuiltIntentsResponder(resp *http.Response
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, appID uuid.UUID, versionID string) (result ListCustomPrebuiltModel, err error) {
+func (client ModelClient) ListCustomPrebuiltModels(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListCustomPrebuiltModels")
 		defer func() {
@@ -6438,7 +6518,8 @@ func (client ModelClient) ListCustomPrebuiltModelsPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltmodels", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltmodels", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6451,11 +6532,11 @@ func (client ModelClient) ListCustomPrebuiltModelsSender(req *http.Request) (*ht
 
 // ListCustomPrebuiltModelsResponder handles the response to the ListCustomPrebuiltModels request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListCustomPrebuiltModelsResponder(resp *http.Response) (result ListCustomPrebuiltModel, err error) {
+func (client ModelClient) ListCustomPrebuiltModelsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6468,7 +6549,7 @@ func (client ModelClient) ListCustomPrebuiltModelsResponder(resp *http.Response)
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListEntities")
 		defer func() {
@@ -6539,7 +6620,8 @@ func (client ModelClient) ListEntitiesPreparer(ctx context.Context, appID uuid.U
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6552,11 +6634,11 @@ func (client ModelClient) ListEntitiesSender(req *http.Request) (*http.Response,
 
 // ListEntitiesResponder handles the response to the ListEntities request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListEntitiesResponder(resp *http.Response) (result ListEntityExtractor, err error) {
+func (client ModelClient) ListEntitiesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6569,7 +6651,7 @@ func (client ModelClient) ListEntitiesResponder(resp *http.Response) (result Lis
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListHierarchicalEntityExtractor, err error) {
+func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListHierarchicalEntities")
 		defer func() {
@@ -6640,7 +6722,8 @@ func (client ModelClient) ListHierarchicalEntitiesPreparer(ctx context.Context, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6653,11 +6736,11 @@ func (client ModelClient) ListHierarchicalEntitiesSender(req *http.Request) (*ht
 
 // ListHierarchicalEntitiesResponder handles the response to the ListHierarchicalEntities request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListHierarchicalEntitiesResponder(resp *http.Response) (result ListHierarchicalEntityExtractor, err error) {
+func (client ModelClient) ListHierarchicalEntitiesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6670,7 +6753,7 @@ func (client ModelClient) ListHierarchicalEntitiesResponder(resp *http.Response)
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListIntents")
 		defer func() {
@@ -6741,7 +6824,8 @@ func (client ModelClient) ListIntentsPreparer(ctx context.Context, appID uuid.UU
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6754,11 +6838,11 @@ func (client ModelClient) ListIntentsSender(req *http.Request) (*http.Response, 
 
 // ListIntentsResponder handles the response to the ListIntents request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListIntentsResponder(resp *http.Response) (result ListIntentClassifier, err error) {
+func (client ModelClient) ListIntentsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6771,7 +6855,7 @@ func (client ModelClient) ListIntentsResponder(resp *http.Response) (result List
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListModelInfoResponse, err error) {
+func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListModels")
 		defer func() {
@@ -6842,7 +6926,8 @@ func (client ModelClient) ListModelsPreparer(ctx context.Context, appID uuid.UUI
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/models", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6855,11 +6940,11 @@ func (client ModelClient) ListModelsSender(req *http.Request) (*http.Response, e
 
 // ListModelsResponder handles the response to the ListModels request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListModelsResponder(resp *http.Response) (result ListModelInfoResponse, err error) {
+func (client ModelClient) ListModelsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6870,7 +6955,7 @@ func (client ModelClient) ListModelsResponder(resp *http.Response) (result ListM
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client ModelClient) ListPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result ListAvailablePrebuiltEntityModel, err error) {
+func (client ModelClient) ListPrebuiltEntities(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPrebuiltEntities")
 		defer func() {
@@ -6916,7 +7001,8 @@ func (client ModelClient) ListPrebuiltEntitiesPreparer(ctx context.Context, appI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/listprebuilts", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/listprebuilts", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -6929,11 +7015,11 @@ func (client ModelClient) ListPrebuiltEntitiesSender(req *http.Request) (*http.R
 
 // ListPrebuiltEntitiesResponder handles the response to the ListPrebuiltEntities request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListPrebuiltEntitiesResponder(resp *http.Response) (result ListAvailablePrebuiltEntityModel, err error) {
+func (client ModelClient) ListPrebuiltEntitiesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6946,7 +7032,7 @@ func (client ModelClient) ListPrebuiltEntitiesResponder(resp *http.Response) (re
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ListPrebuilts")
 		defer func() {
@@ -7017,7 +7103,8 @@ func (client ModelClient) ListPrebuiltsPreparer(ctx context.Context, appID uuid.
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7030,11 +7117,11 @@ func (client ModelClient) ListPrebuiltsSender(req *http.Request) (*http.Response
 
 // ListPrebuiltsResponder handles the response to the ListPrebuilts request. The method always
 // closes the http.Response Body.
-func (client ModelClient) ListPrebuiltsResponder(resp *http.Response) (result ListPrebuiltEntityExtractor, err error) {
+func (client ModelClient) ListPrebuiltsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -7047,7 +7134,7 @@ func (client ModelClient) ListPrebuiltsResponder(resp *http.Response) (result Li
 // versionID - the version ID.
 // clEntityID - the closed list model ID.
 // closedListModelPatchObject - a words list batch.
-func (client ModelClient) PatchClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (result OperationStatus, err error) {
+func (client ModelClient) PatchClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelPatchObject ClosedListModelPatchObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.PatchClosedList")
 		defer func() {
@@ -7096,7 +7183,8 @@ func (client ModelClient) PatchClosedListPreparer(ctx context.Context, appID uui
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithJSON(closedListModelPatchObject))
+		autorest.WithJSON(closedListModelPatchObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7109,12 +7197,12 @@ func (client ModelClient) PatchClosedListSender(req *http.Request) (*http.Respon
 
 // PatchClosedListResponder handles the response to the PatchClosedList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7126,7 +7214,7 @@ func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result 
 // versionID - the version ID.
 // clEntityID - the closed list model ID.
 // closedListModelUpdateObject - the new entity name and words list.
-func (client ModelClient) UpdateClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, closedListModelUpdateObject ClosedListModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateClosedList")
 		defer func() {
@@ -7175,7 +7263,8 @@ func (client ModelClient) UpdateClosedListPreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", pathParameters),
-		autorest.WithJSON(closedListModelUpdateObject))
+		autorest.WithJSON(closedListModelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7188,12 +7277,12 @@ func (client ModelClient) UpdateClosedListSender(req *http.Request) (*http.Respo
 
 // UpdateClosedListResponder handles the response to the UpdateClosedList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7206,7 +7295,7 @@ func (client ModelClient) UpdateClosedListResponder(resp *http.Response) (result
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedListEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateClosedListEntityRole")
 		defer func() {
@@ -7256,7 +7345,8 @@ func (client ModelClient) UpdateClosedListEntityRolePreparer(ctx context.Context
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7269,12 +7359,12 @@ func (client ModelClient) UpdateClosedListEntityRoleSender(req *http.Request) (*
 
 // UpdateClosedListEntityRoleResponder handles the response to the UpdateClosedListEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateClosedListEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateClosedListEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7286,7 +7376,7 @@ func (client ModelClient) UpdateClosedListEntityRoleResponder(resp *http.Respons
 // versionID - the version ID.
 // cEntityID - the composite entity extractor ID.
 // compositeModelUpdateObject - a model object containing the new entity extractor name and children.
-func (client ModelClient) UpdateCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntity(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, compositeModelUpdateObject CompositeEntityModel) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCompositeEntity")
 		defer func() {
@@ -7335,7 +7425,8 @@ func (client ModelClient) UpdateCompositeEntityPreparer(ctx context.Context, app
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", pathParameters),
-		autorest.WithJSON(compositeModelUpdateObject))
+		autorest.WithJSON(compositeModelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7348,12 +7439,12 @@ func (client ModelClient) UpdateCompositeEntitySender(req *http.Request) (*http.
 
 // UpdateCompositeEntityResponder handles the response to the UpdateCompositeEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateCompositeEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7366,7 +7457,7 @@ func (client ModelClient) UpdateCompositeEntityResponder(resp *http.Response) (r
 // cEntityID - the composite entity extractor ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntityRole(ctx context.Context, appID uuid.UUID, versionID string, cEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCompositeEntityRole")
 		defer func() {
@@ -7416,7 +7507,8 @@ func (client ModelClient) UpdateCompositeEntityRolePreparer(ctx context.Context,
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7429,12 +7521,12 @@ func (client ModelClient) UpdateCompositeEntityRoleSender(req *http.Request) (*h
 
 // UpdateCompositeEntityRoleResponder handles the response to the UpdateCompositeEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateCompositeEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCompositeEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7447,7 +7539,7 @@ func (client ModelClient) UpdateCompositeEntityRoleResponder(resp *http.Response
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCustomPrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateCustomPrebuiltEntityRole")
 		defer func() {
@@ -7497,7 +7589,8 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRolePreparer(ctx context.Con
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7510,12 +7603,12 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRoleSender(req *http.Request
 
 // UpdateCustomPrebuiltEntityRoleResponder handles the response to the UpdateCustomPrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7527,7 +7620,7 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRoleResponder(resp *http.Res
 // versionID - the version ID.
 // entityID - the entity extractor ID.
 // modelUpdateObject - a model object containing the new entity extractor name.
-func (client ModelClient) UpdateEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntity(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, modelUpdateObject ModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateEntity")
 		defer func() {
@@ -7576,7 +7669,8 @@ func (client ModelClient) UpdateEntityPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}", pathParameters),
-		autorest.WithJSON(modelUpdateObject))
+		autorest.WithJSON(modelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7589,12 +7683,12 @@ func (client ModelClient) UpdateEntitySender(req *http.Request) (*http.Response,
 
 // UpdateEntityResponder handles the response to the UpdateEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7607,7 +7701,7 @@ func (client ModelClient) UpdateEntityResponder(resp *http.Response) (result Ope
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateEntityRole")
 		defer func() {
@@ -7657,7 +7751,8 @@ func (client ModelClient) UpdateEntityRolePreparer(ctx context.Context, appID uu
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7670,12 +7765,12 @@ func (client ModelClient) UpdateEntityRoleSender(req *http.Request) (*http.Respo
 
 // UpdateEntityRoleResponder handles the response to the UpdateEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7688,7 +7783,7 @@ func (client ModelClient) UpdateEntityRoleResponder(resp *http.Response) (result
 // entityID - the Pattern.Any entity extractor ID.
 // itemID - the explicit list item ID.
 // item - the new explicit list item.
-func (client ModelClient) UpdateExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateExplicitListItem(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, itemID int64, item ExplicitListItemUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateExplicitListItem")
 		defer func() {
@@ -7738,7 +7833,8 @@ func (client ModelClient) UpdateExplicitListItemPreparer(ctx context.Context, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", pathParameters),
-		autorest.WithJSON(item))
+		autorest.WithJSON(item),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7751,12 +7847,12 @@ func (client ModelClient) UpdateExplicitListItemSender(req *http.Request) (*http
 
 // UpdateExplicitListItemResponder handles the response to the UpdateExplicitListItem request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateExplicitListItemResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateExplicitListItemResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7768,7 +7864,7 @@ func (client ModelClient) UpdateExplicitListItemResponder(resp *http.Response) (
 // versionID - the version ID.
 // hEntityID - the hierarchical entity extractor ID.
 // hierarchicalModelUpdateObject - model containing names of the children of the hierarchical entity.
-func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntity(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hierarchicalModelUpdateObject HierarchicalEntityModel) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntity")
 		defer func() {
@@ -7817,7 +7913,8 @@ func (client ModelClient) UpdateHierarchicalEntityPreparer(ctx context.Context, 
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", pathParameters),
-		autorest.WithJSON(hierarchicalModelUpdateObject))
+		autorest.WithJSON(hierarchicalModelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7830,12 +7927,12 @@ func (client ModelClient) UpdateHierarchicalEntitySender(req *http.Request) (*ht
 
 // UpdateHierarchicalEntityResponder handles the response to the UpdateHierarchicalEntity request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateHierarchicalEntityResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7848,7 +7945,7 @@ func (client ModelClient) UpdateHierarchicalEntityResponder(resp *http.Response)
 // hEntityID - the hierarchical entity extractor ID.
 // hChildID - the hierarchical entity extractor child ID.
 // hierarchicalChildModelUpdateObject - model object containing new name of the hierarchical entity child.
-func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityChild(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, hChildID uuid.UUID, hierarchicalChildModelUpdateObject HierarchicalChildModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntityChild")
 		defer func() {
@@ -7898,7 +7995,8 @@ func (client ModelClient) UpdateHierarchicalEntityChildPreparer(ctx context.Cont
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", pathParameters),
-		autorest.WithJSON(hierarchicalChildModelUpdateObject))
+		autorest.WithJSON(hierarchicalChildModelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7911,12 +8009,12 @@ func (client ModelClient) UpdateHierarchicalEntityChildSender(req *http.Request)
 
 // UpdateHierarchicalEntityChildResponder handles the response to the UpdateHierarchicalEntityChild request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateHierarchicalEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityChildResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -7929,7 +8027,7 @@ func (client ModelClient) UpdateHierarchicalEntityChildResponder(resp *http.Resp
 // hEntityID - the hierarchical entity extractor ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityRole(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateHierarchicalEntityRole")
 		defer func() {
@@ -7979,7 +8077,8 @@ func (client ModelClient) UpdateHierarchicalEntityRolePreparer(ctx context.Conte
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -7992,12 +8091,12 @@ func (client ModelClient) UpdateHierarchicalEntityRoleSender(req *http.Request) 
 
 // UpdateHierarchicalEntityRoleResponder handles the response to the UpdateHierarchicalEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateHierarchicalEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateHierarchicalEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8009,7 +8108,7 @@ func (client ModelClient) UpdateHierarchicalEntityRoleResponder(resp *http.Respo
 // versionID - the version ID.
 // intentID - the intent classifier ID.
 // modelUpdateObject - a model object containing the new intent classifier name.
-func (client ModelClient) UpdateIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateIntent(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, modelUpdateObject ModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateIntent")
 		defer func() {
@@ -8058,7 +8157,8 @@ func (client ModelClient) UpdateIntentPreparer(ctx context.Context, appID uuid.U
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}", pathParameters),
-		autorest.WithJSON(modelUpdateObject))
+		autorest.WithJSON(modelUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8071,12 +8171,12 @@ func (client ModelClient) UpdateIntentSender(req *http.Request) (*http.Response,
 
 // UpdateIntentResponder handles the response to the UpdateIntent request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateIntentResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateIntentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8088,7 +8188,7 @@ func (client ModelClient) UpdateIntentResponder(resp *http.Response) (result Ope
 // versionID - the version ID.
 // entityID - the Pattern.Any entity extractor ID.
 // patternAnyUpdateObject - an object containing the explicit list of the Pattern.Any entity.
-func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, patternAnyUpdateObject PatternAnyModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePatternAnyEntityModel")
 		defer func() {
@@ -8137,7 +8237,8 @@ func (client ModelClient) UpdatePatternAnyEntityModelPreparer(ctx context.Contex
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", pathParameters),
-		autorest.WithJSON(patternAnyUpdateObject))
+		autorest.WithJSON(patternAnyUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8150,12 +8251,12 @@ func (client ModelClient) UpdatePatternAnyEntityModelSender(req *http.Request) (
 
 // UpdatePatternAnyEntityModelResponder handles the response to the UpdatePatternAnyEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdatePatternAnyEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8168,7 +8269,7 @@ func (client ModelClient) UpdatePatternAnyEntityModelResponder(resp *http.Respon
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePatternAnyEntityRole")
 		defer func() {
@@ -8218,7 +8319,8 @@ func (client ModelClient) UpdatePatternAnyEntityRolePreparer(ctx context.Context
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8231,12 +8333,12 @@ func (client ModelClient) UpdatePatternAnyEntityRoleSender(req *http.Request) (*
 
 // UpdatePatternAnyEntityRoleResponder handles the response to the UpdatePatternAnyEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdatePatternAnyEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePatternAnyEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8249,7 +8351,7 @@ func (client ModelClient) UpdatePatternAnyEntityRoleResponder(resp *http.Respons
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePrebuiltEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdatePrebuiltEntityRole")
 		defer func() {
@@ -8299,7 +8401,8 @@ func (client ModelClient) UpdatePrebuiltEntityRolePreparer(ctx context.Context, 
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8312,12 +8415,12 @@ func (client ModelClient) UpdatePrebuiltEntityRoleSender(req *http.Request) (*ht
 
 // UpdatePrebuiltEntityRoleResponder handles the response to the UpdatePrebuiltEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdatePrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdatePrebuiltEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8329,7 +8432,7 @@ func (client ModelClient) UpdatePrebuiltEntityRoleResponder(resp *http.Response)
 // versionID - the version ID.
 // regexEntityID - the regex entity extractor ID.
 // regexEntityUpdateObject - an object containing the new entity name and regex pattern.
-func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityModel(ctx context.Context, appID uuid.UUID, versionID string, regexEntityID uuid.UUID, regexEntityUpdateObject RegexModelUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateRegexEntityModel")
 		defer func() {
@@ -8378,7 +8481,8 @@ func (client ModelClient) UpdateRegexEntityModelPreparer(ctx context.Context, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", pathParameters),
-		autorest.WithJSON(regexEntityUpdateObject))
+		autorest.WithJSON(regexEntityUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8391,12 +8495,12 @@ func (client ModelClient) UpdateRegexEntityModelSender(req *http.Request) (*http
 
 // UpdateRegexEntityModelResponder handles the response to the UpdateRegexEntityModel request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateRegexEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityModelResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8409,7 +8513,7 @@ func (client ModelClient) UpdateRegexEntityModelResponder(resp *http.Response) (
 // entityID - the entity ID.
 // roleID - the entity role ID.
 // entityRoleUpdateObject - the new entity role.
-func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityRole(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, roleID uuid.UUID, entityRoleUpdateObject EntityRoleUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateRegexEntityRole")
 		defer func() {
@@ -8459,7 +8563,8 @@ func (client ModelClient) UpdateRegexEntityRolePreparer(ctx context.Context, app
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", pathParameters),
-		autorest.WithJSON(entityRoleUpdateObject))
+		autorest.WithJSON(entityRoleUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8472,12 +8577,12 @@ func (client ModelClient) UpdateRegexEntityRoleSender(req *http.Request) (*http.
 
 // UpdateRegexEntityRoleResponder handles the response to the UpdateRegexEntityRole request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateRegexEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateRegexEntityRoleResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -8490,7 +8595,7 @@ func (client ModelClient) UpdateRegexEntityRoleResponder(resp *http.Response) (r
 // clEntityID - the closed list entity extractor ID.
 // subListID - the sublist ID.
 // wordListBaseUpdateObject - a sublist update object containing the new canonical form and the list of words.
-func (client ModelClient) UpdateSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int32, wordListBaseUpdateObject WordListBaseUpdateObject) (result OperationStatus, err error) {
+func (client ModelClient) UpdateSubList(ctx context.Context, appID uuid.UUID, versionID string, clEntityID uuid.UUID, subListID int32, wordListBaseUpdateObject WordListBaseUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.UpdateSubList")
 		defer func() {
@@ -8540,7 +8645,8 @@ func (client ModelClient) UpdateSubListPreparer(ctx context.Context, appID uuid.
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", pathParameters),
-		autorest.WithJSON(wordListBaseUpdateObject))
+		autorest.WithJSON(wordListBaseUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -8553,12 +8659,12 @@ func (client ModelClient) UpdateSubListSender(req *http.Request) (*http.Response
 
 // UpdateSubListResponder handles the response to the UpdateSubList request. The method always
 // closes the http.Response Body.
-func (client ModelClient) UpdateSubListResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client ModelClient) UpdateSubListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

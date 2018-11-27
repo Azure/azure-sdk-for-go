@@ -33,8 +33,8 @@ type VersionsClient struct {
 }
 
 // NewVersionsClient creates an instance of the VersionsClient client.
-func NewVersionsClient(endpoint string) VersionsClient {
-	return VersionsClient{New(endpoint)}
+func NewVersionsClient(endpoint string, ocpApimSubscriptionKey string) VersionsClient {
+	return VersionsClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // Clone creates a new version using the current snapshot of the selected application version.
@@ -42,7 +42,7 @@ func NewVersionsClient(endpoint string) VersionsClient {
 // appID - the application ID.
 // versionID - the version ID.
 // versionCloneObject - a model containing the new version ID.
-func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, versionID string, versionCloneObject *TaskUpdateObject) (result String, err error) {
+func (client VersionsClient) Clone(ctx context.Context, appID uuid.UUID, versionID string, versionCloneObject *TaskUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Clone")
 		defer func() {
@@ -89,7 +89,8 @@ func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID,
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	if versionCloneObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(versionCloneObject))
@@ -106,11 +107,11 @@ func (client VersionsClient) CloneSender(req *http.Request) (*http.Response, err
 
 // CloneResponder handles the response to the Clone request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) CloneResponder(resp *http.Response) (result String, err error) {
+func (client VersionsClient) CloneResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -121,7 +122,7 @@ func (client VersionsClient) CloneResponder(resp *http.Response) (result String,
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versionID string) (result OperationStatus, err error) {
+func (client VersionsClient) Delete(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Delete")
 		defer func() {
@@ -167,7 +168,8 @@ func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -180,12 +182,12 @@ func (client VersionsClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client VersionsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -196,7 +198,7 @@ func (client VersionsClient) DeleteResponder(resp *http.Response) (result Operat
 // appID - the application ID.
 // versionID - the version ID.
 // utterance - the utterance text to delete.
-func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (result OperationStatus, err error) {
+func (client VersionsClient) DeleteUnlabelledUtterance(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.DeleteUnlabelledUtterance")
 		defer func() {
@@ -244,7 +246,8 @@ func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Conte
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/suggest", pathParameters),
-		autorest.WithJSON(utterance))
+		autorest.WithJSON(utterance),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -257,12 +260,12 @@ func (client VersionsClient) DeleteUnlabelledUtteranceSender(req *http.Request) 
 
 // DeleteUnlabelledUtteranceResponder handles the response to the DeleteUnlabelledUtterance request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) DeleteUnlabelledUtteranceResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client VersionsClient) DeleteUnlabelledUtteranceResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -272,7 +275,7 @@ func (client VersionsClient) DeleteUnlabelledUtteranceResponder(resp *http.Respo
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versionID string) (result LuisApp, err error) {
+func (client VersionsClient) Export(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Export")
 		defer func() {
@@ -318,7 +321,8 @@ func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -331,12 +335,12 @@ func (client VersionsClient) ExportSender(req *http.Request) (*http.Response, er
 
 // ExportResponder handles the response to the Export request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) ExportResponder(resp *http.Response) (result LuisApp, err error) {
+func (client VersionsClient) ExportResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -346,7 +350,7 @@ func (client VersionsClient) ExportResponder(resp *http.Response) (result LuisAp
 // Parameters:
 // appID - the application ID.
 // versionID - the version ID.
-func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID string) (result VersionInfo, err error) {
+func (client VersionsClient) Get(ctx context.Context, appID uuid.UUID, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Get")
 		defer func() {
@@ -392,7 +396,8 @@ func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, v
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -405,12 +410,12 @@ func (client VersionsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) GetResponder(resp *http.Response) (result VersionInfo, err error) {
+func (client VersionsClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -422,7 +427,7 @@ func (client VersionsClient) GetResponder(resp *http.Response) (result VersionIn
 // luisApp - a LUIS application structure.
 // versionID - the new versionId to import. If not specified, the versionId will be read from the imported
 // object.
-func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisApp LuisApp, versionID string) (result String, err error) {
+func (client VersionsClient) Import(ctx context.Context, appID uuid.UUID, luisApp LuisApp, versionID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Import")
 		defer func() {
@@ -475,7 +480,8 @@ func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
 		autorest.WithJSON(luisApp),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -488,11 +494,11 @@ func (client VersionsClient) ImportSender(req *http.Request) (*http.Response, er
 
 // ImportResponder handles the response to the Import request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) ImportResponder(resp *http.Response) (result String, err error) {
+func (client VersionsClient) ImportResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -504,7 +510,7 @@ func (client VersionsClient) ImportResponder(resp *http.Response) (result String
 // appID - the application ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (result ListVersionInfo, err error) {
+func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.List")
 		defer func() {
@@ -574,7 +580,8 @@ func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -587,11 +594,11 @@ func (client VersionsClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) ListResponder(resp *http.Response) (result ListVersionInfo, err error) {
+func (client VersionsClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -603,7 +610,7 @@ func (client VersionsClient) ListResponder(resp *http.Response) (result ListVers
 // appID - the application ID.
 // versionID - the version ID.
 // versionUpdateObject - a model containing Name and Description of the application.
-func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (result OperationStatus, err error) {
+func (client VersionsClient) Update(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject TaskUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VersionsClient.Update")
 		defer func() {
@@ -651,7 +658,8 @@ func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
-		autorest.WithJSON(versionUpdateObject))
+		autorest.WithJSON(versionUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -664,12 +672,12 @@ func (client VersionsClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client VersionsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client VersionsClient) UpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

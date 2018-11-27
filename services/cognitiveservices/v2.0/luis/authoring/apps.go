@@ -33,8 +33,8 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates an instance of the AppsClient client.
-func NewAppsClient(endpoint string) AppsClient {
-	return AppsClient{New(endpoint)}
+func NewAppsClient(endpoint string, ocpApimSubscriptionKey string) AppsClient {
+	return AppsClient{New(endpoint, ocpApimSubscriptionKey)}
 }
 
 // Add creates a new LUIS app.
@@ -42,7 +42,7 @@ func NewAppsClient(endpoint string) AppsClient {
 // applicationCreateObject - a model containing Name, Description (optional), Culture, Usage Scenario
 // (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the
 // version ID is 0.1. Note: the culture cannot be changed after the app is created.
-func (client AppsClient) Add(ctx context.Context, applicationCreateObject ApplicationCreateObject) (result UUID, err error) {
+func (client AppsClient) Add(ctx context.Context, applicationCreateObject ApplicationCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Add")
 		defer func() {
@@ -92,7 +92,8 @@ func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObjec
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
-		autorest.WithJSON(applicationCreateObject))
+		autorest.WithJSON(applicationCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -105,11 +106,11 @@ func (client AppsClient) AddSender(req *http.Request) (*http.Response, error) {
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err error) {
+func (client AppsClient) AddResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -119,7 +120,7 @@ func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err err
 // AddCustomPrebuiltDomain adds a prebuilt domain along with its models as a new application.
 // Parameters:
 // prebuiltDomainCreateObject - a prebuilt domain create object containing the name and culture of the domain.
-func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (result UUID, err error) {
+func (client AppsClient) AddCustomPrebuiltDomain(ctx context.Context, prebuiltDomainCreateObject PrebuiltDomainCreateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.AddCustomPrebuiltDomain")
 		defer func() {
@@ -162,7 +163,8 @@ func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, pr
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"),
-		autorest.WithJSON(prebuiltDomainCreateObject))
+		autorest.WithJSON(prebuiltDomainCreateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -175,11 +177,11 @@ func (client AppsClient) AddCustomPrebuiltDomainSender(req *http.Request) (*http
 
 // AddCustomPrebuiltDomainResponder handles the response to the AddCustomPrebuiltDomain request. The method always
 // closes the http.Response Body.
-func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result UUID, err error) {
+func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -189,7 +191,7 @@ func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (
 // Delete deletes an application.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result OperationStatus, err error) {
+func (client AppsClient) Delete(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Delete")
 		defer func() {
@@ -234,7 +236,8 @@ func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID) (*
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -247,12 +250,12 @@ func (client AppsClient) DeleteSender(req *http.Request) (*http.Response, error)
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client AppsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -261,7 +264,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationS
 // DownloadQueryLogs gets the query logs of the past month for the application.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID) (result ReadCloser, err error) {
+func (client AppsClient) DownloadQueryLogs(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DownloadQueryLogs")
 		defer func() {
@@ -306,7 +309,8 @@ func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -319,12 +323,13 @@ func (client AppsClient) DownloadQueryLogsSender(req *http.Request) (*http.Respo
 
 // DownloadQueryLogsResponder handles the response to the DownloadQueryLogs request. The method always
 // closes the http.Response Body.
-func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result ReadCloser, err error) {
-	result.Value = &resp.Body
+func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -332,7 +337,7 @@ func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result
 // Get gets the application info.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result ApplicationInfoResponse, err error) {
+func (client AppsClient) Get(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Get")
 		defer func() {
@@ -377,7 +382,8 @@ func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -390,12 +396,12 @@ func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationInfoResponse, err error) {
+func (client AppsClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -404,7 +410,7 @@ func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationIn
 // GetPublishSettings get the application publish settings.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID) (result PublishSettings, err error) {
+func (client AppsClient) GetPublishSettings(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetPublishSettings")
 		defer func() {
@@ -449,7 +455,8 @@ func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID u
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -462,12 +469,12 @@ func (client AppsClient) GetPublishSettingsSender(req *http.Request) (*http.Resp
 
 // GetPublishSettingsResponder handles the response to the GetPublishSettings request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (result PublishSettings, err error) {
+func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -476,7 +483,7 @@ func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (resul
 // GetSettings get the application settings.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (result ApplicationSettings, err error) {
+func (client AppsClient) GetSettings(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetSettings")
 		defer func() {
@@ -521,7 +528,8 @@ func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -534,12 +542,12 @@ func (client AppsClient) GetSettingsSender(req *http.Request) (*http.Response, e
 
 // GetSettingsResponder handles the response to the GetSettings request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetSettingsResponder(resp *http.Response) (result ApplicationSettings, err error) {
+func (client AppsClient) GetSettingsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -550,7 +558,7 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result Appli
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the
 // imported object.
-func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName string) (result UUID, err error) {
+func (client AppsClient) Import(ctx context.Context, luisApp LuisApp, appName string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Import")
 		defer func() {
@@ -599,7 +607,8 @@ func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, ap
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/import"),
 		autorest.WithJSON(luisApp),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -612,11 +621,11 @@ func (client AppsClient) ImportSender(req *http.Request) (*http.Response, error)
 
 // ImportResponder handles the response to the Import request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err error) {
+func (client AppsClient) ImportResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -627,7 +636,7 @@ func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err 
 // Parameters:
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (result ListApplicationInfoResponse, err error) {
+func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.List")
 		defer func() {
@@ -693,7 +702,8 @@ func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *in
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPath("/apps/"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -706,11 +716,11 @@ func (client AppsClient) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListResponder(resp *http.Response) (result ListApplicationInfoResponse, err error) {
+func (client AppsClient) ListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -718,7 +728,7 @@ func (client AppsClient) ListResponder(resp *http.Response) (result ListApplicat
 }
 
 // ListAvailableCustomPrebuiltDomains gets all the available custom prebuilt domains for all cultures.
-func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomains(ctx context.Context) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListAvailableCustomPrebuiltDomains")
 		defer func() {
@@ -759,7 +769,8 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/customprebuiltdomains"))
+		autorest.WithPath("/apps/customprebuiltdomains"),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -772,11 +783,11 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsSender(req *http.Requ
 
 // ListAvailableCustomPrebuiltDomainsResponder handles the response to the ListAvailableCustomPrebuiltDomains request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -786,7 +797,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.
 // ListAvailableCustomPrebuiltDomainsForCulture gets all the available custom prebuilt domains for a specific culture.
 // Parameters:
 // culture - culture.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListAvailableCustomPrebuiltDomainsForCulture")
 		defer func() {
@@ -831,7 +842,8 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ct
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters))
+		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -844,11 +856,11 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureSender(req 
 
 // ListAvailableCustomPrebuiltDomainsForCultureResponder handles the response to the ListAvailableCustomPrebuiltDomainsForCulture request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
+func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -856,7 +868,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(r
 }
 
 // ListCortanaEndpoints gets the endpoint URLs for the prebuilt Cortana applications.
-func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result PersonalAssistantsResponse, err error) {
+func (client AppsClient) ListCortanaEndpoints(ctx context.Context) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListCortanaEndpoints")
 		defer func() {
@@ -897,7 +909,8 @@ func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/assistants"))
+		autorest.WithPath("/apps/assistants"),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -910,19 +923,19 @@ func (client AppsClient) ListCortanaEndpointsSender(req *http.Request) (*http.Re
 
 // ListCortanaEndpointsResponder handles the response to the ListCortanaEndpoints request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListCortanaEndpointsResponder(resp *http.Response) (result PersonalAssistantsResponse, err error) {
+func (client AppsClient) ListCortanaEndpointsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // ListDomains gets the available application domains.
-func (client AppsClient) ListDomains(ctx context.Context) (result ListString, err error) {
+func (client AppsClient) ListDomains(ctx context.Context) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListDomains")
 		defer func() {
@@ -963,7 +976,8 @@ func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/domains"))
+		autorest.WithPath("/apps/domains"),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -976,11 +990,11 @@ func (client AppsClient) ListDomainsSender(req *http.Request) (*http.Response, e
 
 // ListDomainsResponder handles the response to the ListDomains request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListDomainsResponder(resp *http.Response) (result ListString, err error) {
+func (client AppsClient) ListDomainsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -990,7 +1004,7 @@ func (client AppsClient) ListDomainsResponder(resp *http.Response) (result ListS
 // ListEndpoints returns the available endpoint deployment regions and URLs.
 // Parameters:
 // appID - the application ID.
-func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (result SetString, err error) {
+func (client AppsClient) ListEndpoints(ctx context.Context, appID uuid.UUID) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListEndpoints")
 		defer func() {
@@ -1035,7 +1049,8 @@ func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters))
+		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1048,11 +1063,11 @@ func (client AppsClient) ListEndpointsSender(req *http.Request) (*http.Response,
 
 // ListEndpointsResponder handles the response to the ListEndpoints request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result SetString, err error) {
+func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1060,7 +1075,7 @@ func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result Set
 }
 
 // ListSupportedCultures gets the supported application cultures.
-func (client AppsClient) ListSupportedCultures(ctx context.Context) (result ListAvailableCulture, err error) {
+func (client AppsClient) ListSupportedCultures(ctx context.Context) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSupportedCultures")
 		defer func() {
@@ -1101,7 +1116,8 @@ func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*ht
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/cultures"))
+		autorest.WithPath("/apps/cultures"),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1114,11 +1130,11 @@ func (client AppsClient) ListSupportedCulturesSender(req *http.Request) (*http.R
 
 // ListSupportedCulturesResponder handles the response to the ListSupportedCultures request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (result ListAvailableCulture, err error) {
+func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1126,7 +1142,7 @@ func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (re
 }
 
 // ListUsageScenarios gets the application available usage scenarios.
-func (client AppsClient) ListUsageScenarios(ctx context.Context) (result ListString, err error) {
+func (client AppsClient) ListUsageScenarios(ctx context.Context) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListUsageScenarios")
 		defer func() {
@@ -1167,7 +1183,8 @@ func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
-		autorest.WithPath("/apps/usagescenarios"))
+		autorest.WithPath("/apps/usagescenarios"),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1180,11 +1197,11 @@ func (client AppsClient) ListUsageScenariosSender(req *http.Request) (*http.Resp
 
 // ListUsageScenariosResponder handles the response to the ListUsageScenarios request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (result ListString, err error) {
+func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -1196,7 +1213,7 @@ func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (resul
 // appID - the application ID.
 // applicationPublishObject - the application publish object. The region is the target region that the
 // application is published to.
-func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result ProductionOrStagingEndpointInfo, err error) {
+func (client AppsClient) Publish(ctx context.Context, appID uuid.UUID, applicationPublishObject ApplicationPublishObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Publish")
 		defer func() {
@@ -1243,7 +1260,8 @@ func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, a
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publish", pathParameters),
-		autorest.WithJSON(applicationPublishObject))
+		autorest.WithJSON(applicationPublishObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1256,12 +1274,12 @@ func (client AppsClient) PublishSender(req *http.Request) (*http.Response, error
 
 // PublishResponder handles the response to the Publish request. The method always
 // closes the http.Response Body.
-func (client AppsClient) PublishResponder(resp *http.Response) (result ProductionOrStagingEndpointInfo, err error) {
+func (client AppsClient) PublishResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1271,7 +1289,7 @@ func (client AppsClient) PublishResponder(resp *http.Response) (result Productio
 // Parameters:
 // appID - the application ID.
 // applicationUpdateObject - a model containing Name and Description of the application.
-func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) Update(ctx context.Context, appID uuid.UUID, applicationUpdateObject ApplicationUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Update")
 		defer func() {
@@ -1318,7 +1336,8 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, ap
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
-		autorest.WithJSON(applicationUpdateObject))
+		autorest.WithJSON(applicationUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1331,12 +1350,12 @@ func (client AppsClient) UpdateSender(req *http.Request) (*http.Response, error)
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client AppsClient) UpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1346,7 +1365,7 @@ func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationS
 // Parameters:
 // appID - the application ID.
 // publishSettingUpdateObject - an object containing the new publish application settings.
-func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) UpdatePublishSettings(ctx context.Context, appID uuid.UUID, publishSettingUpdateObject PublishSettingUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdatePublishSettings")
 		defer func() {
@@ -1393,7 +1412,8 @@ func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appI
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
-		autorest.WithJSON(publishSettingUpdateObject))
+		autorest.WithJSON(publishSettingUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1406,12 +1426,12 @@ func (client AppsClient) UpdatePublishSettingsSender(req *http.Request) (*http.R
 
 // UpdatePublishSettingsResponder handles the response to the UpdatePublishSettings request. The method always
 // closes the http.Response Body.
-func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1421,7 +1441,7 @@ func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (re
 // Parameters:
 // appID - the application ID.
 // applicationSettingUpdateObject - an object containing the new application settings.
-func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (result OperationStatus, err error) {
+func (client AppsClient) UpdateSettings(ctx context.Context, appID uuid.UUID, applicationSettingUpdateObject ApplicationSettingUpdateObject) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSettings")
 		defer func() {
@@ -1468,7 +1488,8 @@ func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v2.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
-		autorest.WithJSON(applicationSettingUpdateObject))
+		autorest.WithJSON(applicationSettingUpdateObject),
+		autorest.WithHeader("Ocp-Apim-Subscription-Key", client.OcpApimSubscriptionKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1481,12 +1502,12 @@ func (client AppsClient) UpdateSettingsSender(req *http.Request) (*http.Response
 
 // UpdateSettingsResponder handles the response to the UpdateSettings request. The method always
 // closes the http.Response Body.
-func (client AppsClient) UpdateSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
+func (client AppsClient) UpdateSettingsResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusTooManyRequests),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

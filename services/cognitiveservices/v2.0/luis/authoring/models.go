@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/satori/go.uuid"
-	"io"
 )
 
 // The package's fully qualified name.
@@ -441,7 +440,6 @@ type ApplicationCreateObject struct {
 
 // ApplicationInfoResponse response containing the Application Info.
 type ApplicationInfoResponse struct {
-	autorest.Response `json:"-"`
 	// ID - The ID (GUID) of the application.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - The name of the application.
@@ -476,7 +474,6 @@ type ApplicationPublishObject struct {
 
 // ApplicationSettings the application settings.
 type ApplicationSettings struct {
-	autorest.Response `json:"-"`
 	// ID - The application ID.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// IsPublic - Setting your application as public allows other people to use your application's endpoint using their own keys.
@@ -549,7 +546,6 @@ type ClosedList struct {
 
 // ClosedListEntityExtractor closed List Entity Extractor.
 type ClosedListEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -598,7 +594,6 @@ type CompositeChildModelCreateObject struct {
 
 // CompositeEntityExtractor a Composite Entity Extractor.
 type CompositeEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -657,7 +652,6 @@ type EndpointInfo struct {
 
 // EnqueueTrainingResponse response model when requesting to train the model.
 type EnqueueTrainingResponse struct {
-	autorest.Response `json:"-"`
 	// StatusID - The train request status ID.
 	StatusID *int32 `json:"statusId,omitempty"`
 	// Status - Possible values include: 'StatusQueued', 'StatusInProgress', 'StatusUpToDate', 'StatusFail', 'StatusSuccess'
@@ -678,7 +672,6 @@ type EntitiesSuggestionExample struct {
 
 // EntityExtractor entity Extractor.
 type EntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -741,7 +734,6 @@ type EntityPrediction struct {
 
 // EntityRole entity extractor role
 type EntityRole struct {
-	autorest.Response `json:"-"`
 	// ID - The entity role ID.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - The entity role name.
@@ -760,59 +752,12 @@ type EntityRoleUpdateObject struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ErrorResponse error response when invoking an operation on the API.
+// ErrorResponse error information returned by the API
 type ErrorResponse struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
-	ErrorType            *string                `json:"errorType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ErrorResponse.
-func (er ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if er.ErrorType != nil {
-		objectMap["errorType"] = er.ErrorType
-	}
-	for k, v := range er.AdditionalProperties {
-		objectMap[k] = v
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ErrorResponse struct.
-func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if er.AdditionalProperties == nil {
-					er.AdditionalProperties = make(map[string]interface{})
-				}
-				er.AdditionalProperties[k] = additionalProperties
-			}
-		case "errorType":
-			if v != nil {
-				var errorType string
-				err = json.Unmarshal(*v, &errorType)
-				if err != nil {
-					return err
-				}
-				er.ErrorType = &errorType
-			}
-		}
-	}
-
-	return nil
+	// StatusCode - HTTP Status code
+	StatusCode *int32 `json:"statusCode,omitempty"`
+	// Message - Cause of the error.
+	Message *string `json:"message,omitempty"`
 }
 
 // ExampleLabelObject a labeled example.
@@ -827,7 +772,6 @@ type ExampleLabelObject struct {
 
 // ExplicitListItem explicit list item
 type ExplicitListItem struct {
-	autorest.Response `json:"-"`
 	// ID - The explicit list item ID.
 	ID *int64 `json:"id,omitempty"`
 	// ExplicitListItem - The explicit list item value.
@@ -858,14 +802,12 @@ type FeatureInfoObject struct {
 
 // FeaturesResponseObject model Features, including Patterns and Phraselists.
 type FeaturesResponseObject struct {
-	autorest.Response  `json:"-"`
 	PhraselistFeatures *[]PhraseListFeatureInfo `json:"phraselistFeatures,omitempty"`
 	PatternFeatures    *[]PatternFeatureInfo    `json:"patternFeatures,omitempty"`
 }
 
 // HierarchicalChildEntity a Hierarchical Child Entity.
 type HierarchicalChildEntity struct {
-	autorest.Response `json:"-"`
 	// TypeID - The type ID of the Entity Model.
 	TypeID *int32 `json:"typeId,omitempty"`
 	// ReadableType - Possible values include: 'ReadableType6EntityExtractor', 'ReadableType6HierarchicalEntityExtractor', 'ReadableType6HierarchicalChildEntityExtractor', 'ReadableType6CompositeEntityExtractor', 'ReadableType6ClosedListEntityExtractor', 'ReadableType6PrebuiltEntityExtractor', 'ReadableType6IntentClassifier', 'ReadableType6PatternAnyEntityExtractor', 'ReadableType6RegexEntityExtractor'
@@ -888,7 +830,6 @@ type HierarchicalChildModelUpdateObject struct {
 
 // HierarchicalEntityExtractor hierarchical Entity Extractor.
 type HierarchicalEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -918,15 +859,8 @@ type HierarchicalModel struct {
 	Roles    *[]string             `json:"roles,omitempty"`
 }
 
-// Int32 ...
-type Int32 struct {
-	autorest.Response `json:"-"`
-	Value             *int32 `json:"value,omitempty"`
-}
-
 // IntentClassifier intent Classifier.
 type IntentClassifier struct {
-	autorest.Response `json:"-"`
 	// CustomPrebuiltDomainName - The domain name.
 	CustomPrebuiltDomainName *string `json:"customPrebuiltDomainName,omitempty"`
 	// CustomPrebuiltModelName - The intent name or entity name.
@@ -1023,7 +957,6 @@ type LabeledUtterance struct {
 
 // LabelExampleResponse response when adding a labeled example.
 type LabelExampleResponse struct {
-	autorest.Response `json:"-"`
 	// UtteranceText - The sample's utterance.
 	UtteranceText *string `json:"UtteranceText,omitempty"`
 	// ExampleID - The newly created sample ID.
@@ -1038,177 +971,8 @@ type LabelTextObject struct {
 	Text *string `json:"text,omitempty"`
 }
 
-// ListApplicationInfoResponse ...
-type ListApplicationInfoResponse struct {
-	autorest.Response `json:"-"`
-	Value             *[]ApplicationInfoResponse `json:"value,omitempty"`
-}
-
-// ListAppVersionSettingObject ...
-type ListAppVersionSettingObject struct {
-	autorest.Response `json:"-"`
-	Value             *[]AppVersionSettingObject `json:"value,omitempty"`
-}
-
-// ListAvailableCulture ...
-type ListAvailableCulture struct {
-	autorest.Response `json:"-"`
-	Value             *[]AvailableCulture `json:"value,omitempty"`
-}
-
-// ListAvailablePrebuiltEntityModel ...
-type ListAvailablePrebuiltEntityModel struct {
-	autorest.Response `json:"-"`
-	Value             *[]AvailablePrebuiltEntityModel `json:"value,omitempty"`
-}
-
-// ListBatchLabelExample ...
-type ListBatchLabelExample struct {
-	autorest.Response `json:"-"`
-	Value             *[]BatchLabelExample `json:"value,omitempty"`
-}
-
-// ListClosedListEntityExtractor ...
-type ListClosedListEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]ClosedListEntityExtractor `json:"value,omitempty"`
-}
-
-// ListCompositeEntityExtractor ...
-type ListCompositeEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]CompositeEntityExtractor `json:"value,omitempty"`
-}
-
-// ListCustomPrebuiltModel ...
-type ListCustomPrebuiltModel struct {
-	autorest.Response `json:"-"`
-	Value             *[]CustomPrebuiltModel `json:"value,omitempty"`
-}
-
-// ListEntitiesSuggestionExample ...
-type ListEntitiesSuggestionExample struct {
-	autorest.Response `json:"-"`
-	Value             *[]EntitiesSuggestionExample `json:"value,omitempty"`
-}
-
-// ListEntityExtractor ...
-type ListEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]EntityExtractor `json:"value,omitempty"`
-}
-
-// ListEntityRole ...
-type ListEntityRole struct {
-	autorest.Response `json:"-"`
-	Value             *[]EntityRole `json:"value,omitempty"`
-}
-
-// ListExplicitListItem ...
-type ListExplicitListItem struct {
-	autorest.Response `json:"-"`
-	Value             *[]ExplicitListItem `json:"value,omitempty"`
-}
-
-// ListHierarchicalEntityExtractor ...
-type ListHierarchicalEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]HierarchicalEntityExtractor `json:"value,omitempty"`
-}
-
-// ListIntentClassifier ...
-type ListIntentClassifier struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntentClassifier `json:"value,omitempty"`
-}
-
-// ListIntentsSuggestionExample ...
-type ListIntentsSuggestionExample struct {
-	autorest.Response `json:"-"`
-	Value             *[]IntentsSuggestionExample `json:"value,omitempty"`
-}
-
-// ListLabeledUtterance ...
-type ListLabeledUtterance struct {
-	autorest.Response `json:"-"`
-	Value             *[]LabeledUtterance `json:"value,omitempty"`
-}
-
-// ListLabelTextObject ...
-type ListLabelTextObject struct {
-	autorest.Response `json:"-"`
-	Value             *[]LabelTextObject `json:"value,omitempty"`
-}
-
-// ListModelInfoResponse ...
-type ListModelInfoResponse struct {
-	autorest.Response `json:"-"`
-	Value             *[]ModelInfoResponse `json:"value,omitempty"`
-}
-
-// ListModelTrainingInfo ...
-type ListModelTrainingInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]ModelTrainingInfo `json:"value,omitempty"`
-}
-
-// ListPatternAnyEntityExtractor ...
-type ListPatternAnyEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]PatternAnyEntityExtractor `json:"value,omitempty"`
-}
-
-// ListPatternRuleInfo ...
-type ListPatternRuleInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]PatternRuleInfo `json:"value,omitempty"`
-}
-
-// ListPhraseListFeatureInfo ...
-type ListPhraseListFeatureInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]PhraseListFeatureInfo `json:"value,omitempty"`
-}
-
-// ListPrebuiltDomain ...
-type ListPrebuiltDomain struct {
-	autorest.Response `json:"-"`
-	Value             *[]PrebuiltDomain `json:"value,omitempty"`
-}
-
-// ListPrebuiltEntityExtractor ...
-type ListPrebuiltEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]PrebuiltEntityExtractor `json:"value,omitempty"`
-}
-
-// ListRegexEntityExtractor ...
-type ListRegexEntityExtractor struct {
-	autorest.Response `json:"-"`
-	Value             *[]RegexEntityExtractor `json:"value,omitempty"`
-}
-
-// ListString ...
-type ListString struct {
-	autorest.Response `json:"-"`
-	Value             *[]string `json:"value,omitempty"`
-}
-
-// ListUUID ...
-type ListUUID struct {
-	autorest.Response `json:"-"`
-	Value             *[]uuid.UUID `json:"value,omitempty"`
-}
-
-// ListVersionInfo ...
-type ListVersionInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]VersionInfo `json:"value,omitempty"`
-}
-
 // LuisApp exported Model - An exported LUIS Application.
 type LuisApp struct {
-	autorest.Response `json:"-"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Name - The name of the application.
@@ -1536,7 +1300,6 @@ type OperationError struct {
 
 // OperationStatus response of an Operation status.
 type OperationStatus struct {
-	autorest.Response `json:"-"`
 	// Code - Status Code. Possible values include: 'Failed', 'FAILED', 'Success'
 	Code OperationStatusType `json:"code,omitempty"`
 	// Message - Status details.
@@ -1552,7 +1315,6 @@ type PatternAny struct {
 
 // PatternAnyEntityExtractor pattern.Any Entity Extractor.
 type PatternAnyEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -1619,7 +1381,6 @@ type PatternRuleCreateObject struct {
 
 // PatternRuleInfo pattern rule
 type PatternRuleInfo struct {
-	autorest.Response `json:"-"`
 	// ID - The pattern ID.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Pattern - The pattern text.
@@ -1651,9 +1412,8 @@ type PatternUpdateObject struct {
 // PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the
 // prebuilt Cortana applications.
 type PersonalAssistantsResponse struct {
-	autorest.Response `json:"-"`
-	EndpointKeys      *[]uuid.UUID       `json:"endpointKeys,omitempty"`
-	EndpointUrls      map[string]*string `json:"endpointUrls"`
+	EndpointKeys *[]uuid.UUID       `json:"endpointKeys,omitempty"`
+	EndpointUrls map[string]*string `json:"endpointUrls"`
 }
 
 // MarshalJSON is the custom marshaler for PersonalAssistantsResponse.
@@ -1674,13 +1434,12 @@ type PhraselistCreateObject struct {
 	Phrases *string `json:"phrases,omitempty"`
 	// Name - The Phraselist name.
 	Name *string `json:"name,omitempty"`
-	// IsExchangeable - An exchangeable phrase list feature are serves as single feature to the LUIS underlying training algorithm. It is used as a lexicon lookup feature where its value is 1 if the lexicon contains a given word or 0 if it doesn’t. Think of an exchangeable as a synonyms list. A non-exchangeable phrase list feature has all the phrases in the list serve as separate features to the underlying training algorithm. So, if you your phrase list feature contains 5 phrases, they will be mapped to 5 separate features. You can think of the non-exchangeable phrase list feature as an additional bag of words that you are willing to add to LUIS existing vocabulary features. Think of a non-exchangeable as set of different words. Default value is true.
+	// IsExchangeable - An exchangeable phrase list feature serves as a single feature to the LUIS underlying training algorithm. It is used as a lexicon lookup feature where its value is 1 if the lexicon contains a given word or 0 if it doesn’t. Think of an exchangeable as a synonyms list. A non-exchangeable phrase list feature has all the phrases in the list serve as separate features to the underlying training algorithm. So, if you your phrase list feature contains 5 phrases, they will be mapped to 5 separate features. You can think of the non-exchangeable phrase list feature as an additional bag of words that you are willing to add to LUIS existing vocabulary features. Think of a non-exchangeable as set of different words. Default value is true.
 	IsExchangeable *bool `json:"isExchangeable,omitempty"`
 }
 
 // PhraseListFeatureInfo phraselist Feature.
 type PhraseListFeatureInfo struct {
-	autorest.Response `json:"-"`
 	// Phrases - A list of comma-separated values.
 	Phrases *string `json:"phrases,omitempty"`
 	// IsExchangeable - An exchangeable phrase list feature are serves as single feature to the LUIS underlying training algorithm. It is used as a lexicon lookup feature where its value is 1 if the lexicon contains a given word or 0 if it doesn’t. Think of an exchangeable as a synonyms list. A non-exchangeable phrase list feature has all the phrases in the list serve as separate features to the underlying training algorithm. So, if you your phrase list feature contains 5 phrases, they will be mapped to 5 separate features. You can think of the non-exchangeable phrase list feature as an additional bag of words that you are willing to add to LUIS existing vocabulary features. Think of a non-exchangeable as set of different words. Default value is true.
@@ -1761,7 +1520,6 @@ type PrebuiltEntity struct {
 
 // PrebuiltEntityExtractor prebuilt Entity Extractor.
 type PrebuiltEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -1775,7 +1533,6 @@ type PrebuiltEntityExtractor struct {
 
 // ProductionOrStagingEndpointInfo ...
 type ProductionOrStagingEndpointInfo struct {
-	autorest.Response `json:"-"`
 	// VersionID - The version ID to publish.
 	VersionID *string `json:"versionId,omitempty"`
 	// IsStaging - Indicates if the staging slot should be used, instead of the Production one.
@@ -1794,7 +1551,6 @@ type ProductionOrStagingEndpointInfo struct {
 
 // PublishSettings the application publish settings.
 type PublishSettings struct {
-	autorest.Response `json:"-"`
 	// ID - The application ID.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// IsSentimentAnalysisEnabled - Setting sentiment analysis as true returns the Sentiment of the input utterance along with the resopnse
@@ -1815,12 +1571,6 @@ type PublishSettingUpdateObject struct {
 	SpellChecker *bool `json:"spellChecker,omitempty"`
 }
 
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
-}
-
 // RegexEntity regular Expression Entity Extractor.
 type RegexEntity struct {
 	Name         *string   `json:"name,omitempty"`
@@ -1830,7 +1580,6 @@ type RegexEntity struct {
 
 // RegexEntityExtractor regex Entity Extractor.
 type RegexEntityExtractor struct {
-	autorest.Response `json:"-"`
 	// ID - The ID of the Entity Model.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// Name - Name of the Entity Model.
@@ -1860,25 +1609,10 @@ type RegexModelUpdateObject struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// SetString ...
-type SetString struct {
+// SetObject ...
+type SetObject struct {
 	autorest.Response `json:"-"`
-	Value             map[string]*string `json:"value"`
-}
-
-// MarshalJSON is the custom marshaler for SetString.
-func (ss SetString) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ss.Value != nil {
-		objectMap["value"] = ss.Value
-	}
-	return json.Marshal(objectMap)
-}
-
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // SubClosedList sublist of items for a Closed list.
@@ -1907,7 +1641,6 @@ type TaskUpdateObject struct {
 
 // UserAccessList list of user permissions.
 type UserAccessList struct {
-	autorest.Response `json:"-"`
 	// Owner - The email address of owner of the application.
 	Owner  *string   `json:"owner,omitempty"`
 	Emails *[]string `json:"emails,omitempty"`
@@ -1919,15 +1652,8 @@ type UserCollaborator struct {
 	Email *string `json:"email,omitempty"`
 }
 
-// UUID ...
-type UUID struct {
-	autorest.Response `json:"-"`
-	Value             *uuid.UUID `json:"value,omitempty"`
-}
-
 // VersionInfo object model of an application version.
 type VersionInfo struct {
-	autorest.Response `json:"-"`
 	// Version - The version ID. E.g.: "0.1"
 	Version *string `json:"version,omitempty"`
 	// CreatedDateTime - The version's creation timestamp.

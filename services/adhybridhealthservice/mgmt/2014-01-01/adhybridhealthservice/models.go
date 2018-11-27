@@ -1427,8 +1427,8 @@ type ExportError struct {
 	AadSourceOfAuthority *string `json:"aadSourceOfAuthority,omitempty"`
 	// AadUserPrincipalName - The AAD side user principal name.
 	AadUserPrincipalName *string `json:"aadUserPrincipalName,omitempty"`
-	// AadDistringuishedName - The AAD side distinguished name for the object.
-	AadDistringuishedName *string `json:"aadDistringuishedName,omitempty"`
+	// AadDistinguishedName - The AAD side distinguished name for the object.
+	AadDistinguishedName *string `json:"aadDistinguishedName,omitempty"`
 	// AadMail - The AAD side email for the object.
 	AadMail *string `json:"aadMail,omitempty"`
 	// LastDirSyncTime - The date and time of last sync run.

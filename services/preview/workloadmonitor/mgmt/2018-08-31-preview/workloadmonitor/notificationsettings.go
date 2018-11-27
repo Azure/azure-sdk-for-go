@@ -47,8 +47,7 @@ func NewNotificationSettingsClientWithBaseURI(baseURI string, subscriptionID str
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
-// notificationSettingName - name of the notificationSetting
-func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (result NotificationSetting, err error) {
+func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result NotificationSetting, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Get")
 		defer func() {
@@ -69,7 +68,7 @@ func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupN
 		return result, validation.NewError("workloadmonitor.NotificationSettingsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Get", nil, "Failure preparing request")
 		return
@@ -91,9 +90,9 @@ func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupN
 }
 
 // GetPreparer prepares the Get request.
-func (client NotificationSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (*http.Request, error) {
+func (client NotificationSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"notificationSettingName": autorest.Encode("path", notificationSettingName),
+		"notificationSettingName": autorest.Encode("path", "default"),
 		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
 		"resourceName":            autorest.Encode("path", resourceName),
 		"resourceNamespace":       autorest.Encode("path", resourceNamespace),
@@ -273,9 +272,8 @@ func (client NotificationSettingsClient) ListByResourceComplete(ctx context.Cont
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
-// notificationSettingName - name of the notificationSetting
 // body - body of the NotificationSetting PUT object.
-func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (result NotificationSetting, err error) {
+func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body NotificationSetting) (result NotificationSetting, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Update")
 		defer func() {
@@ -296,7 +294,7 @@ func (client NotificationSettingsClient) Update(ctx context.Context, resourceGro
 		return result, validation.NewError("workloadmonitor.NotificationSettingsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName, body)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -318,9 +316,9 @@ func (client NotificationSettingsClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdatePreparer prepares the Update request.
-func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (*http.Request, error) {
+func (client NotificationSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, body NotificationSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"notificationSettingName": autorest.Encode("path", notificationSettingName),
+		"notificationSettingName": autorest.Encode("path", "default"),
 		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
 		"resourceName":            autorest.Encode("path", resourceName),
 		"resourceNamespace":       autorest.Encode("path", resourceNamespace),

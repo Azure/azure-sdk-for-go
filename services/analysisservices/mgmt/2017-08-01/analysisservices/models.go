@@ -153,7 +153,7 @@ type CheckServerNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckServerNameAvailabilityResult the checking result of server name availibility.
+// CheckServerNameAvailabilityResult the checking result of server name availability.
 type CheckServerNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - Indicator of available of the server name.
@@ -217,7 +217,7 @@ type IPv4FirewallRule struct {
 type IPv4FirewallSettings struct {
 	// FirewallRules - An array of firewall rules.
 	FirewallRules *[]IPv4FirewallRule `json:"firewallRules,omitempty"`
-	// EnablePowerBIService - The indicator of enableing PBI service.
+	// EnablePowerBIService - The indicator of enabling PBI service.
 	EnablePowerBIService *string `json:"enablePowerBIService,omitempty"`
 }
 

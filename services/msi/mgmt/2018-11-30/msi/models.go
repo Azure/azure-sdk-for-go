@@ -179,7 +179,7 @@ type IdentityProperties struct {
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// ClientID - The id of the app associated with the identity. This is a random generated UUID by MSI.
 	ClientID *uuid.UUID `json:"clientId,omitempty"`
-	// ClientSecretURL -  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, the clientSecretUrl is null, otherwise the clientSecretUrl is not null
+	// ClientSecretURL -  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
 	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 

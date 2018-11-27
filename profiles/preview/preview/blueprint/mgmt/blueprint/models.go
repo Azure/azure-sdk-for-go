@@ -26,6 +26,7 @@ import (
 )
 
 type ArtifactsClient = original.ArtifactsClient
+type AssignmentOperationClient = original.AssignmentOperationClient
 type AssignmentsClient = original.AssignmentsClient
 type BlueprintsClient = original.BlueprintsClient
 
@@ -100,13 +101,22 @@ type ArtifactListPage = original.ArtifactListPage
 type ArtifactModel = original.ArtifactModel
 type ArtifactPropertiesBase = original.ArtifactPropertiesBase
 type Assignment = original.Assignment
+type AssignmentDeploymentJob = original.AssignmentDeploymentJob
+type AssignmentDeploymentJobResult = original.AssignmentDeploymentJobResult
+type AssignmentJobCreatedResource = original.AssignmentJobCreatedResource
 type AssignmentList = original.AssignmentList
 type AssignmentListIterator = original.AssignmentListIterator
 type AssignmentListPage = original.AssignmentListPage
 type AssignmentLockSettings = original.AssignmentLockSettings
+type AssignmentOperation = original.AssignmentOperation
+type AssignmentOperationList = original.AssignmentOperationList
+type AssignmentOperationListIterator = original.AssignmentOperationListIterator
+type AssignmentOperationListPage = original.AssignmentOperationListPage
+type AssignmentOperationProperties = original.AssignmentOperationProperties
 type AssignmentProperties = original.AssignmentProperties
 type AssignmentStatus = original.AssignmentStatus
 type AzureResourceBase = original.AzureResourceBase
+type AzureResourceManagerError = original.AzureResourceManagerError
 type KeyVaultReference = original.KeyVaultReference
 type List = original.List
 type ListIterator = original.ListIterator
@@ -150,6 +160,12 @@ func NewArtifactsClient() ArtifactsClient {
 }
 func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 	return original.NewArtifactsClientWithBaseURI(baseURI)
+}
+func NewAssignmentOperationClient() AssignmentOperationClient {
+	return original.NewAssignmentOperationClient()
+}
+func NewAssignmentOperationClientWithBaseURI(baseURI string) AssignmentOperationClient {
+	return original.NewAssignmentOperationClientWithBaseURI(baseURI)
 }
 func NewAssignmentsClient() AssignmentsClient {
 	return original.NewAssignmentsClient()
@@ -198,6 +214,12 @@ func NewAssignmentListIterator(page AssignmentListPage) AssignmentListIterator {
 }
 func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
 	return original.NewAssignmentListPage(getNextPage)
+}
+func NewAssignmentOperationListIterator(page AssignmentOperationListPage) AssignmentOperationListIterator {
+	return original.NewAssignmentOperationListIterator(page)
+}
+func NewAssignmentOperationListPage(getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
+	return original.NewAssignmentOperationListPage(getNextPage)
 }
 func NewListIterator(page ListPage) ListIterator {
 	return original.NewListIterator(page)

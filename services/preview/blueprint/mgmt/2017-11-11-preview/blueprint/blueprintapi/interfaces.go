@@ -76,3 +76,11 @@ type AssignmentsClientAPI interface {
 }
 
 var _ AssignmentsClientAPI = (*blueprint.AssignmentsClient)(nil)
+
+// AssignmentOperationClientAPI contains the set of methods on the AssignmentOperationClient type.
+type AssignmentOperationClientAPI interface {
+	Get(ctx context.Context, subscriptionID string, assignmentName string, assignmentOperationName string) (result blueprint.AssignmentOperation, err error)
+	List(ctx context.Context, subscriptionID string, assignmentName string) (result blueprint.AssignmentOperationListPage, err error)
+}
+
+var _ AssignmentOperationClientAPI = (*blueprint.AssignmentOperationClient)(nil)

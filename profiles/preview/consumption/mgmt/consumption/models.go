@@ -19,7 +19,11 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption"
+)
 
 type AggregatedCostClient = original.AggregatedCostClient
 type BalancesClient = original.BalancesClient
@@ -230,6 +234,48 @@ func PossibleOperatorTypeValues() []OperatorType {
 }
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
+}
+func NewBudgetsListResultIterator(page BudgetsListResultPage) BudgetsListResultIterator {
+	return original.NewBudgetsListResultIterator(page)
+}
+func NewBudgetsListResultPage(getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
+	return original.NewBudgetsListResultPage(getNextPage)
+}
+func NewMarketplacesListResultIterator(page MarketplacesListResultPage) MarketplacesListResultIterator {
+	return original.NewMarketplacesListResultIterator(page)
+}
+func NewMarketplacesListResultPage(getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
+	return original.NewMarketplacesListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewReservationDetailsListResultIterator(page ReservationDetailsListResultPage) ReservationDetailsListResultIterator {
+	return original.NewReservationDetailsListResultIterator(page)
+}
+func NewReservationDetailsListResultPage(getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
+	return original.NewReservationDetailsListResultPage(getNextPage)
+}
+func NewReservationRecommendationsListResultIterator(page ReservationRecommendationsListResultPage) ReservationRecommendationsListResultIterator {
+	return original.NewReservationRecommendationsListResultIterator(page)
+}
+func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
+	return original.NewReservationRecommendationsListResultPage(getNextPage)
+}
+func NewReservationSummariesListResultIterator(page ReservationSummariesListResultPage) ReservationSummariesListResultIterator {
+	return original.NewReservationSummariesListResultIterator(page)
+}
+func NewReservationSummariesListResultPage(getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
+	return original.NewReservationSummariesListResultPage(getNextPage)
+}
+func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
+	return original.NewUsageDetailsListResultIterator(page)
+}
+func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
+	return original.NewUsageDetailsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

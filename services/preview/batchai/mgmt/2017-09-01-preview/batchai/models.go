@@ -574,6 +574,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -643,11 +648,16 @@ func (page ClusterListResultPage) Values() []Cluster {
 	return *page.clr.Value
 }
 
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
+}
+
 // ClusterProperties job specific properties.
 type ClusterProperties struct {
 	// VMSize - All virtual machines in a cluster are the same size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes for Virtual Machines (Windows). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
 	VMSize *string `json:"vmSize,omitempty"`
-	// VMPriority - The default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'Dedicated', 'Lowpriority'
+	// VMPriority - The default value is dedicated. The node can get preempted while the task is running if lowpriority is chosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'Dedicated', 'Lowpriority'
 	VMPriority                  VMPriority                   `json:"vmPriority,omitempty"`
 	ScaleSettings               *ScaleSettings               `json:"scaleSettings,omitempty"`
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
@@ -962,6 +972,11 @@ func (iter FileListResultIterator) Value() File {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileListResultIterator type.
+func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
+	return FileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FileListResult) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -1029,6 +1044,11 @@ func (page FileListResultPage) Values() []File {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FileListResultPage type.
+func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{fn: getNextPage}
 }
 
 // FileProperties file specific properties.
@@ -1292,6 +1312,11 @@ func (iter FileServerListResultIterator) Value() FileServer {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileServerListResultIterator type.
+func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
+	return FileServerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fslr FileServerListResult) IsEmpty() bool {
 	return fslr.Value == nil || len(*fslr.Value) == 0
@@ -1359,6 +1384,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 		return nil
 	}
 	return *page.fslr.Value
+}
+
+// Creates a new instance of the FileServerListResultPage type.
+func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{fn: getNextPage}
 }
 
 // FileServerProperties file server specific properties.
@@ -1739,6 +1769,11 @@ func (iter JobListResultIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
@@ -1808,6 +1843,11 @@ func (page JobListResultPage) Values() []Job {
 	return *page.jlr.Value
 }
 
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
+}
+
 // JobPreparation specifies the settings for job preparation.
 type JobPreparation struct {
 	// CommandLine - If containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
@@ -1848,7 +1888,7 @@ type JobProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - The time at which the job entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
-	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
+	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
 	ExecutionState ExecutionState `json:"executionState,omitempty"`
 	// ExecutionStateTransitionTime - The time at which the job entered its current execution state.
 	ExecutionStateTransitionTime *date.Time `json:"executionStateTransitionTime,omitempty"`
@@ -2097,6 +2137,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2164,6 +2209,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OutputDirectory output directory for the job.
@@ -2266,6 +2316,11 @@ func (iter RemoteLoginInformationListResultIterator) Value() RemoteLoginInformat
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RemoteLoginInformationListResultIterator type.
+func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
+	return RemoteLoginInformationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlilr RemoteLoginInformationListResult) IsEmpty() bool {
 	return rlilr.Value == nil || len(*rlilr.Value) == 0
@@ -2333,6 +2388,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 		return nil
 	}
 	return *page.rlilr.Value
+}
+
+// Creates a new instance of the RemoteLoginInformationListResultPage type.
+func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{fn: getNextPage}
 }
 
 // Resource a definition of an Azure resource.

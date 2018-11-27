@@ -43,6 +43,19 @@ func PossibleAccessTierValues() []AccessTier {
 	return []AccessTier{Cool, Hot}
 }
 
+// AccountExpand enumerates the values for account expand.
+type AccountExpand string
+
+const (
+	// AccountExpandGeoReplicationStats ...
+	AccountExpandGeoReplicationStats AccountExpand = "geoReplicationStats"
+)
+
+// PossibleAccountExpandValues returns an array of possible values for the AccountExpand const type.
+func PossibleAccountExpandValues() []AccountExpand {
+	return []AccountExpand{AccountExpandGeoReplicationStats}
+}
+
 // AccountStatus enumerates the values for account status.
 type AccountStatus string
 
@@ -103,6 +116,23 @@ const (
 // PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
 func PossibleDefaultActionValues() []DefaultAction {
 	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
+}
+
+// GeoReplicationStatus enumerates the values for geo replication status.
+type GeoReplicationStatus string
+
+const (
+	// GeoReplicationStatusBootstrap ...
+	GeoReplicationStatusBootstrap GeoReplicationStatus = "Bootstrap"
+	// GeoReplicationStatusLive ...
+	GeoReplicationStatusLive GeoReplicationStatus = "Live"
+	// GeoReplicationStatusUnavailable ...
+	GeoReplicationStatusUnavailable GeoReplicationStatus = "Unavailable"
+)
+
+// PossibleGeoReplicationStatusValues returns an array of possible values for the GeoReplicationStatus const type.
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
+	return []GeoReplicationStatus{GeoReplicationStatusBootstrap, GeoReplicationStatusLive, GeoReplicationStatusUnavailable}
 }
 
 // HTTPProtocol enumerates the values for http protocol.
@@ -634,7 +664,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCheckNameAvailabilityParameters the parameters used to check the availabity of the storage
+// AccountCheckNameAvailabilityParameters the parameters used to check the availability of the storage
 // account name.
 type AccountCheckNameAvailabilityParameters struct {
 	// Name - The storage account name.
@@ -645,7 +675,7 @@ type AccountCheckNameAvailabilityParameters struct {
 
 // AccountCreateParameters the parameters used when creating a storage account.
 type AccountCreateParameters struct {
-	// Sku - Required. Gets or sets the sku name.
+	// Sku - Required. Gets or sets the SKU name.
 	Sku *Sku `json:"sku,omitempty"`
 	// Kind - Required. Indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
 	Kind Kind `json:"kind,omitempty"`
@@ -900,6 +930,10 @@ type AccountProperties struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
+	// GeoReplicationStats - Geo Replication Stats
+	GeoReplicationStats *GeoReplicationStats `json:"geoReplicationStats,omitempty"`
+	// FailoverInProgress - If the failover is in progress, the value will be true, otherwise, it will be null.
+	FailoverInProgress *bool `json:"failoverInProgress,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -938,7 +972,7 @@ type AccountPropertiesUpdateParameters struct {
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.
 type AccountRegenerateKeyParameters struct {
-	// KeyName - The name of storage keys that want to be regenerated, possible vaules are key1, key2.
+	// KeyName - The name of storage keys that want to be regenerated, possible values are key1, key2.
 	KeyName *string `json:"keyName,omitempty"`
 }
 
@@ -991,10 +1025,33 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 	return
 }
 
+// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccountsFailoverFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // AccountUpdateParameters the parameters that can be provided when updating the storage account
 // properties.
 type AccountUpdateParameters struct {
-	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those sku names be updated to any other value.
+	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
 	Sku *Sku `json:"sku,omitempty"`
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
 	Tags map[string]*string `json:"tags"`
@@ -1394,7 +1451,7 @@ type DeleteRetentionPolicy struct {
 	Days *int32 `json:"days,omitempty"`
 }
 
-// Dimension dimension of blobs, possiblly be blob type or access tier.
+// Dimension dimension of blobs, possibly be blob type or access tier.
 type Dimension struct {
 	// Name - Display name of dimension.
 	Name *string `json:"name,omitempty"`
@@ -1447,6 +1504,17 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+}
+
+// GeoReplicationStats statistics related to replication for storage account's Blob, Table, Queue and File
+// services. It is only available when geo-redundant replication is enabled for the storage account.
+type GeoReplicationStats struct {
+	// Status - The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is active and operational. - Bootstrap: Indicates initial synchronization from the primary location to the secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable: Indicates that the secondary location is temporarily unavailable. Possible values include: 'GeoReplicationStatusLive', 'GeoReplicationStatusBootstrap', 'GeoReplicationStatusUnavailable'
+	Status GeoReplicationStatus `json:"status,omitempty"`
+	// LastSyncTime - All primary writes preceding this UTC date/time value are guaranteed to be available for read operations. Primary writes following this point in time may or may not be available for reads. Element may be default value if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
+	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
+	// CanFailover - A boolean flag which indicates whether or not account failover is supported for the account.
+	CanFailover *bool `json:"canFailover,omitempty"`
 }
 
 // Identity identity for the resource.
@@ -1778,7 +1846,7 @@ type ListContainerItems struct {
 // ListServiceSasResponse the List service SAS credentials operation response.
 type ListServiceSasResponse struct {
 	autorest.Response `json:"-"`
-	// ServiceSasToken - List service SAS credentials of speicific resource.
+	// ServiceSasToken - List service SAS credentials of specific resource.
 	ServiceSasToken *string `json:"serviceSasToken,omitempty"`
 }
 
@@ -2002,7 +2070,7 @@ type Restriction struct {
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
 }
 
-// ServiceSasParameters the parameters to list service SAS credentials of a speicific resource.
+// ServiceSasParameters the parameters to list service SAS credentials of a specific resource.
 type ServiceSasParameters struct {
 	// CanonicalizedResource - The canonical path to the signed resource.
 	CanonicalizedResource *string `json:"canonicalizedResource,omitempty"`
@@ -2050,9 +2118,9 @@ type ServiceSpecification struct {
 
 // Sku the SKU of the storage account.
 type Sku struct {
-	// Name - Gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS'
+	// Name - Gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - Gets the sku tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'
+	// Tier - Gets the SKU tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// ResourceType - The type of the resource, usually it is 'storageAccounts'.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -2060,16 +2128,16 @@ type Sku struct {
 	Kind Kind `json:"kind,omitempty"`
 	// Locations - The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
 	Locations *[]string `json:"locations,omitempty"`
-	// Capabilities - The capability information in the specified sku, including file encryption, network acls, change notification, etc.
+	// Capabilities - The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
 	Capabilities *[]SKUCapability `json:"capabilities,omitempty"`
 	// Restrictions - The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
 }
 
-// SKUCapability the capability information in the specified sku, including file encryption, network acls,
+// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
 // change notification, etc.
 type SKUCapability struct {
-	// Name - The name of capability, The capability information in the specified sku, including file encryption, network acls, change notification, etc.
+	// Name - The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
 	Name *string `json:"name,omitempty"`
 	// Value - A string value to indicate states of given capability. Possibly 'true' or 'false'.
 	Value *string `json:"value,omitempty"`

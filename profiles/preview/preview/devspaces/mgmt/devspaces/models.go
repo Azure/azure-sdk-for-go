@@ -19,7 +19,11 @@
 
 package devspaces
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/devspaces/mgmt/2018-06-01-preview/devspaces"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/devspaces/mgmt/2018-06-01-preview/devspaces"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -106,6 +110,18 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func NewControllerListIterator(page ControllerListPage) ControllerListIterator {
+	return original.NewControllerListIterator(page)
+}
+func NewControllerListPage(getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
+	return original.NewControllerListPage(getNextPage)
+}
+func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
+	return original.NewResourceProviderOperationListIterator(page)
+}
+func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

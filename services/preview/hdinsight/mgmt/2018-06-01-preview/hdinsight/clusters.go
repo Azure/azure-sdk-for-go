@@ -662,6 +662,85 @@ func (client ClustersClient) ResizeResponder(resp *http.Response) (result autore
 	return
 }
 
+// RotateDiskEncryptionKey rotate disk encryption key of the specified HDInsight cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the cluster.
+// parameters - the parameters for the disk encryption operation.
+func (client ClustersClient) RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterDiskEncryptionParameters) (result ClustersRotateDiskEncryptionKeyFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.RotateDiskEncryptionKey")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.RotateDiskEncryptionKeyPreparer(ctx, resourceGroupName, clusterName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "RotateDiskEncryptionKey", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RotateDiskEncryptionKeySender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "RotateDiskEncryptionKey", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RotateDiskEncryptionKeyPreparer prepares the RotateDiskEncryptionKey request.
+func (client ClustersClient) RotateDiskEncryptionKeyPreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterDiskEncryptionParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/rotatediskencryptionkey", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RotateDiskEncryptionKeySender sends the RotateDiskEncryptionKey request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) RotateDiskEncryptionKeySender(req *http.Request) (future ClustersRotateDiskEncryptionKeyFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// RotateDiskEncryptionKeyResponder handles the response to the RotateDiskEncryptionKey request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) RotateDiskEncryptionKeyResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Update patch HDInsight cluster with the specified parameters.
 // Parameters:
 // resourceGroupName - the name of the resource group.

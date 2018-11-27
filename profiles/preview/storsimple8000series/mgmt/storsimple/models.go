@@ -19,7 +19,11 @@
 
 package storsimple
 
-import original "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
+)
 
 type AccessControlRecordsClient = original.AccessControlRecordsClient
 type AlertsClient = original.AlertsClient
@@ -850,6 +854,30 @@ func PossibleVolumeStatusValues() []VolumeStatus {
 }
 func PossibleVolumeTypeValues() []VolumeType {
 	return original.PossibleVolumeTypeValues()
+}
+func NewAlertListIterator(page AlertListPage) AlertListIterator {
+	return original.NewAlertListIterator(page)
+}
+func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(getNextPage)
+}
+func NewAvailableProviderOperationListIterator(page AvailableProviderOperationListPage) AvailableProviderOperationListIterator {
+	return original.NewAvailableProviderOperationListIterator(page)
+}
+func NewAvailableProviderOperationListPage(getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
+	return original.NewAvailableProviderOperationListPage(getNextPage)
+}
+func NewBackupListIterator(page BackupListPage) BackupListIterator {
+	return original.NewBackupListIterator(page)
+}
+func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return original.NewBackupListPage(getNextPage)
+}
+func NewJobListIterator(page JobListPage) JobListIterator {
+	return original.NewJobListIterator(page)
+}
+func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
+	return original.NewJobListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

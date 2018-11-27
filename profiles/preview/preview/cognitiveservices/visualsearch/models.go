@@ -22,7 +22,7 @@ package visualsearch
 import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/visualsearch"
 
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	DefaultEndpoint = original.DefaultEndpoint
 )
 
 type BaseClient = original.BaseClient
@@ -338,14 +338,11 @@ type Thing = original.Thing
 func New() BaseClient {
 	return original.New()
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func NewImagesClient() ImagesClient {
 	return original.NewImagesClient()
-}
-func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI)
 }
 func PossibleCurrencyValues() []Currency {
 	return original.PossibleCurrencyValues()

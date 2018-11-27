@@ -19,7 +19,11 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
+)
 
 type APIClient = original.APIClient
 type APIExportClient = original.APIExportClient
@@ -489,6 +493,96 @@ func PossibleTemplateNameValues() []TemplateName {
 }
 func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
+}
+func NewAPICollectionIterator(page APICollectionPage) APICollectionIterator {
+	return original.NewAPICollectionIterator(page)
+}
+func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return original.NewAPICollectionPage(getNextPage)
+}
+func NewAuthorizationServerCollectionIterator(page AuthorizationServerCollectionPage) AuthorizationServerCollectionIterator {
+	return original.NewAuthorizationServerCollectionIterator(page)
+}
+func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return original.NewAuthorizationServerCollectionPage(getNextPage)
+}
+func NewBackendCollectionIterator(page BackendCollectionPage) BackendCollectionIterator {
+	return original.NewBackendCollectionIterator(page)
+}
+func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return original.NewBackendCollectionPage(getNextPage)
+}
+func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
+	return original.NewCertificateCollectionIterator(page)
+}
+func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(getNextPage)
+}
+func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailTemplateCollectionIterator {
+	return original.NewEmailTemplateCollectionIterator(page)
+}
+func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return original.NewEmailTemplateCollectionPage(getNextPage)
+}
+func NewGroupCollectionIterator(page GroupCollectionPage) GroupCollectionIterator {
+	return original.NewGroupCollectionIterator(page)
+}
+func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return original.NewGroupCollectionPage(getNextPage)
+}
+func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIterator {
+	return original.NewLoggerCollectionIterator(page)
+}
+func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return original.NewLoggerCollectionPage(getNextPage)
+}
+func NewOpenIDConnectProviderCollectionIterator(page OpenIDConnectProviderCollectionPage) OpenIDConnectProviderCollectionIterator {
+	return original.NewOpenIDConnectProviderCollectionIterator(page)
+}
+func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return original.NewOpenIDConnectProviderCollectionPage(getNextPage)
+}
+func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
+	return original.NewOperationCollectionIterator(page)
+}
+func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(getNextPage)
+}
+func NewProductCollectionIterator(page ProductCollectionPage) ProductCollectionIterator {
+	return original.NewProductCollectionIterator(page)
+}
+func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return original.NewProductCollectionPage(getNextPage)
+}
+func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
+	return original.NewPropertyCollectionIterator(page)
+}
+func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return original.NewPropertyCollectionPage(getNextPage)
+}
+func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIterator {
+	return original.NewReportCollectionIterator(page)
+}
+func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return original.NewReportCollectionPage(getNextPage)
+}
+func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
+	return original.NewSchemaCollectionIterator(page)
+}
+func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return original.NewSchemaCollectionPage(getNextPage)
+}
+func NewSubscriptionCollectionIterator(page SubscriptionCollectionPage) SubscriptionCollectionIterator {
+	return original.NewSubscriptionCollectionIterator(page)
+}
+func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return original.NewSubscriptionCollectionPage(getNextPage)
+}
+func NewUserCollectionIterator(page UserCollectionPage) UserCollectionIterator {
+	return original.NewUserCollectionIterator(page)
+}
+func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return original.NewUserCollectionPage(getNextPage)
 }
 func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
 	return original.NewOpenIDConnectProviderClient()

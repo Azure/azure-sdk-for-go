@@ -19,7 +19,11 @@
 
 package job
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job"
+)
 
 const (
 	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
@@ -186,6 +190,24 @@ func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties
 }
 func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()
+}
+func NewInfoListResultIterator(page InfoListResultPage) InfoListResultIterator {
+	return original.NewInfoListResultIterator(page)
+}
+func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return original.NewInfoListResultPage(getNextPage)
+}
+func NewPipelineInformationListResultIterator(page PipelineInformationListResultPage) PipelineInformationListResultIterator {
+	return original.NewPipelineInformationListResultIterator(page)
+}
+func NewPipelineInformationListResultPage(getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
+	return original.NewPipelineInformationListResultPage(getNextPage)
+}
+func NewRecurrenceInformationListResultIterator(page RecurrenceInformationListResultPage) RecurrenceInformationListResultIterator {
+	return original.NewRecurrenceInformationListResultIterator(page)
+}
+func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
+	return original.NewRecurrenceInformationListResultPage(getNextPage)
 }
 func NewPipelineClient() PipelineClient {
 	return original.NewPipelineClient()

@@ -19,7 +19,11 @@
 
 package containerregistry
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
+)
 
 type BuildsClient = original.BuildsClient
 type BuildStepsClient = original.BuildStepsClient
@@ -410,6 +414,60 @@ func PossibleWebhookActionValues() []WebhookAction {
 }
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
+}
+func NewBuildArgumentListIterator(page BuildArgumentListPage) BuildArgumentListIterator {
+	return original.NewBuildArgumentListIterator(page)
+}
+func NewBuildArgumentListPage(getNextPage func(context.Context, BuildArgumentList) (BuildArgumentList, error)) BuildArgumentListPage {
+	return original.NewBuildArgumentListPage(getNextPage)
+}
+func NewBuildListResultIterator(page BuildListResultPage) BuildListResultIterator {
+	return original.NewBuildListResultIterator(page)
+}
+func NewBuildListResultPage(getNextPage func(context.Context, BuildListResult) (BuildListResult, error)) BuildListResultPage {
+	return original.NewBuildListResultPage(getNextPage)
+}
+func NewBuildStepListIterator(page BuildStepListPage) BuildStepListIterator {
+	return original.NewBuildStepListIterator(page)
+}
+func NewBuildStepListPage(getNextPage func(context.Context, BuildStepList) (BuildStepList, error)) BuildStepListPage {
+	return original.NewBuildStepListPage(getNextPage)
+}
+func NewBuildTaskListResultIterator(page BuildTaskListResultPage) BuildTaskListResultIterator {
+	return original.NewBuildTaskListResultIterator(page)
+}
+func NewBuildTaskListResultPage(getNextPage func(context.Context, BuildTaskListResult) (BuildTaskListResult, error)) BuildTaskListResultPage {
+	return original.NewBuildTaskListResultPage(getNextPage)
+}
+func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
+	return original.NewEventListResultIterator(page)
+}
+func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return original.NewEventListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
+	return original.NewRegistryListResultIterator(page)
+}
+func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return original.NewRegistryListResultPage(getNextPage)
+}
+func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
+	return original.NewReplicationListResultIterator(page)
+}
+func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return original.NewReplicationListResultPage(getNextPage)
+}
+func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
+	return original.NewWebhookListResultIterator(page)
+}
+func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return original.NewWebhookListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

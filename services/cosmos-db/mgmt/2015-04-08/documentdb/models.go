@@ -994,6 +994,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1063,9 +1068,14 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
+}
+
 // PartitionMetric the metric values for a single partition.
 type PartitionMetric struct {
-	// PartitionID - The parition id (GUID identifier) of the metric values.
+	// PartitionID - The partition id (GUID identifier) of the metric values.
 	PartitionID *string `json:"partitionId,omitempty"`
 	// PartitionKeyRangeID - The partition key range id (integer identifier) of the metric values.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
@@ -1092,7 +1102,7 @@ type PartitionMetricListResult struct {
 
 // PartitionUsage the partition level usage data for a usage request.
 type PartitionUsage struct {
-	// PartitionID - The parition id (GUID identifier) of the usages.
+	// PartitionID - The partition id (GUID identifier) of the usages.
 	PartitionID *string `json:"partitionId,omitempty"`
 	// PartitionKeyRangeID - The partition key range id (integer identifier) of the usages.
 	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`

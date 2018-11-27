@@ -19,7 +19,11 @@
 
 package servicemap
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -384,6 +388,42 @@ func PossibleVirtualizationStateValues() []VirtualizationState {
 }
 func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 	return original.PossibleVirtualMachineTypeValues()
+}
+func NewClientGroupMembersCollectionIterator(page ClientGroupMembersCollectionPage) ClientGroupMembersCollectionIterator {
+	return original.NewClientGroupMembersCollectionIterator(page)
+}
+func NewClientGroupMembersCollectionPage(getNextPage func(context.Context, ClientGroupMembersCollection) (ClientGroupMembersCollection, error)) ClientGroupMembersCollectionPage {
+	return original.NewClientGroupMembersCollectionPage(getNextPage)
+}
+func NewConnectionCollectionIterator(page ConnectionCollectionPage) ConnectionCollectionIterator {
+	return original.NewConnectionCollectionIterator(page)
+}
+func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
+	return original.NewConnectionCollectionPage(getNextPage)
+}
+func NewMachineCollectionIterator(page MachineCollectionPage) MachineCollectionIterator {
+	return original.NewMachineCollectionIterator(page)
+}
+func NewMachineCollectionPage(getNextPage func(context.Context, MachineCollection) (MachineCollection, error)) MachineCollectionPage {
+	return original.NewMachineCollectionPage(getNextPage)
+}
+func NewMachineGroupCollectionIterator(page MachineGroupCollectionPage) MachineGroupCollectionIterator {
+	return original.NewMachineGroupCollectionIterator(page)
+}
+func NewMachineGroupCollectionPage(getNextPage func(context.Context, MachineGroupCollection) (MachineGroupCollection, error)) MachineGroupCollectionPage {
+	return original.NewMachineGroupCollectionPage(getNextPage)
+}
+func NewPortCollectionIterator(page PortCollectionPage) PortCollectionIterator {
+	return original.NewPortCollectionIterator(page)
+}
+func NewPortCollectionPage(getNextPage func(context.Context, PortCollection) (PortCollection, error)) PortCollectionPage {
+	return original.NewPortCollectionPage(getNextPage)
+}
+func NewProcessCollectionIterator(page ProcessCollectionPage) ProcessCollectionIterator {
+	return original.NewProcessCollectionIterator(page)
+}
+func NewProcessCollectionPage(getNextPage func(context.Context, ProcessCollection) (ProcessCollection, error)) ProcessCollectionPage {
+	return original.NewProcessCollectionPage(getNextPage)
 }
 func NewPortsClient(subscriptionID string) PortsClient {
 	return original.NewPortsClient(subscriptionID)

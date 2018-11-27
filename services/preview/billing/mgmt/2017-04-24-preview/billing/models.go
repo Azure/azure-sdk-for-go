@@ -216,6 +216,11 @@ func (iter InvoicesListResultIterator) Value() Invoice {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InvoicesListResultIterator type.
+func NewInvoicesListResultIterator(page InvoicesListResultPage) InvoicesListResultIterator {
+	return InvoicesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InvoicesListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -283,6 +288,11 @@ func (page InvoicesListResultPage) Values() []Invoice {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the InvoicesListResultPage type.
+func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
+	return InvoicesListResultPage{fn: getNextPage}
 }
 
 // Operation a Billing REST API operation.
@@ -371,6 +381,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -438,6 +453,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Period a billing period resource.
@@ -599,6 +619,11 @@ func (iter PeriodsListResultIterator) Value() Period {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PeriodsListResultIterator type.
+func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultIterator {
+	return PeriodsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr PeriodsListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -666,6 +691,11 @@ func (page PeriodsListResultPage) Values() []Period {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the PeriodsListResultPage type.
+func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
+	return PeriodsListResultPage{fn: getNextPage}
 }
 
 // Resource the Resource model definition.

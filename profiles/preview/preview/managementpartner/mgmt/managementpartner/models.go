@@ -19,7 +19,11 @@
 
 package managementpartner
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -64,6 +68,12 @@ func PossibleCodeValues() []Code {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()

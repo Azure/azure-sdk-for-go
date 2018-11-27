@@ -129,6 +129,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -196,6 +201,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // ResourceLink the resource link.
@@ -294,6 +304,11 @@ func (iter ResourceLinkResultIterator) Value() ResourceLink {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceLinkResultIterator type.
+func NewResourceLinkResultIterator(page ResourceLinkResultPage) ResourceLinkResultIterator {
+	return ResourceLinkResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr ResourceLinkResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -361,4 +376,9 @@ func (page ResourceLinkResultPage) Values() []ResourceLink {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the ResourceLinkResultPage type.
+func NewResourceLinkResultPage(getNextPage func(context.Context, ResourceLinkResult) (ResourceLinkResult, error)) ResourceLinkResultPage {
+	return ResourceLinkResultPage{fn: getNextPage}
 }

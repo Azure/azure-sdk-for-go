@@ -19,7 +19,11 @@
 
 package sql
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql"
+)
 
 type BackupShortTermRetentionPoliciesClient = original.BackupShortTermRetentionPoliciesClient
 type CapabilitiesClient = original.CapabilitiesClient
@@ -253,6 +257,9 @@ type DatabasesUpdateFuture = original.DatabasesUpdateFuture
 type DatabasesUpgradeDataWarehouseFuture = original.DatabasesUpgradeDataWarehouseFuture
 type DatabaseUpdate = original.DatabaseUpdate
 type DatabaseVulnerabilityAssessment = original.DatabaseVulnerabilityAssessment
+type DatabaseVulnerabilityAssessmentListResult = original.DatabaseVulnerabilityAssessmentListResult
+type DatabaseVulnerabilityAssessmentListResultIterator = original.DatabaseVulnerabilityAssessmentListResultIterator
+type DatabaseVulnerabilityAssessmentListResultPage = original.DatabaseVulnerabilityAssessmentListResultPage
 type DatabaseVulnerabilityAssessmentProperties = original.DatabaseVulnerabilityAssessmentProperties
 type DatabaseVulnerabilityAssessmentRuleBaseline = original.DatabaseVulnerabilityAssessmentRuleBaseline
 type DatabaseVulnerabilityAssessmentRuleBaselineItem = original.DatabaseVulnerabilityAssessmentRuleBaselineItem
@@ -490,6 +497,66 @@ func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentS
 }
 func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
 	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
+}
+func NewBackupShortTermRetentionPolicyListResultIterator(page BackupShortTermRetentionPolicyListResultPage) BackupShortTermRetentionPolicyListResultIterator {
+	return original.NewBackupShortTermRetentionPolicyListResultIterator(page)
+}
+func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
+	return original.NewBackupShortTermRetentionPolicyListResultPage(getNextPage)
+}
+func NewDatabaseListResultIterator(page DatabaseListResultPage) DatabaseListResultIterator {
+	return original.NewDatabaseListResultIterator(page)
+}
+func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return original.NewDatabaseListResultPage(getNextPage)
+}
+func NewDatabaseOperationListResultIterator(page DatabaseOperationListResultPage) DatabaseOperationListResultIterator {
+	return original.NewDatabaseOperationListResultIterator(page)
+}
+func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
+	return original.NewDatabaseOperationListResultPage(getNextPage)
+}
+func NewDatabaseVulnerabilityAssessmentListResultIterator(page DatabaseVulnerabilityAssessmentListResultPage) DatabaseVulnerabilityAssessmentListResultIterator {
+	return original.NewDatabaseVulnerabilityAssessmentListResultIterator(page)
+}
+func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
+	return original.NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage)
+}
+func NewElasticPoolListResultIterator(page ElasticPoolListResultPage) ElasticPoolListResultIterator {
+	return original.NewElasticPoolListResultIterator(page)
+}
+func NewElasticPoolListResultPage(getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
+	return original.NewElasticPoolListResultPage(getNextPage)
+}
+func NewElasticPoolOperationListResultIterator(page ElasticPoolOperationListResultPage) ElasticPoolOperationListResultIterator {
+	return original.NewElasticPoolOperationListResultIterator(page)
+}
+func NewElasticPoolOperationListResultPage(getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
+	return original.NewElasticPoolOperationListResultPage(getNextPage)
+}
+func NewInstanceFailoverGroupListResultIterator(page InstanceFailoverGroupListResultPage) InstanceFailoverGroupListResultIterator {
+	return original.NewInstanceFailoverGroupListResultIterator(page)
+}
+func NewInstanceFailoverGroupListResultPage(getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
+	return original.NewInstanceFailoverGroupListResultPage(getNextPage)
+}
+func NewManagedInstanceEncryptionProtectorListResultIterator(page ManagedInstanceEncryptionProtectorListResultPage) ManagedInstanceEncryptionProtectorListResultIterator {
+	return original.NewManagedInstanceEncryptionProtectorListResultIterator(page)
+}
+func NewManagedInstanceEncryptionProtectorListResultPage(getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
+	return original.NewManagedInstanceEncryptionProtectorListResultPage(getNextPage)
+}
+func NewManagedInstanceKeyListResultIterator(page ManagedInstanceKeyListResultPage) ManagedInstanceKeyListResultIterator {
+	return original.NewManagedInstanceKeyListResultIterator(page)
+}
+func NewManagedInstanceKeyListResultPage(getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
+	return original.NewManagedInstanceKeyListResultPage(getNextPage)
+}
+func NewVulnerabilityAssessmentScanRecordListResultIterator(page VulnerabilityAssessmentScanRecordListResultPage) VulnerabilityAssessmentScanRecordListResultIterator {
+	return original.NewVulnerabilityAssessmentScanRecordListResultIterator(page)
+}
+func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return original.NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage)
 }
 func NewTdeCertificatesClient(subscriptionID string) TdeCertificatesClient {
 	return original.NewTdeCertificatesClient(subscriptionID)

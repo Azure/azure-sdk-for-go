@@ -19,7 +19,11 @@
 
 package automation
 
-import original "github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2015-10-31/automation"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2015-10-31/automation"
+)
 
 type AccountClient = original.AccountClient
 type ActivityClient = original.ActivityClient
@@ -662,6 +666,126 @@ func PossibleScheduleFrequencyValues() []ScheduleFrequency {
 }
 func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
+}
+func NewActivityListResultIterator(page ActivityListResultPage) ActivityListResultIterator {
+	return original.NewActivityListResultIterator(page)
+}
+func NewActivityListResultPage(getNextPage func(context.Context, ActivityListResult) (ActivityListResult, error)) ActivityListResultPage {
+	return original.NewActivityListResultPage(getNextPage)
+}
+func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
+	return original.NewCertificateListResultIterator(page)
+}
+func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return original.NewCertificateListResultPage(getNextPage)
+}
+func NewConnectionListResultIterator(page ConnectionListResultPage) ConnectionListResultIterator {
+	return original.NewConnectionListResultIterator(page)
+}
+func NewConnectionListResultPage(getNextPage func(context.Context, ConnectionListResult) (ConnectionListResult, error)) ConnectionListResultPage {
+	return original.NewConnectionListResultPage(getNextPage)
+}
+func NewConnectionTypeListResultIterator(page ConnectionTypeListResultPage) ConnectionTypeListResultIterator {
+	return original.NewConnectionTypeListResultIterator(page)
+}
+func NewConnectionTypeListResultPage(getNextPage func(context.Context, ConnectionTypeListResult) (ConnectionTypeListResult, error)) ConnectionTypeListResultPage {
+	return original.NewConnectionTypeListResultPage(getNextPage)
+}
+func NewCredentialListResultIterator(page CredentialListResultPage) CredentialListResultIterator {
+	return original.NewCredentialListResultIterator(page)
+}
+func NewCredentialListResultPage(getNextPage func(context.Context, CredentialListResult) (CredentialListResult, error)) CredentialListResultPage {
+	return original.NewCredentialListResultPage(getNextPage)
+}
+func NewDscCompilationJobListResultIterator(page DscCompilationJobListResultPage) DscCompilationJobListResultIterator {
+	return original.NewDscCompilationJobListResultIterator(page)
+}
+func NewDscCompilationJobListResultPage(getNextPage func(context.Context, DscCompilationJobListResult) (DscCompilationJobListResult, error)) DscCompilationJobListResultPage {
+	return original.NewDscCompilationJobListResultPage(getNextPage)
+}
+func NewDscConfigurationListResultIterator(page DscConfigurationListResultPage) DscConfigurationListResultIterator {
+	return original.NewDscConfigurationListResultIterator(page)
+}
+func NewDscConfigurationListResultPage(getNextPage func(context.Context, DscConfigurationListResult) (DscConfigurationListResult, error)) DscConfigurationListResultPage {
+	return original.NewDscConfigurationListResultPage(getNextPage)
+}
+func NewDscNodeConfigurationListResultIterator(page DscNodeConfigurationListResultPage) DscNodeConfigurationListResultIterator {
+	return original.NewDscNodeConfigurationListResultIterator(page)
+}
+func NewDscNodeConfigurationListResultPage(getNextPage func(context.Context, DscNodeConfigurationListResult) (DscNodeConfigurationListResult, error)) DscNodeConfigurationListResultPage {
+	return original.NewDscNodeConfigurationListResultPage(getNextPage)
+}
+func NewDscNodeListResultIterator(page DscNodeListResultPage) DscNodeListResultIterator {
+	return original.NewDscNodeListResultIterator(page)
+}
+func NewDscNodeListResultPage(getNextPage func(context.Context, DscNodeListResult) (DscNodeListResult, error)) DscNodeListResultPage {
+	return original.NewDscNodeListResultPage(getNextPage)
+}
+func NewDscNodeReportListResultIterator(page DscNodeReportListResultPage) DscNodeReportListResultIterator {
+	return original.NewDscNodeReportListResultIterator(page)
+}
+func NewDscNodeReportListResultPage(getNextPage func(context.Context, DscNodeReportListResult) (DscNodeReportListResult, error)) DscNodeReportListResultPage {
+	return original.NewDscNodeReportListResultPage(getNextPage)
+}
+func NewHybridRunbookWorkerGroupsListResultIterator(page HybridRunbookWorkerGroupsListResultPage) HybridRunbookWorkerGroupsListResultIterator {
+	return original.NewHybridRunbookWorkerGroupsListResultIterator(page)
+}
+func NewHybridRunbookWorkerGroupsListResultPage(getNextPage func(context.Context, HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)) HybridRunbookWorkerGroupsListResultPage {
+	return original.NewHybridRunbookWorkerGroupsListResultPage(getNextPage)
+}
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return original.NewJobListResultIterator(page)
+}
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(getNextPage)
+}
+func NewJobScheduleListResultIterator(page JobScheduleListResultPage) JobScheduleListResultIterator {
+	return original.NewJobScheduleListResultIterator(page)
+}
+func NewJobScheduleListResultPage(getNextPage func(context.Context, JobScheduleListResult) (JobScheduleListResult, error)) JobScheduleListResultPage {
+	return original.NewJobScheduleListResultPage(getNextPage)
+}
+func NewJobStreamListResultIterator(page JobStreamListResultPage) JobStreamListResultIterator {
+	return original.NewJobStreamListResultIterator(page)
+}
+func NewJobStreamListResultPage(getNextPage func(context.Context, JobStreamListResult) (JobStreamListResult, error)) JobStreamListResultPage {
+	return original.NewJobStreamListResultPage(getNextPage)
+}
+func NewModuleListResultIterator(page ModuleListResultPage) ModuleListResultIterator {
+	return original.NewModuleListResultIterator(page)
+}
+func NewModuleListResultPage(getNextPage func(context.Context, ModuleListResult) (ModuleListResult, error)) ModuleListResultPage {
+	return original.NewModuleListResultPage(getNextPage)
+}
+func NewRunbookListResultIterator(page RunbookListResultPage) RunbookListResultIterator {
+	return original.NewRunbookListResultIterator(page)
+}
+func NewRunbookListResultPage(getNextPage func(context.Context, RunbookListResult) (RunbookListResult, error)) RunbookListResultPage {
+	return original.NewRunbookListResultPage(getNextPage)
+}
+func NewScheduleListResultIterator(page ScheduleListResultPage) ScheduleListResultIterator {
+	return original.NewScheduleListResultIterator(page)
+}
+func NewScheduleListResultPage(getNextPage func(context.Context, ScheduleListResult) (ScheduleListResult, error)) ScheduleListResultPage {
+	return original.NewScheduleListResultPage(getNextPage)
+}
+func NewVariableListResultIterator(page VariableListResultPage) VariableListResultIterator {
+	return original.NewVariableListResultIterator(page)
+}
+func NewVariableListResultPage(getNextPage func(context.Context, VariableListResult) (VariableListResult, error)) VariableListResultPage {
+	return original.NewVariableListResultPage(getNextPage)
+}
+func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
+	return original.NewWebhookListResultIterator(page)
+}
+func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return original.NewWebhookListResultPage(getNextPage)
 }
 func NewModuleClient(subscriptionID string) ModuleClient {
 	return original.NewModuleClient(subscriptionID)

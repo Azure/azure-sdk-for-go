@@ -323,6 +323,11 @@ func (iter DeploymentListResultIterator) Value() DeploymentExtended {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DeploymentListResultIterator type.
+func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
+	return DeploymentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DeploymentListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -390,6 +395,11 @@ func (page DeploymentListResultPage) Values() []DeploymentExtended {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DeploymentListResultPage type.
+func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return DeploymentListResultPage{fn: getNextPage}
 }
 
 // DeploymentOperation deployment operation information.
@@ -491,6 +501,11 @@ func (iter DeploymentOperationsListResultIterator) Value() DeploymentOperation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DeploymentOperationsListResultIterator type.
+func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
+	return DeploymentOperationsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DeploymentOperationsListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -558,6 +573,11 @@ func (page DeploymentOperationsListResultPage) Values() []DeploymentOperation {
 		return nil
 	}
 	return *page.dolr.Value
+}
+
+// Creates a new instance of the DeploymentOperationsListResultPage type.
+func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return DeploymentOperationsListResultPage{fn: getNextPage}
 }
 
 // DeploymentProperties deployment properties.
@@ -877,6 +897,11 @@ func (iter GroupListResultIterator) Value() Group {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the GroupListResultIterator type.
+func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
+	return GroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (glr GroupListResult) IsEmpty() bool {
 	return glr.Value == nil || len(*glr.Value) == 0
@@ -944,6 +969,11 @@ func (page GroupListResultPage) Values() []Group {
 		return nil
 	}
 	return *page.glr.Value
+}
+
+// Creates a new instance of the GroupListResultPage type.
+func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{fn: getNextPage}
 }
 
 // GroupPatchable resource group information.
@@ -1086,6 +1116,11 @@ func (iter ListResultIterator) Value() GenericResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -1153,6 +1188,11 @@ func (page ListResultPage) Values() []GenericResource {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // ManagementErrorWithDetails the detailed error message of resource management.
@@ -1318,6 +1358,11 @@ func (iter ProviderListResultIterator) Value() Provider {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProviderListResultIterator type.
+func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
+	return ProviderListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr ProviderListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -1385,6 +1430,11 @@ func (page ProviderListResultPage) Values() []Provider {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the ProviderListResultPage type.
+func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return ProviderListResultPage{fn: getNextPage}
 }
 
 // ProviderOperationDisplayProperties resource provider operation's display properties.
@@ -1581,6 +1631,11 @@ func (iter TagsListResultIterator) Value() TagDetails {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TagsListResultIterator type.
+func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
+	return TagsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tlr TagsListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
@@ -1648,6 +1703,11 @@ func (page TagsListResultPage) Values() []TagDetails {
 		return nil
 	}
 	return *page.tlr.Value
+}
+
+// Creates a new instance of the TagsListResultPage type.
+func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
+	return TagsListResultPage{fn: getNextPage}
 }
 
 // TagValue tag information.

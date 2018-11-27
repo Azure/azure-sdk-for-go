@@ -19,7 +19,11 @@
 
 package logic
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -497,8 +501,15 @@ type RecurrenceSchedule = original.RecurrenceSchedule
 type RecurrenceScheduleOccurrence = original.RecurrenceScheduleOccurrence
 type RegenerateActionParameter = original.RegenerateActionParameter
 type RepetitionIndex = original.RepetitionIndex
+type Request = original.Request
+type RequestHistory = original.RequestHistory
+type RequestHistoryListResult = original.RequestHistoryListResult
+type RequestHistoryListResultIterator = original.RequestHistoryListResultIterator
+type RequestHistoryListResultPage = original.RequestHistoryListResultPage
+type RequestHistoryProperties = original.RequestHistoryProperties
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
+type Response = original.Response
 type RetryHistory = original.RetryHistory
 type RunActionCorrelation = original.RunActionCorrelation
 type RunCorrelation = original.RunCorrelation
@@ -570,6 +581,8 @@ type X12ValidationOverride = original.X12ValidationOverride
 type X12ValidationSettings = original.X12ValidationSettings
 type OperationsClient = original.OperationsClient
 type WorkflowRunActionRepetitionsClient = original.WorkflowRunActionRepetitionsClient
+type WorkflowRunActionRepetitionsRequestHistoriesClient = original.WorkflowRunActionRepetitionsRequestHistoriesClient
+type WorkflowRunActionRequestHistoriesClient = original.WorkflowRunActionRequestHistoriesClient
 type WorkflowRunActionsClient = original.WorkflowRunActionsClient
 type WorkflowRunActionScopeRepetitionsClient = original.WorkflowRunActionScopeRepetitionsClient
 type WorkflowRunOperationsClient = original.WorkflowRunOperationsClient
@@ -730,6 +743,96 @@ func PossibleX12DateFormatValues() []X12DateFormat {
 func PossibleX12TimeFormatValues() []X12TimeFormat {
 	return original.PossibleX12TimeFormatValues()
 }
+func NewIntegrationAccountAgreementListResultIterator(page IntegrationAccountAgreementListResultPage) IntegrationAccountAgreementListResultIterator {
+	return original.NewIntegrationAccountAgreementListResultIterator(page)
+}
+func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
+	return original.NewIntegrationAccountAgreementListResultPage(getNextPage)
+}
+func NewIntegrationAccountCertificateListResultIterator(page IntegrationAccountCertificateListResultPage) IntegrationAccountCertificateListResultIterator {
+	return original.NewIntegrationAccountCertificateListResultIterator(page)
+}
+func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
+	return original.NewIntegrationAccountCertificateListResultPage(getNextPage)
+}
+func NewIntegrationAccountListResultIterator(page IntegrationAccountListResultPage) IntegrationAccountListResultIterator {
+	return original.NewIntegrationAccountListResultIterator(page)
+}
+func NewIntegrationAccountListResultPage(getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
+	return original.NewIntegrationAccountListResultPage(getNextPage)
+}
+func NewIntegrationAccountMapListResultIterator(page IntegrationAccountMapListResultPage) IntegrationAccountMapListResultIterator {
+	return original.NewIntegrationAccountMapListResultIterator(page)
+}
+func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
+	return original.NewIntegrationAccountMapListResultPage(getNextPage)
+}
+func NewIntegrationAccountPartnerListResultIterator(page IntegrationAccountPartnerListResultPage) IntegrationAccountPartnerListResultIterator {
+	return original.NewIntegrationAccountPartnerListResultIterator(page)
+}
+func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
+	return original.NewIntegrationAccountPartnerListResultPage(getNextPage)
+}
+func NewIntegrationAccountSchemaListResultIterator(page IntegrationAccountSchemaListResultPage) IntegrationAccountSchemaListResultIterator {
+	return original.NewIntegrationAccountSchemaListResultIterator(page)
+}
+func NewIntegrationAccountSchemaListResultPage(getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
+	return original.NewIntegrationAccountSchemaListResultPage(getNextPage)
+}
+func NewIntegrationAccountSessionListResultIterator(page IntegrationAccountSessionListResultPage) IntegrationAccountSessionListResultIterator {
+	return original.NewIntegrationAccountSessionListResultIterator(page)
+}
+func NewIntegrationAccountSessionListResultPage(getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
+	return original.NewIntegrationAccountSessionListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewRequestHistoryListResultIterator(page RequestHistoryListResultPage) RequestHistoryListResultIterator {
+	return original.NewRequestHistoryListResultIterator(page)
+}
+func NewRequestHistoryListResultPage(getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
+	return original.NewRequestHistoryListResultPage(getNextPage)
+}
+func NewWorkflowListResultIterator(page WorkflowListResultPage) WorkflowListResultIterator {
+	return original.NewWorkflowListResultIterator(page)
+}
+func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return original.NewWorkflowListResultPage(getNextPage)
+}
+func NewWorkflowRunActionListResultIterator(page WorkflowRunActionListResultPage) WorkflowRunActionListResultIterator {
+	return original.NewWorkflowRunActionListResultIterator(page)
+}
+func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return original.NewWorkflowRunActionListResultPage(getNextPage)
+}
+func NewWorkflowRunListResultIterator(page WorkflowRunListResultPage) WorkflowRunListResultIterator {
+	return original.NewWorkflowRunListResultIterator(page)
+}
+func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return original.NewWorkflowRunListResultPage(getNextPage)
+}
+func NewWorkflowTriggerHistoryListResultIterator(page WorkflowTriggerHistoryListResultPage) WorkflowTriggerHistoryListResultIterator {
+	return original.NewWorkflowTriggerHistoryListResultIterator(page)
+}
+func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return original.NewWorkflowTriggerHistoryListResultPage(getNextPage)
+}
+func NewWorkflowTriggerListResultIterator(page WorkflowTriggerListResultPage) WorkflowTriggerListResultIterator {
+	return original.NewWorkflowTriggerListResultIterator(page)
+}
+func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return original.NewWorkflowTriggerListResultPage(getNextPage)
+}
+func NewWorkflowVersionListResultIterator(page WorkflowVersionListResultPage) WorkflowVersionListResultIterator {
+	return original.NewWorkflowVersionListResultIterator(page)
+}
+func NewWorkflowVersionListResultPage(getNextPage func(context.Context, WorkflowVersionListResult) (WorkflowVersionListResult, error)) WorkflowVersionListResultPage {
+	return original.NewWorkflowVersionListResultPage(getNextPage)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -747,6 +850,18 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string) WorkflowRunAct
 }
 func NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsClient {
 	return original.NewWorkflowRunActionRepetitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRepetitionsRequestHistoriesClient {
+	return original.NewWorkflowRunActionRepetitionsRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClient(subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClient(subscriptionID)
+}
+func NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionRequestHistoriesClient {
+	return original.NewWorkflowRunActionRequestHistoriesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClient(subscriptionID)

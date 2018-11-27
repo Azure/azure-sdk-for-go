@@ -19,7 +19,11 @@
 
 package dtl
 
-import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl"
+)
 
 type ArmTemplatesClient = original.ArmTemplatesClient
 type ArtifactsClient = original.ArtifactsClient
@@ -625,6 +629,120 @@ func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource
 }
 func PossibleWindowsOsStateValues() []WindowsOsState {
 	return original.PossibleWindowsOsStateValues()
+}
+func NewProviderOperationResultIterator(page ProviderOperationResultPage) ProviderOperationResultIterator {
+	return original.NewProviderOperationResultIterator(page)
+}
+func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return original.NewProviderOperationResultPage(getNextPage)
+}
+func NewResponseWithContinuationArmTemplateIterator(page ResponseWithContinuationArmTemplatePage) ResponseWithContinuationArmTemplateIterator {
+	return original.NewResponseWithContinuationArmTemplateIterator(page)
+}
+func NewResponseWithContinuationArmTemplatePage(getNextPage func(context.Context, ResponseWithContinuationArmTemplate) (ResponseWithContinuationArmTemplate, error)) ResponseWithContinuationArmTemplatePage {
+	return original.NewResponseWithContinuationArmTemplatePage(getNextPage)
+}
+func NewResponseWithContinuationArtifactIterator(page ResponseWithContinuationArtifactPage) ResponseWithContinuationArtifactIterator {
+	return original.NewResponseWithContinuationArtifactIterator(page)
+}
+func NewResponseWithContinuationArtifactPage(getNextPage func(context.Context, ResponseWithContinuationArtifact) (ResponseWithContinuationArtifact, error)) ResponseWithContinuationArtifactPage {
+	return original.NewResponseWithContinuationArtifactPage(getNextPage)
+}
+func NewResponseWithContinuationArtifactSourceIterator(page ResponseWithContinuationArtifactSourcePage) ResponseWithContinuationArtifactSourceIterator {
+	return original.NewResponseWithContinuationArtifactSourceIterator(page)
+}
+func NewResponseWithContinuationArtifactSourcePage(getNextPage func(context.Context, ResponseWithContinuationArtifactSource) (ResponseWithContinuationArtifactSource, error)) ResponseWithContinuationArtifactSourcePage {
+	return original.NewResponseWithContinuationArtifactSourcePage(getNextPage)
+}
+func NewResponseWithContinuationCustomImageIterator(page ResponseWithContinuationCustomImagePage) ResponseWithContinuationCustomImageIterator {
+	return original.NewResponseWithContinuationCustomImageIterator(page)
+}
+func NewResponseWithContinuationCustomImagePage(getNextPage func(context.Context, ResponseWithContinuationCustomImage) (ResponseWithContinuationCustomImage, error)) ResponseWithContinuationCustomImagePage {
+	return original.NewResponseWithContinuationCustomImagePage(getNextPage)
+}
+func NewResponseWithContinuationDiskIterator(page ResponseWithContinuationDiskPage) ResponseWithContinuationDiskIterator {
+	return original.NewResponseWithContinuationDiskIterator(page)
+}
+func NewResponseWithContinuationDiskPage(getNextPage func(context.Context, ResponseWithContinuationDisk) (ResponseWithContinuationDisk, error)) ResponseWithContinuationDiskPage {
+	return original.NewResponseWithContinuationDiskPage(getNextPage)
+}
+func NewResponseWithContinuationDtlEnvironmentIterator(page ResponseWithContinuationDtlEnvironmentPage) ResponseWithContinuationDtlEnvironmentIterator {
+	return original.NewResponseWithContinuationDtlEnvironmentIterator(page)
+}
+func NewResponseWithContinuationDtlEnvironmentPage(getNextPage func(context.Context, ResponseWithContinuationDtlEnvironment) (ResponseWithContinuationDtlEnvironment, error)) ResponseWithContinuationDtlEnvironmentPage {
+	return original.NewResponseWithContinuationDtlEnvironmentPage(getNextPage)
+}
+func NewResponseWithContinuationFormulaIterator(page ResponseWithContinuationFormulaPage) ResponseWithContinuationFormulaIterator {
+	return original.NewResponseWithContinuationFormulaIterator(page)
+}
+func NewResponseWithContinuationFormulaPage(getNextPage func(context.Context, ResponseWithContinuationFormula) (ResponseWithContinuationFormula, error)) ResponseWithContinuationFormulaPage {
+	return original.NewResponseWithContinuationFormulaPage(getNextPage)
+}
+func NewResponseWithContinuationGalleryImageIterator(page ResponseWithContinuationGalleryImagePage) ResponseWithContinuationGalleryImageIterator {
+	return original.NewResponseWithContinuationGalleryImageIterator(page)
+}
+func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return original.NewResponseWithContinuationGalleryImagePage(getNextPage)
+}
+func NewResponseWithContinuationLabIterator(page ResponseWithContinuationLabPage) ResponseWithContinuationLabIterator {
+	return original.NewResponseWithContinuationLabIterator(page)
+}
+func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return original.NewResponseWithContinuationLabPage(getNextPage)
+}
+func NewResponseWithContinuationLabVhdIterator(page ResponseWithContinuationLabVhdPage) ResponseWithContinuationLabVhdIterator {
+	return original.NewResponseWithContinuationLabVhdIterator(page)
+}
+func NewResponseWithContinuationLabVhdPage(getNextPage func(context.Context, ResponseWithContinuationLabVhd) (ResponseWithContinuationLabVhd, error)) ResponseWithContinuationLabVhdPage {
+	return original.NewResponseWithContinuationLabVhdPage(getNextPage)
+}
+func NewResponseWithContinuationLabVirtualMachineIterator(page ResponseWithContinuationLabVirtualMachinePage) ResponseWithContinuationLabVirtualMachineIterator {
+	return original.NewResponseWithContinuationLabVirtualMachineIterator(page)
+}
+func NewResponseWithContinuationLabVirtualMachinePage(getNextPage func(context.Context, ResponseWithContinuationLabVirtualMachine) (ResponseWithContinuationLabVirtualMachine, error)) ResponseWithContinuationLabVirtualMachinePage {
+	return original.NewResponseWithContinuationLabVirtualMachinePage(getNextPage)
+}
+func NewResponseWithContinuationNotificationChannelIterator(page ResponseWithContinuationNotificationChannelPage) ResponseWithContinuationNotificationChannelIterator {
+	return original.NewResponseWithContinuationNotificationChannelIterator(page)
+}
+func NewResponseWithContinuationNotificationChannelPage(getNextPage func(context.Context, ResponseWithContinuationNotificationChannel) (ResponseWithContinuationNotificationChannel, error)) ResponseWithContinuationNotificationChannelPage {
+	return original.NewResponseWithContinuationNotificationChannelPage(getNextPage)
+}
+func NewResponseWithContinuationPolicyIterator(page ResponseWithContinuationPolicyPage) ResponseWithContinuationPolicyIterator {
+	return original.NewResponseWithContinuationPolicyIterator(page)
+}
+func NewResponseWithContinuationPolicyPage(getNextPage func(context.Context, ResponseWithContinuationPolicy) (ResponseWithContinuationPolicy, error)) ResponseWithContinuationPolicyPage {
+	return original.NewResponseWithContinuationPolicyPage(getNextPage)
+}
+func NewResponseWithContinuationScheduleIterator(page ResponseWithContinuationSchedulePage) ResponseWithContinuationScheduleIterator {
+	return original.NewResponseWithContinuationScheduleIterator(page)
+}
+func NewResponseWithContinuationSchedulePage(getNextPage func(context.Context, ResponseWithContinuationSchedule) (ResponseWithContinuationSchedule, error)) ResponseWithContinuationSchedulePage {
+	return original.NewResponseWithContinuationSchedulePage(getNextPage)
+}
+func NewResponseWithContinuationSecretIterator(page ResponseWithContinuationSecretPage) ResponseWithContinuationSecretIterator {
+	return original.NewResponseWithContinuationSecretIterator(page)
+}
+func NewResponseWithContinuationSecretPage(getNextPage func(context.Context, ResponseWithContinuationSecret) (ResponseWithContinuationSecret, error)) ResponseWithContinuationSecretPage {
+	return original.NewResponseWithContinuationSecretPage(getNextPage)
+}
+func NewResponseWithContinuationServiceRunnerIterator(page ResponseWithContinuationServiceRunnerPage) ResponseWithContinuationServiceRunnerIterator {
+	return original.NewResponseWithContinuationServiceRunnerIterator(page)
+}
+func NewResponseWithContinuationServiceRunnerPage(getNextPage func(context.Context, ResponseWithContinuationServiceRunner) (ResponseWithContinuationServiceRunner, error)) ResponseWithContinuationServiceRunnerPage {
+	return original.NewResponseWithContinuationServiceRunnerPage(getNextPage)
+}
+func NewResponseWithContinuationUserIterator(page ResponseWithContinuationUserPage) ResponseWithContinuationUserIterator {
+	return original.NewResponseWithContinuationUserIterator(page)
+}
+func NewResponseWithContinuationUserPage(getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
+	return original.NewResponseWithContinuationUserPage(getNextPage)
+}
+func NewResponseWithContinuationVirtualNetworkIterator(page ResponseWithContinuationVirtualNetworkPage) ResponseWithContinuationVirtualNetworkIterator {
+	return original.NewResponseWithContinuationVirtualNetworkIterator(page)
+}
+func NewResponseWithContinuationVirtualNetworkPage(getNextPage func(context.Context, ResponseWithContinuationVirtualNetwork) (ResponseWithContinuationVirtualNetwork, error)) ResponseWithContinuationVirtualNetworkPage {
+	return original.NewResponseWithContinuationVirtualNetworkPage(getNextPage)
 }
 func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsClient {
 	return original.NewNotificationChannelsClient(subscriptionID)

@@ -242,6 +242,11 @@ func (iter ConfigurationListResultIterator) Value() ConfigData {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ConfigurationListResultIterator type.
+func NewConfigurationListResultIterator(page ConfigurationListResultPage) ConfigurationListResultIterator {
+	return ConfigurationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ConfigurationListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -309,6 +314,11 @@ func (page ConfigurationListResultPage) Values() []ConfigData {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the ConfigurationListResultPage type.
+func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return ConfigurationListResultPage{fn: getNextPage}
 }
 
 // OperationDisplayInfo the operation supported by Advisor.
@@ -398,6 +408,11 @@ func (iter OperationEntityListResultIterator) Value() OperationEntity {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationEntityListResultIterator type.
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return OperationEntityListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
@@ -465,6 +480,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 		return nil
 	}
 	return *page.oelr.Value
+}
+
+// Creates a new instance of the OperationEntityListResultPage type.
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{fn: getNextPage}
 }
 
 // RecommendationProperties the properties of the recommendation.
@@ -692,6 +712,11 @@ func (iter ResourceRecommendationBaseListResultIterator) Value() ResourceRecomme
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceRecommendationBaseListResultIterator type.
+func NewResourceRecommendationBaseListResultIterator(page ResourceRecommendationBaseListResultPage) ResourceRecommendationBaseListResultIterator {
+	return ResourceRecommendationBaseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rrblr ResourceRecommendationBaseListResult) IsEmpty() bool {
 	return rrblr.Value == nil || len(*rrblr.Value) == 0
@@ -759,6 +784,11 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 		return nil
 	}
 	return *page.rrblr.Value
+}
+
+// Creates a new instance of the ResourceRecommendationBaseListResultPage type.
+func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
+	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
 }
 
 // ShortDescription a summary of the recommendation.
@@ -920,6 +950,11 @@ func (iter SuppressionContractListResultIterator) Value() SuppressionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SuppressionContractListResultIterator type.
+func NewSuppressionContractListResultIterator(page SuppressionContractListResultPage) SuppressionContractListResultIterator {
+	return SuppressionContractListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sclr SuppressionContractListResult) IsEmpty() bool {
 	return sclr.Value == nil || len(*sclr.Value) == 0
@@ -987,6 +1022,11 @@ func (page SuppressionContractListResultPage) Values() []SuppressionContract {
 		return nil
 	}
 	return *page.sclr.Value
+}
+
+// Creates a new instance of the SuppressionContractListResultPage type.
+func NewSuppressionContractListResultPage(getNextPage func(context.Context, SuppressionContractListResult) (SuppressionContractListResult, error)) SuppressionContractListResultPage {
+	return SuppressionContractListResultPage{fn: getNextPage}
 }
 
 // SuppressionProperties the properties of the suppression.

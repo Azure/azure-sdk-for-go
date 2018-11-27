@@ -19,7 +19,11 @@
 
 package adhybridhealthservice
 
-import original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
+)
 
 type AdDomainServiceMembersClient = original.AdDomainServiceMembersClient
 type AddsServiceClient = original.AddsServiceClient
@@ -361,6 +365,66 @@ func PossibleValueDeltaOperationTypeValues() []ValueDeltaOperationType {
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()
+}
+func NewAddsConfigurationIterator(page AddsConfigurationPage) AddsConfigurationIterator {
+	return original.NewAddsConfigurationIterator(page)
+}
+func NewAddsConfigurationPage(getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
+	return original.NewAddsConfigurationPage(getNextPage)
+}
+func NewAddsServiceMembersIterator(page AddsServiceMembersPage) AddsServiceMembersIterator {
+	return original.NewAddsServiceMembersIterator(page)
+}
+func NewAddsServiceMembersPage(getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
+	return original.NewAddsServiceMembersPage(getNextPage)
+}
+func NewAlertsIterator(page AlertsPage) AlertsIterator {
+	return original.NewAlertsIterator(page)
+}
+func NewAlertsPage(getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
+	return original.NewAlertsPage(getNextPage)
+}
+func NewDimensionsIterator(page DimensionsPage) DimensionsIterator {
+	return original.NewDimensionsIterator(page)
+}
+func NewDimensionsPage(getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
+	return original.NewDimensionsPage(getNextPage)
+}
+func NewExportStatusesIterator(page ExportStatusesPage) ExportStatusesIterator {
+	return original.NewExportStatusesIterator(page)
+}
+func NewExportStatusesPage(getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
+	return original.NewExportStatusesPage(getNextPage)
+}
+func NewMetricMetadataListIterator(page MetricMetadataListPage) MetricMetadataListIterator {
+	return original.NewMetricMetadataListIterator(page)
+}
+func NewMetricMetadataListPage(getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
+	return original.NewMetricMetadataListPage(getNextPage)
+}
+func NewMetricsIterator(page MetricsPage) MetricsIterator {
+	return original.NewMetricsIterator(page)
+}
+func NewMetricsPage(getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
+	return original.NewMetricsPage(getNextPage)
+}
+func NewOperationListResponseIterator(page OperationListResponsePage) OperationListResponseIterator {
+	return original.NewOperationListResponseIterator(page)
+}
+func NewOperationListResponsePage(getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
+	return original.NewOperationListResponsePage(getNextPage)
+}
+func NewServiceMembersIterator(page ServiceMembersPage) ServiceMembersIterator {
+	return original.NewServiceMembersIterator(page)
+}
+func NewServiceMembersPage(getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
+	return original.NewServiceMembersPage(getNextPage)
+}
+func NewServicesIterator(page ServicesPage) ServicesIterator {
+	return original.NewServicesIterator(page)
+}
+func NewServicesPage(getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
+	return original.NewServicesPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

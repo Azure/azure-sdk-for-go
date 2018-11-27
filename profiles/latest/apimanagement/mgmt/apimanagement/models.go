@@ -19,7 +19,11 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement"
+)
 
 type APIClient = original.APIClient
 type APIDiagnosticClient = original.APIDiagnosticClient
@@ -921,6 +925,174 @@ func PossibleVersioningSchemeValues() []VersioningScheme {
 }
 func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
 	return original.PossibleVirtualNetworkTypeValues()
+}
+func NewAPICollectionIterator(page APICollectionPage) APICollectionIterator {
+	return original.NewAPICollectionIterator(page)
+}
+func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return original.NewAPICollectionPage(getNextPage)
+}
+func NewAPIReleaseCollectionIterator(page APIReleaseCollectionPage) APIReleaseCollectionIterator {
+	return original.NewAPIReleaseCollectionIterator(page)
+}
+func NewAPIReleaseCollectionPage(getNextPage func(context.Context, APIReleaseCollection) (APIReleaseCollection, error)) APIReleaseCollectionPage {
+	return original.NewAPIReleaseCollectionPage(getNextPage)
+}
+func NewAPIRevisionCollectionIterator(page APIRevisionCollectionPage) APIRevisionCollectionIterator {
+	return original.NewAPIRevisionCollectionIterator(page)
+}
+func NewAPIRevisionCollectionPage(getNextPage func(context.Context, APIRevisionCollection) (APIRevisionCollection, error)) APIRevisionCollectionPage {
+	return original.NewAPIRevisionCollectionPage(getNextPage)
+}
+func NewAPIVersionSetCollectionIterator(page APIVersionSetCollectionPage) APIVersionSetCollectionIterator {
+	return original.NewAPIVersionSetCollectionIterator(page)
+}
+func NewAPIVersionSetCollectionPage(getNextPage func(context.Context, APIVersionSetCollection) (APIVersionSetCollection, error)) APIVersionSetCollectionPage {
+	return original.NewAPIVersionSetCollectionPage(getNextPage)
+}
+func NewAuthorizationServerCollectionIterator(page AuthorizationServerCollectionPage) AuthorizationServerCollectionIterator {
+	return original.NewAuthorizationServerCollectionIterator(page)
+}
+func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return original.NewAuthorizationServerCollectionPage(getNextPage)
+}
+func NewBackendCollectionIterator(page BackendCollectionPage) BackendCollectionIterator {
+	return original.NewBackendCollectionIterator(page)
+}
+func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return original.NewBackendCollectionPage(getNextPage)
+}
+func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
+	return original.NewCertificateCollectionIterator(page)
+}
+func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(getNextPage)
+}
+func NewDiagnosticCollectionIterator(page DiagnosticCollectionPage) DiagnosticCollectionIterator {
+	return original.NewDiagnosticCollectionIterator(page)
+}
+func NewDiagnosticCollectionPage(getNextPage func(context.Context, DiagnosticCollection) (DiagnosticCollection, error)) DiagnosticCollectionPage {
+	return original.NewDiagnosticCollectionPage(getNextPage)
+}
+func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailTemplateCollectionIterator {
+	return original.NewEmailTemplateCollectionIterator(page)
+}
+func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return original.NewEmailTemplateCollectionPage(getNextPage)
+}
+func NewGroupCollectionIterator(page GroupCollectionPage) GroupCollectionIterator {
+	return original.NewGroupCollectionIterator(page)
+}
+func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return original.NewGroupCollectionPage(getNextPage)
+}
+func NewIssueAttachmentCollectionIterator(page IssueAttachmentCollectionPage) IssueAttachmentCollectionIterator {
+	return original.NewIssueAttachmentCollectionIterator(page)
+}
+func NewIssueAttachmentCollectionPage(getNextPage func(context.Context, IssueAttachmentCollection) (IssueAttachmentCollection, error)) IssueAttachmentCollectionPage {
+	return original.NewIssueAttachmentCollectionPage(getNextPage)
+}
+func NewIssueCollectionIterator(page IssueCollectionPage) IssueCollectionIterator {
+	return original.NewIssueCollectionIterator(page)
+}
+func NewIssueCollectionPage(getNextPage func(context.Context, IssueCollection) (IssueCollection, error)) IssueCollectionPage {
+	return original.NewIssueCollectionPage(getNextPage)
+}
+func NewIssueCommentCollectionIterator(page IssueCommentCollectionPage) IssueCommentCollectionIterator {
+	return original.NewIssueCommentCollectionIterator(page)
+}
+func NewIssueCommentCollectionPage(getNextPage func(context.Context, IssueCommentCollection) (IssueCommentCollection, error)) IssueCommentCollectionPage {
+	return original.NewIssueCommentCollectionPage(getNextPage)
+}
+func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIterator {
+	return original.NewLoggerCollectionIterator(page)
+}
+func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return original.NewLoggerCollectionPage(getNextPage)
+}
+func NewNotificationCollectionIterator(page NotificationCollectionPage) NotificationCollectionIterator {
+	return original.NewNotificationCollectionIterator(page)
+}
+func NewNotificationCollectionPage(getNextPage func(context.Context, NotificationCollection) (NotificationCollection, error)) NotificationCollectionPage {
+	return original.NewNotificationCollectionPage(getNextPage)
+}
+func NewOpenIDConnectProviderCollectionIterator(page OpenIDConnectProviderCollectionPage) OpenIDConnectProviderCollectionIterator {
+	return original.NewOpenIDConnectProviderCollectionIterator(page)
+}
+func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return original.NewOpenIDConnectProviderCollectionPage(getNextPage)
+}
+func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
+	return original.NewOperationCollectionIterator(page)
+}
+func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewProductCollectionIterator(page ProductCollectionPage) ProductCollectionIterator {
+	return original.NewProductCollectionIterator(page)
+}
+func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return original.NewProductCollectionPage(getNextPage)
+}
+func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
+	return original.NewPropertyCollectionIterator(page)
+}
+func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return original.NewPropertyCollectionPage(getNextPage)
+}
+func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIterator {
+	return original.NewReportCollectionIterator(page)
+}
+func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return original.NewReportCollectionPage(getNextPage)
+}
+func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
+	return original.NewSchemaCollectionIterator(page)
+}
+func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return original.NewSchemaCollectionPage(getNextPage)
+}
+func NewServiceListResultIterator(page ServiceListResultPage) ServiceListResultIterator {
+	return original.NewServiceListResultIterator(page)
+}
+func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return original.NewServiceListResultPage(getNextPage)
+}
+func NewSubscriptionCollectionIterator(page SubscriptionCollectionPage) SubscriptionCollectionIterator {
+	return original.NewSubscriptionCollectionIterator(page)
+}
+func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return original.NewSubscriptionCollectionPage(getNextPage)
+}
+func NewTagCollectionIterator(page TagCollectionPage) TagCollectionIterator {
+	return original.NewTagCollectionIterator(page)
+}
+func NewTagCollectionPage(getNextPage func(context.Context, TagCollection) (TagCollection, error)) TagCollectionPage {
+	return original.NewTagCollectionPage(getNextPage)
+}
+func NewTagDescriptionCollectionIterator(page TagDescriptionCollectionPage) TagDescriptionCollectionIterator {
+	return original.NewTagDescriptionCollectionIterator(page)
+}
+func NewTagDescriptionCollectionPage(getNextPage func(context.Context, TagDescriptionCollection) (TagDescriptionCollection, error)) TagDescriptionCollectionPage {
+	return original.NewTagDescriptionCollectionPage(getNextPage)
+}
+func NewTagResourceCollectionIterator(page TagResourceCollectionPage) TagResourceCollectionIterator {
+	return original.NewTagResourceCollectionIterator(page)
+}
+func NewTagResourceCollectionPage(getNextPage func(context.Context, TagResourceCollection) (TagResourceCollection, error)) TagResourceCollectionPage {
+	return original.NewTagResourceCollectionPage(getNextPage)
+}
+func NewUserCollectionIterator(page UserCollectionPage) UserCollectionIterator {
+	return original.NewUserCollectionIterator(page)
+}
+func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return original.NewUserCollectionPage(getNextPage)
 }
 func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
 	return original.NewNetworkStatusClient(subscriptionID)

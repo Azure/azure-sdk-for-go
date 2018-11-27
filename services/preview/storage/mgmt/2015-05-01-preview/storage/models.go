@@ -436,6 +436,11 @@ func (iter AccountListResultIterator) Value() Account {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AccountListResultIterator type.
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return AccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -503,6 +508,11 @@ func (page AccountListResultPage) Values() []Account {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AccountListResultPage type.
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{fn: getNextPage}
 }
 
 // AccountProperties ...

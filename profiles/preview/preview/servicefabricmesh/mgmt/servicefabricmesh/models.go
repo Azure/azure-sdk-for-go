@@ -19,7 +19,11 @@
 
 package servicefabricmesh
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
+)
 
 type ApplicationClient = original.ApplicationClient
 
@@ -385,6 +389,60 @@ func PossibleSizeTypesValues() []SizeTypes {
 }
 func PossibleVolumeProviderValues() []VolumeProvider {
 	return original.PossibleVolumeProviderValues()
+}
+func NewApplicationResourceDescriptionListIterator(page ApplicationResourceDescriptionListPage) ApplicationResourceDescriptionListIterator {
+	return original.NewApplicationResourceDescriptionListIterator(page)
+}
+func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return original.NewApplicationResourceDescriptionListPage(getNextPage)
+}
+func NewGatewayResourceDescriptionListIterator(page GatewayResourceDescriptionListPage) GatewayResourceDescriptionListIterator {
+	return original.NewGatewayResourceDescriptionListIterator(page)
+}
+func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
+	return original.NewGatewayResourceDescriptionListPage(getNextPage)
+}
+func NewNetworkResourceDescriptionListIterator(page NetworkResourceDescriptionListPage) NetworkResourceDescriptionListIterator {
+	return original.NewNetworkResourceDescriptionListIterator(page)
+}
+func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return original.NewNetworkResourceDescriptionListPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewSecretResourceDescriptionListIterator(page SecretResourceDescriptionListPage) SecretResourceDescriptionListIterator {
+	return original.NewSecretResourceDescriptionListIterator(page)
+}
+func NewSecretResourceDescriptionListPage(getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
+	return original.NewSecretResourceDescriptionListPage(getNextPage)
+}
+func NewSecretValueResourceDescriptionListIterator(page SecretValueResourceDescriptionListPage) SecretValueResourceDescriptionListIterator {
+	return original.NewSecretValueResourceDescriptionListIterator(page)
+}
+func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
+	return original.NewSecretValueResourceDescriptionListPage(getNextPage)
+}
+func NewServiceReplicaDescriptionListIterator(page ServiceReplicaDescriptionListPage) ServiceReplicaDescriptionListIterator {
+	return original.NewServiceReplicaDescriptionListIterator(page)
+}
+func NewServiceReplicaDescriptionListPage(getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
+	return original.NewServiceReplicaDescriptionListPage(getNextPage)
+}
+func NewServiceResourceDescriptionListIterator(page ServiceResourceDescriptionListPage) ServiceResourceDescriptionListIterator {
+	return original.NewServiceResourceDescriptionListIterator(page)
+}
+func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
+	return original.NewServiceResourceDescriptionListPage(getNextPage)
+}
+func NewVolumeResourceDescriptionListIterator(page VolumeResourceDescriptionListPage) VolumeResourceDescriptionListIterator {
+	return original.NewVolumeResourceDescriptionListIterator(page)
+}
+func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
+	return original.NewVolumeResourceDescriptionListPage(getNextPage)
 }
 func NewNetworkClient(subscriptionID string) NetworkClient {
 	return original.NewNetworkClient(subscriptionID)

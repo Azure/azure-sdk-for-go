@@ -19,7 +19,11 @@
 
 package eventhub
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -112,6 +116,36 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(getNextPage)
+}
+func NewEHNamespaceListResultIterator(page EHNamespaceListResultPage) EHNamespaceListResultIterator {
+	return original.NewEHNamespaceListResultIterator(page)
+}
+func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
+	return original.NewEHNamespaceListResultPage(getNextPage)
+}
+func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilterRuleListResultIterator {
+	return original.NewIPFilterRuleListResultIterator(page)
+}
+func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return original.NewIPFilterRuleListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return original.NewVirtualNetworkRuleListResultIterator(page)
+}
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)

@@ -125,7 +125,7 @@ func (client SmartGroupsClient) ChangeStateResponder(resp *http.Response) (resul
 // monitorService - filter by monitor service which generates the alert instance. Default value is select all.
 // monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
 // select all.
-// severity - filter by severity.  Defaut value is select all.
+// severity - filter by severity.  Default value is select all.
 // smartGroupState - filter by state of the smart group. Default value is to select all.
 // timeRange - filter by time range by below listed values. Default value is 1 day.
 // pageCount - determines number of alerts returned per page in response. Permissible value is between 1 to

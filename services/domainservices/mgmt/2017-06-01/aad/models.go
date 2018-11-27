@@ -352,6 +352,11 @@ func (iter DomainServiceListResultIterator) Value() DomainService {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DomainServiceListResultIterator type.
+func NewDomainServiceListResultIterator(page DomainServiceListResultPage) DomainServiceListResultIterator {
+	return DomainServiceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dslr DomainServiceListResult) IsEmpty() bool {
 	return dslr.Value == nil || len(*dslr.Value) == 0
@@ -421,16 +426,9 @@ func (page DomainServiceListResultPage) Values() []DomainService {
 	return *page.dslr.Value
 }
 
-// DomainServicePatchProperties update Properties of the Domain Service.
-type DomainServicePatchProperties struct {
-	// LdapsSettings - Secure LDAP Settings
-	LdapsSettings *LdapsSettings `json:"ldapsSettings,omitempty"`
-	// NotificationSettings - Notification Settings
-	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
-	// DomainSecuritySettings - DomainSecurity Settings
-	DomainSecuritySettings *DomainSecuritySettings `json:"domainSecuritySettings,omitempty"`
-	// FilteredSync - Enabled or Disabled flag to turn on Group-based filtered sync. Possible values include: 'FilteredSyncEnabled', 'FilteredSyncDisabled'
-	FilteredSync FilteredSync `json:"filteredSync,omitempty"`
+// Creates a new instance of the DomainServiceListResultPage type.
+func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return DomainServiceListResultPage{fn: getNextPage}
 }
 
 // DomainServiceProperties properties of the Domain Service.
@@ -699,6 +697,11 @@ func (iter OperationEntityListResultIterator) Value() OperationEntity {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationEntityListResultIterator type.
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return OperationEntityListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
@@ -766,6 +769,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 		return nil
 	}
 	return *page.oelr.Value
+}
+
+// Creates a new instance of the OperationEntityListResultPage type.
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{fn: getNextPage}
 }
 
 // Resource the Resource model definition.

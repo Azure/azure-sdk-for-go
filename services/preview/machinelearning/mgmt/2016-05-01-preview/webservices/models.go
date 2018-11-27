@@ -572,6 +572,11 @@ func (iter PaginatedWebServicesListIterator) Value() WebService {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PaginatedWebServicesListIterator type.
+func NewPaginatedWebServicesListIterator(page PaginatedWebServicesListPage) PaginatedWebServicesListIterator {
+	return PaginatedWebServicesListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pwsl PaginatedWebServicesList) IsEmpty() bool {
 	return pwsl.Value == nil || len(*pwsl.Value) == 0
@@ -639,6 +644,11 @@ func (page PaginatedWebServicesListPage) Values() []WebService {
 		return nil
 	}
 	return *page.pwsl.Value
+}
+
+// Creates a new instance of the PaginatedWebServicesListPage type.
+func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
+	return PaginatedWebServicesListPage{fn: getNextPage}
 }
 
 // PatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.

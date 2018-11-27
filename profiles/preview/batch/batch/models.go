@@ -19,7 +19,11 @@
 
 package batch
 
-import original "github.com/Azure/azure-sdk-for-go/services/batch/2018-08-01.7.0/batch"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/batch/2018-08-01.7.0/batch"
+)
 
 type AccountClient = original.AccountClient
 type ApplicationClient = original.ApplicationClient
@@ -662,6 +666,78 @@ func PossibleTaskExecutionResultValues() []TaskExecutionResult {
 }
 func PossibleTaskStateValues() []TaskState {
 	return original.PossibleTaskStateValues()
+}
+func NewAccountListNodeAgentSkusResultIterator(page AccountListNodeAgentSkusResultPage) AccountListNodeAgentSkusResultIterator {
+	return original.NewAccountListNodeAgentSkusResultIterator(page)
+}
+func NewAccountListNodeAgentSkusResultPage(getNextPage func(context.Context, AccountListNodeAgentSkusResult) (AccountListNodeAgentSkusResult, error)) AccountListNodeAgentSkusResultPage {
+	return original.NewAccountListNodeAgentSkusResultPage(getNextPage)
+}
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return original.NewApplicationListResultIterator(page)
+}
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(getNextPage)
+}
+func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
+	return original.NewCertificateListResultIterator(page)
+}
+func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return original.NewCertificateListResultPage(getNextPage)
+}
+func NewCloudJobListPreparationAndReleaseTaskStatusResultIterator(page CloudJobListPreparationAndReleaseTaskStatusResultPage) CloudJobListPreparationAndReleaseTaskStatusResultIterator {
+	return original.NewCloudJobListPreparationAndReleaseTaskStatusResultIterator(page)
+}
+func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
+	return original.NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage)
+}
+func NewCloudJobListResultIterator(page CloudJobListResultPage) CloudJobListResultIterator {
+	return original.NewCloudJobListResultIterator(page)
+}
+func NewCloudJobListResultPage(getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
+	return original.NewCloudJobListResultPage(getNextPage)
+}
+func NewCloudJobScheduleListResultIterator(page CloudJobScheduleListResultPage) CloudJobScheduleListResultIterator {
+	return original.NewCloudJobScheduleListResultIterator(page)
+}
+func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
+	return original.NewCloudJobScheduleListResultPage(getNextPage)
+}
+func NewCloudPoolListResultIterator(page CloudPoolListResultPage) CloudPoolListResultIterator {
+	return original.NewCloudPoolListResultIterator(page)
+}
+func NewCloudPoolListResultPage(getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
+	return original.NewCloudPoolListResultPage(getNextPage)
+}
+func NewCloudTaskListResultIterator(page CloudTaskListResultPage) CloudTaskListResultIterator {
+	return original.NewCloudTaskListResultIterator(page)
+}
+func NewCloudTaskListResultPage(getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
+	return original.NewCloudTaskListResultPage(getNextPage)
+}
+func NewComputeNodeListResultIterator(page ComputeNodeListResultPage) ComputeNodeListResultIterator {
+	return original.NewComputeNodeListResultIterator(page)
+}
+func NewComputeNodeListResultPage(getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
+	return original.NewComputeNodeListResultPage(getNextPage)
+}
+func NewNodeFileListResultIterator(page NodeFileListResultPage) NodeFileListResultIterator {
+	return original.NewNodeFileListResultIterator(page)
+}
+func NewNodeFileListResultPage(getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
+	return original.NewNodeFileListResultPage(getNextPage)
+}
+func NewPoolListUsageMetricsResultIterator(page PoolListUsageMetricsResultPage) PoolListUsageMetricsResultIterator {
+	return original.NewPoolListUsageMetricsResultIterator(page)
+}
+func NewPoolListUsageMetricsResultPage(getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
+	return original.NewPoolListUsageMetricsResultPage(getNextPage)
+}
+func NewPoolNodeCountsListResultIterator(page PoolNodeCountsListResultPage) PoolNodeCountsListResultIterator {
+	return original.NewPoolNodeCountsListResultIterator(page)
+}
+func NewPoolNodeCountsListResultPage(getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
+	return original.NewPoolNodeCountsListResultPage(getNextPage)
 }
 func NewPoolClient() PoolClient {
 	return original.NewPoolClient()

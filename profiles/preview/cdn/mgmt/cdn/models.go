@@ -19,7 +19,11 @@
 
 package cdn
 
-import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -322,6 +326,48 @@ func PossibleResourceTypeValues() []ResourceType {
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
+}
+func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDomainListResultIterator {
+	return original.NewCustomDomainListResultIterator(page)
+}
+func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
+	return original.NewCustomDomainListResultPage(getNextPage)
+}
+func NewEdgenodeResultIterator(page EdgenodeResultPage) EdgenodeResultIterator {
+	return original.NewEdgenodeResultIterator(page)
+}
+func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
+	return original.NewEdgenodeResultPage(getNextPage)
+}
+func NewEndpointListResultIterator(page EndpointListResultPage) EndpointListResultIterator {
+	return original.NewEndpointListResultIterator(page)
+}
+func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
+	return original.NewEndpointListResultPage(getNextPage)
+}
+func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
+	return original.NewOperationsListResultIterator(page)
+}
+func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return original.NewOperationsListResultPage(getNextPage)
+}
+func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIterator {
+	return original.NewOriginListResultIterator(page)
+}
+func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
+	return original.NewOriginListResultPage(getNextPage)
+}
+func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
+	return original.NewProfileListResultIterator(page)
+}
+func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return original.NewProfileListResultPage(getNextPage)
+}
+func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) ResourceUsageListResultIterator {
+	return original.NewResourceUsageListResultIterator(page)
+}
+func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
+	return original.NewResourceUsageListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

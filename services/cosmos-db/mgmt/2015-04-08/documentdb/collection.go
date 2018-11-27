@@ -41,7 +41,7 @@ func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) Colle
 	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListMetricDefinitions retrieves metric defintions for the given collection.
+// ListMetricDefinitions retrieves metric definitions for the given collection.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.

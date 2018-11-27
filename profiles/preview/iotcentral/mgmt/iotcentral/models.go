@@ -19,7 +19,11 @@
 
 package iotcentral
 
-import original "github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral"
+)
 
 type AppsClient = original.AppsClient
 
@@ -71,6 +75,18 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()
+}
+func NewAppListResultIterator(page AppListResultPage) AppListResultIterator {
+	return original.NewAppListResultIterator(page)
+}
+func NewAppListResultPage(getNextPage func(context.Context, AppListResult) (AppListResult, error)) AppListResultPage {
+	return original.NewAppListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

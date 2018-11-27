@@ -19,7 +19,11 @@
 
 package billing
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -72,6 +76,30 @@ func NewInvoicesClient(subscriptionID string) InvoicesClient {
 }
 func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEnrollmentAccountListResultIterator(page EnrollmentAccountListResultPage) EnrollmentAccountListResultIterator {
+	return original.NewEnrollmentAccountListResultIterator(page)
+}
+func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
+	return original.NewEnrollmentAccountListResultPage(getNextPage)
+}
+func NewInvoicesListResultIterator(page InvoicesListResultPage) InvoicesListResultIterator {
+	return original.NewInvoicesListResultIterator(page)
+}
+func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
+	return original.NewInvoicesListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultIterator {
+	return original.NewPeriodsListResultIterator(page)
+}
+func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
+	return original.NewPeriodsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

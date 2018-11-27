@@ -969,6 +969,11 @@ func (iter InfoListResultIterator) Value() InformationBasic {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InfoListResultIterator type.
+func NewInfoListResultIterator(page InfoListResultPage) InfoListResultIterator {
+	return InfoListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InfoListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -1036,6 +1041,11 @@ func (page InfoListResultPage) Values() []InformationBasic {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the InfoListResultPage type.
+func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{fn: getNextPage}
 }
 
 // Information the extended Data Lake Analytics job information properties returned when retrieving a
@@ -1563,6 +1573,11 @@ func (iter PipelineInformationListResultIterator) Value() PipelineInformation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PipelineInformationListResultIterator type.
+func NewPipelineInformationListResultIterator(page PipelineInformationListResultPage) PipelineInformationListResultIterator {
+	return PipelineInformationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pilr PipelineInformationListResult) IsEmpty() bool {
 	return pilr.Value == nil || len(*pilr.Value) == 0
@@ -1630,6 +1645,11 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 		return nil
 	}
 	return *page.pilr.Value
+}
+
+// Creates a new instance of the PipelineInformationListResultPage type.
+func NewPipelineInformationListResultPage(getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
+	return PipelineInformationListResultPage{fn: getNextPage}
 }
 
 // PipelineRunInformation run info for a specific job pipeline.
@@ -1835,6 +1855,11 @@ func (iter RecurrenceInformationListResultIterator) Value() RecurrenceInformatio
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecurrenceInformationListResultIterator type.
+func NewRecurrenceInformationListResultIterator(page RecurrenceInformationListResultPage) RecurrenceInformationListResultIterator {
+	return RecurrenceInformationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rilr RecurrenceInformationListResult) IsEmpty() bool {
 	return rilr.Value == nil || len(*rilr.Value) == 0
@@ -1902,6 +1927,11 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 		return nil
 	}
 	return *page.rilr.Value
+}
+
+// Creates a new instance of the RecurrenceInformationListResultPage type.
+func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
+	return RecurrenceInformationListResultPage{fn: getNextPage}
 }
 
 // RelationshipProperties job relationship information properties including pipeline information,

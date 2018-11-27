@@ -235,7 +235,7 @@ func PossibleVMPriorityValues() []VMPriority {
 type AppInsightsReference struct {
 	Component          *ResourceID `json:"component,omitempty"`
 	InstrumentationKey *string     `json:"instrumentationKey,omitempty"`
-	// InstrumentationKeySecretReference - Specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instumentationKey or instrumentationKeySecretReference must be specified.
+	// InstrumentationKeySecretReference - Specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instrumentationKey or instrumentationKeySecretReference must be specified.
 	InstrumentationKeySecretReference *KeyVaultSecretReference `json:"instrumentationKeySecretReference,omitempty"`
 }
 
@@ -583,6 +583,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -652,11 +657,16 @@ func (page ClusterListResultPage) Values() []Cluster {
 	return *page.clr.Value
 }
 
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
+}
+
 // ClusterProperties job specific properties.
 type ClusterProperties struct {
 	// VMSize - All virtual machines in a cluster are the same size. For information about available VM sizes for clusters using images from the Virtual Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes for Virtual Machines (Windows). Batch AI service supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
 	VMSize *string `json:"vmSize,omitempty"`
-	// VMPriority - The default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'Dedicated', 'Lowpriority'
+	// VMPriority - The default value is dedicated. The node can get preempted while the task is running if lowpriority is chosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'Dedicated', 'Lowpriority'
 	VMPriority                  VMPriority                   `json:"vmPriority,omitempty"`
 	ScaleSettings               *ScaleSettings               `json:"scaleSettings,omitempty"`
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
@@ -992,6 +1002,11 @@ func (iter FileListResultIterator) Value() File {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileListResultIterator type.
+func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
+	return FileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FileListResult) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -1059,6 +1074,11 @@ func (page FileListResultPage) Values() []File {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FileListResultPage type.
+func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{fn: getNextPage}
 }
 
 // FileProperties file specific properties.
@@ -1322,6 +1342,11 @@ func (iter FileServerListResultIterator) Value() FileServer {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileServerListResultIterator type.
+func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
+	return FileServerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fslr FileServerListResult) IsEmpty() bool {
 	return fslr.Value == nil || len(*fslr.Value) == 0
@@ -1391,6 +1416,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 	return *page.fslr.Value
 }
 
+// Creates a new instance of the FileServerListResultPage type.
+func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{fn: getNextPage}
+}
+
 // FileServerProperties file server specific properties.
 type FileServerProperties struct {
 	// VMSize - For information about available VM sizes for File Server from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux).
@@ -1411,7 +1441,7 @@ type FileServerReference struct {
 	FileServer *ResourceID `json:"fileServer,omitempty"`
 	// SourceDirectory - If this property is not specified, the entire File Server will be mounted.
 	SourceDirectory *string `json:"sourceDirectory,omitempty"`
-	// RelativeMountPath - Note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
+	// RelativeMountPath - Note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 	MountOptions      *string `json:"mountOptions,omitempty"`
 }
@@ -1609,7 +1639,7 @@ type JobBaseProperties struct {
 	// Priority - Priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority *int32      `json:"priority,omitempty"`
 	Cluster  *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - The job will be gang scheduled on that many compute nodes
 	NodeCount *int32 `json:"nodeCount,omitempty"`
@@ -1776,6 +1806,11 @@ func (iter JobListResultIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
@@ -1845,6 +1880,11 @@ func (page JobListResultPage) Values() []Job {
 	return *page.jlr.Value
 }
 
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
+}
+
 // JobPreparation specifies the settings for job preparation.
 type JobPreparation struct {
 	// CommandLine - If containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
@@ -1858,7 +1898,7 @@ type JobProperties struct {
 	// Priority - Priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority *int32      `json:"priority,omitempty"`
 	Cluster  *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// JobOutputDirectoryPathSegment - Batch AI creates job's output directories under an unique path to avoid conflicts between jobs. This value contains a path segment generated by Batch AI to make the path unique and can be used to find the output directory on the node or mounted filesystem.
 	JobOutputDirectoryPathSegment *string `json:"jobOutputDirectoryPathSegment,omitempty"`
@@ -1892,7 +1932,7 @@ type JobProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - The time at which the job entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
-	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
+	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
 	ExecutionState ExecutionState `json:"executionState,omitempty"`
 	// ExecutionStateTransitionTime - The time at which the job entered its current execution state.
 	ExecutionStateTransitionTime *date.Time `json:"executionStateTransitionTime,omitempty"`
@@ -2069,6 +2109,11 @@ func (iter ListUsagesResultIterator) Value() Usage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListUsagesResultIterator type.
+func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
+	return ListUsagesResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lur ListUsagesResult) IsEmpty() bool {
 	return lur.Value == nil || len(*lur.Value) == 0
@@ -2136,6 +2181,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 		return nil
 	}
 	return *page.lur.Value
+}
+
+// Creates a new instance of the ListUsagesResultPage type.
+func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{fn: getNextPage}
 }
 
 // LocalDataVolume represents mapping of host directories to directories in the container.
@@ -2279,6 +2329,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2346,6 +2401,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OutputDirectory output directory for the job.
@@ -2465,6 +2525,11 @@ func (iter RemoteLoginInformationListResultIterator) Value() RemoteLoginInformat
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RemoteLoginInformationListResultIterator type.
+func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
+	return RemoteLoginInformationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlilr RemoteLoginInformationListResult) IsEmpty() bool {
 	return rlilr.Value == nil || len(*rlilr.Value) == 0
@@ -2534,6 +2599,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 	return *page.rlilr.Value
 }
 
+// Creates a new instance of the RemoteLoginInformationListResultPage type.
+func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{fn: getNextPage}
+}
+
 // Resource a definition of an Azure resource.
 type Resource struct {
 	// ID - The ID of the resource
@@ -2593,7 +2663,7 @@ type SetupTask struct {
 	RunElevated *bool `json:"runElevated,omitempty"`
 	// StdOutErrPathPrefix - The prefix of a path where the Batch AI service will upload the stdout and stderr of the setup task.
 	StdOutErrPathPrefix *string `json:"stdOutErrPathPrefix,omitempty"`
-	// StdOutErrPathSuffix - Batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatinate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
+	// StdOutErrPathSuffix - Batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatenate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
 	StdOutErrPathSuffix *string `json:"stdOutErrPathSuffix,omitempty"`
 }
 

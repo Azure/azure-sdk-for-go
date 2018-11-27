@@ -19,7 +19,11 @@
 
 package devices
 
-import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices"
+)
 
 type CertificatesClient = original.CertificatesClient
 
@@ -254,6 +258,48 @@ func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
 }
 func PossibleRoutingSourceValues() []RoutingSource {
 	return original.PossibleRoutingSourceValues()
+}
+func NewEventHubConsumerGroupsListResultIterator(page EventHubConsumerGroupsListResultPage) EventHubConsumerGroupsListResultIterator {
+	return original.NewEventHubConsumerGroupsListResultIterator(page)
+}
+func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
+	return original.NewEventHubConsumerGroupsListResultPage(getNextPage)
+}
+func NewIotHubDescriptionListResultIterator(page IotHubDescriptionListResultPage) IotHubDescriptionListResultIterator {
+	return original.NewIotHubDescriptionListResultIterator(page)
+}
+func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
+	return original.NewIotHubDescriptionListResultPage(getNextPage)
+}
+func NewIotHubQuotaMetricInfoListResultIterator(page IotHubQuotaMetricInfoListResultPage) IotHubQuotaMetricInfoListResultIterator {
+	return original.NewIotHubQuotaMetricInfoListResultIterator(page)
+}
+func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
+	return original.NewIotHubQuotaMetricInfoListResultPage(getNextPage)
+}
+func NewIotHubSkuDescriptionListResultIterator(page IotHubSkuDescriptionListResultPage) IotHubSkuDescriptionListResultIterator {
+	return original.NewIotHubSkuDescriptionListResultIterator(page)
+}
+func NewIotHubSkuDescriptionListResultPage(getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
+	return original.NewIotHubSkuDescriptionListResultPage(getNextPage)
+}
+func NewJobResponseListResultIterator(page JobResponseListResultPage) JobResponseListResultIterator {
+	return original.NewJobResponseListResultIterator(page)
+}
+func NewJobResponseListResultPage(getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
+	return original.NewJobResponseListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultIterator(page)
+}
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

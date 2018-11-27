@@ -228,6 +228,11 @@ func (iter USQLAssemblyListIterator) Value() USQLAssemblyClr {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLAssemblyListIterator type.
+func NewUSQLAssemblyListIterator(page USQLAssemblyListPage) USQLAssemblyListIterator {
+	return USQLAssemblyListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (usal USQLAssemblyList) IsEmpty() bool {
 	return usal.Value == nil || len(*usal.Value) == 0
@@ -295,6 +300,11 @@ func (page USQLAssemblyListPage) Values() []USQLAssemblyClr {
 		return nil
 	}
 	return *page.ual.Value
+}
+
+// Creates a new instance of the USQLAssemblyListPage type.
+func NewUSQLAssemblyListPage(getNextPage func(context.Context, USQLAssemblyList) (USQLAssemblyList, error)) USQLAssemblyListPage {
+	return USQLAssemblyListPage{fn: getNextPage}
 }
 
 // USQLCredential a Data Lake Analytics catalog U-SQL credential item.
@@ -383,6 +393,11 @@ func (iter USQLCredentialListIterator) Value() USQLCredential {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLCredentialListIterator type.
+func NewUSQLCredentialListIterator(page USQLCredentialListPage) USQLCredentialListIterator {
+	return USQLCredentialListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (uscl USQLCredentialList) IsEmpty() bool {
 	return uscl.Value == nil || len(*uscl.Value) == 0
@@ -450,6 +465,11 @@ func (page USQLCredentialListPage) Values() []USQLCredential {
 		return nil
 	}
 	return *page.ucl.Value
+}
+
+// Creates a new instance of the USQLCredentialListPage type.
+func NewUSQLCredentialListPage(getNextPage func(context.Context, USQLCredentialList) (USQLCredentialList, error)) USQLCredentialListPage {
+	return USQLCredentialListPage{fn: getNextPage}
 }
 
 // USQLDatabase a Data Lake Analytics catalog U-SQL database item.
@@ -532,6 +552,11 @@ func (iter USQLDatabaseListIterator) Value() USQLDatabase {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLDatabaseListIterator type.
+func NewUSQLDatabaseListIterator(page USQLDatabaseListPage) USQLDatabaseListIterator {
+	return USQLDatabaseListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (usdl USQLDatabaseList) IsEmpty() bool {
 	return usdl.Value == nil || len(*usdl.Value) == 0
@@ -599,6 +624,11 @@ func (page USQLDatabaseListPage) Values() []USQLDatabase {
 		return nil
 	}
 	return *page.udl.Value
+}
+
+// Creates a new instance of the USQLDatabaseListPage type.
+func NewUSQLDatabaseListPage(getNextPage func(context.Context, USQLDatabaseList) (USQLDatabaseList, error)) USQLDatabaseListPage {
+	return USQLDatabaseListPage{fn: getNextPage}
 }
 
 // USQLDirectedColumn a Data Lake Analytics catalog U-SQL directed column item.
@@ -710,6 +740,11 @@ func (iter USQLExternalDataSourceListIterator) Value() USQLExternalDataSource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLExternalDataSourceListIterator type.
+func NewUSQLExternalDataSourceListIterator(page USQLExternalDataSourceListPage) USQLExternalDataSourceListIterator {
+	return USQLExternalDataSourceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (usedsl USQLExternalDataSourceList) IsEmpty() bool {
 	return usedsl.Value == nil || len(*usedsl.Value) == 0
@@ -777,6 +812,11 @@ func (page USQLExternalDataSourceListPage) Values() []USQLExternalDataSource {
 		return nil
 	}
 	return *page.uedsl.Value
+}
+
+// Creates a new instance of the USQLExternalDataSourceListPage type.
+func NewUSQLExternalDataSourceListPage(getNextPage func(context.Context, USQLExternalDataSourceList) (USQLExternalDataSourceList, error)) USQLExternalDataSourceListPage {
+	return USQLExternalDataSourceListPage{fn: getNextPage}
 }
 
 // USQLIndex a Data Lake Analytics catalog U-SQL table index item.
@@ -889,6 +929,11 @@ func (iter USQLProcedureListIterator) Value() USQLProcedure {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLProcedureListIterator type.
+func NewUSQLProcedureListIterator(page USQLProcedureListPage) USQLProcedureListIterator {
+	return USQLProcedureListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (uspl USQLProcedureList) IsEmpty() bool {
 	return uspl.Value == nil || len(*uspl.Value) == 0
@@ -956,6 +1001,11 @@ func (page USQLProcedureListPage) Values() []USQLProcedure {
 		return nil
 	}
 	return *page.upl.Value
+}
+
+// Creates a new instance of the USQLProcedureListPage type.
+func NewUSQLProcedureListPage(getNextPage func(context.Context, USQLProcedureList) (USQLProcedureList, error)) USQLProcedureListPage {
+	return USQLProcedureListPage{fn: getNextPage}
 }
 
 // USQLSchema a Data Lake Analytics catalog U-SQL schema item.
@@ -1040,6 +1090,11 @@ func (iter USQLSchemaListIterator) Value() USQLSchema {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLSchemaListIterator type.
+func NewUSQLSchemaListIterator(page USQLSchemaListPage) USQLSchemaListIterator {
+	return USQLSchemaListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ussl USQLSchemaList) IsEmpty() bool {
 	return ussl.Value == nil || len(*ussl.Value) == 0
@@ -1107,6 +1162,11 @@ func (page USQLSchemaListPage) Values() []USQLSchema {
 		return nil
 	}
 	return *page.usl.Value
+}
+
+// Creates a new instance of the USQLSchemaListPage type.
+func NewUSQLSchemaListPage(getNextPage func(context.Context, USQLSchemaList) (USQLSchemaList, error)) USQLSchemaListPage {
+	return USQLSchemaListPage{fn: getNextPage}
 }
 
 // USQLSecret a Data Lake Analytics catalog U-SQL secret item.
@@ -1230,6 +1290,11 @@ func (iter USQLTableListIterator) Value() USQLTable {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTableListIterator type.
+func NewUSQLTableListIterator(page USQLTableListPage) USQLTableListIterator {
+	return USQLTableListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ustl USQLTableList) IsEmpty() bool {
 	return ustl.Value == nil || len(*ustl.Value) == 0
@@ -1297,6 +1362,11 @@ func (page USQLTableListPage) Values() []USQLTable {
 		return nil
 	}
 	return *page.utl.Value
+}
+
+// Creates a new instance of the USQLTableListPage type.
+func NewUSQLTableListPage(getNextPage func(context.Context, USQLTableList) (USQLTableList, error)) USQLTableListPage {
+	return USQLTableListPage{fn: getNextPage}
 }
 
 // USQLTablePartition a Data Lake Analytics catalog U-SQL table partition item.
@@ -1391,6 +1461,11 @@ func (iter USQLTablePartitionListIterator) Value() USQLTablePartition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTablePartitionListIterator type.
+func NewUSQLTablePartitionListIterator(page USQLTablePartitionListPage) USQLTablePartitionListIterator {
+	return USQLTablePartitionListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ustpl USQLTablePartitionList) IsEmpty() bool {
 	return ustpl.Value == nil || len(*ustpl.Value) == 0
@@ -1458,6 +1533,11 @@ func (page USQLTablePartitionListPage) Values() []USQLTablePartition {
 		return nil
 	}
 	return *page.utpl.Value
+}
+
+// Creates a new instance of the USQLTablePartitionListPage type.
+func NewUSQLTablePartitionListPage(getNextPage func(context.Context, USQLTablePartitionList) (USQLTablePartitionList, error)) USQLTablePartitionListPage {
+	return USQLTablePartitionListPage{fn: getNextPage}
 }
 
 // USQLTableStatistics a Data Lake Analytics catalog U-SQL table statistics item.
@@ -1564,6 +1644,11 @@ func (iter USQLTableStatisticsListIterator) Value() USQLTableStatistics {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTableStatisticsListIterator type.
+func NewUSQLTableStatisticsListIterator(page USQLTableStatisticsListPage) USQLTableStatisticsListIterator {
+	return USQLTableStatisticsListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ustsl USQLTableStatisticsList) IsEmpty() bool {
 	return ustsl.Value == nil || len(*ustsl.Value) == 0
@@ -1631,6 +1716,11 @@ func (page USQLTableStatisticsListPage) Values() []USQLTableStatistics {
 		return nil
 	}
 	return *page.utsl.Value
+}
+
+// Creates a new instance of the USQLTableStatisticsListPage type.
+func NewUSQLTableStatisticsListPage(getNextPage func(context.Context, USQLTableStatisticsList) (USQLTableStatisticsList, error)) USQLTableStatisticsListPage {
+	return USQLTableStatisticsListPage{fn: getNextPage}
 }
 
 // USQLTableType a Data Lake Analytics catalog U-SQL table type item.
@@ -1743,6 +1833,11 @@ func (iter USQLTableTypeListIterator) Value() USQLTableType {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTableTypeListIterator type.
+func NewUSQLTableTypeListIterator(page USQLTableTypeListPage) USQLTableTypeListIterator {
+	return USQLTableTypeListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (usttl USQLTableTypeList) IsEmpty() bool {
 	return usttl.Value == nil || len(*usttl.Value) == 0
@@ -1810,6 +1905,11 @@ func (page USQLTableTypeListPage) Values() []USQLTableType {
 		return nil
 	}
 	return *page.uttl.Value
+}
+
+// Creates a new instance of the USQLTableTypeListPage type.
+func NewUSQLTableTypeListPage(getNextPage func(context.Context, USQLTableTypeList) (USQLTableTypeList, error)) USQLTableTypeListPage {
+	return USQLTableTypeListPage{fn: getNextPage}
 }
 
 // USQLTableValuedFunction a Data Lake Analytics catalog U-SQL table valued function item.
@@ -1899,6 +1999,11 @@ func (iter USQLTableValuedFunctionListIterator) Value() USQLTableValuedFunction 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTableValuedFunctionListIterator type.
+func NewUSQLTableValuedFunctionListIterator(page USQLTableValuedFunctionListPage) USQLTableValuedFunctionListIterator {
+	return USQLTableValuedFunctionListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ustvfl USQLTableValuedFunctionList) IsEmpty() bool {
 	return ustvfl.Value == nil || len(*ustvfl.Value) == 0
@@ -1966,6 +2071,11 @@ func (page USQLTableValuedFunctionListPage) Values() []USQLTableValuedFunction {
 		return nil
 	}
 	return *page.utvfl.Value
+}
+
+// Creates a new instance of the USQLTableValuedFunctionListPage type.
+func NewUSQLTableValuedFunctionListPage(getNextPage func(context.Context, USQLTableValuedFunctionList) (USQLTableValuedFunctionList, error)) USQLTableValuedFunctionListPage {
+	return USQLTableValuedFunctionListPage{fn: getNextPage}
 }
 
 // USQLType a Data Lake Analytics catalog U-SQL type item.
@@ -2075,6 +2185,11 @@ func (iter USQLTypeListIterator) Value() USQLType {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLTypeListIterator type.
+func NewUSQLTypeListIterator(page USQLTypeListPage) USQLTypeListIterator {
+	return USQLTypeListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ustl USQLTypeList) IsEmpty() bool {
 	return ustl.Value == nil || len(*ustl.Value) == 0
@@ -2142,6 +2257,11 @@ func (page USQLTypeListPage) Values() []USQLType {
 		return nil
 	}
 	return *page.utl.Value
+}
+
+// Creates a new instance of the USQLTypeListPage type.
+func NewUSQLTypeListPage(getNextPage func(context.Context, USQLTypeList) (USQLTypeList, error)) USQLTypeListPage {
+	return USQLTypeListPage{fn: getNextPage}
 }
 
 // USQLView a Data Lake Analytics catalog U-SQL view item.
@@ -2230,6 +2350,11 @@ func (iter USQLViewListIterator) Value() USQLView {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the USQLViewListIterator type.
+func NewUSQLViewListIterator(page USQLViewListPage) USQLViewListIterator {
+	return USQLViewListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (usvl USQLViewList) IsEmpty() bool {
 	return usvl.Value == nil || len(*usvl.Value) == 0
@@ -2297,4 +2422,9 @@ func (page USQLViewListPage) Values() []USQLView {
 		return nil
 	}
 	return *page.uvl.Value
+}
+
+// Creates a new instance of the USQLViewListPage type.
+func NewUSQLViewListPage(getNextPage func(context.Context, USQLViewList) (USQLViewList, error)) USQLViewListPage {
+	return USQLViewListPage{fn: getNextPage}
 }

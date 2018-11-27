@@ -19,7 +19,11 @@
 
 package managedapplications
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications"
+)
 
 type ApplicationDefinitionsClient = original.ApplicationDefinitionsClient
 type ApplicationsClient = original.ApplicationsClient
@@ -125,6 +129,18 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func NewApplicationDefinitionListResultIterator(page ApplicationDefinitionListResultPage) ApplicationDefinitionListResultIterator {
+	return original.NewApplicationDefinitionListResultIterator(page)
+}
+func NewApplicationDefinitionListResultPage(getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
+	return original.NewApplicationDefinitionListResultPage(getNextPage)
+}
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return original.NewApplicationListResultIterator(page)
+}
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

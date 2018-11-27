@@ -124,7 +124,7 @@ type PolicyEvent struct {
 	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
 	// PolicySetDefinitionParameters - Policy set definition parameters, if the policy assignment is for a policy set.
 	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
-	// ManagementGroupIds - Comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	// ManagementGroupIds - Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
@@ -583,7 +583,7 @@ type PolicyState struct {
 	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
 	// PolicySetDefinitionParameters - Policy set definition parameters, if the policy assignment is for a policy set.
 	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
-	// ManagementGroupIds - Comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	// ManagementGroupIds - Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`

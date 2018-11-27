@@ -775,6 +775,11 @@ func (iter PaginatedOperationalizationClustersListIterator) Value() Operationali
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PaginatedOperationalizationClustersListIterator type.
+func NewPaginatedOperationalizationClustersListIterator(page PaginatedOperationalizationClustersListPage) PaginatedOperationalizationClustersListIterator {
+	return PaginatedOperationalizationClustersListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pocl PaginatedOperationalizationClustersList) IsEmpty() bool {
 	return pocl.Value == nil || len(*pocl.Value) == 0
@@ -842,6 +847,11 @@ func (page PaginatedOperationalizationClustersListPage) Values() []Operationaliz
 		return nil
 	}
 	return *page.pocl.Value
+}
+
+// Creates a new instance of the PaginatedOperationalizationClustersListPage type.
+func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
+	return PaginatedOperationalizationClustersListPage{fn: getNextPage}
 }
 
 // Resource azure resource

@@ -511,6 +511,11 @@ func (iter AccountListResultIterator) Value() Account {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AccountListResultIterator type.
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return AccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -578,6 +583,11 @@ func (page AccountListResultPage) Values() []Account {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AccountListResultPage type.
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{fn: getNextPage}
 }
 
 // AccountProperties properties of Cognitive Services account.
@@ -756,6 +766,11 @@ func (iter OperationEntityListResultIterator) Value() OperationEntity {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationEntityListResultIterator type.
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return OperationEntityListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
@@ -823,6 +838,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 		return nil
 	}
 	return *page.oelr.Value
+}
+
+// Creates a new instance of the OperationEntityListResultPage type.
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{fn: getNextPage}
 }
 
 // RegenerateKeyParameters regenerate key parameters.
@@ -942,6 +962,11 @@ func (iter ResourceSkusResultIterator) Value() ResourceSku {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceSkusResultIterator type.
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return ResourceSkusResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rsr ResourceSkusResult) IsEmpty() bool {
 	return rsr.Value == nil || len(*rsr.Value) == 0
@@ -1009,6 +1034,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 		return nil
 	}
 	return *page.rsr.Value
+}
+
+// Creates a new instance of the ResourceSkusResultPage type.
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{fn: getNextPage}
 }
 
 // Sku the SKU of the cognitive services account.

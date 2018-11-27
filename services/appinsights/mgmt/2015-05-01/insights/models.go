@@ -279,7 +279,7 @@ type AnnotationsListResult struct {
 	Value *[]Annotation `json:"value,omitempty"`
 }
 
-// APIKeyRequest an Application Insights component API Key createion request definition.
+// APIKeyRequest an Application Insights component API Key creation request definition.
 type APIKeyRequest struct {
 	// Name - The name of the API Key.
 	Name *string `json:"name,omitempty"`
@@ -447,7 +447,7 @@ type ApplicationInsightsComponentAnalyticsItemProperties struct {
 // Component.
 type ApplicationInsightsComponentAPIKey struct {
 	autorest.Response `json:"-"`
-	// ID - The unique ID of the API key inside an Applciation Insights component. It is auto generated when the API key is created.
+	// ID - The unique ID of the API key inside an Application Insights component. It is auto generated when the API key is created.
 	ID *string `json:"id,omitempty"`
 	// APIKey - The API key value. It will be only return once when the API Key was created.
 	APIKey *string `json:"apiKey,omitempty"`
@@ -472,20 +472,20 @@ type ApplicationInsightsComponentAPIKeyListResult struct {
 // ApplicationInsightsComponentAvailableFeatures an Application Insights component available features.
 type ApplicationInsightsComponentAvailableFeatures struct {
 	autorest.Response `json:"-"`
-	// Result - A list of Application Insigths component feature.
+	// Result - A list of Application Insights component feature.
 	Result *[]ApplicationInsightsComponentFeature `json:"Result,omitempty"`
 }
 
 // ApplicationInsightsComponentBillingFeatures an Application Insights component billing features
 type ApplicationInsightsComponentBillingFeatures struct {
 	autorest.Response `json:"-"`
-	// DataVolumeCap - An Application Insights component daily data volumne cap
+	// DataVolumeCap - An Application Insights component daily data volume cap
 	DataVolumeCap *ApplicationInsightsComponentDataVolumeCap `json:"DataVolumeCap,omitempty"`
 	// CurrentBillingFeatures - Current enabled pricing plan. When the component is in the Enterprise plan, this will list both 'Basic' and 'Application Insights Enterprise'.
 	CurrentBillingFeatures *[]string `json:"CurrentBillingFeatures,omitempty"`
 }
 
-// ApplicationInsightsComponentDataVolumeCap an Application Insights component daily data volumne cap
+// ApplicationInsightsComponentDataVolumeCap an Application Insights component daily data volume cap
 type ApplicationInsightsComponentDataVolumeCap struct {
 	// Cap - Daily data volume cap in GB.
 	Cap *float64 `json:"Cap,omitempty"`
@@ -505,7 +505,7 @@ type ApplicationInsightsComponentDataVolumeCap struct {
 // configuration.
 type ApplicationInsightsComponentExportConfiguration struct {
 	autorest.Response `json:"-"`
-	// ExportID - The unique ID of the export configuration inside an Applciation Insights component. It is auto generated when the Continuous Export configuration is created.
+	// ExportID - The unique ID of the export configuration inside an Application Insights component. It is auto generated when the Continuous Export configuration is created.
 	ExportID *string `json:"ExportId,omitempty"`
 	// InstrumentationKey - The instrumentation key of the Application Insights component.
 	InstrumentationKey *string `json:"InstrumentationKey,omitempty"`
@@ -602,15 +602,15 @@ type ApplicationInsightsComponentFeature struct {
 	FeatureName *string `json:"FeatureName,omitempty"`
 	// MeterID - The meter id used for the feature.
 	MeterID *string `json:"MeterId,omitempty"`
-	// MeterRateFrequency - The meter meter rate for the feature's meter.
+	// MeterRateFrequency - The meter rate for the feature's meter.
 	MeterRateFrequency *string `json:"MeterRateFrequency,omitempty"`
 	// ResouceID - Reserved, not used now.
 	ResouceID *string `json:"ResouceId,omitempty"`
 	// IsHidden - Reserved, not used now.
 	IsHidden *bool `json:"IsHidden,omitempty"`
-	// Capabilities - A list of Application Insigths component feature capability.
+	// Capabilities - A list of Application Insights component feature capability.
 	Capabilities *[]ApplicationInsightsComponentFeatureCapability `json:"Capabilities,omitempty"`
-	// Title - Desplay name of the feature.
+	// Title - Display name of the feature.
 	Title *string `json:"Title,omitempty"`
 	// IsMainFeature - Whether can apply addon feature on to it.
 	IsMainFeature *bool `json:"IsMainFeature,omitempty"`
@@ -645,7 +645,7 @@ type ApplicationInsightsComponentFeatureCapabilities struct {
 	MultipleStepWebTest *bool `json:"MultipleStepWebTest,omitempty"`
 	// APIAccessLevel - Reserved, not used now.
 	APIAccessLevel *string `json:"ApiAccessLevel,omitempty"`
-	// TrackingType - The applciation insights component used tracking type.
+	// TrackingType - The application insights component used tracking type.
 	TrackingType *string `json:"TrackingType,omitempty"`
 	// DailyCap - Daily data volume cap in GB.
 	DailyCap *float64 `json:"DailyCap,omitempty"`
@@ -661,7 +661,7 @@ type ApplicationInsightsComponentFeatureCapability struct {
 	Name *string `json:"Name,omitempty"`
 	// Description - The description of the capability.
 	Description *string `json:"Description,omitempty"`
-	// Value - The vaule of the capability.
+	// Value - The value of the capability.
 	Value *string `json:"Value,omitempty"`
 	// Unit - The unit of the capability.
 	Unit *string `json:"Unit,omitempty"`
@@ -676,7 +676,7 @@ type ApplicationInsightsComponentListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Application Insights component definitions.
 	Value *[]ApplicationInsightsComponent `json:"value,omitempty"`
-	// NextLink - The URI to get the next set of Application Insights component defintions if too many components where returned in the result set.
+	// NextLink - The URI to get the next set of Application Insights component definitions if too many components where returned in the result set.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -737,6 +737,11 @@ func (iter ApplicationInsightsComponentListResultIterator) Value() ApplicationIn
 		return ApplicationInsightsComponent{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ApplicationInsightsComponentListResultIterator type.
+func NewApplicationInsightsComponentListResultIterator(page ApplicationInsightsComponentListResultPage) ApplicationInsightsComponentListResultIterator {
+	return ApplicationInsightsComponentListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -808,6 +813,11 @@ func (page ApplicationInsightsComponentListResultPage) Values() []ApplicationIns
 	return *page.aiclr.Value
 }
 
+// Creates a new instance of the ApplicationInsightsComponentListResultPage type.
+func NewApplicationInsightsComponentListResultPage(getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
+	return ApplicationInsightsComponentListResultPage{fn: getNextPage}
+}
+
 // ApplicationInsightsComponentProactiveDetectionConfiguration properties that define a ProactiveDetection
 // configuration.
 type ApplicationInsightsComponentProactiveDetectionConfiguration struct {
@@ -835,7 +845,7 @@ type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions 
 	DisplayName *string `json:"DisplayName,omitempty"`
 	// Description - The rule description
 	Description *string `json:"Description,omitempty"`
-	// HelpURL - URL which displays aditional info about the proactive detection rule
+	// HelpURL - URL which displays additional info about the proactive detection rule
 	HelpURL *string `json:"HelpUrl,omitempty"`
 	// IsHidden - A flag indicating whether the rule is hidden (from the UI)
 	IsHidden *bool `json:"IsHidden,omitempty"`
@@ -983,7 +993,7 @@ type ErrorFieldContract struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The
+// ErrorResponse error response indicates Insights service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -1126,6 +1136,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1193,6 +1208,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // SetObject ...
@@ -1415,6 +1435,11 @@ func (iter WebTestListResultIterator) Value() WebTest {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WebTestListResultIterator type.
+func NewWebTestListResultIterator(page WebTestListResultPage) WebTestListResultIterator {
+	return WebTestListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WebTestListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -1482,6 +1507,11 @@ func (page WebTestListResultPage) Values() []WebTest {
 		return nil
 	}
 	return *page.wtlr.Value
+}
+
+// Creates a new instance of the WebTestListResultPage type.
+func NewWebTestListResultPage(getNextPage func(context.Context, WebTestListResult) (WebTestListResult, error)) WebTestListResultPage {
+	return WebTestListResultPage{fn: getNextPage}
 }
 
 // WebTestProperties metadata describing a web test for an Azure resource.
@@ -1786,7 +1816,7 @@ type WorkItemConfigurationsListResult struct {
 type WorkItemCreateConfiguration struct {
 	// ConnectorID - Unique connector id
 	ConnectorID *string `json:"ConnectorId,omitempty"`
-	// ConnectorDataConfiguration - Serialized JSON object for detaile d properties
+	// ConnectorDataConfiguration - Serialized JSON object for detailed properties
 	ConnectorDataConfiguration *string `json:"ConnectorDataConfiguration,omitempty"`
 	// ValidateOnly - Boolean indicating validate only
 	ValidateOnly *bool `json:"ValidateOnly,omitempty"`

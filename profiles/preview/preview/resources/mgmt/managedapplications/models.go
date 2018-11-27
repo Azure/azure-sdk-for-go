@@ -19,7 +19,11 @@
 
 package managedapplications
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications"
+)
 
 type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
 type AppliancesClient = original.AppliancesClient
@@ -130,6 +134,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func NewApplianceDefinitionListResultIterator(page ApplianceDefinitionListResultPage) ApplianceDefinitionListResultIterator {
+	return original.NewApplianceDefinitionListResultIterator(page)
+}
+func NewApplianceDefinitionListResultPage(getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
+	return original.NewApplianceDefinitionListResultPage(getNextPage)
+}
+func NewApplianceListResultIterator(page ApplianceListResultPage) ApplianceListResultIterator {
+	return original.NewApplianceListResultIterator(page)
+}
+func NewApplianceListResultPage(getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
+	return original.NewApplianceListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -188,7 +188,7 @@ type PolicyEvent struct {
 	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
 	// PolicySetDefinitionParameters - Policy set definition parameters, if the policy assignment is for a policy set.
 	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
-	// ManagementGroupIds - Comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	// ManagementGroupIds - Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
@@ -647,7 +647,7 @@ type PolicyState struct {
 	PolicySetDefinitionCategory *string `json:"policySetDefinitionCategory,omitempty"`
 	// PolicySetDefinitionParameters - Policy set definition parameters, if the policy assignment is for a policy set.
 	PolicySetDefinitionParameters *string `json:"policySetDefinitionParameters,omitempty"`
-	// ManagementGroupIds - Comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	// ManagementGroupIds - Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
@@ -1106,6 +1106,11 @@ func (iter PolicyTrackedResourcesQueryResultsIterator) Value() PolicyTrackedReso
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PolicyTrackedResourcesQueryResultsIterator type.
+func NewPolicyTrackedResourcesQueryResultsIterator(page PolicyTrackedResourcesQueryResultsPage) PolicyTrackedResourcesQueryResultsIterator {
+	return PolicyTrackedResourcesQueryResultsIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ptrqr PolicyTrackedResourcesQueryResults) IsEmpty() bool {
 	return ptrqr.Value == nil || len(*ptrqr.Value) == 0
@@ -1173,6 +1178,11 @@ func (page PolicyTrackedResourcesQueryResultsPage) Values() []PolicyTrackedResou
 		return nil
 	}
 	return *page.ptrqr.Value
+}
+
+// Creates a new instance of the PolicyTrackedResourcesQueryResultsPage type.
+func NewPolicyTrackedResourcesQueryResultsPage(getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
+	return PolicyTrackedResourcesQueryResultsPage{fn: getNextPage}
 }
 
 // QueryFailure error response.
@@ -1357,6 +1367,11 @@ func (iter RemediationDeploymentsListResultIterator) Value() RemediationDeployme
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RemediationDeploymentsListResultIterator type.
+func NewRemediationDeploymentsListResultIterator(page RemediationDeploymentsListResultPage) RemediationDeploymentsListResultIterator {
+	return RemediationDeploymentsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rdlr RemediationDeploymentsListResult) IsEmpty() bool {
 	return rdlr.Value == nil || len(*rdlr.Value) == 0
@@ -1424,6 +1439,11 @@ func (page RemediationDeploymentsListResultPage) Values() []RemediationDeploymen
 		return nil
 	}
 	return *page.rdlr.Value
+}
+
+// Creates a new instance of the RemediationDeploymentsListResultPage type.
+func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
+	return RemediationDeploymentsListResultPage{fn: getNextPage}
 }
 
 // RemediationDeploymentSummary the deployment status summary for all deplyoments created by the
@@ -1510,6 +1530,11 @@ func (iter RemediationListResultIterator) Value() Remediation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RemediationListResultIterator type.
+func NewRemediationListResultIterator(page RemediationListResultPage) RemediationListResultIterator {
+	return RemediationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RemediationListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -1577,6 +1602,11 @@ func (page RemediationListResultPage) Values() []Remediation {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the RemediationListResultPage type.
+func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
+	return RemediationListResultPage{fn: getNextPage}
 }
 
 // RemediationProperties the remediation properties.

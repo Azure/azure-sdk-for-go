@@ -19,7 +19,11 @@
 
 package timeseriesinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights"
+)
 
 type AccessPoliciesClient = original.AccessPoliciesClient
 
@@ -205,6 +209,12 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return original.PossibleStorageLimitExceededBehaviorValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

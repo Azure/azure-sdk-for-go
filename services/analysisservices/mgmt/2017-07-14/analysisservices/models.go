@@ -135,7 +135,7 @@ type CheckServerNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckServerNameAvailabilityResult the checking result of server name availibility.
+// CheckServerNameAvailabilityResult the checking result of server name availability.
 type CheckServerNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - Indicator of available of the server name.

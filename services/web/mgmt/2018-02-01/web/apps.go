@@ -11445,7 +11445,7 @@ func (client AppsClient) GetMSDeployStatusSlotResponder(resp *http.Response) (re
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // operationID - GUID of the operation.
-func (client AppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperation")
 		defer func() {
@@ -11516,7 +11516,7 @@ func (client AppsClient) GetNetworkTraceOperationSender(req *http.Request) (*htt
 
 // GetNetworkTraceOperationResponder handles the response to the GetNetworkTraceOperation request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11535,7 +11535,7 @@ func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) 
 // operationID - GUID of the operation.
 // slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
 // production slot.
-func (client AppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationSlot")
 		defer func() {
@@ -11607,7 +11607,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotSender(req *http.Request) (
 
 // GetNetworkTraceOperationSlotResponder handles the response to the GetNetworkTraceOperationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11626,7 +11626,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Respon
 // operationID - GUID of the operation.
 // slot - name of the deployment slot. If a slot is not specified, the API will get an operation for the
 // production slot.
-func (client AppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context, resourceGroupName string, name string, operationID string, slot string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationSlotV2")
 		defer func() {
@@ -11698,7 +11698,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Sender(req *http.Request)
 
 // GetNetworkTraceOperationSlotV2Responder handles the response to the GetNetworkTraceOperationSlotV2 request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -11714,7 +11714,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Resp
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // operationID - GUID of the operation.
-func (client AppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationV2(ctx context.Context, resourceGroupName string, name string, operationID string) (result ListNetworkTrace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetNetworkTraceOperationV2")
 		defer func() {
@@ -11785,7 +11785,7 @@ func (client AppsClient) GetNetworkTraceOperationV2Sender(req *http.Request) (*h
 
 // GetNetworkTraceOperationV2Responder handles the response to the GetNetworkTraceOperationV2 request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -24298,6 +24298,254 @@ func (client AppsClient) ListSnapshotsComplete(ctx context.Context, resourceGrou
 	return
 }
 
+// ListSnapshotsFromDRSecondary returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+func (client AppsClient) ListSnapshotsFromDRSecondary(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondary")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondary", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondaryNextResults
+	req, err := client.ListSnapshotsFromDRSecondaryPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondary", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondaryPreparer prepares the ListSnapshotsFromDRSecondary request.
+func (client AppsClient) ListSnapshotsFromDRSecondaryPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySender sends the ListSnapshotsFromDRSecondary request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondaryResponder handles the response to the ListSnapshotsFromDRSecondary request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondaryResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondaryNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondaryNextResults(ctx context.Context, lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondaryNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondaryComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondaryComplete(ctx context.Context, resourceGroupName string, name string) (result SnapshotCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondary")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSnapshotsFromDRSecondary(ctx, resourceGroupName, name)
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlot returns all Snapshots to the user from DRSecondary endpoint.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - website Name.
+// slot - website Slot.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondarySlot")
+		defer func() {
+			sc := -1
+			if result.sc.Response.Response != nil {
+				sc = result.sc.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSnapshotsFromDRSecondarySlot", err.Error())
+	}
+
+	result.fn = client.listSnapshotsFromDRSecondarySlotNextResults
+	req, err := client.ListSnapshotsFromDRSecondarySlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.sc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure sending request")
+		return
+	}
+
+	result.sc, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsFromDRSecondarySlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotPreparer prepares the ListSnapshotsFromDRSecondarySlot request.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSnapshotsFromDRSecondarySlotSender sends the ListSnapshotsFromDRSecondarySlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSnapshotsFromDRSecondarySlotResponder handles the response to the ListSnapshotsFromDRSecondarySlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotResponder(resp *http.Response) (result SnapshotCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSnapshotsFromDRSecondarySlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSnapshotsFromDRSecondarySlotNextResults(ctx context.Context, lastResults SnapshotCollection) (result SnapshotCollection, err error) {
+	req, err := lastResults.snapshotCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSnapshotsFromDRSecondarySlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSnapshotsFromDRSecondarySlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSnapshotsFromDRSecondarySlotNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSnapshotsFromDRSecondarySlotComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSnapshotsFromDRSecondarySlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result SnapshotCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSnapshotsFromDRSecondarySlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSnapshotsFromDRSecondarySlot(ctx, resourceGroupName, name, slot)
+	return
+}
+
 // ListSnapshotsSlot returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -27943,7 +28191,7 @@ func (client AppsClient) StartNetworkTraceSender(req *http.Request) (future Apps
 
 // StartNetworkTraceResponder handles the response to the StartNetworkTrace request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28042,7 +28290,7 @@ func (client AppsClient) StartNetworkTraceSlotSender(req *http.Request) (future 
 
 // StartNetworkTraceSlotResponder handles the response to the StartNetworkTraceSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28322,7 +28570,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSender(req *http.Reque
 
 // StartWebSiteNetworkTraceOperationResponder handles the response to the StartWebSiteNetworkTraceOperation request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -28421,7 +28669,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotSender(req *http.R
 
 // StartWebSiteNetworkTraceOperationSlotResponder handles the response to the StartWebSiteNetworkTraceOperationSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *http.Response) (result ListNetworkTrace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

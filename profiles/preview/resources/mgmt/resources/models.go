@@ -19,7 +19,11 @@
 
 package resources
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -167,6 +171,48 @@ func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
+	return original.NewDeploymentListResultIterator(page)
+}
+func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return original.NewDeploymentListResultPage(getNextPage)
+}
+func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
+	return original.NewDeploymentOperationsListResultIterator(page)
+}
+func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return original.NewDeploymentOperationsListResultPage(getNextPage)
+}
+func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
+	return original.NewGroupListResultIterator(page)
+}
+func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
+	return original.NewProviderListResultIterator(page)
+}
+func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return original.NewProviderListResultPage(getNextPage)
+}
+func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
+	return original.NewTagsListResultIterator(page)
+}
+func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
+	return original.NewTagsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

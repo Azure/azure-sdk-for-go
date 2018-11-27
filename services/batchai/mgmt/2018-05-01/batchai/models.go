@@ -563,6 +563,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -630,6 +635,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
 }
 
 // ClusterProperties cluster properties.
@@ -990,6 +1000,11 @@ func (iter ExperimentListResultIterator) Value() Experiment {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ExperimentListResultIterator type.
+func NewExperimentListResultIterator(page ExperimentListResultPage) ExperimentListResultIterator {
+	return ExperimentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (elr ExperimentListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
@@ -1057,6 +1072,11 @@ func (page ExperimentListResultPage) Values() []Experiment {
 		return nil
 	}
 	return *page.elr.Value
+}
+
+// Creates a new instance of the ExperimentListResultPage type.
+func NewExperimentListResultPage(getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
+	return ExperimentListResultPage{fn: getNextPage}
 }
 
 // ExperimentProperties experiment properties.
@@ -1269,6 +1289,11 @@ func (iter FileListResultIterator) Value() File {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileListResultIterator type.
+func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
+	return FileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FileListResult) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -1336,6 +1361,11 @@ func (page FileListResultPage) Values() []File {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FileListResultPage type.
+func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{fn: getNextPage}
 }
 
 // FileProperties file properties.
@@ -1546,6 +1576,11 @@ func (iter FileServerListResultIterator) Value() FileServer {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FileServerListResultIterator type.
+func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
+	return FileServerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fslr FileServerListResult) IsEmpty() bool {
 	return fslr.Value == nil || len(*fslr.Value) == 0
@@ -1613,6 +1648,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 		return nil
 	}
 	return *page.fslr.Value
+}
+
+// Creates a new instance of the FileServerListResultPage type.
+func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{fn: getNextPage}
 }
 
 // FileServerProperties file Server properties.
@@ -1831,7 +1871,7 @@ type JobBaseProperties struct {
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	// Cluster - Resource ID of the cluster on which this job will run.
 	Cluster *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - Number of compute nodes to run the job on. The job will be gang scheduled on that many compute nodes.
 	NodeCount *int32 `json:"nodeCount,omitempty"`
@@ -1983,6 +2023,11 @@ func (iter JobListResultIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
@@ -2052,6 +2097,11 @@ func (page JobListResultPage) Values() []Job {
 	return *page.jlr.Value
 }
 
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
+}
+
 // JobPreparation job preparation settings.
 type JobPreparation struct {
 	// CommandLine - The command line to execute. If containerSettings is specified on the job, this commandLine will be executed in the same container as job. Otherwise it will be executed on the node.
@@ -2064,7 +2114,7 @@ type JobProperties struct {
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	// Cluster - Resource ID of the cluster associated with the job.
 	Cluster *ResourceID `json:"cluster,omitempty"`
-	// MountVolumes - Collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmouted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	// MountVolumes - Collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmounted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - The job will be gang scheduled on that many compute nodes
 	NodeCount *int32 `json:"nodeCount,omitempty"`
@@ -2103,7 +2153,7 @@ type JobProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - The time at which the job entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
-	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
+	// ExecutionState - The current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'Queued', 'Running', 'Terminating', 'Succeeded', 'Failed'
 	ExecutionState ExecutionState `json:"executionState,omitempty"`
 	// ExecutionStateTransitionTime - The time at which the job entered its current execution state.
 	ExecutionStateTransitionTime *date.Time `json:"executionStateTransitionTime,omitempty"`
@@ -2204,7 +2254,7 @@ func (future *JobsTerminateFuture) Result(client JobsClient) (ar autorest.Respon
 
 // KeyVaultSecretReference key Vault Secret reference.
 type KeyVaultSecretReference struct {
-	// SourceVault - Fully qualified resource indentifier of the Key Vault.
+	// SourceVault - Fully qualified resource identifier of the Key Vault.
 	SourceVault *ResourceID `json:"sourceVault,omitempty"`
 	// SecretURL - The URL referencing a secret in the Key Vault.
 	SecretURL *string `json:"secretUrl,omitempty"`
@@ -2277,6 +2327,11 @@ func (iter ListUsagesResultIterator) Value() Usage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListUsagesResultIterator type.
+func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
+	return ListUsagesResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lur ListUsagesResult) IsEmpty() bool {
 	return lur.Value == nil || len(*lur.Value) == 0
@@ -2344,6 +2399,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 		return nil
 	}
 	return *page.lur.Value
+}
+
+// Creates a new instance of the ListUsagesResultPage type.
+func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{fn: getNextPage}
 }
 
 // ManualScaleSettings manual scale settings for the cluster.
@@ -2492,6 +2552,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2561,9 +2626,14 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
+}
+
 // OutputDirectory output directory for the job.
 type OutputDirectory struct {
-	// ID - The ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_<id> environment variale to find the directory path, where <id> is the value of id attribute.
+	// ID - The ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_<id> environment variable to find the directory path, where <id> is the value of id attribute.
 	ID *string `json:"id,omitempty"`
 	// PathPrefix - The prefix path where the output directory will be created. Note, this is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs. The full path to the output directory by combining pathPrefix, jobOutputDirectoryPathSegment (reported by get job) and pathSuffix.
 	PathPrefix *string `json:"pathPrefix,omitempty"`
@@ -2689,6 +2759,11 @@ func (iter RemoteLoginInformationListResultIterator) Value() RemoteLoginInformat
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RemoteLoginInformationListResultIterator type.
+func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
+	return RemoteLoginInformationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlilr RemoteLoginInformationListResult) IsEmpty() bool {
 	return rlilr.Value == nil || len(*rlilr.Value) == 0
@@ -2756,6 +2831,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 		return nil
 	}
 	return *page.rlilr.Value
+}
+
+// Creates a new instance of the RemoteLoginInformationListResultPage type.
+func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{fn: getNextPage}
 }
 
 // Resource a definition of an Azure resource.
@@ -2849,7 +2929,7 @@ type TensorFlowSettings struct {
 	ParameterServerCount *int32 `json:"parameterServerCount,omitempty"`
 }
 
-// UnmanagedFileSystemReference unmananged file system mounting configuration.
+// UnmanagedFileSystemReference unmanaged file system mounting configuration.
 type UnmanagedFileSystemReference struct {
 	// MountCommand - Mount command line. Note, Batch AI will append mount path to the command on its own.
 	MountCommand *string `json:"mountCommand,omitempty"`
@@ -3090,6 +3170,11 @@ func (iter WorkspaceListResultIterator) Value() Workspace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkspaceListResultIterator type.
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return WorkspaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -3157,6 +3242,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WorkspaceListResultPage type.
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{fn: getNextPage}
 }
 
 // WorkspaceProperties workspace specific properties.

@@ -401,6 +401,11 @@ func (iter ContainerGroupListResultIterator) Value() ContainerGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ContainerGroupListResultIterator type.
+func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
+	return ContainerGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
@@ -468,6 +473,11 @@ func (page ContainerGroupListResultPage) Values() []ContainerGroup {
 		return nil
 	}
 	return *page.cglr.Value
+}
+
+// Creates a new instance of the ContainerGroupListResultPage type.
+func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return ContainerGroupListResultPage{fn: getNextPage}
 }
 
 // ContainerGroupProperties ...

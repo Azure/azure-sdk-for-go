@@ -22,7 +22,7 @@ package autosuggest
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest"
 
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	DefaultEndpoint = original.DefaultEndpoint
 )
 
 type BaseClient = original.BaseClient
@@ -138,8 +138,8 @@ type Thing = original.Thing
 func New() BaseClient {
 	return original.New()
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()

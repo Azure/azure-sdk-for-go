@@ -19,7 +19,11 @@
 
 package containerinstance
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -121,6 +125,7 @@ type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
 type ContainerGroupsRestartFuture = original.ContainerGroupsRestartFuture
+type ContainerGroupsStartFuture = original.ContainerGroupsStartFuture
 type ContainerHTTPGet = original.ContainerHTTPGet
 type ContainerPort = original.ContainerPort
 type ContainerProbe = original.ContainerProbe
@@ -205,6 +210,12 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleSchemeValues() []Scheme {
 	return original.PossibleSchemeValues()
+}
+func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
+	return original.NewContainerGroupListResultIterator(page)
+}
+func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return original.NewContainerGroupListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

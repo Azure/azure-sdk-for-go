@@ -121,7 +121,7 @@ func (client WorkItemConfigurationsClient) CreateResponder(resp *http.Response) 
 	return
 }
 
-// Delete delete an workitem configuration of an Application Insights component.
+// Delete delete a work item configuration of an Application Insights component.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the Application Insights component resource.

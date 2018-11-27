@@ -19,10 +19,15 @@
 
 package security
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
+)
 
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AlertsClient = original.AlertsClient
+type AllowedConnectionsClient = original.AllowedConnectionsClient
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 
 const (
@@ -64,6 +69,13 @@ type AutoProvision = original.AutoProvision
 const (
 	AutoProvisionOff AutoProvision = original.AutoProvisionOff
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+)
+
+type ConnectionType = original.ConnectionType
+
+const (
+	External ConnectionType = original.External
+	Internal ConnectionType = original.Internal
 )
 
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
@@ -147,6 +159,11 @@ type AlertList = original.AlertList
 type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
+type AllowedConnectionsList = original.AllowedConnectionsList
+type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
+type AllowedConnectionsListPage = original.AllowedConnectionsListPage
+type AllowedConnectionsResource = original.AllowedConnectionsResource
+type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -168,6 +185,8 @@ type ComplianceListIterator = original.ComplianceListIterator
 type ComplianceListPage = original.ComplianceListPage
 type ComplianceProperties = original.ComplianceProperties
 type ComplianceSegment = original.ComplianceSegment
+type ConnectableResource = original.ConnectableResource
+type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
 type Contact = original.Contact
 type ContactList = original.ContactList
@@ -268,6 +287,12 @@ func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
+}
+func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)
 }
@@ -334,6 +359,9 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
+func PossibleConnectionTypeValues() []ConnectionType {
+	return original.PossibleConnectionTypeValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -360,6 +388,102 @@ func PossibleStatusValues() []Status {
 }
 func PossibleStatusReasonValues() []StatusReason {
 	return original.PossibleStatusReasonValues()
+}
+func NewAlertListIterator(page AlertListPage) AlertListIterator {
+	return original.NewAlertListIterator(page)
+}
+func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(getNextPage)
+}
+func NewAllowedConnectionsListIterator(page AllowedConnectionsListPage) AllowedConnectionsListIterator {
+	return original.NewAllowedConnectionsListIterator(page)
+}
+func NewAllowedConnectionsListPage(getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
+	return original.NewAllowedConnectionsListPage(getNextPage)
+}
+func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterator {
+	return original.NewAscLocationListIterator(page)
+}
+func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
+	return original.NewAscLocationListPage(getNextPage)
+}
+func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
+	return original.NewAutoProvisioningSettingListIterator(page)
+}
+func NewAutoProvisioningSettingListPage(getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
+	return original.NewAutoProvisioningSettingListPage(getNextPage)
+}
+func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
+	return original.NewComplianceListIterator(page)
+}
+func NewComplianceListPage(getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
+	return original.NewComplianceListPage(getNextPage)
+}
+func NewContactListIterator(page ContactListPage) ContactListIterator {
+	return original.NewContactListIterator(page)
+}
+func NewContactListPage(getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
+	return original.NewContactListPage(getNextPage)
+}
+func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
+	return original.NewDiscoveredSecuritySolutionListIterator(page)
+}
+func NewDiscoveredSecuritySolutionListPage(getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
+	return original.NewDiscoveredSecuritySolutionListPage(getNextPage)
+}
+func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPage) ExternalSecuritySolutionListIterator {
+	return original.NewExternalSecuritySolutionListIterator(page)
+}
+func NewExternalSecuritySolutionListPage(getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
+	return original.NewExternalSecuritySolutionListPage(getNextPage)
+}
+func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicyListPage) InformationProtectionPolicyListIterator {
+	return original.NewInformationProtectionPolicyListIterator(page)
+}
+func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
+	return original.NewInformationProtectionPolicyListPage(getNextPage)
+}
+func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPage) JitNetworkAccessPoliciesListIterator {
+	return original.NewJitNetworkAccessPoliciesListIterator(page)
+}
+func NewJitNetworkAccessPoliciesListPage(getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
+	return original.NewJitNetworkAccessPoliciesListPage(getNextPage)
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
+}
+func NewPricingListIterator(page PricingListPage) PricingListIterator {
+	return original.NewPricingListIterator(page)
+}
+func NewPricingListPage(getNextPage func(context.Context, PricingList) (PricingList, error)) PricingListPage {
+	return original.NewPricingListPage(getNextPage)
+}
+func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
+	return original.NewSettingsListIterator(page)
+}
+func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
+	return original.NewSettingsListPage(getNextPage)
+}
+func NewTaskListIterator(page TaskListPage) TaskListIterator {
+	return original.NewTaskListIterator(page)
+}
+func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(getNextPage)
+}
+func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
+	return original.NewTopologyListIterator(page)
+}
+func NewTopologyListPage(getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
+	return original.NewTopologyListPage(getNextPage)
+}
+func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSettingListIterator {
+	return original.NewWorkspaceSettingListIterator(page)
+}
+func NewWorkspaceSettingListPage(getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
+	return original.NewWorkspaceSettingListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, ascLocation)

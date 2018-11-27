@@ -447,6 +447,11 @@ func (iter ListIterator) Value() Response {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListIterator type.
+func NewListIterator(page ListPage) ListIterator {
+	return ListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (l List) IsEmpty() bool {
 	return l.Value == nil || len(*l.Value) == 0
@@ -514,6 +519,11 @@ func (page ListPage) Values() []Response {
 		return nil
 	}
 	return *page.l.Value
+}
+
+// Creates a new instance of the ListPage type.
+func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{fn: getNextPage}
 }
 
 // ListResponse ...
@@ -648,6 +658,11 @@ func (iter OperationListIterator) Value() OperationResponse {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -715,6 +730,11 @@ func (page OperationListPage) Values() []OperationResponse {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // OperationResponse ...
@@ -790,6 +810,11 @@ func (iter OrderListIterator) Value() OrderResponse {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OrderListIterator type.
+func NewOrderListIterator(page OrderListPage) OrderListIterator {
+	return OrderListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OrderList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -857,6 +882,11 @@ func (page OrderListPage) Values() []OrderResponse {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OrderListPage type.
+func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{fn: getNextPage}
 }
 
 // OrderProperties ...

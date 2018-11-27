@@ -19,7 +19,11 @@
 
 package relay
 
-import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -147,6 +151,36 @@ func PossibleSkuTierValues() []SkuTier {
 }
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()
+}
+func NewAuthorizationRuleListResultIterator(page AuthorizationRuleListResultPage) AuthorizationRuleListResultIterator {
+	return original.NewAuthorizationRuleListResultIterator(page)
+}
+func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return original.NewAuthorizationRuleListResultPage(getNextPage)
+}
+func NewHybridConnectionListResultIterator(page HybridConnectionListResultPage) HybridConnectionListResultIterator {
+	return original.NewHybridConnectionListResultIterator(page)
+}
+func NewHybridConnectionListResultPage(getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
+	return original.NewHybridConnectionListResultPage(getNextPage)
+}
+func NewNamespaceListResultIterator(page NamespaceListResultPage) NamespaceListResultIterator {
+	return original.NewNamespaceListResultIterator(page)
+}
+func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return original.NewNamespaceListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewWcfRelaysListResultIterator(page WcfRelaysListResultPage) WcfRelaysListResultIterator {
+	return original.NewWcfRelaysListResultIterator(page)
+}
+func NewWcfRelaysListResultPage(getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
+	return original.NewWcfRelaysListResultPage(getNextPage)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)

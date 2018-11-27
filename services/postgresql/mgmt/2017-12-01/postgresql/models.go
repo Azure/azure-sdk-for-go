@@ -1862,6 +1862,11 @@ func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualNetworkRuleListResultIterator type.
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return VirtualNetworkRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
@@ -1929,6 +1934,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 		return nil
 	}
 	return *page.vnrlr.Value
+}
+
+// Creates a new instance of the VirtualNetworkRuleListResultPage type.
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{fn: getNextPage}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.

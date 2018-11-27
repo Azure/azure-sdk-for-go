@@ -466,6 +466,11 @@ func (iter APICollectionIterator) Value() APIContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the APICollectionIterator type.
+func NewAPICollectionIterator(page APICollectionPage) APICollectionIterator {
+	return APICollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ac APICollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -533,6 +538,11 @@ func (page APICollectionPage) Values() []APIContract {
 		return nil
 	}
 	return *page.ac.Value
+}
+
+// Creates a new instance of the APICollectionPage type.
+func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return APICollectionPage{fn: getNextPage}
 }
 
 // APIContract api Contract Details
@@ -759,6 +769,11 @@ func (iter AuthorizationServerCollectionIterator) Value() AuthorizationServerCon
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AuthorizationServerCollectionIterator type.
+func NewAuthorizationServerCollectionIterator(page AuthorizationServerCollectionPage) AuthorizationServerCollectionIterator {
+	return AuthorizationServerCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (asc AuthorizationServerCollection) IsEmpty() bool {
 	return asc.Value == nil || len(*asc.Value) == 0
@@ -826,6 +841,11 @@ func (page AuthorizationServerCollectionPage) Values() []AuthorizationServerCont
 		return nil
 	}
 	return *page.asc.Value
+}
+
+// Creates a new instance of the AuthorizationServerCollectionPage type.
+func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return AuthorizationServerCollectionPage{fn: getNextPage}
 }
 
 // AuthorizationServerContract external OAuth authorization server settings.
@@ -1060,6 +1080,11 @@ func (iter BackendCollectionIterator) Value() BackendContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BackendCollectionIterator type.
+func NewBackendCollectionIterator(page BackendCollectionPage) BackendCollectionIterator {
+	return BackendCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bc BackendCollection) IsEmpty() bool {
 	return bc.Value == nil || len(*bc.Value) == 0
@@ -1127,6 +1152,11 @@ func (page BackendCollectionPage) Values() []BackendContract {
 		return nil
 	}
 	return *page.bc.Value
+}
+
+// Creates a new instance of the BackendCollectionPage type.
+func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return BackendCollectionPage{fn: getNextPage}
 }
 
 // BackendContract backend details.
@@ -1226,7 +1256,7 @@ type BackendProxyContract struct {
 type BackendServiceFabricClusterProperties struct {
 	// ClientCertificateThumbprint - The client certificate thumbprint for the management endpoint.
 	ClientCertificateThumbprint *string `json:"clientCertificateThumbprint,omitempty"`
-	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the parition.
+	// MaxPartitionResolutionRetries - Maximum number of retries while attempting resolve the partition.
 	MaxPartitionResolutionRetries *int32 `json:"maxPartitionResolutionRetries,omitempty"`
 	// PartitionResolutionRequestTimeout - Maximum time allowed to update partition resolution data. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
 	PartitionResolutionRequestTimeout *string `json:"partitionResolutionRequestTimeout,omitempty"`
@@ -1337,6 +1367,11 @@ func (iter CertificateCollectionIterator) Value() CertificateContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CertificateCollectionIterator type.
+func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
+	return CertificateCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
@@ -1404,6 +1439,11 @@ func (page CertificateCollectionPage) Values() []CertificateContract {
 		return nil
 	}
 	return *page.cc.Value
+}
+
+// Creates a new instance of the CertificateCollectionPage type.
+func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{fn: getNextPage}
 }
 
 // CertificateContract certificate details.
@@ -1514,6 +1554,11 @@ func (iter EmailTemplateCollectionIterator) Value() EmailTemplateContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EmailTemplateCollectionIterator type.
+func NewEmailTemplateCollectionIterator(page EmailTemplateCollectionPage) EmailTemplateCollectionIterator {
+	return EmailTemplateCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (etc EmailTemplateCollection) IsEmpty() bool {
 	return etc.Value == nil || len(*etc.Value) == 0
@@ -1581,6 +1626,11 @@ func (page EmailTemplateCollectionPage) Values() []EmailTemplateContract {
 		return nil
 	}
 	return *page.etc.Value
+}
+
+// Creates a new instance of the EmailTemplateCollectionPage type.
+func NewEmailTemplateCollectionPage(getNextPage func(context.Context, EmailTemplateCollection) (EmailTemplateCollection, error)) EmailTemplateCollectionPage {
+	return EmailTemplateCollectionPage{fn: getNextPage}
 }
 
 // EmailTemplateContract email Template details.
@@ -1738,6 +1788,11 @@ func (iter GroupCollectionIterator) Value() GroupContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the GroupCollectionIterator type.
+func NewGroupCollectionIterator(page GroupCollectionPage) GroupCollectionIterator {
+	return GroupCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (gc GroupCollection) IsEmpty() bool {
 	return gc.Value == nil || len(*gc.Value) == 0
@@ -1805,6 +1860,11 @@ func (page GroupCollectionPage) Values() []GroupContract {
 		return nil
 	}
 	return *page.gc.Value
+}
+
+// Creates a new instance of the GroupCollectionPage type.
+func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return GroupCollectionPage{fn: getNextPage}
 }
 
 // GroupContract contract details.
@@ -2021,6 +2081,11 @@ func (iter LoggerCollectionIterator) Value() LoggerContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LoggerCollectionIterator type.
+func NewLoggerCollectionIterator(page LoggerCollectionPage) LoggerCollectionIterator {
+	return LoggerCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lc LoggerCollection) IsEmpty() bool {
 	return lc.Value == nil || len(*lc.Value) == 0
@@ -2088,6 +2153,11 @@ func (page LoggerCollectionPage) Values() []LoggerContract {
 		return nil
 	}
 	return *page.lc.Value
+}
+
+// Creates a new instance of the LoggerCollectionPage type.
+func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return LoggerCollectionPage{fn: getNextPage}
 }
 
 // LoggerContract logger details.
@@ -2266,6 +2336,11 @@ func (iter OpenIDConnectProviderCollectionIterator) Value() OpenidConnectProvide
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OpenIDConnectProviderCollectionIterator type.
+func NewOpenIDConnectProviderCollectionIterator(page OpenIDConnectProviderCollectionPage) OpenIDConnectProviderCollectionIterator {
+	return OpenIDConnectProviderCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oicpc OpenIDConnectProviderCollection) IsEmpty() bool {
 	return oicpc.Value == nil || len(*oicpc.Value) == 0
@@ -2333,6 +2408,11 @@ func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProvider
 		return nil
 	}
 	return *page.oicpc.Value
+}
+
+// Creates a new instance of the OpenIDConnectProviderCollectionPage type.
+func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return OpenIDConnectProviderCollectionPage{fn: getNextPage}
 }
 
 // OpenidConnectProviderContract openId Connect Provider details.
@@ -2449,6 +2529,11 @@ func (iter OperationCollectionIterator) Value() OperationContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationCollectionIterator type.
+func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
+	return OperationCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (oc OperationCollection) IsEmpty() bool {
 	return oc.Value == nil || len(*oc.Value) == 0
@@ -2516,6 +2601,11 @@ func (page OperationCollectionPage) Values() []OperationContract {
 		return nil
 	}
 	return *page.oc.Value
+}
+
+// Creates a new instance of the OperationCollectionPage type.
+func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{fn: getNextPage}
 }
 
 // OperationContract api Operation details.
@@ -2777,6 +2867,11 @@ func (iter ProductCollectionIterator) Value() ProductContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProductCollectionIterator type.
+func NewProductCollectionIterator(page ProductCollectionPage) ProductCollectionIterator {
+	return ProductCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pc ProductCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -2844,6 +2939,11 @@ func (page ProductCollectionPage) Values() []ProductContract {
 		return nil
 	}
 	return *page.pc.Value
+}
+
+// Creates a new instance of the ProductCollectionPage type.
+func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return ProductCollectionPage{fn: getNextPage}
 }
 
 // ProductContract product details.
@@ -2988,6 +3088,11 @@ func (iter PropertyCollectionIterator) Value() PropertyContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PropertyCollectionIterator type.
+func NewPropertyCollectionIterator(page PropertyCollectionPage) PropertyCollectionIterator {
+	return PropertyCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pc PropertyCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -3055,6 +3160,11 @@ func (page PropertyCollectionPage) Values() []PropertyContract {
 		return nil
 	}
 	return *page.pc.Value
+}
+
+// Creates a new instance of the PropertyCollectionPage type.
+func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return PropertyCollectionPage{fn: getNextPage}
 }
 
 // PropertyContract property details.
@@ -3273,6 +3383,11 @@ func (iter ReportCollectionIterator) Value() ReportRecordContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReportCollectionIterator type.
+func NewReportCollectionIterator(page ReportCollectionPage) ReportCollectionIterator {
+	return ReportCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rc ReportCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
@@ -3340,6 +3455,11 @@ func (page ReportCollectionPage) Values() []ReportRecordContract {
 		return nil
 	}
 	return *page.rc.Value
+}
+
+// Creates a new instance of the ReportCollectionPage type.
+func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return ReportCollectionPage{fn: getNextPage}
 }
 
 // ReportRecordContract report data.
@@ -3562,6 +3682,11 @@ func (iter SchemaCollectionIterator) Value() SchemaContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SchemaCollectionIterator type.
+func NewSchemaCollectionIterator(page SchemaCollectionPage) SchemaCollectionIterator {
+	return SchemaCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sc SchemaCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -3629,6 +3754,11 @@ func (page SchemaCollectionPage) Values() []SchemaContract {
 		return nil
 	}
 	return *page.sc.Value
+}
+
+// Creates a new instance of the SchemaCollectionPage type.
+func NewSchemaCollectionPage(getNextPage func(context.Context, SchemaCollection) (SchemaCollection, error)) SchemaCollectionPage {
+	return SchemaCollectionPage{fn: getNextPage}
 }
 
 // SchemaContract schema Contract details.
@@ -3770,6 +3900,11 @@ func (iter SubscriptionCollectionIterator) Value() SubscriptionContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SubscriptionCollectionIterator type.
+func NewSubscriptionCollectionIterator(page SubscriptionCollectionPage) SubscriptionCollectionIterator {
+	return SubscriptionCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sc SubscriptionCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -3837,6 +3972,11 @@ func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 		return nil
 	}
 	return *page.sc.Value
+}
+
+// Creates a new instance of the SubscriptionCollectionPage type.
+func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return SubscriptionCollectionPage{fn: getNextPage}
 }
 
 // SubscriptionContract subscription details.
@@ -4141,6 +4281,11 @@ func (iter UserCollectionIterator) Value() UserContract {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UserCollectionIterator type.
+func NewUserCollectionIterator(page UserCollectionPage) UserCollectionIterator {
+	return UserCollectionIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (uc UserCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
@@ -4208,6 +4353,11 @@ func (page UserCollectionPage) Values() []UserContract {
 		return nil
 	}
 	return *page.uc.Value
+}
+
+// Creates a new instance of the UserCollectionPage type.
+func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
+	return UserCollectionPage{fn: getNextPage}
 }
 
 // UserContract user details.

@@ -2565,6 +2565,11 @@ func (iter ActivityRunsListResponseIterator) Value() ActivityRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ActivityRunsListResponseIterator type.
+func NewActivityRunsListResponseIterator(page ActivityRunsListResponsePage) ActivityRunsListResponseIterator {
+	return ActivityRunsListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (arlr ActivityRunsListResponse) IsEmpty() bool {
 	return arlr.Value == nil || len(*arlr.Value) == 0
@@ -2632,6 +2637,11 @@ func (page ActivityRunsListResponsePage) Values() []ActivityRun {
 		return nil
 	}
 	return *page.arlr.Value
+}
+
+// Creates a new instance of the ActivityRunsListResponsePage type.
+func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return ActivityRunsListResponsePage{fn: getNextPage}
 }
 
 // AmazonMWSLinkedService amazon Marketplace Web Service linked service.
@@ -3125,7 +3135,7 @@ func (amls *AmazonMWSLinkedService) UnmarshalJSON(body []byte) error {
 type AmazonMWSLinkedServiceTypeProperties struct {
 	// Endpoint - The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
 	Endpoint interface{} `json:"endpoint,omitempty"`
-	// MarketplaceID - The Amazon Marketplace ID you want to retrieve data from. To retrive data from multiple Marketplace IDs, seperate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
+	// MarketplaceID - The Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
 	MarketplaceID interface{} `json:"marketplaceID,omitempty"`
 	// SellerID - The Amazon seller ID.
 	SellerID interface{} `json:"sellerID,omitempty"`
@@ -19187,7 +19197,7 @@ func (ats *AzureTableSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobEventsTrigger trigger that runs everytime a Blob event occurs.
+// BlobEventsTrigger trigger that runs every time a Blob event occurs.
 type BlobEventsTrigger struct {
 	// BlobEventsTriggerTypeProperties - Blob Events Trigger properties.
 	*BlobEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
@@ -19988,7 +19998,7 @@ func (bs *BlobSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobTrigger trigger that runs everytime the selected Blob container changes.
+// BlobTrigger trigger that runs every time the selected Blob container changes.
 type BlobTrigger struct {
 	// BlobTriggerTypeProperties - Blob Trigger properties.
 	*BlobTriggerTypeProperties `json:"typeProperties,omitempty"`
@@ -21519,9 +21529,9 @@ type CassandraTableDatasetTypeProperties struct {
 	Keyspace interface{} `json:"keyspace,omitempty"`
 }
 
-// ConcurLinkedService concur Serivce linked service.
+// ConcurLinkedService concur Service linked service.
 type ConcurLinkedService struct {
-	// ConcurLinkedServiceTypeProperties - Concur Serivce linked service properties.
+	// ConcurLinkedServiceTypeProperties - Concur Service linked service properties.
 	*ConcurLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -22006,7 +22016,7 @@ func (cls *ConcurLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConcurLinkedServiceTypeProperties concur Serivce linked service properties.
+// ConcurLinkedServiceTypeProperties concur Service linked service properties.
 type ConcurLinkedServiceTypeProperties struct {
 	// ClientID - Application client_id supplied by Concur App Management.
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -22101,7 +22111,7 @@ func (clstp *ConcurLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// ConcurObjectDataset concur Serivce dataset.
+// ConcurObjectDataset concur Service dataset.
 type ConcurObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -22503,7 +22513,7 @@ func (cod *ConcurObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConcurSource a copy activity Concur Serivce source.
+// ConcurSource a copy activity Concur Service source.
 type ConcurSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -23484,7 +23494,7 @@ type CopyActivityTypeProperties struct {
 	Source BasicCopySource `json:"source,omitempty"`
 	// Sink - Copy activity sink.
 	Sink BasicCopySink `json:"sink,omitempty"`
-	// Translator - Copy activity translator. If not specificed, tabular translator is used.
+	// Translator - Copy activity translator. If not specified, tabular translator is used.
 	Translator BasicCopyTranslator `json:"translator,omitempty"`
 	// EnableStaging - Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
 	EnableStaging interface{} `json:"enableStaging,omitempty"`
@@ -29462,6 +29472,11 @@ func (iter DatasetListResponseIterator) Value() DatasetResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DatasetListResponseIterator type.
+func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
+	return DatasetListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DatasetListResponse) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -29529,6 +29544,11 @@ func (page DatasetListResponsePage) Values() []DatasetResource {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DatasetListResponsePage type.
+func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return DatasetListResponsePage{fn: getNextPage}
 }
 
 // DatasetReference dataset reference type.
@@ -36944,6 +36964,11 @@ func (iter FactoryListResponseIterator) Value() Factory {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FactoryListResponseIterator type.
+func NewFactoryListResponseIterator(page FactoryListResponsePage) FactoryListResponseIterator {
+	return FactoryListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (flr FactoryListResponse) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
@@ -37011,6 +37036,11 @@ func (page FactoryListResponsePage) Values() []Factory {
 		return nil
 	}
 	return *page.flr.Value
+}
+
+// Creates a new instance of the FactoryListResponsePage type.
+func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return FactoryListResponsePage{fn: getNextPage}
 }
 
 // FactoryProperties factory resource properties.
@@ -51071,9 +51101,9 @@ func (hs *HTTPSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotLinkedService hubspot Serivce linked service.
+// HubspotLinkedService hubspot Service linked service.
 type HubspotLinkedService struct {
-	// HubspotLinkedServiceTypeProperties - Hubspot Serivce linked service properties.
+	// HubspotLinkedServiceTypeProperties - Hubspot Service linked service properties.
 	*HubspotLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -51558,7 +51588,7 @@ func (hls *HubspotLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotLinkedServiceTypeProperties hubspot Serivce linked service properties.
+// HubspotLinkedServiceTypeProperties hubspot Service linked service properties.
 type HubspotLinkedServiceTypeProperties struct {
 	// ClientID - The client ID associated with your Hubspot application.
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -51662,7 +51692,7 @@ func (hlstp *HubspotLinkedServiceTypeProperties) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// HubspotObjectDataset hubspot Serivce dataset.
+// HubspotObjectDataset hubspot Service dataset.
 type HubspotObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -52064,7 +52094,7 @@ func (hod *HubspotObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotSource a copy activity Hubspot Serivce source.
+// HubspotSource a copy activity Hubspot Service source.
 type HubspotSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -54580,6 +54610,11 @@ func (iter IntegrationRuntimeListResponseIterator) Value() IntegrationRuntimeRes
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IntegrationRuntimeListResponseIterator type.
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return IntegrationRuntimeListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (irlr IntegrationRuntimeListResponse) IsEmpty() bool {
 	return irlr.Value == nil || len(*irlr.Value) == 0
@@ -54647,6 +54682,11 @@ func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeReso
 		return nil
 	}
 	return *page.irlr.Value
+}
+
+// Creates a new instance of the IntegrationRuntimeListResponsePage type.
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{fn: getNextPage}
 }
 
 // IntegrationRuntimeMonitoringData get monitoring data response.
@@ -55500,9 +55540,9 @@ func (irvnp *IntegrationRuntimeVNetProperties) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// JiraLinkedService jira Serivce linked service.
+// JiraLinkedService jira Service linked service.
 type JiraLinkedService struct {
-	// JiraLinkedServiceTypeProperties - Jira Serivce linked service properties.
+	// JiraLinkedServiceTypeProperties - Jira Service linked service properties.
 	*JiraLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -55987,7 +56027,7 @@ func (jls *JiraLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraLinkedServiceTypeProperties jira Serivce linked service properties.
+// JiraLinkedServiceTypeProperties jira Service linked service properties.
 type JiraLinkedServiceTypeProperties struct {
 	// Host - The IP address or host name of the Jira service. (e.g. jira.example.com)
 	Host interface{} `json:"host,omitempty"`
@@ -56093,7 +56133,7 @@ func (jlstp *JiraLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraObjectDataset jira Serivce dataset.
+// JiraObjectDataset jira Service dataset.
 type JiraObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -56495,7 +56535,7 @@ func (jod *JiraObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraSource a copy activity Jira Serivce source.
+// JiraSource a copy activity Jira Service source.
 type JiraSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -58182,6 +58222,11 @@ func (iter LinkedServiceListResponseIterator) Value() LinkedServiceResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LinkedServiceListResponseIterator type.
+func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
+	return LinkedServiceListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lslr LinkedServiceListResponse) IsEmpty() bool {
 	return lslr.Value == nil || len(*lslr.Value) == 0
@@ -58249,6 +58294,11 @@ func (page LinkedServiceListResponsePage) Values() []LinkedServiceResource {
 		return nil
 	}
 	return *page.lslr.Value
+}
+
+// Creates a new instance of the LinkedServiceListResponsePage type.
+func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return LinkedServiceListResponsePage{fn: getNextPage}
 }
 
 // LinkedServiceReference linked service reference type.
@@ -69941,9 +69991,9 @@ func (pf *ParquetFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalLinkedService paypal Serivce linked service.
+// PaypalLinkedService paypal Service linked service.
 type PaypalLinkedService struct {
-	// PaypalLinkedServiceTypeProperties - Paypal Serivce linked service properties.
+	// PaypalLinkedServiceTypeProperties - Paypal Service linked service properties.
 	*PaypalLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -70428,7 +70478,7 @@ func (pls *PaypalLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalLinkedServiceTypeProperties paypal Serivce linked service properties.
+// PaypalLinkedServiceTypeProperties paypal Service linked service properties.
 type PaypalLinkedServiceTypeProperties struct {
 	// Host - The URL of the PayPal instance. (i.e. api.sandbox.paypal.com)
 	Host interface{} `json:"host,omitempty"`
@@ -70523,7 +70573,7 @@ func (plstp *PaypalLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// PaypalObjectDataset paypal Serivce dataset.
+// PaypalObjectDataset paypal Service dataset.
 type PaypalObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -70925,7 +70975,7 @@ func (pod *PaypalObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalSource a copy activity Paypal Serivce source.
+// PaypalSource a copy activity Paypal Service source.
 type PaypalSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -72843,6 +72893,11 @@ func (iter PipelineListResponseIterator) Value() PipelineResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PipelineListResponseIterator type.
+func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
+	return PipelineListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr PipelineListResponse) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -72910,6 +72965,11 @@ func (page PipelineListResponsePage) Values() []PipelineResource {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the PipelineListResponsePage type.
+func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return PipelineListResponsePage{fn: getNextPage}
 }
 
 // PipelineReference pipeline reference type.
@@ -76776,7 +76836,7 @@ func (rs *RecurrenceSchedule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RecurrenceScheduleOccurrence the recurrence schedule occurence.
+// RecurrenceScheduleOccurrence the recurrence schedule occurrence.
 type RecurrenceScheduleOccurrence struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -88824,9 +88884,9 @@ func (sslstp *SftpServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) 
 	return nil
 }
 
-// ShopifyLinkedService shopify Serivce linked service.
+// ShopifyLinkedService shopify Service linked service.
 type ShopifyLinkedService struct {
-	// ShopifyLinkedServiceTypeProperties - Shopify Serivce linked service properties.
+	// ShopifyLinkedServiceTypeProperties - Shopify Service linked service properties.
 	*ShopifyLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -89311,7 +89371,7 @@ func (sls *ShopifyLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShopifyLinkedServiceTypeProperties shopify Serivce linked service properties.
+// ShopifyLinkedServiceTypeProperties shopify Service linked service properties.
 type ShopifyLinkedServiceTypeProperties struct {
 	// Host - The endpoint of the Shopify server. (i.e. mystore.myshopify.com)
 	Host interface{} `json:"host,omitempty"`
@@ -89395,7 +89455,7 @@ func (slstp *ShopifyLinkedServiceTypeProperties) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// ShopifyObjectDataset shopify Serivce dataset.
+// ShopifyObjectDataset shopify Service dataset.
 type ShopifyObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -89797,7 +89857,7 @@ func (sod *ShopifyObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShopifySource a copy activity Shopify Serivce source.
+// ShopifySource a copy activity Shopify Service source.
 type ShopifySource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -94106,9 +94166,9 @@ func (ss *SQLSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareLinkedService square Serivce linked service.
+// SquareLinkedService square Service linked service.
 type SquareLinkedService struct {
-	// SquareLinkedServiceTypeProperties - Square Serivce linked service properties.
+	// SquareLinkedServiceTypeProperties - Square Service linked service properties.
 	*SquareLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -94593,7 +94653,7 @@ func (sls *SquareLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareLinkedServiceTypeProperties square Serivce linked service properties.
+// SquareLinkedServiceTypeProperties square Service linked service properties.
 type SquareLinkedServiceTypeProperties struct {
 	// Host - The URL of the Square instance. (i.e. mystore.mysquare.com)
 	Host interface{} `json:"host,omitempty"`
@@ -94699,7 +94759,7 @@ func (slstp *SquareLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// SquareObjectDataset square Serivce dataset.
+// SquareObjectDataset square Service dataset.
 type SquareObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -95101,7 +95161,7 @@ func (sod *SquareObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareSource a copy activity Square Serivce source.
+// SquareSource a copy activity Square Service source.
 type SquareSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -97328,6 +97388,11 @@ func (iter TriggerListResponseIterator) Value() TriggerResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TriggerListResponseIterator type.
+func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
+	return TriggerListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tlr TriggerListResponse) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
@@ -97395,6 +97460,11 @@ func (page TriggerListResponsePage) Values() []TriggerResource {
 		return nil
 	}
 	return *page.tlr.Value
+}
+
+// Creates a new instance of the TriggerListResponsePage type.
+func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return TriggerListResponsePage{fn: getNextPage}
 }
 
 // TriggerPipelineReference pipeline that needs to be triggered with the given parameters.
@@ -97712,6 +97782,11 @@ func (iter TriggerRunListResponseIterator) Value() TriggerRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TriggerRunListResponseIterator type.
+func NewTriggerRunListResponseIterator(page TriggerRunListResponsePage) TriggerRunListResponseIterator {
+	return TriggerRunListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (trlr TriggerRunListResponse) IsEmpty() bool {
 	return trlr.Value == nil || len(*trlr.Value) == 0
@@ -97779,6 +97854,11 @@ func (page TriggerRunListResponsePage) Values() []TriggerRun {
 		return nil
 	}
 	return *page.trlr.Value
+}
+
+// Creates a new instance of the TriggerRunListResponsePage type.
+func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
+	return TriggerRunListResponsePage{fn: getNextPage}
 }
 
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -101754,9 +101834,9 @@ type WebTableDatasetTypeProperties struct {
 	Path interface{} `json:"path,omitempty"`
 }
 
-// XeroLinkedService xero Serivce linked service.
+// XeroLinkedService xero Service linked service.
 type XeroLinkedService struct {
-	// XeroLinkedServiceTypeProperties - Xero Serivce linked service properties.
+	// XeroLinkedServiceTypeProperties - Xero Service linked service properties.
 	*XeroLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -102241,7 +102321,7 @@ func (xls *XeroLinkedService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroLinkedServiceTypeProperties xero Serivce linked service properties.
+// XeroLinkedServiceTypeProperties xero Service linked service properties.
 type XeroLinkedServiceTypeProperties struct {
 	// Host - The endpoint of the Xero server. (i.e. api.xero.com)
 	Host interface{} `json:"host,omitempty"`
@@ -102336,7 +102416,7 @@ func (xlstp *XeroLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroObjectDataset xero Serivce dataset.
+// XeroObjectDataset xero Service dataset.
 type XeroObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -102738,7 +102818,7 @@ func (xod *XeroObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroSource a copy activity Xero Serivce source.
+// XeroSource a copy activity Xero Service source.
 type XeroSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`

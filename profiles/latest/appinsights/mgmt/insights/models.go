@@ -19,7 +19,11 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
+)
 
 type AnalyticsItemsClient = original.AnalyticsItemsClient
 type AnnotationsClient = original.AnnotationsClient
@@ -315,6 +319,24 @@ func PossibleSharedTypeKindValues() []SharedTypeKind {
 }
 func PossibleWebTestKindValues() []WebTestKind {
 	return original.PossibleWebTestKindValues()
+}
+func NewApplicationInsightsComponentListResultIterator(page ApplicationInsightsComponentListResultPage) ApplicationInsightsComponentListResultIterator {
+	return original.NewApplicationInsightsComponentListResultIterator(page)
+}
+func NewApplicationInsightsComponentListResultPage(getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
+	return original.NewApplicationInsightsComponentListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewWebTestListResultIterator(page WebTestListResultPage) WebTestListResultIterator {
+	return original.NewWebTestListResultIterator(page)
+}
+func NewWebTestListResultPage(getNextPage func(context.Context, WebTestListResult) (WebTestListResult, error)) WebTestListResultPage {
+	return original.NewWebTestListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

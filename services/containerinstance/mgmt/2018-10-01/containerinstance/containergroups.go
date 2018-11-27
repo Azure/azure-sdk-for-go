@@ -602,6 +602,82 @@ func (client ContainerGroupsClient) RestartResponder(resp *http.Response) (resul
 	return
 }
 
+// Start starts all containers in a container group.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// containerGroupName - the name of the container group.
+func (client ContainerGroupsClient) Start(ctx context.Context, resourceGroupName string, containerGroupName string) (result ContainerGroupsStartFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ContainerGroupsClient.Start")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StartPreparer(ctx, resourceGroupName, containerGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Start", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.StartSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Start", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// StartPreparer prepares the Start request.
+func (client ContainerGroupsClient) StartPreparer(ctx context.Context, resourceGroupName string, containerGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"containerGroupName": autorest.Encode("path", containerGroupName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartSender sends the Start request. The method will close the
+// http.Response Body if it receives an error.
+func (client ContainerGroupsClient) StartSender(req *http.Request) (future ContainerGroupsStartFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// StartResponder handles the response to the Start request. The method always
+// closes the http.Response Body.
+func (client ContainerGroupsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Stop stops all containers in a container group. Compute resources will be deallocated and billing will stop.
 // Parameters:
 // resourceGroupName - the name of the resource group.

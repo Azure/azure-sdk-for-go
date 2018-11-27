@@ -561,6 +561,11 @@ func (iter BuildArgumentListIterator) Value() BuildArgument {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BuildArgumentListIterator type.
+func NewBuildArgumentListIterator(page BuildArgumentListPage) BuildArgumentListIterator {
+	return BuildArgumentListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bal BuildArgumentList) IsEmpty() bool {
 	return bal.Value == nil || len(*bal.Value) == 0
@@ -628,6 +633,11 @@ func (page BuildArgumentListPage) Values() []BuildArgument {
 		return nil
 	}
 	return *page.bal.Value
+}
+
+// Creates a new instance of the BuildArgumentListPage type.
+func NewBuildArgumentListPage(getNextPage func(context.Context, BuildArgumentList) (BuildArgumentList, error)) BuildArgumentListPage {
+	return BuildArgumentListPage{fn: getNextPage}
 }
 
 // BuildFilter properties that are enabled for Odata querying.
@@ -724,6 +734,11 @@ func (iter BuildListResultIterator) Value() Build {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BuildListResultIterator type.
+func NewBuildListResultIterator(page BuildListResultPage) BuildListResultIterator {
+	return BuildListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (blr BuildListResult) IsEmpty() bool {
 	return blr.Value == nil || len(*blr.Value) == 0
@@ -791,6 +806,11 @@ func (page BuildListResultPage) Values() []Build {
 		return nil
 	}
 	return *page.blr.Value
+}
+
+// Creates a new instance of the BuildListResultPage type.
+func NewBuildListResultPage(getNextPage func(context.Context, BuildListResult) (BuildListResult, error)) BuildListResultPage {
+	return BuildListResultPage{fn: getNextPage}
 }
 
 // BuildProperties the properties for a build.
@@ -977,6 +997,11 @@ func (iter BuildStepListIterator) Value() BuildStep {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BuildStepListIterator type.
+func NewBuildStepListIterator(page BuildStepListPage) BuildStepListIterator {
+	return BuildStepListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bsl BuildStepList) IsEmpty() bool {
 	return bsl.Value == nil || len(*bsl.Value) == 0
@@ -1044,6 +1069,11 @@ func (page BuildStepListPage) Values() []BuildStep {
 		return nil
 	}
 	return *page.bsl.Value
+}
+
+// Creates a new instance of the BuildStepListPage type.
+func NewBuildStepListPage(getNextPage func(context.Context, BuildStepList) (BuildStepList, error)) BuildStepListPage {
+	return BuildStepListPage{fn: getNextPage}
 }
 
 // BasicBuildStepProperties base properties for any build step.
@@ -1583,6 +1613,11 @@ func (iter BuildTaskListResultIterator) Value() BuildTask {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BuildTaskListResultIterator type.
+func NewBuildTaskListResultIterator(page BuildTaskListResultPage) BuildTaskListResultIterator {
+	return BuildTaskListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (btlr BuildTaskListResult) IsEmpty() bool {
 	return btlr.Value == nil || len(*btlr.Value) == 0
@@ -1650,6 +1685,11 @@ func (page BuildTaskListResultPage) Values() []BuildTask {
 		return nil
 	}
 	return *page.btlr.Value
+}
+
+// Creates a new instance of the BuildTaskListResultPage type.
+func NewBuildTaskListResultPage(getNextPage func(context.Context, BuildTaskListResult) (BuildTaskListResult, error)) BuildTaskListResultPage {
+	return BuildTaskListResultPage{fn: getNextPage}
 }
 
 // BuildTaskProperties the properties of a build task.
@@ -2099,6 +2139,11 @@ func (iter EventListResultIterator) Value() Event {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EventListResultIterator type.
+func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
+	return EventListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (elr EventListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
@@ -2166,6 +2211,11 @@ func (page EventListResultPage) Values() []Event {
 		return nil
 	}
 	return *page.elr.Value
+}
+
+// Creates a new instance of the EventListResultPage type.
+func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return EventListResultPage{fn: getNextPage}
 }
 
 // EventRequestMessage the event request message sent to the service URI.
@@ -2469,6 +2519,11 @@ func (iter OperationListResultIterator) Value() OperationDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2536,6 +2591,11 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
@@ -3144,6 +3204,11 @@ func (iter RegistryListResultIterator) Value() Registry {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RegistryListResultIterator type.
+func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
+	return RegistryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RegistryListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -3211,6 +3276,11 @@ func (page RegistryListResultPage) Values() []Registry {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the RegistryListResultPage type.
+func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{fn: getNextPage}
 }
 
 // RegistryNameCheckRequest a request to check whether a container registry name is available.
@@ -3550,6 +3620,11 @@ func (iter ReplicationListResultIterator) Value() Replication {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReplicationListResultIterator type.
+func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
+	return ReplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr ReplicationListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -3617,6 +3692,11 @@ func (page ReplicationListResultPage) Values() []Replication {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the ReplicationListResultPage type.
+func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return ReplicationListResultPage{fn: getNextPage}
 }
 
 // ReplicationProperties the properties of a replication.
@@ -4120,6 +4200,11 @@ func (iter WebhookListResultIterator) Value() Webhook {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WebhookListResultIterator type.
+func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
+	return WebhookListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WebhookListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -4187,6 +4272,11 @@ func (page WebhookListResultPage) Values() []Webhook {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WebhookListResultPage type.
+func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return WebhookListResultPage{fn: getNextPage}
 }
 
 // WebhookProperties the properties of a webhook.

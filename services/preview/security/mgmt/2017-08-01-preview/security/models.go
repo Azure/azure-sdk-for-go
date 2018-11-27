@@ -93,6 +93,21 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
 }
 
+// ConnectionType enumerates the values for connection type.
+type ConnectionType string
+
+const (
+	// External ...
+	External ConnectionType = "External"
+	// Internal ...
+	Internal ConnectionType = "Internal"
+)
+
+// PossibleConnectionTypeValues returns an array of possible values for the ConnectionType const type.
+func PossibleConnectionTypeValues() []ConnectionType {
+	return []ConnectionType{External, Internal}
+}
+
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
 type ExternalSecuritySolutionKind string
 
@@ -619,6 +634,11 @@ func (iter AlertListIterator) Value() Alert {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AlertListIterator type.
+func NewAlertListIterator(page AlertListPage) AlertListIterator {
+	return AlertListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (al AlertList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
@@ -686,6 +706,11 @@ func (page AlertListPage) Values() []Alert {
 		return nil
 	}
 	return *page.al.Value
+}
+
+// Creates a new instance of the AlertListPage type.
+func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{fn: getNextPage}
 }
 
 // AlertProperties describes security alert properties.
@@ -802,6 +827,256 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AllowedConnectionsList list of all possible traffic between Azure resources
+type AllowedConnectionsList struct {
+	autorest.Response `json:"-"`
+	Value             *[]AllowedConnectionsResource `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AllowedConnectionsListIterator provides access to a complete listing of AllowedConnectionsResource
+// values.
+type AllowedConnectionsListIterator struct {
+	i    int
+	page AllowedConnectionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AllowedConnectionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AllowedConnectionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AllowedConnectionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AllowedConnectionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AllowedConnectionsListIterator) Response() AllowedConnectionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AllowedConnectionsListIterator) Value() AllowedConnectionsResource {
+	if !iter.page.NotDone() {
+		return AllowedConnectionsResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AllowedConnectionsListIterator type.
+func NewAllowedConnectionsListIterator(page AllowedConnectionsListPage) AllowedConnectionsListIterator {
+	return AllowedConnectionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ACL AllowedConnectionsList) IsEmpty() bool {
+	return ACL.Value == nil || len(*ACL.Value) == 0
+}
+
+// allowedConnectionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ACL AllowedConnectionsList) allowedConnectionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if ACL.NextLink == nil || len(to.String(ACL.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ACL.NextLink)))
+}
+
+// AllowedConnectionsListPage contains a page of AllowedConnectionsResource values.
+type AllowedConnectionsListPage struct {
+	fn  func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)
+	ACL AllowedConnectionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AllowedConnectionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AllowedConnectionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ACL)
+	if err != nil {
+		return err
+	}
+	page.ACL = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AllowedConnectionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AllowedConnectionsListPage) NotDone() bool {
+	return !page.ACL.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AllowedConnectionsListPage) Response() AllowedConnectionsList {
+	return page.ACL
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AllowedConnectionsListPage) Values() []AllowedConnectionsResource {
+	if page.ACL.IsEmpty() {
+		return nil
+	}
+	return *page.ACL.Value
+}
+
+// Creates a new instance of the AllowedConnectionsListPage type.
+func NewAllowedConnectionsListPage(getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
+	return AllowedConnectionsListPage{fn: getNextPage}
+}
+
+// AllowedConnectionsResource the resource whose properties describes the allowed traffic between Azure
+// resources
+type AllowedConnectionsResource struct {
+	autorest.Response `json:"-"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Location where the resource is stored
+	Location                              *string `json:"location,omitempty"`
+	*AllowedConnectionsResourceProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AllowedConnectionsResource.
+func (acr AllowedConnectionsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acr.ID != nil {
+		objectMap["id"] = acr.ID
+	}
+	if acr.Name != nil {
+		objectMap["name"] = acr.Name
+	}
+	if acr.Type != nil {
+		objectMap["type"] = acr.Type
+	}
+	if acr.Location != nil {
+		objectMap["location"] = acr.Location
+	}
+	if acr.AllowedConnectionsResourceProperties != nil {
+		objectMap["properties"] = acr.AllowedConnectionsResourceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AllowedConnectionsResource struct.
+func (acr *AllowedConnectionsResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				acr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				acr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				acr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				acr.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var allowedConnectionsResourceProperties AllowedConnectionsResourceProperties
+				err = json.Unmarshal(*v, &allowedConnectionsResourceProperties)
+				if err != nil {
+					return err
+				}
+				acr.AllowedConnectionsResourceProperties = &allowedConnectionsResourceProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AllowedConnectionsResourceProperties describes the allowed traffic between Azure resources
+type AllowedConnectionsResourceProperties struct {
+	// CalculatedDateTime - The UTC time on which the allowed connections resource was calculated
+	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
+	// ConnectableResources - List of connectable resources
+	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
+}
+
 // AscLocation the ASC location of the subscription is in the "name" field
 type AscLocation struct {
 	autorest.Response `json:"-"`
@@ -880,6 +1155,11 @@ func (iter AscLocationListIterator) Value() AscLocation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AscLocationListIterator type.
+func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterator {
+	return AscLocationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (all AscLocationList) IsEmpty() bool {
 	return all.Value == nil || len(*all.Value) == 0
@@ -947,6 +1227,11 @@ func (page AscLocationListPage) Values() []AscLocation {
 		return nil
 	}
 	return *page.all.Value
+}
+
+// Creates a new instance of the AscLocationListPage type.
+func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
+	return AscLocationListPage{fn: getNextPage}
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -1258,6 +1543,11 @@ func (iter AutoProvisioningSettingListIterator) Value() AutoProvisioningSetting 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AutoProvisioningSettingListIterator type.
+func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
+	return AutoProvisioningSettingListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (apsl AutoProvisioningSettingList) IsEmpty() bool {
 	return apsl.Value == nil || len(*apsl.Value) == 0
@@ -1325,6 +1615,11 @@ func (page AutoProvisioningSettingListPage) Values() []AutoProvisioningSetting {
 		return nil
 	}
 	return *page.apsl.Value
+}
+
+// Creates a new instance of the AutoProvisioningSettingListPage type.
+func NewAutoProvisioningSettingListPage(getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
+	return AutoProvisioningSettingListPage{fn: getNextPage}
 }
 
 // AutoProvisioningSettingProperties describes properties of an auto provisioning setting
@@ -1714,6 +2009,11 @@ func (iter ComplianceListIterator) Value() Compliance {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ComplianceListIterator type.
+func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
+	return ComplianceListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cl ComplianceList) IsEmpty() bool {
 	return cl.Value == nil || len(*cl.Value) == 0
@@ -1783,6 +2083,11 @@ func (page ComplianceListPage) Values() []Compliance {
 	return *page.cl.Value
 }
 
+// Creates a new instance of the ComplianceListPage type.
+func NewComplianceListPage(getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
+	return ComplianceListPage{fn: getNextPage}
+}
+
 // ComplianceProperties the Compliance score (percentage) of a Subscription is a sum of all Resources'
 // Compliances under the given Subscription. A Resource Compliance is defined as the compliant ('healthy')
 // Policy Definitions out of all Policy Definitions applicable to a given resource.
@@ -1801,6 +2106,26 @@ type ComplianceSegment struct {
 	SegmentType *string `json:"segmentType,omitempty"`
 	// Percentage - The size (%) of the segment.
 	Percentage *float64 `json:"percentage,omitempty"`
+}
+
+// ConnectableResource describes the allowed inbound and outbound traffic of an Azure resource
+type ConnectableResource struct {
+	// ID - The Azure resource id
+	ID *string `json:"id,omitempty"`
+	// InboundConnectedResources - The list of Azure resources that the resource has inbound allowed connection from
+	InboundConnectedResources *[]ConnectedResource `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - The list of Azure resources that the resource has outbound allowed connection to
+	OutboundConnectedResources *[]ConnectedResource `json:"outboundConnectedResources,omitempty"`
+}
+
+// ConnectedResource describes properties of a connected resource
+type ConnectedResource struct {
+	// ConnectedResourceID - The Azure resource id of the connected resource
+	ConnectedResourceID *string `json:"connectedResourceId,omitempty"`
+	// TCPPorts - The allowed tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - The allowed udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
 // ConnectedWorkspace ...
@@ -1958,6 +2283,11 @@ func (iter ContactListIterator) Value() Contact {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ContactListIterator type.
+func NewContactListIterator(page ContactListPage) ContactListIterator {
+	return ContactListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cl ContactList) IsEmpty() bool {
 	return cl.Value == nil || len(*cl.Value) == 0
@@ -2025,6 +2355,11 @@ func (page ContactListPage) Values() []Contact {
 		return nil
 	}
 	return *page.cl.Value
+}
+
+// Creates a new instance of the ContactListPage type.
+func NewContactListPage(getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
+	return ContactListPage{fn: getNextPage}
 }
 
 // ContactProperties describes security contact properties
@@ -2318,6 +2653,11 @@ func (iter DiscoveredSecuritySolutionListIterator) Value() DiscoveredSecuritySol
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DiscoveredSecuritySolutionListIterator type.
+func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
+	return DiscoveredSecuritySolutionListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dssl DiscoveredSecuritySolutionList) IsEmpty() bool {
 	return dssl.Value == nil || len(*dssl.Value) == 0
@@ -2385,6 +2725,11 @@ func (page DiscoveredSecuritySolutionListPage) Values() []DiscoveredSecuritySolu
 		return nil
 	}
 	return *page.dssl.Value
+}
+
+// Creates a new instance of the DiscoveredSecuritySolutionListPage type.
+func NewDiscoveredSecuritySolutionListPage(getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
+	return DiscoveredSecuritySolutionListPage{fn: getNextPage}
 }
 
 // DiscoveredSecuritySolutionProperties ...
@@ -2621,6 +2966,11 @@ func (iter ExternalSecuritySolutionListIterator) Value() BasicExternalSecuritySo
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ExternalSecuritySolutionListIterator type.
+func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPage) ExternalSecuritySolutionListIterator {
+	return ExternalSecuritySolutionListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (essl ExternalSecuritySolutionList) IsEmpty() bool {
 	return essl.Value == nil || len(*essl.Value) == 0
@@ -2688,6 +3038,11 @@ func (page ExternalSecuritySolutionListPage) Values() []BasicExternalSecuritySol
 		return nil
 	}
 	return *page.essl.Value
+}
+
+// Creates a new instance of the ExternalSecuritySolutionListPage type.
+func NewExternalSecuritySolutionListPage(getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
+	return ExternalSecuritySolutionListPage{fn: getNextPage}
 }
 
 // ExternalSecuritySolutionModel ...
@@ -2950,6 +3305,11 @@ func (iter InformationProtectionPolicyListIterator) Value() InformationProtectio
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InformationProtectionPolicyListIterator type.
+func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicyListPage) InformationProtectionPolicyListIterator {
+	return InformationProtectionPolicyListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ippl InformationProtectionPolicyList) IsEmpty() bool {
 	return ippl.Value == nil || len(*ippl.Value) == 0
@@ -3017,6 +3377,11 @@ func (page InformationProtectionPolicyListPage) Values() []InformationProtection
 		return nil
 	}
 	return *page.ippl.Value
+}
+
+// Creates a new instance of the InformationProtectionPolicyListPage type.
+func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
+	return InformationProtectionPolicyListPage{fn: getNextPage}
 }
 
 // InformationProtectionPolicyProperties describes properties of an information protection policy.
@@ -3127,6 +3492,11 @@ func (iter JitNetworkAccessPoliciesListIterator) Value() JitNetworkAccessPolicy 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JitNetworkAccessPoliciesListIterator type.
+func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPage) JitNetworkAccessPoliciesListIterator {
+	return JitNetworkAccessPoliciesListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jnapl JitNetworkAccessPoliciesList) IsEmpty() bool {
 	return jnapl.Value == nil || len(*jnapl.Value) == 0
@@ -3194,6 +3564,11 @@ func (page JitNetworkAccessPoliciesListPage) Values() []JitNetworkAccessPolicy {
 		return nil
 	}
 	return *page.jnapl.Value
+}
+
+// Creates a new instance of the JitNetworkAccessPoliciesListPage type.
+func NewJitNetworkAccessPoliciesListPage(getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
+	return JitNetworkAccessPoliciesListPage{fn: getNextPage}
 }
 
 // JitNetworkAccessPolicy ...
@@ -3491,6 +3866,11 @@ func (iter OperationListIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -3558,6 +3938,11 @@ func (page OperationListPage) Values() []Operation {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // Pricing pricing tier will be applied for the scope based on the resource ID
@@ -3709,6 +4094,11 @@ func (iter PricingListIterator) Value() Pricing {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PricingListIterator type.
+func NewPricingListIterator(page PricingListPage) PricingListIterator {
+	return PricingListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pl PricingList) IsEmpty() bool {
 	return pl.Value == nil || len(*pl.Value) == 0
@@ -3776,6 +4166,11 @@ func (page PricingListPage) Values() []Pricing {
 		return nil
 	}
 	return *page.pl.Value
+}
+
+// Creates a new instance of the PricingListPage type.
+func NewPricingListPage(getNextPage func(context.Context, PricingList) (PricingList, error)) PricingListPage {
+	return PricingListPage{fn: getNextPage}
 }
 
 // PricingProperties pricing data
@@ -4016,6 +4411,11 @@ func (iter SettingsListIterator) Value() BasicSetting {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SettingsListIterator type.
+func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
+	return SettingsListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sl SettingsList) IsEmpty() bool {
 	return sl.Value == nil || len(*sl.Value) == 0
@@ -4083,6 +4483,11 @@ func (page SettingsListPage) Values() []BasicSetting {
 		return nil
 	}
 	return *page.sl.Value
+}
+
+// Creates a new instance of the SettingsListPage type.
+func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
+	return SettingsListPage{fn: getNextPage}
 }
 
 // Task security task that we recommend to do in order to strengthen security
@@ -4232,6 +4637,11 @@ func (iter TaskListIterator) Value() Task {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TaskListIterator type.
+func NewTaskListIterator(page TaskListPage) TaskListIterator {
+	return TaskListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tl TaskList) IsEmpty() bool {
 	return tl.Value == nil || len(*tl.Value) == 0
@@ -4299,6 +4709,11 @@ func (page TaskListPage) Values() []Task {
 		return nil
 	}
 	return *page.tl.Value
+}
+
+// Creates a new instance of the TaskListPage type.
+func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return TaskListPage{fn: getNextPage}
 }
 
 // TaskParameters changing set of properties, depending on the task type that is derived from the name
@@ -4437,6 +4852,11 @@ func (iter TopologyListIterator) Value() TopologyResource {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TopologyListIterator type.
+func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
+	return TopologyListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tl TopologyList) IsEmpty() bool {
 	return tl.Value == nil || len(*tl.Value) == 0
@@ -4504,6 +4924,11 @@ func (page TopologyListPage) Values() []TopologyResource {
 		return nil
 	}
 	return *page.tl.Value
+}
+
+// Creates a new instance of the TopologyListPage type.
+func NewTopologyListPage(getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
+	return TopologyListPage{fn: getNextPage}
 }
 
 // TopologyResource ...
@@ -4790,6 +5215,11 @@ func (iter WorkspaceSettingListIterator) Value() WorkspaceSetting {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkspaceSettingListIterator type.
+func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSettingListIterator {
+	return WorkspaceSettingListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wsl WorkspaceSettingList) IsEmpty() bool {
 	return wsl.Value == nil || len(*wsl.Value) == 0
@@ -4857,6 +5287,11 @@ func (page WorkspaceSettingListPage) Values() []WorkspaceSetting {
 		return nil
 	}
 	return *page.wsl.Value
+}
+
+// Creates a new instance of the WorkspaceSettingListPage type.
+func NewWorkspaceSettingListPage(getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
+	return WorkspaceSettingListPage{fn: getNextPage}
 }
 
 // WorkspaceSettingProperties workspace setting data

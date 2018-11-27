@@ -19,7 +19,11 @@
 
 package powerbidedicated
 
-import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
+)
 
 type CapacitiesClient = original.CapacitiesClient
 
@@ -114,6 +118,12 @@ func PossibleSkuTierValues() []SkuTier {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

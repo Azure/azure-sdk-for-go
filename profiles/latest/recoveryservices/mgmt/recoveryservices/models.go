@@ -19,7 +19,11 @@
 
 package recoveryservices
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -144,6 +148,18 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 }
 func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
 	return original.PossibleVaultUpgradeStateValues()
+}
+func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
+	return original.NewClientDiscoveryResponseIterator(page)
+}
+func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return original.NewClientDiscoveryResponsePage(getNextPage)
+}
+func NewVaultListIterator(page VaultListPage) VaultListIterator {
+	return original.NewVaultListIterator(page)
+}
+func NewVaultListPage(getNextPage func(context.Context, VaultList) (VaultList, error)) VaultListPage {
+	return original.NewVaultListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

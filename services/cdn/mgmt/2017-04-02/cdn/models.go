@@ -268,7 +268,7 @@ type CheckNameAvailabilityOutput struct {
 
 // CidrIPAddress CIDR Ip address
 type CidrIPAddress struct {
-	// BaseIPAddress - Ip adress itself.
+	// BaseIPAddress - IP address itself.
 	BaseIPAddress *string `json:"baseIpAddress,omitempty"`
 	// PrefixLength - The length of the prefix of the ip address.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
@@ -424,6 +424,11 @@ func (iter CustomDomainListResultIterator) Value() CustomDomain {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CustomDomainListResultIterator type.
+func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDomainListResultIterator {
+	return CustomDomainListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cdlr CustomDomainListResult) IsEmpty() bool {
 	return cdlr.Value == nil || len(*cdlr.Value) == 0
@@ -491,6 +496,11 @@ func (page CustomDomainListResultPage) Values() []CustomDomain {
 		return nil
 	}
 	return *page.cdlr.Value
+}
+
+// Creates a new instance of the CustomDomainListResultPage type.
+func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
+	return CustomDomainListResultPage{fn: getNextPage}
 }
 
 // CustomDomainParameters the customDomain JSON object required for custom domain creation or update.
@@ -828,6 +838,11 @@ func (iter EdgenodeResultIterator) Value() EdgeNode {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EdgenodeResultIterator type.
+func NewEdgenodeResultIterator(page EdgenodeResultPage) EdgenodeResultIterator {
+	return EdgenodeResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (er EdgenodeResult) IsEmpty() bool {
 	return er.Value == nil || len(*er.Value) == 0
@@ -895,6 +910,11 @@ func (page EdgenodeResultPage) Values() []EdgeNode {
 		return nil
 	}
 	return *page.er.Value
+}
+
+// Creates a new instance of the EdgenodeResultPage type.
+func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
+	return EdgenodeResultPage{fn: getNextPage}
 }
 
 // Endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
@@ -1009,7 +1029,7 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 }
 
 // EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type EndpointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN endpoints within a profile
@@ -1074,6 +1094,11 @@ func (iter EndpointListResultIterator) Value() Endpoint {
 		return Endpoint{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EndpointListResultIterator type.
+func NewEndpointListResultIterator(page EndpointListResultPage) EndpointListResultIterator {
+	return EndpointListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -1145,6 +1170,11 @@ func (page EndpointListResultPage) Values() []Endpoint {
 	return *page.elr.Value
 }
 
+// Creates a new instance of the EndpointListResultPage type.
+func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
+	return EndpointListResultPage{fn: getNextPage}
+}
+
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
 type EndpointProperties struct {
 	// HostName - The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. consoto.azureedge.net
@@ -1157,7 +1187,7 @@ type EndpointProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// OriginHostHeader - The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
-	// OriginPath - A directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+	// OriginPath - A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
 	OriginPath *string `json:"originPath,omitempty"`
 	// ContentTypesToCompress - List of content types on which compression applies. The value should be a valid MIME type.
 	ContentTypesToCompress *[]string `json:"contentTypesToCompress,omitempty"`
@@ -1173,7 +1203,7 @@ type EndpointProperties struct {
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
 	// ProbePath - Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal routes for the CDN. This is relative to the origin path.
 	ProbePath *string `json:"probePath,omitempty"`
-	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1181,7 +1211,7 @@ type EndpointProperties struct {
 type EndpointPropertiesUpdateParameters struct {
 	// OriginHostHeader - The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
-	// OriginPath - A directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+	// OriginPath - A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
 	OriginPath *string `json:"originPath,omitempty"`
 	// ContentTypesToCompress - List of content types on which compression applies. The value should be a valid MIME type.
 	ContentTypesToCompress *[]string `json:"contentTypesToCompress,omitempty"`
@@ -1197,7 +1227,7 @@ type EndpointPropertiesUpdateParameters struct {
 	OptimizationType OptimizationType `json:"optimizationType,omitempty"`
 	// ProbePath - Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal routes for the CDN. This is relative to the origin path.
 	ProbePath *string `json:"probePath,omitempty"`
-	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/
+	// GeoFilters - List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
@@ -1438,7 +1468,7 @@ func (eup *EndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error reponse indicates CDN service is not able to process the incoming request. The
+// ErrorResponse error response indicates CDN service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -1559,6 +1589,11 @@ func (iter OperationsListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationsListResultIterator type.
+func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
+	return OperationsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationsListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1626,6 +1661,11 @@ func (page OperationsListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationsListResultPage type.
+func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return OperationsListResultPage{fn: getNextPage}
 }
 
 // Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented
@@ -1807,6 +1847,11 @@ func (iter OriginListResultIterator) Value() Origin {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OriginListResultIterator type.
+func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIterator {
+	return OriginListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OriginListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1874,6 +1919,11 @@ func (page OriginListResultPage) Values() []Origin {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OriginListResultPage type.
+func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
+	return OriginListResultPage{fn: getNextPage}
 }
 
 // OriginProperties the JSON object that contains the properties of the origin.
@@ -2092,7 +2142,7 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 }
 
 // ProfileListResult result of the request to list profiles. It contains a list of profile objects and a
-// URL link to get the the next set of results.
+// URL link to get the next set of results.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN profiles within a resource group.
@@ -2157,6 +2207,11 @@ func (iter ProfileListResultIterator) Value() Profile {
 		return Profile{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ProfileListResultIterator type.
+func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
+	return ProfileListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -2226,6 +2281,11 @@ func (page ProfileListResultPage) Values() []Profile {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the ProfileListResultPage type.
+func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{fn: getNextPage}
 }
 
 // ProfileProperties the JSON object that contains the properties required to create a profile.
@@ -2438,6 +2498,11 @@ func (iter ResourceUsageListResultIterator) Value() ResourceUsage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ResourceUsageListResultIterator type.
+func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) ResourceUsageListResultIterator {
+	return ResourceUsageListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rulr ResourceUsageListResult) IsEmpty() bool {
 	return rulr.Value == nil || len(*rulr.Value) == 0
@@ -2505,6 +2570,11 @@ func (page ResourceUsageListResultPage) Values() []ResourceUsage {
 		return nil
 	}
 	return *page.rulr.Value
+}
+
+// Creates a new instance of the ResourceUsageListResultPage type.
+func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
+	return ResourceUsageListResultPage{fn: getNextPage}
 }
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.

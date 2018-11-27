@@ -178,6 +178,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -245,6 +250,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Resource the core properties of ARM resources
@@ -491,6 +501,11 @@ func (iter WorkspaceListResultIterator) Value() Workspace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkspaceListResultIterator type.
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return WorkspaceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -558,6 +573,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WorkspaceListResultPage type.
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{fn: getNextPage}
 }
 
 // WorkspaceProperties the workspace properties.

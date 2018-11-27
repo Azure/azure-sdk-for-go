@@ -401,9 +401,9 @@ type AuthorizationPolicy struct {
 	PolicyName *string `json:"policyName,omitempty"`
 	// Permissions - The permissions associated with the policy.
 	Permissions *[]PermissionTypes `json:"permissions,omitempty"`
-	// PrimaryKey - Primary key assiciated with the policy.
+	// PrimaryKey - Primary key associated with the policy.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
-	// SecondaryKey - Secondary key assiciated with the policy.
+	// SecondaryKey - Secondary key associated with the policy.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
@@ -475,6 +475,11 @@ func (iter AuthorizationPolicyListResultIterator) Value() AuthorizationPolicyRes
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AuthorizationPolicyListResultIterator type.
+func NewAuthorizationPolicyListResultIterator(page AuthorizationPolicyListResultPage) AuthorizationPolicyListResultIterator {
+	return AuthorizationPolicyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (aplr AuthorizationPolicyListResult) IsEmpty() bool {
 	return aplr.Value == nil || len(*aplr.Value) == 0
@@ -542,6 +547,11 @@ func (page AuthorizationPolicyListResultPage) Values() []AuthorizationPolicyReso
 		return nil
 	}
 	return *page.aplr.Value
+}
+
+// Creates a new instance of the AuthorizationPolicyListResultPage type.
+func NewAuthorizationPolicyListResultPage(getNextPage func(context.Context, AuthorizationPolicyListResult) (AuthorizationPolicyListResult, error)) AuthorizationPolicyListResultPage {
+	return AuthorizationPolicyListResultPage{fn: getNextPage}
 }
 
 // AuthorizationPolicyResourceFormat the authorization policy resource format.
@@ -647,7 +657,7 @@ type Connector struct {
 	ConnectorProperties map[string]interface{} `json:"connectorProperties"`
 	// Created - The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last monified time.
+	// LastModified - The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// State - State of connector. Possible values include: 'ConnectorStatesCreating', 'ConnectorStatesCreated', 'ConnectorStatesReady', 'ConnectorStatesExpiring', 'ConnectorStatesDeleting', 'ConnectorStatesFailed'
 	State ConnectorStates `json:"state,omitempty"`
@@ -763,6 +773,11 @@ func (iter ConnectorListResultIterator) Value() ConnectorResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ConnectorListResultIterator type.
+func NewConnectorListResultIterator(page ConnectorListResultPage) ConnectorListResultIterator {
+	return ConnectorListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ConnectorListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -832,6 +847,11 @@ func (page ConnectorListResultPage) Values() []ConnectorResourceFormat {
 	return *page.clr.Value
 }
 
+// Creates a new instance of the ConnectorListResultPage type.
+func NewConnectorListResultPage(getNextPage func(context.Context, ConnectorListResult) (ConnectorListResult, error)) ConnectorListResultPage {
+	return ConnectorListResultPage{fn: getNextPage}
+}
+
 // ConnectorMapping the connector mapping definition.
 type ConnectorMapping struct {
 	// ConnectorName - The connector name.
@@ -840,7 +860,7 @@ type ConnectorMapping struct {
 	ConnectorType ConnectorTypes `json:"connectorType,omitempty"`
 	// Created - The created time.
 	Created *date.Time `json:"created,omitempty"`
-	// LastModified - The last monified time.
+	// LastModified - The last modified time.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// EntityType - Defines which entity type the file should map to. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -882,7 +902,7 @@ type ConnectorMappingCompleteOperation struct {
 	DestinationFolder *string `json:"destinationFolder,omitempty"`
 }
 
-// ConnectorMappingErrorManagement the error mangement.
+// ConnectorMappingErrorManagement the error management.
 type ConnectorMappingErrorManagement struct {
 	// ErrorManagementType - The type of error management to use for the mapping. Possible values include: 'RejectAndContinue', 'StopImport', 'RejectUntilLimit'
 	ErrorManagementType ErrorManagementTypes `json:"errorManagementType,omitempty"`
@@ -974,6 +994,11 @@ func (iter ConnectorMappingListResultIterator) Value() ConnectorMappingResourceF
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ConnectorMappingListResultIterator type.
+func NewConnectorMappingListResultIterator(page ConnectorMappingListResultPage) ConnectorMappingListResultIterator {
+	return ConnectorMappingListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cmlr ConnectorMappingListResult) IsEmpty() bool {
 	return cmlr.Value == nil || len(*cmlr.Value) == 0
@@ -1043,6 +1068,11 @@ func (page ConnectorMappingListResultPage) Values() []ConnectorMappingResourceFo
 	return *page.cmlr.Value
 }
 
+// Creates a new instance of the ConnectorMappingListResultPage type.
+func NewConnectorMappingListResultPage(getNextPage func(context.Context, ConnectorMappingListResult) (ConnectorMappingListResult, error)) ConnectorMappingListResultPage {
+	return ConnectorMappingListResultPage{fn: getNextPage}
+}
+
 // ConnectorMappingProperties the connector mapping properties.
 type ConnectorMappingProperties struct {
 	// FolderPath - The folder path for the mapping.
@@ -1063,7 +1093,7 @@ type ConnectorMappingProperties struct {
 	CompleteOperation *ConnectorMappingCompleteOperation `json:"completeOperation,omitempty"`
 }
 
-// ConnectorMappingResourceFormat the c onnector mapping resource format.
+// ConnectorMappingResourceFormat the connector mapping resource format.
 type ConnectorMappingResourceFormat struct {
 	autorest.Response `json:"-"`
 	*ConnectorMapping `json:"properties,omitempty"`
@@ -1487,7 +1517,7 @@ func (ek EnrichingKpi) MarshalJSON() ([]byte, error) {
 
 // EntityTypeDefinition describes an entity.
 type EntityTypeDefinition struct {
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -1776,6 +1806,11 @@ func (iter HubListResultIterator) Value() Hub {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the HubListResultIterator type.
+func NewHubListResultIterator(page HubListResultPage) HubListResultIterator {
+	return HubListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (hlr HubListResult) IsEmpty() bool {
 	return hlr.Value == nil || len(*hlr.Value) == 0
@@ -1843,6 +1878,11 @@ func (page HubListResultPage) Values() []Hub {
 		return nil
 	}
 	return *page.hlr.Value
+}
+
+// Creates a new instance of the HubListResultPage type.
+func NewHubListResultPage(getNextPage func(context.Context, HubListResult) (HubListResult, error)) HubListResultPage {
+	return HubListResultPage{fn: getNextPage}
 }
 
 // HubPropertiesFormat properties of hub.
@@ -1959,6 +1999,11 @@ func (iter InteractionListResultIterator) Value() InteractionResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InteractionListResultIterator type.
+func NewInteractionListResultIterator(page InteractionListResultPage) InteractionListResultIterator {
+	return InteractionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InteractionListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -2026,6 +2071,11 @@ func (page InteractionListResultPage) Values() []InteractionResourceFormat {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the InteractionListResultPage type.
+func NewInteractionListResultPage(getNextPage func(context.Context, InteractionListResult) (InteractionListResult, error)) InteractionListResultPage {
+	return InteractionListResultPage{fn: getNextPage}
 }
 
 // InteractionResourceFormat the interaction resource format.
@@ -2152,7 +2202,7 @@ type InteractionTypeDefinition struct {
 	*DataSource `json:"defaultDataSource,omitempty"`
 	// IsActivity - An interaction can be tagged as an activity only during create. This enables the interaction to be editable and can enable merging of properties from multiple data sources based on precedence, which is defined at a link level.
 	IsActivity *bool `json:"isActivity,omitempty"`
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -2749,6 +2799,11 @@ func (iter KpiListResultIterator) Value() KpiResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the KpiListResultIterator type.
+func NewKpiListResultIterator(page KpiListResultPage) KpiListResultIterator {
+	return KpiListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (klr KpiListResult) IsEmpty() bool {
 	return klr.Value == nil || len(*klr.Value) == 0
@@ -2816,6 +2871,11 @@ func (page KpiListResultPage) Values() []KpiResourceFormat {
 		return nil
 	}
 	return *page.klr.Value
+}
+
+// Creates a new instance of the KpiListResultPage type.
+func NewKpiListResultPage(getNextPage func(context.Context, KpiListResult) (KpiListResult, error)) KpiListResultPage {
+	return KpiListResultPage{fn: getNextPage}
 }
 
 // KpiParticipantProfilesMetadata the KPI participant profile metadata.
@@ -2935,7 +2995,7 @@ type LinkDefinition struct {
 	ParticipantPropertyReferences *[]ParticipantPropertyReference `json:"participantPropertyReferences,omitempty"`
 	// ProvisioningState - Provisioning state. Possible values include: 'ProvisioningStatesProvisioning', 'ProvisioningStatesSucceeded', 'ProvisioningStatesExpiring', 'ProvisioningStatesDeleting', 'ProvisioningStatesHumanIntervention', 'ProvisioningStatesFailed'
 	ProvisioningState ProvisioningStates `json:"provisioningState,omitempty"`
-	// ReferenceOnly - Indicating whether the link is reference only link. This flag is ingored if the Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or update profiles.
+	// ReferenceOnly - Indicating whether the link is reference only link. This flag is ignored if the Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or update profiles.
 	ReferenceOnly *bool `json:"referenceOnly,omitempty"`
 	// OperationType - Determines whether this link is supposed to create or delete instances if Link is NOT Reference Only. Possible values include: 'Upsert', 'Delete'
 	OperationType InstanceOperationType `json:"operationType,omitempty"`
@@ -3047,6 +3107,11 @@ func (iter LinkListResultIterator) Value() LinkResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the LinkListResultIterator type.
+func NewLinkListResultIterator(page LinkListResultPage) LinkListResultIterator {
+	return LinkListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (llr LinkListResult) IsEmpty() bool {
 	return llr.Value == nil || len(*llr.Value) == 0
@@ -3114,6 +3179,11 @@ func (page LinkListResultPage) Values() []LinkResourceFormat {
 		return nil
 	}
 	return *page.llr.Value
+}
+
+// Creates a new instance of the LinkListResultPage type.
+func NewLinkListResultPage(getNextPage func(context.Context, LinkListResult) (LinkListResult, error)) LinkListResultPage {
+	return LinkListResultPage{fn: getNextPage}
 }
 
 // LinkResourceFormat the link resource format.
@@ -3363,6 +3433,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -3430,6 +3505,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Participant describes a profile type participating in an interaction.
@@ -3567,6 +3647,11 @@ func (iter ProfileListResultIterator) Value() ProfileResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ProfileListResultIterator type.
+func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
+	return ProfileListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (plr ProfileListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
@@ -3634,6 +3719,11 @@ func (page ProfileListResultPage) Values() []ProfileResourceFormat {
 		return nil
 	}
 	return *page.plr.Value
+}
+
+// Creates a new instance of the ProfileListResultPage type.
+func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{fn: getNextPage}
 }
 
 // ProfileResourceFormat the profile resource format.
@@ -3773,7 +3863,7 @@ func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.R
 type ProfileTypeDefinition struct {
 	// StrongIds - The strong IDs.
 	StrongIds *[]StrongID `json:"strongIds,omitempty"`
-	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being refered in this object.
+	// APIEntitySetName - The api entity set name. This becomes the odata entity set name for the entity Type being referred in this object.
 	APIEntitySetName *string `json:"apiEntitySetName,omitempty"`
 	// EntityType - Type of entity. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
 	EntityType EntityTypes `json:"entityType,omitempty"`
@@ -3891,7 +3981,7 @@ type PropertyDefinition struct {
 	IsLocalizedString *bool `json:"isLocalizedString,omitempty"`
 	// IsName - Whether the property is a name or a part of name.
 	IsName *bool `json:"isName,omitempty"`
-	// IsRequired - Whether property value is required on instances, IsRequired field only for Intercation. Profile Instance will not check for required field.
+	// IsRequired - Whether property value is required on instances, IsRequired field only for Interaction. Profile Instance will not check for required field.
 	IsRequired *bool `json:"isRequired,omitempty"`
 	// PropertyID - The ID associated with the property.
 	PropertyID *string `json:"propertyId,omitempty"`
@@ -4128,6 +4218,11 @@ func (iter RelationshipLinkListResultIterator) Value() RelationshipLinkResourceF
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RelationshipLinkListResultIterator type.
+func NewRelationshipLinkListResultIterator(page RelationshipLinkListResultPage) RelationshipLinkListResultIterator {
+	return RelationshipLinkListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rllr RelationshipLinkListResult) IsEmpty() bool {
 	return rllr.Value == nil || len(*rllr.Value) == 0
@@ -4195,6 +4290,11 @@ func (page RelationshipLinkListResultPage) Values() []RelationshipLinkResourceFo
 		return nil
 	}
 	return *page.rllr.Value
+}
+
+// Creates a new instance of the RelationshipLinkListResultPage type.
+func NewRelationshipLinkListResultPage(getNextPage func(context.Context, RelationshipLinkListResult) (RelationshipLinkListResult, error)) RelationshipLinkListResultPage {
+	return RelationshipLinkListResultPage{fn: getNextPage}
 }
 
 // RelationshipLinkResourceFormat the relationship link resource format.
@@ -4398,6 +4498,11 @@ func (iter RelationshipListResultIterator) Value() RelationshipResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RelationshipListResultIterator type.
+func NewRelationshipListResultIterator(page RelationshipListResultPage) RelationshipListResultIterator {
+	return RelationshipListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RelationshipListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -4465,6 +4570,11 @@ func (page RelationshipListResultPage) Values() []RelationshipResourceFormat {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the RelationshipListResultPage type.
+func NewRelationshipListResultPage(getNextPage func(context.Context, RelationshipListResult) (RelationshipListResult, error)) RelationshipListResultPage {
+	return RelationshipListResultPage{fn: getNextPage}
 }
 
 // RelationshipResourceFormat the relationship resource format.
@@ -4857,6 +4967,11 @@ func (iter RoleAssignmentListResultIterator) Value() RoleAssignmentResourceForma
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RoleAssignmentListResultIterator type.
+func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
+	return RoleAssignmentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ralr RoleAssignmentListResult) IsEmpty() bool {
 	return ralr.Value == nil || len(*ralr.Value) == 0
@@ -4924,6 +5039,11 @@ func (page RoleAssignmentListResultPage) Values() []RoleAssignmentResourceFormat
 		return nil
 	}
 	return *page.ralr.Value
+}
+
+// Creates a new instance of the RoleAssignmentListResultPage type.
+func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return RoleAssignmentListResultPage{fn: getNextPage}
 }
 
 // RoleAssignmentResourceFormat the Role Assignment resource format.
@@ -5103,6 +5223,11 @@ func (iter RoleListResultIterator) Value() RoleResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RoleListResultIterator type.
+func NewRoleListResultIterator(page RoleListResultPage) RoleListResultIterator {
+	return RoleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rlr RoleListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
@@ -5170,6 +5295,11 @@ func (page RoleListResultPage) Values() []RoleResourceFormat {
 		return nil
 	}
 	return *page.rlr.Value
+}
+
+// Creates a new instance of the RoleListResultPage type.
+func NewRoleListResultPage(getNextPage func(context.Context, RoleListResult) (RoleListResult, error)) RoleListResultPage {
+	return RoleListResultPage{fn: getNextPage}
 }
 
 // RoleResourceFormat the role resource format.
@@ -5443,6 +5573,11 @@ func (iter ViewListResultIterator) Value() ViewResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ViewListResultIterator type.
+func NewViewListResultIterator(page ViewListResultPage) ViewListResultIterator {
+	return ViewListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vlr ViewListResult) IsEmpty() bool {
 	return vlr.Value == nil || len(*vlr.Value) == 0
@@ -5510,6 +5645,11 @@ func (page ViewListResultPage) Values() []ViewResourceFormat {
 		return nil
 	}
 	return *page.vlr.Value
+}
+
+// Creates a new instance of the ViewListResultPage type.
+func NewViewListResultPage(getNextPage func(context.Context, ViewListResult) (ViewListResult, error)) ViewListResultPage {
+	return ViewListResultPage{fn: getNextPage}
 }
 
 // ViewResourceFormat the view resource format.
@@ -5715,6 +5855,11 @@ func (iter WidgetTypeListResultIterator) Value() WidgetTypeResourceFormat {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WidgetTypeListResultIterator type.
+func NewWidgetTypeListResultIterator(page WidgetTypeListResultPage) WidgetTypeListResultIterator {
+	return WidgetTypeListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WidgetTypeListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -5782,6 +5927,11 @@ func (page WidgetTypeListResultPage) Values() []WidgetTypeResourceFormat {
 		return nil
 	}
 	return *page.wtlr.Value
+}
+
+// Creates a new instance of the WidgetTypeListResultPage type.
+func NewWidgetTypeListResultPage(getNextPage func(context.Context, WidgetTypeListResult) (WidgetTypeListResult, error)) WidgetTypeListResultPage {
+	return WidgetTypeListResultPage{fn: getNextPage}
 }
 
 // WidgetTypeResourceFormat the WidgetTypeResourceFormat

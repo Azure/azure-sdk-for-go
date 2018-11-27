@@ -353,6 +353,11 @@ func (iter AddsConfigurationIterator) Value() Item {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AddsConfigurationIterator type.
+func NewAddsConfigurationIterator(page AddsConfigurationPage) AddsConfigurationIterator {
+	return AddsConfigurationIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ac AddsConfiguration) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -420,6 +425,11 @@ func (page AddsConfigurationPage) Values() []Item {
 		return nil
 	}
 	return *page.ac.Value
+}
+
+// Creates a new instance of the AddsConfigurationPage type.
+func NewAddsConfigurationPage(getNextPage func(context.Context, AddsConfiguration) (AddsConfiguration, error)) AddsConfigurationPage {
+	return AddsConfigurationPage{fn: getNextPage}
 }
 
 // AddsServiceMember the server details for ADDS service.
@@ -565,6 +575,11 @@ func (iter AddsServiceMembersIterator) Value() AddsServiceMember {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AddsServiceMembersIterator type.
+func NewAddsServiceMembersIterator(page AddsServiceMembersPage) AddsServiceMembersIterator {
+	return AddsServiceMembersIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (asm AddsServiceMembers) IsEmpty() bool {
 	return asm.Value == nil || len(*asm.Value) == 0
@@ -632,6 +647,11 @@ func (page AddsServiceMembersPage) Values() []AddsServiceMember {
 		return nil
 	}
 	return *page.asm.Value
+}
+
+// Creates a new instance of the AddsServiceMembersPage type.
+func NewAddsServiceMembersPage(getNextPage func(context.Context, AddsServiceMembers) (AddsServiceMembers, error)) AddsServiceMembersPage {
+	return AddsServiceMembersPage{fn: getNextPage}
 }
 
 // Agent the agent details.
@@ -793,6 +813,11 @@ func (iter AlertsIterator) Value() Alert {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AlertsIterator type.
+func NewAlertsIterator(page AlertsPage) AlertsIterator {
+	return AlertsIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (a Alerts) IsEmpty() bool {
 	return a.Value == nil || len(*a.Value) == 0
@@ -860,6 +885,11 @@ func (page AlertsPage) Values() []Alert {
 		return nil
 	}
 	return *page.a.Value
+}
+
+// Creates a new instance of the AlertsPage type.
+func NewAlertsPage(getNextPage func(context.Context, Alerts) (Alerts, error)) AlertsPage {
+	return AlertsPage{fn: getNextPage}
 }
 
 // AssociatedObject object that hold sync object details.
@@ -1188,6 +1218,11 @@ func (iter DimensionsIterator) Value() Dimension {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DimensionsIterator type.
+func NewDimensionsIterator(page DimensionsPage) DimensionsIterator {
+	return DimensionsIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (d Dimensions) IsEmpty() bool {
 	return d.Value == nil || len(*d.Value) == 0
@@ -1255,6 +1290,11 @@ func (page DimensionsPage) Values() []Dimension {
 		return nil
 	}
 	return *page.d.Value
+}
+
+// Creates a new instance of the DimensionsPage type.
+func NewDimensionsPage(getNextPage func(context.Context, Dimensions) (Dimensions, error)) DimensionsPage {
+	return DimensionsPage{fn: getNextPage}
 }
 
 // Display displays the details related to operations supported by Azure Active Directory Connect Health.
@@ -1387,8 +1427,8 @@ type ExportError struct {
 	AadSourceOfAuthority *string `json:"aadSourceOfAuthority,omitempty"`
 	// AadUserPrincipalName - The AAD side user principal name.
 	AadUserPrincipalName *string `json:"aadUserPrincipalName,omitempty"`
-	// AadDistringuishedName - The AAD side distinguished name for the object.
-	AadDistringuishedName *string `json:"aadDistringuishedName,omitempty"`
+	// AadDistinguishedName - The AAD side distinguished name for the object.
+	AadDistinguishedName *string `json:"aadDistinguishedName,omitempty"`
 	// AadMail - The AAD side email for the object.
 	AadMail *string `json:"aadMail,omitempty"`
 	// LastDirSyncTime - The date and time of last sync run.
@@ -1486,6 +1526,11 @@ func (iter ExportStatusesIterator) Value() ExportStatus {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ExportStatusesIterator type.
+func NewExportStatusesIterator(page ExportStatusesPage) ExportStatusesIterator {
+	return ExportStatusesIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (es ExportStatuses) IsEmpty() bool {
 	return es.Value == nil || len(*es.Value) == 0
@@ -1553,6 +1598,11 @@ func (page ExportStatusesPage) Values() []ExportStatus {
 		return nil
 	}
 	return *page.es.Value
+}
+
+// Creates a new instance of the ExportStatusesPage type.
+func NewExportStatusesPage(getNextPage func(context.Context, ExportStatuses) (ExportStatuses, error)) ExportStatusesPage {
+	return ExportStatusesPage{fn: getNextPage}
 }
 
 // ExtensionErrorInfo the extension error details.
@@ -1879,6 +1929,11 @@ func (iter MetricMetadataListIterator) Value() MetricMetadata {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the MetricMetadataListIterator type.
+func NewMetricMetadataListIterator(page MetricMetadataListPage) MetricMetadataListIterator {
+	return MetricMetadataListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mml MetricMetadataList) IsEmpty() bool {
 	return mml.Value == nil || len(*mml.Value) == 0
@@ -1946,6 +2001,11 @@ func (page MetricMetadataListPage) Values() []MetricMetadata {
 		return nil
 	}
 	return *page.mml.Value
+}
+
+// Creates a new instance of the MetricMetadataListPage type.
+func NewMetricMetadataListPage(getNextPage func(context.Context, MetricMetadataList) (MetricMetadataList, error)) MetricMetadataListPage {
+	return MetricMetadataListPage{fn: getNextPage}
 }
 
 // Metrics the list of metric items.
@@ -2037,6 +2097,11 @@ func (iter MetricsIterator) Value() Item {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the MetricsIterator type.
+func NewMetricsIterator(page MetricsPage) MetricsIterator {
+	return MetricsIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mVar Metrics) IsEmpty() bool {
 	return mVar.Value == nil || len(*mVar.Value) == 0
@@ -2104,6 +2169,11 @@ func (page MetricsPage) Values() []Item {
 		return nil
 	}
 	return *page.mVar.Value
+}
+
+// Creates a new instance of the MetricsPage type.
+func NewMetricsPage(getNextPage func(context.Context, Metrics) (Metrics, error)) MetricsPage {
+	return MetricsPage{fn: getNextPage}
 }
 
 // ModuleConfiguration the module configuration as required by the Agent service.
@@ -2253,6 +2323,11 @@ func (iter OperationListResponseIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResponseIterator type.
+func NewOperationListResponseIterator(page OperationListResponsePage) OperationListResponseIterator {
+	return OperationListResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResponse) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2320,6 +2395,11 @@ func (page OperationListResponsePage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResponsePage type.
+func NewOperationListResponsePage(getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
+	return OperationListResponsePage{fn: getNextPage}
 }
 
 // Partition describes the partition in Synchronization service.
@@ -2643,6 +2723,11 @@ func (iter ServiceMembersIterator) Value() ServiceMember {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServiceMembersIterator type.
+func NewServiceMembersIterator(page ServiceMembersPage) ServiceMembersIterator {
+	return ServiceMembersIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sm ServiceMembers) IsEmpty() bool {
 	return sm.Value == nil || len(*sm.Value) == 0
@@ -2710,6 +2795,11 @@ func (page ServiceMembersPage) Values() []ServiceMember {
 		return nil
 	}
 	return *page.sm.Value
+}
+
+// Creates a new instance of the ServiceMembersPage type.
+func NewServiceMembersPage(getNextPage func(context.Context, ServiceMembers) (ServiceMembers, error)) ServiceMembersPage {
+	return ServiceMembersPage{fn: getNextPage}
 }
 
 // ServiceProperties the service properties for a given service.
@@ -2836,6 +2926,11 @@ func (iter ServicesIterator) Value() ServiceProperties {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServicesIterator type.
+func NewServicesIterator(page ServicesPage) ServicesIterator {
+	return ServicesIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (s Services) IsEmpty() bool {
 	return s.Value == nil || len(*s.Value) == 0
@@ -2903,6 +2998,11 @@ func (page ServicesPage) Values() []ServiceProperties {
 		return nil
 	}
 	return *page.s.Value
+}
+
+// Creates a new instance of the ServicesPage type.
+func NewServicesPage(getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
+	return ServicesPage{fn: getNextPage}
 }
 
 // TabularExportError the details for export error.

@@ -331,6 +331,10 @@ type Application struct {
 	Oauth2AllowImplicitFlow *bool `json:"oauth2AllowImplicitFlow,omitempty"`
 	// RequiredResourceAccess - Specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
 	RequiredResourceAccess *[]RequiredResourceAccess `json:"requiredResourceAccess,omitempty"`
+	// KeyCredentials - A collection of KeyCredential objects.
+	KeyCredentials *[]KeyCredential `json:"keyCredentials,omitempty"`
+	// PasswordCredentials - A collection of PasswordCredential objects
+	PasswordCredentials *[]PasswordCredential `json:"passwordCredentials,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// ObjectID - The object ID.
@@ -374,6 +378,12 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.RequiredResourceAccess != nil {
 		objectMap["requiredResourceAccess"] = a.RequiredResourceAccess
+	}
+	if a.KeyCredentials != nil {
+		objectMap["keyCredentials"] = a.KeyCredentials
+	}
+	if a.PasswordCredentials != nil {
+		objectMap["passwordCredentials"] = a.PasswordCredentials
 	}
 	if a.ObjectID != nil {
 		objectMap["objectId"] = a.ObjectID
@@ -518,6 +528,24 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.RequiredResourceAccess = &requiredResourceAccess
+			}
+		case "keyCredentials":
+			if v != nil {
+				var keyCredentials []KeyCredential
+				err = json.Unmarshal(*v, &keyCredentials)
+				if err != nil {
+					return err
+				}
+				a.KeyCredentials = &keyCredentials
+			}
+		case "passwordCredentials":
+			if v != nil {
+				var passwordCredentials []PasswordCredential
+				err = json.Unmarshal(*v, &passwordCredentials)
+				if err != nil {
+					return err
+				}
+				a.PasswordCredentials = &passwordCredentials
 			}
 		default:
 			if v != nil {
@@ -813,6 +841,11 @@ func (iter ApplicationListResultIterator) Value() Application {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ApplicationListResultIterator type.
+func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
+	return ApplicationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -868,6 +901,11 @@ func (page ApplicationListResultPage) Values() []Application {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the ApplicationListResultPage type.
+func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{fn: getNextPage}
 }
 
 // ApplicationUpdateParameters request parameters for updating an existing application.
@@ -1467,6 +1505,11 @@ func (iter DirectoryObjectListResultIterator) Value() BasicDirectoryObject {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DirectoryObjectListResultIterator type.
+func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
+	return DirectoryObjectListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DirectoryObjectListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -1534,6 +1577,11 @@ func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
 		return nil
 	}
 	return *page.dolr.Value
+}
+
+// Creates a new instance of the DirectoryObjectListResultPage type.
+func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return DirectoryObjectListResultPage{fn: getNextPage}
 }
 
 // Domain active Directory Domain information.
@@ -2055,6 +2103,11 @@ func (iter GroupListResultIterator) Value() ADGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the GroupListResultIterator type.
+func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
+	return GroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (glr GroupListResult) IsEmpty() bool {
 	return glr.Value == nil || len(*glr.Value) == 0
@@ -2112,6 +2165,11 @@ func (page GroupListResultPage) Values() []ADGroup {
 	return *page.glr.Value
 }
 
+// Creates a new instance of the GroupListResultPage type.
+func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{fn: getNextPage}
+}
+
 // KeyCredential active Directory Key Credential information.
 type KeyCredential struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -2129,7 +2187,7 @@ type KeyCredential struct {
 	// Type - Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
 	Type *string `json:"type,omitempty"`
 	// CustomKeyIdentifier - Custom Key Identifier
-	CustomKeyIdentifier *[]byte `json:"customKeyIdentifier,omitempty"`
+	CustomKeyIdentifier *string `json:"customKeyIdentifier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for KeyCredential.
@@ -2239,7 +2297,7 @@ func (kc *KeyCredential) UnmarshalJSON(body []byte) error {
 			}
 		case "customKeyIdentifier":
 			if v != nil {
-				var customKeyIdentifier []byte
+				var customKeyIdentifier string
 				err = json.Unmarshal(*v, &customKeyIdentifier)
 				if err != nil {
 					return err
@@ -2330,6 +2388,8 @@ type PasswordCredential struct {
 	KeyID *string `json:"keyId,omitempty"`
 	// Value - Key value.
 	Value *string `json:"value,omitempty"`
+	// CustomKeyIdentifier - Custom Key Identifier
+	CustomKeyIdentifier *[]byte `json:"customKeyIdentifier,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PasswordCredential.
@@ -2346,6 +2406,9 @@ func (pc PasswordCredential) MarshalJSON() ([]byte, error) {
 	}
 	if pc.Value != nil {
 		objectMap["value"] = pc.Value
+	}
+	if pc.CustomKeyIdentifier != nil {
+		objectMap["customKeyIdentifier"] = pc.CustomKeyIdentifier
 	}
 	for k, v := range pc.AdditionalProperties {
 		objectMap[k] = v
@@ -2409,6 +2472,15 @@ func (pc *PasswordCredential) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pc.Value = &value
+			}
+		case "customKeyIdentifier":
+			if v != nil {
+				var customKeyIdentifier []byte
+				err = json.Unmarshal(*v, &customKeyIdentifier)
+				if err != nil {
+					return err
+				}
+				pc.CustomKeyIdentifier = &customKeyIdentifier
 			}
 		}
 	}
@@ -3125,6 +3197,11 @@ func (iter ServicePrincipalListResultIterator) Value() ServicePrincipal {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServicePrincipalListResultIterator type.
+func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
+	return ServicePrincipalListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (splr ServicePrincipalListResult) IsEmpty() bool {
 	return splr.Value == nil || len(*splr.Value) == 0
@@ -3180,6 +3257,11 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 		return nil
 	}
 	return *page.splr.Value
+}
+
+// Creates a new instance of the ServicePrincipalListResultPage type.
+func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return ServicePrincipalListResultPage{fn: getNextPage}
 }
 
 // ServicePrincipalUpdateParameters request parameters for creating a new service principal.
@@ -4182,6 +4264,11 @@ func (iter UserListResultIterator) Value() User {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UserListResultIterator type.
+func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
+	return UserListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ulr UserListResult) IsEmpty() bool {
 	return ulr.Value == nil || len(*ulr.Value) == 0
@@ -4237,6 +4324,11 @@ func (page UserListResultPage) Values() []User {
 		return nil
 	}
 	return *page.ulr.Value
+}
+
+// Creates a new instance of the UserListResultPage type.
+func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
+	return UserListResultPage{fn: getNextPage}
 }
 
 // UserUpdateParameters request parameters for updating an existing work or school account user.

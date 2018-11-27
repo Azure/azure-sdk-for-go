@@ -19,7 +19,11 @@
 
 package alertsmanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2018-05-05/alertsmanagement"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2018-05-05/alertsmanagement"
+)
 
 type AlertsClient = original.AlertsClient
 
@@ -227,6 +231,18 @@ func PossibleStateValues() []State {
 }
 func PossibleTimeRangeValues() []TimeRange {
 	return original.PossibleTimeRangeValues()
+}
+func NewAlertsListIterator(page AlertsListPage) AlertsListIterator {
+	return original.NewAlertsListIterator(page)
+}
+func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return original.NewAlertsListPage(getNextPage)
+}
+func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
+	return original.NewOperationsListIterator(page)
+}
+func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return original.NewOperationsListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

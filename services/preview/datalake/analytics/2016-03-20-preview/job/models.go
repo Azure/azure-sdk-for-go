@@ -364,6 +364,11 @@ func (iter InfoListResultIterator) Value() Information {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InfoListResultIterator type.
+func NewInfoListResultIterator(page InfoListResultPage) InfoListResultIterator {
+	return InfoListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InfoListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -431,6 +436,11 @@ func (page InfoListResultPage) Values() []Information {
 		return nil
 	}
 	return *page.ilr.Value
+}
+
+// Creates a new instance of the InfoListResultPage type.
+func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{fn: getNextPage}
 }
 
 // Information the common Data Lake Analytics job information properties.

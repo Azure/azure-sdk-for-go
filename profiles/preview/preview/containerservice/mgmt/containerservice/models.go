@@ -19,7 +19,11 @@
 
 package containerservice
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-09-30-preview/containerservice"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-09-30-preview/containerservice"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -377,6 +381,18 @@ func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 }
 func PossibleVMSizeTypesValues() []VMSizeTypes {
 	return original.PossibleVMSizeTypesValues()
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) ManagedClusterListResultIterator {
+	return original.NewManagedClusterListResultIterator(page)
+}
+func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
+	return original.NewManagedClusterListResultPage(getNextPage)
 }
 func NewOpenShiftManagedClustersClient(subscriptionID string) OpenShiftManagedClustersClient {
 	return original.NewOpenShiftManagedClustersClient(subscriptionID)

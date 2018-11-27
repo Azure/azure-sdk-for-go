@@ -155,6 +155,11 @@ func (iter OperationListIterator) Value() OperationResponse {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListIterator type.
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return OperationListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -222,6 +227,11 @@ func (page OperationListPage) Values() []OperationResponse {
 		return nil
 	}
 	return *page.ol.Value
+}
+
+// Creates a new instance of the OperationListPage type.
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{fn: getNextPage}
 }
 
 // OperationResponse this is the management partner operations response

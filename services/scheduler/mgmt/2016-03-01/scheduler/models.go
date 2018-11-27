@@ -765,6 +765,12 @@ func (iter JobCollectionListResultIterator) Value() JobCollectionDefinition {
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobCollectionListResultIterator type.
+func NewJobCollectionListResultIterator(page JobCollectionListResultPage) JobCollectionListResultIterator {
+	return JobCollectionListResultIterator{page: page}
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (jclr JobCollectionListResult) IsEmpty() bool {
 	return jclr.Value == nil || len(*jclr.Value) == 0
@@ -835,6 +841,12 @@ func (page JobCollectionListResultPage) Values() []JobCollectionDefinition {
 		return nil
 	}
 	return *page.jclr.Value
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobCollectionListResultPage type.
+func NewJobCollectionListResultPage(getNextPage func(context.Context, JobCollectionListResult) (JobCollectionListResult, error)) JobCollectionListResultPage {
+	return JobCollectionListResultPage{fn: getNextPage}
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
@@ -1076,6 +1088,12 @@ func (iter JobHistoryListResultIterator) Value() JobHistoryDefinition {
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobHistoryListResultIterator type.
+func NewJobHistoryListResultIterator(page JobHistoryListResultPage) JobHistoryListResultIterator {
+	return JobHistoryListResultIterator{page: page}
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (jhlr JobHistoryListResult) IsEmpty() bool {
 	return jhlr.Value == nil || len(*jhlr.Value) == 0
@@ -1146,6 +1164,12 @@ func (page JobHistoryListResultPage) Values() []JobHistoryDefinition {
 		return nil
 	}
 	return *page.jhlr.Value
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobHistoryListResultPage type.
+func NewJobHistoryListResultPage(getNextPage func(context.Context, JobHistoryListResult) (JobHistoryListResult, error)) JobHistoryListResultPage {
+	return JobHistoryListResultPage{fn: getNextPage}
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
@@ -1220,6 +1244,12 @@ func (iter JobListResultIterator) Value() JobDefinition {
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
@@ -1290,6 +1320,12 @@ func (page JobListResultPage) Values() []JobDefinition {
 		return nil
 	}
 	return *page.jlr.Value
+}
+
+// Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
 }
 
 // Deprecated: Please use github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic instead.

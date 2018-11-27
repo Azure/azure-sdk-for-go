@@ -19,7 +19,11 @@
 
 package resourcehealth
 
-import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
+)
 
 type AvailabilityStatusesClient = original.AvailabilityStatusesClient
 
@@ -76,6 +80,12 @@ func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 }
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return original.PossibleReasonChronicityTypesValues()
+}
+func NewAvailabilityStatusListResultIterator(page AvailabilityStatusListResultPage) AvailabilityStatusListResultIterator {
+	return original.NewAvailabilityStatusListResultIterator(page)
+}
+func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return original.NewAvailabilityStatusListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

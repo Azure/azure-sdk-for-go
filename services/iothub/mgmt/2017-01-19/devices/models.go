@@ -375,6 +375,11 @@ func (iter EventHubConsumerGroupsListResultIterator) Value() string {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EventHubConsumerGroupsListResultIterator type.
+func NewEventHubConsumerGroupsListResultIterator(page EventHubConsumerGroupsListResultPage) EventHubConsumerGroupsListResultIterator {
+	return EventHubConsumerGroupsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ehcglr EventHubConsumerGroupsListResult) IsEmpty() bool {
 	return ehcglr.Value == nil || len(*ehcglr.Value) == 0
@@ -444,11 +449,16 @@ func (page EventHubConsumerGroupsListResultPage) Values() []string {
 	return *page.ehcglr.Value
 }
 
+// Creates a new instance of the EventHubConsumerGroupsListResultPage type.
+func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
+	return EventHubConsumerGroupsListResultPage{fn: getNextPage}
+}
+
 // EventHubProperties the properties of the provisioned Event Hub-compatible endpoint used by the IoT hub.
 type EventHubProperties struct {
 	// RetentionTimeInDays - The retention time for device-to-cloud messages in days. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages
 	RetentionTimeInDays *int64 `json:"retentionTimeInDays,omitempty"`
-	// PartitionCount - The number of paritions for receiving device-to-cloud messages in the Event Hub-compatible endpoint. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
+	// PartitionCount - The number of partitions for receiving device-to-cloud messages in the Event Hub-compatible endpoint. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.
 	PartitionCount *int32 `json:"partitionCount,omitempty"`
 	// PartitionIds - The partition ids in the Event Hub-compatible endpoint.
 	PartitionIds *[]string `json:"partitionIds,omitempty"`
@@ -635,6 +645,11 @@ func (iter IotHubDescriptionListResultIterator) Value() IotHubDescription {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IotHubDescriptionListResultIterator type.
+func NewIotHubDescriptionListResultIterator(page IotHubDescriptionListResultPage) IotHubDescriptionListResultIterator {
+	return IotHubDescriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ihdlr IotHubDescriptionListResult) IsEmpty() bool {
 	return ihdlr.Value == nil || len(*ihdlr.Value) == 0
@@ -702,6 +717,11 @@ func (page IotHubDescriptionListResultPage) Values() []IotHubDescription {
 		return nil
 	}
 	return *page.ihdlr.Value
+}
+
+// Creates a new instance of the IotHubDescriptionListResultPage type.
+func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
+	return IotHubDescriptionListResultPage{fn: getNextPage}
 }
 
 // IotHubNameAvailabilityInfo the properties indicating whether a given IoT hub name is available.
@@ -866,6 +886,11 @@ func (iter IotHubQuotaMetricInfoListResultIterator) Value() IotHubQuotaMetricInf
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IotHubQuotaMetricInfoListResultIterator type.
+func NewIotHubQuotaMetricInfoListResultIterator(page IotHubQuotaMetricInfoListResultPage) IotHubQuotaMetricInfoListResultIterator {
+	return IotHubQuotaMetricInfoListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ihqmilr IotHubQuotaMetricInfoListResult) IsEmpty() bool {
 	return ihqmilr.Value == nil || len(*ihqmilr.Value) == 0
@@ -933,6 +958,11 @@ func (page IotHubQuotaMetricInfoListResultPage) Values() []IotHubQuotaMetricInfo
 		return nil
 	}
 	return *page.ihqmilr.Value
+}
+
+// Creates a new instance of the IotHubQuotaMetricInfoListResultPage type.
+func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
+	return IotHubQuotaMetricInfoListResultPage{fn: getNextPage}
 }
 
 // IotHubResourceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1070,6 +1100,11 @@ func (iter IotHubSkuDescriptionListResultIterator) Value() IotHubSkuDescription 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the IotHubSkuDescriptionListResultIterator type.
+func NewIotHubSkuDescriptionListResultIterator(page IotHubSkuDescriptionListResultPage) IotHubSkuDescriptionListResultIterator {
+	return IotHubSkuDescriptionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ihsdlr IotHubSkuDescriptionListResult) IsEmpty() bool {
 	return ihsdlr.Value == nil || len(*ihsdlr.Value) == 0
@@ -1137,6 +1172,11 @@ func (page IotHubSkuDescriptionListResultPage) Values() []IotHubSkuDescription {
 		return nil
 	}
 	return *page.ihsdlr.Value
+}
+
+// Creates a new instance of the IotHubSkuDescriptionListResultPage type.
+func NewIotHubSkuDescriptionListResultPage(getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
+	return IotHubSkuDescriptionListResultPage{fn: getNextPage}
 }
 
 // IotHubSkuInfo information about the SKU of the IoT hub.
@@ -1247,6 +1287,11 @@ func (iter JobResponseListResultIterator) Value() JobResponse {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobResponseListResultIterator type.
+func NewJobResponseListResultIterator(page JobResponseListResultPage) JobResponseListResultIterator {
+	return JobResponseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jrlr JobResponseListResult) IsEmpty() bool {
 	return jrlr.Value == nil || len(*jrlr.Value) == 0
@@ -1314,6 +1359,11 @@ func (page JobResponseListResultPage) Values() []JobResponse {
 		return nil
 	}
 	return *page.jrlr.Value
+}
+
+// Creates a new instance of the JobResponseListResultPage type.
+func NewJobResponseListResultPage(getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
+	return JobResponseListResultPage{fn: getNextPage}
 }
 
 // MessagingEndpointProperties the properties of the messaging endpoints used by this IoT hub.
@@ -1554,6 +1604,11 @@ func (iter SharedAccessSignatureAuthorizationRuleListResultIterator) Value() Sha
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultIterator type.
+func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
+	return SharedAccessSignatureAuthorizationRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) IsEmpty() bool {
 	return sasarlr.Value == nil || len(*sasarlr.Value) == 0
@@ -1624,9 +1679,14 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 	return *page.sasarlr.Value
 }
 
+// Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
+}
+
 // StorageEndpointProperties the properties of the Azure Storage endpoint for file upload.
 type StorageEndpointProperties struct {
-	// SasTTLAsIso8601 - The period of time for which the the SAS URI generated by IoT Hub for file upload is valid. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload#file-upload-notification-configuration-options.
+	// SasTTLAsIso8601 - The period of time for which the SAS URI generated by IoT Hub for file upload is valid. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload#file-upload-notification-configuration-options.
 	SasTTLAsIso8601 *string `json:"sasTtlAsIso8601,omitempty"`
 	// ConnectionString - The connection string for the Azure Storage account to which files are uploaded.
 	ConnectionString *string `json:"connectionString,omitempty"`

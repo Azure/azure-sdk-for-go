@@ -2150,9 +2150,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -2169,9 +2169,10 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -2333,6 +2334,11 @@ func (iter DatabaseOperationListResultIterator) Value() DatabaseOperation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DatabaseOperationListResultIterator type.
+func NewDatabaseOperationListResultIterator(page DatabaseOperationListResultPage) DatabaseOperationListResultIterator {
+	return DatabaseOperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DatabaseOperationListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -2400,6 +2406,11 @@ func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 		return nil
 	}
 	return *page.dolr.Value
+}
+
+// Creates a new instance of the DatabaseOperationListResultPage type.
+func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
+	return DatabaseOperationListResultPage{fn: getNextPage}
 }
 
 // DatabaseOperationProperties the properties of a database operation.
@@ -3021,13 +3032,160 @@ func (dva *DatabaseVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DatabaseVulnerabilityAssessmentListResult a list of the database's vulnerability assessments.
+type DatabaseVulnerabilityAssessmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]DatabaseVulnerabilityAssessment `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentListResultIterator provides access to a complete listing of
+// DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultIterator struct {
+	i    int
+	page DatabaseVulnerabilityAssessmentListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Response() DatabaseVulnerabilityAssessmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Value() DatabaseVulnerabilityAssessment {
+	if !iter.page.NotDone() {
+		return DatabaseVulnerabilityAssessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DatabaseVulnerabilityAssessmentListResultIterator type.
+func NewDatabaseVulnerabilityAssessmentListResultIterator(page DatabaseVulnerabilityAssessmentListResultPage) DatabaseVulnerabilityAssessmentListResultIterator {
+	return DatabaseVulnerabilityAssessmentListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) IsEmpty() bool {
+	return dvalr.Value == nil || len(*dvalr.Value) == 0
+}
+
+// databaseVulnerabilityAssessmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) databaseVulnerabilityAssessmentListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if dvalr.NextLink == nil || len(to.String(dvalr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dvalr.NextLink)))
+}
+
+// DatabaseVulnerabilityAssessmentListResultPage contains a page of DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultPage struct {
+	fn    func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)
+	dvalr DatabaseVulnerabilityAssessmentListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dvalr)
+	if err != nil {
+		return err
+	}
+	page.dvalr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatabaseVulnerabilityAssessmentListResultPage) NotDone() bool {
+	return !page.dvalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Response() DatabaseVulnerabilityAssessmentListResult {
+	return page.dvalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Values() []DatabaseVulnerabilityAssessment {
+	if page.dvalr.IsEmpty() {
+		return nil
+	}
+	return *page.dvalr.Value
+}
+
+// Creates a new instance of the DatabaseVulnerabilityAssessmentListResultPage type.
+func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
+	return DatabaseVulnerabilityAssessmentListResultPage{fn: getNextPage}
+}
+
 // DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
 type DatabaseVulnerabilityAssessmentProperties struct {
-	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
+	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).  It is required if server level vulnerability assessment policy doesn't set
 	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
 	// StorageContainerSasKey - A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter. If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is required.
 	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
-	// StorageAccountAccessKey - Specifies the identifier key of the vulnerability assessment storage account. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
+	// StorageAccountAccessKey - Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RecurringScans - The recurring scans settings
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
@@ -4311,6 +4469,11 @@ func (iter EncryptionProtectorListResultIterator) Value() EncryptionProtector {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the EncryptionProtectorListResultIterator type.
+func NewEncryptionProtectorListResultIterator(page EncryptionProtectorListResultPage) EncryptionProtectorListResultIterator {
+	return EncryptionProtectorListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (eplr EncryptionProtectorListResult) IsEmpty() bool {
 	return eplr.Value == nil || len(*eplr.Value) == 0
@@ -4378,6 +4541,11 @@ func (page EncryptionProtectorListResultPage) Values() []EncryptionProtector {
 		return nil
 	}
 	return *page.eplr.Value
+}
+
+// Creates a new instance of the EncryptionProtectorListResultPage type.
+func NewEncryptionProtectorListResultPage(getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
+	return EncryptionProtectorListResultPage{fn: getNextPage}
 }
 
 // EncryptionProtectorProperties properties for an encryption protector execution.
@@ -4580,9 +4748,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4599,9 +4767,10 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -4778,9 +4947,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -4797,9 +4966,10 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -4983,6 +5153,11 @@ func (iter FailoverGroupListResultIterator) Value() FailoverGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FailoverGroupListResultIterator type.
+func NewFailoverGroupListResultIterator(page FailoverGroupListResultPage) FailoverGroupListResultIterator {
+	return FailoverGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (fglr FailoverGroupListResult) IsEmpty() bool {
 	return fglr.Value == nil || len(*fglr.Value) == 0
@@ -5050,6 +5225,11 @@ func (page FailoverGroupListResultPage) Values() []FailoverGroup {
 		return nil
 	}
 	return *page.fglr.Value
+}
+
+// Creates a new instance of the FailoverGroupListResultPage type.
+func NewFailoverGroupListResultPage(getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
+	return FailoverGroupListResultPage{fn: getNextPage}
 }
 
 // FailoverGroupProperties properties of a failover group.
@@ -6020,6 +6200,11 @@ func (iter JobAgentListResultIterator) Value() JobAgent {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobAgentListResultIterator type.
+func NewJobAgentListResultIterator(page JobAgentListResultPage) JobAgentListResultIterator {
+	return JobAgentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jalr JobAgentListResult) IsEmpty() bool {
 	return jalr.Value == nil || len(*jalr.Value) == 0
@@ -6087,6 +6272,11 @@ func (page JobAgentListResultPage) Values() []JobAgent {
 		return nil
 	}
 	return *page.jalr.Value
+}
+
+// Creates a new instance of the JobAgentListResultPage type.
+func NewJobAgentListResultPage(getNextPage func(context.Context, JobAgentListResult) (JobAgentListResult, error)) JobAgentListResultPage {
+	return JobAgentListResultPage{fn: getNextPage}
 }
 
 // JobAgentProperties properties of a job agent.
@@ -6342,6 +6532,11 @@ func (iter JobCredentialListResultIterator) Value() JobCredential {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobCredentialListResultIterator type.
+func NewJobCredentialListResultIterator(page JobCredentialListResultPage) JobCredentialListResultIterator {
+	return JobCredentialListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jclr JobCredentialListResult) IsEmpty() bool {
 	return jclr.Value == nil || len(*jclr.Value) == 0
@@ -6409,6 +6604,11 @@ func (page JobCredentialListResultPage) Values() []JobCredential {
 		return nil
 	}
 	return *page.jclr.Value
+}
+
+// Creates a new instance of the JobCredentialListResultPage type.
+func NewJobCredentialListResultPage(getNextPage func(context.Context, JobCredentialListResult) (JobCredentialListResult, error)) JobCredentialListResultPage {
+	return JobCredentialListResultPage{fn: getNextPage}
 }
 
 // JobCredentialProperties properties of a job credential.
@@ -6568,6 +6768,11 @@ func (iter JobExecutionListResultIterator) Value() JobExecution {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobExecutionListResultIterator type.
+func NewJobExecutionListResultIterator(page JobExecutionListResultPage) JobExecutionListResultIterator {
+	return JobExecutionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jelr JobExecutionListResult) IsEmpty() bool {
 	return jelr.Value == nil || len(*jelr.Value) == 0
@@ -6635,6 +6840,11 @@ func (page JobExecutionListResultPage) Values() []JobExecution {
 		return nil
 	}
 	return *page.jelr.Value
+}
+
+// Creates a new instance of the JobExecutionListResultPage type.
+func NewJobExecutionListResultPage(getNextPage func(context.Context, JobExecutionListResult) (JobExecutionListResult, error)) JobExecutionListResultPage {
+	return JobExecutionListResultPage{fn: getNextPage}
 }
 
 // JobExecutionProperties properties for an Azure SQL Database Elastic job execution.
@@ -6802,6 +7012,11 @@ func (iter JobListResultIterator) Value() Job {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobListResultIterator type.
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return JobListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
@@ -6869,6 +7084,11 @@ func (page JobListResultPage) Values() []Job {
 		return nil
 	}
 	return *page.jlr.Value
+}
+
+// Creates a new instance of the JobListResultPage type.
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{fn: getNextPage}
 }
 
 // JobProperties properties of a job.
@@ -7068,6 +7288,11 @@ func (iter JobStepListResultIterator) Value() JobStep {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobStepListResultIterator type.
+func NewJobStepListResultIterator(page JobStepListResultPage) JobStepListResultIterator {
+	return JobStepListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jslr JobStepListResult) IsEmpty() bool {
 	return jslr.Value == nil || len(*jslr.Value) == 0
@@ -7135,6 +7360,11 @@ func (page JobStepListResultPage) Values() []JobStep {
 		return nil
 	}
 	return *page.jslr.Value
+}
+
+// Creates a new instance of the JobStepListResultPage type.
+func NewJobStepListResultPage(getNextPage func(context.Context, JobStepListResult) (JobStepListResult, error)) JobStepListResultPage {
+	return JobStepListResultPage{fn: getNextPage}
 }
 
 // JobStepOutput the output configuration of a job step.
@@ -7341,6 +7571,11 @@ func (iter JobTargetGroupListResultIterator) Value() JobTargetGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobTargetGroupListResultIterator type.
+func NewJobTargetGroupListResultIterator(page JobTargetGroupListResultPage) JobTargetGroupListResultIterator {
+	return JobTargetGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jtglr JobTargetGroupListResult) IsEmpty() bool {
 	return jtglr.Value == nil || len(*jtglr.Value) == 0
@@ -7408,6 +7643,11 @@ func (page JobTargetGroupListResultPage) Values() []JobTargetGroup {
 		return nil
 	}
 	return *page.jtglr.Value
+}
+
+// Creates a new instance of the JobTargetGroupListResultPage type.
+func NewJobTargetGroupListResultPage(getNextPage func(context.Context, JobTargetGroupListResult) (JobTargetGroupListResult, error)) JobTargetGroupListResultPage {
+	return JobTargetGroupListResultPage{fn: getNextPage}
 }
 
 // JobTargetGroupProperties properties of job target group.
@@ -7494,6 +7734,11 @@ func (iter JobVersionListResultIterator) Value() JobVersion {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the JobVersionListResultIterator type.
+func NewJobVersionListResultIterator(page JobVersionListResultPage) JobVersionListResultIterator {
+	return JobVersionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (jvlr JobVersionListResult) IsEmpty() bool {
 	return jvlr.Value == nil || len(*jvlr.Value) == 0
@@ -7563,6 +7808,11 @@ func (page JobVersionListResultPage) Values() []JobVersion {
 	return *page.jvlr.Value
 }
 
+// Creates a new instance of the JobVersionListResultPage type.
+func NewJobVersionListResultPage(getNextPage func(context.Context, JobVersionListResult) (JobVersionListResult, error)) JobVersionListResultPage {
+	return JobVersionListResultPage{fn: getNextPage}
+}
+
 // LocationCapabilities the capabilities for a location.
 type LocationCapabilities struct {
 	autorest.Response `json:"-"`
@@ -7572,6 +7822,300 @@ type LocationCapabilities struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// SupportedServerVersions - The list of supported server versions.
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+}
+
+// ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp, err = client.CreateOrUpdateResponder(mbstrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedBackupShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedBackupShortTermRetentionPoliciesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedBackupShortTermRetentionPoliciesUpdateFuture) Result(client ManagedBackupShortTermRetentionPoliciesClient) (mbstrp ManagedBackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp, err = client.UpdateResponder(mbstrp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedBackupShortTermRetentionPolicy a short term retention policy.
+type ManagedBackupShortTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// ManagedBackupShortTermRetentionPolicyProperties - Resource properties.
+	*ManagedBackupShortTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedBackupShortTermRetentionPolicy.
+func (mbstrp ManagedBackupShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mbstrp.ManagedBackupShortTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = mbstrp.ManagedBackupShortTermRetentionPolicyProperties
+	}
+	if mbstrp.ID != nil {
+		objectMap["id"] = mbstrp.ID
+	}
+	if mbstrp.Name != nil {
+		objectMap["name"] = mbstrp.Name
+	}
+	if mbstrp.Type != nil {
+		objectMap["type"] = mbstrp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedBackupShortTermRetentionPolicy struct.
+func (mbstrp *ManagedBackupShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedBackupShortTermRetentionPolicyProperties ManagedBackupShortTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &managedBackupShortTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				mbstrp.ManagedBackupShortTermRetentionPolicyProperties = &managedBackupShortTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mbstrp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mbstrp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mbstrp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedBackupShortTermRetentionPolicyListResult a list of short term retention policies.
+type ManagedBackupShortTermRetentionPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ManagedBackupShortTermRetentionPolicy `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedBackupShortTermRetentionPolicyListResultIterator provides access to a complete listing of
+// ManagedBackupShortTermRetentionPolicy values.
+type ManagedBackupShortTermRetentionPolicyListResultIterator struct {
+	i    int
+	page ManagedBackupShortTermRetentionPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedBackupShortTermRetentionPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedBackupShortTermRetentionPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedBackupShortTermRetentionPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) Response() ManagedBackupShortTermRetentionPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedBackupShortTermRetentionPolicyListResultIterator) Value() ManagedBackupShortTermRetentionPolicy {
+	if !iter.page.NotDone() {
+		return ManagedBackupShortTermRetentionPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedBackupShortTermRetentionPolicyListResultIterator type.
+func NewManagedBackupShortTermRetentionPolicyListResultIterator(page ManagedBackupShortTermRetentionPolicyListResultPage) ManagedBackupShortTermRetentionPolicyListResultIterator {
+	return ManagedBackupShortTermRetentionPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mbstrplr ManagedBackupShortTermRetentionPolicyListResult) IsEmpty() bool {
+	return mbstrplr.Value == nil || len(*mbstrplr.Value) == 0
+}
+
+// managedBackupShortTermRetentionPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mbstrplr ManagedBackupShortTermRetentionPolicyListResult) managedBackupShortTermRetentionPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if mbstrplr.NextLink == nil || len(to.String(mbstrplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mbstrplr.NextLink)))
+}
+
+// ManagedBackupShortTermRetentionPolicyListResultPage contains a page of
+// ManagedBackupShortTermRetentionPolicy values.
+type ManagedBackupShortTermRetentionPolicyListResultPage struct {
+	fn       func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error)
+	mbstrplr ManagedBackupShortTermRetentionPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedBackupShortTermRetentionPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedBackupShortTermRetentionPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mbstrplr)
+	if err != nil {
+		return err
+	}
+	page.mbstrplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedBackupShortTermRetentionPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) NotDone() bool {
+	return !page.mbstrplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) Response() ManagedBackupShortTermRetentionPolicyListResult {
+	return page.mbstrplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedBackupShortTermRetentionPolicyListResultPage) Values() []ManagedBackupShortTermRetentionPolicy {
+	if page.mbstrplr.IsEmpty() {
+		return nil
+	}
+	return *page.mbstrplr.Value
+}
+
+// Creates a new instance of the ManagedBackupShortTermRetentionPolicyListResultPage type.
+func NewManagedBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, ManagedBackupShortTermRetentionPolicyListResult) (ManagedBackupShortTermRetentionPolicyListResult, error)) ManagedBackupShortTermRetentionPolicyListResultPage {
+	return ManagedBackupShortTermRetentionPolicyListResultPage{fn: getNextPage}
+}
+
+// ManagedBackupShortTermRetentionPolicyProperties properties of a short term retention policy
+type ManagedBackupShortTermRetentionPolicyProperties struct {
+	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
 }
 
 // ManagedDatabase a managed database resource.
@@ -7751,6 +8295,11 @@ func (iter ManagedDatabaseListResultIterator) Value() ManagedDatabase {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedDatabaseListResultIterator type.
+func NewManagedDatabaseListResultIterator(page ManagedDatabaseListResultPage) ManagedDatabaseListResultIterator {
+	return ManagedDatabaseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mdlr ManagedDatabaseListResult) IsEmpty() bool {
 	return mdlr.Value == nil || len(*mdlr.Value) == 0
@@ -7818,6 +8367,11 @@ func (page ManagedDatabaseListResultPage) Values() []ManagedDatabase {
 		return nil
 	}
 	return *page.mdlr.Value
+}
+
+// Creates a new instance of the ManagedDatabaseListResultPage type.
+func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
+	return ManagedDatabaseListResultPage{fn: getNextPage}
 }
 
 // ManagedDatabaseProperties the managed database's properties.
@@ -8210,6 +8764,11 @@ func (iter ManagedInstanceListResultIterator) Value() ManagedInstance {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedInstanceListResultIterator type.
+func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) ManagedInstanceListResultIterator {
+	return ManagedInstanceListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (milr ManagedInstanceListResult) IsEmpty() bool {
 	return milr.Value == nil || len(*milr.Value) == 0
@@ -8277,6 +8836,11 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 		return nil
 	}
 	return *page.milr.Value
+}
+
+// Creates a new instance of the ManagedInstanceListResultPage type.
+func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return ManagedInstanceListResultPage{fn: getNextPage}
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -8660,6 +9224,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -8727,6 +9296,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PartnerInfo partner server information for the failover group.
@@ -10000,9 +10574,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// REFERENCES
 	//
 	// The general form for defining an action to be audited is:
-	// <action> ON <object> BY <principal>
+	// {action} ON {object} BY {principal}
 	//
-	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::<db_name> and SCHEMA::<schema_name> are used, respectively.
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
 	//
 	// For example:
 	// SELECT on dbo.myTable by public
@@ -10019,9 +10593,10 @@ type ServerBlobAuditingPolicyProperties struct {
 	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
-	// Note that for server level audit you should use the 'master' database as <databaseName>.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
 	// Diagnostic Settings URI format:
-	// PUT https://management.azure.com/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Sql/servers/<serverName>/databases/<databaseName>/providers/microsoft.insights/diagnosticSettings/<settingsName>?api-version=2017-05-01-preview
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
 	//
 	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
 	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
@@ -10528,6 +11103,11 @@ func (iter ServerDNSAliasListResultIterator) Value() ServerDNSAlias {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServerDNSAliasListResultIterator type.
+func NewServerDNSAliasListResultIterator(page ServerDNSAliasListResultPage) ServerDNSAliasListResultIterator {
+	return ServerDNSAliasListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sdalr ServerDNSAliasListResult) IsEmpty() bool {
 	return sdalr.Value == nil || len(*sdalr.Value) == 0
@@ -10595,6 +11175,11 @@ func (page ServerDNSAliasListResultPage) Values() []ServerDNSAlias {
 		return nil
 	}
 	return *page.sdalr.Value
+}
+
+// Creates a new instance of the ServerDNSAliasListResultPage type.
+func NewServerDNSAliasListResultPage(getNextPage func(context.Context, ServerDNSAliasListResult) (ServerDNSAliasListResult, error)) ServerDNSAliasListResultPage {
+	return ServerDNSAliasListResultPage{fn: getNextPage}
 }
 
 // ServerDNSAliasProperties properties of a server DNS alias.
@@ -10780,6 +11365,11 @@ func (iter ServerKeyListResultIterator) Value() ServerKey {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServerKeyListResultIterator type.
+func NewServerKeyListResultIterator(page ServerKeyListResultPage) ServerKeyListResultIterator {
+	return ServerKeyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sklr ServerKeyListResult) IsEmpty() bool {
 	return sklr.Value == nil || len(*sklr.Value) == 0
@@ -10847,6 +11437,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 		return nil
 	}
 	return *page.sklr.Value
+}
+
+// Creates a new instance of the ServerKeyListResultPage type.
+func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{fn: getNextPage}
 }
 
 // ServerKeyProperties properties for a server key execution.
@@ -10982,6 +11577,11 @@ func (iter ServerListResultIterator) Value() Server {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ServerListResultIterator type.
+func NewServerListResultIterator(page ServerListResultPage) ServerListResultIterator {
+	return ServerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (slr ServerListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
@@ -11049,6 +11649,11 @@ func (page ServerListResultPage) Values() []Server {
 		return nil
 	}
 	return *page.slr.Value
+}
+
+// Creates a new instance of the ServerListResultPage type.
+func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
+	return ServerListResultPage{fn: getNextPage}
 }
 
 // ServerProperties the properties of a server.
@@ -11863,6 +12468,11 @@ func (iter SubscriptionUsageListResultIterator) Value() SubscriptionUsage {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SubscriptionUsageListResultIterator type.
+func NewSubscriptionUsageListResultIterator(page SubscriptionUsageListResultPage) SubscriptionUsageListResultIterator {
+	return SubscriptionUsageListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sulr SubscriptionUsageListResult) IsEmpty() bool {
 	return sulr.Value == nil || len(*sulr.Value) == 0
@@ -11930,6 +12540,11 @@ func (page SubscriptionUsageListResultPage) Values() []SubscriptionUsage {
 		return nil
 	}
 	return *page.sulr.Value
+}
+
+// Creates a new instance of the SubscriptionUsageListResultPage type.
+func NewSubscriptionUsageListResultPage(getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
+	return SubscriptionUsageListResultPage{fn: getNextPage}
 }
 
 // SubscriptionUsageProperties properties of a subscription usage.
@@ -12182,6 +12797,11 @@ func (iter SyncAgentLinkedDatabaseListResultIterator) Value() SyncAgentLinkedDat
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncAgentLinkedDatabaseListResultIterator type.
+func NewSyncAgentLinkedDatabaseListResultIterator(page SyncAgentLinkedDatabaseListResultPage) SyncAgentLinkedDatabaseListResultIterator {
+	return SyncAgentLinkedDatabaseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (saldlr SyncAgentLinkedDatabaseListResult) IsEmpty() bool {
 	return saldlr.Value == nil || len(*saldlr.Value) == 0
@@ -12249,6 +12869,11 @@ func (page SyncAgentLinkedDatabaseListResultPage) Values() []SyncAgentLinkedData
 		return nil
 	}
 	return *page.saldlr.Value
+}
+
+// Creates a new instance of the SyncAgentLinkedDatabaseListResultPage type.
+func NewSyncAgentLinkedDatabaseListResultPage(getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
+	return SyncAgentLinkedDatabaseListResultPage{fn: getNextPage}
 }
 
 // SyncAgentLinkedDatabaseProperties properties of an Azure SQL Database sync agent linked database.
@@ -12334,6 +12959,11 @@ func (iter SyncAgentListResultIterator) Value() SyncAgent {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncAgentListResultIterator type.
+func NewSyncAgentListResultIterator(page SyncAgentListResultPage) SyncAgentListResultIterator {
+	return SyncAgentListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (salr SyncAgentListResult) IsEmpty() bool {
 	return salr.Value == nil || len(*salr.Value) == 0
@@ -12401,6 +13031,11 @@ func (page SyncAgentListResultPage) Values() []SyncAgent {
 		return nil
 	}
 	return *page.salr.Value
+}
+
+// Creates a new instance of the SyncAgentListResultPage type.
+func NewSyncAgentListResultPage(getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
+	return SyncAgentListResultPage{fn: getNextPage}
 }
 
 // SyncAgentProperties properties of an Azure SQL Database sync agent.
@@ -12541,6 +13176,11 @@ func (iter SyncDatabaseIDListResultIterator) Value() SyncDatabaseIDProperties {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncDatabaseIDListResultIterator type.
+func NewSyncDatabaseIDListResultIterator(page SyncDatabaseIDListResultPage) SyncDatabaseIDListResultIterator {
+	return SyncDatabaseIDListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sdilr SyncDatabaseIDListResult) IsEmpty() bool {
 	return sdilr.Value == nil || len(*sdilr.Value) == 0
@@ -12608,6 +13248,11 @@ func (page SyncDatabaseIDListResultPage) Values() []SyncDatabaseIDProperties {
 		return nil
 	}
 	return *page.sdilr.Value
+}
+
+// Creates a new instance of the SyncDatabaseIDListResultPage type.
+func NewSyncDatabaseIDListResultPage(getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
+	return SyncDatabaseIDListResultPage{fn: getNextPage}
 }
 
 // SyncDatabaseIDProperties properties of the sync database id.
@@ -12692,6 +13337,11 @@ func (iter SyncFullSchemaPropertiesListResultIterator) Value() SyncFullSchemaPro
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncFullSchemaPropertiesListResultIterator type.
+func NewSyncFullSchemaPropertiesListResultIterator(page SyncFullSchemaPropertiesListResultPage) SyncFullSchemaPropertiesListResultIterator {
+	return SyncFullSchemaPropertiesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sfsplr SyncFullSchemaPropertiesListResult) IsEmpty() bool {
 	return sfsplr.Value == nil || len(*sfsplr.Value) == 0
@@ -12759,6 +13409,11 @@ func (page SyncFullSchemaPropertiesListResultPage) Values() []SyncFullSchemaProp
 		return nil
 	}
 	return *page.sfsplr.Value
+}
+
+// Creates a new instance of the SyncFullSchemaPropertiesListResultPage type.
+func NewSyncFullSchemaPropertiesListResultPage(getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
+	return SyncFullSchemaPropertiesListResultPage{fn: getNextPage}
 }
 
 // SyncFullSchemaTable properties of the table in the database full schema.
@@ -12942,6 +13597,11 @@ func (iter SyncGroupListResultIterator) Value() SyncGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncGroupListResultIterator type.
+func NewSyncGroupListResultIterator(page SyncGroupListResultPage) SyncGroupListResultIterator {
+	return SyncGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (sglr SyncGroupListResult) IsEmpty() bool {
 	return sglr.Value == nil || len(*sglr.Value) == 0
@@ -13011,6 +13671,11 @@ func (page SyncGroupListResultPage) Values() []SyncGroup {
 	return *page.sglr.Value
 }
 
+// Creates a new instance of the SyncGroupListResultPage type.
+func NewSyncGroupListResultPage(getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
+	return SyncGroupListResultPage{fn: getNextPage}
+}
+
 // SyncGroupLogListResult a list of sync group log properties.
 type SyncGroupLogListResult struct {
 	autorest.Response `json:"-"`
@@ -13076,6 +13741,11 @@ func (iter SyncGroupLogListResultIterator) Value() SyncGroupLogProperties {
 		return SyncGroupLogProperties{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SyncGroupLogListResultIterator type.
+func NewSyncGroupLogListResultIterator(page SyncGroupLogListResultPage) SyncGroupLogListResultIterator {
+	return SyncGroupLogListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -13145,6 +13815,11 @@ func (page SyncGroupLogListResultPage) Values() []SyncGroupLogProperties {
 		return nil
 	}
 	return *page.sgllr.Value
+}
+
+// Creates a new instance of the SyncGroupLogListResultPage type.
+func NewSyncGroupLogListResultPage(getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
+	return SyncGroupLogListResultPage{fn: getNextPage}
 }
 
 // SyncGroupLogProperties properties of an Azure SQL Database sync group log.
@@ -13462,6 +14137,11 @@ func (iter SyncMemberListResultIterator) Value() SyncMember {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SyncMemberListResultIterator type.
+func NewSyncMemberListResultIterator(page SyncMemberListResultPage) SyncMemberListResultIterator {
+	return SyncMemberListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (smlr SyncMemberListResult) IsEmpty() bool {
 	return smlr.Value == nil || len(*smlr.Value) == 0
@@ -13529,6 +14209,11 @@ func (page SyncMemberListResultPage) Values() []SyncMember {
 		return nil
 	}
 	return *page.smlr.Value
+}
+
+// Creates a new instance of the SyncMemberListResultPage type.
+func NewSyncMemberListResultPage(getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
+	return SyncMemberListResultPage{fn: getNextPage}
 }
 
 // SyncMemberProperties properties of a sync member.
@@ -14055,6 +14740,11 @@ func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualNetworkRuleListResultIterator type.
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return VirtualNetworkRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
@@ -14122,6 +14812,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 		return nil
 	}
 	return *page.vnrlr.Value
+}
+
+// Creates a new instance of the VirtualNetworkRuleListResultPage type.
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{fn: getNextPage}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.

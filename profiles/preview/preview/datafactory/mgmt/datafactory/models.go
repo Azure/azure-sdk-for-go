@@ -19,7 +19,11 @@
 
 package datafactory
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
+)
 
 type ActivityRunsClient = original.ActivityRunsClient
 
@@ -1589,6 +1593,54 @@ func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()
+}
+func NewActivityRunsListResponseIterator(page ActivityRunsListResponsePage) ActivityRunsListResponseIterator {
+	return original.NewActivityRunsListResponseIterator(page)
+}
+func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return original.NewActivityRunsListResponsePage(getNextPage)
+}
+func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
+	return original.NewDatasetListResponseIterator(page)
+}
+func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return original.NewDatasetListResponsePage(getNextPage)
+}
+func NewFactoryListResponseIterator(page FactoryListResponsePage) FactoryListResponseIterator {
+	return original.NewFactoryListResponseIterator(page)
+}
+func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return original.NewFactoryListResponsePage(getNextPage)
+}
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return original.NewIntegrationRuntimeListResponseIterator(page)
+}
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+}
+func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
+	return original.NewLinkedServiceListResponseIterator(page)
+}
+func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return original.NewLinkedServiceListResponsePage(getNextPage)
+}
+func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
+	return original.NewPipelineListResponseIterator(page)
+}
+func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return original.NewPipelineListResponsePage(getNextPage)
+}
+func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
+	return original.NewTriggerListResponseIterator(page)
+}
+func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return original.NewTriggerListResponsePage(getNextPage)
+}
+func NewTriggerRunListResponseIterator(page TriggerRunListResponsePage) TriggerRunListResponseIterator {
+	return original.NewTriggerRunListResponseIterator(page)
+}
+func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
+	return original.NewTriggerRunListResponsePage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

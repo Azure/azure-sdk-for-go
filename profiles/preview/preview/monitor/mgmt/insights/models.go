@@ -19,7 +19,11 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights"
+)
 
 type ActionGroupsClient = original.ActionGroupsClient
 type ActivityLogAlertsClient = original.ActivityLogAlertsClient
@@ -607,6 +611,18 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 }
 func PossibleUnitValues() []Unit {
 	return original.PossibleUnitValues()
+}
+func NewAutoscaleSettingResourceCollectionIterator(page AutoscaleSettingResourceCollectionPage) AutoscaleSettingResourceCollectionIterator {
+	return original.NewAutoscaleSettingResourceCollectionIterator(page)
+}
+func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return original.NewAutoscaleSettingResourceCollectionPage(getNextPage)
+}
+func NewEventDataCollectionIterator(page EventDataCollectionPage) EventDataCollectionIterator {
+	return original.NewEventDataCollectionIterator(page)
+}
+func NewEventDataCollectionPage(getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
+	return original.NewEventDataCollectionPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

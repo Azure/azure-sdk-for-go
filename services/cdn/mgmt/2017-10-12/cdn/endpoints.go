@@ -565,7 +565,7 @@ func (client EndpointsClient) ListResourceUsageComplete(ctx context.Context, res
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
 // contentFilePaths - the path to the content to be loaded. Path should be a full URL, e.g.
-// ‘/pictires/city.png' which loads a single file
+// ‘/pictures/city.png' which loads a single file
 func (client EndpointsClient) LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters) (result EndpointsLoadContentFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.LoadContent")

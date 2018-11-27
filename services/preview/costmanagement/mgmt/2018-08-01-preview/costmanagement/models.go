@@ -419,6 +419,11 @@ func (iter AlertListResultIterator) Value() Alert {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AlertListResultIterator type.
+func NewAlertListResultIterator(page AlertListResultPage) AlertListResultIterator {
+	return AlertListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (alr AlertListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
@@ -486,6 +491,11 @@ func (page AlertListResultPage) Values() []Alert {
 		return nil
 	}
 	return *page.alr.Value
+}
+
+// Creates a new instance of the AlertListResultPage type.
+func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
+	return AlertListResultPage{fn: getNextPage}
 }
 
 // AlertProperties the properties of an Alert.
@@ -955,6 +965,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1022,6 +1037,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // Query ...

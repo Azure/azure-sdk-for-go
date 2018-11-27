@@ -19,7 +19,11 @@
 
 package frontdoor
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+)
 
 type BackendPoolsClient = original.BackendPoolsClient
 
@@ -451,6 +455,48 @@ func PossibleTransformValues() []Transform {
 }
 func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
 	return original.PossibleWebApplicationFirewallPolicyValues()
+}
+func NewBackendPoolListResultIterator(page BackendPoolListResultPage) BackendPoolListResultIterator {
+	return original.NewBackendPoolListResultIterator(page)
+}
+func NewBackendPoolListResultPage(getNextPage func(context.Context, BackendPoolListResult) (BackendPoolListResult, error)) BackendPoolListResultPage {
+	return original.NewBackendPoolListResultPage(getNextPage)
+}
+func NewFrontendEndpointsListResultIterator(page FrontendEndpointsListResultPage) FrontendEndpointsListResultIterator {
+	return original.NewFrontendEndpointsListResultIterator(page)
+}
+func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return original.NewFrontendEndpointsListResultPage(getNextPage)
+}
+func NewHealthProbeSettingsListResultIterator(page HealthProbeSettingsListResultPage) HealthProbeSettingsListResultIterator {
+	return original.NewHealthProbeSettingsListResultIterator(page)
+}
+func NewHealthProbeSettingsListResultPage(getNextPage func(context.Context, HealthProbeSettingsListResult) (HealthProbeSettingsListResult, error)) HealthProbeSettingsListResultPage {
+	return original.NewHealthProbeSettingsListResultPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewLoadBalancingSettingsListResultIterator(page LoadBalancingSettingsListResultPage) LoadBalancingSettingsListResultIterator {
+	return original.NewLoadBalancingSettingsListResultIterator(page)
+}
+func NewLoadBalancingSettingsListResultPage(getNextPage func(context.Context, LoadBalancingSettingsListResult) (LoadBalancingSettingsListResult, error)) LoadBalancingSettingsListResultPage {
+	return original.NewLoadBalancingSettingsListResultPage(getNextPage)
+}
+func NewRoutingRuleListResultIterator(page RoutingRuleListResultPage) RoutingRuleListResultIterator {
+	return original.NewRoutingRuleListResultIterator(page)
+}
+func NewRoutingRuleListResultPage(getNextPage func(context.Context, RoutingRuleListResult) (RoutingRuleListResult, error)) RoutingRuleListResultPage {
+	return original.NewRoutingRuleListResultPage(getNextPage)
+}
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return original.NewWebApplicationFirewallPolicyListResultIterator(page)
+}
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return original.NewWebApplicationFirewallPolicyListResultPage(getNextPage)
 }
 func NewPoliciesClient(subscriptionID string) PoliciesClient {
 	return original.NewPoliciesClient(subscriptionID)

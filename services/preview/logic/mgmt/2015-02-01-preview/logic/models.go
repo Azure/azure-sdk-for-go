@@ -571,6 +571,11 @@ func (iter WorkflowAccessKeyListResultIterator) Value() WorkflowAccessKey {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowAccessKeyListResultIterator type.
+func NewWorkflowAccessKeyListResultIterator(page WorkflowAccessKeyListResultPage) WorkflowAccessKeyListResultIterator {
+	return WorkflowAccessKeyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (waklr WorkflowAccessKeyListResult) IsEmpty() bool {
 	return waklr.Value == nil || len(*waklr.Value) == 0
@@ -638,6 +643,11 @@ func (page WorkflowAccessKeyListResultPage) Values() []WorkflowAccessKey {
 		return nil
 	}
 	return *page.waklr.Value
+}
+
+// Creates a new instance of the WorkflowAccessKeyListResultPage type.
+func NewWorkflowAccessKeyListResultPage(getNextPage func(context.Context, WorkflowAccessKeyListResult) (WorkflowAccessKeyListResult, error)) WorkflowAccessKeyListResultPage {
+	return WorkflowAccessKeyListResultPage{fn: getNextPage}
 }
 
 // WorkflowAccessKeyProperties ...
@@ -721,6 +731,11 @@ func (iter WorkflowListResultIterator) Value() Workflow {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowListResultIterator type.
+func NewWorkflowListResultIterator(page WorkflowListResultPage) WorkflowListResultIterator {
+	return WorkflowListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkflowListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -788,6 +803,11 @@ func (page WorkflowListResultPage) Values() []Workflow {
 		return nil
 	}
 	return *page.wlr.Value
+}
+
+// Creates a new instance of the WorkflowListResultPage type.
+func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return WorkflowListResultPage{fn: getNextPage}
 }
 
 // WorkflowOutputParameter ...
@@ -1114,6 +1134,11 @@ func (iter WorkflowRunActionListResultIterator) Value() WorkflowRunAction {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowRunActionListResultIterator type.
+func NewWorkflowRunActionListResultIterator(page WorkflowRunActionListResultPage) WorkflowRunActionListResultIterator {
+	return WorkflowRunActionListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wralr WorkflowRunActionListResult) IsEmpty() bool {
 	return wralr.Value == nil || len(*wralr.Value) == 0
@@ -1181,6 +1206,11 @@ func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 		return nil
 	}
 	return *page.wralr.Value
+}
+
+// Creates a new instance of the WorkflowRunActionListResultPage type.
+func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return WorkflowRunActionListResultPage{fn: getNextPage}
 }
 
 // WorkflowRunActionProperties ...
@@ -1276,6 +1306,11 @@ func (iter WorkflowRunListResultIterator) Value() WorkflowRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowRunListResultIterator type.
+func NewWorkflowRunListResultIterator(page WorkflowRunListResultPage) WorkflowRunListResultIterator {
+	return WorkflowRunListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wrlr WorkflowRunListResult) IsEmpty() bool {
 	return wrlr.Value == nil || len(*wrlr.Value) == 0
@@ -1343,6 +1378,11 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 		return nil
 	}
 	return *page.wrlr.Value
+}
+
+// Creates a new instance of the WorkflowRunListResultPage type.
+func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return WorkflowRunListResultPage{fn: getNextPage}
 }
 
 // WorkflowRunProperties ...
@@ -1707,6 +1747,11 @@ func (iter WorkflowTriggerHistoryListResultIterator) Value() WorkflowTriggerHist
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowTriggerHistoryListResultIterator type.
+func NewWorkflowTriggerHistoryListResultIterator(page WorkflowTriggerHistoryListResultPage) WorkflowTriggerHistoryListResultIterator {
+	return WorkflowTriggerHistoryListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wthlr WorkflowTriggerHistoryListResult) IsEmpty() bool {
 	return wthlr.Value == nil || len(*wthlr.Value) == 0
@@ -1774,6 +1819,11 @@ func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHisto
 		return nil
 	}
 	return *page.wthlr.Value
+}
+
+// Creates a new instance of the WorkflowTriggerHistoryListResultPage type.
+func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return WorkflowTriggerHistoryListResultPage{fn: getNextPage}
 }
 
 // WorkflowTriggerHistoryProperties ...
@@ -1867,6 +1917,11 @@ func (iter WorkflowTriggerListResultIterator) Value() WorkflowTrigger {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the WorkflowTriggerListResultIterator type.
+func NewWorkflowTriggerListResultIterator(page WorkflowTriggerListResultPage) WorkflowTriggerListResultIterator {
+	return WorkflowTriggerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WorkflowTriggerListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -1934,6 +1989,11 @@ func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 		return nil
 	}
 	return *page.wtlr.Value
+}
+
+// Creates a new instance of the WorkflowTriggerListResultPage type.
+func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return WorkflowTriggerListResultPage{fn: getNextPage}
 }
 
 // WorkflowTriggerProperties ...

@@ -19,7 +19,11 @@
 
 package subscription
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -98,6 +102,18 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
+	return original.NewTenantListResultIterator(page)
+}
+func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return original.NewTenantListResultPage(getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

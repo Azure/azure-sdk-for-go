@@ -19,7 +19,11 @@
 
 package authorization
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization"
+)
 
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
@@ -106,6 +110,42 @@ func NewDenyAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func PossiblePrincipalTypeValues() []PrincipalType {
 	return original.PossiblePrincipalTypeValues()
+}
+func NewClassicAdministratorListResultIterator(page ClassicAdministratorListResultPage) ClassicAdministratorListResultIterator {
+	return original.NewClassicAdministratorListResultIterator(page)
+}
+func NewClassicAdministratorListResultPage(getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
+	return original.NewClassicAdministratorListResultPage(getNextPage)
+}
+func NewDenyAssignmentListResultIterator(page DenyAssignmentListResultPage) DenyAssignmentListResultIterator {
+	return original.NewDenyAssignmentListResultIterator(page)
+}
+func NewDenyAssignmentListResultPage(getNextPage func(context.Context, DenyAssignmentListResult) (DenyAssignmentListResult, error)) DenyAssignmentListResultPage {
+	return original.NewDenyAssignmentListResultPage(getNextPage)
+}
+func NewPermissionGetResultIterator(page PermissionGetResultPage) PermissionGetResultIterator {
+	return original.NewPermissionGetResultIterator(page)
+}
+func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
+	return original.NewPermissionGetResultPage(getNextPage)
+}
+func NewProviderOperationsMetadataListResultIterator(page ProviderOperationsMetadataListResultPage) ProviderOperationsMetadataListResultIterator {
+	return original.NewProviderOperationsMetadataListResultIterator(page)
+}
+func NewProviderOperationsMetadataListResultPage(getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
+	return original.NewProviderOperationsMetadataListResultPage(getNextPage)
+}
+func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
+	return original.NewRoleAssignmentListResultIterator(page)
+}
+func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return original.NewRoleAssignmentListResultPage(getNextPage)
+}
+func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) RoleDefinitionListResultIterator {
+	return original.NewRoleDefinitionListResultIterator(page)
+}
+func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
+	return original.NewRoleDefinitionListResultPage(getNextPage)
 }
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClient(subscriptionID)

@@ -19,7 +19,11 @@
 
 package aad
 
-import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -89,7 +93,6 @@ type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult
 type DomainServiceListResultIterator = original.DomainServiceListResultIterator
 type DomainServiceListResultPage = original.DomainServiceListResultPage
-type DomainServicePatchProperties = original.DomainServicePatchProperties
 type DomainServiceProperties = original.DomainServiceProperties
 type DomainServicesCreateOrUpdateFuture = original.DomainServicesCreateOrUpdateFuture
 type DomainServicesDeleteFuture = original.DomainServicesDeleteFuture
@@ -146,6 +149,18 @@ func PossibleSyncNtlmPasswordsValues() []SyncNtlmPasswords {
 }
 func PossibleTLSV1Values() []TLSV1 {
 	return original.PossibleTLSV1Values()
+}
+func NewDomainServiceListResultIterator(page DomainServiceListResultPage) DomainServiceListResultIterator {
+	return original.NewDomainServiceListResultIterator(page)
+}
+func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return original.NewDomainServiceListResultPage(getNextPage)
+}
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return original.NewOperationEntityListResultIterator(page)
+}
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -19,7 +19,11 @@
 
 package media
 
-import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media"
+)
 
 type AccountFiltersClient = original.AccountFiltersClient
 type AssetFiltersClient = original.AssetFiltersClient
@@ -922,6 +926,90 @@ func PossibleTrackPropertyCompareOperationValues() []TrackPropertyCompareOperati
 }
 func PossibleTrackPropertyTypeValues() []TrackPropertyType {
 	return original.PossibleTrackPropertyTypeValues()
+}
+func NewAccountFilterCollectionIterator(page AccountFilterCollectionPage) AccountFilterCollectionIterator {
+	return original.NewAccountFilterCollectionIterator(page)
+}
+func NewAccountFilterCollectionPage(getNextPage func(context.Context, AccountFilterCollection) (AccountFilterCollection, error)) AccountFilterCollectionPage {
+	return original.NewAccountFilterCollectionPage(getNextPage)
+}
+func NewAssetCollectionIterator(page AssetCollectionPage) AssetCollectionIterator {
+	return original.NewAssetCollectionIterator(page)
+}
+func NewAssetCollectionPage(getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
+	return original.NewAssetCollectionPage(getNextPage)
+}
+func NewAssetFilterCollectionIterator(page AssetFilterCollectionPage) AssetFilterCollectionIterator {
+	return original.NewAssetFilterCollectionIterator(page)
+}
+func NewAssetFilterCollectionPage(getNextPage func(context.Context, AssetFilterCollection) (AssetFilterCollection, error)) AssetFilterCollectionPage {
+	return original.NewAssetFilterCollectionPage(getNextPage)
+}
+func NewContentKeyPolicyCollectionIterator(page ContentKeyPolicyCollectionPage) ContentKeyPolicyCollectionIterator {
+	return original.NewContentKeyPolicyCollectionIterator(page)
+}
+func NewContentKeyPolicyCollectionPage(getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
+	return original.NewContentKeyPolicyCollectionPage(getNextPage)
+}
+func NewJobCollectionIterator(page JobCollectionPage) JobCollectionIterator {
+	return original.NewJobCollectionIterator(page)
+}
+func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return original.NewJobCollectionPage(getNextPage)
+}
+func NewLiveEventListResultIterator(page LiveEventListResultPage) LiveEventListResultIterator {
+	return original.NewLiveEventListResultIterator(page)
+}
+func NewLiveEventListResultPage(getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
+	return original.NewLiveEventListResultPage(getNextPage)
+}
+func NewLiveOutputListResultIterator(page LiveOutputListResultPage) LiveOutputListResultIterator {
+	return original.NewLiveOutputListResultIterator(page)
+}
+func NewLiveOutputListResultPage(getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
+	return original.NewLiveOutputListResultPage(getNextPage)
+}
+func NewOperationCollectionIterator(page OperationCollectionPage) OperationCollectionIterator {
+	return original.NewOperationCollectionIterator(page)
+}
+func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return original.NewOperationCollectionPage(getNextPage)
+}
+func NewServiceCollectionIterator(page ServiceCollectionPage) ServiceCollectionIterator {
+	return original.NewServiceCollectionIterator(page)
+}
+func NewServiceCollectionPage(getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
+	return original.NewServiceCollectionPage(getNextPage)
+}
+func NewStreamingEndpointListResultIterator(page StreamingEndpointListResultPage) StreamingEndpointListResultIterator {
+	return original.NewStreamingEndpointListResultIterator(page)
+}
+func NewStreamingEndpointListResultPage(getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
+	return original.NewStreamingEndpointListResultPage(getNextPage)
+}
+func NewStreamingLocatorCollectionIterator(page StreamingLocatorCollectionPage) StreamingLocatorCollectionIterator {
+	return original.NewStreamingLocatorCollectionIterator(page)
+}
+func NewStreamingLocatorCollectionPage(getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
+	return original.NewStreamingLocatorCollectionPage(getNextPage)
+}
+func NewStreamingPolicyCollectionIterator(page StreamingPolicyCollectionPage) StreamingPolicyCollectionIterator {
+	return original.NewStreamingPolicyCollectionIterator(page)
+}
+func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
+	return original.NewStreamingPolicyCollectionPage(getNextPage)
+}
+func NewSubscriptionMediaServiceCollectionIterator(page SubscriptionMediaServiceCollectionPage) SubscriptionMediaServiceCollectionIterator {
+	return original.NewSubscriptionMediaServiceCollectionIterator(page)
+}
+func NewSubscriptionMediaServiceCollectionPage(getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
+	return original.NewSubscriptionMediaServiceCollectionPage(getNextPage)
+}
+func NewTransformCollectionIterator(page TransformCollectionPage) TransformCollectionIterator {
+	return original.NewTransformCollectionIterator(page)
+}
+func NewTransformCollectionPage(getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
+	return original.NewTransformCollectionPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

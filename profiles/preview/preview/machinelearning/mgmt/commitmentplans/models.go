@@ -19,7 +19,11 @@
 
 package commitmentplans
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -104,6 +108,24 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 }
 func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
 	return original.PossibleSkuCapacityScaleTypeValues()
+}
+func NewCommitmentAssociationListResultIterator(page CommitmentAssociationListResultPage) CommitmentAssociationListResultIterator {
+	return original.NewCommitmentAssociationListResultIterator(page)
+}
+func NewCommitmentAssociationListResultPage(getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
+	return original.NewCommitmentAssociationListResultPage(getNextPage)
+}
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return original.NewListResultIterator(page)
+}
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(getNextPage)
+}
+func NewPlanUsageHistoryListResultIterator(page PlanUsageHistoryListResultPage) PlanUsageHistoryListResultIterator {
+	return original.NewPlanUsageHistoryListResultIterator(page)
+}
+func NewPlanUsageHistoryListResultPage(getNextPage func(context.Context, PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)) PlanUsageHistoryListResultPage {
+	return original.NewPlanUsageHistoryListResultPage(getNextPage)
 }
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)

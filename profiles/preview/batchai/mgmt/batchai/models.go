@@ -19,7 +19,11 @@
 
 package batchai
 
-import original "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-05-01/batchai"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-05-01/batchai"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -312,6 +316,60 @@ func PossibleUsageUnitValues() []UsageUnit {
 }
 func PossibleVMPriorityValues() []VMPriority {
 	return original.PossibleVMPriorityValues()
+}
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(getNextPage)
+}
+func NewExperimentListResultIterator(page ExperimentListResultPage) ExperimentListResultIterator {
+	return original.NewExperimentListResultIterator(page)
+}
+func NewExperimentListResultPage(getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
+	return original.NewExperimentListResultPage(getNextPage)
+}
+func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
+	return original.NewFileListResultIterator(page)
+}
+func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return original.NewFileListResultPage(getNextPage)
+}
+func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
+	return original.NewFileServerListResultIterator(page)
+}
+func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return original.NewFileServerListResultPage(getNextPage)
+}
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return original.NewJobListResultIterator(page)
+}
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(getNextPage)
+}
+func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
+	return original.NewListUsagesResultIterator(page)
+}
+func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return original.NewListUsagesResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
+	return original.NewRemoteLoginInformationListResultIterator(page)
+}
+func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return original.NewRemoteLoginInformationListResultPage(getNextPage)
+}
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return original.NewWorkspaceListResultIterator(page)
+}
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return original.NewWorkspaceListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

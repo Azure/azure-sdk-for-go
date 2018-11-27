@@ -1169,7 +1169,7 @@ type EventsExceptionInfo struct {
 	OuterType *string `json:"outerType,omitempty"`
 	// OuterMethod - The outer method of the exception
 	OuterMethod *string `json:"outerMethod,omitempty"`
-	// OuterAssembly - The outer assmebly of the exception
+	// OuterAssembly - The outer assembly of the exception
 	OuterAssembly *string `json:"outerAssembly,omitempty"`
 	// OuterMessage - The outer message of the exception
 	OuterMessage *string `json:"outerMessage,omitempty"`

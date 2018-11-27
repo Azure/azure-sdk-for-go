@@ -36,12 +36,7 @@ type ImagesClient struct {
 
 // NewImagesClient creates an instance of the ImagesClient client.
 func NewImagesClient() ImagesClient {
-	return NewImagesClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
-func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
-	return ImagesClient{NewWithBaseURI(baseURI)}
+	return ImagesClient{New()}
 }
 
 // VisualSearch sends the visual search request.
@@ -197,6 +192,10 @@ func (client ImagesClient) VisualSearch(ctx context.Context, acceptLanguage stri
 
 // VisualSearchPreparer prepares the VisualSearch request.
 func (client ImagesClient) VisualSearchPreparer(ctx context.Context, acceptLanguage string, contentType string, userAgent string, clientID string, clientIP string, location string, market string, safeSearch SafeSearch, setLang string, knowledgeRequest string, imageParameter io.ReadCloser) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{}
 	if len(market) > 0 {
 		queryParameters["mkt"] = autorest.Encode("query", market)
@@ -218,7 +217,7 @@ func (client ImagesClient) VisualSearchPreparer(ctx context.Context, acceptLangu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/images/visualsearch"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithMultiPartFormData(formDataParameters),

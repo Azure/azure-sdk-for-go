@@ -230,6 +230,11 @@ func (iter ListResultIterator) Value() Model {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -297,6 +302,11 @@ func (page ListResultPage) Values() []Model {
 		return nil
 	}
 	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{fn: getNextPage}
 }
 
 // Location location information.
@@ -469,6 +479,11 @@ func (iter TenantListResultIterator) Value() TenantIDDescription {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TenantListResultIterator type.
+func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
+	return TenantListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tlr TenantListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
@@ -536,4 +551,9 @@ func (page TenantListResultPage) Values() []TenantIDDescription {
 		return nil
 	}
 	return *page.tlr.Value
+}
+
+// Creates a new instance of the TenantListResultPage type.
+func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return TenantListResultPage{fn: getNextPage}
 }

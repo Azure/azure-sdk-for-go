@@ -307,6 +307,11 @@ func (iter DataLakeStoreAccountListResultIterator) Value() DataLakeStoreAccount 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DataLakeStoreAccountListResultIterator type.
+func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
+	return DataLakeStoreAccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlsalr DataLakeStoreAccountListResult) IsEmpty() bool {
 	return dlsalr.Value == nil || len(*dlsalr.Value) == 0
@@ -374,6 +379,11 @@ func (page DataLakeStoreAccountListResultPage) Values() []DataLakeStoreAccount {
 		return nil
 	}
 	return *page.dlsalr.Value
+}
+
+// Creates a new instance of the DataLakeStoreAccountListResultPage type.
+func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return DataLakeStoreAccountListResultPage{fn: getNextPage}
 }
 
 // DataLakeStoreAccountProperties data Lake Store account properties information
@@ -468,6 +478,11 @@ func (iter DataLakeStoreFirewallRuleListResultIterator) Value() FirewallRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DataLakeStoreFirewallRuleListResultIterator type.
+func NewDataLakeStoreFirewallRuleListResultIterator(page DataLakeStoreFirewallRuleListResultPage) DataLakeStoreFirewallRuleListResultIterator {
+	return DataLakeStoreFirewallRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlsfrlr DataLakeStoreFirewallRuleListResult) IsEmpty() bool {
 	return dlsfrlr.Value == nil || len(*dlsfrlr.Value) == 0
@@ -535,6 +550,11 @@ func (page DataLakeStoreFirewallRuleListResultPage) Values() []FirewallRule {
 		return nil
 	}
 	return *page.dlsfrlr.Value
+}
+
+// Creates a new instance of the DataLakeStoreFirewallRuleListResultPage type.
+func NewDataLakeStoreFirewallRuleListResultPage(getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
+	return DataLakeStoreFirewallRuleListResultPage{fn: getNextPage}
 }
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.

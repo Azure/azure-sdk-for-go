@@ -360,6 +360,11 @@ func (iter ArtifactListIterator) Value() BasicArtifact {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ArtifactListIterator type.
+func NewArtifactListIterator(page ArtifactListPage) ArtifactListIterator {
+	return ArtifactListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (al ArtifactList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
@@ -427,6 +432,11 @@ func (page ArtifactListPage) Values() []BasicArtifact {
 		return nil
 	}
 	return *page.al.Value
+}
+
+// Creates a new instance of the ArtifactListPage type.
+func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return ArtifactListPage{fn: getNextPage}
 }
 
 // ArtifactModel ...
@@ -629,6 +639,11 @@ func (iter AssignmentListIterator) Value() Assignment {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the AssignmentListIterator type.
+func NewAssignmentListIterator(page AssignmentListPage) AssignmentListIterator {
+	return AssignmentListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (al AssignmentList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
@@ -696,6 +711,11 @@ func (page AssignmentListPage) Values() []Assignment {
 		return nil
 	}
 	return *page.al.Value
+}
+
+// Creates a new instance of the AssignmentListPage type.
+func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
+	return AssignmentListPage{fn: getNextPage}
 }
 
 // AssignmentLockSettings defines how Blueprint-managed resources will be locked.
@@ -845,6 +865,11 @@ func (iter ListIterator) Value() Model {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ListIterator type.
+func NewListIterator(page ListPage) ListIterator {
+	return ListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (l List) IsEmpty() bool {
 	return l.Value == nil || len(*l.Value) == 0
@@ -912,6 +937,11 @@ func (page ListPage) Values() []Model {
 		return nil
 	}
 	return *page.l.Value
+}
+
+// Creates a new instance of the ListPage type.
+func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{fn: getNextPage}
 }
 
 // ManagedServiceIdentity managed Service Identity
@@ -1471,6 +1501,11 @@ func (iter PublishedBlueprintListIterator) Value() PublishedBlueprint {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the PublishedBlueprintListIterator type.
+func NewPublishedBlueprintListIterator(page PublishedBlueprintListPage) PublishedBlueprintListIterator {
+	return PublishedBlueprintListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (pbl PublishedBlueprintList) IsEmpty() bool {
 	return pbl.Value == nil || len(*pbl.Value) == 0
@@ -1538,6 +1573,11 @@ func (page PublishedBlueprintListPage) Values() []PublishedBlueprint {
 		return nil
 	}
 	return *page.pbl.Value
+}
+
+// Creates a new instance of the PublishedBlueprintListPage type.
+func NewPublishedBlueprintListPage(getNextPage func(context.Context, PublishedBlueprintList) (PublishedBlueprintList, error)) PublishedBlueprintListPage {
+	return PublishedBlueprintListPage{fn: getNextPage}
 }
 
 // PublishedBlueprintProperties schema for published Blueprint properties.

@@ -33,12 +33,7 @@ type WebClient struct {
 
 // NewWebClient creates an instance of the WebClient client.
 func NewWebClient() WebClient {
-	return NewWebClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewWebClientWithBaseURI creates an instance of the WebClient client.
-func NewWebClientWithBaseURI(baseURI string) WebClient {
-	return WebClient{NewWithBaseURI(baseURI)}
+	return WebClient{New()}
 }
 
 // Search sends the search request.
@@ -224,6 +219,10 @@ func (client WebClient) Search(ctx context.Context, query string, acceptLanguage
 
 // SearchPreparer prepares the Search request.
 func (client WebClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, answerCount *int32, countryCode string, count *int32, freshness Freshness, market string, offset *int32, promote []AnswerType, responseFilter []AnswerType, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -268,7 +267,7 @@ func (client WebClient) SearchPreparer(ctx context.Context, query string, accept
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/search"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

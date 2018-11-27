@@ -19,7 +19,11 @@
 
 package azurestack
 
-import original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -122,6 +126,30 @@ func PossibleOperatingSystemValues() []OperatingSystem {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func NewCustomerSubscriptionListIterator(page CustomerSubscriptionListPage) CustomerSubscriptionListIterator {
+	return original.NewCustomerSubscriptionListIterator(page)
+}
+func NewCustomerSubscriptionListPage(getNextPage func(context.Context, CustomerSubscriptionList) (CustomerSubscriptionList, error)) CustomerSubscriptionListPage {
+	return original.NewCustomerSubscriptionListPage(getNextPage)
+}
+func NewOperationListIterator(page OperationListPage) OperationListIterator {
+	return original.NewOperationListIterator(page)
+}
+func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(getNextPage)
+}
+func NewProductListIterator(page ProductListPage) ProductListIterator {
+	return original.NewProductListIterator(page)
+}
+func NewProductListPage(getNextPage func(context.Context, ProductList) (ProductList, error)) ProductListPage {
+	return original.NewProductListPage(getNextPage)
+}
+func NewRegistrationListIterator(page RegistrationListPage) RegistrationListIterator {
+	return original.NewRegistrationListIterator(page)
+}
+func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList) (RegistrationList, error)) RegistrationListPage {
+	return original.NewRegistrationListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

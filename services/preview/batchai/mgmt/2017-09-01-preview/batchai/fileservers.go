@@ -328,8 +328,8 @@ func (client FileServersClient) GetResponder(resp *http.Response) (result FileSe
 // List to list all the file servers available under the given subscription (and across all resource groups within that
 // subscription)
 // Parameters:
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client FileServersClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result FileServerListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -464,8 +464,8 @@ func (client FileServersClient) ListComplete(ctx context.Context, filter string,
 // resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// filter - an OData $filter clause. Used to filter results that are returned in the GET response.
+// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET response.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client FileServersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result FileServerListResultPage, err error) {
 	if tracing.IsEnabled() {

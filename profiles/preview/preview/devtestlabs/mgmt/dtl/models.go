@@ -19,7 +19,11 @@
 
 package dtl
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
+)
 
 type ArtifactClient = original.ArtifactClient
 type ArtifactSourceClient = original.ArtifactSourceClient
@@ -350,6 +354,84 @@ func PossibleUsagePermissionTypeValues() []UsagePermissionType {
 }
 func PossibleWindowsOsStateValues() []WindowsOsState {
 	return original.PossibleWindowsOsStateValues()
+}
+func NewResponseWithContinuationArtifactIterator(page ResponseWithContinuationArtifactPage) ResponseWithContinuationArtifactIterator {
+	return original.NewResponseWithContinuationArtifactIterator(page)
+}
+func NewResponseWithContinuationArtifactPage(getNextPage func(context.Context, ResponseWithContinuationArtifact) (ResponseWithContinuationArtifact, error)) ResponseWithContinuationArtifactPage {
+	return original.NewResponseWithContinuationArtifactPage(getNextPage)
+}
+func NewResponseWithContinuationArtifactSourceIterator(page ResponseWithContinuationArtifactSourcePage) ResponseWithContinuationArtifactSourceIterator {
+	return original.NewResponseWithContinuationArtifactSourceIterator(page)
+}
+func NewResponseWithContinuationArtifactSourcePage(getNextPage func(context.Context, ResponseWithContinuationArtifactSource) (ResponseWithContinuationArtifactSource, error)) ResponseWithContinuationArtifactSourcePage {
+	return original.NewResponseWithContinuationArtifactSourcePage(getNextPage)
+}
+func NewResponseWithContinuationCostInsightIterator(page ResponseWithContinuationCostInsightPage) ResponseWithContinuationCostInsightIterator {
+	return original.NewResponseWithContinuationCostInsightIterator(page)
+}
+func NewResponseWithContinuationCostInsightPage(getNextPage func(context.Context, ResponseWithContinuationCostInsight) (ResponseWithContinuationCostInsight, error)) ResponseWithContinuationCostInsightPage {
+	return original.NewResponseWithContinuationCostInsightPage(getNextPage)
+}
+func NewResponseWithContinuationCostIterator(page ResponseWithContinuationCostPage) ResponseWithContinuationCostIterator {
+	return original.NewResponseWithContinuationCostIterator(page)
+}
+func NewResponseWithContinuationCostPage(getNextPage func(context.Context, ResponseWithContinuationCost) (ResponseWithContinuationCost, error)) ResponseWithContinuationCostPage {
+	return original.NewResponseWithContinuationCostPage(getNextPage)
+}
+func NewResponseWithContinuationCustomImageIterator(page ResponseWithContinuationCustomImagePage) ResponseWithContinuationCustomImageIterator {
+	return original.NewResponseWithContinuationCustomImageIterator(page)
+}
+func NewResponseWithContinuationCustomImagePage(getNextPage func(context.Context, ResponseWithContinuationCustomImage) (ResponseWithContinuationCustomImage, error)) ResponseWithContinuationCustomImagePage {
+	return original.NewResponseWithContinuationCustomImagePage(getNextPage)
+}
+func NewResponseWithContinuationFormulaIterator(page ResponseWithContinuationFormulaPage) ResponseWithContinuationFormulaIterator {
+	return original.NewResponseWithContinuationFormulaIterator(page)
+}
+func NewResponseWithContinuationFormulaPage(getNextPage func(context.Context, ResponseWithContinuationFormula) (ResponseWithContinuationFormula, error)) ResponseWithContinuationFormulaPage {
+	return original.NewResponseWithContinuationFormulaPage(getNextPage)
+}
+func NewResponseWithContinuationGalleryImageIterator(page ResponseWithContinuationGalleryImagePage) ResponseWithContinuationGalleryImageIterator {
+	return original.NewResponseWithContinuationGalleryImageIterator(page)
+}
+func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return original.NewResponseWithContinuationGalleryImagePage(getNextPage)
+}
+func NewResponseWithContinuationLabIterator(page ResponseWithContinuationLabPage) ResponseWithContinuationLabIterator {
+	return original.NewResponseWithContinuationLabIterator(page)
+}
+func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return original.NewResponseWithContinuationLabPage(getNextPage)
+}
+func NewResponseWithContinuationLabVhdIterator(page ResponseWithContinuationLabVhdPage) ResponseWithContinuationLabVhdIterator {
+	return original.NewResponseWithContinuationLabVhdIterator(page)
+}
+func NewResponseWithContinuationLabVhdPage(getNextPage func(context.Context, ResponseWithContinuationLabVhd) (ResponseWithContinuationLabVhd, error)) ResponseWithContinuationLabVhdPage {
+	return original.NewResponseWithContinuationLabVhdPage(getNextPage)
+}
+func NewResponseWithContinuationLabVirtualMachineIterator(page ResponseWithContinuationLabVirtualMachinePage) ResponseWithContinuationLabVirtualMachineIterator {
+	return original.NewResponseWithContinuationLabVirtualMachineIterator(page)
+}
+func NewResponseWithContinuationLabVirtualMachinePage(getNextPage func(context.Context, ResponseWithContinuationLabVirtualMachine) (ResponseWithContinuationLabVirtualMachine, error)) ResponseWithContinuationLabVirtualMachinePage {
+	return original.NewResponseWithContinuationLabVirtualMachinePage(getNextPage)
+}
+func NewResponseWithContinuationPolicyIterator(page ResponseWithContinuationPolicyPage) ResponseWithContinuationPolicyIterator {
+	return original.NewResponseWithContinuationPolicyIterator(page)
+}
+func NewResponseWithContinuationPolicyPage(getNextPage func(context.Context, ResponseWithContinuationPolicy) (ResponseWithContinuationPolicy, error)) ResponseWithContinuationPolicyPage {
+	return original.NewResponseWithContinuationPolicyPage(getNextPage)
+}
+func NewResponseWithContinuationScheduleIterator(page ResponseWithContinuationSchedulePage) ResponseWithContinuationScheduleIterator {
+	return original.NewResponseWithContinuationScheduleIterator(page)
+}
+func NewResponseWithContinuationSchedulePage(getNextPage func(context.Context, ResponseWithContinuationSchedule) (ResponseWithContinuationSchedule, error)) ResponseWithContinuationSchedulePage {
+	return original.NewResponseWithContinuationSchedulePage(getNextPage)
+}
+func NewResponseWithContinuationVirtualNetworkIterator(page ResponseWithContinuationVirtualNetworkPage) ResponseWithContinuationVirtualNetworkIterator {
+	return original.NewResponseWithContinuationVirtualNetworkIterator(page)
+}
+func NewResponseWithContinuationVirtualNetworkPage(getNextPage func(context.Context, ResponseWithContinuationVirtualNetwork) (ResponseWithContinuationVirtualNetwork, error)) ResponseWithContinuationVirtualNetworkPage {
+	return original.NewResponseWithContinuationVirtualNetworkPage(getNextPage)
 }
 func NewPolicyClient(subscriptionID string) PolicyClient {
 	return original.NewPolicyClient(subscriptionID)

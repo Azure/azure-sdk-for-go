@@ -403,6 +403,11 @@ func (iter CertificateIssuerListResultIterator) Value() CertificateIssuerItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CertificateIssuerListResultIterator type.
+func NewCertificateIssuerListResultIterator(page CertificateIssuerListResultPage) CertificateIssuerListResultIterator {
+	return CertificateIssuerListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cilr CertificateIssuerListResult) IsEmpty() bool {
 	return cilr.Value == nil || len(*cilr.Value) == 0
@@ -470,6 +475,11 @@ func (page CertificateIssuerListResultPage) Values() []CertificateIssuerItem {
 		return nil
 	}
 	return *page.cilr.Value
+}
+
+// Creates a new instance of the CertificateIssuerListResultPage type.
+func NewCertificateIssuerListResultPage(getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
+	return CertificateIssuerListResultPage{fn: getNextPage}
 }
 
 // CertificateIssuerSetParameters the certificate issuer set parameters.
@@ -593,6 +603,11 @@ func (iter CertificateListResultIterator) Value() CertificateItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the CertificateListResultIterator type.
+func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
+	return CertificateListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr CertificateListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -660,6 +675,11 @@ func (page CertificateListResultPage) Values() []CertificateItem {
 		return nil
 	}
 	return *page.clr.Value
+}
+
+// Creates a new instance of the CertificateListResultPage type.
+func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{fn: getNextPage}
 }
 
 // CertificateMergeParameters the certificate merge parameters
@@ -1067,6 +1087,11 @@ func (iter KeyListResultIterator) Value() KeyItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the KeyListResultIterator type.
+func NewKeyListResultIterator(page KeyListResultPage) KeyListResultIterator {
+	return KeyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (klr KeyListResult) IsEmpty() bool {
 	return klr.Value == nil || len(*klr.Value) == 0
@@ -1134,6 +1159,11 @@ func (page KeyListResultPage) Values() []KeyItem {
 		return nil
 	}
 	return *page.klr.Value
+}
+
+// Creates a new instance of the KeyListResultPage type.
+func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return KeyListResultPage{fn: getNextPage}
 }
 
 // KeyOperationResult the key operation result
@@ -1405,6 +1435,11 @@ func (iter SecretListResultIterator) Value() SecretItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the SecretListResultIterator type.
+func NewSecretListResultIterator(page SecretListResultPage) SecretListResultIterator {
+	return SecretListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (slr SecretListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
@@ -1472,6 +1507,11 @@ func (page SecretListResultPage) Values() []SecretItem {
 		return nil
 	}
 	return *page.slr.Value
+}
+
+// Creates a new instance of the SecretListResultPage type.
+func NewSecretListResultPage(getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
+	return SecretListResultPage{fn: getNextPage}
 }
 
 // SecretProperties properties of the key backing a certificate.

@@ -19,7 +19,11 @@
 
 package keyvault
 
-import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -218,6 +222,30 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return original.PossibleStoragePermissionsValues()
+}
+func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
+	return original.NewDeletedVaultListResultIterator(page)
+}
+func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return original.NewDeletedVaultListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
+	return original.NewResourceListResultIterator(page)
+}
+func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return original.NewResourceListResultPage(getNextPage)
+}
+func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterator {
+	return original.NewVaultListResultIterator(page)
+}
+func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
+	return original.NewVaultListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

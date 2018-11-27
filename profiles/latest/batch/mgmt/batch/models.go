@@ -19,7 +19,11 @@
 
 package batch
 
-import original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
+)
 
 type AccountClient = original.AccountClient
 type ApplicationClient = original.ApplicationClient
@@ -364,6 +368,36 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
+}
+func NewListApplicationsResultIterator(page ListApplicationsResultPage) ListApplicationsResultIterator {
+	return original.NewListApplicationsResultIterator(page)
+}
+func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return original.NewListApplicationsResultPage(getNextPage)
+}
+func NewListCertificatesResultIterator(page ListCertificatesResultPage) ListCertificatesResultIterator {
+	return original.NewListCertificatesResultIterator(page)
+}
+func NewListCertificatesResultPage(getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
+	return original.NewListCertificatesResultPage(getNextPage)
+}
+func NewListPoolsResultIterator(page ListPoolsResultPage) ListPoolsResultIterator {
+	return original.NewListPoolsResultIterator(page)
+}
+func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
+	return original.NewListPoolsResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

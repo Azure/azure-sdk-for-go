@@ -19,7 +19,11 @@
 
 package documentdb
 
-import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -210,6 +214,12 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 }
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

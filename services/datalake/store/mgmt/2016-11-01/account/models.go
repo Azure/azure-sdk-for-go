@@ -1045,6 +1045,11 @@ func (iter DataLakeStoreAccountListResultIterator) Value() DataLakeStoreAccountB
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DataLakeStoreAccountListResultIterator type.
+func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
+	return DataLakeStoreAccountListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlsalr DataLakeStoreAccountListResult) IsEmpty() bool {
 	return dlsalr.Value == nil || len(*dlsalr.Value) == 0
@@ -1112,6 +1117,11 @@ func (page DataLakeStoreAccountListResultPage) Values() []DataLakeStoreAccountBa
 		return nil
 	}
 	return *page.dlsalr.Value
+}
+
+// Creates a new instance of the DataLakeStoreAccountListResultPage type.
+func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return DataLakeStoreAccountListResultPage{fn: getNextPage}
 }
 
 // DataLakeStoreAccountProperties data Lake Store account properties information.
@@ -1338,6 +1348,11 @@ func (iter FirewallRuleListResultIterator) Value() FirewallRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the FirewallRuleListResultIterator type.
+func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
+	return FirewallRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (frlr FirewallRuleListResult) IsEmpty() bool {
 	return frlr.Value == nil || len(*frlr.Value) == 0
@@ -1405,6 +1420,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 		return nil
 	}
 	return *page.frlr.Value
+}
+
+// Creates a new instance of the FirewallRuleListResultPage type.
+func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{fn: getNextPage}
 }
 
 // FirewallRuleProperties the firewall rule properties.
@@ -1661,6 +1681,11 @@ func (iter TrustedIDProviderListResultIterator) Value() TrustedIDProvider {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the TrustedIDProviderListResultIterator type.
+func NewTrustedIDProviderListResultIterator(page TrustedIDProviderListResultPage) TrustedIDProviderListResultIterator {
+	return TrustedIDProviderListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (tiplr TrustedIDProviderListResult) IsEmpty() bool {
 	return tiplr.Value == nil || len(*tiplr.Value) == 0
@@ -1728,6 +1753,11 @@ func (page TrustedIDProviderListResultPage) Values() []TrustedIDProvider {
 		return nil
 	}
 	return *page.tiplr.Value
+}
+
+// Creates a new instance of the TrustedIDProviderListResultPage type.
+func NewTrustedIDProviderListResultPage(getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
+	return TrustedIDProviderListResultPage{fn: getNextPage}
 }
 
 // TrustedIDProviderProperties the trusted identity provider properties.
@@ -2273,6 +2303,11 @@ func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VirtualNetworkRuleListResultIterator type.
+func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
+	return VirtualNetworkRuleListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
@@ -2340,6 +2375,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 		return nil
 	}
 	return *page.vnrlr.Value
+}
+
+// Creates a new instance of the VirtualNetworkRuleListResultPage type.
+func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{fn: getNextPage}
 }
 
 // VirtualNetworkRuleProperties the virtual network rule properties.

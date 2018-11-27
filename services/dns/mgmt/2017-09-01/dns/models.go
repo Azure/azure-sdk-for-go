@@ -313,6 +313,11 @@ func (iter RecordSetListResultIterator) Value() RecordSet {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the RecordSetListResultIterator type.
+func NewRecordSetListResultIterator(page RecordSetListResultPage) RecordSetListResultIterator {
+	return RecordSetListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rslr RecordSetListResult) IsEmpty() bool {
 	return rslr.Value == nil || len(*rslr.Value) == 0
@@ -380,6 +385,11 @@ func (page RecordSetListResultPage) Values() []RecordSet {
 		return nil
 	}
 	return *page.rslr.Value
+}
+
+// Creates a new instance of the RecordSetListResultPage type.
+func NewRecordSetListResultPage(getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
+	return RecordSetListResultPage{fn: getNextPage}
 }
 
 // RecordSetProperties represents the properties of the records in the record set.
@@ -741,6 +751,11 @@ func (iter ZoneListResultIterator) Value() Zone {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ZoneListResultIterator type.
+func NewZoneListResultIterator(page ZoneListResultPage) ZoneListResultIterator {
+	return ZoneListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (zlr ZoneListResult) IsEmpty() bool {
 	return zlr.Value == nil || len(*zlr.Value) == 0
@@ -808,6 +823,11 @@ func (page ZoneListResultPage) Values() []Zone {
 		return nil
 	}
 	return *page.zlr.Value
+}
+
+// Creates a new instance of the ZoneListResultPage type.
+func NewZoneListResultPage(getNextPage func(context.Context, ZoneListResult) (ZoneListResult, error)) ZoneListResultPage {
+	return ZoneListResultPage{fn: getNextPage}
 }
 
 // ZoneProperties represents the properties of the zone.

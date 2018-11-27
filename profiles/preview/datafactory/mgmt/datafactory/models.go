@@ -19,7 +19,11 @@
 
 package datafactory
 
-import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory"
+)
 
 type ActivityRunsClient = original.ActivityRunsClient
 
@@ -557,6 +561,7 @@ const (
 	TypeDatabricksSparkJar       TypeBasicActivity = original.TypeDatabricksSparkJar
 	TypeDatabricksSparkPython    TypeBasicActivity = original.TypeDatabricksSparkPython
 	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
+	TypeDelete                   TypeBasicActivity = original.TypeDelete
 	TypeExecutePipeline          TypeBasicActivity = original.TypeExecutePipeline
 	TypeExecuteSSISPackage       TypeBasicActivity = original.TypeExecuteSSISPackage
 	TypeExecution                TypeBasicActivity = original.TypeExecution
@@ -880,6 +885,7 @@ const (
 	PUT    WebActivityMethod = original.PUT
 )
 
+type AccessPolicyResponse = original.AccessPolicyResponse
 type BasicActivity = original.BasicActivity
 type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
@@ -1022,6 +1028,8 @@ type DatasetStorageFormat = original.DatasetStorageFormat
 type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type DeleteActivity = original.DeleteActivity
+type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type BasicDependencyReference = original.BasicDependencyReference
 type DependencyReference = original.DependencyReference
 type DistcpSettings = original.DistcpSettings
@@ -1074,6 +1082,7 @@ type ForEachActivity = original.ForEachActivity
 type ForEachActivityTypeProperties = original.ForEachActivityTypeProperties
 type FtpServerLinkedService = original.FtpServerLinkedService
 type FtpServerLinkedServiceTypeProperties = original.FtpServerLinkedServiceTypeProperties
+type GenericDatasetTypeProperties = original.GenericDatasetTypeProperties
 type GetMetadataActivity = original.GetMetadataActivity
 type GetMetadataActivityTypeProperties = original.GetMetadataActivityTypeProperties
 type GitHubAccessTokenRequest = original.GitHubAccessTokenRequest
@@ -1385,6 +1394,7 @@ type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
 type UpdateIntegrationRuntimeNodeRequest = original.UpdateIntegrationRuntimeNodeRequest
 type UpdateIntegrationRuntimeRequest = original.UpdateIntegrationRuntimeRequest
+type UserAccessPolicy = original.UserAccessPolicy
 type UserProperty = original.UserProperty
 type VariableSpecification = original.VariableSpecification
 type VerticaLinkedService = original.VerticaLinkedService
@@ -1686,6 +1696,54 @@ func PossibleVariableTypeValues() []VariableType {
 }
 func PossibleWebActivityMethodValues() []WebActivityMethod {
 	return original.PossibleWebActivityMethodValues()
+}
+func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
+	return original.NewDatasetListResponseIterator(page)
+}
+func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return original.NewDatasetListResponsePage(getNextPage)
+}
+func NewFactoryListResponseIterator(page FactoryListResponsePage) FactoryListResponseIterator {
+	return original.NewFactoryListResponseIterator(page)
+}
+func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return original.NewFactoryListResponsePage(getNextPage)
+}
+func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
+	return original.NewIntegrationRuntimeListResponseIterator(page)
+}
+func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+}
+func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
+	return original.NewLinkedServiceListResponseIterator(page)
+}
+func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return original.NewLinkedServiceListResponsePage(getNextPage)
+}
+func NewOperationListResponseIterator(page OperationListResponsePage) OperationListResponseIterator {
+	return original.NewOperationListResponseIterator(page)
+}
+func NewOperationListResponsePage(getNextPage func(context.Context, OperationListResponse) (OperationListResponse, error)) OperationListResponsePage {
+	return original.NewOperationListResponsePage(getNextPage)
+}
+func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
+	return original.NewPipelineListResponseIterator(page)
+}
+func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return original.NewPipelineListResponsePage(getNextPage)
+}
+func NewRerunTriggerListResponseIterator(page RerunTriggerListResponsePage) RerunTriggerListResponseIterator {
+	return original.NewRerunTriggerListResponseIterator(page)
+}
+func NewRerunTriggerListResponsePage(getNextPage func(context.Context, RerunTriggerListResponse) (RerunTriggerListResponse, error)) RerunTriggerListResponsePage {
+	return original.NewRerunTriggerListResponsePage(getNextPage)
+}
+func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
+	return original.NewTriggerListResponseIterator(page)
+}
+func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return original.NewTriggerListResponsePage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

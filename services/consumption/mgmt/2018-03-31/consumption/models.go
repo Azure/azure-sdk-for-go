@@ -466,6 +466,11 @@ func (iter BudgetsListResultIterator) Value() Budget {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BudgetsListResultIterator type.
+func NewBudgetsListResultIterator(page BudgetsListResultPage) BudgetsListResultIterator {
+	return BudgetsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (blr BudgetsListResult) IsEmpty() bool {
 	return blr.Value == nil || len(*blr.Value) == 0
@@ -533,6 +538,11 @@ func (page BudgetsListResultPage) Values() []Budget {
 		return nil
 	}
 	return *page.blr.Value
+}
+
+// Creates a new instance of the BudgetsListResultPage type.
+func NewBudgetsListResultPage(getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
+	return BudgetsListResultPage{fn: getNextPage}
 }
 
 // BudgetTimePeriod the start and end date for a budget.
@@ -917,6 +927,11 @@ func (iter MarketplacesListResultIterator) Value() Marketplace {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the MarketplacesListResultIterator type.
+func NewMarketplacesListResultIterator(page MarketplacesListResultPage) MarketplacesListResultIterator {
+	return MarketplacesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mlr MarketplacesListResult) IsEmpty() bool {
 	return mlr.Value == nil || len(*mlr.Value) == 0
@@ -984,6 +999,11 @@ func (page MarketplacesListResultPage) Values() []Marketplace {
 		return nil
 	}
 	return *page.mlr.Value
+}
+
+// Creates a new instance of the MarketplacesListResultPage type.
+func NewMarketplacesListResultPage(getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
+	return MarketplacesListResultPage{fn: getNextPage}
 }
 
 // MeterDetails the properties of the meter detail.
@@ -1106,6 +1126,11 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1173,6 +1198,11 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // PriceSheetModel price sheet result. It contains the pricesheet associated with billing period
@@ -1471,6 +1501,11 @@ func (iter ReservationDetailsListResultIterator) Value() ReservationDetails {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReservationDetailsListResultIterator type.
+func NewReservationDetailsListResultIterator(page ReservationDetailsListResultPage) ReservationDetailsListResultIterator {
+	return ReservationDetailsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rdlr ReservationDetailsListResult) IsEmpty() bool {
 	return rdlr.Value == nil || len(*rdlr.Value) == 0
@@ -1538,6 +1573,11 @@ func (page ReservationDetailsListResultPage) Values() []ReservationDetails {
 		return nil
 	}
 	return *page.rdlr.Value
+}
+
+// Creates a new instance of the ReservationDetailsListResultPage type.
+func NewReservationDetailsListResultPage(getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
+	return ReservationDetailsListResultPage{fn: getNextPage}
 }
 
 // ReservationDetailsProperties the properties of the reservation details.
@@ -1750,6 +1790,11 @@ func (iter ReservationRecommendationsListResultIterator) Value() ReservationReco
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReservationRecommendationsListResultIterator type.
+func NewReservationRecommendationsListResultIterator(page ReservationRecommendationsListResultPage) ReservationRecommendationsListResultIterator {
+	return ReservationRecommendationsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rrlr ReservationRecommendationsListResult) IsEmpty() bool {
 	return rrlr.Value == nil || len(*rrlr.Value) == 0
@@ -1817,6 +1862,11 @@ func (page ReservationRecommendationsListResultPage) Values() []ReservationRecom
 		return nil
 	}
 	return *page.rrlr.Value
+}
+
+// Creates a new instance of the ReservationRecommendationsListResultPage type.
+func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
+	return ReservationRecommendationsListResultPage{fn: getNextPage}
 }
 
 // ReservationRecommendationsProperties the properties of the reservation recommendations.
@@ -2003,6 +2053,11 @@ func (iter ReservationSummariesListResultIterator) Value() ReservationSummaries 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ReservationSummariesListResultIterator type.
+func NewReservationSummariesListResultIterator(page ReservationSummariesListResultPage) ReservationSummariesListResultIterator {
+	return ReservationSummariesListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (rslr ReservationSummariesListResult) IsEmpty() bool {
 	return rslr.Value == nil || len(*rslr.Value) == 0
@@ -2070,6 +2125,11 @@ func (page ReservationSummariesListResultPage) Values() []ReservationSummaries {
 		return nil
 	}
 	return *page.rslr.Value
+}
+
+// Creates a new instance of the ReservationSummariesListResultPage type.
+func NewReservationSummariesListResultPage(getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
+	return ReservationSummariesListResultPage{fn: getNextPage}
 }
 
 // ReservationSummariesProperties the properties of the reservation summaries.
@@ -2449,6 +2509,11 @@ func (iter UsageDetailsListResultIterator) Value() UsageDetail {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the UsageDetailsListResultIterator type.
+func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
+	return UsageDetailsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (udlr UsageDetailsListResult) IsEmpty() bool {
 	return udlr.Value == nil || len(*udlr.Value) == 0
@@ -2516,4 +2581,9 @@ func (page UsageDetailsListResultPage) Values() []UsageDetail {
 		return nil
 	}
 	return *page.udlr.Value
+}
+
+// Creates a new instance of the UsageDetailsListResultPage type.
+func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
+	return UsageDetailsListResultPage{fn: getNextPage}
 }

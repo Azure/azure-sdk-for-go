@@ -250,6 +250,11 @@ func (iter ClientDiscoveryResponseIterator) Value() ClientDiscoveryValueForSingl
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClientDiscoveryResponseIterator type.
+func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
+	return ClientDiscoveryResponseIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (cdr ClientDiscoveryResponse) IsEmpty() bool {
 	return cdr.Value == nil || len(*cdr.Value) == 0
@@ -317,6 +322,11 @@ func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingle
 		return nil
 	}
 	return *page.cdr.Value
+}
+
+// Creates a new instance of the ClientDiscoveryResponsePage type.
+func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return ClientDiscoveryResponsePage{fn: getNextPage}
 }
 
 // ClientDiscoveryValueForSingleAPI available operation details.
@@ -1164,6 +1174,11 @@ func (iter VaultListIterator) Value() Vault {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VaultListIterator type.
+func NewVaultListIterator(page VaultListPage) VaultListIterator {
+	return VaultListIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vl VaultList) IsEmpty() bool {
 	return vl.Value == nil || len(*vl.Value) == 0
@@ -1231,6 +1246,11 @@ func (page VaultListPage) Values() []Vault {
 		return nil
 	}
 	return *page.vl.Value
+}
+
+// Creates a new instance of the VaultListPage type.
+func NewVaultListPage(getNextPage func(context.Context, VaultList) (VaultList, error)) VaultListPage {
+	return VaultListPage{fn: getNextPage}
 }
 
 // VaultProperties properties of the vault.

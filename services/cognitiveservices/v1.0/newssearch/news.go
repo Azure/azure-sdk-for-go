@@ -36,12 +36,7 @@ type NewsClient struct {
 
 // NewNewsClient creates an instance of the NewsClient client.
 func NewNewsClient() NewsClient {
-	return NewNewsClientWithBaseURI(DefaultBaseURI)
-}
-
-// NewNewsClientWithBaseURI creates an instance of the NewsClient client.
-func NewNewsClientWithBaseURI(baseURI string) NewsClient {
-	return NewsClient{NewWithBaseURI(baseURI)}
+	return NewsClient{New()}
 }
 
 // Category sends the category request.
@@ -244,6 +239,10 @@ func (client NewsClient) Category(ctx context.Context, acceptLanguage string, us
 
 // CategoryPreparer prepares the Category request.
 func (client NewsClient) CategoryPreparer(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, category string, count *int32, headlineCount *int32, market string, offset *int32, originalImage *bool, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{}
 	if len(countryCode) > 0 {
 		queryParameters["cc"] = autorest.Encode("query", countryCode)
@@ -281,7 +280,7 @@ func (client NewsClient) CategoryPreparer(ctx context.Context, acceptLanguage st
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/news"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))
@@ -523,6 +522,10 @@ func (client NewsClient) Search(ctx context.Context, query string, acceptLanguag
 
 // SearchPreparer prepares the Search request.
 func (client NewsClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, freshness Freshness, market string, offset *int32, originalImage *bool, safeSearch SafeSearch, setLang string, sortBy string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -562,7 +565,7 @@ func (client NewsClient) SearchPreparer(ctx context.Context, query string, accep
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/news/search"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))
@@ -793,6 +796,10 @@ func (client NewsClient) Trending(ctx context.Context, acceptLanguage string, us
 
 // TrendingPreparer prepares the Trending request.
 func (client NewsClient) TrendingPreparer(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, market string, offset *int32, safeSearch SafeSearch, setLang string, since *int64, sortBy string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
 	queryParameters := map[string]interface{}{}
 	if len(countryCode) > 0 {
 		queryParameters["cc"] = autorest.Encode("query", countryCode)
@@ -827,7 +834,7 @@ func (client NewsClient) TrendingPreparer(ctx context.Context, acceptLanguage st
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithCustomBaseURL("{Endpoint}/bing/v7.0", urlParameters),
 		autorest.WithPath("/news/trendingtopics"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("X-BingApis-SDK", "true"))

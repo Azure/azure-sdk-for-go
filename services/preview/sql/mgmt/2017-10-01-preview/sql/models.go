@@ -636,6 +636,11 @@ func (iter BackupShortTermRetentionPolicyListResultIterator) Value() BackupShort
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the BackupShortTermRetentionPolicyListResultIterator type.
+func NewBackupShortTermRetentionPolicyListResultIterator(page BackupShortTermRetentionPolicyListResultPage) BackupShortTermRetentionPolicyListResultIterator {
+	return BackupShortTermRetentionPolicyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (bstrplr BackupShortTermRetentionPolicyListResult) IsEmpty() bool {
 	return bstrplr.Value == nil || len(*bstrplr.Value) == 0
@@ -703,6 +708,11 @@ func (page BackupShortTermRetentionPolicyListResultPage) Values() []BackupShortT
 		return nil
 	}
 	return *page.bstrplr.Value
+}
+
+// Creates a new instance of the BackupShortTermRetentionPolicyListResultPage type.
+func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
+	return BackupShortTermRetentionPolicyListResultPage{fn: getNextPage}
 }
 
 // BackupShortTermRetentionPolicyProperties properties of a short term retention policy
@@ -930,6 +940,11 @@ func (iter DatabaseListResultIterator) Value() Database {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DatabaseListResultIterator type.
+func NewDatabaseListResultIterator(page DatabaseListResultPage) DatabaseListResultIterator {
+	return DatabaseListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dlr DatabaseListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
@@ -997,6 +1012,11 @@ func (page DatabaseListResultPage) Values() []Database {
 		return nil
 	}
 	return *page.dlr.Value
+}
+
+// Creates a new instance of the DatabaseListResultPage type.
+func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return DatabaseListResultPage{fn: getNextPage}
 }
 
 // DatabaseOperation a database operation.
@@ -1147,6 +1167,11 @@ func (iter DatabaseOperationListResultIterator) Value() DatabaseOperation {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the DatabaseOperationListResultIterator type.
+func NewDatabaseOperationListResultIterator(page DatabaseOperationListResultPage) DatabaseOperationListResultIterator {
+	return DatabaseOperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DatabaseOperationListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -1214,6 +1239,11 @@ func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 		return nil
 	}
 	return *page.dolr.Value
+}
+
+// Creates a new instance of the DatabaseOperationListResultPage type.
+func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
+	return DatabaseOperationListResultPage{fn: getNextPage}
 }
 
 // DatabaseOperationProperties the properties of a database operation.
@@ -1631,13 +1661,160 @@ func (dva *DatabaseVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DatabaseVulnerabilityAssessmentListResult a list of the database's vulnerability assessments.
+type DatabaseVulnerabilityAssessmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]DatabaseVulnerabilityAssessment `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentListResultIterator provides access to a complete listing of
+// DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultIterator struct {
+	i    int
+	page DatabaseVulnerabilityAssessmentListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DatabaseVulnerabilityAssessmentListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Response() DatabaseVulnerabilityAssessmentListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatabaseVulnerabilityAssessmentListResultIterator) Value() DatabaseVulnerabilityAssessment {
+	if !iter.page.NotDone() {
+		return DatabaseVulnerabilityAssessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DatabaseVulnerabilityAssessmentListResultIterator type.
+func NewDatabaseVulnerabilityAssessmentListResultIterator(page DatabaseVulnerabilityAssessmentListResultPage) DatabaseVulnerabilityAssessmentListResultIterator {
+	return DatabaseVulnerabilityAssessmentListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) IsEmpty() bool {
+	return dvalr.Value == nil || len(*dvalr.Value) == 0
+}
+
+// databaseVulnerabilityAssessmentListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dvalr DatabaseVulnerabilityAssessmentListResult) databaseVulnerabilityAssessmentListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if dvalr.NextLink == nil || len(to.String(dvalr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dvalr.NextLink)))
+}
+
+// DatabaseVulnerabilityAssessmentListResultPage contains a page of DatabaseVulnerabilityAssessment values.
+type DatabaseVulnerabilityAssessmentListResultPage struct {
+	fn    func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)
+	dvalr DatabaseVulnerabilityAssessmentListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseVulnerabilityAssessmentListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dvalr)
+	if err != nil {
+		return err
+	}
+	page.dvalr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DatabaseVulnerabilityAssessmentListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatabaseVulnerabilityAssessmentListResultPage) NotDone() bool {
+	return !page.dvalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Response() DatabaseVulnerabilityAssessmentListResult {
+	return page.dvalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatabaseVulnerabilityAssessmentListResultPage) Values() []DatabaseVulnerabilityAssessment {
+	if page.dvalr.IsEmpty() {
+		return nil
+	}
+	return *page.dvalr.Value
+}
+
+// Creates a new instance of the DatabaseVulnerabilityAssessmentListResultPage type.
+func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
+	return DatabaseVulnerabilityAssessmentListResultPage{fn: getNextPage}
+}
+
 // DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
 type DatabaseVulnerabilityAssessmentProperties struct {
-	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
+	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).  It is required if server level vulnerability assessment policy doesn't set
 	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
 	// StorageContainerSasKey - A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter. If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is required.
 	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
-	// StorageAccountAccessKey - Specifies the identifier key of the vulnerability assessment storage account. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
+	// StorageAccountAccessKey - Specifies the identifier key of the storage account for vulnerability assessment scan results. If 'StorageContainerSasKey' isn't specified, storageAccountAccessKey is required.
 	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
 	// RecurringScans - The recurring scans settings
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
@@ -2082,6 +2259,11 @@ func (iter ElasticPoolListResultIterator) Value() ElasticPool {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ElasticPoolListResultIterator type.
+func NewElasticPoolListResultIterator(page ElasticPoolListResultPage) ElasticPoolListResultIterator {
+	return ElasticPoolListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (eplr ElasticPoolListResult) IsEmpty() bool {
 	return eplr.Value == nil || len(*eplr.Value) == 0
@@ -2149,6 +2331,11 @@ func (page ElasticPoolListResultPage) Values() []ElasticPool {
 		return nil
 	}
 	return *page.eplr.Value
+}
+
+// Creates a new instance of the ElasticPoolListResultPage type.
+func NewElasticPoolListResultPage(getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
+	return ElasticPoolListResultPage{fn: getNextPage}
 }
 
 // ElasticPoolOperation a elastic pool operation.
@@ -2300,6 +2487,11 @@ func (iter ElasticPoolOperationListResultIterator) Value() ElasticPoolOperation 
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ElasticPoolOperationListResultIterator type.
+func NewElasticPoolOperationListResultIterator(page ElasticPoolOperationListResultPage) ElasticPoolOperationListResultIterator {
+	return ElasticPoolOperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (epolr ElasticPoolOperationListResult) IsEmpty() bool {
 	return epolr.Value == nil || len(*epolr.Value) == 0
@@ -2367,6 +2559,11 @@ func (page ElasticPoolOperationListResultPage) Values() []ElasticPoolOperation {
 		return nil
 	}
 	return *page.epolr.Value
+}
+
+// Creates a new instance of the ElasticPoolOperationListResultPage type.
+func NewElasticPoolOperationListResultPage(getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
+	return ElasticPoolOperationListResultPage{fn: getNextPage}
 }
 
 // ElasticPoolOperationProperties the properties of a elastic pool operation.
@@ -2785,6 +2982,11 @@ func (iter InstanceFailoverGroupListResultIterator) Value() InstanceFailoverGrou
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the InstanceFailoverGroupListResultIterator type.
+func NewInstanceFailoverGroupListResultIterator(page InstanceFailoverGroupListResultPage) InstanceFailoverGroupListResultIterator {
+	return InstanceFailoverGroupListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ifglr InstanceFailoverGroupListResult) IsEmpty() bool {
 	return ifglr.Value == nil || len(*ifglr.Value) == 0
@@ -2852,6 +3054,11 @@ func (page InstanceFailoverGroupListResultPage) Values() []InstanceFailoverGroup
 		return nil
 	}
 	return *page.ifglr.Value
+}
+
+// Creates a new instance of the InstanceFailoverGroupListResultPage type.
+func NewInstanceFailoverGroupListResultPage(getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
+	return InstanceFailoverGroupListResultPage{fn: getNextPage}
 }
 
 // InstanceFailoverGroupProperties properties of a instance failover group.
@@ -3226,6 +3433,11 @@ func (iter ManagedInstanceEncryptionProtectorListResultIterator) Value() Managed
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedInstanceEncryptionProtectorListResultIterator type.
+func NewManagedInstanceEncryptionProtectorListResultIterator(page ManagedInstanceEncryptionProtectorListResultPage) ManagedInstanceEncryptionProtectorListResultIterator {
+	return ManagedInstanceEncryptionProtectorListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (mieplr ManagedInstanceEncryptionProtectorListResult) IsEmpty() bool {
 	return mieplr.Value == nil || len(*mieplr.Value) == 0
@@ -3294,6 +3506,11 @@ func (page ManagedInstanceEncryptionProtectorListResultPage) Values() []ManagedI
 		return nil
 	}
 	return *page.mieplr.Value
+}
+
+// Creates a new instance of the ManagedInstanceEncryptionProtectorListResultPage type.
+func NewManagedInstanceEncryptionProtectorListResultPage(getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
+	return ManagedInstanceEncryptionProtectorListResultPage{fn: getNextPage}
 }
 
 // ManagedInstanceEncryptionProtectorProperties properties for an encryption protector execution.
@@ -3520,6 +3737,11 @@ func (iter ManagedInstanceKeyListResultIterator) Value() ManagedInstanceKey {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ManagedInstanceKeyListResultIterator type.
+func NewManagedInstanceKeyListResultIterator(page ManagedInstanceKeyListResultPage) ManagedInstanceKeyListResultIterator {
+	return ManagedInstanceKeyListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (miklr ManagedInstanceKeyListResult) IsEmpty() bool {
 	return miklr.Value == nil || len(*miklr.Value) == 0
@@ -3587,6 +3809,11 @@ func (page ManagedInstanceKeyListResultPage) Values() []ManagedInstanceKey {
 		return nil
 	}
 	return *page.miklr.Value
+}
+
+// Creates a new instance of the ManagedInstanceKeyListResultPage type.
+func NewManagedInstanceKeyListResultPage(getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
+	return ManagedInstanceKeyListResultPage{fn: getNextPage}
 }
 
 // ManagedInstanceKeyProperties properties for a key execution.
@@ -4140,6 +4367,11 @@ func (iter VulnerabilityAssessmentScanRecordListResultIterator) Value() Vulnerab
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the VulnerabilityAssessmentScanRecordListResultIterator type.
+func NewVulnerabilityAssessmentScanRecordListResultIterator(page VulnerabilityAssessmentScanRecordListResultPage) VulnerabilityAssessmentScanRecordListResultIterator {
+	return VulnerabilityAssessmentScanRecordListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (vasrlr VulnerabilityAssessmentScanRecordListResult) IsEmpty() bool {
 	return vasrlr.Value == nil || len(*vasrlr.Value) == 0
@@ -4208,6 +4440,11 @@ func (page VulnerabilityAssessmentScanRecordListResultPage) Values() []Vulnerabi
 		return nil
 	}
 	return *page.vasrlr.Value
+}
+
+// Creates a new instance of the VulnerabilityAssessmentScanRecordListResultPage type.
+func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return VulnerabilityAssessmentScanRecordListResultPage{fn: getNextPage}
 }
 
 // VulnerabilityAssessmentScanRecordProperties properties of a vulnerability assessment scan record.

@@ -19,7 +19,11 @@
 
 package hanaonazure
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -105,6 +109,12 @@ func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
 }
 func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
 	return original.PossibleHanaInstanceSizeNamesEnumValues()
+}
+func NewHanaInstancesListResultIterator(page HanaInstancesListResultPage) HanaInstancesListResultIterator {
+	return original.NewHanaInstancesListResultIterator(page)
+}
+func NewHanaInstancesListResultPage(getNextPage func(context.Context, HanaInstancesListResult) (HanaInstancesListResult, error)) HanaInstancesListResultPage {
+	return original.NewHanaInstancesListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

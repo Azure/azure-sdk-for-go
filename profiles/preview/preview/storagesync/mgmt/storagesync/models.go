@@ -52,6 +52,26 @@ const (
 	CloudTiering2On  CloudTiering2 = original.CloudTiering2On
 )
 
+type CombinedHealth = original.CombinedHealth
+
+const (
+	CombinedHealthError                                    CombinedHealth = original.CombinedHealthError
+	CombinedHealthHealthy                                  CombinedHealth = original.CombinedHealthHealthy
+	CombinedHealthNoActivity                               CombinedHealth = original.CombinedHealthNoActivity
+	CombinedHealthSyncBlockedForChangeDetectionPostRestore CombinedHealth = original.CombinedHealthSyncBlockedForChangeDetectionPostRestore
+	CombinedHealthSyncBlockedForRestore                    CombinedHealth = original.CombinedHealthSyncBlockedForRestore
+)
+
+type DownloadHealth = original.DownloadHealth
+
+const (
+	DownloadHealthError                                    DownloadHealth = original.DownloadHealthError
+	DownloadHealthHealthy                                  DownloadHealth = original.DownloadHealthHealthy
+	DownloadHealthNoActivity                               DownloadHealth = original.DownloadHealthNoActivity
+	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = original.DownloadHealthSyncBlockedForChangeDetectionPostRestore
+	DownloadHealthSyncBlockedForRestore                    DownloadHealth = original.DownloadHealthSyncBlockedForRestore
+)
+
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
@@ -108,6 +128,26 @@ const (
 	Succeeded Status = original.Succeeded
 )
 
+type SyncDirection = original.SyncDirection
+
+const (
+	Download   SyncDirection = original.Download
+	Initialize SyncDirection = original.Initialize
+	None       SyncDirection = original.None
+	Recall     SyncDirection = original.Recall
+	Upload     SyncDirection = original.Upload
+)
+
+type UploadHealth = original.UploadHealth
+
+const (
+	UploadHealthError                                    UploadHealth = original.UploadHealthError
+	UploadHealthHealthy                                  UploadHealth = original.UploadHealthHealthy
+	UploadHealthNoActivity                               UploadHealth = original.UploadHealthNoActivity
+	UploadHealthSyncBlockedForChangeDetectionPostRestore UploadHealth = original.UploadHealthSyncBlockedForChangeDetectionPostRestore
+	UploadHealthSyncBlockedForRestore                    UploadHealth = original.UploadHealthSyncBlockedForRestore
+)
+
 type APIError = original.APIError
 type AzureEntityResource = original.AzureEntityResource
 type BackupRequest = original.BackupRequest
@@ -153,6 +193,7 @@ type ServerEndpoint = original.ServerEndpoint
 type ServerEndpointArray = original.ServerEndpointArray
 type ServerEndpointCreateParameters = original.ServerEndpointCreateParameters
 type ServerEndpointCreateParametersProperties = original.ServerEndpointCreateParametersProperties
+type ServerEndpointHealth = original.ServerEndpointHealth
 type ServerEndpointProperties = original.ServerEndpointProperties
 type ServerEndpointsCreateFuture = original.ServerEndpointsCreateFuture
 type ServerEndpointsDeleteFuture = original.ServerEndpointsDeleteFuture
@@ -170,6 +211,8 @@ type SyncGroup = original.SyncGroup
 type SyncGroupArray = original.SyncGroupArray
 type SyncGroupCreateParameters = original.SyncGroupCreateParameters
 type SyncGroupProperties = original.SyncGroupProperties
+type SyncProgressStatus = original.SyncProgressStatus
+type SyncSessionStatus = original.SyncSessionStatus
 type TrackedResource = original.TrackedResource
 type TriggerRolloverRequest = original.TriggerRolloverRequest
 type Workflow = original.Workflow
@@ -203,6 +246,12 @@ func PossibleCloudTiering1Values() []CloudTiering1 {
 func PossibleCloudTiering2Values() []CloudTiering2 {
 	return original.PossibleCloudTiering2Values()
 }
+func PossibleCombinedHealthValues() []CombinedHealth {
+	return original.PossibleCombinedHealthValues()
+}
+func PossibleDownloadHealthValues() []DownloadHealth {
+	return original.PossibleDownloadHealthValues()
+}
 func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
 }
@@ -223,6 +272,12 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleSyncDirectionValues() []SyncDirection {
+	return original.PossibleSyncDirectionValues()
+}
+func PossibleUploadHealthValues() []UploadHealth {
+	return original.PossibleUploadHealthValues()
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)

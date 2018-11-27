@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -73,6 +74,48 @@ const (
 // PossibleCloudTiering2Values returns an array of possible values for the CloudTiering2 const type.
 func PossibleCloudTiering2Values() []CloudTiering2 {
 	return []CloudTiering2{CloudTiering2Off, CloudTiering2On}
+}
+
+// CombinedHealth enumerates the values for combined health.
+type CombinedHealth string
+
+const (
+	// CombinedHealthError ...
+	CombinedHealthError CombinedHealth = "Error"
+	// CombinedHealthHealthy ...
+	CombinedHealthHealthy CombinedHealth = "Healthy"
+	// CombinedHealthNoActivity ...
+	CombinedHealthNoActivity CombinedHealth = "NoActivity"
+	// CombinedHealthSyncBlockedForChangeDetectionPostRestore ...
+	CombinedHealthSyncBlockedForChangeDetectionPostRestore CombinedHealth = "SyncBlockedForChangeDetectionPostRestore"
+	// CombinedHealthSyncBlockedForRestore ...
+	CombinedHealthSyncBlockedForRestore CombinedHealth = "SyncBlockedForRestore"
+)
+
+// PossibleCombinedHealthValues returns an array of possible values for the CombinedHealth const type.
+func PossibleCombinedHealthValues() []CombinedHealth {
+	return []CombinedHealth{CombinedHealthError, CombinedHealthHealthy, CombinedHealthNoActivity, CombinedHealthSyncBlockedForChangeDetectionPostRestore, CombinedHealthSyncBlockedForRestore}
+}
+
+// DownloadHealth enumerates the values for download health.
+type DownloadHealth string
+
+const (
+	// DownloadHealthError ...
+	DownloadHealthError DownloadHealth = "Error"
+	// DownloadHealthHealthy ...
+	DownloadHealthHealthy DownloadHealth = "Healthy"
+	// DownloadHealthNoActivity ...
+	DownloadHealthNoActivity DownloadHealth = "NoActivity"
+	// DownloadHealthSyncBlockedForChangeDetectionPostRestore ...
+	DownloadHealthSyncBlockedForChangeDetectionPostRestore DownloadHealth = "SyncBlockedForChangeDetectionPostRestore"
+	// DownloadHealthSyncBlockedForRestore ...
+	DownloadHealthSyncBlockedForRestore DownloadHealth = "SyncBlockedForRestore"
+)
+
+// PossibleDownloadHealthValues returns an array of possible values for the DownloadHealth const type.
+func PossibleDownloadHealthValues() []DownloadHealth {
+	return []DownloadHealth{DownloadHealthError, DownloadHealthHealthy, DownloadHealthNoActivity, DownloadHealthSyncBlockedForChangeDetectionPostRestore, DownloadHealthSyncBlockedForRestore}
 }
 
 // NameAvailabilityReason enumerates the values for name availability reason.
@@ -192,6 +235,48 @@ const (
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
 	return []Status{Aborted, Active, Expired, Failed, Succeeded}
+}
+
+// SyncDirection enumerates the values for sync direction.
+type SyncDirection string
+
+const (
+	// Download ...
+	Download SyncDirection = "download"
+	// Initialize ...
+	Initialize SyncDirection = "initialize"
+	// None ...
+	None SyncDirection = "none"
+	// Recall ...
+	Recall SyncDirection = "recall"
+	// Upload ...
+	Upload SyncDirection = "upload"
+)
+
+// PossibleSyncDirectionValues returns an array of possible values for the SyncDirection const type.
+func PossibleSyncDirectionValues() []SyncDirection {
+	return []SyncDirection{Download, Initialize, None, Recall, Upload}
+}
+
+// UploadHealth enumerates the values for upload health.
+type UploadHealth string
+
+const (
+	// UploadHealthError ...
+	UploadHealthError UploadHealth = "Error"
+	// UploadHealthHealthy ...
+	UploadHealthHealthy UploadHealth = "Healthy"
+	// UploadHealthNoActivity ...
+	UploadHealthNoActivity UploadHealth = "NoActivity"
+	// UploadHealthSyncBlockedForChangeDetectionPostRestore ...
+	UploadHealthSyncBlockedForChangeDetectionPostRestore UploadHealth = "SyncBlockedForChangeDetectionPostRestore"
+	// UploadHealthSyncBlockedForRestore ...
+	UploadHealthSyncBlockedForRestore UploadHealth = "SyncBlockedForRestore"
+)
+
+// PossibleUploadHealthValues returns an array of possible values for the UploadHealth const type.
+func PossibleUploadHealthValues() []UploadHealth {
+	return []UploadHealth{UploadHealthError, UploadHealthHealthy, UploadHealthNoActivity, UploadHealthSyncBlockedForChangeDetectionPostRestore, UploadHealthSyncBlockedForRestore}
 }
 
 // APIError error type
@@ -1100,8 +1185,8 @@ type RegisteredServerProperties struct {
 	AgentVersion *string `json:"agentVersion,omitempty"`
 	// ServerOSVersion - Registered Server OS Version
 	ServerOSVersion *string `json:"serverOSVersion,omitempty"`
-	// ServerManagementtErrorCode - Registered Server Management Error Code
-	ServerManagementtErrorCode *int32 `json:"serverManagementtErrorCode,omitempty"`
+	// ServerManagementErrorCode - Registered Server Management Error Code
+	ServerManagementErrorCode *int32 `json:"serverManagementErrorCode,omitempty"`
 	// LastHeartBeat - Registered Server last heart beat
 	LastHeartBeat *string `json:"lastHeartBeat,omitempty"`
 	// ProvisioningState - Registered Server Provisioning State
@@ -1425,6 +1510,24 @@ type ServerEndpointCreateParametersProperties struct {
 	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
 }
 
+// ServerEndpointHealth serverEndpoint Health object.
+type ServerEndpointHealth struct {
+	// DownloadHealth - Download Health Status. Possible values include: 'DownloadHealthHealthy', 'DownloadHealthError', 'DownloadHealthSyncBlockedForRestore', 'DownloadHealthSyncBlockedForChangeDetectionPostRestore', 'DownloadHealthNoActivity'
+	DownloadHealth DownloadHealth `json:"downloadHealth,omitempty"`
+	// UploadHealth - Upload Health Status. Possible values include: 'UploadHealthHealthy', 'UploadHealthError', 'UploadHealthSyncBlockedForRestore', 'UploadHealthSyncBlockedForChangeDetectionPostRestore', 'UploadHealthNoActivity'
+	UploadHealth UploadHealth `json:"uploadHealth,omitempty"`
+	// CombinedHealth - Combined Health Status. Possible values include: 'CombinedHealthHealthy', 'CombinedHealthError', 'CombinedHealthSyncBlockedForRestore', 'CombinedHealthSyncBlockedForChangeDetectionPostRestore', 'CombinedHealthNoActivity'
+	CombinedHealth CombinedHealth `json:"combinedHealth,omitempty"`
+	// LastUpdatedTimestamp - Last Updated Timestamp
+	LastUpdatedTimestamp *date.Time `json:"lastUpdatedTimestamp,omitempty"`
+	// UploadStatus - Upload Status
+	UploadStatus *SyncSessionStatus `json:"uploadStatus,omitempty"`
+	// DownloadStatus - Download Status
+	DownloadStatus *SyncSessionStatus `json:"downloadStatus,omitempty"`
+	// CurrentProgress - Current progress
+	CurrentProgress *SyncProgressStatus `json:"currentProgress,omitempty"`
+}
+
 // ServerEndpointProperties serverEndpoint Properties object.
 type ServerEndpointProperties struct {
 	// ServerLocalPath - Server Local path.
@@ -1445,8 +1548,8 @@ type ServerEndpointProperties struct {
 	LastWorkflowID *string `json:"lastWorkflowId,omitempty"`
 	// LastOperationName - Resource Last Operation Name
 	LastOperationName *string `json:"lastOperationName,omitempty"`
-	// SyncStatus - Sync Health Status
-	SyncStatus interface{} `json:"syncStatus,omitempty"`
+	// SyncStatus - Server Endpoint properties.
+	SyncStatus *ServerEndpointHealth `json:"syncStatus,omitempty"`
 	// OfflineDataTransfer - Offline data transfer. Possible values include: 'OfflineDataTransfer2On', 'OfflineDataTransfer2Off'
 	OfflineDataTransfer OfflineDataTransfer2 `json:"offlineDataTransfer,omitempty"`
 	// OfflineDataTransferStorageAccountResourceID - Offline data transfer storage account resource ID
@@ -1900,6 +2003,36 @@ type SyncGroupProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SyncGroupStatus - Sync group status
 	SyncGroupStatus *string `json:"syncGroupStatus,omitempty"`
+}
+
+// SyncProgressStatus sync Session status object.
+type SyncProgressStatus struct {
+	// ProgressTimestamp - Progress timestamp
+	ProgressTimestamp *date.Time `json:"progressTimestamp,omitempty"`
+	// SyncDirection - Sync direction. Possible values include: 'None', 'Initialize', 'Download', 'Upload', 'Recall'
+	SyncDirection SyncDirection `json:"syncDirection,omitempty"`
+	// PerItemErrorCount - Per item error count
+	PerItemErrorCount *int32 `json:"perItemErrorCount,omitempty"`
+	// AppliedItemCount - Applied item count.
+	AppliedItemCount *int32 `json:"appliedItemCount,omitempty"`
+	// TotalItemCount - Total item count
+	TotalItemCount *int32 `json:"totalItemCount,omitempty"`
+	// AppliedBytes - Applied bytes
+	AppliedBytes *int32 `json:"appliedBytes,omitempty"`
+	// TotalBytes - Total bytes
+	TotalBytes *int32 `json:"totalBytes,omitempty"`
+}
+
+// SyncSessionStatus sync Session status object.
+type SyncSessionStatus struct {
+	// LastSyncResult - Last sync status
+	LastSyncResult *int32 `json:"lastSyncResult,omitempty"`
+	// LastSyncTimestamp - Last sync timestamp
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
+	// LastSyncSuccessTimestamp - Last sync success timestamp
+	LastSyncSuccessTimestamp *date.Time `json:"lastSyncSuccessTimestamp,omitempty"`
+	// LastSyncPerItemErrorCount - Last sync per item error count.
+	LastSyncPerItemErrorCount *int32 `json:"lastSyncPerItemErrorCount,omitempty"`
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

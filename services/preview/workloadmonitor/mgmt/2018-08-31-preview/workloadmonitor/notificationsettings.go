@@ -48,7 +48,7 @@ func NewNotificationSettingsClientWithBaseURI(baseURI string, subscriptionID str
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
 // notificationSettingName - name of the notificationSetting
-func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (result NotificationSettingsCollection, err error) {
+func (client NotificationSettingsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string) (result NotificationSetting, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Get")
 		defer func() {
@@ -123,7 +123,7 @@ func (client NotificationSettingsClient) GetSender(req *http.Request) (*http.Res
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client NotificationSettingsClient) GetResponder(resp *http.Response) (result NotificationSettingsCollection, err error) {
+func (client NotificationSettingsClient) GetResponder(resp *http.Response) (result NotificationSetting, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -140,13 +140,14 @@ func (client NotificationSettingsClient) GetResponder(resp *http.Response) (resu
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
-func (client NotificationSettingsClient) ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result NotificationSettingsCollection, err error) {
+// skiptoken - the page-continuation token to use with a paged version of this API.
+func (client NotificationSettingsClient) ListByResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (result NotificationSettingsCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.ListByResource")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.nsc.Response.Response != nil {
+				sc = result.nsc.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -161,7 +162,8 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 		return result, validation.NewError("workloadmonitor.NotificationSettingsClient", "ListByResource", err.Error())
 	}
 
-	req, err := client.ListByResourcePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName)
+	result.fn = client.listByResourceNextResults
+	req, err := client.ListByResourcePreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "ListByResource", nil, "Failure preparing request")
 		return
@@ -169,12 +171,12 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 
 	resp, err := client.ListByResourceSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.nsc.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "ListByResource", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceResponder(resp)
+	result.nsc, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "ListByResource", resp, "Failure responding to request")
 	}
@@ -183,7 +185,7 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 }
 
 // ListByResourcePreparer prepares the ListByResource request.
-func (client NotificationSettingsClient) ListByResourcePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (*http.Request, error) {
+func (client NotificationSettingsClient) ListByResourcePreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -195,6 +197,9 @@ func (client NotificationSettingsClient) ListByResourcePreparer(ctx context.Cont
 	const APIVersion = "2018-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -225,6 +230,43 @@ func (client NotificationSettingsClient) ListByResourceResponder(resp *http.Resp
 	return
 }
 
+// listByResourceNextResults retrieves the next set of results, if any.
+func (client NotificationSettingsClient) listByResourceNextResults(ctx context.Context, lastResults NotificationSettingsCollection) (result NotificationSettingsCollection, err error) {
+	req, err := lastResults.notificationSettingsCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "listByResourceNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "listByResourceNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client NotificationSettingsClient) ListByResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, skiptoken string) (result NotificationSettingsCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.ListByResource")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResource(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken)
+	return
+}
+
 // Update sends the update request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -233,7 +275,7 @@ func (client NotificationSettingsClient) ListByResourceResponder(resp *http.Resp
 // resourceName - name of the resource.
 // notificationSettingName - name of the notificationSetting
 // body - body of the NotificationSetting PUT object.
-func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (result NotificationSettingsCollection, err error) {
+func (client NotificationSettingsClient) Update(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, notificationSettingName string, body NotificationSetting) (result NotificationSetting, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsClient.Update")
 		defer func() {
@@ -310,7 +352,7 @@ func (client NotificationSettingsClient) UpdateSender(req *http.Request) (*http.
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client NotificationSettingsClient) UpdateResponder(resp *http.Response) (result NotificationSettingsCollection, err error) {
+func (client NotificationSettingsClient) UpdateResponder(resp *http.Response) (result NotificationSetting, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

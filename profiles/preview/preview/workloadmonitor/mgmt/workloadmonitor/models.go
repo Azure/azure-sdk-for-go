@@ -124,6 +124,8 @@ type MonitorsCollectionPage = original.MonitorsCollectionPage
 type NotificationSetting = original.NotificationSetting
 type NotificationSettingProperties = original.NotificationSettingProperties
 type NotificationSettingsCollection = original.NotificationSettingsCollection
+type NotificationSettingsCollectionIterator = original.NotificationSettingsCollectionIterator
+type NotificationSettingsCollectionPage = original.NotificationSettingsCollectionPage
 type Operation = original.Operation
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
@@ -197,6 +199,12 @@ func NewMonitorsCollectionIterator(page MonitorsCollectionPage) MonitorsCollecti
 }
 func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
 	return original.NewMonitorsCollectionPage(getNextPage)
+}
+func NewNotificationSettingsCollectionIterator(page NotificationSettingsCollectionPage) NotificationSettingsCollectionIterator {
+	return original.NewNotificationSettingsCollectionIterator(page)
+}
+func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
+	return original.NewNotificationSettingsCollectionPage(getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

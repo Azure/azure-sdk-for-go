@@ -1201,6 +1201,7 @@ func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollect
 
 // NotificationSetting model for NotificationSetting.
 type NotificationSetting struct {
+	autorest.Response `json:"-"`
 	// Etag - For optimistic concurrency control.
 	Etag *string `json:"etag,omitempty"`
 	// NotificationSettingProperties - Properties of Notification Settings
@@ -1304,6 +1305,146 @@ type NotificationSettingProperties struct {
 type NotificationSettingsCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]NotificationSetting `json:"value,omitempty"`
+	// NextLink - URL to the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting
+// values.
+type NotificationSettingsCollectionIterator struct {
+	i    int
+	page NotificationSettingsCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *NotificationSettingsCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *NotificationSettingsCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter NotificationSettingsCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter NotificationSettingsCollectionIterator) Response() NotificationSettingsCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter NotificationSettingsCollectionIterator) Value() NotificationSetting {
+	if !iter.page.NotDone() {
+		return NotificationSetting{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the NotificationSettingsCollectionIterator type.
+func NewNotificationSettingsCollectionIterator(page NotificationSettingsCollectionPage) NotificationSettingsCollectionIterator {
+	return NotificationSettingsCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (nsc NotificationSettingsCollection) IsEmpty() bool {
+	return nsc.Value == nil || len(*nsc.Value) == 0
+}
+
+// notificationSettingsCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (nsc NotificationSettingsCollection) notificationSettingsCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if nsc.NextLink == nil || len(to.String(nsc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(nsc.NextLink)))
+}
+
+// NotificationSettingsCollectionPage contains a page of NotificationSetting values.
+type NotificationSettingsCollectionPage struct {
+	fn  func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)
+	nsc NotificationSettingsCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *NotificationSettingsCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationSettingsCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.nsc)
+	if err != nil {
+		return err
+	}
+	page.nsc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *NotificationSettingsCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page NotificationSettingsCollectionPage) NotDone() bool {
+	return !page.nsc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page NotificationSettingsCollectionPage) Response() NotificationSettingsCollection {
+	return page.nsc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page NotificationSettingsCollectionPage) Values() []NotificationSetting {
+	if page.nsc.IsEmpty() {
+		return nil
+	}
+	return *page.nsc.Value
+}
+
+// Creates a new instance of the NotificationSettingsCollectionPage type.
+func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
+	return NotificationSettingsCollectionPage{fn: getNextPage}
 }
 
 // Operation operation supported by the resource provider.

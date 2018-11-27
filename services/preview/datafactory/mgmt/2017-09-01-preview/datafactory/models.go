@@ -19197,7 +19197,7 @@ func (ats *AzureTableSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobEventsTrigger trigger that runs everytime a Blob event occurs.
+// BlobEventsTrigger trigger that runs every time a Blob event occurs.
 type BlobEventsTrigger struct {
 	// BlobEventsTriggerTypeProperties - Blob Events Trigger properties.
 	*BlobEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
@@ -19998,7 +19998,7 @@ func (bs *BlobSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobTrigger trigger that runs everytime the selected Blob container changes.
+// BlobTrigger trigger that runs every time the selected Blob container changes.
 type BlobTrigger struct {
 	// BlobTriggerTypeProperties - Blob Trigger properties.
 	*BlobTriggerTypeProperties `json:"typeProperties,omitempty"`
@@ -22111,7 +22111,7 @@ func (clstp *ConcurLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// ConcurObjectDataset concur Serivce dataset.
+// ConcurObjectDataset concur Service dataset.
 type ConcurObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -22513,7 +22513,7 @@ func (cod *ConcurObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConcurSource a copy activity Concur Serivce source.
+// ConcurSource a copy activity Concur Service source.
 type ConcurSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -23494,7 +23494,7 @@ type CopyActivityTypeProperties struct {
 	Source BasicCopySource `json:"source,omitempty"`
 	// Sink - Copy activity sink.
 	Sink BasicCopySink `json:"sink,omitempty"`
-	// Translator - Copy activity translator. If not specificed, tabular translator is used.
+	// Translator - Copy activity translator. If not specified, tabular translator is used.
 	Translator BasicCopyTranslator `json:"translator,omitempty"`
 	// EnableStaging - Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
 	EnableStaging interface{} `json:"enableStaging,omitempty"`
@@ -51692,7 +51692,7 @@ func (hlstp *HubspotLinkedServiceTypeProperties) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// HubspotObjectDataset hubspot Serivce dataset.
+// HubspotObjectDataset hubspot Service dataset.
 type HubspotObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -52094,7 +52094,7 @@ func (hod *HubspotObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HubspotSource a copy activity Hubspot Serivce source.
+// HubspotSource a copy activity Hubspot Service source.
 type HubspotSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -56133,7 +56133,7 @@ func (jlstp *JiraLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraObjectDataset jira Serivce dataset.
+// JiraObjectDataset jira Service dataset.
 type JiraObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -56535,7 +56535,7 @@ func (jod *JiraObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JiraSource a copy activity Jira Serivce source.
+// JiraSource a copy activity Jira Service source.
 type JiraSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -70573,7 +70573,7 @@ func (plstp *PaypalLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// PaypalObjectDataset paypal Serivce dataset.
+// PaypalObjectDataset paypal Service dataset.
 type PaypalObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -70975,7 +70975,7 @@ func (pod *PaypalObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PaypalSource a copy activity Paypal Serivce source.
+// PaypalSource a copy activity Paypal Service source.
 type PaypalSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -76836,7 +76836,7 @@ func (rs *RecurrenceSchedule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RecurrenceScheduleOccurrence the recurrence schedule occurence.
+// RecurrenceScheduleOccurrence the recurrence schedule occurrence.
 type RecurrenceScheduleOccurrence struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -89455,7 +89455,7 @@ func (slstp *ShopifyLinkedServiceTypeProperties) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// ShopifyObjectDataset shopify Serivce dataset.
+// ShopifyObjectDataset shopify Service dataset.
 type ShopifyObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -89857,7 +89857,7 @@ func (sod *ShopifyObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShopifySource a copy activity Shopify Serivce source.
+// ShopifySource a copy activity Shopify Service source.
 type ShopifySource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -94759,7 +94759,7 @@ func (slstp *SquareLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// SquareObjectDataset square Serivce dataset.
+// SquareObjectDataset square Service dataset.
 type SquareObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -95161,7 +95161,7 @@ func (sod *SquareObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SquareSource a copy activity Square Serivce source.
+// SquareSource a copy activity Square Service source.
 type SquareSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`
@@ -102416,7 +102416,7 @@ func (xlstp *XeroLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroObjectDataset xero Serivce dataset.
+// XeroObjectDataset xero Service dataset.
 type XeroObjectDataset struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
@@ -102818,7 +102818,7 @@ func (xod *XeroObjectDataset) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// XeroSource a copy activity Xero Serivce source.
+// XeroSource a copy activity Xero Service source.
 type XeroSource struct {
 	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
 	Query interface{} `json:"query,omitempty"`

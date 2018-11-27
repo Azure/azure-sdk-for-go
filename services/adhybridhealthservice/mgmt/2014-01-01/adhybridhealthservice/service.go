@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// ServiceClient is the REST APIs for Azure Active Drectory Connect Health
+// ServiceClient is the REST APIs for Azure Active Directory Connect Health
 type ServiceClient struct {
 	BaseClient
 }

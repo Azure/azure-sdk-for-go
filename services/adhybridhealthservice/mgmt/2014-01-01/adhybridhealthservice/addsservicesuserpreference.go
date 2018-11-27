@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// AddsServicesUserPreferenceClient is the REST APIs for Azure Active Drectory Connect Health
+// AddsServicesUserPreferenceClient is the REST APIs for Azure Active Directory Connect Health
 type AddsServicesUserPreferenceClient struct {
 	BaseClient
 }

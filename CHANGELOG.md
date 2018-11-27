@@ -1,5 +1,137 @@
 # CHANGELOG
 
+## `v23.0.0`
+
+### New Packages
+
+Each package now has a sub-package with the suffix `api` which contains interface definitions per operation group.
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| engagementfabric | 2018-09-01 |
+| kusto | 2018-09-07-preview |
+| network | 2018-10-01 |
+| qnamaker | v4.0 |
+| sqlvirtualmachine | 2017-03-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| account | 2015-10-01-preview<br/>2015-10-01-preview<br/>2016-11-01<br/>2016-11-01 |
+| advisor | 2016-07-12-preview<br/>2017-03-31<br/>2017-04-19 |
+| alertsmanagement | 2018-05-05 |
+| analysisservices | 2017-08-01 |
+| apimanagement | 2016-07-07<br/>2016-10-10<br/>2017-03-01<br/>2017-03-01<br/>2018-01-01<br/>2018-06-01-preview |
+| authorization | 2015-07-01<br/>2017-10-01-preview<br/>2018-01-01-preview<br/>2018-09-01-preview |
+| automation | 2015-10-31<br/>2017-05-15-preview<br/>2018-01-15-preview<br/>2018-06-30-preview |
+| azurestack | 2017-06-01 |
+| backup | 2016-06-01<br/>2016-12-01<br/>2017-07-01 |
+| batch | 2015-12-01<br/>2017-01-01<br/>2017-05-01<br/>2017-05-01.5.0<br/>2017-09-01<br/>2018-03-01.6.1<br/>2018-08-01.7.0 |
+| batchai | 2017-09-01-preview<br/>2018-03-01<br/>2018-05-01 |
+| billing | 2017-02-27-preview<br/>2017-04-24-preview<br/>2018-03-01-preview |
+| blueprint | 2017-11-11-preview |
+| botservice | 2017-12-01<br/>2018-07-12 |
+| catalog | 2015-10-01-preview<br/>2016-11-01-preview |
+| cdn | 2016-10-02<br/>2017-04-02<br/>2017-10-12 |
+| cognitiveservices | 2017-04-18 |
+| commerce | 2015-06-01-preview |
+| commitmentplans | 2016-05-01-preview |
+| compute | 2015-06-15<br/>2016-03-30<br/>2016-04-30-preview<br/>2017-03-30<br/>2017-08-01-preview<br/>2017-12-01<br/>2018-04-01<br/>2018-06-01<br/>2018-10-01 |
+| consumption | 2017-04-24-preview<br/>2017-11-30<br/>2017-12-30-preview<br/>2018-01-31<br/>2018-03-31<br/>2018-05-31<br/>2018-06-30<br/>2018-08-31<br/>2018-10-01 |
+| containerinstance | 2017-08-01-preview<br/>2017-10-01-preview<br/>2017-12-01-preview<br/>2018-02-01-preview<br/>2018-04-01<br/>2018-06-01<br/>2018-09-01<br/>2018-10-01 |
+| containerregistry | 2016-06-27-preview<br/>2017-03-01<br/>2017-06-01-preview<br/>2017-10-01<br/>2018-02-01<br/>2018-09-01 |
+| containerservice | 2016-09-30<br/>2017-01-31<br/>2017-07-01<br/>2017-08-31<br/>2017-09-30<br/>2018-03-31<br/>2018-08-01-preview<br/>2018-09-30-preview |
+| costmanagement | 2018-05-31<br/>2018-08-01-preview |
+| customerinsights | 2017-01-01<br/>2017-04-26 |
+| databricks | 2018-04-01 |
+| datafactory | 2017-09-01-preview |
+| datamigration | 2017-11-15-preview<br/>2018-03-31-preview<br/>2018-04-19<br/>2018-07-15-preview |
+| devices | 2016-02-03<br/>2017-01-19<br/>2017-07-01<br/>2018-01-22<br/>2018-04-01 |
+| devspaces | 2018-06-01-preview |
+| dns | 2015-05-04-preview<br/>2016-04-01<br/>2017-09-01<br/>2017-10-01<br/>2018-03-01-preview |
+| documentdb | 2015-04-08 |
+| dtl | 2015-05-21-preview<br/>2016-05-15 |
+| eventhub | 2015-08-01<br/>2017-04-01<br/>2018-01-01-preview |
+| experimentation | 2017-05-01-preview |
+| features | 2015-12-01 |
+| frontdoor | 2018-08-01-preview |
+| hanaonazure | 2017-11-03-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2015-05-01<br/>2017-05-01-preview<br/>2018-03-01<br/>2018-09-01 |
+| iotcentral | 2018-09-01 |
+| iothub | 2017-08-21-preview<br/>2017-11-15<br/>2018-01-22 |
+| iotspaces | 2017-10-01-preview |
+| job | 2015-11-01-preview<br/>2016-03-20-preview<br/>2016-11-01<br/>2017-09-01-preview |
+| keyvault | 2015-06-01<br/>2015-06-01<br/>2016-10-01<br/>2016-10-01<br/>2018-02-14<br/>v7.0 |
+| links | 2016-09-01 |
+| locks | 2015-01-01<br/>2016-09-01 |
+| logic | 2015-02-01-preview<br/>2015-08-01-preview<br/>2016-06-01<br/>2018-07-01-preview |
+| managedapplications | 2016-09-01-preview<br/>2017-09-01<br/>2018-06-01 |
+| managementgroups | 2017-08-31-preview<br/>2017-11-01-preview<br/>2018-01-01-preview<br/>2018-03-01-preview |
+| managementpartner | 2018-02-01 |
+| mariadb | 2018-06-01-preview |
+| marketplaceordering | 2015-06-01 |
+| media | 2018-03-30-preview<br/>2018-06-01-preview<br/>2018-07-01 |
+| msi | 2015-08-31-preview |
+| mysql | 2017-12-01 |
+| network | 2015-05-01-preview<br/>2015-06-15<br/>2016-03-30<br/>2016-06-01<br/>2016-09-01<br/>2016-12-01<br/>2017-03-01<br/>2017-06-01<br/>2017-08-01<br/>2017-09-01<br/>2017-10-01<br/>2017-11-01<br/>2018-01-01<br/>2018-02-01<br/>2018-04-01<br/>2018-06-01<br/>2018-07-01<br/>2018-08-01 |
+| notificationhubs | 2014-09-01<br/>2016-03-01<br/>2017-04-01 |
+| operationalinsights | 2015-03-20<br/>2015-11-01-preview |
+| policy | 2015-10-01-preview<br/>2016-04-01<br/>2016-12-01<br/>2017-06-01-preview<br/>2018-03-01<br/>2018-05-01 |
+| policyinsights | 2018-07-01-preview |
+| postgresql | 2017-12-01 |
+| powerbidedicated | 2017-10-01 |
+| recoveryservices | 2016-06-01 |
+| redis | 2015-08-01<br/>2016-04-01<br/>2017-02-01<br/>2017-10-01<br/>2018-03-01 |
+| relay | 2016-07-01<br/>2017-04-01 |
+| reservations | 2017-11-01<br/>2018-06-01 |
+| resourcehealth | 2015-01-01<br/>2017-07-01 |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01 |
+| scheduler | 2014-08-01-preview<br/>2016-01-01<br/>2016-03-01 |
+| security | 2017-08-01-preview |
+| servicebus | 2015-08-01<br/>2017-04-01 |
+| services | 2018-03-01-preview |
+| signalr | 2018-03-01-preview<br/>2018-10-01 |
+| siterecovery | 2016-08-10<br/>2018-01-10 |
+| skus | 2017-09-01 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2017-10-01-preview |
+| storage | 2015-05-01-preview |
+| storageimportexport | 2016-11-01 |
+| storagesync | 2018-04-02<br/>2018-07-01 |
+| storsimple | 2016-10-01<br/>2017-06-01 |
+| streamanalytics | 2016-03-01 |
+| subscription | 2017-11-01-preview<br/>2018-03-01-preview |
+| subscriptions | 2015-11-01<br/>2016-06-01 |
+| timeseriesinsights | 2017-02-28-preview<br/>2017-11-15 |
+| web | 2015-08-01-preview<br/>2016-09-01 |
+| webservices | 2016-05-01-preview<br/>2017-01-01 |
+| workloadmonitor | 2018-08-31-preview |
+| workspaces | 2016-04-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| aad | 2017-01-01<br/>2017-06-01 |
+| adhybridhealthservice | 2014-01-01 |
+| autosuggest | v1.0 |
+| customimagesearch | v1.0 |
+| customsearch | v1.0 |
+| databox | 2018-01-01 |
+| datafactory | 2018-06-01 |
+| entitysearch | v1.0 |
+| graphrbac | 1.6 |
+| imagesearch | v1.0 |
+| newssearch | v1.0 |
+| spellcheck | v1.0 |
+| storage | 2018-07-01 |
+| storagesync | 2018-10-01 |
+| videosearch | v1.0 |
+| visualsearch | v1.0 |
+| web | 2018-02-01 |
+| websearch | v1.0 |
+
 ## `v22.2.2`
 
 Corrected typo in the env variable for enabling tracing for the SDK. The correct name is `AZURE_SDK_TRACING_ENABLED`.

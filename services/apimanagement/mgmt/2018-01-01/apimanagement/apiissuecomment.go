@@ -468,7 +468,7 @@ func (client APIIssueCommentClient) GetEntityTagResponder(resp *http.Response) (
 	return
 }
 
-// ListByService lists all comments for the Issue assosiated with the specified API.
+// ListByService lists all comments for the Issue associated with the specified API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

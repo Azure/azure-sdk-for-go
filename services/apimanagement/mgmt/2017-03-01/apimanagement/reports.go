@@ -180,7 +180,7 @@ func (client ReportsClient) ListByAPIComplete(ctx context.Context, resourceGroup
 	return
 }
 
-// ListByGeo lists report records by GeoGraphy.
+// ListByGeo lists report records by geography.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -847,7 +847,7 @@ func (client ReportsClient) ListBySubscriptionComplete(ctx context.Context, reso
 // serviceName - the name of the API Management service.
 // interval - by time interval. Interval must be multiple of 15 minutes and may not be zero. The value should
 // be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
-// TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, secconds))
+// TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
 // filter - the filter to apply on the operation.
 // top - number of records to return.
 // skip - number of records to skip.

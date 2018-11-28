@@ -1325,7 +1325,7 @@ func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (
 // GroupContract developer group.
 type GroupContract struct {
 	autorest.Response `json:"-"`
-	// ID - Uniquely identifies the group within the current API Management service instance. The value is a valid relative URL in the format of /groups/{groupid} where {groupid} is a group identifier.
+	// ID - Uniquely identifies the group within the current API Management service instance. The value is a valid relative URL in the format of /groups/{groupId} where {groupId} is a group identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - Group name.
 	Name *string `json:"name,omitempty"`
@@ -2738,7 +2738,7 @@ type ReportRecordContract struct {
 	Name *string `json:"name,omitempty"`
 	// Timestamp - Start of aggregation period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Interval - Length of agregation period.
+	// Interval - Length of aggregation period.
 	Interval *int64 `json:"interval,omitempty"`
 	// Country - Country to which this record data is related.
 	Country *string `json:"country,omitempty"`
@@ -2758,7 +2758,7 @@ type ReportRecordContract struct {
 	APIRegion *string `json:"apiRegion,omitempty"`
 	// SubscriptionID - Subscription identifier path. /subscriptions/{subscriptionId}
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// CallCountSuccess - Number of succesful calls.
+	// CallCountSuccess - Number of successful calls.
 	CallCountSuccess *int32 `json:"callCountSuccess,omitempty"`
 	// CallCountBlocked - Number of calls blocked due to invalid credentials.
 	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
@@ -3077,7 +3077,7 @@ type ServiceManageDeploymentsParameters struct {
 	AdditionalLocations *[]AdditionalRegion `json:"additionalLocations,omitempty"`
 	// VpnConfiguration - Virtual network configuration.
 	VpnConfiguration *VirtualNetworkConfiguration `json:"vpnConfiguration,omitempty"`
-	// VpnType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that the API Management service deployment is set up inside a Virtual Network having an Intranet Facing Endpoint only. When vpnConfiguration is specified, vpnType must be specified. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VpnType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that the API Management service deployment is set up inside a Virtual Network having an Intranet Facing Endpoint only. When vpnConfiguration is specified, vpnType must be specified. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VpnType VirtualNetworkType `json:"vpnType,omitempty"`
 }
 
@@ -3124,7 +3124,7 @@ type ServiceProperties struct {
 	AdditionalLocations *[]AdditionalRegion `json:"additionalLocations,omitempty"`
 	// CustomProperties - Custom properties of the API Management service, like disabling TLS 1.0.
 	CustomProperties map[string]*string `json:"customProperties"`
-	// VpnType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VpnType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VpnType VirtualNetworkType `json:"vpnType,omitempty"`
 }
 
@@ -3411,7 +3411,7 @@ type SetObject struct {
 	Value             interface{} `json:"value,omitempty"`
 }
 
-// SubscriptionCollection paged Subsctions list representation.
+// SubscriptionCollection paged Subscriptions list representation.
 type SubscriptionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
@@ -3594,7 +3594,7 @@ type SubscriptionContract struct {
 type SubscriptionCreateParameters struct {
 	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product (product id path) for which subscription is being created in form /products/{productid}
+	// ProductID - Product (product id path) for which subscription is being created in form /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// Name - Subscription name.
 	Name *string `json:"name,omitempty"`
@@ -3977,7 +3977,7 @@ type VirtualNetworkConfiguration struct {
 	Vnetid *string `json:"vnetid,omitempty"`
 	// Subnetname - The name of the subnet.
 	Subnetname *string `json:"subnetname,omitempty"`
-	// SubnetResourceID - The name of the subnet Resource ID. This has format /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/{virtual network name}/subnets/{subnet name}.
+	// SubnetResourceID - The name of the subnet Resource ID. This has format /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/{virtual network name}/subnets/{subnet name}.
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 	// Location - The location of the virtual network.
 	Location *string `json:"location,omitempty"`

@@ -647,6 +647,30 @@ type CustomPrebuiltModel struct {
 	Roles                   *[]EntityRole `json:"roles,omitempty"`
 }
 
+// DispatchConnectedServiceDeleteObject an intent to delete its disptch connected service.
+type DispatchConnectedServiceDeleteObject struct {
+	// IntentName - The name of the intent connected to the dispatch
+	IntentName *string `json:"intentName,omitempty"`
+}
+
+// DispatchConnectedServiceObject a disptch connected service.
+type DispatchConnectedServiceObject struct {
+	// IntentName - The name of the intent connected to the dispatch
+	IntentName *string `json:"intentName,omitempty"`
+	// Type - The type of the connected service [luis/qna]
+	Type *string `json:"type,omitempty"`
+	// Name - The name of the connected LUIS app (only if type is luis)
+	Name *string `json:"name,omitempty"`
+	// AppID - The ID of the connected LUIS app (only if type is luis)
+	AppID *uuid.UUID `json:"appId,omitempty"`
+	// Version - The version ID of the connected LUIS app (only if type is luis)
+	Version *string `json:"version,omitempty"`
+	// Region - The region of the connected LUIS app (only if type is luis)
+	Region *string `json:"region,omitempty"`
+	// KbID - The ID of the connected QnA app (only if type is qna)
+	KbID *uuid.UUID `json:"kbId,omitempty"`
+}
+
 // EndpointInfo the base class "ProductionOrStagingEndpointInfo" inherits from.
 type EndpointInfo struct {
 	// VersionID - The version ID to publish.

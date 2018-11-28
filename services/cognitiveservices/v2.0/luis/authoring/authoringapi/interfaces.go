@@ -246,3 +246,12 @@ type SettingsClientAPI interface {
 }
 
 var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
+
+// DispatchClientAPI contains the set of methods on the DispatchClient type.
+type DispatchClientAPI interface {
+	BatchAddConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, connectedServices []authoring.DispatchConnectedServiceObject) (result authoring.SetObject, err error)
+	BatchUpdateConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, connectedServices []authoring.DispatchConnectedServiceObject) (result authoring.SetObject, err error)
+	DeleteConnectedServices(ctx context.Context, appID uuid.UUID, versionID string, intentNames []authoring.DispatchConnectedServiceDeleteObject) (result authoring.SetObject, err error)
+}
+
+var _ DispatchClientAPI = (*authoring.DispatchClient)(nil)

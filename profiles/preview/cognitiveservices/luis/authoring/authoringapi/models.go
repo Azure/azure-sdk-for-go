@@ -31,3 +31,4 @@ type TrainClientAPI = original.TrainClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI
 type PatternClientAPI = original.PatternClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
+type DispatchClientAPI = original.DispatchClientAPI

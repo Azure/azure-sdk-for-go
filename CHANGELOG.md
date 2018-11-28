@@ -8,6 +8,7 @@
 - Updated README regarding blob storage support.
 - Add godoc indexer tool.
 - Add apidiff tool.
+- Adds easykey library for keyvault service to ease in its use.
 
 ## `v14.2.0`
 

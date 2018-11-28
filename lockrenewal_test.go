@@ -22,12 +22,12 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second*300)
 			defer cancel()
-			cleanup := makeQueue(ctx, t, ns, queueName)
+			lockDuration := 30 * time.Second
+
+			cleanup := makeQueue(ctx, t, ns, queueName, QueueEntityWithLockDuration(&lockDuration))
 			q, err := ns.NewQueue(queueName)
 			suite.NoError(err)
-			defer func() {
-				cleanup()
-			}()
+			defer cleanup()
 			testFunc(ctx, t, q)
 			suite.NoError(q.Close(ctx))
 			if !t.Failed() {
@@ -47,8 +47,8 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 	seen := make(map[string]int, numMessages)
 	errs := make(chan error, 1)
 
-	renewEvery := time.Second * 35
-	processingTime := time.Second * 240
+	renewEvery := time.Second * 20
+	processingTime := time.Second * 100
 
 	t.Logf("Sending/receiving %d messages", numMessages)
 

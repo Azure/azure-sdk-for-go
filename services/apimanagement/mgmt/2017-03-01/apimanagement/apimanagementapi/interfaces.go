@@ -176,18 +176,12 @@ type APIIssueCommentsClientAPI interface {
 
 var _ APIIssueCommentsClientAPI = (*apimanagement.APIIssueCommentsClient)(nil)
 
-// APIIssuCommentClientAPI contains the set of methods on the APIIssuCommentClient type.
-type APIIssuCommentClientAPI interface {
-	Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result autorest.Response, err error)
-}
-
-var _ APIIssuCommentClientAPI = (*apimanagement.APIIssuCommentClient)(nil)
-
 // APIIssueCommentClientAPI contains the set of methods on the APIIssueCommentClient type.
 type APIIssueCommentClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string, parameters apimanagement.IssueCommentContract, ifMatch string) (result apimanagement.IssueCommentContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result apimanagement.IssueCommentContract, err error)
+	Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result autorest.Response, err error)
 }
 
 var _ APIIssueCommentClientAPI = (*apimanagement.APIIssueCommentClient)(nil)
@@ -199,18 +193,12 @@ type APIIssueAttachmentsClientAPI interface {
 
 var _ APIIssueAttachmentsClientAPI = (*apimanagement.APIIssueAttachmentsClient)(nil)
 
-// APIIssuAttachmentClientAPI contains the set of methods on the APIIssuAttachmentClient type.
-type APIIssuAttachmentClientAPI interface {
-	Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error)
-}
-
-var _ APIIssuAttachmentClientAPI = (*apimanagement.APIIssuAttachmentClient)(nil)
-
 // APIIssueAttachmentClientAPI contains the set of methods on the APIIssueAttachmentClient type.
 type APIIssueAttachmentClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, parameters apimanagement.IssueAttachmentContract, ifMatch string) (result apimanagement.IssueAttachmentContract, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, ifMatch string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result apimanagement.IssueAttachmentContract, err error)
+	Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error)
 }
 
 var _ APIIssueAttachmentClientAPI = (*apimanagement.APIIssueAttachmentClient)(nil)

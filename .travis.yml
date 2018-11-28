@@ -38,6 +38,7 @@ jobs:
     - export GO111MODULE=on
     - make test-cover
     - goveralls -coverprofile=cover.out -service=travis-ci
+    - make destroy-sb
 script:
   - export GO111MODULE=on
   - make

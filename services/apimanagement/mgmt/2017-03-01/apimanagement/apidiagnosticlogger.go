@@ -142,7 +142,7 @@ func (client APIDiagnosticLoggerClient) CheckEntityExistsResponder(resp *http.Re
 	return
 }
 
-// CreateOrUpdate attaches a logger to a diagnostic for an API.
+// CreateOrUpdate attaches a logger to a dignostic for an API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -345,7 +345,7 @@ func (client APIDiagnosticLoggerClient) DeleteResponder(resp *http.Response) (re
 	return
 }
 
-// ListByService lists all loggers associated with the specified Diagnostic of an API.
+// ListByService lists all loggers assosiated with the specified Diagnostic of an API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

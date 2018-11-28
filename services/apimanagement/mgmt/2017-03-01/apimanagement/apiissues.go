@@ -41,7 +41,7 @@ func NewAPIIssuesClientWithBaseURI(baseURI string, subscriptionID string) APIIss
 	return APIIssuesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByService lists all issues associated with the specified API.
+// ListByService lists all issues assosiated with the specified API.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

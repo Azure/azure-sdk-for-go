@@ -29,6 +29,8 @@ type APIClient = original.APIClient
 type APIDiagnosticClient = original.APIDiagnosticClient
 type APIDiagnosticLoggerClient = original.APIDiagnosticLoggerClient
 type APIExportClient = original.APIExportClient
+type APIIssuAttachmentClient = original.APIIssuAttachmentClient
+type APIIssuCommentClient = original.APIIssuCommentClient
 type APIIssueClient = original.APIIssueClient
 type APIIssueAttachmentClient = original.APIIssueAttachmentClient
 type APIIssueAttachmentsClient = original.APIIssueAttachmentsClient
@@ -668,6 +670,18 @@ func NewAPIExportClient(subscriptionID string) APIExportClient {
 }
 func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExportClient {
 	return original.NewAPIExportClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIIssuAttachmentClient(subscriptionID string) APIIssuAttachmentClient {
+	return original.NewAPIIssuAttachmentClient(subscriptionID)
+}
+func NewAPIIssuAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuAttachmentClient {
+	return original.NewAPIIssuAttachmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIIssuCommentClient(subscriptionID string) APIIssuCommentClient {
+	return original.NewAPIIssuCommentClient(subscriptionID)
+}
+func NewAPIIssuCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuCommentClient {
+	return original.NewAPIIssuCommentClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAPIIssueClient(subscriptionID string) APIIssueClient {
 	return original.NewAPIIssueClient(subscriptionID)

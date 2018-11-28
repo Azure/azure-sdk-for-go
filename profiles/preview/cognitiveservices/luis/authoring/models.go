@@ -23,7 +23,6 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2
 
 type AppsClient = original.AppsClient
 type BaseClient = original.BaseClient
-type DispatchClient = original.DispatchClient
 type ExamplesClient = original.ExamplesClient
 type FeaturesClient = original.FeaturesClient
 type ModelClient = original.ModelClient
@@ -226,6 +225,7 @@ type ApplicationUpdateObject = original.ApplicationUpdateObject
 type AppVersionSettingObject = original.AppVersionSettingObject
 type AvailableCulture = original.AvailableCulture
 type AvailablePrebuiltEntityModel = original.AvailablePrebuiltEntityModel
+type AzureAccountInfoObject = original.AzureAccountInfoObject
 type BatchLabelExample = original.BatchLabelExample
 type ChildEntity = original.ChildEntity
 type ClosedList = original.ClosedList
@@ -238,8 +238,6 @@ type CompositeChildModelCreateObject = original.CompositeChildModelCreateObject
 type CompositeEntityExtractor = original.CompositeEntityExtractor
 type CompositeEntityModel = original.CompositeEntityModel
 type CustomPrebuiltModel = original.CustomPrebuiltModel
-type DispatchConnectedServiceDeleteObject = original.DispatchConnectedServiceDeleteObject
-type DispatchConnectedServiceObject = original.DispatchConnectedServiceObject
 type EndpointInfo = original.EndpointInfo
 type EnqueueTrainingResponse = original.EnqueueTrainingResponse
 type EntitiesSuggestionExample = original.EntitiesSuggestionExample
@@ -343,6 +341,7 @@ type RegexEntity = original.RegexEntity
 type RegexEntityExtractor = original.RegexEntityExtractor
 type RegexModelCreateObject = original.RegexModelCreateObject
 type RegexModelUpdateObject = original.RegexModelUpdateObject
+type SetObject = original.SetObject
 type SetString = original.SetString
 type String = original.String
 type SubClosedList = original.SubClosedList
@@ -368,9 +367,6 @@ func New(endpoint string) BaseClient {
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
-}
-func NewDispatchClient(endpoint string) DispatchClient {
-	return original.NewDispatchClient(endpoint)
 }
 func NewExamplesClient(endpoint string) ExamplesClient {
 	return original.NewExamplesClient(endpoint)

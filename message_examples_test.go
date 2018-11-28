@@ -9,7 +9,7 @@ import (
 )
 
 func ExampleMessage_ScheduleAt() {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute+40*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
@@ -32,6 +32,9 @@ func ExampleMessage_ScheduleAt() {
 		return
 	}
 
+	// purge all of the existing messages in the queue
+	purgeMessages(ns)
+
 	// The delay that we should schedule a message for.
 	const waitTime = 1 * time.Minute
 	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll buffer our expectations
@@ -50,14 +53,14 @@ func ExampleMessage_ScheduleAt() {
 
 	err = client.ReceiveOne(
 		ctx,
-		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+		servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
 			received := time.Now()
 			if received.Before(expectedTime.Add(buffer)) && received.After(expectedTime.Add(-buffer)) {
 				fmt.Println("Received when expected!")
 			} else {
 				fmt.Println("Received outside the expected window.")
 			}
-			return msg.Complete()
+			return msg.Complete(ctx)
 		}))
 	if err != nil {
 		fmt.Println("FATAL: ", err)
@@ -65,4 +68,16 @@ func ExampleMessage_ScheduleAt() {
 	}
 
 	// Output: Received when expected!
+}
+
+func purgeMessages(ns *servicebus.Namespace) {
+	purgeCtx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	client, _ := ns.NewQueue("scheduledmessages")
+	defer func() {
+		_ = client.Close(purgeCtx)
+	}()
+	defer cancel()
+	_ = client.Receive(purgeCtx, servicebus.HandlerFunc(func(ctx context.Context, msg *servicebus.Message) error {
+		return msg.Complete(ctx)
+	}))
 }

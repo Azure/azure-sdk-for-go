@@ -134,6 +134,9 @@ func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Mes
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
 func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
 	defer span.Finish()
@@ -146,6 +149,11 @@ func (s *Subscription) ReceiveOne(ctx context.Context, handler Handler) error {
 }
 
 // Receive subscribes for messages sent to the Subscription
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
 	defer span.Finish()
@@ -159,6 +167,11 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 }
 
 // ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (s *Subscription) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()

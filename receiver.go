@@ -24,7 +24,6 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go"
@@ -36,18 +35,19 @@ import (
 // receiver provides session and link handling for a receiving entity path
 type (
 	receiver struct {
-		namespace   *Namespace
-		connection  *amqp.Client
-		session     *session
-		receiver    *amqp.Receiver
-		entityPath  string
-		done        func()
-		Name        string
-		useSessions bool
-		sessionID   *string
-		lastError   error
-		mode        ReceiveMode
-		prefetch    uint32
+		namespace          *Namespace
+		connection         *amqp.Client
+		session            *session
+		receiver           *amqp.Receiver
+		entityPath         string
+		done               func()
+		Name               string
+		useSessions        bool
+		sessionID          *string
+		lastError          error
+		mode               ReceiveMode
+		prefetch           uint32
+		DefaultDisposition DispositionAction
 	}
 
 	// receiverOption provides a structure for configuring receivers
@@ -171,17 +171,33 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
 
-	dispositionAction := handler.Handle(ctx, event)
+	if err := handler.Handle(ctx, event); err != nil {
+		// stop handling messages since the message consumer ran into an unexpected error
+		r.lastError = err
+		r.done()
+		return
+	}
 
+	// nothing more to be done. The message was settled when it was accepted by the receiver
 	if r.mode == ReceiveAndDeleteMode {
 		return
 	}
 
-	if dispositionAction != nil {
-		dispositionAction(ctx)
-	} else {
-		log.For(ctx).Info(fmt.Sprintf("disposition action not provided auto accepted message id %q", id))
-		event.Complete()
+	// nothing more to be done. The receiver has no default disposition, so the handler is solely responsible for
+	// disposition
+	if r.DefaultDisposition == nil {
+		return
+	}
+
+	// default disposition is set, so try to send the disposition. If the message disposition has already been set, the
+	// underlying AMQP library will ignore the second disposition respecting the disposition of the handler func.
+	if err := r.DefaultDisposition(ctx); err != nil {
+		// if an error is returned by the default disposition, then we must alert the message consumer as we can't
+		// be sure the final message disposition.
+		log.For(ctx).Error(err)
+		r.lastError = err
+		r.done()
+		return
 	}
 }
 
@@ -227,7 +243,9 @@ func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 			if retryErr != nil {
 				log.For(ctx).Debug("retried, but error was unrecoverable")
 				r.lastError = retryErr
-				r.Close(ctx)
+				if err := r.Close(ctx); err != nil {
+					log.For(ctx).Error(err)
+				}
 				return
 			}
 		}

@@ -273,9 +273,9 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
 		inner, cancel := context.WithCancel(ctx)
-		err := sub.Receive(inner, HandlerFunc(func(eventCtx context.Context, msg *Message) DispositionAction {
+		err := sub.Receive(inner, HandlerFunc(func(eventCtx context.Context, msg *Message) error {
 			defer cancel()
-			return msg.Complete()
+			return msg.Complete(ctx)
 		}))
 		assert.EqualError(t, err, context.Canceled.Error())
 	}
@@ -283,8 +283,8 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 
 func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
-		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
-			return msg.Complete()
+		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
+			return msg.Complete(ctx)
 		}))
 		assert.NoError(t, err)
 	}

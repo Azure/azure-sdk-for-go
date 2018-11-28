@@ -56,7 +56,7 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 	go func() {
 		inner, cancel := context.WithCancel(ctx)
 		numSeen := 0
-		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			numSeen++
 			seen[string(msg.Data)]++
 
@@ -64,9 +64,9 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 			if numSeen >= numMessages {
 				cancel()
 			}
-			return func(ctx context.Context) {
-				//Do nothing as we want the message to remain in an uncompleted state.
-			}
+
+			// Do nothing as we want the message to remain in an uncompleted state.
+			return nil
 		}))
 	}()
 
@@ -103,7 +103,7 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 
 	// Then finally accept all the messages we're holding locks on
 	for _, msg := range activeMessages {
-		msg.Complete()(ctx)
+		assert.NoError(t, msg.Complete(ctx))
 	}
 
 	//Check for any errors

@@ -14,7 +14,9 @@ import (
 )
 
 func init() {
-	godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("FATAL: ", err)
+	}
 }
 
 func ExampleQueue_getOrBuildQueue() {
@@ -76,14 +78,16 @@ func ExampleQueue_Send() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	client.Send(ctx, servicebus.NewMessageFromString("Hello World!!!"))
+	if err := client.Send(ctx, servicebus.NewMessageFromString("Hello World!!!")); err != nil {
+		fmt.Println("FATAL: ", err)
+	}
 }
 
 func ExampleQueue_Receive() {
 	// Define a function that should be executed when a message is received.
-	var printMessage servicebus.HandlerFunc = func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+	var printMessage servicebus.HandlerFunc = func(ctx context.Context, msg *servicebus.Message) error {
 		fmt.Println(string(msg.Data))
-		return msg.Complete()
+		return msg.Complete(ctx)
 	}
 
 	// Instantiate the clients needed to communicate with a Service Bus Queue.
@@ -101,7 +105,9 @@ func ExampleQueue_Receive() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
 
-	client.Receive(ctx, printMessage)
+	if err := client.Receive(ctx, printMessage); err != nil {
+		fmt.Println("FATAL: ", err)
+	}
 }
 
 func ExampleQueue_scheduleAndCancelMessages() {
@@ -129,11 +135,6 @@ func ExampleQueue_scheduleAndCancelMessages() {
 
 	// The delay that we should schedule a message for.
 	const waitTime = 1 * time.Minute
-
-	// Service Bus guarantees roughly a one minute window. So that our tests aren't flaky, we'll buffer our expectations
-	// on either side.
-	const buffer = 20 * time.Second
-
 	expectedTime := time.Now().Add(waitTime)
 	msg := servicebus.NewMessageFromString("to the future!!")
 
@@ -274,7 +275,7 @@ func (sp *SessionPrinter) Start(ms *servicebus.MessageSession) error {
 	return nil
 }
 
-func (sp *SessionPrinter) Handle(_ context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+func (sp *SessionPrinter) Handle(ctx context.Context, msg *servicebus.Message) error {
 	sp.builder.Write(msg.Data)
 
 	sp.messagesReceived++
@@ -283,7 +284,7 @@ func (sp *SessionPrinter) Handle(_ context.Context, msg *servicebus.Message) ser
 		defer sp.messageSession.Close()
 	}
 
-	return msg.Complete()
+	return msg.Complete(ctx)
 }
 
 func (sp *SessionPrinter) End() {

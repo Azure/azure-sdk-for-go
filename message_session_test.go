@@ -54,10 +54,10 @@ func (suite *serviceBusSuite) TestMessageSession() {
 
 			suite.Require().NoError(q.Send(ctx, msg))
 			err = q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
-				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+				HandlerFunc(func(ctx context.Context, msg *Message) error {
 					defer cancel()
 					assert.Equal(t, string(msg.Data), want)
-					return msg.Complete()
+					return msg.Complete(ctx)
 				}),
 				func(ms *MessageSession) error {
 					testFunc(ctx, t, ms)

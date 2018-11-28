@@ -449,16 +449,16 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 			fail := true
 
 			errs <- q.Receive(inner,
-				HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+				HandlerFunc(func(ctx context.Context, msg *Message) error {
 					assert.EqualValues(t, payload, string(msg.Data))
 					if fail {
 						fail = false
 						assert.EqualValues(t, 1, msg.DeliveryCount)
-						return msg.Abandon()
+						return msg.Abandon(ctx)
 					}
 					assert.EqualValues(t, 2, msg.DeliveryCount)
 					cancel()
-					return msg.Complete()
+					return msg.Complete(ctx)
 				}))
 		}()
 
@@ -475,7 +475,7 @@ func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
 func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
 		err := q.ReceiveOne(context.Background(),
-			HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+			HandlerFunc(func(ctx context.Context, msg *Message) error {
 				sp := msg.SystemProperties
 				assert.NotNil(t, sp.LockedUntil, "LockedUntil")
 				assert.NotNil(t, sp.EnqueuedSequenceNumber, "EnqueuedSequenceNumber")
@@ -483,7 +483,7 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 				assert.NotNil(t, sp.SequenceNumber, "SequenceNumber")
 				assert.NotNil(t, sp.PartitionID, "PartitionID")
 				assert.NotNil(t, sp.PartitionKey, "PartitionKey")
-				return msg.Complete()
+				return msg.Complete(ctx)
 			}))
 
 		assert.NoError(t, err)
@@ -519,7 +519,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	inner, cancel := context.WithCancel(ctx)
 
 	var all []*Message
-	err := queue.Receive(inner, HandlerFunc(func(ctx context.Context, message *Message) DispositionAction {
+	err := queue.Receive(inner, HandlerFunc(func(ctx context.Context, message *Message) error {
 		all = append(all, message)
 		if _, ok := received[message.ID]; !ok {
 			// caught a new one
@@ -534,7 +534,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 		if len(all) == len(messages) {
 			cancel()
 		}
-		return message.Complete()
+		return message.Complete(ctx)
 	}))
 	assert.EqualError(t, err, context.Canceled.Error())
 }
@@ -578,7 +578,7 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	go func() {
 		inner, cancel := context.WithCancel(ctx)
 		numSeen := 0
-		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) DispositionAction {
+		errs <- queue.Receive(inner, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			numSeen++
 			seen[string(msg.Data)]++
 			if numSeen >= numMessages {

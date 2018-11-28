@@ -327,6 +327,9 @@ func (q *Queue) PeekOne(ctx context.Context, options ...PeekOption) (*Message, e
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
 func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
 	defer span.Finish()
@@ -340,6 +343,11 @@ func (q *Queue) ReceiveOne(ctx context.Context, handler Handler) error {
 
 // Receive subscribes for messages sent to the Queue. If the messages not within a session, messages will arrive
 // unordered.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
 	defer span.Finish()
@@ -356,6 +364,11 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 
 // ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
 // The session can contain multiple messages. ReceiveOneSession will receive all messages within that session.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -392,6 +405,11 @@ func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handle
 
 // ReceiveSessions is the session-based counterpart of `Receive`. It subscribes to a Queue and waits for new sessions to
 // become available.
+//
+// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
+// have a disposition set, the Queue's DefaultDisposition will be used.
+//
+// If the handler returns an error, the receive loop will be terminated.
 func (q *Queue) ReceiveSessions(ctx context.Context, handler SessionHandler) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveSessions")
 	defer span.Finish()

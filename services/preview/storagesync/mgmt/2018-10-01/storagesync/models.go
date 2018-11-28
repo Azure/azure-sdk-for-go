@@ -178,6 +178,25 @@ func PossibleOfflineDataTransfer2Values() []OfflineDataTransfer2 {
 	return []OfflineDataTransfer2{OfflineDataTransfer2Off, OfflineDataTransfer2On}
 }
 
+// OfflineDataTransferStatus enumerates the values for offline data transfer status.
+type OfflineDataTransferStatus string
+
+const (
+	// Complete ...
+	Complete OfflineDataTransferStatus = "Complete"
+	// InProgress ...
+	InProgress OfflineDataTransferStatus = "InProgress"
+	// NotRunning ...
+	NotRunning OfflineDataTransferStatus = "NotRunning"
+	// Stopping ...
+	Stopping OfflineDataTransferStatus = "Stopping"
+)
+
+// PossibleOfflineDataTransferStatusValues returns an array of possible values for the OfflineDataTransferStatus const type.
+func PossibleOfflineDataTransferStatusValues() []OfflineDataTransferStatus {
+	return []OfflineDataTransferStatus{Complete, InProgress, NotRunning, Stopping}
+}
+
 // Operation enumerates the values for operation.
 type Operation string
 
@@ -1526,6 +1545,8 @@ type ServerEndpointHealth struct {
 	DownloadStatus *SyncSessionStatus `json:"downloadStatus,omitempty"`
 	// CurrentProgress - Current progress
 	CurrentProgress *SyncProgressStatus `json:"currentProgress,omitempty"`
+	// OfflineDataTransferStatus - Offline Data Transfer State. Possible values include: 'InProgress', 'Stopping', 'NotRunning', 'Complete'
+	OfflineDataTransferStatus OfflineDataTransferStatus `json:"offlineDataTransferStatus,omitempty"`
 }
 
 // ServerEndpointProperties serverEndpoint Properties object.

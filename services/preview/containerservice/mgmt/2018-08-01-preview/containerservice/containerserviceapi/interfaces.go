@@ -27,6 +27,8 @@ type OpenShiftManagedClustersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.OpenShiftManagedCluster) (result containerservice.OpenShiftManagedClustersCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.OpenShiftManagedClustersDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.OpenShiftManagedCluster, err error)
+	List(ctx context.Context) (result containerservice.OpenShiftManagedClusterListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result containerservice.OpenShiftManagedClusterListResultPage, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.TagsObject) (result containerservice.OpenShiftManagedClustersUpdateTagsFuture, err error)
 }
 

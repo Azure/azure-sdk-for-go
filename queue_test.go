@@ -638,8 +638,8 @@ func (suite *serviceBusSuite) TestIssue73QueueClient() {
 			if !t.Failed() {
 
 			}
-			if !t.Failed() && name != "SimpleSend200" {
-				checkZeroQueueMessages(ctx, t, ns, queueName)
+			if !t.Failed() {
+				checkMessageCount(ctx, t, ns, queueName, 200)
 			}
 		}
 

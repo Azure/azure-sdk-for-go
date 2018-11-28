@@ -2417,7 +2417,7 @@ func (asco *AppServiceCertificateOrder) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AppServiceCertificateOrderCollection collection of certitificate orders.
+// AppServiceCertificateOrderCollection collection of certificate orders.
 type AppServiceCertificateOrderCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.

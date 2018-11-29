@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-service-bus-go"
-	"os"
+	"github.com/opentracing/opentracing-go/log"
 )
 
 func ExampleMessageIterator() {
@@ -16,8 +16,7 @@ func ExampleMessageIterator() {
 	for !subject.Done() {
 		cursor, err := subject.Next(context.Background())
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "FATAL: ", err)
-			return
+			log.Error(err)
 		}
 		fmt.Println(string(cursor.Data))
 	}

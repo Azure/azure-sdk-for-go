@@ -41,7 +41,7 @@ func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
 
 func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, queue *Queue) {
 	ttl := 5 * time.Minute
-	numMessages := rand.Intn(100) + 20
+	numMessages := rand.Intn(40) + 20
 	activeMessages := make([]*Message, 0, numMessages)
 	expected := make(map[string]int, numMessages)
 	seen := make(map[string]int, numMessages)

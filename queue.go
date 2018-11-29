@@ -452,7 +452,11 @@ func (q *Queue) Close(ctx context.Context) error {
 
 	if q.receiver != nil {
 		if err := q.receiver.Close(ctx); err != nil {
-			_ = q.sender.Close(ctx)
+			if q.sender != nil {
+				if err := q.sender.Close(ctx); err != nil {
+					log.For(ctx).Error(err)
+				}
+			}
 			log.For(ctx).Error(err)
 			return err
 		}

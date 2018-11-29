@@ -494,11 +494,13 @@ const (
 	LiveEventEncodingTypeBasic LiveEventEncodingType = "Basic"
 	// LiveEventEncodingTypeNone ...
 	LiveEventEncodingTypeNone LiveEventEncodingType = "None"
+	// LiveEventEncodingTypeStandard ...
+	LiveEventEncodingTypeStandard LiveEventEncodingType = "Standard"
 )
 
 // PossibleLiveEventEncodingTypeValues returns an array of possible values for the LiveEventEncodingType const type.
 func PossibleLiveEventEncodingTypeValues() []LiveEventEncodingType {
-	return []LiveEventEncodingType{LiveEventEncodingTypeBasic, LiveEventEncodingTypeNone}
+	return []LiveEventEncodingType{LiveEventEncodingTypeBasic, LiveEventEncodingTypeNone, LiveEventEncodingTypeStandard}
 }
 
 // LiveEventInputProtocol enumerates the values for live event input protocol.
@@ -6666,7 +6668,7 @@ type LiveEventActionInput struct {
 
 // LiveEventEncoding the Live Event encoding.
 type LiveEventEncoding struct {
-	// EncodingType - The encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'LiveEventEncodingTypeNone', 'LiveEventEncodingTypeBasic'
+	// EncodingType - The encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'LiveEventEncodingTypeNone', 'LiveEventEncodingTypeBasic', 'LiveEventEncodingTypeStandard'
 	EncodingType LiveEventEncodingType `json:"encodingType,omitempty"`
 	// PresetName - The encoding preset name.  This value is specified at creation time and cannot be updated.
 	PresetName *string `json:"presetName,omitempty"`

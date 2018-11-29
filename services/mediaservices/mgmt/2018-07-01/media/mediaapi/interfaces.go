@@ -104,7 +104,7 @@ type TransformsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters media.Transform) (result media.Transform, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result media.Transform, err error)
-	List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32) (result media.TransformCollectionPage, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, filter string, orderby string) (result media.TransformCollectionPage, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters media.Transform) (result media.Transform, err error)
 }
 
@@ -116,7 +116,7 @@ type JobsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters media.Job) (result media.Job, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result media.Job, err error)
-	List(ctx context.Context, resourceGroupName string, accountName string, transformName string, filter string, top *int32, skip *int32) (result media.JobCollectionPage, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, transformName string, filter string, orderby string) (result media.JobCollectionPage, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters media.Job) (result media.Job, err error)
 }
 

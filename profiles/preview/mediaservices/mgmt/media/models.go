@@ -241,8 +241,9 @@ const (
 type LiveEventEncodingType = original.LiveEventEncodingType
 
 const (
-	LiveEventEncodingTypeBasic LiveEventEncodingType = original.LiveEventEncodingTypeBasic
-	LiveEventEncodingTypeNone  LiveEventEncodingType = original.LiveEventEncodingTypeNone
+	LiveEventEncodingTypeBasic    LiveEventEncodingType = original.LiveEventEncodingTypeBasic
+	LiveEventEncodingTypeNone     LiveEventEncodingType = original.LiveEventEncodingTypeNone
+	LiveEventEncodingTypeStandard LiveEventEncodingType = original.LiveEventEncodingTypeStandard
 )
 
 type LiveEventInputProtocol = original.LiveEventInputProtocol

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// AddsServicesReplicationStatusClient is the REST APIs for Azure Active Drectory Connect Health
+// AddsServicesReplicationStatusClient is the REST APIs for Azure Active Directory Connect Health
 type AddsServicesReplicationStatusClient struct {
 	BaseClient
 }

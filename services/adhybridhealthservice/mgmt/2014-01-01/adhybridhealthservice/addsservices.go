@@ -27,7 +27,7 @@ import (
 	"net/http"
 )
 
-// AddsServicesClient is the REST APIs for Azure Active Drectory Connect Health
+// AddsServicesClient is the REST APIs for Azure Active Directory Connect Health
 type AddsServicesClient struct {
 	BaseClient
 }

@@ -225,7 +225,7 @@ const (
 	// AdaptiveStreaming Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio.
 	// Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset
 	// will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output
-	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will will have video and
+	// will remain 720p at best, and will start at rates lower than 3 Mbps. The output will have video and
 	// audio in separate MP4 files, which is optimal for adaptive streaming.
 	AdaptiveStreaming EncoderNamedPreset = "AdaptiveStreaming"
 	// H264MultipleBitrate1080p Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps,
@@ -3747,7 +3747,7 @@ type CrossSiteAccessPolicies struct {
 
 // DefaultKey class to specify properties of default content key for each encryption scheme
 type DefaultKey struct {
-	// Label - Label can be used to specify Content Key when creating Stremaing Locator
+	// Label - Label can be used to specify Content Key when creating Streaming Locator
 	Label *string `json:"label,omitempty"`
 	// PolicyName - Policy used by Default Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -3792,7 +3792,7 @@ type EnvelopeEncryption struct {
 	ClearTracks *[]TrackSelection `json:"clearTracks,omitempty"`
 	// ContentKeys - Representing default content key for each encryption scheme and separate content keys for specific tracks
 	ContentKeys *StreamingPolicyContentKeys `json:"contentKeys,omitempty"`
-	// CustomLicenseAcquisitionURLTemplate - LicenseAcquistionUrlTemplate is used to point to user speicified service to delivery content keys
+	// CustomLicenseAcquisitionURLTemplate - LicenseAcquisitionUrlTemplate is used to point to user specified service to delivery content keys
 	CustomLicenseAcquisitionURLTemplate *string `json:"customLicenseAcquisitionUrlTemplate,omitempty"`
 }
 
@@ -5150,7 +5150,7 @@ func (jih JobInputHTTP) AsBasicJobInput() (BasicJobInput, bool) {
 	return &jih, true
 }
 
-// JobInputs describes a list of of inputs to a Job.
+// JobInputs describes a list of inputs to a Job.
 type JobInputs struct {
 	// Inputs - List of inputs to a Job.
 	Inputs *[]BasicJobInput `json:"inputs,omitempty"`
@@ -8697,7 +8697,7 @@ type StreamingLocatorContentKey struct {
 	Type StreamingLocatorContentKeyType `json:"type,omitempty"`
 	// ID - ID of Content Key
 	ID *uuid.UUID `json:"id,omitempty"`
-	// Value - Value of  of Content Key
+	// Value - Value of Content Key
 	Value *string `json:"value,omitempty"`
 	// PolicyName - ContentKeyPolicy used by Content Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -8975,7 +8975,7 @@ func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, Streamin
 
 // StreamingPolicyContentKey class to specify properties of content key
 type StreamingPolicyContentKey struct {
-	// Label - Label can be used to specify Content Key when creating Stremaing Locator
+	// Label - Label can be used to specify Content Key when creating Streaming Locator
 	Label *string `json:"label,omitempty"`
 	// PolicyName - Policy used by Content Key
 	PolicyName *string `json:"policyName,omitempty"`
@@ -8987,7 +8987,7 @@ type StreamingPolicyContentKey struct {
 type StreamingPolicyContentKeys struct {
 	// DefaultKey - Default content key for an encryption scheme
 	DefaultKey *DefaultKey `json:"defaultKey,omitempty"`
-	// KeyToTrackMappings - Representing tracks needs sepearete content key
+	// KeyToTrackMappings - Representing tracks needs separate content key
 	KeyToTrackMappings *[]StreamingPolicyContentKey `json:"keyToTrackMappings,omitempty"`
 }
 
@@ -9019,7 +9019,7 @@ type StreamingPolicyProperties struct {
 	CommonEncryptionCenc *CommonEncryptionCenc `json:"commonEncryptionCenc,omitempty"`
 	// CommonEncryptionCbcs - Configuration of CommonEncryptionCbcs
 	CommonEncryptionCbcs *CommonEncryptionCbcs `json:"commonEncryptionCbcs,omitempty"`
-	// NoEncryption - Configuations of NoEncryption
+	// NoEncryption - Configuration of NoEncryption
 	NoEncryption *NoEncryption `json:"noEncryption,omitempty"`
 }
 
@@ -9333,7 +9333,7 @@ type TrackPropertyCondition struct {
 	Property TrackPropertyType `json:"property,omitempty"`
 	// Operation - Track property condition operation. Possible values include: 'TrackPropertyCompareOperationUnknown', 'TrackPropertyCompareOperationEqual'
 	Operation TrackPropertyCompareOperation `json:"operation,omitempty"`
-	// Value - Track proprty value
+	// Value - Track property value
 	Value *string `json:"value,omitempty"`
 }
 

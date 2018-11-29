@@ -25,121 +25,98 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/marstr/collection"
 )
 
-// LatestStrategy evaluates the Azure-SDK-for-Go repository for the latest available API versions of each service.
-type LatestStrategy struct {
-	Root          string
-	Predicate     func(packageName string) bool
-	VerboseOutput *log.Logger
-}
-
-// AcceptAll is a predefined value for `LatestStrategy.Predicate` which always returns true.
-func AcceptAll(name string) bool {
+func acceptAll(name string) bool {
 	return true
 }
 
-// IgnorePreview searches a packages "API Version" to see if it contains the word "preview". It only returns true when a package is not a preview.
-func IgnorePreview(name string) (result bool) {
+func ignorePreview(name string) (result bool) {
 	matches := packageName.FindStringSubmatch(name)
 	version := matches[3]
 	result = !strings.Contains(version, "-preview") && !strings.Contains(version, "-beta") // matches[2] is the `version` group
 	return
 }
 
-// Enumerate scans through the known Azure SDK for Go packages and finds each
-func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
-	results := make(chan interface{})
+func GetLatestPackages(rootDir string, includePreview bool, verboseLog *log.Logger) (ListDefinition, error) {
+	type operationGroup struct {
+		provider string
+		arm      string
+		group    string
+	}
 
-	go func() {
-		defer close(results)
+	type operInfo struct {
+		version string
+		rawpath string
+	}
 
-		type operationGroup struct {
-			provider string
-			arm      string
-			group    string
-		}
+	predicate := ignorePreview
+	if includePreview {
+		predicate = acceptAll
+	}
 
-		type operInfo struct {
-			version string
-			rawpath string
-		}
+	maxFound := make(map[operationGroup]operInfo)
 
-		if latest.VerboseOutput == nil {
-			latest.VerboseOutput = log.New(ioutil.Discard, "", 0)
-		}
-
-		maxFound := make(map[operationGroup]operInfo)
-
-		filepath.Walk(latest.Root, func(currentPath string, info os.FileInfo, openErr error) (err error) {
-			pathMatches := packageName.FindStringSubmatch(currentPath)
-
-			if latest.Predicate == nil {
-				latest.Predicate = AcceptAll
-			}
-
-			if len(pathMatches) == 0 || !info.IsDir() {
-				return
-			} else if !latest.Predicate(currentPath) {
-				latest.VerboseOutput.Printf("%q rejected by Predicate", currentPath)
-				return
-			}
-
-			version := pathMatches[3]
-			currentGroup := operationGroup{
-				provider: pathMatches[1],
-				arm:      pathMatches[2],
-				group:    pathMatches[4],
-			}
-
-			prev, ok := maxFound[currentGroup]
-			if !ok {
-				maxFound[currentGroup] = operInfo{version, currentPath}
-				latest.VerboseOutput.Printf("New group found %q using version %q", currentGroup, version)
-				return
-			}
-
-			if le, _ := VersionLE(prev.version, version); le {
-				maxFound[currentGroup] = operInfo{version, currentPath}
-				latest.VerboseOutput.Printf("Updating group %q from version %q to %q", currentGroup, prev.version, version)
-			} else {
-				latest.VerboseOutput.Printf("Evaluated group %q version %q decided to stay with %q", currentGroup, version, prev.version)
-			}
-
+	filepath.Walk(rootDir, func(currentPath string, info os.FileInfo, openErr error) (err error) {
+		pathMatches := packageName.FindStringSubmatch(currentPath)
+		if len(pathMatches) == 0 || !info.IsDir() {
 			return
-		})
+		} else if !predicate(currentPath) {
+			verboseLog.Printf("%q rejected by Predicate", currentPath)
+			return
+		}
 
-		for _, entry := range maxFound {
-			absolute, err := filepath.Abs(entry.rawpath)
-			if err != nil {
-				continue
-			}
+		version := pathMatches[3]
+		currentGroup := operationGroup{
+			provider: pathMatches[1],
+			arm:      pathMatches[2],
+			group:    pathMatches[4],
+		}
 
-			select {
-			case results <- absolute:
-				// Intionally Left Blank
-			case <-cancel:
-				return
+		prev, ok := maxFound[currentGroup]
+		if !ok {
+			maxFound[currentGroup] = operInfo{version, currentPath}
+			verboseLog.Printf("New group found %q using version %q", currentGroup, version)
+			return
+		}
+
+		if le, _ := versionLE(prev.version, version); le {
+			maxFound[currentGroup] = operInfo{version, currentPath}
+			verboseLog.Printf("Updating group %q from version %q to %q", currentGroup, prev.version, version)
+		} else {
+			verboseLog.Printf("Evaluated group %q version %q decided to stay with %q", currentGroup, version, prev.version)
+		}
+
+		return
+	})
+
+	listDef := ListDefinition{
+		Include: []string{},
+	}
+	for _, entry := range maxFound {
+		absolute, err := filepath.Abs(entry.rawpath)
+		if err != nil {
+			return listDef, err
+		}
+		// ensure the directory actually contains files
+		entries, err := ioutil.ReadDir(absolute)
+		if err != nil {
+			return listDef, err
+		}
+		for _, entry := range entries {
+			if !entry.IsDir() {
+				listDef.Include = append(listDef.Include, absolute)
+				break
 			}
 		}
-	}()
-
-	return results
+	}
+	return listDef, nil
 }
 
-// ErrNotVersionString is instantiated when a string not conforming to known Azure API Version patterns is parsed is if it did.
-type ErrNotVersionString string
-
-func (err ErrNotVersionString) Error() string {
-	return fmt.Sprintf("`%s` is not a recognized Azure version string", string(err))
-}
-
-// VersionLE takes two version strings that share a format and returns true if the one on the
+// versionLE takes two version strings that share a format and returns true if the one on the
 // left is less than or equal to the one on the right. If the two do not match in format, or
 // are not in a well known format, this will return false and an error.
-var VersionLE = func() func(string, string) (bool, error) {
+var versionLE = func() func(string, string) (bool, error) {
 	wellKnownStrategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
 		// The strategy below handles Azure API Versions which have a date optionally followed by some tag.
 		regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`): func(leftMatch, rightMatch []string) (bool, error) {
@@ -174,7 +151,7 @@ var VersionLE = func() func(string, string) (bool, error) {
 			return true, nil
 		},
 		// The strategy below compares two semvers.
-		regexp.MustCompile(`(?P<major>\d+)\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*)`): func(leftMatch, rightMatch []string) (bool, error) {
+		regexp.MustCompile(`(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*))?`): func(leftMatch, rightMatch []string) (bool, error) {
 			for i := 1; i <= 3; i++ {
 				if len(leftMatch[i]) == 0 || len(rightMatch[i]) == 0 {
 					return leftMatch[i] <= rightMatch[i], nil

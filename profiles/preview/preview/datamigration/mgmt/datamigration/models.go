@@ -41,6 +41,18 @@ const (
 	WindowsAuthentication     AuthenticationType = original.WindowsAuthentication
 )
 
+type BackupFileStatus = original.BackupFileStatus
+
+const (
+	Arrived   BackupFileStatus = original.Arrived
+	Cancelled BackupFileStatus = original.Cancelled
+	Queued    BackupFileStatus = original.Queued
+	Restored  BackupFileStatus = original.Restored
+	Restoring BackupFileStatus = original.Restoring
+	Uploaded  BackupFileStatus = original.Uploaded
+	Uploading BackupFileStatus = original.Uploading
+)
+
 type BackupMode = original.BackupMode
 
 const (
@@ -73,11 +85,12 @@ const (
 type CommandType = original.CommandType
 
 const (
-	CommandTypeCancel                      CommandType = original.CommandTypeCancel
-	CommandTypeFinish                      CommandType = original.CommandTypeFinish
-	CommandTypeMigrateSyncCompleteDatabase CommandType = original.CommandTypeMigrateSyncCompleteDatabase
-	CommandTypeRestart                     CommandType = original.CommandTypeRestart
-	CommandTypeUnknown                     CommandType = original.CommandTypeUnknown
+	CommandTypeCancel                               CommandType = original.CommandTypeCancel
+	CommandTypeFinish                               CommandType = original.CommandTypeFinish
+	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = original.CommandTypeMigrateSQLServerAzureDbSQLMiComplete
+	CommandTypeMigrateSyncCompleteDatabase          CommandType = original.CommandTypeMigrateSyncCompleteDatabase
+	CommandTypeRestart                              CommandType = original.CommandTypeRestart
+	CommandTypeUnknown                              CommandType = original.CommandTypeUnknown
 )
 
 type DatabaseCompatLevel = original.DatabaseCompatLevel
@@ -113,18 +126,33 @@ const (
 	DatabaseMigrationStageRestore    DatabaseMigrationStage = original.DatabaseMigrationStageRestore
 )
 
+type DatabaseMigrationState = original.DatabaseMigrationState
+
+const (
+	CANCELLED             DatabaseMigrationState = original.CANCELLED
+	COMPLETED             DatabaseMigrationState = original.COMPLETED
+	CUTOVERSTART          DatabaseMigrationState = original.CUTOVERSTART
+	FAILED                DatabaseMigrationState = original.FAILED
+	FULLBACKUPUPLOADSTART DatabaseMigrationState = original.FULLBACKUPUPLOADSTART
+	INITIAL               DatabaseMigrationState = original.INITIAL
+	LOGSHIPPINGSTART      DatabaseMigrationState = original.LOGSHIPPINGSTART
+	POSTCUTOVERCOMPLETE   DatabaseMigrationState = original.POSTCUTOVERCOMPLETE
+	UNDEFINED             DatabaseMigrationState = original.UNDEFINED
+	UPLOADLOGFILESSTART   DatabaseMigrationState = original.UPLOADLOGFILESSTART
+)
+
 type DatabaseState = original.DatabaseState
 
 const (
-	Copying          DatabaseState = original.Copying
-	Emergency        DatabaseState = original.Emergency
-	Offline          DatabaseState = original.Offline
-	OfflineSecondary DatabaseState = original.OfflineSecondary
-	Online           DatabaseState = original.Online
-	Recovering       DatabaseState = original.Recovering
-	RecoveryPending  DatabaseState = original.RecoveryPending
-	Restoring        DatabaseState = original.Restoring
-	Suspect          DatabaseState = original.Suspect
+	DatabaseStateCopying          DatabaseState = original.DatabaseStateCopying
+	DatabaseStateEmergency        DatabaseState = original.DatabaseStateEmergency
+	DatabaseStateOffline          DatabaseState = original.DatabaseStateOffline
+	DatabaseStateOfflineSecondary DatabaseState = original.DatabaseStateOfflineSecondary
+	DatabaseStateOnline           DatabaseState = original.DatabaseStateOnline
+	DatabaseStateRecovering       DatabaseState = original.DatabaseStateRecovering
+	DatabaseStateRecoveryPending  DatabaseState = original.DatabaseStateRecoveryPending
+	DatabaseStateRestoring        DatabaseState = original.DatabaseStateRestoring
+	DatabaseStateSuspect          DatabaseState = original.DatabaseStateSuspect
 )
 
 type ErrorType = original.ErrorType
@@ -240,6 +268,7 @@ type MySQLTargetPlatformType = original.MySQLTargetPlatformType
 
 const (
 	AzureDbForMySQL MySQLTargetPlatformType = original.AzureDbForMySQL
+	SQLServer       MySQLTargetPlatformType = original.SQLServer
 )
 
 type NameCheckFailureReason = original.NameCheckFailureReason
@@ -390,6 +419,15 @@ const (
 	ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput                ResultTypeBasicMigrateSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbTaskOutputResultTypeTableLevelOutput
 )
 
+type ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput                 ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput                         ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrateSQLServerSQLMISyncTaskOutput
+	ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput                ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputResultTypeMigrationLevelOutput
+)
+
 type ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutput
 
 const (
@@ -473,17 +511,17 @@ const (
 type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
 
 const (
-	CANCELLED       SyncDatabaseMigrationReportingState = original.CANCELLED
-	CANCELLING      SyncDatabaseMigrationReportingState = original.CANCELLING
-	COMPLETE        SyncDatabaseMigrationReportingState = original.COMPLETE
-	COMPLETING      SyncDatabaseMigrationReportingState = original.COMPLETING
-	CONFIGURING     SyncDatabaseMigrationReportingState = original.CONFIGURING
-	FAILED          SyncDatabaseMigrationReportingState = original.FAILED
-	INITIALIAZING   SyncDatabaseMigrationReportingState = original.INITIALIAZING
-	READYTOCOMPLETE SyncDatabaseMigrationReportingState = original.READYTOCOMPLETE
-	RUNNING         SyncDatabaseMigrationReportingState = original.RUNNING
-	STARTING        SyncDatabaseMigrationReportingState = original.STARTING
-	UNDEFINED       SyncDatabaseMigrationReportingState = original.UNDEFINED
+	SyncDatabaseMigrationReportingStateCANCELLED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLED
+	SyncDatabaseMigrationReportingStateCANCELLING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCANCELLING
+	SyncDatabaseMigrationReportingStateCOMPLETE        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETE
+	SyncDatabaseMigrationReportingStateCOMPLETING      SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCOMPLETING
+	SyncDatabaseMigrationReportingStateCONFIGURING     SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateCONFIGURING
+	SyncDatabaseMigrationReportingStateFAILED          SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateFAILED
+	SyncDatabaseMigrationReportingStateINITIALIAZING   SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateINITIALIAZING
+	SyncDatabaseMigrationReportingStateREADYTOCOMPLETE SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateREADYTOCOMPLETE
+	SyncDatabaseMigrationReportingStateRUNNING         SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateRUNNING
+	SyncDatabaseMigrationReportingStateSTARTING        SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateSTARTING
+	SyncDatabaseMigrationReportingStateUNDEFINED       SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingStateUNDEFINED
 )
 
 type SyncTableMigrationState = original.SyncTableMigrationState
@@ -513,33 +551,39 @@ const (
 type TaskType = original.TaskType
 
 const (
-	TaskTypeConnectMongoDb                              TaskType = original.TaskTypeConnectMongoDb
-	TaskTypeConnectToSourceMySQL                        TaskType = original.TaskTypeConnectToSourceMySQL
-	TaskTypeConnectToSourceSQLServer                    TaskType = original.TaskTypeConnectToSourceSQLServer
-	TaskTypeConnectToSourceSQLServerSync                TaskType = original.TaskTypeConnectToSourceSQLServerSync
-	TaskTypeConnectToTargetAzureDbForMySQL              TaskType = original.TaskTypeConnectToTargetAzureDbForMySQL
-	TaskTypeConnectToTargetAzureSQLDbMI                 TaskType = original.TaskTypeConnectToTargetAzureSQLDbMI
-	TaskTypeConnectToTargetSQLDb                        TaskType = original.TaskTypeConnectToTargetSQLDb
-	TaskTypeConnectToTargetSQLDbSync                    TaskType = original.TaskTypeConnectToTargetSQLDbSync
-	TaskTypeGetTDECertificatesSQL                       TaskType = original.TaskTypeGetTDECertificatesSQL
-	TaskTypeGetUserTablesAzureSQLDbSync                 TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
-	TaskTypeGetUserTablesSQL                            TaskType = original.TaskTypeGetUserTablesSQL
-	TaskTypeMigrateMongoDb                              TaskType = original.TaskTypeMigrateMongoDb
-	TaskTypeMigrateMySQLAzureDbForMySQLSync             TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
-	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync   TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
-	TaskTypeMigrateSchemaSQLServerSQLDb                 TaskType = original.TaskTypeMigrateSchemaSQLServerSQLDb
-	TaskTypeMigrateSQLServerAzureSQLDbMI                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
-	TaskTypeMigrateSQLServerAzureSQLDbSync              TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
-	TaskTypeMigrateSQLServerSQLDb                       TaskType = original.TaskTypeMigrateSQLServerSQLDb
-	TaskTypeUnknown                                     TaskType = original.TaskTypeUnknown
-	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
-	TaskTypeValidateMigrationInputSQLServerSQLDbSync    TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync
-	TaskTypeValidateMongoDb                             TaskType = original.TaskTypeValidateMongoDb
+	TaskTypeConnectMongoDb                                     TaskType = original.TaskTypeConnectMongoDb
+	TaskTypeConnectToSourceMySQL                               TaskType = original.TaskTypeConnectToSourceMySQL
+	TaskTypeConnectToSourcePostgreSQLSync                      TaskType = original.TaskTypeConnectToSourcePostgreSQLSync
+	TaskTypeConnectToSourceSQLServer                           TaskType = original.TaskTypeConnectToSourceSQLServer
+	TaskTypeConnectToSourceSQLServerSync                       TaskType = original.TaskTypeConnectToSourceSQLServerSync
+	TaskTypeConnectToTargetAzureDbForMySQL                     TaskType = original.TaskTypeConnectToTargetAzureDbForMySQL
+	TaskTypeConnectToTargetAzureDbForPostgreSQLSync            TaskType = original.TaskTypeConnectToTargetAzureDbForPostgreSQLSync
+	TaskTypeConnectToTargetAzureSQLDbMI                        TaskType = original.TaskTypeConnectToTargetAzureSQLDbMI
+	TaskTypeConnectToTargetAzureSQLDbMISyncLRS                 TaskType = original.TaskTypeConnectToTargetAzureSQLDbMISyncLRS
+	TaskTypeConnectToTargetSQLDb                               TaskType = original.TaskTypeConnectToTargetSQLDb
+	TaskTypeConnectToTargetSQLDbSync                           TaskType = original.TaskTypeConnectToTargetSQLDbSync
+	TaskTypeGetTDECertificatesSQL                              TaskType = original.TaskTypeGetTDECertificatesSQL
+	TaskTypeGetUserTablesAzureSQLDbSync                        TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
+	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
+	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
+	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
+	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync          TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
+	TaskTypeMigrateSchemaSQLServerSQLDb                        TaskType = original.TaskTypeMigrateSchemaSQLServerSQLDb
+	TaskTypeMigrateSQLServerAzureSQLDbMI                       TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
+	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
+	TaskTypeMigrateSQLServerAzureSQLDbSync                     TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
+	TaskTypeMigrateSQLServerSQLDb                              TaskType = original.TaskTypeMigrateSQLServerSQLDb
+	TaskTypeUnknown                                            TaskType = original.TaskTypeUnknown
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI        TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
+	TaskTypeValidateMigrationInputSQLServerSQLDbSync           TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync
+	TaskTypeValidateMongoDb                                    TaskType = original.TaskTypeValidateMongoDb
 )
 
 type Type = original.Type
 
 const (
+	TypeMiSQLConnectionInfo      Type = original.TypeMiSQLConnectionInfo
 	TypeMongoDbConnectionInfo    Type = original.TypeMongoDbConnectionInfo
 	TypeMySQLConnectionInfo      Type = original.TypeMySQLConnectionInfo
 	TypePostgreSQLConnectionInfo Type = original.TypePostgreSQLConnectionInfo
@@ -572,6 +616,9 @@ type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
+type AzureActiveDirectoryApp = original.AzureActiveDirectoryApp
+type BackupFileInfo = original.BackupFileInfo
+type BackupSetInfo = original.BackupSetInfo
 type BlobShare = original.BlobShare
 type BasicCommandProperties = original.BasicCommandProperties
 type CommandProperties = original.CommandProperties
@@ -582,6 +629,9 @@ type ConnectToMongoDbTaskProperties = original.ConnectToMongoDbTaskProperties
 type ConnectToSourceMySQLTaskInput = original.ConnectToSourceMySQLTaskInput
 type ConnectToSourceMySQLTaskProperties = original.ConnectToSourceMySQLTaskProperties
 type ConnectToSourceNonSQLTaskOutput = original.ConnectToSourceNonSQLTaskOutput
+type ConnectToSourcePostgreSQLSyncTaskInput = original.ConnectToSourcePostgreSQLSyncTaskInput
+type ConnectToSourcePostgreSQLSyncTaskOutput = original.ConnectToSourcePostgreSQLSyncTaskOutput
+type ConnectToSourcePostgreSQLSyncTaskProperties = original.ConnectToSourcePostgreSQLSyncTaskProperties
 type ConnectToSourceSQLServerSyncTaskProperties = original.ConnectToSourceSQLServerSyncTaskProperties
 type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
 type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
@@ -594,9 +644,15 @@ type ConnectToSourceSQLServerTaskProperties = original.ConnectToSourceSQLServerT
 type ConnectToTargetAzureDbForMySQLTaskInput = original.ConnectToTargetAzureDbForMySQLTaskInput
 type ConnectToTargetAzureDbForMySQLTaskOutput = original.ConnectToTargetAzureDbForMySQLTaskOutput
 type ConnectToTargetAzureDbForMySQLTaskProperties = original.ConnectToTargetAzureDbForMySQLTaskProperties
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskInput = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskInput
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput
+type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties
 type ConnectToTargetSQLDbTaskInput = original.ConnectToTargetSQLDbTaskInput
 type ConnectToTargetSQLDbTaskOutput = original.ConnectToTargetSQLDbTaskOutput
 type ConnectToTargetSQLDbTaskProperties = original.ConnectToTargetSQLDbTaskProperties
+type ConnectToTargetSQLMISyncTaskInput = original.ConnectToTargetSQLMISyncTaskInput
+type ConnectToTargetSQLMISyncTaskOutput = original.ConnectToTargetSQLMISyncTaskOutput
+type ConnectToTargetSQLMISyncTaskProperties = original.ConnectToTargetSQLMISyncTaskProperties
 type ConnectToTargetSQLMITaskInput = original.ConnectToTargetSQLMITaskInput
 type ConnectToTargetSQLMITaskOutput = original.ConnectToTargetSQLMITaskOutput
 type ConnectToTargetSQLMITaskProperties = original.ConnectToTargetSQLMITaskProperties
@@ -629,6 +685,9 @@ type GetUserTablesSQLSyncTaskProperties = original.GetUserTablesSQLSyncTaskPrope
 type GetUserTablesSQLTaskInput = original.GetUserTablesSQLTaskInput
 type GetUserTablesSQLTaskOutput = original.GetUserTablesSQLTaskOutput
 type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
+type MigrateMISyncCompleteCommandInput = original.MigrateMISyncCompleteCommandInput
+type MigrateMISyncCompleteCommandOutput = original.MigrateMISyncCompleteCommandOutput
+type MigrateMISyncCompleteCommandProperties = original.MigrateMISyncCompleteCommandProperties
 type MigrateMongoDbTaskProperties = original.MigrateMongoDbTaskProperties
 type MigrateMySQLAzureDbForMySQLSyncDatabaseInput = original.MigrateMySQLAzureDbForMySQLSyncDatabaseInput
 type MigrateMySQLAzureDbForMySQLSyncTaskInput = original.MigrateMySQLAzureDbForMySQLSyncTaskInput
@@ -679,6 +738,13 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSQLServerSQ
 type MigrateSQLServerSQLDbTaskOutputTableLevel = original.MigrateSQLServerSQLDbTaskOutputTableLevel
 type MigrateSQLServerSQLDbTaskProperties = original.MigrateSQLServerSQLDbTaskProperties
 type MigrateSQLServerSQLMIDatabaseInput = original.MigrateSQLServerSQLMIDatabaseInput
+type MigrateSQLServerSQLMISyncTaskInput = original.MigrateSQLServerSQLMISyncTaskInput
+type BasicMigrateSQLServerSQLMISyncTaskOutput = original.BasicMigrateSQLServerSQLMISyncTaskOutput
+type MigrateSQLServerSQLMISyncTaskOutput = original.MigrateSQLServerSQLMISyncTaskOutput
+type MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel = original.MigrateSQLServerSQLMISyncTaskOutputDatabaseLevel
+type MigrateSQLServerSQLMISyncTaskOutputError = original.MigrateSQLServerSQLMISyncTaskOutputError
+type MigrateSQLServerSQLMISyncTaskOutputMigrationLevel = original.MigrateSQLServerSQLMISyncTaskOutputMigrationLevel
+type MigrateSQLServerSQLMISyncTaskProperties = original.MigrateSQLServerSQLMISyncTaskProperties
 type MigrateSQLServerSQLMITaskInput = original.MigrateSQLServerSQLMITaskInput
 type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
 type MigrateSQLServerSQLMITaskOutput = original.MigrateSQLServerSQLMITaskOutput
@@ -699,6 +765,7 @@ type MigrationValidationDatabaseLevelResult = original.MigrationValidationDataba
 type MigrationValidationDatabaseSummaryResult = original.MigrationValidationDatabaseSummaryResult
 type MigrationValidationOptions = original.MigrationValidationOptions
 type MigrationValidationResult = original.MigrationValidationResult
+type MiSQLConnectionInfo = original.MiSQLConnectionInfo
 type MongoDbCancelCommand = original.MongoDbCancelCommand
 type MongoDbClusterInfo = original.MongoDbClusterInfo
 type MongoDbCollectionInfo = original.MongoDbCollectionInfo
@@ -785,6 +852,7 @@ type ServiceStatusResponse = original.ServiceStatusResponse
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SQLConnectionInfo = original.SQLConnectionInfo
 type SQLMigrationTaskInput = original.SQLMigrationTaskInput
+type SQLServerSQLMISyncTaskInput = original.SQLServerSQLMISyncTaskInput
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type SyncMigrationDatabaseErrorEvent = original.SyncMigrationDatabaseErrorEvent
 type TaskList = original.TaskList
@@ -792,6 +860,9 @@ type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
 type TrackedResource = original.TrackedResource
 type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties = original.ValidateMigrationInputSQLServerSQLDbSyncTaskProperties
+type ValidateMigrationInputSQLServerSQLMISyncTaskInput = original.ValidateMigrationInputSQLServerSQLMISyncTaskInput
+type ValidateMigrationInputSQLServerSQLMISyncTaskOutput = original.ValidateMigrationInputSQLServerSQLMISyncTaskOutput
+type ValidateMigrationInputSQLServerSQLMISyncTaskProperties = original.ValidateMigrationInputSQLServerSQLMISyncTaskProperties
 type ValidateMigrationInputSQLServerSQLMITaskInput = original.ValidateMigrationInputSQLServerSQLMITaskInput
 type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigrationInputSQLServerSQLMITaskOutput
 type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
@@ -822,6 +893,9 @@ func NewFilesClientWithBaseURI(baseURI string, subscriptionID string) FilesClien
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
+func PossibleBackupFileStatusValues() []BackupFileStatus {
+	return original.PossibleBackupFileStatusValues()
+}
 func PossibleBackupModeValues() []BackupMode {
 	return original.PossibleBackupModeValues()
 }
@@ -842,6 +916,9 @@ func PossibleDatabaseFileTypeValues() []DatabaseFileType {
 }
 func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
 	return original.PossibleDatabaseMigrationStageValues()
+}
+func PossibleDatabaseMigrationStateValues() []DatabaseMigrationState {
+	return original.PossibleDatabaseMigrationStateValues()
 }
 func PossibleDatabaseStateValues() []DatabaseState {
 	return original.PossibleDatabaseStateValues()
@@ -926,6 +1003,9 @@ func PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues() []Result
 }
 func PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbTaskOutput {
 	return original.PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMISyncTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLMISyncTaskOutputValues()
 }
 func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMITaskOutput {
 	return original.PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues()

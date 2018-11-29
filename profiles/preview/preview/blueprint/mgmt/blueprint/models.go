@@ -26,7 +26,7 @@ import (
 )
 
 type ArtifactsClient = original.ArtifactsClient
-type AssignmentOperationClient = original.AssignmentOperationClient
+type AssignmentOperationsClient = original.AssignmentOperationsClient
 type AssignmentsClient = original.AssignmentsClient
 type BlueprintsClient = original.BlueprintsClient
 
@@ -161,11 +161,11 @@ func NewArtifactsClient() ArtifactsClient {
 func NewArtifactsClientWithBaseURI(baseURI string) ArtifactsClient {
 	return original.NewArtifactsClientWithBaseURI(baseURI)
 }
-func NewAssignmentOperationClient() AssignmentOperationClient {
-	return original.NewAssignmentOperationClient()
+func NewAssignmentOperationsClient() AssignmentOperationsClient {
+	return original.NewAssignmentOperationsClient()
 }
-func NewAssignmentOperationClientWithBaseURI(baseURI string) AssignmentOperationClient {
-	return original.NewAssignmentOperationClientWithBaseURI(baseURI)
+func NewAssignmentOperationsClientWithBaseURI(baseURI string) AssignmentOperationsClient {
+	return original.NewAssignmentOperationsClientWithBaseURI(baseURI)
 }
 func NewAssignmentsClient() AssignmentsClient {
 	return original.NewAssignmentsClient()

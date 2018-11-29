@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// AssignmentOperationClient is the blueprint Client
-type AssignmentOperationClient struct {
+// AssignmentOperationsClient is the blueprint Client
+type AssignmentOperationsClient struct {
 	BaseClient
 }
 
-// NewAssignmentOperationClient creates an instance of the AssignmentOperationClient client.
-func NewAssignmentOperationClient() AssignmentOperationClient {
-	return NewAssignmentOperationClientWithBaseURI(DefaultBaseURI)
+// NewAssignmentOperationsClient creates an instance of the AssignmentOperationsClient client.
+func NewAssignmentOperationsClient() AssignmentOperationsClient {
+	return NewAssignmentOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAssignmentOperationClientWithBaseURI creates an instance of the AssignmentOperationClient client.
-func NewAssignmentOperationClientWithBaseURI(baseURI string) AssignmentOperationClient {
-	return AssignmentOperationClient{NewWithBaseURI(baseURI)}
+// NewAssignmentOperationsClientWithBaseURI creates an instance of the AssignmentOperationsClient client.
+func NewAssignmentOperationsClientWithBaseURI(baseURI string) AssignmentOperationsClient {
+	return AssignmentOperationsClient{NewWithBaseURI(baseURI)}
 }
 
 // Get get a Blueprint assignment operation.
@@ -45,9 +45,9 @@ func NewAssignmentOperationClientWithBaseURI(baseURI string) AssignmentOperation
 // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 // assignmentName - name of the assignment.
 // assignmentOperationName - name of the assignment operation.
-func (client AssignmentOperationClient) Get(ctx context.Context, subscriptionID string, assignmentName string, assignmentOperationName string) (result AssignmentOperation, err error) {
+func (client AssignmentOperationsClient) Get(ctx context.Context, subscriptionID string, assignmentName string, assignmentOperationName string) (result AssignmentOperation, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,27 +58,27 @@ func (client AssignmentOperationClient) Get(ctx context.Context, subscriptionID 
 	}
 	req, err := client.GetPreparer(ctx, subscriptionID, assignmentName, assignmentOperationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AssignmentOperationClient) GetPreparer(ctx context.Context, subscriptionID string, assignmentName string, assignmentOperationName string) (*http.Request, error) {
+func (client AssignmentOperationsClient) GetPreparer(ctx context.Context, subscriptionID string, assignmentName string, assignmentOperationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assignmentName":          autorest.Encode("path", assignmentName),
 		"assignmentOperationName": autorest.Encode("path", assignmentOperationName),
@@ -100,14 +100,14 @@ func (client AssignmentOperationClient) GetPreparer(ctx context.Context, subscri
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssignmentOperationClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AssignmentOperationsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AssignmentOperationClient) GetResponder(resp *http.Response) (result AssignmentOperation, err error) {
+func (client AssignmentOperationsClient) GetResponder(resp *http.Response) (result AssignmentOperation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -122,9 +122,9 @@ func (client AssignmentOperationClient) GetResponder(resp *http.Response) (resul
 // Parameters:
 // subscriptionID - azure subscriptionId, which we assign the blueprint to.
 // assignmentName - name of the assignment.
-func (client AssignmentOperationClient) List(ctx context.Context, subscriptionID string, assignmentName string) (result AssignmentOperationListPage, err error) {
+func (client AssignmentOperationsClient) List(ctx context.Context, subscriptionID string, assignmentName string) (result AssignmentOperationListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationsClient.List")
 		defer func() {
 			sc := -1
 			if result.aol.Response.Response != nil {
@@ -136,27 +136,27 @@ func (client AssignmentOperationClient) List(ctx context.Context, subscriptionID
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, subscriptionID, assignmentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.aol.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.aol, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AssignmentOperationClient) ListPreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
+func (client AssignmentOperationsClient) ListPreparer(ctx context.Context, subscriptionID string, assignmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"assignmentName": autorest.Encode("path", assignmentName),
 		"subscriptionId": autorest.Encode("path", subscriptionID),
@@ -177,14 +177,14 @@ func (client AssignmentOperationClient) ListPreparer(ctx context.Context, subscr
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssignmentOperationClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AssignmentOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AssignmentOperationClient) ListResponder(resp *http.Response) (result AssignmentOperationList, err error) {
+func (client AssignmentOperationsClient) ListResponder(resp *http.Response) (result AssignmentOperationList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -196,10 +196,10 @@ func (client AssignmentOperationClient) ListResponder(resp *http.Response) (resu
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AssignmentOperationClient) listNextResults(ctx context.Context, lastResults AssignmentOperationList) (result AssignmentOperationList, err error) {
+func (client AssignmentOperationsClient) listNextResults(ctx context.Context, lastResults AssignmentOperationList) (result AssignmentOperationList, err error) {
 	req, err := lastResults.assignmentOperationListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -207,19 +207,19 @@ func (client AssignmentOperationClient) listNextResults(ctx context.Context, las
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "blueprint.AssignmentOperationsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssignmentOperationClient) ListComplete(ctx context.Context, subscriptionID string, assignmentName string) (result AssignmentOperationListIterator, err error) {
+func (client AssignmentOperationsClient) ListComplete(ctx context.Context, subscriptionID string, assignmentName string) (result AssignmentOperationListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentOperationsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

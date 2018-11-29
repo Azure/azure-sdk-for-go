@@ -102,6 +102,19 @@ func (s *sender) Close(ctx context.Context) error {
 	span, _ := s.startProducerSpanFromContext(ctx, "sb.sender.Close")
 	defer span.Finish()
 
+	err := s.sender.Close(ctx)
+	if err != nil {
+		_ = s.session.Close(ctx)
+		_ = s.connection.Close()
+		return err
+	}
+
+	err = s.session.Close(ctx)
+	if err != nil {
+		_ = s.connection.Close()
+		return err
+	}
+
 	return s.connection.Close()
 }
 
@@ -222,7 +235,8 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 	amqpSender, err := amqpSession.NewSender(
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkSenderSettle(amqp.ModeMixed))
+		amqp.LinkSenderSettle(amqp.ModeMixed),
+		amqp.LinkReceiverSettle(amqp.ModeSecond))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err

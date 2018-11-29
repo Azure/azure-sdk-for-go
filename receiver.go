@@ -88,6 +88,19 @@ func (r *receiver) Close(ctx context.Context) error {
 		r.done()
 	}
 
+	err := r.receiver.Close(ctx)
+	if err != nil {
+		_ = r.session.Close(ctx)
+		_ = r.connection.Close()
+		return err
+	}
+
+	err = r.session.Close(ctx)
+	if err != nil {
+		_ = r.connection.Close()
+		return err
+	}
+
 	return r.connection.Close()
 }
 

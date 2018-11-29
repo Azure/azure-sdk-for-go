@@ -21,7 +21,7 @@ package commitmentplansapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans/commitmentplansapi"
 
-type SkusClientAPI = original.SkusClientAPI
-type CommitmentAssociationsClientAPI = original.CommitmentAssociationsClientAPI
 type ClientAPI = original.ClientAPI
+type CommitmentAssociationsClientAPI = original.CommitmentAssociationsClientAPI
+type SkusClientAPI = original.SkusClientAPI
 type UsageHistoryClientAPI = original.UsageHistoryClientAPI

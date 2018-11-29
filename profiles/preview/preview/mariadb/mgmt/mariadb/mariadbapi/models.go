@@ -21,13 +21,13 @@ package mariadbapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/mariadb/mgmt/2018-06-01-preview/mariadb/mariadbapi"
 
-type ServersClientAPI = original.ServersClientAPI
-type FirewallRulesClientAPI = original.FirewallRulesClientAPI
-type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI
-type DatabasesClientAPI = original.DatabasesClientAPI
-type ConfigurationsClientAPI = original.ConfigurationsClientAPI
-type LogFilesClientAPI = original.LogFilesClientAPI
-type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
-type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
+type ConfigurationsClientAPI = original.ConfigurationsClientAPI
+type DatabasesClientAPI = original.DatabasesClientAPI
+type FirewallRulesClientAPI = original.FirewallRulesClientAPI
+type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
+type LogFilesClientAPI = original.LogFilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
+type ServersClientAPI = original.ServersClientAPI
+type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

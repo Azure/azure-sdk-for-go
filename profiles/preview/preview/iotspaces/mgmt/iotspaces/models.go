@@ -30,8 +30,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type Client = original.Client
 type NameUnavailabilityReason = original.NameUnavailabilityReason
 
 const (
@@ -58,6 +56,8 @@ const (
 	S3 Sku = original.S3
 )
 
+type BaseClient = original.BaseClient
+type Client = original.Client
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type DeleteFuture = original.DeleteFuture
 type Description = original.Description
@@ -72,34 +72,22 @@ type OperationInputs = original.OperationInputs
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type PatchDescription = original.PatchDescription
 type Properties = original.Properties
 type Resource = original.Resource
 type SkuInfo = original.SkuInfo
 type StorageContainerProperties = original.StorageContainerProperties
 type UpdateFuture = original.UpdateFuture
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID uuid.UUID) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewClient(subscriptionID uuid.UUID) Client {
 	return original.NewClient(subscriptionID)
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
-	return original.PossibleNameUnavailabilityReasonValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleSkuValues() []Sku {
-	return original.PossibleSkuValues()
 }
 func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
 	return original.NewDescriptionListResultIterator(page)
@@ -118,6 +106,18 @@ func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
+	return original.PossibleNameUnavailabilityReasonValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuValues() []Sku {
+	return original.PossibleSkuValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

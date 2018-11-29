@@ -21,8 +21,8 @@ package engagementfabricapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric/engagementfabricapi"
 
-type BaseClientAPI = original.BaseClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type ChannelsClientAPI = original.ChannelsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SKUsClientAPI = original.SKUsClientAPI

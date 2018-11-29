@@ -21,6 +21,6 @@ package notificationhubsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs/notificationhubsapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type NamespacesClientAPI = original.NamespacesClientAPI
 type ClientAPI = original.ClientAPI
+type NamespacesClientAPI = original.NamespacesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

@@ -23,6 +23,6 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mg
 
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI
-type SubscriptionsClientAPI = original.SubscriptionsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type EntitiesClientAPI = original.EntitiesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type SubscriptionsClientAPI = original.SubscriptionsClientAPI

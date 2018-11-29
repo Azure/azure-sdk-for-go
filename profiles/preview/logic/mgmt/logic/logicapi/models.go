@@ -21,24 +21,24 @@ package logicapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic/logicapi"
 
+type AgreementsClientAPI = original.AgreementsClientAPI
 type BaseClientAPI = original.BaseClientAPI
-type WorkflowsClientAPI = original.WorkflowsClientAPI
-type WorkflowVersionsClientAPI = original.WorkflowVersionsClientAPI
-type WorkflowTriggersClientAPI = original.WorkflowTriggersClientAPI
-type WorkflowTriggerHistoriesClientAPI = original.WorkflowTriggerHistoriesClientAPI
-type WorkflowRunsClientAPI = original.WorkflowRunsClientAPI
-type WorkflowRunActionsClientAPI = original.WorkflowRunActionsClientAPI
+type CertificatesClientAPI = original.CertificatesClientAPI
+type IntegrationAccountAssembliesClientAPI = original.IntegrationAccountAssembliesClientAPI
+type IntegrationAccountBatchConfigurationsClientAPI = original.IntegrationAccountBatchConfigurationsClientAPI
+type IntegrationAccountsClientAPI = original.IntegrationAccountsClientAPI
+type MapsClientAPI = original.MapsClientAPI
+type PartnersClientAPI = original.PartnersClientAPI
+type SchemasClientAPI = original.SchemasClientAPI
+type SessionsClientAPI = original.SessionsClientAPI
 type WorkflowRunActionRepetitionsClientAPI = original.WorkflowRunActionRepetitionsClientAPI
 type WorkflowRunActionRepetitionsRequestHistoriesClientAPI = original.WorkflowRunActionRepetitionsRequestHistoriesClientAPI
 type WorkflowRunActionRequestHistoriesClientAPI = original.WorkflowRunActionRequestHistoriesClientAPI
 type WorkflowRunActionScopedRepetitionsClientAPI = original.WorkflowRunActionScopedRepetitionsClientAPI
+type WorkflowRunActionsClientAPI = original.WorkflowRunActionsClientAPI
 type WorkflowRunOperationsClientAPI = original.WorkflowRunOperationsClientAPI
-type IntegrationAccountsClientAPI = original.IntegrationAccountsClientAPI
-type IntegrationAccountAssembliesClientAPI = original.IntegrationAccountAssembliesClientAPI
-type IntegrationAccountBatchConfigurationsClientAPI = original.IntegrationAccountBatchConfigurationsClientAPI
-type SchemasClientAPI = original.SchemasClientAPI
-type MapsClientAPI = original.MapsClientAPI
-type PartnersClientAPI = original.PartnersClientAPI
-type AgreementsClientAPI = original.AgreementsClientAPI
-type CertificatesClientAPI = original.CertificatesClientAPI
-type SessionsClientAPI = original.SessionsClientAPI
+type WorkflowRunsClientAPI = original.WorkflowRunsClientAPI
+type WorkflowTriggerHistoriesClientAPI = original.WorkflowTriggerHistoriesClientAPI
+type WorkflowTriggersClientAPI = original.WorkflowTriggersClientAPI
+type WorkflowVersionsClientAPI = original.WorkflowVersionsClientAPI
+type WorkflowsClientAPI = original.WorkflowsClientAPI

@@ -22,9 +22,9 @@ package batchapi
 import original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch/batchapi"
 
 type AccountClientAPI = original.AccountClientAPI
-type ApplicationPackageClientAPI = original.ApplicationPackageClientAPI
 type ApplicationClientAPI = original.ApplicationClientAPI
+type ApplicationPackageClientAPI = original.ApplicationPackageClientAPI
+type CertificateClientAPI = original.CertificateClientAPI
 type LocationClientAPI = original.LocationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type CertificateClientAPI = original.CertificateClientAPI
 type PoolClientAPI = original.PoolClientAPI

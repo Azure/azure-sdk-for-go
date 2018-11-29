@@ -22,8 +22,8 @@ package costmanagementapi
 import original "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-05-31/costmanagement/costmanagementapi"
 
 type BaseClientAPI = original.BaseClientAPI
-type ReportConfigClientAPI = original.ReportConfigClientAPI
 type BillingAccountDimensionsClientAPI = original.BillingAccountDimensionsClientAPI
-type SubscriptionDimensionsClientAPI = original.SubscriptionDimensionsClientAPI
-type ResourceGroupDimensionsClientAPI = original.ResourceGroupDimensionsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ReportConfigClientAPI = original.ReportConfigClientAPI
+type ResourceGroupDimensionsClientAPI = original.ResourceGroupDimensionsClientAPI
+type SubscriptionDimensionsClientAPI = original.SubscriptionDimensionsClientAPI

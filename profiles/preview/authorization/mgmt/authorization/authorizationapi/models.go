@@ -21,8 +21,8 @@ package authorizationapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization/authorizationapi"
 
+type ClassicAdministratorsClientAPI = original.ClassicAdministratorsClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI
 type ProviderOperationsMetadataClientAPI = original.ProviderOperationsMetadataClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI
-type ClassicAdministratorsClientAPI = original.ClassicAdministratorsClientAPI

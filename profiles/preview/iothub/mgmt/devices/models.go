@@ -25,14 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices"
 )
 
-type CertificatesClient = original.CertificatesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type IotHubResourceClient = original.IotHubResourceClient
 type AccessRights = original.AccessRights
 
 const (
@@ -69,6 +65,13 @@ const (
 	Unknown   EndpointHealthStatus = original.Unknown
 )
 
+type IPFilterActionType = original.IPFilterActionType
+
+const (
+	Accept IPFilterActionType = original.Accept
+	Reject IPFilterActionType = original.Reject
+)
+
 type IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReason
 
 const (
@@ -102,13 +105,6 @@ const (
 	Basic    IotHubSkuTier = original.Basic
 	Free     IotHubSkuTier = original.Free
 	Standard IotHubSkuTier = original.Standard
-)
-
-type IPFilterActionType = original.IPFilterActionType
-
-const (
-	Accept IPFilterActionType = original.Accept
-	Reject IPFilterActionType = original.Reject
 )
 
 type JobStatus = original.JobStatus
@@ -171,6 +167,7 @@ const (
 	Undefined TestResultStatus = original.Undefined
 )
 
+type BaseClient = original.BaseClient
 type CertificateBodyDescription = original.CertificateBodyDescription
 type CertificateDescription = original.CertificateDescription
 type CertificateListDescription = original.CertificateListDescription
@@ -178,6 +175,7 @@ type CertificateProperties = original.CertificateProperties
 type CertificatePropertiesWithNonce = original.CertificatePropertiesWithNonce
 type CertificateVerificationDescription = original.CertificateVerificationDescription
 type CertificateWithNonceDescription = original.CertificateWithNonceDescription
+type CertificatesClient = original.CertificatesClient
 type CloudToDeviceProperties = original.CloudToDeviceProperties
 type EndpointHealthData = original.EndpointHealthData
 type EndpointHealthDataListResult = original.EndpointHealthDataListResult
@@ -192,6 +190,7 @@ type EventHubProperties = original.EventHubProperties
 type ExportDevicesRequest = original.ExportDevicesRequest
 type FallbackRouteProperties = original.FallbackRouteProperties
 type FeedbackProperties = original.FeedbackProperties
+type IPFilterRule = original.IPFilterRule
 type ImportDevicesRequest = original.ImportDevicesRequest
 type IotHubCapacity = original.IotHubCapacity
 type IotHubDescription = original.IotHubDescription
@@ -204,6 +203,7 @@ type IotHubQuotaMetricInfo = original.IotHubQuotaMetricInfo
 type IotHubQuotaMetricInfoListResult = original.IotHubQuotaMetricInfoListResult
 type IotHubQuotaMetricInfoListResultIterator = original.IotHubQuotaMetricInfoListResultIterator
 type IotHubQuotaMetricInfoListResultPage = original.IotHubQuotaMetricInfoListResultPage
+type IotHubResourceClient = original.IotHubResourceClient
 type IotHubResourceCreateOrUpdateFuture = original.IotHubResourceCreateOrUpdateFuture
 type IotHubResourceDeleteFuture = original.IotHubResourceDeleteFuture
 type IotHubResourceUpdateFuture = original.IotHubResourceUpdateFuture
@@ -212,7 +212,6 @@ type IotHubSkuDescriptionListResult = original.IotHubSkuDescriptionListResult
 type IotHubSkuDescriptionListResultIterator = original.IotHubSkuDescriptionListResultIterator
 type IotHubSkuDescriptionListResultPage = original.IotHubSkuDescriptionListResultPage
 type IotHubSkuInfo = original.IotHubSkuInfo
-type IPFilterRule = original.IPFilterRule
 type JobResponse = original.JobResponse
 type JobResponseListResult = original.JobResponseListResult
 type JobResponseListResultIterator = original.JobResponseListResultIterator
@@ -226,9 +225,11 @@ type OperationInputs = original.OperationInputs
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type OperationsMonitoringProperties = original.OperationsMonitoringProperties
 type RegistryStatistics = original.RegistryStatistics
 type Resource = original.Resource
+type ResourceProviderCommonClient = original.ResourceProviderCommonClient
 type RouteCompilationError = original.RouteCompilationError
 type RouteErrorPosition = original.RouteErrorPosition
 type RouteErrorRange = original.RouteErrorRange
@@ -256,68 +257,15 @@ type TestRouteResult = original.TestRouteResult
 type TestRouteResultDetails = original.TestRouteResultDetails
 type UserSubscriptionQuota = original.UserSubscriptionQuota
 type UserSubscriptionQuotaListResult = original.UserSubscriptionQuotaListResult
-type OperationsClient = original.OperationsClient
-type ResourceProviderCommonClient = original.ResourceProviderCommonClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewCertificatesClient(subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClient(subscriptionID)
 }
 func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClient(subscriptionID)
-}
-func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAccessRightsValues() []AccessRights {
-	return original.PossibleAccessRightsValues()
-}
-func PossibleCapabilitiesValues() []Capabilities {
-	return original.PossibleCapabilitiesValues()
-}
-func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
-	return original.PossibleEndpointHealthStatusValues()
-}
-func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
-	return original.PossibleIotHubNameUnavailabilityReasonValues()
-}
-func PossibleIotHubScaleTypeValues() []IotHubScaleType {
-	return original.PossibleIotHubScaleTypeValues()
-}
-func PossibleIotHubSkuValues() []IotHubSku {
-	return original.PossibleIotHubSkuValues()
-}
-func PossibleIotHubSkuTierValues() []IotHubSkuTier {
-	return original.PossibleIotHubSkuTierValues()
-}
-func PossibleIPFilterActionTypeValues() []IPFilterActionType {
-	return original.PossibleIPFilterActionTypeValues()
-}
-func PossibleJobStatusValues() []JobStatus {
-	return original.PossibleJobStatusValues()
-}
-func PossibleJobTypeValues() []JobType {
-	return original.PossibleJobTypeValues()
-}
-func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
-	return original.PossibleOperationMonitoringLevelValues()
-}
-func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
-	return original.PossibleRouteErrorSeverityValues()
-}
-func PossibleRoutingSourceValues() []RoutingSource {
-	return original.PossibleRoutingSourceValues()
-}
-func PossibleTestResultStatusValues() []TestResultStatus {
-	return original.PossibleTestResultStatusValues()
 }
 func NewEndpointHealthDataListResultIterator(page EndpointHealthDataListResultPage) EndpointHealthDataListResultIterator {
 	return original.NewEndpointHealthDataListResultIterator(page)
@@ -343,6 +291,12 @@ func NewIotHubQuotaMetricInfoListResultIterator(page IotHubQuotaMetricInfoListRe
 func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
 	return original.NewIotHubQuotaMetricInfoListResultPage(getNextPage)
 }
+func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClient(subscriptionID)
+}
+func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewIotHubSkuDescriptionListResultIterator(page IotHubSkuDescriptionListResultPage) IotHubSkuDescriptionListResultIterator {
 	return original.NewIotHubSkuDescriptionListResultIterator(page)
 }
@@ -361,12 +315,6 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
-	return original.NewSharedAccessSignatureAuthorizationRuleListResultIterator(page)
-}
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -378,6 +326,57 @@ func NewResourceProviderCommonClient(subscriptionID string) ResourceProviderComm
 }
 func NewResourceProviderCommonClientWithBaseURI(baseURI string, subscriptionID string) ResourceProviderCommonClient {
 	return original.NewResourceProviderCommonClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSharedAccessSignatureAuthorizationRuleListResultIterator(page SharedAccessSignatureAuthorizationRuleListResultPage) SharedAccessSignatureAuthorizationRuleListResultIterator {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultIterator(page)
+}
+func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
+	return original.NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessRightsValues() []AccessRights {
+	return original.PossibleAccessRightsValues()
+}
+func PossibleCapabilitiesValues() []Capabilities {
+	return original.PossibleCapabilitiesValues()
+}
+func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
+	return original.PossibleEndpointHealthStatusValues()
+}
+func PossibleIPFilterActionTypeValues() []IPFilterActionType {
+	return original.PossibleIPFilterActionTypeValues()
+}
+func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
+	return original.PossibleIotHubNameUnavailabilityReasonValues()
+}
+func PossibleIotHubScaleTypeValues() []IotHubScaleType {
+	return original.PossibleIotHubScaleTypeValues()
+}
+func PossibleIotHubSkuTierValues() []IotHubSkuTier {
+	return original.PossibleIotHubSkuTierValues()
+}
+func PossibleIotHubSkuValues() []IotHubSku {
+	return original.PossibleIotHubSkuValues()
+}
+func PossibleJobStatusValues() []JobStatus {
+	return original.PossibleJobStatusValues()
+}
+func PossibleJobTypeValues() []JobType {
+	return original.PossibleJobTypeValues()
+}
+func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
+	return original.PossibleOperationMonitoringLevelValues()
+}
+func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
+	return original.PossibleRouteErrorSeverityValues()
+}
+func PossibleRoutingSourceValues() []RoutingSource {
+	return original.PossibleRoutingSourceValues()
+}
+func PossibleTestResultStatusValues() []TestResultStatus {
+	return original.PossibleTestResultStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

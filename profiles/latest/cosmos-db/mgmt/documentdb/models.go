@@ -29,14 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type CollectionClient = original.CollectionClient
-type CollectionPartitionClient = original.CollectionPartitionClient
-type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
-type CollectionRegionClient = original.CollectionRegionClient
-type DatabaseClient = original.DatabaseClient
-type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
-type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
@@ -93,7 +85,12 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
+type BaseClient = original.BaseClient
 type Capability = original.Capability
+type CollectionClient = original.CollectionClient
+type CollectionPartitionClient = original.CollectionPartitionClient
+type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
+type CollectionRegionClient = original.CollectionRegionClient
 type ConsistencyPolicy = original.ConsistencyPolicy
 type DatabaseAccount = original.DatabaseAccount
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
@@ -106,6 +103,8 @@ type DatabaseAccountPatchParameters = original.DatabaseAccountPatchParameters
 type DatabaseAccountPatchProperties = original.DatabaseAccountPatchProperties
 type DatabaseAccountProperties = original.DatabaseAccountProperties
 type DatabaseAccountRegenerateKeyParameters = original.DatabaseAccountRegenerateKeyParameters
+type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
+type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountsCreateOrUpdateFuture = original.DatabaseAccountsCreateOrUpdateFuture
 type DatabaseAccountsDeleteFuture = original.DatabaseAccountsDeleteFuture
 type DatabaseAccountsFailoverPriorityChangeFuture = original.DatabaseAccountsFailoverPriorityChangeFuture
@@ -114,6 +113,7 @@ type DatabaseAccountsOfflineRegionFuture = original.DatabaseAccountsOfflineRegio
 type DatabaseAccountsOnlineRegionFuture = original.DatabaseAccountsOnlineRegionFuture
 type DatabaseAccountsPatchFuture = original.DatabaseAccountsPatchFuture
 type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKeyFuture
+type DatabaseClient = original.DatabaseClient
 type ErrorResponse = original.ErrorResponse
 type FailoverPolicies = original.FailoverPolicies
 type FailoverPolicy = original.FailoverPolicy
@@ -130,30 +130,27 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
+type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
+type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
 type PartitionMetric = original.PartitionMetric
 type PartitionMetricListResult = original.PartitionMetricListResult
 type PartitionUsage = original.PartitionUsage
 type PartitionUsagesResult = original.PartitionUsagesResult
+type PercentileClient = original.PercentileClient
 type PercentileMetric = original.PercentileMetric
 type PercentileMetricListResult = original.PercentileMetricListResult
 type PercentileMetricValue = original.PercentileMetricValue
+type PercentileSourceTargetClient = original.PercentileSourceTargetClient
+type PercentileTargetClient = original.PercentileTargetClient
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type VirtualNetworkRule = original.VirtualNetworkRule
-type OperationsClient = original.OperationsClient
-type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
-type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
-type PercentileClient = original.PercentileClient
-type PercentileSourceTargetClient = original.PercentileSourceTargetClient
-type PercentileTargetClient = original.PercentileTargetClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewCollectionClient(subscriptionID string) CollectionClient {
 	return original.NewCollectionClient(subscriptionID)
@@ -179,12 +176,6 @@ func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
 func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
 	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDatabaseClient(subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClient(subscriptionID)
-}
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
 	return original.NewDatabaseAccountRegionClient(subscriptionID)
 }
@@ -197,23 +188,11 @@ func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
 func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
 	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
-	return original.PossibleDatabaseAccountKindValues()
+func NewDatabaseClient(subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClient(subscriptionID)
 }
-func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
-	return original.PossibleDatabaseAccountOfferTypeValues()
-}
-func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
-	return original.PossibleDefaultConsistencyLevelValues()
-}
-func PossibleKeyKindValues() []KeyKind {
-	return original.PossibleKeyKindValues()
-}
-func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
-	return original.PossiblePrimaryAggregationTypeValues()
-}
-func PossibleUnitTypeValues() []UnitType {
-	return original.PossibleUnitTypeValues()
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -256,6 +235,27 @@ func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
 }
 func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
 	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
+	return original.PossibleDatabaseAccountKindValues()
+}
+func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
+	return original.PossibleDatabaseAccountOfferTypeValues()
+}
+func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
+	return original.PossibleDefaultConsistencyLevelValues()
+}
+func PossibleKeyKindValues() []KeyKind {
+	return original.PossibleKeyKindValues()
+}
+func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
+	return original.PossiblePrimaryAggregationTypeValues()
+}
+func PossibleUnitTypeValues() []UnitType {
+	return original.PossibleUnitTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

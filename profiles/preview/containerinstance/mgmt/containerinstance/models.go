@@ -29,10 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ContainerClient = original.ContainerClient
-type ContainerGroupsClient = original.ContainerGroupsClient
-type ContainerGroupUsageClient = original.ContainerGroupUsageClient
 type ContainerGroupIPAddressType = original.ContainerGroupIPAddressType
 
 const (
@@ -108,7 +104,9 @@ const (
 )
 
 type AzureFileVolume = original.AzureFileVolume
+type BaseClient = original.BaseClient
 type Container = original.Container
+type ContainerClient = original.ContainerClient
 type ContainerExec = original.ContainerExec
 type ContainerExecRequest = original.ContainerExecRequest
 type ContainerExecRequestTerminalSize = original.ContainerExecRequestTerminalSize
@@ -123,6 +121,8 @@ type ContainerGroupListResultPage = original.ContainerGroupListResultPage
 type ContainerGroupNetworkProfile = original.ContainerGroupNetworkProfile
 type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
+type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+type ContainerGroupsClient = original.ContainerGroupsClient
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
 type ContainerGroupsRestartFuture = original.ContainerGroupsRestartFuture
 type ContainerGroupsStartFuture = original.ContainerGroupsStartFuture
@@ -137,31 +137,28 @@ type EnvironmentVariable = original.EnvironmentVariable
 type Event = original.Event
 type GitRepoVolume = original.GitRepoVolume
 type GpuResource = original.GpuResource
-type ImageRegistryCredential = original.ImageRegistryCredential
 type IPAddress = original.IPAddress
+type ImageRegistryCredential = original.ImageRegistryCredential
 type LogAnalytics = original.LogAnalytics
 type Logs = original.Logs
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationsClient = original.OperationsClient
 type Port = original.Port
 type Resource = original.Resource
 type ResourceLimits = original.ResourceLimits
 type ResourceRequests = original.ResourceRequests
 type ResourceRequirements = original.ResourceRequirements
+type ServiceAssociationLinkClient = original.ServiceAssociationLinkClient
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type Volume = original.Volume
 type VolumeMount = original.VolumeMount
-type OperationsClient = original.OperationsClient
-type ServiceAssociationLinkClient = original.ServiceAssociationLinkClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewContainerClient(subscriptionID string) ContainerClient {
 	return original.NewContainerClient(subscriptionID)
@@ -169,17 +166,38 @@ func NewContainerClient(subscriptionID string) ContainerClient {
 func NewContainerClientWithBaseURI(baseURI string, subscriptionID string) ContainerClient {
 	return original.NewContainerClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClient(subscriptionID)
+func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
+	return original.NewContainerGroupListResultIterator(page)
 }
-func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
+func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return original.NewContainerGroupListResultPage(getNextPage)
 }
 func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClient(subscriptionID)
 }
 func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClient(subscriptionID)
+}
+func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceAssociationLinkClient(subscriptionID string) ServiceAssociationLinkClient {
+	return original.NewServiceAssociationLinkClient(subscriptionID)
+}
+func NewServiceAssociationLinkClientWithBaseURI(baseURI string, subscriptionID string) ServiceAssociationLinkClient {
+	return original.NewServiceAssociationLinkClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleContainerGroupIPAddressTypeValues() []ContainerGroupIPAddressType {
 	return original.PossibleContainerGroupIPAddressTypeValues()
@@ -210,24 +228,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 }
 func PossibleSchemeValues() []Scheme {
 	return original.PossibleSchemeValues()
-}
-func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
-	return original.NewContainerGroupListResultIterator(page)
-}
-func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
-	return original.NewContainerGroupListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceAssociationLinkClient(subscriptionID string) ServiceAssociationLinkClient {
-	return original.NewServiceAssociationLinkClient(subscriptionID)
-}
-func NewServiceAssociationLinkClientWithBaseURI(baseURI string, subscriptionID string) ServiceAssociationLinkClient {
-	return original.NewServiceAssociationLinkClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -21,7 +21,7 @@ package batchaiapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai/batchaiapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
-type JobsClientAPI = original.JobsClientAPI
 type FileServersClientAPI = original.FileServersClientAPI
+type JobsClientAPI = original.JobsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

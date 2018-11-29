@@ -25,9 +25,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
-type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
 const (
@@ -80,13 +77,16 @@ const (
 	Weighted    TrafficRoutingMethod = original.Weighted
 )
 
+type BaseClient = original.BaseClient
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters = original.CheckTrafficManagerRelativeDNSNameAvailabilityParameters
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
-type DeleteOperationResult = original.DeleteOperationResult
 type DNSConfig = original.DNSConfig
+type DeleteOperationResult = original.DeleteOperationResult
 type Endpoint = original.Endpoint
 type EndpointProperties = original.EndpointProperties
+type EndpointsClient = original.EndpointsClient
+type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type GeographicHierarchy = original.GeographicHierarchy
 type GeographicHierarchyProperties = original.GeographicHierarchyProperties
 type MonitorConfig = original.MonitorConfig
@@ -94,17 +94,14 @@ type NameAvailability = original.NameAvailability
 type Profile = original.Profile
 type ProfileListResult = original.ProfileListResult
 type ProfileProperties = original.ProfileProperties
+type ProfilesClient = original.ProfilesClient
 type ProxyResource = original.ProxyResource
 type Region = original.Region
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
-type ProfilesClient = original.ProfilesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewEndpointsClient(subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClient(subscriptionID)
@@ -117,6 +114,15 @@ func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchies
 }
 func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
 	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
+}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 	return original.PossibleEndpointMonitorStatusValues()
@@ -135,12 +141,6 @@ func PossibleProfileStatusValues() []ProfileStatus {
 }
 func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	return original.PossibleTrafficRoutingMethodValues()
-}
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
-}
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

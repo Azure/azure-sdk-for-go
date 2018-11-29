@@ -21,9 +21,9 @@ package datamigrationapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/datamigration/mgmt/2018-04-19/datamigration/datamigrationapi"
 
+type OperationsClientAPI = original.OperationsClientAPI
+type ProjectsClientAPI = original.ProjectsClientAPI
 type ResourceSkusClientAPI = original.ResourceSkusClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
 type TasksClientAPI = original.TasksClientAPI
-type ProjectsClientAPI = original.ProjectsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
-type OperationsClientAPI = original.OperationsClientAPI

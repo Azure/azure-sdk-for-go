@@ -21,31 +21,10 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/1.0.0/servicefabric"
 
-type ApplicationHealthsClient = original.ApplicationHealthsClient
-type ApplicationManifestsClient = original.ApplicationManifestsClient
-type ApplicationsClient = original.ApplicationsClient
-type ApplicationTypesClient = original.ApplicationTypesClient
-type ApplicationUpgradeRollbacksClient = original.ApplicationUpgradeRollbacksClient
-type ApplicationUpgradesClient = original.ApplicationUpgradesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ClusterHealthsClient = original.ClusterHealthsClient
-type ClusterLoadInformationsClient = original.ClusterLoadInformationsClient
-type ClusterManifestsClient = original.ClusterManifestsClient
-type ClusterPackagesClient = original.ClusterPackagesClient
-type ClusterUpgradesClient = original.ClusterUpgradesClient
-type DeployedApplicationHealthsClient = original.DeployedApplicationHealthsClient
-type DeployedApplicationsClient = original.DeployedApplicationsClient
-type DeployedCodePackagesClient = original.DeployedCodePackagesClient
-type DeployedReplicaDetailsClient = original.DeployedReplicaDetailsClient
-type DeployedReplicasClient = original.DeployedReplicasClient
-type DeployedServicePackageHealthsClient = original.DeployedServicePackageHealthsClient
-type DeployedServicePackagesClient = original.DeployedServicePackagesClient
-type DeployedServiceTypesClient = original.DeployedServiceTypesClient
 type AggregatedHealthState = original.AggregatedHealthState
 
 const (
@@ -697,56 +676,80 @@ type ApplicationHealthPolicyDefaultServiceTypeHealthPolicy = original.Applicatio
 type ApplicationHealthPolicyMap = original.ApplicationHealthPolicyMap
 type ApplicationHealthReport = original.ApplicationHealthReport
 type ApplicationHealthServiceHealthStatesItem = original.ApplicationHealthServiceHealthStatesItem
+type ApplicationHealthsClient = original.ApplicationHealthsClient
 type ApplicationList = original.ApplicationList
 type ApplicationManifest = original.ApplicationManifest
+type ApplicationManifestsClient = original.ApplicationManifestsClient
 type ApplicationParametersItem = original.ApplicationParametersItem
-type ApplicationsHealthEvaluation = original.ApplicationsHealthEvaluation
 type ApplicationType = original.ApplicationType
 type ApplicationTypeDefaultParameterListItem = original.ApplicationTypeDefaultParameterListItem
 type ApplicationTypeHealthEvaluation = original.ApplicationTypeHealthEvaluation
+type ApplicationTypesClient = original.ApplicationTypesClient
 type ApplicationUpgrade = original.ApplicationUpgrade
 type ApplicationUpgradeCurrentUpgradeDomainProgress = original.ApplicationUpgradeCurrentUpgradeDomainProgress
 type ApplicationUpgradeDeployedApplicationHealthStates = original.ApplicationUpgradeDeployedApplicationHealthStates
+type ApplicationUpgradeRollbacksClient = original.ApplicationUpgradeRollbacksClient
+type ApplicationUpgradesClient = original.ApplicationUpgradesClient
+type ApplicationsClient = original.ApplicationsClient
+type ApplicationsHealthEvaluation = original.ApplicationsHealthEvaluation
+type BaseClient = original.BaseClient
+type BasicCreateServiceDescription = original.BasicCreateServiceDescription
+type BasicCreateServiceGroupDescription = original.BasicCreateServiceGroupDescription
+type BasicHealthEvaluation = original.BasicHealthEvaluation
+type BasicServiceDescription = original.BasicServiceDescription
+type BasicServiceGroupDescription = original.BasicServiceGroupDescription
+type BasicUpdateServiceDescription = original.BasicUpdateServiceDescription
+type BasicUpdateServiceGroupDescription = original.BasicUpdateServiceGroupDescription
 type ClusterHealth = original.ClusterHealth
 type ClusterHealthApplicationHealthStateItem = original.ClusterHealthApplicationHealthStateItem
 type ClusterHealthNodeHealthStatesItem = original.ClusterHealthNodeHealthStatesItem
 type ClusterHealthNodeHealthStatesItemID = original.ClusterHealthNodeHealthStatesItemID
 type ClusterHealthPolicy = original.ClusterHealthPolicy
 type ClusterHealthReport = original.ClusterHealthReport
+type ClusterHealthsClient = original.ClusterHealthsClient
 type ClusterLoadInformation = original.ClusterLoadInformation
+type ClusterLoadInformationsClient = original.ClusterLoadInformationsClient
+type ClusterManifestsClient = original.ClusterManifestsClient
+type ClusterPackagesClient = original.ClusterPackagesClient
 type ClusterUpgradeHealthPolicy = original.ClusterUpgradeHealthPolicy
 type ClusterUpgradeProgress = original.ClusterUpgradeProgress
 type ClusterUpgradeProgressCurrentUpgradeDomainProgress = original.ClusterUpgradeProgressCurrentUpgradeDomainProgress
 type ClusterUpgradeProgressUpgradeDomainProgressAtFailure = original.ClusterUpgradeProgressUpgradeDomainProgressAtFailure
+type ClusterUpgradesClient = original.ClusterUpgradesClient
 type CodePackageEntryPointStatistics = original.CodePackageEntryPointStatistics
-type BasicCreateServiceDescription = original.BasicCreateServiceDescription
 type CreateServiceDescription = original.CreateServiceDescription
-type BasicCreateServiceGroupDescription = original.BasicCreateServiceGroupDescription
 type CreateServiceGroupDescription = original.CreateServiceGroupDescription
 type DeltaNodesCheckHealthEvaluation = original.DeltaNodesCheckHealthEvaluation
 type DeployedApplication = original.DeployedApplication
 type DeployedApplicationHealth = original.DeployedApplicationHealth
 type DeployedApplicationHealthEvaluation = original.DeployedApplicationHealthEvaluation
 type DeployedApplicationHealthReport = original.DeployedApplicationHealthReport
+type DeployedApplicationHealthsClient = original.DeployedApplicationHealthsClient
+type DeployedApplicationsClient = original.DeployedApplicationsClient
 type DeployedApplicationsHealthEvaluation = original.DeployedApplicationsHealthEvaluation
 type DeployedCodePackage = original.DeployedCodePackage
+type DeployedCodePackagesClient = original.DeployedCodePackagesClient
 type DeployedReplica = original.DeployedReplica
 type DeployedReplicaDetail = original.DeployedReplicaDetail
 type DeployedReplicaDetailReplicatorStatus = original.DeployedReplicaDetailReplicatorStatus
 type DeployedReplicaDetailReplicatorStatusReplicationQueueStatus = original.DeployedReplicaDetailReplicatorStatusReplicationQueueStatus
+type DeployedReplicaDetailsClient = original.DeployedReplicaDetailsClient
+type DeployedReplicasClient = original.DeployedReplicasClient
 type DeployedServiceHealthReport = original.DeployedServiceHealthReport
 type DeployedServicePackage = original.DeployedServicePackage
 type DeployedServicePackageHealth = original.DeployedServicePackageHealth
 type DeployedServicePackageHealthEvaluation = original.DeployedServicePackageHealthEvaluation
 type DeployedServicePackageHealthState = original.DeployedServicePackageHealthState
+type DeployedServicePackageHealthsClient = original.DeployedServicePackageHealthsClient
+type DeployedServicePackagesClient = original.DeployedServicePackagesClient
 type DeployedServicePackagesHealthEvaluation = original.DeployedServicePackagesHealthEvaluation
 type DeployedServiceType = original.DeployedServiceType
+type DeployedServiceTypesClient = original.DeployedServiceTypesClient
 type DisableNode = original.DisableNode
 type EntryPoint = original.EntryPoint
 type ErrorModel = original.ErrorModel
 type ErrorModelError = original.ErrorModelError
 type EventHealthEvaluation = original.EventHealthEvaluation
-type BasicHealthEvaluation = original.BasicHealthEvaluation
 type HealthEvaluation = original.HealthEvaluation
 type HealthEvent = original.HealthEvent
 type HealthReport = original.HealthReport
@@ -765,11 +768,15 @@ type Node = original.Node
 type NodeHealth = original.NodeHealth
 type NodeHealthEvaluation = original.NodeHealthEvaluation
 type NodeHealthReport = original.NodeHealthReport
+type NodeHealthsClient = original.NodeHealthsClient
 type NodeID = original.NodeID
 type NodeList = original.NodeList
 type NodeLoadInformation = original.NodeLoadInformation
+type NodeLoadInformationsClient = original.NodeLoadInformationsClient
 type NodeLoadMetricInformation = original.NodeLoadMetricInformation
 type NodeNodeDeactivationInfo = original.NodeNodeDeactivationInfo
+type NodeStatesClient = original.NodeStatesClient
+type NodesClient = original.NodesClient
 type NodesHealthEvaluation = original.NodesHealthEvaluation
 type Partition = original.Partition
 type PartitionCurrentConfigurationEpoch = original.PartitionCurrentConfigurationEpoch
@@ -778,9 +785,14 @@ type PartitionHealth = original.PartitionHealth
 type PartitionHealthEvaluation = original.PartitionHealthEvaluation
 type PartitionHealthReplicaHealthStatesItem = original.PartitionHealthReplicaHealthStatesItem
 type PartitionHealthReport = original.PartitionHealthReport
+type PartitionHealthsClient = original.PartitionHealthsClient
 type PartitionInformation = original.PartitionInformation
 type PartitionList = original.PartitionList
+type PartitionListsClient = original.PartitionListsClient
 type PartitionLoadInformation = original.PartitionLoadInformation
+type PartitionLoadInformationsClient = original.PartitionLoadInformationsClient
+type PartitionLoadsClient = original.PartitionLoadsClient
+type PartitionsClient = original.PartitionsClient
 type PartitionsHealthEvaluation = original.PartitionsHealthEvaluation
 type RegisterApplicationType = original.RegisterApplicationType
 type RegisterClusterPackage = original.RegisterClusterPackage
@@ -788,8 +800,11 @@ type Replica = original.Replica
 type ReplicaHealth = original.ReplicaHealth
 type ReplicaHealthEvaluation = original.ReplicaHealthEvaluation
 type ReplicaHealthReport = original.ReplicaHealthReport
+type ReplicaHealthsClient = original.ReplicaHealthsClient
 type ReplicaList = original.ReplicaList
 type ReplicaLoadInformation = original.ReplicaLoadInformation
+type ReplicaLoadInformationsClient = original.ReplicaLoadInformationsClient
+type ReplicasClient = original.ReplicasClient
 type ReplicasHealthEvaluation = original.ReplicasHealthEvaluation
 type ResolvedServicePartition = original.ResolvedServicePartition
 type ResolvedServicePartitionEndpointsItem = original.ResolvedServicePartitionEndpointsItem
@@ -797,26 +812,34 @@ type ResumeApplicationUpgrade = original.ResumeApplicationUpgrade
 type ResumeClusterUpgrade = original.ResumeClusterUpgrade
 type Service = original.Service
 type ServiceCorrelationDescription = original.ServiceCorrelationDescription
-type BasicServiceDescription = original.BasicServiceDescription
 type ServiceDescription = original.ServiceDescription
 type ServiceDescriptionModel = original.ServiceDescriptionModel
 type ServiceDescriptionTemplate = original.ServiceDescriptionTemplate
-type BasicServiceGroupDescription = original.BasicServiceGroupDescription
+type ServiceDescriptionsClient = original.ServiceDescriptionsClient
+type ServiceFromTemplatesClient = original.ServiceFromTemplatesClient
 type ServiceGroupDescription = original.ServiceGroupDescription
 type ServiceGroupDescriptionModel = original.ServiceGroupDescriptionModel
+type ServiceGroupDescriptionsClient = original.ServiceGroupDescriptionsClient
+type ServiceGroupFromTemplatesClient = original.ServiceGroupFromTemplatesClient
 type ServiceGroupMember = original.ServiceGroupMember
 type ServiceGroupMemberDescription = original.ServiceGroupMemberDescription
+type ServiceGroupMembersClient = original.ServiceGroupMembersClient
+type ServiceGroupsClient = original.ServiceGroupsClient
 type ServiceHealth = original.ServiceHealth
 type ServiceHealthEvaluation = original.ServiceHealthEvaluation
 type ServiceHealthPartitionHealthStatesItem = original.ServiceHealthPartitionHealthStatesItem
 type ServiceHealthReport = original.ServiceHealthReport
+type ServiceHealthsClient = original.ServiceHealthsClient
 type ServiceList = original.ServiceList
 type ServiceLoadMetricDescription = original.ServiceLoadMetricDescription
 type ServiceManifest = original.ServiceManifest
+type ServiceManifestsClient = original.ServiceManifestsClient
 type ServicePlacementPolicyDescription = original.ServicePlacementPolicyDescription
-type ServicesHealthEvaluation = original.ServicesHealthEvaluation
 type ServiceType = original.ServiceType
 type ServiceTypeServiceTypeDescription = original.ServiceTypeServiceTypeDescription
+type ServiceTypesClient = original.ServiceTypesClient
+type ServicesClient = original.ServicesClient
+type ServicesHealthEvaluation = original.ServicesHealthEvaluation
 type StartApplicationUpgrade = original.StartApplicationUpgrade
 type StartApplicationUpgradeParametersItem = original.StartApplicationUpgradeParametersItem
 type StartClusterUpgrade = original.StartClusterUpgrade
@@ -840,37 +863,16 @@ type UnregisterClusterPackage = original.UnregisterClusterPackage
 type UpdateApplicationUpgrade = original.UpdateApplicationUpgrade
 type UpdateClusterUpgrade = original.UpdateClusterUpgrade
 type UpdateDescription = original.UpdateDescription
-type BasicUpdateServiceDescription = original.BasicUpdateServiceDescription
 type UpdateServiceDescription = original.UpdateServiceDescription
-type BasicUpdateServiceGroupDescription = original.BasicUpdateServiceGroupDescription
 type UpdateServiceGroupDescription = original.UpdateServiceGroupDescription
 type UpgradeDomainDeltaNodesCheckHealthEvaluation = original.UpgradeDomainDeltaNodesCheckHealthEvaluation
 type UpgradeDomainDeployedApplicationsHealthEvaluation = original.UpgradeDomainDeployedApplicationsHealthEvaluation
 type UpgradeDomainNodesHealthEvaluation = original.UpgradeDomainNodesHealthEvaluation
-type NodeHealthsClient = original.NodeHealthsClient
-type NodeLoadInformationsClient = original.NodeLoadInformationsClient
-type NodesClient = original.NodesClient
-type NodeStatesClient = original.NodeStatesClient
-type PartitionHealthsClient = original.PartitionHealthsClient
-type PartitionListsClient = original.PartitionListsClient
-type PartitionLoadInformationsClient = original.PartitionLoadInformationsClient
-type PartitionLoadsClient = original.PartitionLoadsClient
-type PartitionsClient = original.PartitionsClient
-type ReplicaHealthsClient = original.ReplicaHealthsClient
-type ReplicaLoadInformationsClient = original.ReplicaLoadInformationsClient
-type ReplicasClient = original.ReplicasClient
-type ServiceDescriptionsClient = original.ServiceDescriptionsClient
-type ServiceFromTemplatesClient = original.ServiceFromTemplatesClient
-type ServiceGroupDescriptionsClient = original.ServiceGroupDescriptionsClient
-type ServiceGroupFromTemplatesClient = original.ServiceGroupFromTemplatesClient
-type ServiceGroupMembersClient = original.ServiceGroupMembersClient
-type ServiceGroupsClient = original.ServiceGroupsClient
-type ServiceHealthsClient = original.ServiceHealthsClient
-type ServiceManifestsClient = original.ServiceManifestsClient
-type ServicesClient = original.ServicesClient
-type ServiceTypesClient = original.ServiceTypesClient
 type UpgradeProgressesClient = original.UpgradeProgressesClient
 
+func New(timeout *int32) BaseClient {
+	return original.New(timeout)
+}
 func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
 	return original.NewApplicationHealthsClient(timeout)
 }
@@ -882,12 +884,6 @@ func NewApplicationManifestsClient(timeout *int32) ApplicationManifestsClient {
 }
 func NewApplicationManifestsClientWithBaseURI(baseURI string, timeout *int32) ApplicationManifestsClient {
 	return original.NewApplicationManifestsClientWithBaseURI(baseURI, timeout)
-}
-func NewApplicationsClient(timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClient(timeout)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, timeout)
 }
 func NewApplicationTypesClient(timeout *int32) ApplicationTypesClient {
 	return original.NewApplicationTypesClient(timeout)
@@ -907,11 +903,11 @@ func NewApplicationUpgradesClient(timeout *int32) ApplicationUpgradesClient {
 func NewApplicationUpgradesClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradesClient {
 	return original.NewApplicationUpgradesClientWithBaseURI(baseURI, timeout)
 }
-func New(timeout *int32) BaseClient {
-	return original.New(timeout)
+func NewApplicationsClient(timeout *int32) ApplicationsClient {
+	return original.NewApplicationsClient(timeout)
 }
-func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
-	return original.NewWithBaseURI(baseURI, timeout)
+func NewApplicationsClientWithBaseURI(baseURI string, timeout *int32) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, timeout)
 }
 func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
 	return original.NewClusterHealthsClient(timeout)
@@ -991,204 +987,6 @@ func NewDeployedServiceTypesClient(timeout *int32) DeployedServiceTypesClient {
 func NewDeployedServiceTypesClientWithBaseURI(baseURI string, timeout *int32) DeployedServiceTypesClient {
 	return original.NewDeployedServiceTypesClientWithBaseURI(baseURI, timeout)
 }
-func PossibleAggregatedHealthStateValues() []AggregatedHealthState {
-	return original.PossibleAggregatedHealthStateValues()
-}
-func PossibleAggregatedHealthState1Values() []AggregatedHealthState1 {
-	return original.PossibleAggregatedHealthState1Values()
-}
-func PossibleAggregatedHealthState10Values() []AggregatedHealthState10 {
-	return original.PossibleAggregatedHealthState10Values()
-}
-func PossibleAggregatedHealthState11Values() []AggregatedHealthState11 {
-	return original.PossibleAggregatedHealthState11Values()
-}
-func PossibleAggregatedHealthState12Values() []AggregatedHealthState12 {
-	return original.PossibleAggregatedHealthState12Values()
-}
-func PossibleAggregatedHealthState13Values() []AggregatedHealthState13 {
-	return original.PossibleAggregatedHealthState13Values()
-}
-func PossibleAggregatedHealthState14Values() []AggregatedHealthState14 {
-	return original.PossibleAggregatedHealthState14Values()
-}
-func PossibleAggregatedHealthState15Values() []AggregatedHealthState15 {
-	return original.PossibleAggregatedHealthState15Values()
-}
-func PossibleAggregatedHealthState2Values() []AggregatedHealthState2 {
-	return original.PossibleAggregatedHealthState2Values()
-}
-func PossibleAggregatedHealthState3Values() []AggregatedHealthState3 {
-	return original.PossibleAggregatedHealthState3Values()
-}
-func PossibleAggregatedHealthState4Values() []AggregatedHealthState4 {
-	return original.PossibleAggregatedHealthState4Values()
-}
-func PossibleAggregatedHealthState5Values() []AggregatedHealthState5 {
-	return original.PossibleAggregatedHealthState5Values()
-}
-func PossibleAggregatedHealthState6Values() []AggregatedHealthState6 {
-	return original.PossibleAggregatedHealthState6Values()
-}
-func PossibleAggregatedHealthState7Values() []AggregatedHealthState7 {
-	return original.PossibleAggregatedHealthState7Values()
-}
-func PossibleAggregatedHealthState8Values() []AggregatedHealthState8 {
-	return original.PossibleAggregatedHealthState8Values()
-}
-func PossibleAggregatedHealthState9Values() []AggregatedHealthState9 {
-	return original.PossibleAggregatedHealthState9Values()
-}
-func PossibleDeactivationIntentValues() []DeactivationIntent {
-	return original.PossibleDeactivationIntentValues()
-}
-func PossibleDefaultMoveCostValues() []DefaultMoveCost {
-	return original.PossibleDefaultMoveCostValues()
-}
-func PossibleDefaultMoveCost1Values() []DefaultMoveCost1 {
-	return original.PossibleDefaultMoveCost1Values()
-}
-func PossibleDefaultMoveCost2Values() []DefaultMoveCost2 {
-	return original.PossibleDefaultMoveCost2Values()
-}
-func PossibleDefaultMoveCost3Values() []DefaultMoveCost3 {
-	return original.PossibleDefaultMoveCost3Values()
-}
-func PossibleFailureReasonValues() []FailureReason {
-	return original.PossibleFailureReasonValues()
-}
-func PossibleFailureReason1Values() []FailureReason1 {
-	return original.PossibleFailureReason1Values()
-}
-func PossibleHealthStateValues() []HealthState {
-	return original.PossibleHealthStateValues()
-}
-func PossibleHealthState1Values() []HealthState1 {
-	return original.PossibleHealthState1Values()
-}
-func PossibleHealthState2Values() []HealthState2 {
-	return original.PossibleHealthState2Values()
-}
-func PossibleHealthState3Values() []HealthState3 {
-	return original.PossibleHealthState3Values()
-}
-func PossibleHealthState4Values() []HealthState4 {
-	return original.PossibleHealthState4Values()
-}
-func PossibleHealthState5Values() []HealthState5 {
-	return original.PossibleHealthState5Values()
-}
-func PossibleHealthState6Values() []HealthState6 {
-	return original.PossibleHealthState6Values()
-}
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
-func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
-	return original.PossibleNodeDeactivationIntentValues()
-}
-func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
-	return original.PossibleNodeDeactivationStatusValues()
-}
-func PossibleNodeStatusValues() []NodeStatus {
-	return original.PossibleNodeStatusValues()
-}
-func PossiblePartitionSchemeValues() []PartitionScheme {
-	return original.PossiblePartitionSchemeValues()
-}
-func PossiblePartitionStatusValues() []PartitionStatus {
-	return original.PossiblePartitionStatusValues()
-}
-func PossibleReplicaRoleValues() []ReplicaRole {
-	return original.PossibleReplicaRoleValues()
-}
-func PossibleReplicaRole1Values() []ReplicaRole1 {
-	return original.PossibleReplicaRole1Values()
-}
-func PossibleReplicaStatusValues() []ReplicaStatus {
-	return original.PossibleReplicaStatusValues()
-}
-func PossibleReplicaStatus1Values() []ReplicaStatus1 {
-	return original.PossibleReplicaStatus1Values()
-}
-func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
-	return original.PossibleRollingUpgradeModeValues()
-}
-func PossibleRollingUpgradeMode1Values() []RollingUpgradeMode1 {
-	return original.PossibleRollingUpgradeMode1Values()
-}
-func PossibleRollingUpgradeMode2Values() []RollingUpgradeMode2 {
-	return original.PossibleRollingUpgradeMode2Values()
-}
-func PossibleRollingUpgradeMode3Values() []RollingUpgradeMode3 {
-	return original.PossibleRollingUpgradeMode3Values()
-}
-func PossibleRollingUpgradeMode4Values() []RollingUpgradeMode4 {
-	return original.PossibleRollingUpgradeMode4Values()
-}
-func PossibleRollingUpgradeMode5Values() []RollingUpgradeMode5 {
-	return original.PossibleRollingUpgradeMode5Values()
-}
-func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
-	return original.PossibleServiceCorrelationSchemeValues()
-}
-func PossibleServiceKindValues() []ServiceKind {
-	return original.PossibleServiceKindValues()
-}
-func PossibleServiceKind1Values() []ServiceKind1 {
-	return original.PossibleServiceKind1Values()
-}
-func PossibleServiceKind2Values() []ServiceKind2 {
-	return original.PossibleServiceKind2Values()
-}
-func PossibleServiceKind3Values() []ServiceKind3 {
-	return original.PossibleServiceKind3Values()
-}
-func PossibleServiceKind4Values() []ServiceKind4 {
-	return original.PossibleServiceKind4Values()
-}
-func PossibleServiceKind5Values() []ServiceKind5 {
-	return original.PossibleServiceKind5Values()
-}
-func PossibleServiceKind6Values() []ServiceKind6 {
-	return original.PossibleServiceKind6Values()
-}
-func PossibleServiceKindBasicCreateServiceDescriptionValues() []ServiceKindBasicCreateServiceDescription {
-	return original.PossibleServiceKindBasicCreateServiceDescriptionValues()
-}
-func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() []ServiceKindBasicCreateServiceGroupDescription {
-	return original.PossibleServiceKindBasicCreateServiceGroupDescriptionValues()
-}
-func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
-	return original.PossibleServiceKindBasicServiceDescriptionValues()
-}
-func PossibleServiceKindBasicServiceGroupDescriptionValues() []ServiceKindBasicServiceGroupDescription {
-	return original.PossibleServiceKindBasicServiceGroupDescriptionValues()
-}
-func PossibleServiceKindBasicUpdateServiceDescriptionValues() []ServiceKindBasicUpdateServiceDescription {
-	return original.PossibleServiceKindBasicUpdateServiceDescriptionValues()
-}
-func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() []ServiceKindBasicUpdateServiceGroupDescription {
-	return original.PossibleServiceKindBasicUpdateServiceGroupDescriptionValues()
-}
-func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
-	return original.PossibleServiceLoadMetricWeightValues()
-}
-func PossibleServicePartitionKindValues() []ServicePartitionKind {
-	return original.PossibleServicePartitionKindValues()
-}
-func PossibleServiceStatusValues() []ServiceStatus {
-	return original.PossibleServiceStatusValues()
-}
-func PossibleUpgradeKindValues() []UpgradeKind {
-	return original.PossibleUpgradeKindValues()
-}
-func PossibleUpgradeStateValues() []UpgradeState {
-	return original.PossibleUpgradeStateValues()
-}
-func PossibleUpgradeState1Values() []UpgradeState1 {
-	return original.PossibleUpgradeState1Values()
-}
 func NewNodeHealthsClient(timeout *int32) NodeHealthsClient {
 	return original.NewNodeHealthsClient(timeout)
 }
@@ -1201,17 +999,17 @@ func NewNodeLoadInformationsClient(timeout *int32) NodeLoadInformationsClient {
 func NewNodeLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) NodeLoadInformationsClient {
 	return original.NewNodeLoadInformationsClientWithBaseURI(baseURI, timeout)
 }
-func NewNodesClient(timeout *int32) NodesClient {
-	return original.NewNodesClient(timeout)
-}
-func NewNodesClientWithBaseURI(baseURI string, timeout *int32) NodesClient {
-	return original.NewNodesClientWithBaseURI(baseURI, timeout)
-}
 func NewNodeStatesClient(timeout *int32) NodeStatesClient {
 	return original.NewNodeStatesClient(timeout)
 }
 func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
 	return original.NewNodeStatesClientWithBaseURI(baseURI, timeout)
+}
+func NewNodesClient(timeout *int32) NodesClient {
+	return original.NewNodesClient(timeout)
+}
+func NewNodesClientWithBaseURI(baseURI string, timeout *int32) NodesClient {
+	return original.NewNodesClientWithBaseURI(baseURI, timeout)
 }
 func NewPartitionHealthsClient(timeout *int32) PartitionHealthsClient {
 	return original.NewPartitionHealthsClient(timeout)
@@ -1309,23 +1107,224 @@ func NewServiceManifestsClient(timeout *int32) ServiceManifestsClient {
 func NewServiceManifestsClientWithBaseURI(baseURI string, timeout *int32) ServiceManifestsClient {
 	return original.NewServiceManifestsClientWithBaseURI(baseURI, timeout)
 }
-func NewServicesClient(timeout *int32) ServicesClient {
-	return original.NewServicesClient(timeout)
-}
-func NewServicesClientWithBaseURI(baseURI string, timeout *int32) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, timeout)
-}
 func NewServiceTypesClient(timeout *int32) ServiceTypesClient {
 	return original.NewServiceTypesClient(timeout)
 }
 func NewServiceTypesClientWithBaseURI(baseURI string, timeout *int32) ServiceTypesClient {
 	return original.NewServiceTypesClientWithBaseURI(baseURI, timeout)
 }
+func NewServicesClient(timeout *int32) ServicesClient {
+	return original.NewServicesClient(timeout)
+}
+func NewServicesClientWithBaseURI(baseURI string, timeout *int32) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, timeout)
+}
 func NewUpgradeProgressesClient(timeout *int32) UpgradeProgressesClient {
 	return original.NewUpgradeProgressesClient(timeout)
 }
 func NewUpgradeProgressesClientWithBaseURI(baseURI string, timeout *int32) UpgradeProgressesClient {
 	return original.NewUpgradeProgressesClientWithBaseURI(baseURI, timeout)
+}
+func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
+	return original.NewWithBaseURI(baseURI, timeout)
+}
+func PossibleAggregatedHealthState10Values() []AggregatedHealthState10 {
+	return original.PossibleAggregatedHealthState10Values()
+}
+func PossibleAggregatedHealthState11Values() []AggregatedHealthState11 {
+	return original.PossibleAggregatedHealthState11Values()
+}
+func PossibleAggregatedHealthState12Values() []AggregatedHealthState12 {
+	return original.PossibleAggregatedHealthState12Values()
+}
+func PossibleAggregatedHealthState13Values() []AggregatedHealthState13 {
+	return original.PossibleAggregatedHealthState13Values()
+}
+func PossibleAggregatedHealthState14Values() []AggregatedHealthState14 {
+	return original.PossibleAggregatedHealthState14Values()
+}
+func PossibleAggregatedHealthState15Values() []AggregatedHealthState15 {
+	return original.PossibleAggregatedHealthState15Values()
+}
+func PossibleAggregatedHealthState1Values() []AggregatedHealthState1 {
+	return original.PossibleAggregatedHealthState1Values()
+}
+func PossibleAggregatedHealthState2Values() []AggregatedHealthState2 {
+	return original.PossibleAggregatedHealthState2Values()
+}
+func PossibleAggregatedHealthState3Values() []AggregatedHealthState3 {
+	return original.PossibleAggregatedHealthState3Values()
+}
+func PossibleAggregatedHealthState4Values() []AggregatedHealthState4 {
+	return original.PossibleAggregatedHealthState4Values()
+}
+func PossibleAggregatedHealthState5Values() []AggregatedHealthState5 {
+	return original.PossibleAggregatedHealthState5Values()
+}
+func PossibleAggregatedHealthState6Values() []AggregatedHealthState6 {
+	return original.PossibleAggregatedHealthState6Values()
+}
+func PossibleAggregatedHealthState7Values() []AggregatedHealthState7 {
+	return original.PossibleAggregatedHealthState7Values()
+}
+func PossibleAggregatedHealthState8Values() []AggregatedHealthState8 {
+	return original.PossibleAggregatedHealthState8Values()
+}
+func PossibleAggregatedHealthState9Values() []AggregatedHealthState9 {
+	return original.PossibleAggregatedHealthState9Values()
+}
+func PossibleAggregatedHealthStateValues() []AggregatedHealthState {
+	return original.PossibleAggregatedHealthStateValues()
+}
+func PossibleDeactivationIntentValues() []DeactivationIntent {
+	return original.PossibleDeactivationIntentValues()
+}
+func PossibleDefaultMoveCost1Values() []DefaultMoveCost1 {
+	return original.PossibleDefaultMoveCost1Values()
+}
+func PossibleDefaultMoveCost2Values() []DefaultMoveCost2 {
+	return original.PossibleDefaultMoveCost2Values()
+}
+func PossibleDefaultMoveCost3Values() []DefaultMoveCost3 {
+	return original.PossibleDefaultMoveCost3Values()
+}
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
+	return original.PossibleDefaultMoveCostValues()
+}
+func PossibleFailureReason1Values() []FailureReason1 {
+	return original.PossibleFailureReason1Values()
+}
+func PossibleFailureReasonValues() []FailureReason {
+	return original.PossibleFailureReasonValues()
+}
+func PossibleHealthState1Values() []HealthState1 {
+	return original.PossibleHealthState1Values()
+}
+func PossibleHealthState2Values() []HealthState2 {
+	return original.PossibleHealthState2Values()
+}
+func PossibleHealthState3Values() []HealthState3 {
+	return original.PossibleHealthState3Values()
+}
+func PossibleHealthState4Values() []HealthState4 {
+	return original.PossibleHealthState4Values()
+}
+func PossibleHealthState5Values() []HealthState5 {
+	return original.PossibleHealthState5Values()
+}
+func PossibleHealthState6Values() []HealthState6 {
+	return original.PossibleHealthState6Values()
+}
+func PossibleHealthStateValues() []HealthState {
+	return original.PossibleHealthStateValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
+	return original.PossibleNodeDeactivationIntentValues()
+}
+func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
+	return original.PossibleNodeDeactivationStatusValues()
+}
+func PossibleNodeStatusValues() []NodeStatus {
+	return original.PossibleNodeStatusValues()
+}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return original.PossiblePartitionSchemeValues()
+}
+func PossiblePartitionStatusValues() []PartitionStatus {
+	return original.PossiblePartitionStatusValues()
+}
+func PossibleReplicaRole1Values() []ReplicaRole1 {
+	return original.PossibleReplicaRole1Values()
+}
+func PossibleReplicaRoleValues() []ReplicaRole {
+	return original.PossibleReplicaRoleValues()
+}
+func PossibleReplicaStatus1Values() []ReplicaStatus1 {
+	return original.PossibleReplicaStatus1Values()
+}
+func PossibleReplicaStatusValues() []ReplicaStatus {
+	return original.PossibleReplicaStatusValues()
+}
+func PossibleRollingUpgradeMode1Values() []RollingUpgradeMode1 {
+	return original.PossibleRollingUpgradeMode1Values()
+}
+func PossibleRollingUpgradeMode2Values() []RollingUpgradeMode2 {
+	return original.PossibleRollingUpgradeMode2Values()
+}
+func PossibleRollingUpgradeMode3Values() []RollingUpgradeMode3 {
+	return original.PossibleRollingUpgradeMode3Values()
+}
+func PossibleRollingUpgradeMode4Values() []RollingUpgradeMode4 {
+	return original.PossibleRollingUpgradeMode4Values()
+}
+func PossibleRollingUpgradeMode5Values() []RollingUpgradeMode5 {
+	return original.PossibleRollingUpgradeMode5Values()
+}
+func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
+	return original.PossibleRollingUpgradeModeValues()
+}
+func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
+	return original.PossibleServiceCorrelationSchemeValues()
+}
+func PossibleServiceKind1Values() []ServiceKind1 {
+	return original.PossibleServiceKind1Values()
+}
+func PossibleServiceKind2Values() []ServiceKind2 {
+	return original.PossibleServiceKind2Values()
+}
+func PossibleServiceKind3Values() []ServiceKind3 {
+	return original.PossibleServiceKind3Values()
+}
+func PossibleServiceKind4Values() []ServiceKind4 {
+	return original.PossibleServiceKind4Values()
+}
+func PossibleServiceKind5Values() []ServiceKind5 {
+	return original.PossibleServiceKind5Values()
+}
+func PossibleServiceKind6Values() []ServiceKind6 {
+	return original.PossibleServiceKind6Values()
+}
+func PossibleServiceKindBasicCreateServiceDescriptionValues() []ServiceKindBasicCreateServiceDescription {
+	return original.PossibleServiceKindBasicCreateServiceDescriptionValues()
+}
+func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() []ServiceKindBasicCreateServiceGroupDescription {
+	return original.PossibleServiceKindBasicCreateServiceGroupDescriptionValues()
+}
+func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
+	return original.PossibleServiceKindBasicServiceDescriptionValues()
+}
+func PossibleServiceKindBasicServiceGroupDescriptionValues() []ServiceKindBasicServiceGroupDescription {
+	return original.PossibleServiceKindBasicServiceGroupDescriptionValues()
+}
+func PossibleServiceKindBasicUpdateServiceDescriptionValues() []ServiceKindBasicUpdateServiceDescription {
+	return original.PossibleServiceKindBasicUpdateServiceDescriptionValues()
+}
+func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() []ServiceKindBasicUpdateServiceGroupDescription {
+	return original.PossibleServiceKindBasicUpdateServiceGroupDescriptionValues()
+}
+func PossibleServiceKindValues() []ServiceKind {
+	return original.PossibleServiceKindValues()
+}
+func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
+	return original.PossibleServiceLoadMetricWeightValues()
+}
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
+	return original.PossibleServicePartitionKindValues()
+}
+func PossibleServiceStatusValues() []ServiceStatus {
+	return original.PossibleServiceStatusValues()
+}
+func PossibleUpgradeKindValues() []UpgradeKind {
+	return original.PossibleUpgradeKindValues()
+}
+func PossibleUpgradeState1Values() []UpgradeState1 {
+	return original.PossibleUpgradeState1Values()
+}
+func PossibleUpgradeStateValues() []UpgradeState {
+	return original.PossibleUpgradeStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

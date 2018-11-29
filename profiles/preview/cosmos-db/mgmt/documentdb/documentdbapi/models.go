@@ -21,16 +21,16 @@ package documentdbapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb/documentdbapi"
 
-type DatabaseAccountsClientAPI = original.DatabaseAccountsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type DatabaseClientAPI = original.DatabaseClientAPI
 type CollectionClientAPI = original.CollectionClientAPI
+type CollectionPartitionClientAPI = original.CollectionPartitionClientAPI
+type CollectionPartitionRegionClientAPI = original.CollectionPartitionRegionClientAPI
 type CollectionRegionClientAPI = original.CollectionRegionClientAPI
 type DatabaseAccountRegionClientAPI = original.DatabaseAccountRegionClientAPI
-type PercentileSourceTargetClientAPI = original.PercentileSourceTargetClientAPI
-type PercentileTargetClientAPI = original.PercentileTargetClientAPI
-type PercentileClientAPI = original.PercentileClientAPI
-type CollectionPartitionRegionClientAPI = original.CollectionPartitionRegionClientAPI
-type CollectionPartitionClientAPI = original.CollectionPartitionClientAPI
+type DatabaseAccountsClientAPI = original.DatabaseAccountsClientAPI
+type DatabaseClientAPI = original.DatabaseClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type PartitionKeyRangeIDClientAPI = original.PartitionKeyRangeIDClientAPI
 type PartitionKeyRangeIDRegionClientAPI = original.PartitionKeyRangeIDRegionClientAPI
+type PercentileClientAPI = original.PercentileClientAPI
+type PercentileSourceTargetClientAPI = original.PercentileSourceTargetClientAPI
+type PercentileTargetClientAPI = original.PercentileTargetClientAPI

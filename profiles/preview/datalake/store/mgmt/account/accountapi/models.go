@@ -23,7 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/
 
 type AccountsClientAPI = original.AccountsClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI
-type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI
-type TrustedIDProvidersClientAPI = original.TrustedIDProvidersClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type TrustedIDProvidersClientAPI = original.TrustedIDProvidersClientAPI
+type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

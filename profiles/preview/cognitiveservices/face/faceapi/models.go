@@ -22,9 +22,9 @@ package faceapi
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face/faceapi"
 
 type ClientAPI = original.ClientAPI
-type PersonGroupPersonClientAPI = original.PersonGroupPersonClientAPI
-type PersonGroupClientAPI = original.PersonGroupClientAPI
-type ListClientAPI = original.ListClientAPI
-type LargePersonGroupPersonClientAPI = original.LargePersonGroupPersonClientAPI
-type LargePersonGroupClientAPI = original.LargePersonGroupClientAPI
 type LargeFaceListClientAPI = original.LargeFaceListClientAPI
+type LargePersonGroupClientAPI = original.LargePersonGroupClientAPI
+type LargePersonGroupPersonClientAPI = original.LargePersonGroupPersonClientAPI
+type ListClientAPI = original.ListClientAPI
+type PersonGroupClientAPI = original.PersonGroupClientAPI
+type PersonGroupPersonClientAPI = original.PersonGroupPersonClientAPI

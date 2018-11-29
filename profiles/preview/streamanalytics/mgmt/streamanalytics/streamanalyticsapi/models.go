@@ -21,10 +21,10 @@ package streamanalyticsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics/streamanalyticsapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type StreamingJobsClientAPI = original.StreamingJobsClientAPI
-type InputsClientAPI = original.InputsClientAPI
-type OutputsClientAPI = original.OutputsClientAPI
-type TransformationsClientAPI = original.TransformationsClientAPI
 type FunctionsClientAPI = original.FunctionsClientAPI
+type InputsClientAPI = original.InputsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type OutputsClientAPI = original.OutputsClientAPI
+type StreamingJobsClientAPI = original.StreamingJobsClientAPI
 type SubscriptionsClientAPI = original.SubscriptionsClientAPI
+type TransformationsClientAPI = original.TransformationsClientAPI

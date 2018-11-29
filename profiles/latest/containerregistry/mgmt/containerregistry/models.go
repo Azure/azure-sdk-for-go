@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type ImportMode = original.ImportMode
 
 const (
@@ -109,6 +108,7 @@ const (
 )
 
 type Actor = original.Actor
+type BaseClient = original.BaseClient
 type CallbackConfig = original.CallbackConfig
 type Event = original.Event
 type EventContent = original.EventContent
@@ -129,8 +129,10 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationMetricSpecificationDefinition = original.OperationMetricSpecificationDefinition
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
+type OperationsClient = original.OperationsClient
 type QuarantinePolicy = original.QuarantinePolicy
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
+type RegistriesClient = original.RegistriesClient
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
@@ -155,10 +157,11 @@ type ReplicationListResult = original.ReplicationListResult
 type ReplicationListResultIterator = original.ReplicationListResultIterator
 type ReplicationListResultPage = original.ReplicationListResultPage
 type ReplicationProperties = original.ReplicationProperties
+type ReplicationUpdateParameters = original.ReplicationUpdateParameters
+type ReplicationsClient = original.ReplicationsClient
 type ReplicationsCreateFuture = original.ReplicationsCreateFuture
 type ReplicationsDeleteFuture = original.ReplicationsDeleteFuture
 type ReplicationsUpdateFuture = original.ReplicationsUpdateFuture
-type ReplicationUpdateParameters = original.ReplicationUpdateParameters
 type Request = original.Request
 type Resource = original.Resource
 type Sku = original.Sku
@@ -175,17 +178,68 @@ type WebhookListResultPage = original.WebhookListResultPage
 type WebhookProperties = original.WebhookProperties
 type WebhookPropertiesCreateParameters = original.WebhookPropertiesCreateParameters
 type WebhookPropertiesUpdateParameters = original.WebhookPropertiesUpdateParameters
+type WebhookUpdateParameters = original.WebhookUpdateParameters
+type WebhooksClient = original.WebhooksClient
 type WebhooksCreateFuture = original.WebhooksCreateFuture
 type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
-type WebhookUpdateParameters = original.WebhookUpdateParameters
-type OperationsClient = original.OperationsClient
-type RegistriesClient = original.RegistriesClient
-type ReplicationsClient = original.ReplicationsClient
-type WebhooksClient = original.WebhooksClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
+	return original.NewEventListResultIterator(page)
+}
+func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return original.NewEventListResultPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegistriesClient(subscriptionID string) RegistriesClient {
+	return original.NewRegistriesClient(subscriptionID)
+}
+func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) RegistriesClient {
+	return original.NewRegistriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
+	return original.NewRegistryListResultIterator(page)
+}
+func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return original.NewRegistryListResultPage(getNextPage)
+}
+func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
+	return original.NewReplicationListResultIterator(page)
+}
+func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return original.NewReplicationListResultPage(getNextPage)
+}
+func NewReplicationsClient(subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClient(subscriptionID)
+}
+func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
+	return original.NewWebhookListResultIterator(page)
+}
+func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return original.NewWebhookListResultPage(getNextPage)
+}
+func NewWebhooksClient(subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClient(subscriptionID)
+}
+func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -220,63 +274,9 @@ func PossibleWebhookActionValues() []WebhookAction {
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
 }
-func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
-	return original.NewEventListResultIterator(page)
-}
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return original.NewEventListResultPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
-	return original.NewRegistryListResultIterator(page)
-}
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return original.NewRegistryListResultPage(getNextPage)
-}
-func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
-	return original.NewReplicationListResultIterator(page)
-}
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return original.NewReplicationListResultPage(getNextPage)
-}
-func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
-	return original.NewWebhookListResultIterator(page)
-}
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return original.NewWebhookListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRegistriesClient(subscriptionID string) RegistriesClient {
-	return original.NewRegistriesClient(subscriptionID)
-}
-func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) RegistriesClient {
-	return original.NewRegistriesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewReplicationsClient(subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClient(subscriptionID)
-}
-func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
-}
-func NewWebhooksClient(subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClient(subscriptionID)
-}
-func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
 }

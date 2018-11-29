@@ -21,6 +21,6 @@ package servicesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2018-03-01-preview/services/servicesapi"
 
+type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI
-type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI

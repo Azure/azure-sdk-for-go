@@ -25,7 +25,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
 const (
@@ -49,37 +48,26 @@ const (
 
 type APIEndpoint = original.APIEndpoint
 type APIError = original.APIError
+type BaseClient = original.BaseClient
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationsClient = original.OperationsClient
 type RegenerateKeyInput = original.RegenerateKeyInput
 type RegenerateKeyOutput = original.RegenerateKeyOutput
 type Resource = original.Resource
 type Service = original.Service
+type ServiceClient = original.ServiceClient
 type ServiceCollection = original.ServiceCollection
 type ServiceKeys = original.ServiceKeys
 type ServiceProperties = original.ServiceProperties
 type StorageAccount = original.StorageAccount
 type SyncStorageKeysInput = original.SyncStorageKeysInput
-type OperationsClient = original.OperationsClient
-type ServiceClient = original.ServiceClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleEntityNameUnavailabilityReasonValues() []EntityNameUnavailabilityReason {
-	return original.PossibleEntityNameUnavailabilityReasonValues()
-}
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-func PossibleResourceTypeValues() []ResourceType {
-	return original.PossibleResourceTypeValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -92,6 +80,18 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 }
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleEntityNameUnavailabilityReasonValues() []EntityNameUnavailabilityReason {
+	return original.PossibleEntityNameUnavailabilityReasonValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleResourceTypeValues() []ResourceType {
+	return original.PossibleResourceTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

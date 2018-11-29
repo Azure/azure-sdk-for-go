@@ -21,18 +21,18 @@ package webapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web/webapi"
 
-type BaseClientAPI = original.BaseClientAPI
 type AppServiceCertificateOrdersClientAPI = original.AppServiceCertificateOrdersClientAPI
+type AppServiceEnvironmentsClientAPI = original.AppServiceEnvironmentsClientAPI
+type AppServicePlansClientAPI = original.AppServicePlansClientAPI
+type AppsClientAPI = original.AppsClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type CertificateRegistrationProviderClientAPI = original.CertificateRegistrationProviderClientAPI
-type DomainsClientAPI = original.DomainsClientAPI
-type TopLevelDomainsClientAPI = original.TopLevelDomainsClientAPI
-type DomainRegistrationProviderClientAPI = original.DomainRegistrationProviderClientAPI
 type CertificatesClientAPI = original.CertificatesClientAPI
 type DeletedWebAppsClientAPI = original.DeletedWebAppsClientAPI
 type DiagnosticsClientAPI = original.DiagnosticsClientAPI
+type DomainRegistrationProviderClientAPI = original.DomainRegistrationProviderClientAPI
+type DomainsClientAPI = original.DomainsClientAPI
 type ProviderClientAPI = original.ProviderClientAPI
 type RecommendationsClientAPI = original.RecommendationsClientAPI
-type AppsClientAPI = original.AppsClientAPI
-type AppServiceEnvironmentsClientAPI = original.AppServiceEnvironmentsClientAPI
-type AppServicePlansClientAPI = original.AppServicePlansClientAPI
 type ResourceHealthMetadataClientAPI = original.ResourceHealthMetadataClientAPI
+type TopLevelDomainsClientAPI = original.TopLevelDomainsClientAPI

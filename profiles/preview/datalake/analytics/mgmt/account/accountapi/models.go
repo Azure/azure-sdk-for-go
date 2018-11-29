@@ -22,9 +22,9 @@ package accountapi
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account/accountapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
-type DataLakeStoreAccountsClientAPI = original.DataLakeStoreAccountsClientAPI
-type StorageAccountsClientAPI = original.StorageAccountsClientAPI
 type ComputePoliciesClientAPI = original.ComputePoliciesClientAPI
+type DataLakeStoreAccountsClientAPI = original.DataLakeStoreAccountsClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type StorageAccountsClientAPI = original.StorageAccountsClientAPI

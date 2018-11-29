@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type KeyType = original.KeyType
 
 const (
@@ -60,6 +59,8 @@ const (
 	Standard SkuTier = original.Standard
 )
 
+type BaseClient = original.BaseClient
+type Client = original.Client
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateOrUpdateProperties = original.CreateOrUpdateProperties
 type CreateParameters = original.CreateParameters
@@ -75,6 +76,7 @@ type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationProperties = original.OperationProperties
+type OperationsClient = original.OperationsClient
 type Properties = original.Properties
 type RegenerateKeyFuture = original.RegenerateKeyFuture
 type RegenerateKeyParameters = original.RegenerateKeyParameters
@@ -93,30 +95,28 @@ type UsageList = original.UsageList
 type UsageListIterator = original.UsageListIterator
 type UsageListPage = original.UsageListPage
 type UsageName = original.UsageName
-type OperationsClient = original.OperationsClient
-type Client = original.Client
 type UsagesClient = original.UsagesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
 }
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
 func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return original.NewOperationListPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
 	return original.NewResourceListIterator(page)
@@ -130,23 +130,23 @@ func NewUsageListIterator(page UsageListPage) UsageListIterator {
 func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
 	return original.NewUsageListPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

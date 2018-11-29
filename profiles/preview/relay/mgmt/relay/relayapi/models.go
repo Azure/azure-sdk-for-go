@@ -21,7 +21,7 @@ package relayapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay/relayapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type NamespacesClientAPI = original.NamespacesClientAPI
 type HybridConnectionsClientAPI = original.HybridConnectionsClientAPI
+type NamespacesClientAPI = original.NamespacesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type WCFRelaysClientAPI = original.WCFRelaysClientAPI

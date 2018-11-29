@@ -21,15 +21,15 @@ package sqlapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql/sqlapi"
 
-type ServersClientAPI = original.ServersClientAPI
+type DatabaseThreatDetectionPoliciesClientAPI = original.DatabaseThreatDetectionPoliciesClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI
+type ElasticPoolActivitiesClientAPI = original.ElasticPoolActivitiesClientAPI
+type ElasticPoolDatabaseActivitiesClientAPI = original.ElasticPoolDatabaseActivitiesClientAPI
 type ElasticPoolsClientAPI = original.ElasticPoolsClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI
 type RecommendedElasticPoolsClientAPI = original.RecommendedElasticPoolsClientAPI
 type ReplicationLinksClientAPI = original.ReplicationLinksClientAPI
-type ElasticPoolActivitiesClientAPI = original.ElasticPoolActivitiesClientAPI
-type ElasticPoolDatabaseActivitiesClientAPI = original.ElasticPoolDatabaseActivitiesClientAPI
+type ServersClientAPI = original.ServersClientAPI
 type ServiceTierAdvisorsClientAPI = original.ServiceTierAdvisorsClientAPI
-type TransparentDataEncryptionsClientAPI = original.TransparentDataEncryptionsClientAPI
 type TransparentDataEncryptionActivitiesClientAPI = original.TransparentDataEncryptionActivitiesClientAPI
-type DatabaseThreatDetectionPoliciesClientAPI = original.DatabaseThreatDetectionPoliciesClientAPI
+type TransparentDataEncryptionsClientAPI = original.TransparentDataEncryptionsClientAPI

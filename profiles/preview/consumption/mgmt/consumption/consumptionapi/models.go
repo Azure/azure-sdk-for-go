@@ -21,16 +21,16 @@ package consumptionapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption/consumptionapi"
 
-type UsageDetailsClientAPI = original.UsageDetailsClientAPI
-type MarketplacesClientAPI = original.MarketplacesClientAPI
-type BalancesClientAPI = original.BalancesClientAPI
-type ReservationsSummariesClientAPI = original.ReservationsSummariesClientAPI
-type ReservationsDetailsClientAPI = original.ReservationsDetailsClientAPI
-type ReservationRecommendationsClientAPI = original.ReservationRecommendationsClientAPI
-type BudgetsClientAPI = original.BudgetsClientAPI
-type PriceSheetClientAPI = original.PriceSheetClientAPI
-type TagsClientAPI = original.TagsClientAPI
-type ForecastsClientAPI = original.ForecastsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type AggregatedCostClientAPI = original.AggregatedCostClientAPI
+type BalancesClientAPI = original.BalancesClientAPI
+type BudgetsClientAPI = original.BudgetsClientAPI
 type ChargesClientAPI = original.ChargesClientAPI
+type ForecastsClientAPI = original.ForecastsClientAPI
+type MarketplacesClientAPI = original.MarketplacesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type PriceSheetClientAPI = original.PriceSheetClientAPI
+type ReservationRecommendationsClientAPI = original.ReservationRecommendationsClientAPI
+type ReservationsDetailsClientAPI = original.ReservationsDetailsClientAPI
+type ReservationsSummariesClientAPI = original.ReservationsSummariesClientAPI
+type TagsClientAPI = original.TagsClientAPI
+type UsageDetailsClientAPI = original.UsageDetailsClientAPI

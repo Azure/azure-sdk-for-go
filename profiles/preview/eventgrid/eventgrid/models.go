@@ -21,7 +21,6 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
-type BaseClient = original.BaseClient
 type MediaJobErrorCategory = original.MediaJobErrorCategory
 
 const (
@@ -72,6 +71,8 @@ const (
 	OdataTypeMicrosoftMediaJobOutputAsset OdataType = original.OdataTypeMicrosoftMediaJobOutputAsset
 )
 
+type BaseClient = original.BaseClient
+type BasicMediaJobOutput = original.BasicMediaJobOutput
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest
@@ -99,7 +100,6 @@ type MediaJobError = original.MediaJobError
 type MediaJobErrorDetail = original.MediaJobErrorDetail
 type MediaJobErroredEventData = original.MediaJobErroredEventData
 type MediaJobFinishedEventData = original.MediaJobFinishedEventData
-type BasicMediaJobOutput = original.BasicMediaJobOutput
 type MediaJobOutput = original.MediaJobOutput
 type MediaJobOutputAsset = original.MediaJobOutputAsset
 type MediaJobOutputCanceledEventData = original.MediaJobOutputCanceledEventData

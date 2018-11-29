@@ -29,10 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
-type DatabasesClient = original.DatabasesClient
-type EventHubConnectionsClient = original.EventHubConnectionsClient
 type AzureScaleType = original.AzureScaleType
 
 const (
@@ -54,6 +50,14 @@ const (
 	L8    AzureSkuName = original.L8
 )
 
+type DataFormat = original.DataFormat
+
+const (
+	CSV       DataFormat = original.CSV
+	JSON      DataFormat = original.JSON
+	MULTIJSON DataFormat = original.MULTIJSON
+)
+
 type DatabasePrincipalRole = original.DatabasePrincipalRole
 
 const (
@@ -71,14 +75,6 @@ const (
 	DatabasePrincipalTypeApp   DatabasePrincipalType = original.DatabasePrincipalTypeApp
 	DatabasePrincipalTypeGroup DatabasePrincipalType = original.DatabasePrincipalTypeGroup
 	DatabasePrincipalTypeUser  DatabasePrincipalType = original.DatabasePrincipalTypeUser
-)
-
-type DataFormat = original.DataFormat
-
-const (
-	CSV       DataFormat = original.CSV
-	JSON      DataFormat = original.JSON
-	MULTIJSON DataFormat = original.MULTIJSON
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -108,6 +104,7 @@ type AzureCapacity = original.AzureCapacity
 type AzureEntityResource = original.AzureEntityResource
 type AzureResourceSku = original.AzureResourceSku
 type AzureSku = original.AzureSku
+type BaseClient = original.BaseClient
 type CheckNameResult = original.CheckNameResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -115,12 +112,13 @@ type Cluster = original.Cluster
 type ClusterCheckNameRequest = original.ClusterCheckNameRequest
 type ClusterListResult = original.ClusterListResult
 type ClusterProperties = original.ClusterProperties
+type ClusterUpdate = original.ClusterUpdate
+type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
-type ClusterUpdate = original.ClusterUpdate
 type Database = original.Database
 type DatabaseCheckNameRequest = original.DatabaseCheckNameRequest
 type DatabaseListResult = original.DatabaseListResult
@@ -128,21 +126,23 @@ type DatabasePrincipal = original.DatabasePrincipal
 type DatabasePrincipalListRequest = original.DatabasePrincipalListRequest
 type DatabasePrincipalListResult = original.DatabasePrincipalListResult
 type DatabaseProperties = original.DatabaseProperties
+type DatabaseStatistics = original.DatabaseStatistics
+type DatabaseUpdate = original.DatabaseUpdate
+type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
-type DatabaseStatistics = original.DatabaseStatistics
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
-type DatabaseUpdate = original.DatabaseUpdate
 type EventHubConnection = original.EventHubConnection
 type EventHubConnectionListResult = original.EventHubConnectionListResult
 type EventHubConnectionProperties = original.EventHubConnectionProperties
-type EventHubConnectionsCreateOrUpdateFuture = original.EventHubConnectionsCreateOrUpdateFuture
-type EventHubConnectionsDeleteFuture = original.EventHubConnectionsDeleteFuture
-type EventHubConnectionsUpdateFuture = original.EventHubConnectionsUpdateFuture
 type EventHubConnectionUpdate = original.EventHubConnectionUpdate
 type EventHubConnectionValidation = original.EventHubConnectionValidation
 type EventHubConnectionValidationListResult = original.EventHubConnectionValidationListResult
 type EventHubConnectionValidationResult = original.EventHubConnectionValidationResult
+type EventHubConnectionsClient = original.EventHubConnectionsClient
+type EventHubConnectionsCreateOrUpdateFuture = original.EventHubConnectionsCreateOrUpdateFuture
+type EventHubConnectionsDeleteFuture = original.EventHubConnectionsDeleteFuture
+type EventHubConnectionsUpdateFuture = original.EventHubConnectionsUpdateFuture
 type ListResourceSkusResult = original.ListResourceSkusResult
 type ListSkusResult = original.ListSkusResult
 type Operation = original.Operation
@@ -150,17 +150,14 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -180,27 +177,6 @@ func NewEventHubConnectionsClient(subscriptionID string) EventHubConnectionsClie
 func NewEventHubConnectionsClientWithBaseURI(baseURI string, subscriptionID string) EventHubConnectionsClient {
 	return original.NewEventHubConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleAzureScaleTypeValues() []AzureScaleType {
-	return original.PossibleAzureScaleTypeValues()
-}
-func PossibleAzureSkuNameValues() []AzureSkuName {
-	return original.PossibleAzureSkuNameValues()
-}
-func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
-	return original.PossibleDatabasePrincipalRoleValues()
-}
-func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
-	return original.PossibleDatabasePrincipalTypeValues()
-}
-func PossibleDataFormatValues() []DataFormat {
-	return original.PossibleDataFormatValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -212,6 +188,30 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAzureScaleTypeValues() []AzureScaleType {
+	return original.PossibleAzureScaleTypeValues()
+}
+func PossibleAzureSkuNameValues() []AzureSkuName {
+	return original.PossibleAzureSkuNameValues()
+}
+func PossibleDataFormatValues() []DataFormat {
+	return original.PossibleDataFormatValues()
+}
+func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
+	return original.PossibleDatabasePrincipalRoleValues()
+}
+func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
+	return original.PossibleDatabasePrincipalTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

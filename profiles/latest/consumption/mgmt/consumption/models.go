@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type Datagrain = original.Datagrain
 
 const (
@@ -37,6 +36,7 @@ const (
 	MonthlyGrain Datagrain = original.MonthlyGrain
 )
 
+type BaseClient = original.BaseClient
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type MeterDetails = original.MeterDetails
@@ -45,43 +45,31 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type ReservationDetails = original.ReservationDetails
 type ReservationDetailsListResult = original.ReservationDetailsListResult
 type ReservationDetailsProperties = original.ReservationDetailsProperties
 type ReservationSummaries = original.ReservationSummaries
 type ReservationSummariesListResult = original.ReservationSummariesListResult
 type ReservationSummariesProperties = original.ReservationSummariesProperties
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+type ReservationsSummariesClient = original.ReservationsSummariesClient
 type Resource = original.Resource
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
+type UsageDetailsClient = original.UsageDetailsClient
 type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
-type OperationsClient = original.OperationsClient
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-type UsageDetailsClient = original.UsageDetailsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleDatagrainValues() []Datagrain {
-	return original.PossibleDatagrainValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
-}
-func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
-	return original.NewUsageDetailsListResultIterator(page)
-}
-func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
-	return original.NewUsageDetailsListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -106,6 +94,18 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 }
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
+	return original.NewUsageDetailsListResultIterator(page)
+}
+func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
+	return original.NewUsageDetailsListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDatagrainValues() []Datagrain {
+	return original.PossibleDatagrainValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

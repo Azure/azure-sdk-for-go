@@ -21,7 +21,6 @@ package computervision
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/computervision"
 
-type BaseClient = original.BaseClient
 type Details = original.Details
 
 const (
@@ -115,6 +114,7 @@ const (
 )
 
 type AdultInfo = original.AdultInfo
+type BaseClient = original.BaseClient
 type Category = original.Category
 type CategoryDetail = original.CategoryDetail
 type CelebritiesModel = original.CelebritiesModel

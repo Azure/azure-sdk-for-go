@@ -25,9 +25,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
-type ClusterVersionsClient = original.ClusterVersionsClient
 type ClusterState = original.ClusterState
 
 const (
@@ -113,6 +110,7 @@ const (
 
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AzureActiveDirectory = original.AzureActiveDirectory
+type BaseClient = original.BaseClient
 type CertificateDescription = original.CertificateDescription
 type ClientCertificateCommonName = original.ClientCertificateCommonName
 type ClientCertificateThumbprint = original.ClientCertificateThumbprint
@@ -127,12 +125,14 @@ type ClusterListResultIterator = original.ClusterListResultIterator
 type ClusterListResultPage = original.ClusterListResultPage
 type ClusterProperties = original.ClusterProperties
 type ClusterPropertiesUpdateParameters = original.ClusterPropertiesUpdateParameters
-type ClustersCreateFuture = original.ClustersCreateFuture
-type ClustersUpdateFuture = original.ClustersUpdateFuture
 type ClusterUpdateParameters = original.ClusterUpdateParameters
 type ClusterUpgradeDeltaHealthPolicy = original.ClusterUpgradeDeltaHealthPolicy
 type ClusterUpgradePolicy = original.ClusterUpgradePolicy
 type ClusterVersionDetails = original.ClusterVersionDetails
+type ClusterVersionsClient = original.ClusterVersionsClient
+type ClustersClient = original.ClustersClient
+type ClustersCreateFuture = original.ClustersCreateFuture
+type ClustersUpdateFuture = original.ClustersUpdateFuture
 type DiagnosticsStorageAccountConfig = original.DiagnosticsStorageAccountConfig
 type EndpointRangeDescription = original.EndpointRangeDescription
 type ErrorModel = original.ErrorModel
@@ -142,16 +142,19 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResult = original.OperationResult
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type SettingsParameterDescription = original.SettingsParameterDescription
 type SettingsSectionDescription = original.SettingsSectionDescription
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClusterVersionsClient(subscriptionID string) ClusterVersionsClient {
+	return original.NewClusterVersionsClient(subscriptionID)
+}
+func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) ClusterVersionsClient {
+	return original.NewClusterVersionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -159,11 +162,14 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewClusterVersionsClient(subscriptionID string) ClusterVersionsClient {
-	return original.NewClusterVersionsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) ClusterVersionsClient {
-	return original.NewClusterVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()
@@ -177,26 +183,20 @@ func PossibleEnvironmentValues() []Environment {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
-func PossibleReliabilityLevelValues() []ReliabilityLevel {
-	return original.PossibleReliabilityLevelValues()
-}
 func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
 	return original.PossibleReliabilityLevel1Values()
 }
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return original.PossibleUpgradeModeValues()
+func PossibleReliabilityLevelValues() []ReliabilityLevel {
+	return original.PossibleReliabilityLevelValues()
 }
 func PossibleUpgradeMode1Values() []UpgradeMode1 {
 	return original.PossibleUpgradeMode1Values()
 }
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return original.PossibleUpgradeModeValues()
+}
 func PossibleX509StoreNameValues() []X509StoreName {
 	return original.PossibleX509StoreNameValues()
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

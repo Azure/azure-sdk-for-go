@@ -22,10 +22,10 @@ package cdnapi
 import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn/cdnapi"
 
 type BaseClientAPI = original.BaseClientAPI
-type ProfilesClientAPI = original.ProfilesClientAPI
-type EndpointsClientAPI = original.EndpointsClientAPI
-type OriginsClientAPI = original.OriginsClientAPI
 type CustomDomainsClientAPI = original.CustomDomainsClientAPI
-type ResourceUsageClientAPI = original.ResourceUsageClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type EdgeNodesClientAPI = original.EdgeNodesClientAPI
+type EndpointsClientAPI = original.EndpointsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type OriginsClientAPI = original.OriginsClientAPI
+type ProfilesClientAPI = original.ProfilesClientAPI
+type ResourceUsageClientAPI = original.ResourceUsageClientAPI

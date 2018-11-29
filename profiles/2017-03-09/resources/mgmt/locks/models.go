@@ -29,8 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
@@ -39,17 +37,22 @@ const (
 	ReadOnly     LockLevel = original.ReadOnly
 )
 
+type BaseClient = original.BaseClient
 type ManagementLockListResult = original.ManagementLockListResult
 type ManagementLockListResultIterator = original.ManagementLockListResultIterator
 type ManagementLockListResultPage = original.ManagementLockListResultPage
 type ManagementLockObject = original.ManagementLockObject
 type ManagementLockProperties = original.ManagementLockProperties
+type ManagementLocksClient = original.ManagementLocksClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
+	return original.NewManagementLockListResultIterator(page)
+}
+func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
+	return original.NewManagementLockListResultPage(getNextPage)
 }
 func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClient(subscriptionID)
@@ -57,14 +60,11 @@ func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleLockLevelValues() []LockLevel {
 	return original.PossibleLockLevelValues()
-}
-func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
-	return original.NewManagementLockListResultIterator(page)
-}
-func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
-	return original.NewManagementLockListResultPage(getNextPage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"

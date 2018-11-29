@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type ConnectionMode = original.ConnectionMode
 
 const (
@@ -85,6 +84,7 @@ const (
 	Live Status = original.Live
 )
 
+type BaseClient = original.BaseClient
 type CheckServerNameAvailabilityParameters = original.CheckServerNameAvailabilityParameters
 type CheckServerNameAvailabilityResult = original.CheckServerNameAvailabilityResult
 type ErrorResponse = original.ErrorResponse
@@ -100,45 +100,27 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationStatus = original.OperationStatus
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
 type Server = original.Server
 type ServerAdministrators = original.ServerAdministrators
 type ServerMutableProperties = original.ServerMutableProperties
 type ServerProperties = original.ServerProperties
+type ServerUpdateParameters = original.ServerUpdateParameters
 type Servers = original.Servers
+type ServersClient = original.ServersClient
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
 type ServersResumeFuture = original.ServersResumeFuture
 type ServersSuspendFuture = original.ServersSuspendFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
-type ServerUpdateParameters = original.ServerUpdateParameters
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
-type OperationsClient = original.OperationsClient
-type ServersClient = original.ServersClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleConnectionModeValues() []ConnectionMode {
-	return original.PossibleConnectionModeValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -157,6 +139,24 @@ func NewServersClient(subscriptionID string) ServersClient {
 }
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleConnectionModeValues() []ConnectionMode {
+	return original.PossibleConnectionModeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

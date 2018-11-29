@@ -21,9 +21,9 @@ package eventhubapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub/eventhubapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type NamespacesClientAPI = original.NamespacesClientAPI
+type ConsumerGroupsClientAPI = original.ConsumerGroupsClientAPI
 type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAPI
 type EventHubsClientAPI = original.EventHubsClientAPI
-type ConsumerGroupsClientAPI = original.ConsumerGroupsClientAPI
+type NamespacesClientAPI = original.NamespacesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type RegionsClientAPI = original.RegionsClientAPI

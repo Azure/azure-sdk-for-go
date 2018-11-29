@@ -29,8 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type HanaInstancesClient = original.HanaInstancesClient
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -71,44 +69,34 @@ const (
 	S960m   HanaInstanceSizeNamesEnum = original.S960m
 )
 
+type BaseClient = original.BaseClient
 type Disk = original.Disk
 type Display = original.Display
 type ErrorResponse = original.ErrorResponse
 type HanaInstance = original.HanaInstance
 type HanaInstanceProperties = original.HanaInstanceProperties
+type HanaInstancesClient = original.HanaInstancesClient
 type HanaInstancesListResult = original.HanaInstancesListResult
 type HanaInstancesListResultIterator = original.HanaInstancesListResultIterator
 type HanaInstancesListResultPage = original.HanaInstancesListResultPage
 type HardwareProfile = original.HardwareProfile
 type IPAddress = original.IPAddress
 type NetworkProfile = original.NetworkProfile
+type OSProfile = original.OSProfile
 type Operation = original.Operation
 type OperationList = original.OperationList
-type OSProfile = original.OSProfile
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type StorageProfile = original.StorageProfile
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
 	return original.NewHanaInstancesClient(subscriptionID)
 }
 func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
 	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
-	return original.PossibleHanaHardwareTypeNamesEnumValues()
-}
-func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
-	return original.PossibleHanaInstancePowerStateEnumValues()
-}
-func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
-	return original.PossibleHanaInstanceSizeNamesEnumValues()
 }
 func NewHanaInstancesListResultIterator(page HanaInstancesListResultPage) HanaInstancesListResultIterator {
 	return original.NewHanaInstancesListResultIterator(page)
@@ -121,6 +109,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
+	return original.PossibleHanaHardwareTypeNamesEnumValues()
+}
+func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
+	return original.PossibleHanaInstancePowerStateEnumValues()
+}
+func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
+	return original.PossibleHanaInstanceSizeNamesEnumValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

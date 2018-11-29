@@ -25,15 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement"
 )
 
-type AlertsClient = original.AlertsClient
-type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ConnectorClient = original.ConnectorClient
 type AlertCategory = original.AlertCategory
 
 const (
@@ -148,7 +143,11 @@ type AlertListResult = original.AlertListResult
 type AlertListResultIterator = original.AlertListResultIterator
 type AlertListResultPage = original.AlertListResultPage
 type AlertProperties = original.AlertProperties
+type AlertsClient = original.AlertsClient
+type BaseClient = original.BaseClient
+type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
 type CommonReportProperties = original.CommonReportProperties
+type ConnectorClient = original.ConnectorClient
 type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
 type ConnectorCollectionInfo = original.ConnectorCollectionInfo
 type ConnectorDefinition = original.ConnectorDefinition
@@ -165,6 +164,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type Query = original.Query
 type QueryColumn = original.QueryColumn
 type QueryProperties = original.QueryProperties
@@ -187,12 +187,20 @@ type ReportProperties = original.ReportProperties
 type ReportRecurrencePeriod = original.ReportRecurrencePeriod
 type ReportSchedule = original.ReportSchedule
 type ReportTimePeriod = original.ReportTimePeriod
-type Resource = original.Resource
-type OperationsClient = original.OperationsClient
 type ReportsClient = original.ReportsClient
+type Resource = original.Resource
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewAlertListResultIterator(page AlertListResultPage) AlertListResultIterator {
+	return original.NewAlertListResultIterator(page)
+}
+func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
+	return original.NewAlertListResultPage(getNextPage)
+}
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
 }
@@ -205,17 +213,44 @@ func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDime
 func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountDimensionsClient {
 	return original.NewBillingAccountDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewConnectorClient(subscriptionID string) ConnectorClient {
 	return original.NewConnectorClient(subscriptionID)
 }
 func NewConnectorClientWithBaseURI(baseURI string, subscriptionID string) ConnectorClient {
 	return original.NewConnectorClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReportsClient(subscriptionID string) ReportsClient {
+	return original.NewReportsClient(subscriptionID)
+}
+func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
+	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClient(subscriptionID)
+}
+func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClient(subscriptionID)
+}
+func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAlertCategoryValues() []AlertCategory {
 	return original.PossibleAlertCategoryValues()
@@ -258,42 +293,6 @@ func PossibleStatusTypeValues() []StatusType {
 }
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()
-}
-func NewAlertListResultIterator(page AlertListResultPage) AlertListResultIterator {
-	return original.NewAlertListResultIterator(page)
-}
-func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
-	return original.NewAlertListResultPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewReportsClient(subscriptionID string) ReportsClient {
-	return original.NewReportsClient(subscriptionID)
-}
-func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
-	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
-	return original.NewResourceGroupDimensionsClient(subscriptionID)
-}
-func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
-	return original.NewResourceGroupDimensionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
-	return original.NewSubscriptionDimensionsClient(subscriptionID)
-}
-func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
-	return original.NewSubscriptionDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

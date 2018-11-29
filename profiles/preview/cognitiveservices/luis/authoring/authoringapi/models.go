@@ -21,12 +21,12 @@ package authoringapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/authoring/authoringapi"
 
-type FeaturesClientAPI = original.FeaturesClientAPI
-type ExamplesClientAPI = original.ExamplesClientAPI
-type ModelClientAPI = original.ModelClientAPI
 type AppsClientAPI = original.AppsClientAPI
-type VersionsClientAPI = original.VersionsClientAPI
-type TrainClientAPI = original.TrainClientAPI
-type PermissionsClientAPI = original.PermissionsClientAPI
+type ExamplesClientAPI = original.ExamplesClientAPI
+type FeaturesClientAPI = original.FeaturesClientAPI
+type ModelClientAPI = original.ModelClientAPI
 type PatternClientAPI = original.PatternClientAPI
+type PermissionsClientAPI = original.PermissionsClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
+type TrainClientAPI = original.TrainClientAPI
+type VersionsClientAPI = original.VersionsClientAPI

@@ -25,13 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
 )
 
-type Client = original.Client
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type DataLakeAnalyticsAccountState = original.DataLakeAnalyticsAccountState
 
 const (
@@ -64,8 +61,10 @@ const (
 type AddDataLakeStoreParameters = original.AddDataLakeStoreParameters
 type AddStorageAccountParameters = original.AddStorageAccountParameters
 type AzureAsyncOperationResult = original.AzureAsyncOperationResult
+type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainerProperties = original.BlobContainerProperties
+type Client = original.Client
 type CreateFuture = original.CreateFuture
 type DataLakeAnalyticsAccount = original.DataLakeAnalyticsAccount
 type DataLakeAnalyticsAccountListDataLakeStoreResult = original.DataLakeAnalyticsAccountListDataLakeStoreResult
@@ -95,26 +94,14 @@ type StorageAccountInfo = original.StorageAccountInfo
 type StorageAccountProperties = original.StorageAccountProperties
 type UpdateFuture = original.UpdateFuture
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
-	return original.PossibleDataLakeAnalyticsAccountStateValues()
-}
-func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
-	return original.PossibleDataLakeAnalyticsAccountStatusValues()
-}
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
 }
 func NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page DataLakeAnalyticsAccountListDataLakeStoreResultPage) DataLakeAnalyticsAccountListDataLakeStoreResultIterator {
 	return original.NewDataLakeAnalyticsAccountListDataLakeStoreResultIterator(page)
@@ -145,6 +132,18 @@ func NewListSasTokensResultIterator(page ListSasTokensResultPage) ListSasTokensR
 }
 func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
 	return original.NewListSasTokensResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
+	return original.PossibleDataLakeAnalyticsAccountStateValues()
+}
+func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
+	return original.PossibleDataLakeAnalyticsAccountStatusValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

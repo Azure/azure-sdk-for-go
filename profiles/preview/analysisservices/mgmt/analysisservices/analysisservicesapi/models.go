@@ -21,5 +21,5 @@ package analysisservicesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices/analysisservicesapi"
 
-type ServersClientAPI = original.ServersClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ServersClientAPI = original.ServersClientAPI

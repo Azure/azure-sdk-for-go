@@ -21,18 +21,18 @@ package storsimpleapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/storsimple1200series/mgmt/2016-10-01/storsimple/storsimpleapi"
 
-type ManagersClientAPI = original.ManagersClientAPI
-type AvailableProviderOperationsClientAPI = original.AvailableProviderOperationsClientAPI
 type AccessControlRecordsClientAPI = original.AccessControlRecordsClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
-type BackupsClientAPI = original.BackupsClientAPI
-type DevicesClientAPI = original.DevicesClientAPI
+type AvailableProviderOperationsClientAPI = original.AvailableProviderOperationsClientAPI
 type BackupScheduleGroupsClientAPI = original.BackupScheduleGroupsClientAPI
+type BackupsClientAPI = original.BackupsClientAPI
 type ChapSettingsClientAPI = original.ChapSettingsClientAPI
-type IscsiDisksClientAPI = original.IscsiDisksClientAPI
+type DevicesClientAPI = original.DevicesClientAPI
 type FileServersClientAPI = original.FileServersClientAPI
 type FileSharesClientAPI = original.FileSharesClientAPI
+type IscsiDisksClientAPI = original.IscsiDisksClientAPI
 type IscsiServersClientAPI = original.IscsiServersClientAPI
 type JobsClientAPI = original.JobsClientAPI
+type ManagersClientAPI = original.ManagersClientAPI
 type StorageAccountCredentialsClientAPI = original.StorageAccountCredentialsClientAPI
 type StorageDomainsClientAPI = original.StorageDomainsClientAPI

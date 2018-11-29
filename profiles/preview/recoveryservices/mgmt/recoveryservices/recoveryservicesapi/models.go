@@ -21,10 +21,10 @@ package recoveryservicesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices/recoveryservicesapi"
 
-type VaultCertificatesClientAPI = original.VaultCertificatesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type RegisteredIdentitiesClientAPI = original.RegisteredIdentitiesClientAPI
 type ReplicationUsagesClientAPI = original.ReplicationUsagesClientAPI
-type VaultsClientAPI = original.VaultsClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type VaultExtendedInfoClientAPI = original.VaultExtendedInfoClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
+type VaultCertificatesClientAPI = original.VaultCertificatesClientAPI
+type VaultExtendedInfoClientAPI = original.VaultExtendedInfoClientAPI
+type VaultsClientAPI = original.VaultsClientAPI

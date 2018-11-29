@@ -29,9 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ContainerServicesClient = original.ContainerServicesClient
-type ManagedClustersClient = original.ManagedClustersClient
+type OSType = original.OSType
+
+const (
+	Linux   OSType = original.Linux
+	Windows OSType = original.Windows
+)
+
 type OrchestratorTypes = original.OrchestratorTypes
 
 const (
@@ -40,13 +44,6 @@ const (
 	DockerCE   OrchestratorTypes = original.DockerCE
 	Kubernetes OrchestratorTypes = original.Kubernetes
 	Swarm      OrchestratorTypes = original.Swarm
-)
-
-type OSType = original.OSType
-
-const (
-	Linux   OSType = original.Linux
-	Windows OSType = original.Windows
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -237,7 +234,9 @@ const (
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
+type BaseClient = original.BaseClient
 type ContainerService = original.ContainerService
+type ContainerServicesClient = original.ContainerServicesClient
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
 type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType
 type CustomProfile = original.CustomProfile
@@ -254,10 +253,11 @@ type ManagedClusterListResultIterator = original.ManagedClusterListResultIterato
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterProperties = original.ManagedClusterProperties
-type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
-type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
+type ManagedClustersClient = original.ManagedClustersClient
+type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
+type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type MasterProfile = original.MasterProfile
 type OrchestratorProfile = original.OrchestratorProfile
 type OrchestratorProfileType = original.OrchestratorProfileType
@@ -266,41 +266,20 @@ type OrchestratorVersionProfileListResult = original.OrchestratorVersionProfileL
 type OrchestratorVersionProfileProperties = original.OrchestratorVersionProfileProperties
 type Properties = original.Properties
 type Resource = original.Resource
-type ServicePrincipalProfile = original.ServicePrincipalProfile
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type ServicePrincipalProfile = original.ServicePrincipalProfile
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClient(subscriptionID)
 }
 func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClient(subscriptionID)
-}
-func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleOrchestratorTypesValues() []OrchestratorTypes {
-	return original.PossibleOrchestratorTypesValues()
-}
-func PossibleOSTypeValues() []OSType {
-	return original.PossibleOSTypeValues()
-}
-func PossibleStorageProfileTypesValues() []StorageProfileTypes {
-	return original.PossibleStorageProfileTypesValues()
-}
-func PossibleVMSizeTypesValues() []VMSizeTypes {
-	return original.PossibleVMSizeTypesValues()
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -313,6 +292,27 @@ func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) Mana
 }
 func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
 	return original.NewManagedClusterListResultPage(getNextPage)
+}
+func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClient(subscriptionID)
+}
+func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleOSTypeValues() []OSType {
+	return original.PossibleOSTypeValues()
+}
+func PossibleOrchestratorTypesValues() []OrchestratorTypes {
+	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleStorageProfileTypesValues() []StorageProfileTypes {
+	return original.PossibleStorageProfileTypesValues()
+}
+func PossibleVMSizeTypesValues() []VMSizeTypes {
+	return original.PossibleVMSizeTypesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

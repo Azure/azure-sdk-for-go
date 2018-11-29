@@ -22,6 +22,6 @@ package cognitiveservicesapi
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices/cognitiveservicesapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
-type ResourceSkusClientAPI = original.ResourceSkusClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type CheckSkuAvailabilityClientAPI = original.CheckSkuAvailabilityClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type ResourceSkusClientAPI = original.ResourceSkusClientAPI

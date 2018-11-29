@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -322,11 +321,13 @@ type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
-type BlobShare = original.BlobShare
-type BasicConnectionInfo = original.BasicConnectionInfo
-type ConnectionInfo = original.ConnectionInfo
-type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
+type BaseClient = original.BaseClient
 type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
+type BasicConnectionInfo = original.BasicConnectionInfo
+type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbTaskOutput
+type BasicProjectTaskProperties = original.BasicProjectTaskProperties
+type BlobShare = original.BlobShare
+type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
 type ConnectToSourceSQLServerTaskOutput = original.ConnectToSourceSQLServerTaskOutput
 type ConnectToSourceSQLServerTaskOutputAgentJobLevel = original.ConnectToSourceSQLServerTaskOutputAgentJobLevel
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel = original.ConnectToSourceSQLServerTaskOutputDatabaseLevel
@@ -336,6 +337,9 @@ type ConnectToSourceSQLServerTaskProperties = original.ConnectToSourceSQLServerT
 type ConnectToTargetSQLDbTaskInput = original.ConnectToTargetSQLDbTaskInput
 type ConnectToTargetSQLDbTaskOutput = original.ConnectToTargetSQLDbTaskOutput
 type ConnectToTargetSQLDbTaskProperties = original.ConnectToTargetSQLDbTaskProperties
+type ConnectionInfo = original.ConnectionInfo
+type DataIntegrityValidationResult = original.DataIntegrityValidationResult
+type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Database = original.Database
 type DatabaseFileInfo = original.DatabaseFileInfo
 type DatabaseFileInput = original.DatabaseFileInput
@@ -343,8 +347,6 @@ type DatabaseInfo = original.DatabaseInfo
 type DatabaseObjectName = original.DatabaseObjectName
 type DatabaseSummaryResult = original.DatabaseSummaryResult
 type DatabaseTable = original.DatabaseTable
-type DataIntegrityValidationResult = original.DataIntegrityValidationResult
-type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Error = original.Error
 type ExecutionStatistics = original.ExecutionStatistics
 type FileShare = original.FileShare
@@ -353,7 +355,6 @@ type GetUserTablesSQLTaskOutput = original.GetUserTablesSQLTaskOutput
 type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
 type MigrateSQLServerSQLDbDatabaseInput = original.MigrateSQLServerSQLDbDatabaseInput
 type MigrateSQLServerSQLDbTaskInput = original.MigrateSQLServerSQLDbTaskInput
-type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutput = original.MigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevel
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevelValidationResult
@@ -371,6 +372,7 @@ type MigrationValidationOptions = original.MigrationValidationOptions
 type NameAvailabilityRequest = original.NameAvailabilityRequest
 type NameAvailabilityResponse = original.NameAvailabilityResponse
 type ODataError = original.ODataError
+type OperationsClient = original.OperationsClient
 type Project = original.Project
 type ProjectList = original.ProjectList
 type ProjectListIterator = original.ProjectListIterator
@@ -378,8 +380,8 @@ type ProjectListPage = original.ProjectListPage
 type ProjectMetadata = original.ProjectMetadata
 type ProjectProperties = original.ProjectProperties
 type ProjectTask = original.ProjectTask
-type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type ProjectTaskProperties = original.ProjectTaskProperties
+type ProjectsClient = original.ProjectsClient
 type QueryAnalysisValidationResult = original.QueryAnalysisValidationResult
 type QueryExecutionResult = original.QueryExecutionResult
 type Quota = original.Quota
@@ -394,9 +396,12 @@ type ResourceSkuCapabilities = original.ResourceSkuCapabilities
 type ResourceSkuCapacity = original.ResourceSkuCapacity
 type ResourceSkuCosts = original.ResourceSkuCosts
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type SQLConnectionInfo = original.SQLConnectionInfo
+type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type SchemaComparisonValidationResult = original.SchemaComparisonValidationResult
 type SchemaComparisonValidationResultType = original.SchemaComparisonValidationResultType
 type Service = original.Service
@@ -409,34 +414,107 @@ type ServiceOperationList = original.ServiceOperationList
 type ServiceOperationListIterator = original.ServiceOperationListIterator
 type ServiceOperationListPage = original.ServiceOperationListPage
 type ServiceProperties = original.ServiceProperties
-type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
-type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServiceSku = original.ServiceSku
 type ServiceSkuList = original.ServiceSkuList
 type ServiceSkuListIterator = original.ServiceSkuListIterator
 type ServiceSkuListPage = original.ServiceSkuListPage
+type ServiceStatusResponse = original.ServiceStatusResponse
+type ServicesClient = original.ServicesClient
+type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
+type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesStartFuture = original.ServicesStartFuture
 type ServicesStopFuture = original.ServicesStopFuture
-type ServiceStatusResponse = original.ServiceStatusResponse
 type ServicesUpdateFuture = original.ServicesUpdateFuture
-type SQLConnectionInfo = original.SQLConnectionInfo
-type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
+type TasksClient = original.TasksClient
 type TrackedResource = original.TrackedResource
+type UsagesClient = original.UsagesClient
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
-type OperationsClient = original.OperationsClient
-type ProjectsClient = original.ProjectsClient
-type ResourceSkusClient = original.ResourceSkusClient
-type ServicesClient = original.ServicesClient
-type TasksClient = original.TasksClient
-type UsagesClient = original.UsagesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
+	return original.NewProjectListIterator(page)
+}
+func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return original.NewProjectListPage(getNextPage)
+}
+func NewProjectsClient(subscriptionID string) ProjectsClient {
+	return original.NewProjectsClient(subscriptionID)
+}
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
+	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
+	return original.NewQuotaListIterator(page)
+}
+func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return original.NewQuotaListPage(getNextPage)
+}
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return original.NewResourceSkusResultIterator(page)
+}
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(getNextPage)
+}
+func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
+	return original.NewServiceListIterator(page)
+}
+func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return original.NewServiceListPage(getNextPage)
+}
+func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
+	return original.NewServiceOperationListIterator(page)
+}
+func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return original.NewServiceOperationListPage(getNextPage)
+}
+func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
+	return original.NewServiceSkuListIterator(page)
+}
+func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return original.NewServiceSkuListPage(getNextPage)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTaskListIterator(page TaskListPage) TaskListIterator {
+	return original.NewTaskListIterator(page)
+}
+func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(getNextPage)
+}
+func NewTasksClient(subscriptionID string) TasksClient {
+	return original.NewTasksClient(subscriptionID)
+}
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
+	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
+}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -495,11 +573,11 @@ func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictions
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
-func PossibleResultTypeValues() []ResultType {
-	return original.PossibleResultTypeValues()
-}
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
+}
+func PossibleResultTypeValues() []ResultType {
+	return original.PossibleResultTypeValues()
 }
 func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
 	return original.PossibleServerLevelPermissionsGroupValues()
@@ -527,84 +605,6 @@ func PossibleUpdateActionTypeValues() []UpdateActionType {
 }
 func PossibleValidationStatusValues() []ValidationStatus {
 	return original.PossibleValidationStatusValues()
-}
-func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
-	return original.NewProjectListIterator(page)
-}
-func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
-	return original.NewProjectListPage(getNextPage)
-}
-func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
-	return original.NewQuotaListIterator(page)
-}
-func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
-	return original.NewQuotaListPage(getNextPage)
-}
-func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
-	return original.NewResourceSkusResultIterator(page)
-}
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
-}
-func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
-	return original.NewServiceListIterator(page)
-}
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return original.NewServiceListPage(getNextPage)
-}
-func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
-	return original.NewServiceOperationListIterator(page)
-}
-func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return original.NewServiceOperationListPage(getNextPage)
-}
-func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
-	return original.NewServiceSkuListIterator(page)
-}
-func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
-	return original.NewServiceSkuListPage(getNextPage)
-}
-func NewTaskListIterator(page TaskListPage) TaskListIterator {
-	return original.NewTaskListIterator(page)
-}
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return original.NewTaskListPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProjectsClient(subscriptionID string) ProjectsClient {
-	return original.NewProjectsClient(subscriptionID)
-}
-func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
-	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTasksClient(subscriptionID string) TasksClient {
-	return original.NewTasksClient(subscriptionID)
-}
-func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
-	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
-}
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

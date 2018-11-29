@@ -22,5 +22,5 @@ package containerserviceapi
 import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2018-03-31/containerservice/containerserviceapi"
 
 type ContainerServicesClientAPI = original.ContainerServicesClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
 type ManagedClustersClientAPI = original.ManagedClustersClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

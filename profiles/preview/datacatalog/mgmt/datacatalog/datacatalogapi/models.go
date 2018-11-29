@@ -21,5 +21,5 @@ package datacatalogapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog/datacatalogapi"
 
-type ADCOperationsClientAPI = original.ADCOperationsClientAPI
 type ADCCatalogsClientAPI = original.ADCCatalogsClientAPI
+type ADCOperationsClientAPI = original.ADCOperationsClientAPI

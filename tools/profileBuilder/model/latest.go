@@ -117,64 +117,79 @@ func GetLatestPackages(rootDir string, includePreview bool, verboseLog *log.Logg
 // left is less than or equal to the one on the right. If the two do not match in format, or
 // are not in a well known format, this will return false and an error.
 var versionLE = func() func(string, string) (bool, error) {
-	wellKnownStrategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
-		// The strategy below handles Azure API Versions which have a date optionally followed by some tag.
-		regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`): func(leftMatch, rightMatch []string) (bool, error) {
-			var err error
-			for i := 1; i <= 3; i++ { // Start with index 1 because the element 0 is the entire match, not a group. End at 3 because there are three numeric groups.
-				if leftMatch[i] == rightMatch[i] {
-					continue
-				}
+	type strategyTuple struct {
+		match   *regexp.Regexp
+		handler func([]string, []string) (bool, error)
+	}
 
-				var leftNum, rightNum int
-				leftNum, err = strconv.Atoi(leftMatch[i])
-				if err != nil {
-					return false, err
-				}
+	// there are two strategies in the following order:
+	// The first handles Azure API Versions which have a date optionally followed by some tag.
+	// The second strategy compares two semvers.
+	// the order is important as the semver strategy is less specific than the API version strategy due to
+	// inconsistencies in the directory structure (e.g. v1, 6.2, v1.0 etc).  given this we must always check
+	// the API version strategry first as the semver strategy can match an API version yielding incorrect results.
+	wellKnownStrategies := []strategyTuple{
+		strategyTuple{
+			match: regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`),
+			handler: func(leftMatch, rightMatch []string) (bool, error) {
+				var err error
+				for i := 1; i <= 3; i++ { // Start with index 1 because the element 0 is the entire match, not a group. End at 3 because there are three numeric groups.
+					if leftMatch[i] == rightMatch[i] {
+						continue
+					}
 
-				rightNum, err = strconv.Atoi(rightMatch[i])
-				if err != nil {
-					return false, err
-				}
+					var leftNum, rightNum int
+					leftNum, err = strconv.Atoi(leftMatch[i])
+					if err != nil {
+						return false, err
+					}
 
-				if leftNum < rightNum {
-					return true, nil
-				}
-				return false, nil
-			}
+					rightNum, err = strconv.Atoi(rightMatch[i])
+					if err != nil {
+						return false, err
+					}
 
-			if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" { // match[4] is the tag portion of a date based API Version label
-				return false, nil
-			} else if leftTag != "" && rightTag != "" {
-				return leftTag <= rightTag, nil
-			}
-			return true, nil
-		},
-		// The strategy below compares two semvers.
-		regexp.MustCompile(`(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*))?`): func(leftMatch, rightMatch []string) (bool, error) {
-			for i := 1; i <= 3; i++ {
-				if len(leftMatch[i]) == 0 || len(rightMatch[i]) == 0 {
-					return leftMatch[i] <= rightMatch[i], nil
-				}
-				numLeft, err := strconv.Atoi(leftMatch[i])
-				if err != nil {
-					return false, err
-				}
-				numRight, err := strconv.Atoi(rightMatch[i])
-				if err != nil {
-					return false, err
-				}
-
-				if numLeft < numRight {
-					return true, nil
-				}
-
-				if numLeft > numRight {
+					if leftNum < rightNum {
+						return true, nil
+					}
 					return false, nil
 				}
-			}
 
-			return leftMatch[4] <= rightMatch[4], nil
+				if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" { // match[4] is the tag portion of a date based API Version label
+					return false, nil
+				} else if leftTag != "" && rightTag != "" {
+					return leftTag <= rightTag, nil
+				}
+				return true, nil
+			},
+		},
+		strategyTuple{
+			match: regexp.MustCompile(`(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*))?`),
+			handler: func(leftMatch, rightMatch []string) (bool, error) {
+				for i := 1; i <= 3; i++ {
+					if len(leftMatch[i]) == 0 || len(rightMatch[i]) == 0 {
+						return leftMatch[i] <= rightMatch[i], nil
+					}
+					numLeft, err := strconv.Atoi(leftMatch[i])
+					if err != nil {
+						return false, err
+					}
+					numRight, err := strconv.Atoi(rightMatch[i])
+					if err != nil {
+						return false, err
+					}
+
+					if numLeft < numRight {
+						return true, nil
+					}
+
+					if numLeft > numRight {
+						return false, nil
+					}
+				}
+
+				return leftMatch[4] <= rightMatch[4], nil
+			},
 		},
 	}
 
@@ -184,9 +199,9 @@ var versionLE = func() func(string, string) (bool, error) {
 			return true, nil
 		}
 
-		for versionStrategy, handler := range wellKnownStrategies {
-			if leftMatch, rightMatch := versionStrategy.FindAllStringSubmatch(left, 1), versionStrategy.FindAllStringSubmatch(right, 1); len(leftMatch) > 0 && len(rightMatch) > 0 {
-				return handler(leftMatch[0], rightMatch[0])
+		for _, strategy := range wellKnownStrategies {
+			if leftMatch, rightMatch := strategy.match.FindAllStringSubmatch(left, 1), strategy.match.FindAllStringSubmatch(right, 1); len(leftMatch) > 0 && len(rightMatch) > 0 {
+				return strategy.handler(leftMatch[0], rightMatch[0])
 			}
 		}
 		return false, fmt.Errorf("Unable to find versioning strategy that could compare %q and %q", left, right)

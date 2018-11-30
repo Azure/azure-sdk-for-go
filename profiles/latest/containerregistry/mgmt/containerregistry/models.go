@@ -30,6 +30,13 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
+)
+
 type ImportMode = original.ImportMode
 
 const (
@@ -121,6 +128,7 @@ type EventResponseMessage = original.EventResponseMessage
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
+type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
 type OperationListResult = original.OperationListResult
@@ -167,6 +175,7 @@ type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
 type TrustPolicy = original.TrustPolicy
+type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -189,6 +198,9 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
 }
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()

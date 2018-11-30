@@ -1143,7 +1143,7 @@ type ParameterValueBase struct {
 
 // PolicyAssignmentArtifact blueprint artifact applies Policy assignments.
 type PolicyAssignmentArtifact struct {
-	// PolicyAssignmentArtifactProperties - properties for policyAssginment Artifact
+	// PolicyAssignmentArtifactProperties - properties for policyAssignment Artifact
 	*PolicyAssignmentArtifactProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindArtifact', 'KindTemplate', 'KindRoleAssignment', 'KindPolicyAssignment'
 	Kind Kind `json:"kind,omitempty"`

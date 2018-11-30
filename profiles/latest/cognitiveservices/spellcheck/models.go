@@ -25,7 +25,6 @@ const (
 	DefaultEndpoint = original.DefaultEndpoint
 )
 
-type BaseClient = original.BaseClient
 type ActionType = original.ActionType
 
 const (
@@ -78,15 +77,16 @@ const (
 	TypeSpellCheck    Type = original.TypeSpellCheck
 )
 
-type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
+type BaseClient = original.BaseClient
+type BasicAnswer = original.BasicAnswer
+type BasicIdentifiable = original.BasicIdentifiable
+type BasicResponse = original.BasicResponse
+type BasicResponseBase = original.BasicResponseBase
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
-type BasicIdentifiable = original.BasicIdentifiable
 type Identifiable = original.Identifiable
-type BasicResponse = original.BasicResponse
 type Response = original.Response
-type BasicResponseBase = original.BasicResponseBase
 type ResponseBase = original.ResponseBase
 type SpellCheck = original.SpellCheck
 type SpellingFlaggedToken = original.SpellingFlaggedToken

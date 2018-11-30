@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type State = original.State
 
 const (
@@ -52,6 +51,8 @@ const (
 	Production   WorkspaceType = original.Production
 )
 
+type BaseClient = original.BaseClient
+type Client = original.Client
 type ErrorResponse = original.ErrorResponse
 type KeysResponse = original.KeysResponse
 type ListResult = original.ListResult
@@ -60,25 +61,21 @@ type ListResultPage = original.ListResultPage
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type OperationsClient = original.OperationsClient
 type Properties = original.Properties
 type PropertiesUpdateParameters = original.PropertiesUpdateParameters
 type Resource = original.Resource
 type UpdateParameters = original.UpdateParameters
 type Workspace = original.Workspace
-type OperationsClient = original.OperationsClient
-type Client = original.Client
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
 }
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
-func PossibleWorkspaceTypeValues() []WorkspaceType {
-	return original.PossibleWorkspaceTypeValues()
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -92,15 +89,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+func PossibleWorkspaceTypeValues() []WorkspaceType {
+	return original.PossibleWorkspaceTypeValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }

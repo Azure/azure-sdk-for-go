@@ -22,16 +22,16 @@ package mediaapi
 import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media/mediaapi"
 
 type AccountFiltersClientAPI = original.AccountFiltersClientAPI
-type OperationsClientAPI = original.OperationsClientAPI
-type MediaservicesClientAPI = original.MediaservicesClientAPI
-type LocationsClientAPI = original.LocationsClientAPI
-type AssetsClientAPI = original.AssetsClientAPI
 type AssetFiltersClientAPI = original.AssetFiltersClientAPI
+type AssetsClientAPI = original.AssetsClientAPI
 type ContentKeyPoliciesClientAPI = original.ContentKeyPoliciesClientAPI
-type TransformsClientAPI = original.TransformsClientAPI
 type JobsClientAPI = original.JobsClientAPI
-type StreamingPoliciesClientAPI = original.StreamingPoliciesClientAPI
-type StreamingLocatorsClientAPI = original.StreamingLocatorsClientAPI
 type LiveEventsClientAPI = original.LiveEventsClientAPI
 type LiveOutputsClientAPI = original.LiveOutputsClientAPI
+type LocationsClientAPI = original.LocationsClientAPI
+type MediaservicesClientAPI = original.MediaservicesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type StreamingEndpointsClientAPI = original.StreamingEndpointsClientAPI
+type StreamingLocatorsClientAPI = original.StreamingLocatorsClientAPI
+type StreamingPoliciesClientAPI = original.StreamingPoliciesClientAPI
+type TransformsClientAPI = original.TransformsClientAPI

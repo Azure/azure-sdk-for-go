@@ -25,14 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
 )
 
-type AuthorizationOperationsClient = original.AuthorizationOperationsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
@@ -41,38 +37,29 @@ const (
 	ReadOnly     LockLevel = original.ReadOnly
 )
 
+type AuthorizationOperationsClient = original.AuthorizationOperationsClient
+type BaseClient = original.BaseClient
 type ManagementLockListResult = original.ManagementLockListResult
 type ManagementLockListResultIterator = original.ManagementLockListResultIterator
 type ManagementLockListResultPage = original.ManagementLockListResultPage
 type ManagementLockObject = original.ManagementLockObject
 type ManagementLockOwner = original.ManagementLockOwner
 type ManagementLockProperties = original.ManagementLockProperties
+type ManagementLocksClient = original.ManagementLocksClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewAuthorizationOperationsClient(subscriptionID string) AuthorizationOperationsClient {
 	return original.NewAuthorizationOperationsClient(subscriptionID)
 }
 func NewAuthorizationOperationsClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationOperationsClient {
 	return original.NewAuthorizationOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClient(subscriptionID)
-}
-func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleLockLevelValues() []LockLevel {
-	return original.PossibleLockLevelValues()
 }
 func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
 	return original.NewManagementLockListResultIterator(page)
@@ -80,11 +67,23 @@ func NewManagementLockListResultIterator(page ManagementLockListResultPage) Mana
 func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
 	return original.NewManagementLockListResultPage(getNextPage)
 }
+func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClient(subscriptionID)
+}
+func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleLockLevelValues() []LockLevel {
+	return original.PossibleLockLevelValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

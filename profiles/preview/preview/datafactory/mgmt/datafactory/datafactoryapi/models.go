@@ -21,13 +21,13 @@ package datafactoryapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory/datafactoryapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type FactoriesClientAPI = original.FactoriesClientAPI
-type IntegrationRuntimesClientAPI = original.IntegrationRuntimesClientAPI
-type IntegrationRuntimeNodesClientAPI = original.IntegrationRuntimeNodesClientAPI
-type LinkedServicesClientAPI = original.LinkedServicesClientAPI
-type DatasetsClientAPI = original.DatasetsClientAPI
-type PipelinesClientAPI = original.PipelinesClientAPI
-type PipelineRunsClientAPI = original.PipelineRunsClientAPI
 type ActivityRunsClientAPI = original.ActivityRunsClientAPI
+type DatasetsClientAPI = original.DatasetsClientAPI
+type FactoriesClientAPI = original.FactoriesClientAPI
+type IntegrationRuntimeNodesClientAPI = original.IntegrationRuntimeNodesClientAPI
+type IntegrationRuntimesClientAPI = original.IntegrationRuntimesClientAPI
+type LinkedServicesClientAPI = original.LinkedServicesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type PipelineRunsClientAPI = original.PipelineRunsClientAPI
+type PipelinesClientAPI = original.PipelinesClientAPI
 type TriggersClientAPI = original.TriggersClientAPI

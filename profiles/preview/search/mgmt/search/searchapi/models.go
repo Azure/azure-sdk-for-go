@@ -21,7 +21,7 @@ package searchapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search/searchapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type AdminKeysClientAPI = original.AdminKeysClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type QueryKeysClientAPI = original.QueryKeysClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

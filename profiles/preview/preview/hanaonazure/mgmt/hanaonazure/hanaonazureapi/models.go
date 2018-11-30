@@ -21,5 +21,5 @@ package hanaonazureapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure/hanaonazureapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type HanaInstancesClientAPI = original.HanaInstancesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

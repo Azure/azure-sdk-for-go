@@ -25,23 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl"
 )
 
-type ArmTemplatesClient = original.ArmTemplatesClient
-type ArtifactsClient = original.ArtifactsClient
-type ArtifactSourcesClient = original.ArtifactSourcesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type CostsClient = original.CostsClient
-type CustomImagesClient = original.CustomImagesClient
-type DisksClient = original.DisksClient
-type EnvironmentsClient = original.EnvironmentsClient
-type FormulasClient = original.FormulasClient
-type GalleryImagesClient = original.GalleryImagesClient
-type GlobalSchedulesClient = original.GlobalSchedulesClient
-type LabsClient = original.LabsClient
 type CostThresholdStatus = original.CostThresholdStatus
 
 const (
@@ -77,14 +64,6 @@ type FileUploadOptions = original.FileUploadOptions
 const (
 	FileUploadOptionsNone                            FileUploadOptions = original.FileUploadOptionsNone
 	FileUploadOptionsUploadFilesAndGenerateSasTokens FileUploadOptions = original.FileUploadOptionsUploadFilesAndGenerateSasTokens
-)
-
-type HostCachingOptions = original.HostCachingOptions
-
-const (
-	HostCachingOptionsNone      HostCachingOptions = original.HostCachingOptionsNone
-	HostCachingOptionsReadOnly  HostCachingOptions = original.HostCachingOptionsReadOnly
-	HostCachingOptionsReadWrite HostCachingOptions = original.HostCachingOptionsReadWrite
 )
 
 type HTTPStatusCode = original.HTTPStatusCode
@@ -132,6 +111,14 @@ const (
 	Unused                       HTTPStatusCode = original.Unused
 	UpgradeRequired              HTTPStatusCode = original.UpgradeRequired
 	UseProxy                     HTTPStatusCode = original.UseProxy
+)
+
+type HostCachingOptions = original.HostCachingOptions
+
+const (
+	HostCachingOptionsNone      HostCachingOptions = original.HostCachingOptionsNone
+	HostCachingOptionsReadOnly  HostCachingOptions = original.HostCachingOptionsReadOnly
+	HostCachingOptionsReadWrite HostCachingOptions = original.HostCachingOptionsReadWrite
 )
 
 type LinuxOsState = original.LinuxOsState
@@ -257,6 +244,7 @@ type ArmTemplate = original.ArmTemplate
 type ArmTemplateInfo = original.ArmTemplateInfo
 type ArmTemplateParameterProperties = original.ArmTemplateParameterProperties
 type ArmTemplateProperties = original.ArmTemplateProperties
+type ArmTemplatesClient = original.ArmTemplatesClient
 type Artifact = original.Artifact
 type ArtifactDeploymentStatusProperties = original.ArtifactDeploymentStatusProperties
 type ArtifactDeploymentStatusPropertiesFragment = original.ArtifactDeploymentStatusPropertiesFragment
@@ -269,8 +257,11 @@ type ArtifactSource = original.ArtifactSource
 type ArtifactSourceFragment = original.ArtifactSourceFragment
 type ArtifactSourceProperties = original.ArtifactSourceProperties
 type ArtifactSourcePropertiesFragment = original.ArtifactSourcePropertiesFragment
+type ArtifactSourcesClient = original.ArtifactSourcesClient
+type ArtifactsClient = original.ArtifactsClient
 type AttachDiskProperties = original.AttachDiskProperties
 type AttachNewDataDiskOptions = original.AttachNewDataDiskOptions
+type BaseClient = original.BaseClient
 type BulkCreationParameters = original.BulkCreationParameters
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -281,10 +272,12 @@ type ComputeVMInstanceViewStatusFragment = original.ComputeVMInstanceViewStatusF
 type ComputeVMProperties = original.ComputeVMProperties
 type ComputeVMPropertiesFragment = original.ComputeVMPropertiesFragment
 type CostThresholdProperties = original.CostThresholdProperties
+type CostsClient = original.CostsClient
 type CustomImage = original.CustomImage
 type CustomImageProperties = original.CustomImageProperties
 type CustomImagePropertiesCustom = original.CustomImagePropertiesCustom
 type CustomImagePropertiesFromVM = original.CustomImagePropertiesFromVM
+type CustomImagesClient = original.CustomImagesClient
 type CustomImagesCreateOrUpdateFuture = original.CustomImagesCreateOrUpdateFuture
 type CustomImagesDeleteFuture = original.CustomImagesDeleteFuture
 type DataDiskProperties = original.DataDiskProperties
@@ -295,12 +288,14 @@ type DetachDiskProperties = original.DetachDiskProperties
 type Disk = original.Disk
 type DiskProperties = original.DiskProperties
 type DisksAttachFuture = original.DisksAttachFuture
+type DisksClient = original.DisksClient
 type DisksCreateOrUpdateFuture = original.DisksCreateOrUpdateFuture
 type DisksDeleteFuture = original.DisksDeleteFuture
 type DisksDetachFuture = original.DisksDetachFuture
 type Environment = original.Environment
 type EnvironmentDeploymentProperties = original.EnvironmentDeploymentProperties
 type EnvironmentProperties = original.EnvironmentProperties
+type EnvironmentsClient = original.EnvironmentsClient
 type EnvironmentsCreateOrUpdateFuture = original.EnvironmentsCreateOrUpdateFuture
 type EnvironmentsDeleteFuture = original.EnvironmentsDeleteFuture
 type EvaluatePoliciesProperties = original.EvaluatePoliciesProperties
@@ -314,14 +309,17 @@ type ExternalSubnetFragment = original.ExternalSubnetFragment
 type Formula = original.Formula
 type FormulaProperties = original.FormulaProperties
 type FormulaPropertiesFromVM = original.FormulaPropertiesFromVM
+type FormulasClient = original.FormulasClient
 type FormulasCreateOrUpdateFuture = original.FormulasCreateOrUpdateFuture
 type GalleryImage = original.GalleryImage
 type GalleryImageProperties = original.GalleryImageProperties
 type GalleryImageReference = original.GalleryImageReference
 type GalleryImageReferenceFragment = original.GalleryImageReferenceFragment
+type GalleryImagesClient = original.GalleryImagesClient
 type GenerateArmTemplateRequest = original.GenerateArmTemplateRequest
 type GenerateUploadURIParameter = original.GenerateUploadURIParameter
 type GenerateUploadURIResponse = original.GenerateUploadURIResponse
+type GlobalSchedulesClient = original.GlobalSchedulesClient
 type GlobalSchedulesExecuteFuture = original.GlobalSchedulesExecuteFuture
 type GlobalSchedulesRetargetFuture = original.GlobalSchedulesRetargetFuture
 type HourDetails = original.HourDetails
@@ -338,11 +336,6 @@ type LabFragment = original.LabFragment
 type LabProperties = original.LabProperties
 type LabPropertiesFragment = original.LabPropertiesFragment
 type LabResourceCostProperties = original.LabResourceCostProperties
-type LabsClaimAnyVMFuture = original.LabsClaimAnyVMFuture
-type LabsCreateEnvironmentFuture = original.LabsCreateEnvironmentFuture
-type LabsCreateOrUpdateFuture = original.LabsCreateOrUpdateFuture
-type LabsDeleteFuture = original.LabsDeleteFuture
-type LabsExportResourceUsageFuture = original.LabsExportResourceUsageFuture
 type LabVhd = original.LabVhd
 type LabVirtualMachine = original.LabVirtualMachine
 type LabVirtualMachineCreationParameter = original.LabVirtualMachineCreationParameter
@@ -350,6 +343,12 @@ type LabVirtualMachineCreationParameterProperties = original.LabVirtualMachineCr
 type LabVirtualMachineFragment = original.LabVirtualMachineFragment
 type LabVirtualMachineProperties = original.LabVirtualMachineProperties
 type LabVirtualMachinePropertiesFragment = original.LabVirtualMachinePropertiesFragment
+type LabsClaimAnyVMFuture = original.LabsClaimAnyVMFuture
+type LabsClient = original.LabsClient
+type LabsCreateEnvironmentFuture = original.LabsCreateEnvironmentFuture
+type LabsCreateOrUpdateFuture = original.LabsCreateOrUpdateFuture
+type LabsDeleteFuture = original.LabsDeleteFuture
+type LabsExportResourceUsageFuture = original.LabsExportResourceUsageFuture
 type LinuxOsInfo = original.LinuxOsInfo
 type NetworkInterfaceProperties = original.NetworkInterfaceProperties
 type NetworkInterfacePropertiesFragment = original.NetworkInterfacePropertiesFragment
@@ -357,6 +356,7 @@ type NotificationChannel = original.NotificationChannel
 type NotificationChannelFragment = original.NotificationChannelFragment
 type NotificationChannelProperties = original.NotificationChannelProperties
 type NotificationChannelPropertiesFragment = original.NotificationChannelPropertiesFragment
+type NotificationChannelsClient = original.NotificationChannelsClient
 type NotificationSettings = original.NotificationSettings
 type NotificationSettingsFragment = original.NotificationSettingsFragment
 type NotifyParameters = original.NotifyParameters
@@ -364,20 +364,24 @@ type OperationError = original.OperationError
 type OperationMetadata = original.OperationMetadata
 type OperationMetadataDisplay = original.OperationMetadataDisplay
 type OperationResult = original.OperationResult
+type OperationsClient = original.OperationsClient
 type ParameterInfo = original.ParameterInfo
 type ParametersValueFileInfo = original.ParametersValueFileInfo
 type PercentageCostThresholdProperties = original.PercentageCostThresholdProperties
+type PoliciesClient = original.PoliciesClient
 type Policy = original.Policy
 type PolicyFragment = original.PolicyFragment
 type PolicyProperties = original.PolicyProperties
 type PolicyPropertiesFragment = original.PolicyPropertiesFragment
 type PolicySetResult = original.PolicySetResult
+type PolicySetsClient = original.PolicySetsClient
 type PolicyViolation = original.PolicyViolation
 type Port = original.Port
 type PortFragment = original.PortFragment
 type ProviderOperationResult = original.ProviderOperationResult
 type ProviderOperationResultIterator = original.ProviderOperationResultIterator
 type ProviderOperationResultPage = original.ProviderOperationResultPage
+type ProviderOperationsClient = original.ProviderOperationsClient
 type Resource = original.Resource
 type ResponseWithContinuationArmTemplate = original.ResponseWithContinuationArmTemplate
 type ResponseWithContinuationArmTemplateIterator = original.ResponseWithContinuationArmTemplateIterator
@@ -438,10 +442,13 @@ type Schedule = original.Schedule
 type ScheduleFragment = original.ScheduleFragment
 type ScheduleProperties = original.ScheduleProperties
 type SchedulePropertiesFragment = original.SchedulePropertiesFragment
+type SchedulesClient = original.SchedulesClient
 type SchedulesExecuteFuture = original.SchedulesExecuteFuture
 type Secret = original.Secret
 type SecretProperties = original.SecretProperties
+type SecretsClient = original.SecretsClient
 type ServiceRunner = original.ServiceRunner
+type ServiceRunnersClient = original.ServiceRunnersClient
 type SharedPublicIPAddressConfiguration = original.SharedPublicIPAddressConfiguration
 type SharedPublicIPAddressConfigurationFragment = original.SharedPublicIPAddressConfigurationFragment
 type ShutdownNotificationContent = original.ShutdownNotificationContent
@@ -458,13 +465,16 @@ type UserIdentity = original.UserIdentity
 type UserIdentityFragment = original.UserIdentityFragment
 type UserProperties = original.UserProperties
 type UserPropertiesFragment = original.UserPropertiesFragment
-type UsersDeleteFuture = original.UsersDeleteFuture
 type UserSecretStore = original.UserSecretStore
 type UserSecretStoreFragment = original.UserSecretStoreFragment
+type UsersClient = original.UsersClient
+type UsersDeleteFuture = original.UsersDeleteFuture
+type VirtualMachineSchedulesClient = original.VirtualMachineSchedulesClient
+type VirtualMachineSchedulesExecuteFuture = original.VirtualMachineSchedulesExecuteFuture
 type VirtualMachinesAddDataDiskFuture = original.VirtualMachinesAddDataDiskFuture
 type VirtualMachinesApplyArtifactsFuture = original.VirtualMachinesApplyArtifactsFuture
-type VirtualMachineSchedulesExecuteFuture = original.VirtualMachineSchedulesExecuteFuture
 type VirtualMachinesClaimFuture = original.VirtualMachinesClaimFuture
+type VirtualMachinesClient = original.VirtualMachinesClient
 type VirtualMachinesCreateOrUpdateFuture = original.VirtualMachinesCreateOrUpdateFuture
 type VirtualMachinesDeleteFuture = original.VirtualMachinesDeleteFuture
 type VirtualMachinesDetachDataDiskFuture = original.VirtualMachinesDetachDataDiskFuture
@@ -474,35 +484,21 @@ type VirtualNetwork = original.VirtualNetwork
 type VirtualNetworkFragment = original.VirtualNetworkFragment
 type VirtualNetworkProperties = original.VirtualNetworkProperties
 type VirtualNetworkPropertiesFragment = original.VirtualNetworkPropertiesFragment
+type VirtualNetworksClient = original.VirtualNetworksClient
 type VirtualNetworksCreateOrUpdateFuture = original.VirtualNetworksCreateOrUpdateFuture
 type VirtualNetworksDeleteFuture = original.VirtualNetworksDeleteFuture
 type WeekDetails = original.WeekDetails
 type WeekDetailsFragment = original.WeekDetailsFragment
 type WindowsOsInfo = original.WindowsOsInfo
-type NotificationChannelsClient = original.NotificationChannelsClient
-type OperationsClient = original.OperationsClient
-type PoliciesClient = original.PoliciesClient
-type PolicySetsClient = original.PolicySetsClient
-type ProviderOperationsClient = original.ProviderOperationsClient
-type SchedulesClient = original.SchedulesClient
-type SecretsClient = original.SecretsClient
-type ServiceRunnersClient = original.ServiceRunnersClient
-type UsersClient = original.UsersClient
-type VirtualMachinesClient = original.VirtualMachinesClient
-type VirtualMachineSchedulesClient = original.VirtualMachineSchedulesClient
-type VirtualNetworksClient = original.VirtualNetworksClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewArmTemplatesClient(subscriptionID string) ArmTemplatesClient {
 	return original.NewArmTemplatesClient(subscriptionID)
 }
 func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) ArmTemplatesClient {
 	return original.NewArmTemplatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewArtifactsClient(subscriptionID string) ArtifactsClient {
-	return original.NewArtifactsClient(subscriptionID)
-}
-func NewArtifactsClientWithBaseURI(baseURI string, subscriptionID string) ArtifactsClient {
-	return original.NewArtifactsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewArtifactSourcesClient(subscriptionID string) ArtifactSourcesClient {
 	return original.NewArtifactSourcesClient(subscriptionID)
@@ -510,11 +506,11 @@ func NewArtifactSourcesClient(subscriptionID string) ArtifactSourcesClient {
 func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) ArtifactSourcesClient {
 	return original.NewArtifactSourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewArtifactsClient(subscriptionID string) ArtifactsClient {
+	return original.NewArtifactsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewArtifactsClientWithBaseURI(baseURI string, subscriptionID string) ArtifactsClient {
+	return original.NewArtifactsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCostsClient(subscriptionID string) CostsClient {
 	return original.NewCostsClient(subscriptionID)
@@ -564,77 +560,41 @@ func NewLabsClient(subscriptionID string) LabsClient {
 func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient {
 	return original.NewLabsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleCostThresholdStatusValues() []CostThresholdStatus {
-	return original.PossibleCostThresholdStatusValues()
+func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsClient {
+	return original.NewNotificationChannelsClient(subscriptionID)
 }
-func PossibleCostTypeValues() []CostType {
-	return original.PossibleCostTypeValues()
+func NewNotificationChannelsClientWithBaseURI(baseURI string, subscriptionID string) NotificationChannelsClient {
+	return original.NewNotificationChannelsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleCustomImageOsTypeValues() []CustomImageOsType {
-	return original.PossibleCustomImageOsTypeValues()
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func PossibleEnableStatusValues() []EnableStatus {
-	return original.PossibleEnableStatusValues()
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleFileUploadOptionsValues() []FileUploadOptions {
-	return original.PossibleFileUploadOptionsValues()
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
 }
-func PossibleHostCachingOptionsValues() []HostCachingOptions {
-	return original.PossibleHostCachingOptionsValues()
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return original.PossibleHTTPStatusCodeValues()
+func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
+	return original.NewPolicySetsClient(subscriptionID)
 }
-func PossibleLinuxOsStateValues() []LinuxOsState {
-	return original.PossibleLinuxOsStateValues()
-}
-func PossibleNotificationChannelEventTypeValues() []NotificationChannelEventType {
-	return original.PossibleNotificationChannelEventTypeValues()
-}
-func PossibleNotificationStatusValues() []NotificationStatus {
-	return original.PossibleNotificationStatusValues()
-}
-func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
-	return original.PossiblePolicyEvaluatorTypeValues()
-}
-func PossiblePolicyFactNameValues() []PolicyFactName {
-	return original.PossiblePolicyFactNameValues()
-}
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return original.PossiblePolicyStatusValues()
-}
-func PossiblePremiumDataDiskValues() []PremiumDataDisk {
-	return original.PossiblePremiumDataDiskValues()
-}
-func PossibleReportingCycleTypeValues() []ReportingCycleType {
-	return original.PossibleReportingCycleTypeValues()
-}
-func PossibleSourceControlTypeValues() []SourceControlType {
-	return original.PossibleSourceControlTypeValues()
-}
-func PossibleStorageTypeValues() []StorageType {
-	return original.PossibleStorageTypeValues()
-}
-func PossibleTargetCostStatusValues() []TargetCostStatus {
-	return original.PossibleTargetCostStatusValues()
-}
-func PossibleTransportProtocolValues() []TransportProtocol {
-	return original.PossibleTransportProtocolValues()
-}
-func PossibleUsagePermissionTypeValues() []UsagePermissionType {
-	return original.PossibleUsagePermissionTypeValues()
-}
-func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource {
-	return original.PossibleVirtualMachineCreationSourceValues()
-}
-func PossibleWindowsOsStateValues() []WindowsOsState {
-	return original.PossibleWindowsOsStateValues()
+func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySetsClient {
+	return original.NewPolicySetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProviderOperationResultIterator(page ProviderOperationResultPage) ProviderOperationResultIterator {
 	return original.NewProviderOperationResultIterator(page)
 }
 func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
 	return original.NewProviderOperationResultPage(getNextPage)
+}
+func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
+	return original.NewProviderOperationsClient(subscriptionID)
+}
+func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsClient {
+	return original.NewProviderOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResponseWithContinuationArmTemplateIterator(page ResponseWithContinuationArmTemplatePage) ResponseWithContinuationArmTemplateIterator {
 	return original.NewResponseWithContinuationArmTemplateIterator(page)
@@ -744,36 +704,6 @@ func NewResponseWithContinuationVirtualNetworkIterator(page ResponseWithContinua
 func NewResponseWithContinuationVirtualNetworkPage(getNextPage func(context.Context, ResponseWithContinuationVirtualNetwork) (ResponseWithContinuationVirtualNetwork, error)) ResponseWithContinuationVirtualNetworkPage {
 	return original.NewResponseWithContinuationVirtualNetworkPage(getNextPage)
 }
-func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsClient {
-	return original.NewNotificationChannelsClient(subscriptionID)
-}
-func NewNotificationChannelsClientWithBaseURI(baseURI string, subscriptionID string) NotificationChannelsClient {
-	return original.NewNotificationChannelsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPoliciesClient(subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID)
-}
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
-	return original.NewPolicySetsClient(subscriptionID)
-}
-func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySetsClient {
-	return original.NewPolicySetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
-	return original.NewProviderOperationsClient(subscriptionID)
-}
-func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsClient {
-	return original.NewProviderOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewSchedulesClient(subscriptionID string) SchedulesClient {
 	return original.NewSchedulesClient(subscriptionID)
 }
@@ -798,11 +728,11 @@ func NewUsersClient(subscriptionID string) UsersClient {
 func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
 	return original.NewUsersClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewVirtualMachineSchedulesClient(subscriptionID string) VirtualMachineSchedulesClient {
+	return original.NewVirtualMachineSchedulesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewVirtualMachineSchedulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSchedulesClient {
+	return original.NewVirtualMachineSchedulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
 	return original.NewVirtualMachinesClient(subscriptionID)
@@ -810,15 +740,84 @@ func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
 func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
 	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVirtualMachineSchedulesClient(subscriptionID string) VirtualMachineSchedulesClient {
-	return original.NewVirtualMachineSchedulesClient(subscriptionID)
-}
-func NewVirtualMachineSchedulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSchedulesClient {
-	return original.NewVirtualMachineSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
 	return original.NewVirtualNetworksClient(subscriptionID)
 }
 func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
 	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCostThresholdStatusValues() []CostThresholdStatus {
+	return original.PossibleCostThresholdStatusValues()
+}
+func PossibleCostTypeValues() []CostType {
+	return original.PossibleCostTypeValues()
+}
+func PossibleCustomImageOsTypeValues() []CustomImageOsType {
+	return original.PossibleCustomImageOsTypeValues()
+}
+func PossibleEnableStatusValues() []EnableStatus {
+	return original.PossibleEnableStatusValues()
+}
+func PossibleFileUploadOptionsValues() []FileUploadOptions {
+	return original.PossibleFileUploadOptionsValues()
+}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return original.PossibleHTTPStatusCodeValues()
+}
+func PossibleHostCachingOptionsValues() []HostCachingOptions {
+	return original.PossibleHostCachingOptionsValues()
+}
+func PossibleLinuxOsStateValues() []LinuxOsState {
+	return original.PossibleLinuxOsStateValues()
+}
+func PossibleNotificationChannelEventTypeValues() []NotificationChannelEventType {
+	return original.PossibleNotificationChannelEventTypeValues()
+}
+func PossibleNotificationStatusValues() []NotificationStatus {
+	return original.PossibleNotificationStatusValues()
+}
+func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
+	return original.PossiblePolicyEvaluatorTypeValues()
+}
+func PossiblePolicyFactNameValues() []PolicyFactName {
+	return original.PossiblePolicyFactNameValues()
+}
+func PossiblePolicyStatusValues() []PolicyStatus {
+	return original.PossiblePolicyStatusValues()
+}
+func PossiblePremiumDataDiskValues() []PremiumDataDisk {
+	return original.PossiblePremiumDataDiskValues()
+}
+func PossibleReportingCycleTypeValues() []ReportingCycleType {
+	return original.PossibleReportingCycleTypeValues()
+}
+func PossibleSourceControlTypeValues() []SourceControlType {
+	return original.PossibleSourceControlTypeValues()
+}
+func PossibleStorageTypeValues() []StorageType {
+	return original.PossibleStorageTypeValues()
+}
+func PossibleTargetCostStatusValues() []TargetCostStatus {
+	return original.PossibleTargetCostStatusValues()
+}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return original.PossibleTransportProtocolValues()
+}
+func PossibleUsagePermissionTypeValues() []UsagePermissionType {
+	return original.PossibleUsagePermissionTypeValues()
+}
+func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource {
+	return original.PossibleVirtualMachineCreationSourceValues()
+}
+func PossibleWindowsOsStateValues() []WindowsOsState {
+	return original.PossibleWindowsOsStateValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

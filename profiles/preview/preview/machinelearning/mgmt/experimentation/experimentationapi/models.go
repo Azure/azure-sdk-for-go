@@ -21,7 +21,7 @@ package experimentationapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation/experimentationapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
-type WorkspacesClientAPI = original.WorkspacesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type ProjectsClientAPI = original.ProjectsClientAPI
+type WorkspacesClientAPI = original.WorkspacesClientAPI

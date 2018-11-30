@@ -25,7 +25,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type ApplicationDefinitionKind = original.ApplicationDefinitionKind
 
 const (
@@ -1388,7 +1387,6 @@ type ApplicationCapacityDescription = original.ApplicationCapacityDescription
 type ApplicationCreatedEvent = original.ApplicationCreatedEvent
 type ApplicationDeletedEvent = original.ApplicationDeletedEvent
 type ApplicationDescription = original.ApplicationDescription
-type BasicApplicationEvent = original.BasicApplicationEvent
 type ApplicationEvent = original.ApplicationEvent
 type ApplicationHealth = original.ApplicationHealth
 type ApplicationHealthEvaluation = original.ApplicationHealthEvaluation
@@ -1406,7 +1404,6 @@ type ApplicationLoadInfo = original.ApplicationLoadInfo
 type ApplicationMetricDescription = original.ApplicationMetricDescription
 type ApplicationNameInfo = original.ApplicationNameInfo
 type ApplicationParameter = original.ApplicationParameter
-type ApplicationsHealthEvaluation = original.ApplicationsHealthEvaluation
 type ApplicationTypeApplicationsHealthEvaluation = original.ApplicationTypeApplicationsHealthEvaluation
 type ApplicationTypeHealthPolicyMapItem = original.ApplicationTypeHealthPolicyMapItem
 type ApplicationTypeImageStorePath = original.ApplicationTypeImageStorePath
@@ -1420,30 +1417,67 @@ type ApplicationUpgradeRollbackCompleteEvent = original.ApplicationUpgradeRollba
 type ApplicationUpgradeRollbackStartEvent = original.ApplicationUpgradeRollbackStartEvent
 type ApplicationUpgradeStartEvent = original.ApplicationUpgradeStartEvent
 type ApplicationUpgradeUpdateDescription = original.ApplicationUpgradeUpdateDescription
+type ApplicationsHealthEvaluation = original.ApplicationsHealthEvaluation
 type AveragePartitionLoadScalingTrigger = original.AveragePartitionLoadScalingTrigger
 type AverageServiceLoadScalingTrigger = original.AverageServiceLoadScalingTrigger
 type AzureBlobBackupStorageDescription = original.AzureBlobBackupStorageDescription
-type BasicBackupConfigurationInfo = original.BasicBackupConfigurationInfo
 type BackupConfigurationInfo = original.BackupConfigurationInfo
-type BasicBackupEntity = original.BasicBackupEntity
 type BackupEntity = original.BackupEntity
 type BackupEpoch = original.BackupEpoch
 type BackupInfo = original.BackupInfo
 type BackupPartitionDescription = original.BackupPartitionDescription
 type BackupPolicyDescription = original.BackupPolicyDescription
 type BackupProgressInfo = original.BackupProgressInfo
-type BasicBackupScheduleDescription = original.BasicBackupScheduleDescription
 type BackupScheduleDescription = original.BackupScheduleDescription
-type BasicBackupStorageDescription = original.BasicBackupStorageDescription
 type BackupStorageDescription = original.BackupStorageDescription
 type BackupSuspensionInfo = original.BackupSuspensionInfo
+type BaseClient = original.BaseClient
+type BasicApplicationEvent = original.BasicApplicationEvent
+type BasicBackupConfigurationInfo = original.BasicBackupConfigurationInfo
+type BasicBackupEntity = original.BasicBackupEntity
+type BasicBackupScheduleDescription = original.BasicBackupScheduleDescription
+type BasicBackupStorageDescription = original.BasicBackupStorageDescription
+type BasicChaosEvent = original.BasicChaosEvent
+type BasicClusterEvent = original.BasicClusterEvent
+type BasicDeployedServiceReplicaDetailInfo = original.BasicDeployedServiceReplicaDetailInfo
+type BasicDeployedServiceReplicaInfo = original.BasicDeployedServiceReplicaInfo
+type BasicFabricEvent = original.BasicFabricEvent
+type BasicHealthEvaluation = original.BasicHealthEvaluation
+type BasicNodeEvent = original.BasicNodeEvent
+type BasicPartitionAnalysisEvent = original.BasicPartitionAnalysisEvent
+type BasicPartitionEvent = original.BasicPartitionEvent
+type BasicPartitionInformation = original.BasicPartitionInformation
+type BasicPartitionSafetyCheck = original.BasicPartitionSafetyCheck
+type BasicPartitionSchemeDescription = original.BasicPartitionSchemeDescription
+type BasicPropertyBatchInfo = original.BasicPropertyBatchInfo
+type BasicPropertyBatchOperation = original.BasicPropertyBatchOperation
+type BasicPropertyValue = original.BasicPropertyValue
+type BasicProvisionApplicationTypeDescriptionBase = original.BasicProvisionApplicationTypeDescriptionBase
+type BasicRepairImpactDescriptionBase = original.BasicRepairImpactDescriptionBase
+type BasicRepairTargetDescriptionBase = original.BasicRepairTargetDescriptionBase
+type BasicReplicaEvent = original.BasicReplicaEvent
+type BasicReplicaHealth = original.BasicReplicaHealth
+type BasicReplicaHealthState = original.BasicReplicaHealthState
+type BasicReplicaInfo = original.BasicReplicaInfo
+type BasicReplicaStatusBase = original.BasicReplicaStatusBase
+type BasicReplicatorStatus = original.BasicReplicatorStatus
+type BasicSafetyCheck = original.BasicSafetyCheck
+type BasicScalingMechanismDescription = original.BasicScalingMechanismDescription
+type BasicScalingTriggerDescription = original.BasicScalingTriggerDescription
+type BasicSecondaryReplicatorStatus = original.BasicSecondaryReplicatorStatus
+type BasicServiceDescription = original.BasicServiceDescription
+type BasicServiceEvent = original.BasicServiceEvent
+type BasicServiceInfo = original.BasicServiceInfo
+type BasicServicePartitionInfo = original.BasicServicePartitionInfo
+type BasicServicePlacementPolicyDescription = original.BasicServicePlacementPolicyDescription
+type BasicServiceTypeDescription = original.BasicServiceTypeDescription
+type BasicServiceUpdateDescription = original.BasicServiceUpdateDescription
 type BinaryPropertyValue = original.BinaryPropertyValue
 type Chaos = original.Chaos
 type ChaosContext = original.ChaosContext
-type BasicChaosEvent = original.BasicChaosEvent
 type ChaosEvent = original.ChaosEvent
-type ChaosEventsSegment = original.ChaosEventsSegment
 type ChaosEventWrapper = original.ChaosEventWrapper
+type ChaosEventsSegment = original.ChaosEventsSegment
 type ChaosMovePrimaryFaultScheduledEvent = original.ChaosMovePrimaryFaultScheduledEvent
 type ChaosMoveSecondaryFaultScheduledEvent = original.ChaosMoveSecondaryFaultScheduledEvent
 type ChaosParameters = original.ChaosParameters
@@ -1468,7 +1502,6 @@ type CheckValuePropertyBatchOperation = original.CheckValuePropertyBatchOperatio
 type ClusterConfiguration = original.ClusterConfiguration
 type ClusterConfigurationUpgradeDescription = original.ClusterConfigurationUpgradeDescription
 type ClusterConfigurationUpgradeStatusInfo = original.ClusterConfigurationUpgradeStatusInfo
-type BasicClusterEvent = original.BasicClusterEvent
 type ClusterEvent = original.ClusterEvent
 type ClusterHealth = original.ClusterHealth
 type ClusterHealthChunk = original.ClusterHealthChunk
@@ -1502,6 +1535,7 @@ type CurrentUpgradeDomainProgressInfo = original.CurrentUpgradeDomainProgressInf
 type DeactivationIntentDescription = original.DeactivationIntentDescription
 type DeletePropertyBatchOperation = original.DeletePropertyBatchOperation
 type DeltaNodesCheckHealthEvaluation = original.DeltaNodesCheckHealthEvaluation
+type DeployServicePackageToNodeDescription = original.DeployServicePackageToNodeDescription
 type DeployedApplicationHealth = original.DeployedApplicationHealth
 type DeployedApplicationHealthEvaluation = original.DeployedApplicationHealthEvaluation
 type DeployedApplicationHealthReportCreatedEvent = original.DeployedApplicationHealthReportCreatedEvent
@@ -1523,17 +1557,14 @@ type DeployedServicePackageHealthStateChunkList = original.DeployedServicePackag
 type DeployedServicePackageHealthStateFilter = original.DeployedServicePackageHealthStateFilter
 type DeployedServicePackageInfo = original.DeployedServicePackageInfo
 type DeployedServicePackagesHealthEvaluation = original.DeployedServicePackagesHealthEvaluation
-type BasicDeployedServiceReplicaDetailInfo = original.BasicDeployedServiceReplicaDetailInfo
 type DeployedServiceReplicaDetailInfo = original.DeployedServiceReplicaDetailInfo
 type DeployedServiceReplicaDetailInfoModel = original.DeployedServiceReplicaDetailInfoModel
-type BasicDeployedServiceReplicaInfo = original.BasicDeployedServiceReplicaInfo
 type DeployedServiceReplicaInfo = original.DeployedServiceReplicaInfo
 type DeployedServiceTypeInfo = original.DeployedServiceTypeInfo
 type DeployedStatefulServiceReplicaDetailInfo = original.DeployedStatefulServiceReplicaDetailInfo
 type DeployedStatefulServiceReplicaInfo = original.DeployedStatefulServiceReplicaInfo
 type DeployedStatelessServiceInstanceDetailInfo = original.DeployedStatelessServiceInstanceDetailInfo
 type DeployedStatelessServiceInstanceInfo = original.DeployedStatelessServiceInstanceInfo
-type DeployServicePackageToNodeDescription = original.DeployServicePackageToNodeDescription
 type DoublePropertyValue = original.DoublePropertyValue
 type EnableBackupDescription = original.EnableBackupDescription
 type EnsureAvailabilitySafetyCheck = original.EnsureAvailabilitySafetyCheck
@@ -1551,7 +1582,6 @@ type FabricCodeVersionInfo = original.FabricCodeVersionInfo
 type FabricConfigVersionInfo = original.FabricConfigVersionInfo
 type FabricError = original.FabricError
 type FabricErrorError = original.FabricErrorError
-type BasicFabricEvent = original.BasicFabricEvent
 type FabricEvent = original.FabricEvent
 type FailedPropertyBatchInfo = original.FailedPropertyBatchInfo
 type FailedUpgradeDomainProgressObject = original.FailedUpgradeDomainProgressObject
@@ -1561,10 +1591,9 @@ type FileShareBackupStorageDescription = original.FileShareBackupStorageDescript
 type FileVersion = original.FileVersion
 type FolderInfo = original.FolderInfo
 type FrequencyBasedBackupScheduleDescription = original.FrequencyBasedBackupScheduleDescription
+type GUIDPropertyValue = original.GUIDPropertyValue
 type GetBackupByStorageQueryDescription = original.GetBackupByStorageQueryDescription
 type GetPropertyBatchOperation = original.GetPropertyBatchOperation
-type GUIDPropertyValue = original.GUIDPropertyValue
-type BasicHealthEvaluation = original.BasicHealthEvaluation
 type HealthEvaluation = original.HealthEvaluation
 type HealthEvaluationWrapper = original.HealthEvaluationWrapper
 type HealthEvent = original.HealthEvent
@@ -1612,7 +1641,6 @@ type NodeDeactivationInfo = original.NodeDeactivationInfo
 type NodeDeactivationTask = original.NodeDeactivationTask
 type NodeDeactivationTaskID = original.NodeDeactivationTaskID
 type NodeDownEvent = original.NodeDownEvent
-type BasicNodeEvent = original.BasicNodeEvent
 type NodeEvent = original.NodeEvent
 type NodeHealth = original.NodeHealth
 type NodeHealthEvaluation = original.NodeHealthEvaluation
@@ -1627,18 +1655,18 @@ type NodeImpact = original.NodeImpact
 type NodeInfo = original.NodeInfo
 type NodeLoadInfo = original.NodeLoadInfo
 type NodeLoadMetricInformation = original.NodeLoadMetricInformation
-type NodeOpenedSuccessEvent = original.NodeOpenedSuccessEvent
 type NodeOpenFailedEvent = original.NodeOpenFailedEvent
+type NodeOpenedSuccessEvent = original.NodeOpenedSuccessEvent
 type NodeOpeningEvent = original.NodeOpeningEvent
 type NodeRemovedEvent = original.NodeRemovedEvent
 type NodeRepairImpactDescription = original.NodeRepairImpactDescription
 type NodeRepairTargetDescription = original.NodeRepairTargetDescription
 type NodeResult = original.NodeResult
-type NodesHealthEvaluation = original.NodesHealthEvaluation
 type NodeTransitionProgress = original.NodeTransitionProgress
 type NodeTransitionResult = original.NodeTransitionResult
 type NodeUpEvent = original.NodeUpEvent
 type NodeUpgradeProgressInfo = original.NodeUpgradeProgressInfo
+type NodesHealthEvaluation = original.NodesHealthEvaluation
 type OperationStatus = original.OperationStatus
 type PackageSharingPolicyInfo = original.PackageSharingPolicyInfo
 type PagedApplicationInfoList = original.PagedApplicationInfoList
@@ -1655,12 +1683,10 @@ type PagedReplicaInfoList = original.PagedReplicaInfoList
 type PagedServiceInfoList = original.PagedServiceInfoList
 type PagedServicePartitionInfoList = original.PagedServicePartitionInfoList
 type PagedSubNameInfoList = original.PagedSubNameInfoList
-type BasicPartitionAnalysisEvent = original.BasicPartitionAnalysisEvent
 type PartitionAnalysisEvent = original.PartitionAnalysisEvent
 type PartitionBackupConfigurationInfo = original.PartitionBackupConfigurationInfo
 type PartitionBackupEntity = original.PartitionBackupEntity
 type PartitionDataLossProgress = original.PartitionDataLossProgress
-type BasicPartitionEvent = original.BasicPartitionEvent
 type PartitionEvent = original.PartitionEvent
 type PartitionHealth = original.PartitionHealth
 type PartitionHealthEvaluation = original.PartitionHealthEvaluation
@@ -1670,7 +1696,6 @@ type PartitionHealthState = original.PartitionHealthState
 type PartitionHealthStateChunk = original.PartitionHealthStateChunk
 type PartitionHealthStateChunkList = original.PartitionHealthStateChunkList
 type PartitionHealthStateFilter = original.PartitionHealthStateFilter
-type BasicPartitionInformation = original.BasicPartitionInformation
 type PartitionInformation = original.PartitionInformation
 type PartitionInstanceCountScaleMechanism = original.PartitionInstanceCountScaleMechanism
 type PartitionLoadInformation = original.PartitionLoadInformation
@@ -1678,26 +1703,20 @@ type PartitionPrimaryMoveAnalysisEvent = original.PartitionPrimaryMoveAnalysisEv
 type PartitionQuorumLossProgress = original.PartitionQuorumLossProgress
 type PartitionReconfigurationCompletedEvent = original.PartitionReconfigurationCompletedEvent
 type PartitionRestartProgress = original.PartitionRestartProgress
-type BasicPartitionSafetyCheck = original.BasicPartitionSafetyCheck
 type PartitionSafetyCheck = original.PartitionSafetyCheck
-type BasicPartitionSchemeDescription = original.BasicPartitionSchemeDescription
 type PartitionSchemeDescription = original.PartitionSchemeDescription
 type PartitionsHealthEvaluation = original.PartitionsHealthEvaluation
 type PrimaryReplicatorStatus = original.PrimaryReplicatorStatus
 type ProcessDeactivatedEvent = original.ProcessDeactivatedEvent
 type PropertyBatchDescriptionList = original.PropertyBatchDescriptionList
-type BasicPropertyBatchInfo = original.BasicPropertyBatchInfo
 type PropertyBatchInfo = original.PropertyBatchInfo
 type PropertyBatchInfoModel = original.PropertyBatchInfoModel
-type BasicPropertyBatchOperation = original.BasicPropertyBatchOperation
 type PropertyBatchOperation = original.PropertyBatchOperation
 type PropertyDescription = original.PropertyDescription
 type PropertyInfo = original.PropertyInfo
 type PropertyMetadata = original.PropertyMetadata
-type BasicPropertyValue = original.BasicPropertyValue
 type PropertyValue = original.PropertyValue
 type ProvisionApplicationTypeDescription = original.ProvisionApplicationTypeDescription
-type BasicProvisionApplicationTypeDescriptionBase = original.BasicProvisionApplicationTypeDescriptionBase
 type ProvisionApplicationTypeDescriptionBase = original.ProvisionApplicationTypeDescriptionBase
 type ProvisionFabricDescription = original.ProvisionFabricDescription
 type PutPropertyBatchOperation = original.PutPropertyBatchOperation
@@ -1706,9 +1725,7 @@ type RegistryCredential = original.RegistryCredential
 type RemoteReplicatorAcknowledgementDetail = original.RemoteReplicatorAcknowledgementDetail
 type RemoteReplicatorAcknowledgementStatus = original.RemoteReplicatorAcknowledgementStatus
 type RemoteReplicatorStatus = original.RemoteReplicatorStatus
-type BasicRepairImpactDescriptionBase = original.BasicRepairImpactDescriptionBase
 type RepairImpactDescriptionBase = original.RepairImpactDescriptionBase
-type BasicRepairTargetDescriptionBase = original.BasicRepairTargetDescriptionBase
 type RepairTargetDescriptionBase = original.RepairTargetDescriptionBase
 type RepairTask = original.RepairTask
 type RepairTaskApproveDescription = original.RepairTaskApproveDescription
@@ -1717,25 +1734,19 @@ type RepairTaskDeleteDescription = original.RepairTaskDeleteDescription
 type RepairTaskHistory = original.RepairTaskHistory
 type RepairTaskUpdateHealthPolicyDescription = original.RepairTaskUpdateHealthPolicyDescription
 type RepairTaskUpdateInfo = original.RepairTaskUpdateInfo
-type BasicReplicaEvent = original.BasicReplicaEvent
 type ReplicaEvent = original.ReplicaEvent
-type BasicReplicaHealth = original.BasicReplicaHealth
 type ReplicaHealth = original.ReplicaHealth
 type ReplicaHealthEvaluation = original.ReplicaHealthEvaluation
 type ReplicaHealthModel = original.ReplicaHealthModel
-type BasicReplicaHealthState = original.BasicReplicaHealthState
 type ReplicaHealthState = original.ReplicaHealthState
 type ReplicaHealthStateChunk = original.ReplicaHealthStateChunk
 type ReplicaHealthStateChunkList = original.ReplicaHealthStateChunkList
 type ReplicaHealthStateFilter = original.ReplicaHealthStateFilter
-type BasicReplicaInfo = original.BasicReplicaInfo
 type ReplicaInfo = original.ReplicaInfo
 type ReplicaInfoModel = original.ReplicaInfoModel
-type ReplicasHealthEvaluation = original.ReplicasHealthEvaluation
-type BasicReplicaStatusBase = original.BasicReplicaStatusBase
 type ReplicaStatusBase = original.ReplicaStatusBase
+type ReplicasHealthEvaluation = original.ReplicasHealthEvaluation
 type ReplicatorQueueStatus = original.ReplicatorQueueStatus
-type BasicReplicatorStatus = original.BasicReplicatorStatus
 type ReplicatorStatus = original.ReplicatorStatus
 type ResolvedServiceEndpoint = original.ResolvedServiceEndpoint
 type ResolvedServicePartition = original.ResolvedServicePartition
@@ -1747,17 +1758,13 @@ type RestoreProgressInfo = original.RestoreProgressInfo
 type ResumeApplicationUpgradeDescription = original.ResumeApplicationUpgradeDescription
 type ResumeClusterUpgradeDescription = original.ResumeClusterUpgradeDescription
 type RollingUpgradeUpdateDescription = original.RollingUpgradeUpdateDescription
-type BasicSafetyCheck = original.BasicSafetyCheck
 type SafetyCheck = original.SafetyCheck
 type SafetyCheckWrapper = original.SafetyCheckWrapper
-type BasicScalingMechanismDescription = original.BasicScalingMechanismDescription
 type ScalingMechanismDescription = original.ScalingMechanismDescription
 type ScalingPolicyDescription = original.ScalingPolicyDescription
-type BasicScalingTriggerDescription = original.BasicScalingTriggerDescription
 type ScalingTriggerDescription = original.ScalingTriggerDescription
 type SecondaryActiveReplicatorStatus = original.SecondaryActiveReplicatorStatus
 type SecondaryIdleReplicatorStatus = original.SecondaryIdleReplicatorStatus
-type BasicSecondaryReplicatorStatus = original.BasicSecondaryReplicatorStatus
 type SecondaryReplicatorStatus = original.SecondaryReplicatorStatus
 type SeedNodeSafetyCheck = original.SeedNodeSafetyCheck
 type SelectedPartition = original.SelectedPartition
@@ -1766,10 +1773,8 @@ type ServiceBackupEntity = original.ServiceBackupEntity
 type ServiceCorrelationDescription = original.ServiceCorrelationDescription
 type ServiceCreatedEvent = original.ServiceCreatedEvent
 type ServiceDeletedEvent = original.ServiceDeletedEvent
-type BasicServiceDescription = original.BasicServiceDescription
 type ServiceDescription = original.ServiceDescription
 type ServiceDescriptionModel = original.ServiceDescriptionModel
-type BasicServiceEvent = original.BasicServiceEvent
 type ServiceEvent = original.ServiceEvent
 type ServiceFromTemplateDescription = original.ServiceFromTemplateDescription
 type ServiceHealth = original.ServiceHealth
@@ -1780,31 +1785,26 @@ type ServiceHealthState = original.ServiceHealthState
 type ServiceHealthStateChunk = original.ServiceHealthStateChunk
 type ServiceHealthStateChunkList = original.ServiceHealthStateChunkList
 type ServiceHealthStateFilter = original.ServiceHealthStateFilter
-type BasicServiceInfo = original.BasicServiceInfo
 type ServiceInfo = original.ServiceInfo
 type ServiceInfoModel = original.ServiceInfoModel
 type ServiceLoadMetricDescription = original.ServiceLoadMetricDescription
 type ServiceNameInfo = original.ServiceNameInfo
-type BasicServicePartitionInfo = original.BasicServicePartitionInfo
 type ServicePartitionInfo = original.ServicePartitionInfo
 type ServicePartitionInfoModel = original.ServicePartitionInfoModel
 type ServicePlacementInvalidDomainPolicyDescription = original.ServicePlacementInvalidDomainPolicyDescription
 type ServicePlacementNonPartiallyPlaceServicePolicyDescription = original.ServicePlacementNonPartiallyPlaceServicePolicyDescription
-type BasicServicePlacementPolicyDescription = original.BasicServicePlacementPolicyDescription
 type ServicePlacementPolicyDescription = original.ServicePlacementPolicyDescription
 type ServicePlacementPreferPrimaryDomainPolicyDescription = original.ServicePlacementPreferPrimaryDomainPolicyDescription
-type ServicePlacementRequiredDomainPolicyDescription = original.ServicePlacementRequiredDomainPolicyDescription
 type ServicePlacementRequireDomainDistributionPolicyDescription = original.ServicePlacementRequireDomainDistributionPolicyDescription
-type ServicesHealthEvaluation = original.ServicesHealthEvaluation
-type BasicServiceTypeDescription = original.BasicServiceTypeDescription
+type ServicePlacementRequiredDomainPolicyDescription = original.ServicePlacementRequiredDomainPolicyDescription
 type ServiceTypeDescription = original.ServiceTypeDescription
 type ServiceTypeExtensionDescription = original.ServiceTypeExtensionDescription
 type ServiceTypeHealthPolicy = original.ServiceTypeHealthPolicy
 type ServiceTypeHealthPolicyMapItem = original.ServiceTypeHealthPolicyMapItem
 type ServiceTypeInfo = original.ServiceTypeInfo
 type ServiceTypeManifest = original.ServiceTypeManifest
-type BasicServiceUpdateDescription = original.BasicServiceUpdateDescription
 type ServiceUpdateDescription = original.ServiceUpdateDescription
+type ServicesHealthEvaluation = original.ServicesHealthEvaluation
 type SingletonPartitionInformation = original.SingletonPartitionInformation
 type SingletonPartitionSchemeDescription = original.SingletonPartitionSchemeDescription
 type StartClusterUpgradeDescription = original.StartClusterUpgradeDescription
@@ -1935,11 +1935,11 @@ func PossibleDeployedApplicationStatusValues() []DeployedApplicationStatus {
 func PossibleDeploymentStatusValues() []DeploymentStatus {
 	return original.PossibleDeploymentStatusValues()
 }
-func PossibleEntityKindValues() []EntityKind {
-	return original.PossibleEntityKindValues()
-}
 func PossibleEntityKindBasicBackupEntityValues() []EntityKindBasicBackupEntity {
 	return original.PossibleEntityKindBasicBackupEntityValues()
+}
+func PossibleEntityKindValues() []EntityKind {
+	return original.PossibleEntityKindValues()
 }
 func PossibleEntryPointStatusValues() []EntryPointStatus {
 	return original.PossibleEntryPointStatusValues()
@@ -1973,9 +1973,6 @@ func PossibleHostTypeValues() []HostType {
 }
 func PossibleImpactLevelValues() []ImpactLevel {
 	return original.PossibleImpactLevelValues()
-}
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
 }
 func PossibleKindBasicBackupConfigurationInfoValues() []KindBasicBackupConfigurationInfo {
 	return original.PossibleKindBasicBackupConfigurationInfoValues()
@@ -2022,6 +2019,9 @@ func PossibleKindBasicScalingTriggerDescriptionValues() []KindBasicScalingTrigge
 func PossibleKindBasicServiceTypeDescriptionValues() []KindBasicServiceTypeDescription {
 	return original.PossibleKindBasicServiceTypeDescriptionValues()
 }
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
 func PossibleMoveCostValues() []MoveCost {
 	return original.PossibleMoveCostValues()
 }
@@ -2034,11 +2034,11 @@ func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
 func PossibleNodeDeactivationTaskTypeValues() []NodeDeactivationTaskType {
 	return original.PossibleNodeDeactivationTaskTypeValues()
 }
-func PossibleNodeStatusValues() []NodeStatus {
-	return original.PossibleNodeStatusValues()
-}
 func PossibleNodeStatusFilterValues() []NodeStatusFilter {
 	return original.PossibleNodeStatusFilterValues()
+}
+func PossibleNodeStatusValues() []NodeStatus {
+	return original.PossibleNodeStatusValues()
 }
 func PossibleNodeTransitionTypeValues() []NodeTransitionType {
 	return original.PossibleNodeTransitionTypeValues()
@@ -2058,11 +2058,11 @@ func PossiblePackageSharingPolicyScopeValues() []PackageSharingPolicyScope {
 func PossiblePartitionAccessStatusValues() []PartitionAccessStatus {
 	return original.PossiblePartitionAccessStatusValues()
 }
-func PossiblePartitionSchemeValues() []PartitionScheme {
-	return original.PossiblePartitionSchemeValues()
-}
 func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
 	return original.PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues()
+}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return original.PossiblePartitionSchemeValues()
 }
 func PossiblePropertyBatchInfoKindValues() []PropertyBatchInfoKind {
 	return original.PossiblePropertyBatchInfoKindValues()
@@ -2136,20 +2136,17 @@ func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 func PossibleServiceEndpointRoleValues() []ServiceEndpointRole {
 	return original.PossibleServiceEndpointRoleValues()
 }
-func PossibleServiceKindValues() []ServiceKind {
-	return original.PossibleServiceKindValues()
-}
 func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() []ServiceKindBasicDeployedServiceReplicaDetailInfo {
 	return original.PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues()
 }
 func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() []ServiceKindBasicDeployedServiceReplicaInfo {
 	return original.PossibleServiceKindBasicDeployedServiceReplicaInfoValues()
 }
-func PossibleServiceKindBasicReplicaHealthValues() []ServiceKindBasicReplicaHealth {
-	return original.PossibleServiceKindBasicReplicaHealthValues()
-}
 func PossibleServiceKindBasicReplicaHealthStateValues() []ServiceKindBasicReplicaHealthState {
 	return original.PossibleServiceKindBasicReplicaHealthStateValues()
+}
+func PossibleServiceKindBasicReplicaHealthValues() []ServiceKindBasicReplicaHealth {
+	return original.PossibleServiceKindBasicReplicaHealthValues()
 }
 func PossibleServiceKindBasicReplicaInfoValues() []ServiceKindBasicReplicaInfo {
 	return original.PossibleServiceKindBasicReplicaInfoValues()
@@ -2166,6 +2163,9 @@ func PossibleServiceKindBasicServicePartitionInfoValues() []ServiceKindBasicServ
 func PossibleServiceKindBasicServiceUpdateDescriptionValues() []ServiceKindBasicServiceUpdateDescription {
 	return original.PossibleServiceKindBasicServiceUpdateDescriptionValues()
 }
+func PossibleServiceKindValues() []ServiceKind {
+	return original.PossibleServiceKindValues()
+}
 func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 	return original.PossibleServiceLoadMetricWeightValues()
 }
@@ -2175,11 +2175,11 @@ func PossibleServiceOperationNameValues() []ServiceOperationName {
 func PossibleServicePackageActivationModeValues() []ServicePackageActivationMode {
 	return original.PossibleServicePackageActivationModeValues()
 }
-func PossibleServicePartitionKindValues() []ServicePartitionKind {
-	return original.PossibleServicePartitionKindValues()
-}
 func PossibleServicePartitionKindBasicPartitionInformationValues() []ServicePartitionKindBasicPartitionInformation {
 	return original.PossibleServicePartitionKindBasicPartitionInformationValues()
+}
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
+	return original.PossibleServicePartitionKindValues()
 }
 func PossibleServicePartitionStatusValues() []ServicePartitionStatus {
 	return original.PossibleServicePartitionStatusValues()

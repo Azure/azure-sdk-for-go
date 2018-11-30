@@ -21,14 +21,14 @@ package mysqlapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql/mysqlapi"
 
-type ServersClientAPI = original.ServersClientAPI
-type ReplicasClientAPI = original.ReplicasClientAPI
-type FirewallRulesClientAPI = original.FirewallRulesClientAPI
-type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI
-type DatabasesClientAPI = original.DatabasesClientAPI
-type ConfigurationsClientAPI = original.ConfigurationsClientAPI
-type LogFilesClientAPI = original.LogFilesClientAPI
-type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
-type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
+type ConfigurationsClientAPI = original.ConfigurationsClientAPI
+type DatabasesClientAPI = original.DatabasesClientAPI
+type FirewallRulesClientAPI = original.FirewallRulesClientAPI
+type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTierClientAPI
+type LogFilesClientAPI = original.LogFilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ReplicasClientAPI = original.ReplicasClientAPI
+type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
+type ServersClientAPI = original.ServersClientAPI
+type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

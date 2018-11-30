@@ -21,25 +21,25 @@ package computeapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute/computeapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
+type ContainerServicesClientAPI = original.ContainerServicesClientAPI
+type DisksClientAPI = original.DisksClientAPI
+type GalleriesClientAPI = original.GalleriesClientAPI
+type GalleryImageVersionsClientAPI = original.GalleryImageVersionsClientAPI
+type GalleryImagesClientAPI = original.GalleryImagesClientAPI
+type ImagesClientAPI = original.ImagesClientAPI
+type LogAnalyticsClientAPI = original.LogAnalyticsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type ResourceSkusClientAPI = original.ResourceSkusClientAPI
+type SnapshotsClientAPI = original.SnapshotsClientAPI
+type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI
 type VirtualMachineExtensionsClientAPI = original.VirtualMachineExtensionsClientAPI
 type VirtualMachineImagesClientAPI = original.VirtualMachineImagesClientAPI
-type UsageClientAPI = original.UsageClientAPI
-type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI
-type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI
-type ImagesClientAPI = original.ImagesClientAPI
-type VirtualMachineScaleSetsClientAPI = original.VirtualMachineScaleSetsClientAPI
+type VirtualMachineRunCommandsClientAPI = original.VirtualMachineRunCommandsClientAPI
 type VirtualMachineScaleSetExtensionsClientAPI = original.VirtualMachineScaleSetExtensionsClientAPI
 type VirtualMachineScaleSetRollingUpgradesClientAPI = original.VirtualMachineScaleSetRollingUpgradesClientAPI
 type VirtualMachineScaleSetVMsClientAPI = original.VirtualMachineScaleSetVMsClientAPI
-type LogAnalyticsClientAPI = original.LogAnalyticsClientAPI
-type VirtualMachineRunCommandsClientAPI = original.VirtualMachineRunCommandsClientAPI
-type ResourceSkusClientAPI = original.ResourceSkusClientAPI
-type DisksClientAPI = original.DisksClientAPI
-type SnapshotsClientAPI = original.SnapshotsClientAPI
-type GalleriesClientAPI = original.GalleriesClientAPI
-type GalleryImagesClientAPI = original.GalleryImagesClientAPI
-type GalleryImageVersionsClientAPI = original.GalleryImageVersionsClientAPI
-type ContainerServicesClientAPI = original.ContainerServicesClientAPI
+type VirtualMachineScaleSetsClientAPI = original.VirtualMachineScaleSetsClientAPI
+type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI
+type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI

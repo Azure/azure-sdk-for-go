@@ -2,7 +2,7 @@
   "meta": {
     "after_scripts": [
       "dep ensure",
-      "go generate ./profiles/...",
+      "go generate ./profiles/generate.go",
       "gofmt -w ./profiles/",
       "gofmt -w ./services/"
     ],

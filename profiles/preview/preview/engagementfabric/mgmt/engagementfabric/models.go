@@ -21,14 +21,10 @@ package engagementfabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric"
 
-type AccountsClient = original.AccountsClient
-type ChannelsClient = original.ChannelsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type CheckNameUnavailableReason = original.CheckNameUnavailableReason
 
 const (
@@ -46,11 +42,14 @@ const (
 type Account = original.Account
 type AccountList = original.AccountList
 type AccountPatch = original.AccountPatch
+type AccountsClient = original.AccountsClient
+type BaseClient = original.BaseClient
 type Channel = original.Channel
 type ChannelList = original.ChannelList
 type ChannelProperties = original.ChannelProperties
 type ChannelTypeDescription = original.ChannelTypeDescription
 type ChannelTypeDescriptionList = original.ChannelTypeDescriptionList
+type ChannelsClient = original.ChannelsClient
 type CheckNameAvailabilityParameter = original.CheckNameAvailabilityParameter
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudError = original.CloudError
@@ -60,17 +59,20 @@ type KeyDescriptionList = original.KeyDescriptionList
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
+type OperationsClient = original.OperationsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
 type RegenerateKeyParameter = original.RegenerateKeyParameter
 type Resource = original.Resource
 type SKU = original.SKU
+type SKUsClient = original.SKUsClient
 type SkuDescription = original.SkuDescription
 type SkuDescriptionList = original.SkuDescriptionList
 type SkuLocationInfoItem = original.SkuLocationInfoItem
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
-type SKUsClient = original.SKUsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -83,18 +85,6 @@ func NewChannelsClient(subscriptionID string) ChannelsClient {
 func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) ChannelsClient {
 	return original.NewChannelsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleCheckNameUnavailableReasonValues() []CheckNameUnavailableReason {
-	return original.PossibleCheckNameUnavailableReasonValues()
-}
-func PossibleKeyRankValues() []KeyRank {
-	return original.PossibleKeyRankValues()
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -106,6 +96,15 @@ func NewSKUsClient(subscriptionID string) SKUsClient {
 }
 func NewSKUsClientWithBaseURI(baseURI string, subscriptionID string) SKUsClient {
 	return original.NewSKUsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCheckNameUnavailableReasonValues() []CheckNameUnavailableReason {
+	return original.PossibleCheckNameUnavailableReasonValues()
+}
+func PossibleKeyRankValues() []KeyRank {
+	return original.PossibleKeyRankValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

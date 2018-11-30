@@ -25,24 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-01-preview/web"
 )
 
-type CertificateOrdersClient = original.CertificateOrdersClient
-type CertificatesClient = original.CertificatesClient
-type ClassicMobileServicesClient = original.ClassicMobileServicesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ConnectionsClient = original.ConnectionsClient
-type DomainsClient = original.DomainsClient
-type GlobalClient = original.GlobalClient
-type GlobalCertificateOrderClient = original.GlobalCertificateOrderClient
-type GlobalDomainRegistrationClient = original.GlobalDomainRegistrationClient
-type GlobalResourceGroupsClient = original.GlobalResourceGroupsClient
-type HostingEnvironmentsClient = original.HostingEnvironmentsClient
-type ManagedApisClient = original.ManagedApisClient
-type ManagedHostingEnvironmentsClient = original.ManagedHostingEnvironmentsClient
 type AccessControlEntryAction = original.AccessControlEntryAction
 
 const (
@@ -229,6 +215,13 @@ const (
 	Hour FrequencyUnit = original.Hour
 )
 
+type HostNameType = original.HostNameType
+
+const (
+	Managed  HostNameType = original.Managed
+	Verified HostNameType = original.Verified
+)
+
 type HostingEnvironmentStatus = original.HostingEnvironmentStatus
 
 const (
@@ -236,13 +229,6 @@ const (
 	Preparing HostingEnvironmentStatus = original.Preparing
 	Ready     HostingEnvironmentStatus = original.Ready
 	Scaling   HostingEnvironmentStatus = original.Scaling
-)
-
-type HostNameType = original.HostNameType
-
-const (
-	Managed  HostNameType = original.Managed
-	Verified HostNameType = original.Verified
 )
 
 type InternalLoadBalancingMode = original.InternalLoadBalancingMode
@@ -384,8 +370,6 @@ const (
 	WorkerSizeOptionsSmall   WorkerSizeOptions = original.WorkerSizeOptionsSmall
 )
 
-type Address = original.Address
-type AddressResponse = original.AddressResponse
 type APIDefinitionInfo = original.APIDefinitionInfo
 type APIEntity = original.APIEntity
 type APIEntityProperties = original.APIEntityProperties
@@ -393,6 +377,8 @@ type APIOAuthSettings = original.APIOAuthSettings
 type APIOAuthSettingsParameter = original.APIOAuthSettingsParameter
 type APIPolicies = original.APIPolicies
 type APIPoliciesProperties = original.APIPoliciesProperties
+type Address = original.Address
+type AddressResponse = original.AddressResponse
 type ApisCollection = original.ApisCollection
 type ApisCollectionIterator = original.ApisCollectionIterator
 type ApisCollectionPage = original.ApisCollectionPage
@@ -415,6 +401,7 @@ type BackupItemProperties = original.BackupItemProperties
 type BackupRequest = original.BackupRequest
 type BackupRequestProperties = original.BackupRequestProperties
 type BackupSchedule = original.BackupSchedule
+type BaseClient = original.BaseClient
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
 type CertificateCollectionIterator = original.CertificateCollectionIterator
@@ -435,15 +422,20 @@ type CertificateOrderCollection = original.CertificateOrderCollection
 type CertificateOrderCollectionIterator = original.CertificateOrderCollectionIterator
 type CertificateOrderCollectionPage = original.CertificateOrderCollectionPage
 type CertificateOrderProperties = original.CertificateOrderProperties
+type CertificateOrdersClient = original.CertificateOrdersClient
 type CertificateProperties = original.CertificateProperties
+type CertificatesClient = original.CertificatesClient
 type ClassicMobileService = original.ClassicMobileService
 type ClassicMobileServiceCollection = original.ClassicMobileServiceCollection
 type ClassicMobileServiceCollectionIterator = original.ClassicMobileServiceCollectionIterator
 type ClassicMobileServiceCollectionPage = original.ClassicMobileServiceCollectionPage
 type ClassicMobileServiceProperties = original.ClassicMobileServiceProperties
+type ClassicMobileServicesClient = original.ClassicMobileServicesClient
 type CloningInfo = original.CloningInfo
 type ConfirmConsentCodeInput = original.ConfirmConsentCodeInput
 type ConfirmConsentCodeInputProperties = original.ConfirmConsentCodeInputProperties
+type ConnStringInfo = original.ConnStringInfo
+type ConnStringValueTypePair = original.ConnStringValueTypePair
 type Connection = original.Connection
 type ConnectionCollection = original.ConnectionCollection
 type ConnectionCollectionIterator = original.ConnectionCollectionIterator
@@ -456,8 +448,7 @@ type ConnectionSecrets = original.ConnectionSecrets
 type ConnectionStatus = original.ConnectionStatus
 type ConnectionStatusProperties = original.ConnectionStatusProperties
 type ConnectionStringDictionary = original.ConnectionStringDictionary
-type ConnStringInfo = original.ConnStringInfo
-type ConnStringValueTypePair = original.ConnStringValueTypePair
+type ConnectionsClient = original.ConnectionsClient
 type ConsentLink = original.ConsentLink
 type ConsentLinkInput = original.ConsentLinkInput
 type ConsentLinkInputParameter = original.ConsentLinkInputParameter
@@ -499,6 +490,7 @@ type DomainPurchaseConsent = original.DomainPurchaseConsent
 type DomainRecommendationSearchParameters = original.DomainRecommendationSearchParameters
 type DomainRegistrationInput = original.DomainRegistrationInput
 type DomainRegistrationInputProperties = original.DomainRegistrationInputProperties
+type DomainsClient = original.DomainsClient
 type EnabledConfig = original.EnabledConfig
 type ExpandedParentAPIEntity = original.ExpandedParentAPIEntity
 type ExpandedParentAPIEntityProperties = original.ExpandedParentAPIEntityProperties
@@ -512,23 +504,12 @@ type GeoRegionCollection = original.GeoRegionCollection
 type GeoRegionCollectionIterator = original.GeoRegionCollectionIterator
 type GeoRegionCollectionPage = original.GeoRegionCollectionPage
 type GeoRegionProperties = original.GeoRegionProperties
+type GlobalCertificateOrderClient = original.GlobalCertificateOrderClient
+type GlobalClient = original.GlobalClient
+type GlobalDomainRegistrationClient = original.GlobalDomainRegistrationClient
+type GlobalResourceGroupsClient = original.GlobalResourceGroupsClient
+type HTTPLogsConfig = original.HTTPLogsConfig
 type HandlerMapping = original.HandlerMapping
-type HostingEnvironment = original.HostingEnvironment
-type HostingEnvironmentCollection = original.HostingEnvironmentCollection
-type HostingEnvironmentCollectionIterator = original.HostingEnvironmentCollectionIterator
-type HostingEnvironmentCollectionPage = original.HostingEnvironmentCollectionPage
-type HostingEnvironmentDiagnostics = original.HostingEnvironmentDiagnostics
-type HostingEnvironmentProfile = original.HostingEnvironmentProfile
-type HostingEnvironmentProperties = original.HostingEnvironmentProperties
-type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture = original.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture
-type HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture = original.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture
-type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture = original.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture
-type HostingEnvironmentsDeleteHostingEnvironmentFuture = original.HostingEnvironmentsDeleteHostingEnvironmentFuture
-type HostingEnvironmentServiceDescriptions = original.HostingEnvironmentServiceDescriptions
-type HostingEnvironmentsResumeHostingEnvironmentAllFuture = original.HostingEnvironmentsResumeHostingEnvironmentAllFuture
-type HostingEnvironmentsResumeHostingEnvironmentFuture = original.HostingEnvironmentsResumeHostingEnvironmentFuture
-type HostingEnvironmentsSuspendHostingEnvironmentAllFuture = original.HostingEnvironmentsSuspendHostingEnvironmentAllFuture
-type HostingEnvironmentsSuspendHostingEnvironmentFuture = original.HostingEnvironmentsSuspendHostingEnvironmentFuture
 type HostName = original.HostName
 type HostNameBinding = original.HostNameBinding
 type HostNameBindingCollection = original.HostNameBindingCollection
@@ -536,7 +517,23 @@ type HostNameBindingCollectionIterator = original.HostNameBindingCollectionItera
 type HostNameBindingCollectionPage = original.HostNameBindingCollectionPage
 type HostNameBindingProperties = original.HostNameBindingProperties
 type HostNameSslState = original.HostNameSslState
-type HTTPLogsConfig = original.HTTPLogsConfig
+type HostingEnvironment = original.HostingEnvironment
+type HostingEnvironmentCollection = original.HostingEnvironmentCollection
+type HostingEnvironmentCollectionIterator = original.HostingEnvironmentCollectionIterator
+type HostingEnvironmentCollectionPage = original.HostingEnvironmentCollectionPage
+type HostingEnvironmentDiagnostics = original.HostingEnvironmentDiagnostics
+type HostingEnvironmentProfile = original.HostingEnvironmentProfile
+type HostingEnvironmentProperties = original.HostingEnvironmentProperties
+type HostingEnvironmentServiceDescriptions = original.HostingEnvironmentServiceDescriptions
+type HostingEnvironmentsClient = original.HostingEnvironmentsClient
+type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture = original.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture
+type HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture = original.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture
+type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture = original.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture
+type HostingEnvironmentsDeleteHostingEnvironmentFuture = original.HostingEnvironmentsDeleteHostingEnvironmentFuture
+type HostingEnvironmentsResumeHostingEnvironmentAllFuture = original.HostingEnvironmentsResumeHostingEnvironmentAllFuture
+type HostingEnvironmentsResumeHostingEnvironmentFuture = original.HostingEnvironmentsResumeHostingEnvironmentFuture
+type HostingEnvironmentsSuspendHostingEnvironmentAllFuture = original.HostingEnvironmentsSuspendHostingEnvironmentAllFuture
+type HostingEnvironmentsSuspendHostingEnvironmentFuture = original.HostingEnvironmentsSuspendHostingEnvironmentFuture
 type IPSecurityRestriction = original.IPSecurityRestriction
 type KeyValuePairStringString = original.KeyValuePairStringString
 type ListCertificateEmail = original.ListCertificateEmail
@@ -549,11 +546,13 @@ type ListRecommendation = original.ListRecommendation
 type ListVnetInfo = original.ListVnetInfo
 type ListVnetRoute = original.ListVnetRoute
 type LocalizableString = original.LocalizableString
+type ManagedApisClient = original.ManagedApisClient
 type ManagedHostingEnvironment = original.ManagedHostingEnvironment
 type ManagedHostingEnvironmentCollection = original.ManagedHostingEnvironmentCollection
 type ManagedHostingEnvironmentCollectionIterator = original.ManagedHostingEnvironmentCollectionIterator
 type ManagedHostingEnvironmentCollectionPage = original.ManagedHostingEnvironmentCollectionPage
 type ManagedHostingEnvironmentProperties = original.ManagedHostingEnvironmentProperties
+type ManagedHostingEnvironmentsClient = original.ManagedHostingEnvironmentsClient
 type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture = original.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture
 type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture = original.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture
 type MetricAvailabilily = original.MetricAvailabilily
@@ -573,10 +572,12 @@ type NetworkFeaturesProperties = original.NetworkFeaturesProperties
 type ParameterCustomLoginSettingValues = original.ParameterCustomLoginSettingValues
 type ParameterCustomLoginSettingValuesProperties = original.ParameterCustomLoginSettingValuesProperties
 type PremierAddOnRequest = original.PremierAddOnRequest
+type ProviderClient = original.ProviderClient
 type RampUpRule = original.RampUpRule
 type ReadCloser = original.ReadCloser
 type Recommendation = original.Recommendation
 type RecommendationRule = original.RecommendationRule
+type RecommendationsClient = original.RecommendationsClient
 type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
@@ -602,9 +603,10 @@ type RoutingRule = original.RoutingRule
 type ServerFarmCollection = original.ServerFarmCollection
 type ServerFarmCollectionIterator = original.ServerFarmCollectionIterator
 type ServerFarmCollectionPage = original.ServerFarmCollectionPage
-type ServerFarmsCreateOrUpdateServerFarmFuture = original.ServerFarmsCreateOrUpdateServerFarmFuture
 type ServerFarmWithRichSku = original.ServerFarmWithRichSku
 type ServerFarmWithRichSkuProperties = original.ServerFarmWithRichSkuProperties
+type ServerFarmsClient = original.ServerFarmsClient
+type ServerFarmsCreateOrUpdateServerFarmFuture = original.ServerFarmsCreateOrUpdateServerFarmFuture
 type SetObject = original.SetObject
 type Site = original.Site
 type SiteAuthSettings = original.SiteAuthSettings
@@ -625,18 +627,19 @@ type SiteLogsConfig = original.SiteLogsConfig
 type SiteLogsConfigProperties = original.SiteLogsConfigProperties
 type SiteProperties = original.SiteProperties
 type SitePropertiesModel = original.SitePropertiesModel
+type SiteSourceControl = original.SiteSourceControl
+type SiteSourceControlProperties = original.SiteSourceControlProperties
+type SitesClient = original.SitesClient
 type SitesCreateOrUpdateSiteFuture = original.SitesCreateOrUpdateSiteFuture
 type SitesCreateOrUpdateSiteSlotFuture = original.SitesCreateOrUpdateSiteSlotFuture
 type SitesListSitePublishingCredentialsFuture = original.SitesListSitePublishingCredentialsFuture
 type SitesListSitePublishingCredentialsSlotFuture = original.SitesListSitePublishingCredentialsSlotFuture
-type SiteSourceControl = original.SiteSourceControl
-type SiteSourceControlProperties = original.SiteSourceControlProperties
 type SitesRecoverSiteFuture = original.SitesRecoverSiteFuture
 type SitesRecoverSiteSlotFuture = original.SitesRecoverSiteSlotFuture
 type SitesRestoreSiteFuture = original.SitesRestoreSiteFuture
 type SitesRestoreSiteSlotFuture = original.SitesRestoreSiteSlotFuture
-type SitesSwapSlotsSlotFuture = original.SitesSwapSlotsSlotFuture
 type SitesSwapSlotWithProductionFuture = original.SitesSwapSlotWithProductionFuture
+type SitesSwapSlotsSlotFuture = original.SitesSwapSlotsSlotFuture
 type SkuCapacity = original.SkuCapacity
 type SkuDescription = original.SkuDescription
 type SkuInfo = original.SkuInfo
@@ -673,7 +676,9 @@ type TopLevelDomainCollection = original.TopLevelDomainCollection
 type TopLevelDomainCollectionIterator = original.TopLevelDomainCollectionIterator
 type TopLevelDomainCollectionPage = original.TopLevelDomainCollectionPage
 type TopLevelDomainProperties = original.TopLevelDomainProperties
+type TopLevelDomainsClient = original.TopLevelDomainsClient
 type Usage = original.Usage
+type UsageClient = original.UsageClient
 type UsageCollection = original.UsageCollection
 type UsageCollectionIterator = original.UsageCollectionIterator
 type UsageCollectionPage = original.UsageCollectionPage
@@ -695,13 +700,40 @@ type WorkerPoolCollection = original.WorkerPoolCollection
 type WorkerPoolCollectionIterator = original.WorkerPoolCollectionIterator
 type WorkerPoolCollectionPage = original.WorkerPoolCollectionPage
 type WorkerPoolProperties = original.WorkerPoolProperties
-type ProviderClient = original.ProviderClient
-type RecommendationsClient = original.RecommendationsClient
-type ServerFarmsClient = original.ServerFarmsClient
-type SitesClient = original.SitesClient
-type TopLevelDomainsClient = original.TopLevelDomainsClient
-type UsageClient = original.UsageClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewApisCollectionIterator(page ApisCollectionPage) ApisCollectionIterator {
+	return original.NewApisCollectionIterator(page)
+}
+func NewApisCollectionPage(getNextPage func(context.Context, ApisCollection) (ApisCollection, error)) ApisCollectionPage {
+	return original.NewApisCollectionPage(getNextPage)
+}
+func NewBackupItemCollectionIterator(page BackupItemCollectionPage) BackupItemCollectionIterator {
+	return original.NewBackupItemCollectionIterator(page)
+}
+func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
+	return original.NewBackupItemCollectionPage(getNextPage)
+}
+func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
+	return original.NewCertificateCollectionIterator(page)
+}
+func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return original.NewCertificateCollectionPage(getNextPage)
+}
+func NewCertificateOrderCertificateCollectionIterator(page CertificateOrderCertificateCollectionPage) CertificateOrderCertificateCollectionIterator {
+	return original.NewCertificateOrderCertificateCollectionIterator(page)
+}
+func NewCertificateOrderCertificateCollectionPage(getNextPage func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error)) CertificateOrderCertificateCollectionPage {
+	return original.NewCertificateOrderCertificateCollectionPage(getNextPage)
+}
+func NewCertificateOrderCollectionIterator(page CertificateOrderCollectionPage) CertificateOrderCollectionIterator {
+	return original.NewCertificateOrderCollectionIterator(page)
+}
+func NewCertificateOrderCollectionPage(getNextPage func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error)) CertificateOrderCollectionPage {
+	return original.NewCertificateOrderCollectionPage(getNextPage)
+}
 func NewCertificateOrdersClient(subscriptionID string) CertificateOrdersClient {
 	return original.NewCertificateOrdersClient(subscriptionID)
 }
@@ -714,17 +746,23 @@ func NewCertificatesClient(subscriptionID string) CertificatesClient {
 func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewClassicMobileServiceCollectionIterator(page ClassicMobileServiceCollectionPage) ClassicMobileServiceCollectionIterator {
+	return original.NewClassicMobileServiceCollectionIterator(page)
+}
+func NewClassicMobileServiceCollectionPage(getNextPage func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error)) ClassicMobileServiceCollectionPage {
+	return original.NewClassicMobileServiceCollectionPage(getNextPage)
+}
 func NewClassicMobileServicesClient(subscriptionID string) ClassicMobileServicesClient {
 	return original.NewClassicMobileServicesClient(subscriptionID)
 }
 func NewClassicMobileServicesClientWithBaseURI(baseURI string, subscriptionID string) ClassicMobileServicesClient {
 	return original.NewClassicMobileServicesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewConnectionCollectionIterator(page ConnectionCollectionPage) ConnectionCollectionIterator {
+	return original.NewConnectionCollectionIterator(page)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
+	return original.NewConnectionCollectionPage(getNextPage)
 }
 func NewConnectionsClient(subscriptionID string) ConnectionsClient {
 	return original.NewConnectionsClient(subscriptionID)
@@ -732,23 +770,53 @@ func NewConnectionsClient(subscriptionID string) ConnectionsClient {
 func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionsClient {
 	return original.NewConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCsmUsageQuotaCollectionIterator(page CsmUsageQuotaCollectionPage) CsmUsageQuotaCollectionIterator {
+	return original.NewCsmUsageQuotaCollectionIterator(page)
+}
+func NewCsmUsageQuotaCollectionPage(getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
+	return original.NewCsmUsageQuotaCollectionPage(getNextPage)
+}
+func NewDeletedSiteCollectionIterator(page DeletedSiteCollectionPage) DeletedSiteCollectionIterator {
+	return original.NewDeletedSiteCollectionIterator(page)
+}
+func NewDeletedSiteCollectionPage(getNextPage func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error)) DeletedSiteCollectionPage {
+	return original.NewDeletedSiteCollectionPage(getNextPage)
+}
+func NewDeploymentCollectionIterator(page DeploymentCollectionPage) DeploymentCollectionIterator {
+	return original.NewDeploymentCollectionIterator(page)
+}
+func NewDeploymentCollectionPage(getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
+	return original.NewDeploymentCollectionPage(getNextPage)
+}
+func NewDomainCollectionIterator(page DomainCollectionPage) DomainCollectionIterator {
+	return original.NewDomainCollectionIterator(page)
+}
+func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
+	return original.NewDomainCollectionPage(getNextPage)
+}
 func NewDomainsClient(subscriptionID string) DomainsClient {
 	return original.NewDomainsClient(subscriptionID)
 }
 func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
 	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGlobalClient(subscriptionID string) GlobalClient {
-	return original.NewGlobalClient(subscriptionID)
+func NewGeoRegionCollectionIterator(page GeoRegionCollectionPage) GeoRegionCollectionIterator {
+	return original.NewGeoRegionCollectionIterator(page)
 }
-func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalClient {
-	return original.NewGlobalClientWithBaseURI(baseURI, subscriptionID)
+func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
+	return original.NewGeoRegionCollectionPage(getNextPage)
 }
 func NewGlobalCertificateOrderClient(subscriptionID string) GlobalCertificateOrderClient {
 	return original.NewGlobalCertificateOrderClient(subscriptionID)
 }
 func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID string) GlobalCertificateOrderClient {
 	return original.NewGlobalCertificateOrderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGlobalClient(subscriptionID string) GlobalClient {
+	return original.NewGlobalClient(subscriptionID)
+}
+func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalClient {
+	return original.NewGlobalClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewGlobalDomainRegistrationClient(subscriptionID string) GlobalDomainRegistrationClient {
 	return original.NewGlobalDomainRegistrationClient(subscriptionID)
@@ -762,6 +830,18 @@ func NewGlobalResourceGroupsClient(subscriptionID string) GlobalResourceGroupsCl
 func NewGlobalResourceGroupsClientWithBaseURI(baseURI string, subscriptionID string) GlobalResourceGroupsClient {
 	return original.NewGlobalResourceGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewHostNameBindingCollectionIterator(page HostNameBindingCollectionPage) HostNameBindingCollectionIterator {
+	return original.NewHostNameBindingCollectionIterator(page)
+}
+func NewHostNameBindingCollectionPage(getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
+	return original.NewHostNameBindingCollectionPage(getNextPage)
+}
+func NewHostingEnvironmentCollectionIterator(page HostingEnvironmentCollectionPage) HostingEnvironmentCollectionIterator {
+	return original.NewHostingEnvironmentCollectionIterator(page)
+}
+func NewHostingEnvironmentCollectionPage(getNextPage func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error)) HostingEnvironmentCollectionPage {
+	return original.NewHostingEnvironmentCollectionPage(getNextPage)
+}
 func NewHostingEnvironmentsClient(subscriptionID string) HostingEnvironmentsClient {
 	return original.NewHostingEnvironmentsClient(subscriptionID)
 }
@@ -774,11 +854,140 @@ func NewManagedApisClient(subscriptionID string) ManagedApisClient {
 func NewManagedApisClientWithBaseURI(baseURI string, subscriptionID string) ManagedApisClient {
 	return original.NewManagedApisClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagedHostingEnvironmentCollectionIterator(page ManagedHostingEnvironmentCollectionPage) ManagedHostingEnvironmentCollectionIterator {
+	return original.NewManagedHostingEnvironmentCollectionIterator(page)
+}
+func NewManagedHostingEnvironmentCollectionPage(getNextPage func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error)) ManagedHostingEnvironmentCollectionPage {
+	return original.NewManagedHostingEnvironmentCollectionPage(getNextPage)
+}
 func NewManagedHostingEnvironmentsClient(subscriptionID string) ManagedHostingEnvironmentsClient {
 	return original.NewManagedHostingEnvironmentsClient(subscriptionID)
 }
 func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedHostingEnvironmentsClient {
 	return original.NewManagedHostingEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetricDefinitionCollectionIterator(page MetricDefinitionCollectionPage) MetricDefinitionCollectionIterator {
+	return original.NewMetricDefinitionCollectionIterator(page)
+}
+func NewMetricDefinitionCollectionPage(getNextPage func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error)) MetricDefinitionCollectionPage {
+	return original.NewMetricDefinitionCollectionPage(getNextPage)
+}
+func NewNameIdentifierCollectionIterator(page NameIdentifierCollectionPage) NameIdentifierCollectionIterator {
+	return original.NewNameIdentifierCollectionIterator(page)
+}
+func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
+	return original.NewNameIdentifierCollectionPage(getNextPage)
+}
+func NewProviderClient(subscriptionID string) ProviderClient {
+	return original.NewProviderClient(subscriptionID)
+}
+func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
+	return original.NewProviderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClient(subscriptionID)
+}
+func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceMetricCollectionIterator(page ResourceMetricCollectionPage) ResourceMetricCollectionIterator {
+	return original.NewResourceMetricCollectionIterator(page)
+}
+func NewResourceMetricCollectionPage(getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
+	return original.NewResourceMetricCollectionPage(getNextPage)
+}
+func NewServerFarmCollectionIterator(page ServerFarmCollectionPage) ServerFarmCollectionIterator {
+	return original.NewServerFarmCollectionIterator(page)
+}
+func NewServerFarmCollectionPage(getNextPage func(context.Context, ServerFarmCollection) (ServerFarmCollection, error)) ServerFarmCollectionPage {
+	return original.NewServerFarmCollectionPage(getNextPage)
+}
+func NewServerFarmsClient(subscriptionID string) ServerFarmsClient {
+	return original.NewServerFarmsClient(subscriptionID)
+}
+func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) ServerFarmsClient {
+	return original.NewServerFarmsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSiteCollectionIterator(page SiteCollectionPage) SiteCollectionIterator {
+	return original.NewSiteCollectionIterator(page)
+}
+func NewSiteCollectionPage(getNextPage func(context.Context, SiteCollection) (SiteCollection, error)) SiteCollectionPage {
+	return original.NewSiteCollectionPage(getNextPage)
+}
+func NewSiteInstanceCollectionIterator(page SiteInstanceCollectionPage) SiteInstanceCollectionIterator {
+	return original.NewSiteInstanceCollectionIterator(page)
+}
+func NewSiteInstanceCollectionPage(getNextPage func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error)) SiteInstanceCollectionPage {
+	return original.NewSiteInstanceCollectionPage(getNextPage)
+}
+func NewSitesClient(subscriptionID string) SitesClient {
+	return original.NewSitesClient(subscriptionID)
+}
+func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClient {
+	return original.NewSitesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkuInfoCollectionIterator(page SkuInfoCollectionPage) SkuInfoCollectionIterator {
+	return original.NewSkuInfoCollectionIterator(page)
+}
+func NewSkuInfoCollectionPage(getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
+	return original.NewSkuInfoCollectionPage(getNextPage)
+}
+func NewSlotDifferenceCollectionIterator(page SlotDifferenceCollectionPage) SlotDifferenceCollectionIterator {
+	return original.NewSlotDifferenceCollectionIterator(page)
+}
+func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
+	return original.NewSlotDifferenceCollectionPage(getNextPage)
+}
+func NewSourceControlCollectionIterator(page SourceControlCollectionPage) SourceControlCollectionIterator {
+	return original.NewSourceControlCollectionIterator(page)
+}
+func NewSourceControlCollectionPage(getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
+	return original.NewSourceControlCollectionPage(getNextPage)
+}
+func NewStampCapacityCollectionIterator(page StampCapacityCollectionPage) StampCapacityCollectionIterator {
+	return original.NewStampCapacityCollectionIterator(page)
+}
+func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
+	return original.NewStampCapacityCollectionPage(getNextPage)
+}
+func NewTldLegalAgreementCollectionIterator(page TldLegalAgreementCollectionPage) TldLegalAgreementCollectionIterator {
+	return original.NewTldLegalAgreementCollectionIterator(page)
+}
+func NewTldLegalAgreementCollectionPage(getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
+	return original.NewTldLegalAgreementCollectionPage(getNextPage)
+}
+func NewTopLevelDomainCollectionIterator(page TopLevelDomainCollectionPage) TopLevelDomainCollectionIterator {
+	return original.NewTopLevelDomainCollectionIterator(page)
+}
+func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
+	return original.NewTopLevelDomainCollectionPage(getNextPage)
+}
+func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
+	return original.NewTopLevelDomainsClient(subscriptionID)
+}
+func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) TopLevelDomainsClient {
+	return original.NewTopLevelDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageClient(subscriptionID string) UsageClient {
+	return original.NewUsageClient(subscriptionID)
+}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageCollectionIterator(page UsageCollectionPage) UsageCollectionIterator {
+	return original.NewUsageCollectionIterator(page)
+}
+func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
+	return original.NewUsageCollectionPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkerPoolCollectionIterator(page WorkerPoolCollectionPage) WorkerPoolCollectionIterator {
+	return original.NewWorkerPoolCollectionIterator(page)
+}
+func NewWorkerPoolCollectionPage(getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
+	return original.NewWorkerPoolCollectionPage(getNextPage)
 }
 func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
 	return original.PossibleAccessControlEntryActionValues()
@@ -834,11 +1043,11 @@ func PossibleDomainTypeValues() []DomainType {
 func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return original.PossibleFrequencyUnitValues()
 }
-func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
-	return original.PossibleHostingEnvironmentStatusValues()
-}
 func PossibleHostNameTypeValues() []HostNameType {
 	return original.PossibleHostNameTypeValues()
+}
+func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
+	return original.PossibleHostingEnvironmentStatusValues()
 }
 func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
 	return original.PossibleInternalLoadBalancingModeValues()
@@ -887,216 +1096,6 @@ func PossibleUsageStateValues() []UsageState {
 }
 func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
 	return original.PossibleWorkerSizeOptionsValues()
-}
-func NewApisCollectionIterator(page ApisCollectionPage) ApisCollectionIterator {
-	return original.NewApisCollectionIterator(page)
-}
-func NewApisCollectionPage(getNextPage func(context.Context, ApisCollection) (ApisCollection, error)) ApisCollectionPage {
-	return original.NewApisCollectionPage(getNextPage)
-}
-func NewBackupItemCollectionIterator(page BackupItemCollectionPage) BackupItemCollectionIterator {
-	return original.NewBackupItemCollectionIterator(page)
-}
-func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
-	return original.NewBackupItemCollectionPage(getNextPage)
-}
-func NewCertificateCollectionIterator(page CertificateCollectionPage) CertificateCollectionIterator {
-	return original.NewCertificateCollectionIterator(page)
-}
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return original.NewCertificateCollectionPage(getNextPage)
-}
-func NewCertificateOrderCertificateCollectionIterator(page CertificateOrderCertificateCollectionPage) CertificateOrderCertificateCollectionIterator {
-	return original.NewCertificateOrderCertificateCollectionIterator(page)
-}
-func NewCertificateOrderCertificateCollectionPage(getNextPage func(context.Context, CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error)) CertificateOrderCertificateCollectionPage {
-	return original.NewCertificateOrderCertificateCollectionPage(getNextPage)
-}
-func NewCertificateOrderCollectionIterator(page CertificateOrderCollectionPage) CertificateOrderCollectionIterator {
-	return original.NewCertificateOrderCollectionIterator(page)
-}
-func NewCertificateOrderCollectionPage(getNextPage func(context.Context, CertificateOrderCollection) (CertificateOrderCollection, error)) CertificateOrderCollectionPage {
-	return original.NewCertificateOrderCollectionPage(getNextPage)
-}
-func NewClassicMobileServiceCollectionIterator(page ClassicMobileServiceCollectionPage) ClassicMobileServiceCollectionIterator {
-	return original.NewClassicMobileServiceCollectionIterator(page)
-}
-func NewClassicMobileServiceCollectionPage(getNextPage func(context.Context, ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error)) ClassicMobileServiceCollectionPage {
-	return original.NewClassicMobileServiceCollectionPage(getNextPage)
-}
-func NewConnectionCollectionIterator(page ConnectionCollectionPage) ConnectionCollectionIterator {
-	return original.NewConnectionCollectionIterator(page)
-}
-func NewConnectionCollectionPage(getNextPage func(context.Context, ConnectionCollection) (ConnectionCollection, error)) ConnectionCollectionPage {
-	return original.NewConnectionCollectionPage(getNextPage)
-}
-func NewCsmUsageQuotaCollectionIterator(page CsmUsageQuotaCollectionPage) CsmUsageQuotaCollectionIterator {
-	return original.NewCsmUsageQuotaCollectionIterator(page)
-}
-func NewCsmUsageQuotaCollectionPage(getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
-	return original.NewCsmUsageQuotaCollectionPage(getNextPage)
-}
-func NewDeletedSiteCollectionIterator(page DeletedSiteCollectionPage) DeletedSiteCollectionIterator {
-	return original.NewDeletedSiteCollectionIterator(page)
-}
-func NewDeletedSiteCollectionPage(getNextPage func(context.Context, DeletedSiteCollection) (DeletedSiteCollection, error)) DeletedSiteCollectionPage {
-	return original.NewDeletedSiteCollectionPage(getNextPage)
-}
-func NewDeploymentCollectionIterator(page DeploymentCollectionPage) DeploymentCollectionIterator {
-	return original.NewDeploymentCollectionIterator(page)
-}
-func NewDeploymentCollectionPage(getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
-	return original.NewDeploymentCollectionPage(getNextPage)
-}
-func NewDomainCollectionIterator(page DomainCollectionPage) DomainCollectionIterator {
-	return original.NewDomainCollectionIterator(page)
-}
-func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
-	return original.NewDomainCollectionPage(getNextPage)
-}
-func NewGeoRegionCollectionIterator(page GeoRegionCollectionPage) GeoRegionCollectionIterator {
-	return original.NewGeoRegionCollectionIterator(page)
-}
-func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
-	return original.NewGeoRegionCollectionPage(getNextPage)
-}
-func NewHostingEnvironmentCollectionIterator(page HostingEnvironmentCollectionPage) HostingEnvironmentCollectionIterator {
-	return original.NewHostingEnvironmentCollectionIterator(page)
-}
-func NewHostingEnvironmentCollectionPage(getNextPage func(context.Context, HostingEnvironmentCollection) (HostingEnvironmentCollection, error)) HostingEnvironmentCollectionPage {
-	return original.NewHostingEnvironmentCollectionPage(getNextPage)
-}
-func NewHostNameBindingCollectionIterator(page HostNameBindingCollectionPage) HostNameBindingCollectionIterator {
-	return original.NewHostNameBindingCollectionIterator(page)
-}
-func NewHostNameBindingCollectionPage(getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
-	return original.NewHostNameBindingCollectionPage(getNextPage)
-}
-func NewManagedHostingEnvironmentCollectionIterator(page ManagedHostingEnvironmentCollectionPage) ManagedHostingEnvironmentCollectionIterator {
-	return original.NewManagedHostingEnvironmentCollectionIterator(page)
-}
-func NewManagedHostingEnvironmentCollectionPage(getNextPage func(context.Context, ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error)) ManagedHostingEnvironmentCollectionPage {
-	return original.NewManagedHostingEnvironmentCollectionPage(getNextPage)
-}
-func NewMetricDefinitionCollectionIterator(page MetricDefinitionCollectionPage) MetricDefinitionCollectionIterator {
-	return original.NewMetricDefinitionCollectionIterator(page)
-}
-func NewMetricDefinitionCollectionPage(getNextPage func(context.Context, MetricDefinitionCollection) (MetricDefinitionCollection, error)) MetricDefinitionCollectionPage {
-	return original.NewMetricDefinitionCollectionPage(getNextPage)
-}
-func NewNameIdentifierCollectionIterator(page NameIdentifierCollectionPage) NameIdentifierCollectionIterator {
-	return original.NewNameIdentifierCollectionIterator(page)
-}
-func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
-	return original.NewNameIdentifierCollectionPage(getNextPage)
-}
-func NewResourceMetricCollectionIterator(page ResourceMetricCollectionPage) ResourceMetricCollectionIterator {
-	return original.NewResourceMetricCollectionIterator(page)
-}
-func NewResourceMetricCollectionPage(getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
-	return original.NewResourceMetricCollectionPage(getNextPage)
-}
-func NewServerFarmCollectionIterator(page ServerFarmCollectionPage) ServerFarmCollectionIterator {
-	return original.NewServerFarmCollectionIterator(page)
-}
-func NewServerFarmCollectionPage(getNextPage func(context.Context, ServerFarmCollection) (ServerFarmCollection, error)) ServerFarmCollectionPage {
-	return original.NewServerFarmCollectionPage(getNextPage)
-}
-func NewSiteCollectionIterator(page SiteCollectionPage) SiteCollectionIterator {
-	return original.NewSiteCollectionIterator(page)
-}
-func NewSiteCollectionPage(getNextPage func(context.Context, SiteCollection) (SiteCollection, error)) SiteCollectionPage {
-	return original.NewSiteCollectionPage(getNextPage)
-}
-func NewSiteInstanceCollectionIterator(page SiteInstanceCollectionPage) SiteInstanceCollectionIterator {
-	return original.NewSiteInstanceCollectionIterator(page)
-}
-func NewSiteInstanceCollectionPage(getNextPage func(context.Context, SiteInstanceCollection) (SiteInstanceCollection, error)) SiteInstanceCollectionPage {
-	return original.NewSiteInstanceCollectionPage(getNextPage)
-}
-func NewSkuInfoCollectionIterator(page SkuInfoCollectionPage) SkuInfoCollectionIterator {
-	return original.NewSkuInfoCollectionIterator(page)
-}
-func NewSkuInfoCollectionPage(getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
-	return original.NewSkuInfoCollectionPage(getNextPage)
-}
-func NewSlotDifferenceCollectionIterator(page SlotDifferenceCollectionPage) SlotDifferenceCollectionIterator {
-	return original.NewSlotDifferenceCollectionIterator(page)
-}
-func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
-	return original.NewSlotDifferenceCollectionPage(getNextPage)
-}
-func NewSourceControlCollectionIterator(page SourceControlCollectionPage) SourceControlCollectionIterator {
-	return original.NewSourceControlCollectionIterator(page)
-}
-func NewSourceControlCollectionPage(getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
-	return original.NewSourceControlCollectionPage(getNextPage)
-}
-func NewStampCapacityCollectionIterator(page StampCapacityCollectionPage) StampCapacityCollectionIterator {
-	return original.NewStampCapacityCollectionIterator(page)
-}
-func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
-	return original.NewStampCapacityCollectionPage(getNextPage)
-}
-func NewTldLegalAgreementCollectionIterator(page TldLegalAgreementCollectionPage) TldLegalAgreementCollectionIterator {
-	return original.NewTldLegalAgreementCollectionIterator(page)
-}
-func NewTldLegalAgreementCollectionPage(getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
-	return original.NewTldLegalAgreementCollectionPage(getNextPage)
-}
-func NewTopLevelDomainCollectionIterator(page TopLevelDomainCollectionPage) TopLevelDomainCollectionIterator {
-	return original.NewTopLevelDomainCollectionIterator(page)
-}
-func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
-	return original.NewTopLevelDomainCollectionPage(getNextPage)
-}
-func NewUsageCollectionIterator(page UsageCollectionPage) UsageCollectionIterator {
-	return original.NewUsageCollectionIterator(page)
-}
-func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
-	return original.NewUsageCollectionPage(getNextPage)
-}
-func NewWorkerPoolCollectionIterator(page WorkerPoolCollectionPage) WorkerPoolCollectionIterator {
-	return original.NewWorkerPoolCollectionIterator(page)
-}
-func NewWorkerPoolCollectionPage(getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
-	return original.NewWorkerPoolCollectionPage(getNextPage)
-}
-func NewProviderClient(subscriptionID string) ProviderClient {
-	return original.NewProviderClient(subscriptionID)
-}
-func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
-	return original.NewProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClient(subscriptionID)
-}
-func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServerFarmsClient(subscriptionID string) ServerFarmsClient {
-	return original.NewServerFarmsClient(subscriptionID)
-}
-func NewServerFarmsClientWithBaseURI(baseURI string, subscriptionID string) ServerFarmsClient {
-	return original.NewServerFarmsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSitesClient(subscriptionID string) SitesClient {
-	return original.NewSitesClient(subscriptionID)
-}
-func NewSitesClientWithBaseURI(baseURI string, subscriptionID string) SitesClient {
-	return original.NewSitesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
-	return original.NewTopLevelDomainsClient(subscriptionID)
-}
-func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) TopLevelDomainsClient {
-	return original.NewTopLevelDomainsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageClient(subscriptionID string) UsageClient {
-	return original.NewUsageClient(subscriptionID)
-}
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

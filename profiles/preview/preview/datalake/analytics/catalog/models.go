@@ -25,13 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
 )
 
-type Client = original.Client
-
 const (
 	DefaultAdlaCatalogDNSSuffix = original.DefaultAdlaCatalogDNSSuffix
 )
 
-type BaseClient = original.BaseClient
 type FileType = original.FileType
 
 const (
@@ -39,6 +36,8 @@ const (
 	Resource FileType = original.Resource
 )
 
+type BaseClient = original.BaseClient
+type Client = original.Client
 type DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters = original.DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters
 type DdlName = original.DdlName
 type EntityID = original.EntityID
@@ -107,17 +106,11 @@ type USQLViewList = original.USQLViewList
 type USQLViewListIterator = original.USQLViewListIterator
 type USQLViewListPage = original.USQLViewListPage
 
-func NewClient() Client {
-	return original.NewClient()
-}
 func New() BaseClient {
 	return original.New()
 }
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
-func PossibleFileTypeValues() []FileType {
-	return original.PossibleFileTypeValues()
+func NewClient() Client {
+	return original.NewClient()
 }
 func NewUSQLAssemblyListIterator(page USQLAssemblyListPage) USQLAssemblyListIterator {
 	return original.NewUSQLAssemblyListIterator(page)
@@ -196,6 +189,12 @@ func NewUSQLViewListIterator(page USQLViewListPage) USQLViewListIterator {
 }
 func NewUSQLViewListPage(getNextPage func(context.Context, USQLViewList) (USQLViewList, error)) USQLViewListPage {
 	return original.NewUSQLViewListPage(getNextPage)
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
+}
+func PossibleFileTypeValues() []FileType {
+	return original.PossibleFileTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

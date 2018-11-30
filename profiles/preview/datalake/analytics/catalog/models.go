@@ -25,13 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01-preview/catalog"
 )
 
-type Client = original.Client
-
 const (
 	DefaultAdlaCatalogDNSSuffix = original.DefaultAdlaCatalogDNSSuffix
 )
 
-type BaseClient = original.BaseClient
 type ACLType = original.ACLType
 
 const (
@@ -68,6 +65,8 @@ type ACLDeleteParameters = original.ACLDeleteParameters
 type ACLList = original.ACLList
 type ACLListIterator = original.ACLListIterator
 type ACLListPage = original.ACLListPage
+type BaseClient = original.BaseClient
+type Client = original.Client
 type DataLakeAnalyticsCatalogCredentialCreateParameters = original.DataLakeAnalyticsCatalogCredentialCreateParameters
 type DataLakeAnalyticsCatalogCredentialDeleteParameters = original.DataLakeAnalyticsCatalogCredentialDeleteParameters
 type DataLakeAnalyticsCatalogCredentialUpdateParameters = original.DataLakeAnalyticsCatalogCredentialUpdateParameters
@@ -148,29 +147,17 @@ type USQLViewList = original.USQLViewList
 type USQLViewListIterator = original.USQLViewListIterator
 type USQLViewListPage = original.USQLViewListPage
 
-func NewClient() Client {
-	return original.NewClient()
-}
 func New() BaseClient {
 	return original.New()
-}
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
-func PossibleACLTypeValues() []ACLType {
-	return original.PossibleACLTypeValues()
-}
-func PossibleFileTypeValues() []FileType {
-	return original.PossibleFileTypeValues()
-}
-func PossiblePermissionTypeValues() []PermissionType {
-	return original.PossiblePermissionTypeValues()
 }
 func NewACLListIterator(page ACLListPage) ACLListIterator {
 	return original.NewACLListIterator(page)
 }
 func NewACLListPage(getNextPage func(context.Context, ACLList) (ACLList, error)) ACLListPage {
 	return original.NewACLListPage(getNextPage)
+}
+func NewClient() Client {
+	return original.NewClient()
 }
 func NewUSQLAssemblyListIterator(page USQLAssemblyListPage) USQLAssemblyListIterator {
 	return original.NewUSQLAssemblyListIterator(page)
@@ -261,6 +248,18 @@ func NewUSQLViewListIterator(page USQLViewListPage) USQLViewListIterator {
 }
 func NewUSQLViewListPage(getNextPage func(context.Context, USQLViewList) (USQLViewList, error)) USQLViewListPage {
 	return original.NewUSQLViewListPage(getNextPage)
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
+}
+func PossibleACLTypeValues() []ACLType {
+	return original.PossibleACLTypeValues()
+}
+func PossibleFileTypeValues() []FileType {
+	return original.PossibleFileTypeValues()
+}
+func PossiblePermissionTypeValues() []PermissionType {
+	return original.PossiblePermissionTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

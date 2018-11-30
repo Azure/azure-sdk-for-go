@@ -29,9 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
-type ConfigurationClient = original.ConfigurationClient
 type IPAction = original.IPAction
 
 const (
@@ -53,6 +50,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type BaseClient = original.BaseClient
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
@@ -60,7 +58,9 @@ type ClusterListResultPage = original.ClusterListResultPage
 type ClusterProperties = original.ClusterProperties
 type ClusterQuotaConfigurationProperties = original.ClusterQuotaConfigurationProperties
 type ClusterSku = original.ClusterSku
+type ClustersClient = original.ClustersClient
 type ClustersPatchFuture = original.ClustersPatchFuture
+type ConfigurationClient = original.ConfigurationClient
 type EHNamespace = original.EHNamespace
 type EHNamespaceListResult = original.EHNamespaceListResult
 type EHNamespaceListResultIterator = original.EHNamespaceListResultIterator
@@ -72,6 +72,7 @@ type IPFilterRuleListResult = original.IPFilterRuleListResult
 type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
 type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
 type IPFilterRuleProperties = original.IPFilterRuleProperties
+type NamespacesClient = original.NamespacesClient
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
@@ -79,6 +80,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
@@ -87,14 +89,15 @@ type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
 type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResultIterator
 type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPage
 type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -108,21 +111,6 @@ func NewConfigurationClient(subscriptionID string) ConfigurationClient {
 func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
 	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleIPActionValues() []IPAction {
-	return original.PossibleIPActionValues()
-}
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
-func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
-	return original.NewClusterListResultIterator(page)
-}
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
-}
 func NewEHNamespaceListResultIterator(page EHNamespaceListResultPage) EHNamespaceListResultIterator {
 	return original.NewEHNamespaceListResultIterator(page)
 }
@@ -135,11 +123,23 @@ func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilter
 func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
 	return original.NewIPFilterRuleListResultPage(getNextPage)
 }
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
@@ -147,17 +147,17 @@ func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPa
 func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
 	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+func PossibleIPActionValues() []IPAction {
+	return original.PossibleIPActionValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

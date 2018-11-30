@@ -21,18 +21,18 @@ package adhybridhealthserviceapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice/adhybridhealthserviceapi"
 
+type AdDomainServiceMembersClientAPI = original.AdDomainServiceMembersClientAPI
+type AddsServiceClientAPI = original.AddsServiceClientAPI
+type AddsServiceMembersClientAPI = original.AddsServiceMembersClientAPI
 type AddsServicesClientAPI = original.AddsServicesClientAPI
+type AddsServicesReplicationStatusClientAPI = original.AddsServicesReplicationStatusClientAPI
+type AddsServicesServiceMembersClientAPI = original.AddsServicesServiceMembersClientAPI
+type AddsServicesUserPreferenceClientAPI = original.AddsServicesUserPreferenceClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type ConfigurationClientAPI = original.ConfigurationClientAPI
 type DimensionsClientAPI = original.DimensionsClientAPI
-type AddsServiceMembersClientAPI = original.AddsServiceMembersClientAPI
-type AdDomainServiceMembersClientAPI = original.AdDomainServiceMembersClientAPI
-type AddsServicesUserPreferenceClientAPI = original.AddsServicesUserPreferenceClientAPI
-type AddsServiceClientAPI = original.AddsServiceClientAPI
-type AddsServicesReplicationStatusClientAPI = original.AddsServicesReplicationStatusClientAPI
-type AddsServicesServiceMembersClientAPI = original.AddsServicesServiceMembersClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ReportsClientAPI = original.ReportsClientAPI
-type ServicesClientAPI = original.ServicesClientAPI
 type ServiceClientAPI = original.ServiceClientAPI
 type ServiceMembersClientAPI = original.ServiceMembersClientAPI
+type ServicesClientAPI = original.ServicesClientAPI

@@ -29,9 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type EntitiesClient = original.EntitiesClient
-type Client = original.Client
 type InheritedPermissions = original.InheritedPermissions
 
 const (
@@ -103,9 +100,11 @@ const (
 	Type2Subscriptions                                Type2 = original.Type2Subscriptions
 )
 
+type BaseClient = original.BaseClient
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type ChildInfo = original.ChildInfo
+type Client = original.Client
 type CreateManagementGroupChildInfo = original.CreateManagementGroupChildInfo
 type CreateManagementGroupDetails = original.CreateManagementGroupDetails
 type CreateManagementGroupProperties = original.CreateManagementGroupProperties
@@ -114,6 +113,7 @@ type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateParentGroupInfo = original.CreateParentGroupInfo
 type DeleteFuture = original.DeleteFuture
 type Details = original.Details
+type EntitiesClient = original.EntitiesClient
 type EntityHierarchyItem = original.EntityHierarchyItem
 type EntityHierarchyItemProperties = original.EntityHierarchyItemProperties
 type EntityInfo = original.EntityInfo
@@ -137,25 +137,16 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResults = original.OperationResults
 type OperationResultsProperties = original.OperationResultsProperties
+type OperationsClient = original.OperationsClient
 type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
-type TenantBackfillStatusResult = original.TenantBackfillStatusResult
-type OperationsClient = original.OperationsClient
 type SubscriptionsClient = original.SubscriptionsClient
+type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 
 func New() BaseClient {
 	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func NewEntitiesClient() EntitiesClient {
-	return original.NewEntitiesClient()
-}
-func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI)
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -163,32 +154,11 @@ func NewClient() Client {
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
 }
-func PossibleInheritedPermissionsValues() []InheritedPermissions {
-	return original.PossibleInheritedPermissionsValues()
+func NewEntitiesClient() EntitiesClient {
+	return original.NewEntitiesClient()
 }
-func PossiblePermissionsValues() []Permissions {
-	return original.PossiblePermissionsValues()
-}
-func PossiblePermissions1Values() []Permissions1 {
-	return original.PossiblePermissions1Values()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleReasonValues() []Reason {
-	return original.PossibleReasonValues()
-}
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
-}
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
-func PossibleType1Values() []Type1 {
-	return original.PossibleType1Values()
-}
-func PossibleType2Values() []Type2 {
-	return original.PossibleType2Values()
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI)
 }
 func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
 	return original.NewEntityListResultIterator(page)
@@ -219,6 +189,36 @@ func NewSubscriptionsClient() SubscriptionsClient {
 }
 func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI)
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleInheritedPermissionsValues() []InheritedPermissions {
+	return original.PossibleInheritedPermissionsValues()
+}
+func PossiblePermissions1Values() []Permissions1 {
+	return original.PossiblePermissions1Values()
+}
+func PossiblePermissionsValues() []Permissions {
+	return original.PossiblePermissionsValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleType1Values() []Type1 {
+	return original.PossibleType1Values()
+}
+func PossibleType2Values() []Type2 {
+	return original.PossibleType2Values()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

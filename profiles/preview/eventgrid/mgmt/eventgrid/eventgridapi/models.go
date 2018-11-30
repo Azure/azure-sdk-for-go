@@ -23,5 +23,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-
 
 type EventSubscriptionsClientAPI = original.EventSubscriptionsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type TopicsClientAPI = original.TopicsClientAPI
 type TopicTypesClientAPI = original.TopicTypesClientAPI
+type TopicsClientAPI = original.TopicsClientAPI

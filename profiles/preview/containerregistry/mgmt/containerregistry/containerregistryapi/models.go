@@ -21,9 +21,9 @@ package containerregistryapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2018-09-01/containerregistry/containerregistryapi"
 
-type RegistriesClientAPI = original.RegistriesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RegistriesClientAPI = original.RegistriesClientAPI
 type ReplicationsClientAPI = original.ReplicationsClientAPI
-type WebhooksClientAPI = original.WebhooksClientAPI
 type RunsClientAPI = original.RunsClientAPI
 type TasksClientAPI = original.TasksClientAPI
+type WebhooksClientAPI = original.WebhooksClientAPI

@@ -21,6 +21,6 @@ package advisorapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor/advisorapi"
 
-type RecommendationsClientAPI = original.RecommendationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RecommendationsClientAPI = original.RecommendationsClientAPI
 type SuppressionsClientAPI = original.SuppressionsClientAPI

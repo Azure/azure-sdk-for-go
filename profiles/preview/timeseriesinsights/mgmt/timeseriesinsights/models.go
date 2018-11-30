@@ -25,15 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 )
 
-type AccessPoliciesClient = original.AccessPoliciesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type EnvironmentsClient = original.EnvironmentsClient
-type EventSourcesClient = original.EventSourcesClient
 type AccessPolicyRole = original.AccessPolicyRole
 
 const (
@@ -122,6 +117,7 @@ const (
 	PurgeOldData StorageLimitExceededBehavior = original.PurgeOldData
 )
 
+type AccessPoliciesClient = original.AccessPoliciesClient
 type AccessPolicyCreateOrUpdateParameters = original.AccessPolicyCreateOrUpdateParameters
 type AccessPolicyListResponse = original.AccessPolicyListResponse
 type AccessPolicyMutableProperties = original.AccessPolicyMutableProperties
@@ -129,6 +125,9 @@ type AccessPolicyResource = original.AccessPolicyResource
 type AccessPolicyResourceProperties = original.AccessPolicyResourceProperties
 type AccessPolicyUpdateParameters = original.AccessPolicyUpdateParameters
 type AzureEventSourceProperties = original.AzureEventSourceProperties
+type BaseClient = original.BaseClient
+type BasicEventSourceCreateOrUpdateParameters = original.BasicEventSourceCreateOrUpdateParameters
+type BasicEventSourceResource = original.BasicEventSourceResource
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CreateOrUpdateTrackedResourceProperties = original.CreateOrUpdateTrackedResourceProperties
@@ -138,11 +137,12 @@ type EnvironmentListResponse = original.EnvironmentListResponse
 type EnvironmentMutableProperties = original.EnvironmentMutableProperties
 type EnvironmentResource = original.EnvironmentResource
 type EnvironmentResourceProperties = original.EnvironmentResourceProperties
-type EnvironmentsCreateOrUpdateFuture = original.EnvironmentsCreateOrUpdateFuture
 type EnvironmentStateDetails = original.EnvironmentStateDetails
 type EnvironmentStatus = original.EnvironmentStatus
-type EnvironmentsUpdateFuture = original.EnvironmentsUpdateFuture
 type EnvironmentUpdateParameters = original.EnvironmentUpdateParameters
+type EnvironmentsClient = original.EnvironmentsClient
+type EnvironmentsCreateOrUpdateFuture = original.EnvironmentsCreateOrUpdateFuture
+type EnvironmentsUpdateFuture = original.EnvironmentsUpdateFuture
 type EventHubEventSourceCommonProperties = original.EventHubEventSourceCommonProperties
 type EventHubEventSourceCreateOrUpdateParameters = original.EventHubEventSourceCreateOrUpdateParameters
 type EventHubEventSourceCreationProperties = original.EventHubEventSourceCreationProperties
@@ -151,14 +151,13 @@ type EventHubEventSourceResource = original.EventHubEventSourceResource
 type EventHubEventSourceResourceProperties = original.EventHubEventSourceResourceProperties
 type EventHubEventSourceUpdateParameters = original.EventHubEventSourceUpdateParameters
 type EventSourceCommonProperties = original.EventSourceCommonProperties
-type BasicEventSourceCreateOrUpdateParameters = original.BasicEventSourceCreateOrUpdateParameters
 type EventSourceCreateOrUpdateParameters = original.EventSourceCreateOrUpdateParameters
 type EventSourceListResponse = original.EventSourceListResponse
 type EventSourceMutableProperties = original.EventSourceMutableProperties
-type BasicEventSourceResource = original.BasicEventSourceResource
 type EventSourceResource = original.EventSourceResource
 type EventSourceResourceModel = original.EventSourceResourceModel
 type EventSourceUpdateParameters = original.EventSourceUpdateParameters
+type EventSourcesClient = original.EventSourcesClient
 type IngressEnvironmentStatus = original.IngressEnvironmentStatus
 type IoTHubEventSourceCommonProperties = original.IoTHubEventSourceCommonProperties
 type IoTHubEventSourceCreateOrUpdateParameters = original.IoTHubEventSourceCreateOrUpdateParameters
@@ -174,6 +173,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type PartitionKeyProperty = original.PartitionKeyProperty
 type ReferenceDataSetCreateOrUpdateParameters = original.ReferenceDataSetCreateOrUpdateParameters
 type ReferenceDataSetCreationProperties = original.ReferenceDataSetCreationProperties
@@ -182,24 +182,20 @@ type ReferenceDataSetListResponse = original.ReferenceDataSetListResponse
 type ReferenceDataSetResource = original.ReferenceDataSetResource
 type ReferenceDataSetResourceProperties = original.ReferenceDataSetResourceProperties
 type ReferenceDataSetUpdateParameters = original.ReferenceDataSetUpdateParameters
+type ReferenceDataSetsClient = original.ReferenceDataSetsClient
 type Resource = original.Resource
 type ResourceProperties = original.ResourceProperties
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
-type ReferenceDataSetsClient = original.ReferenceDataSetsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewAccessPoliciesClient(subscriptionID string) AccessPoliciesClient {
 	return original.NewAccessPoliciesClient(subscriptionID)
 }
 func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AccessPoliciesClient {
 	return original.NewAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
 	return original.NewEnvironmentsClient(subscriptionID)
@@ -212,39 +208,6 @@ func NewEventSourcesClient(subscriptionID string) EventSourcesClient {
 }
 func NewEventSourcesClientWithBaseURI(baseURI string, subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
-	return original.PossibleAccessPolicyRoleValues()
-}
-func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
-	return original.PossibleDataStringComparisonBehaviorValues()
-}
-func PossibleIngressStateValues() []IngressState {
-	return original.PossibleIngressStateValues()
-}
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
-func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
-	return original.PossibleKindBasicEventSourceResourceValues()
-}
-func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
-	return original.PossibleLocalTimestampFormatValues()
-}
-func PossiblePropertyTypeValues() []PropertyType {
-	return original.PossiblePropertyTypeValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
-	return original.PossibleReferenceDataKeyPropertyTypeValues()
-}
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
-	return original.PossibleStorageLimitExceededBehaviorValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -263,6 +226,42 @@ func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
 }
 func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ReferenceDataSetsClient {
 	return original.NewReferenceDataSetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
+	return original.PossibleAccessPolicyRoleValues()
+}
+func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
+	return original.PossibleDataStringComparisonBehaviorValues()
+}
+func PossibleIngressStateValues() []IngressState {
+	return original.PossibleIngressStateValues()
+}
+func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
+	return original.PossibleKindBasicEventSourceResourceValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
+	return original.PossibleLocalTimestampFormatValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
+	return original.PossibleReferenceDataKeyPropertyTypeValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
+	return original.PossibleStorageLimitExceededBehaviorValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -29,8 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type FilesClient = original.FilesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -359,16 +357,6 @@ const (
 	ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput                                    ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputResultTypeTableLevelOutput
 )
 
-type ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput
-
-const (
-	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput                   ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput
-	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeErrorOutput                           ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeErrorOutput
-	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrateSchemaSQLServerSQLDbTaskOutput ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrateSchemaSQLServerSQLDbTaskOutput
-	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput                  ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput
-	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput                     ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput
-)
-
 type ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput = original.ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput
 
 const (
@@ -399,6 +387,22 @@ const (
 	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput                ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput
 	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput
 	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput            ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput
+)
+
+type ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput
+
+const (
+	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput                   ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeErrorOutput                           ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrateSchemaSQLServerSQLDbTaskOutput ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrateSchemaSQLServerSQLDbTaskOutput
+	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput                  ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeMigrationLevelOutput
+	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput                     ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput
+)
+
+type SQLSourcePlatform = original.SQLSourcePlatform
+
+const (
+	SQLOnPrem SQLSourcePlatform = original.SQLOnPrem
 )
 
 type SchemaMigrationOption = original.SchemaMigrationOption
@@ -462,12 +466,6 @@ const (
 	SeverityError   Severity = original.SeverityError
 	SeverityMessage Severity = original.SeverityMessage
 	SeverityWarning Severity = original.SeverityWarning
-)
-
-type SQLSourcePlatform = original.SQLSourcePlatform
-
-const (
-	SQLOnPrem SQLSourcePlatform = original.SQLOnPrem
 )
 
 type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
@@ -572,19 +570,26 @@ type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
-type BlobShare = original.BlobShare
+type BaseClient = original.BaseClient
 type BasicCommandProperties = original.BasicCommandProperties
+type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
+type BasicConnectionInfo = original.BasicConnectionInfo
+type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
+type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
+type BasicMigrateSQLServerSQLDbSyncTaskOutput = original.BasicMigrateSQLServerSQLDbSyncTaskOutput
+type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbTaskOutput
+type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
+type BasicMigrateSchemaSQLServerSQLDbTaskOutput = original.BasicMigrateSchemaSQLServerSQLDbTaskOutput
+type BasicProjectTaskProperties = original.BasicProjectTaskProperties
+type BlobShare = original.BlobShare
 type CommandProperties = original.CommandProperties
 type CommandPropertiesModel = original.CommandPropertiesModel
-type BasicConnectionInfo = original.BasicConnectionInfo
-type ConnectionInfo = original.ConnectionInfo
 type ConnectToMongoDbTaskProperties = original.ConnectToMongoDbTaskProperties
 type ConnectToSourceMySQLTaskInput = original.ConnectToSourceMySQLTaskInput
 type ConnectToSourceMySQLTaskProperties = original.ConnectToSourceMySQLTaskProperties
 type ConnectToSourceNonSQLTaskOutput = original.ConnectToSourceNonSQLTaskOutput
 type ConnectToSourceSQLServerSyncTaskProperties = original.ConnectToSourceSQLServerSyncTaskProperties
 type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
-type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
 type ConnectToSourceSQLServerTaskOutput = original.ConnectToSourceSQLServerTaskOutput
 type ConnectToSourceSQLServerTaskOutputAgentJobLevel = original.ConnectToSourceSQLServerTaskOutputAgentJobLevel
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel = original.ConnectToSourceSQLServerTaskOutputDatabaseLevel
@@ -602,6 +607,9 @@ type ConnectToTargetSQLMITaskOutput = original.ConnectToTargetSQLMITaskOutput
 type ConnectToTargetSQLMITaskProperties = original.ConnectToTargetSQLMITaskProperties
 type ConnectToTargetSQLSQLDbSyncTaskInput = original.ConnectToTargetSQLSQLDbSyncTaskInput
 type ConnectToTargetSQLSQLDbSyncTaskProperties = original.ConnectToTargetSQLSQLDbSyncTaskProperties
+type ConnectionInfo = original.ConnectionInfo
+type DataIntegrityValidationResult = original.DataIntegrityValidationResult
+type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Database = original.Database
 type DatabaseBackupInfo = original.DatabaseBackupInfo
 type DatabaseFileInfo = original.DatabaseFileInfo
@@ -610,8 +618,6 @@ type DatabaseInfo = original.DatabaseInfo
 type DatabaseObjectName = original.DatabaseObjectName
 type DatabaseSummaryResult = original.DatabaseSummaryResult
 type DatabaseTable = original.DatabaseTable
-type DataIntegrityValidationResult = original.DataIntegrityValidationResult
-type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Error = original.Error
 type ExecutionStatistics = original.ExecutionStatistics
 type FileList = original.FileList
@@ -619,6 +625,7 @@ type FileListIterator = original.FileListIterator
 type FileListPage = original.FileListPage
 type FileShare = original.FileShare
 type FileStorageInfo = original.FileStorageInfo
+type FilesClient = original.FilesClient
 type GetProjectDetailsNonSQLTaskInput = original.GetProjectDetailsNonSQLTaskInput
 type GetTdeCertificatesSQLTaskInput = original.GetTdeCertificatesSQLTaskInput
 type GetTdeCertificatesSQLTaskOutput = original.GetTdeCertificatesSQLTaskOutput
@@ -632,7 +639,6 @@ type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
 type MigrateMongoDbTaskProperties = original.MigrateMongoDbTaskProperties
 type MigrateMySQLAzureDbForMySQLSyncDatabaseInput = original.MigrateMySQLAzureDbForMySQLSyncDatabaseInput
 type MigrateMySQLAzureDbForMySQLSyncTaskInput = original.MigrateMySQLAzureDbForMySQLSyncTaskInput
-type BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput = original.BasicMigrateMySQLAzureDbForMySQLSyncTaskOutput
 type MigrateMySQLAzureDbForMySQLSyncTaskOutput = original.MigrateMySQLAzureDbForMySQLSyncTaskOutput
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseError
 type MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel = original.MigrateMySQLAzureDbForMySQLSyncTaskOutputDatabaseLevel
@@ -642,7 +648,6 @@ type MigrateMySQLAzureDbForMySQLSyncTaskOutputTableLevel = original.MigrateMySQL
 type MigrateMySQLAzureDbForMySQLSyncTaskProperties = original.MigrateMySQLAzureDbForMySQLSyncTaskProperties
 type MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput
-type BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.BasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseError
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputDatabaseLevel
@@ -650,19 +655,9 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputError = original.Migrate
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputMigrationLevel
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputTableLevel
 type MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties = original.MigratePostgreSQLAzureDbForPostgreSQLSyncTaskProperties
-type MigrateSchemaSQLServerSQLDbDatabaseInput = original.MigrateSchemaSQLServerSQLDbDatabaseInput
-type MigrateSchemaSQLServerSQLDbTaskInput = original.MigrateSchemaSQLServerSQLDbTaskInput
-type BasicMigrateSchemaSQLServerSQLDbTaskOutput = original.BasicMigrateSchemaSQLServerSQLDbTaskOutput
-type MigrateSchemaSQLServerSQLDbTaskOutput = original.MigrateSchemaSQLServerSQLDbTaskOutput
-type MigrateSchemaSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSchemaSQLServerSQLDbTaskOutputDatabaseLevel
-type MigrateSchemaSQLServerSQLDbTaskOutputError = original.MigrateSchemaSQLServerSQLDbTaskOutputError
-type MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel
-type MigrateSchemaSQLServerSQLDbTaskProperties = original.MigrateSchemaSQLServerSQLDbTaskProperties
-type MigrateSchemaSQLTaskOutputError = original.MigrateSchemaSQLTaskOutputError
 type MigrateSQLServerSQLDbDatabaseInput = original.MigrateSQLServerSQLDbDatabaseInput
 type MigrateSQLServerSQLDbSyncDatabaseInput = original.MigrateSQLServerSQLDbSyncDatabaseInput
 type MigrateSQLServerSQLDbSyncTaskInput = original.MigrateSQLServerSQLDbSyncTaskInput
-type BasicMigrateSQLServerSQLDbSyncTaskOutput = original.BasicMigrateSQLServerSQLDbSyncTaskOutput
 type MigrateSQLServerSQLDbSyncTaskOutput = original.MigrateSQLServerSQLDbSyncTaskOutput
 type MigrateSQLServerSQLDbSyncTaskOutputDatabaseError = original.MigrateSQLServerSQLDbSyncTaskOutputDatabaseError
 type MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbSyncTaskOutputDatabaseLevel
@@ -671,7 +666,6 @@ type MigrateSQLServerSQLDbSyncTaskOutputMigrationLevel = original.MigrateSQLServ
 type MigrateSQLServerSQLDbSyncTaskOutputTableLevel = original.MigrateSQLServerSQLDbSyncTaskOutputTableLevel
 type MigrateSQLServerSQLDbSyncTaskProperties = original.MigrateSQLServerSQLDbSyncTaskProperties
 type MigrateSQLServerSQLDbTaskInput = original.MigrateSQLServerSQLDbTaskInput
-type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutput = original.MigrateSQLServerSQLDbTaskOutput
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSQLServerSQLDbTaskOutputDatabaseLevel
 type MigrateSQLServerSQLDbTaskOutputError = original.MigrateSQLServerSQLDbTaskOutputError
@@ -680,7 +674,6 @@ type MigrateSQLServerSQLDbTaskOutputTableLevel = original.MigrateSQLServerSQLDbT
 type MigrateSQLServerSQLDbTaskProperties = original.MigrateSQLServerSQLDbTaskProperties
 type MigrateSQLServerSQLMIDatabaseInput = original.MigrateSQLServerSQLMIDatabaseInput
 type MigrateSQLServerSQLMITaskInput = original.MigrateSQLServerSQLMITaskInput
-type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
 type MigrateSQLServerSQLMITaskOutput = original.MigrateSQLServerSQLMITaskOutput
 type MigrateSQLServerSQLMITaskOutputAgentJobLevel = original.MigrateSQLServerSQLMITaskOutputAgentJobLevel
 type MigrateSQLServerSQLMITaskOutputDatabaseLevel = original.MigrateSQLServerSQLMITaskOutputDatabaseLevel
@@ -689,6 +682,14 @@ type MigrateSQLServerSQLMITaskOutputLoginLevel = original.MigrateSQLServerSQLMIT
 type MigrateSQLServerSQLMITaskOutputMigrationLevel = original.MigrateSQLServerSQLMITaskOutputMigrationLevel
 type MigrateSQLServerSQLMITaskProperties = original.MigrateSQLServerSQLMITaskProperties
 type MigrateSQLServerSQLServerDatabaseInput = original.MigrateSQLServerSQLServerDatabaseInput
+type MigrateSchemaSQLServerSQLDbDatabaseInput = original.MigrateSchemaSQLServerSQLDbDatabaseInput
+type MigrateSchemaSQLServerSQLDbTaskInput = original.MigrateSchemaSQLServerSQLDbTaskInput
+type MigrateSchemaSQLServerSQLDbTaskOutput = original.MigrateSchemaSQLServerSQLDbTaskOutput
+type MigrateSchemaSQLServerSQLDbTaskOutputDatabaseLevel = original.MigrateSchemaSQLServerSQLDbTaskOutputDatabaseLevel
+type MigrateSchemaSQLServerSQLDbTaskOutputError = original.MigrateSchemaSQLServerSQLDbTaskOutputError
+type MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel
+type MigrateSchemaSQLServerSQLDbTaskProperties = original.MigrateSchemaSQLServerSQLDbTaskProperties
+type MigrateSchemaSQLTaskOutputError = original.MigrateSchemaSQLTaskOutputError
 type MigrateSyncCompleteCommandInput = original.MigrateSyncCompleteCommandInput
 type MigrateSyncCompleteCommandOutput = original.MigrateSyncCompleteCommandOutput
 type MigrateSyncCompleteCommandProperties = original.MigrateSyncCompleteCommandProperties
@@ -729,6 +730,7 @@ type NonSQLDataMigrationTableResult = original.NonSQLDataMigrationTableResult
 type NonSQLMigrationTaskInput = original.NonSQLMigrationTaskInput
 type NonSQLMigrationTaskOutput = original.NonSQLMigrationTaskOutput
 type ODataError = original.ODataError
+type OperationsClient = original.OperationsClient
 type PostgreSQLConnectionInfo = original.PostgreSQLConnectionInfo
 type Project = original.Project
 type ProjectFile = original.ProjectFile
@@ -739,8 +741,8 @@ type ProjectListPage = original.ProjectListPage
 type ProjectMetadata = original.ProjectMetadata
 type ProjectProperties = original.ProjectProperties
 type ProjectTask = original.ProjectTask
-type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type ProjectTaskProperties = original.ProjectTaskProperties
+type ProjectsClient = original.ProjectsClient
 type QueryAnalysisValidationResult = original.QueryAnalysisValidationResult
 type QueryExecutionResult = original.QueryExecutionResult
 type Quota = original.Quota
@@ -755,9 +757,12 @@ type ResourceSkuCapabilities = original.ResourceSkuCapabilities
 type ResourceSkuCapacity = original.ResourceSkuCapacity
 type ResourceSkuCosts = original.ResourceSkuCosts
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type SQLConnectionInfo = original.SQLConnectionInfo
+type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type SchemaComparisonValidationResult = original.SchemaComparisonValidationResult
 type SchemaComparisonValidationResultType = original.SchemaComparisonValidationResultType
 type SchemaMigrationSetting = original.SchemaMigrationSetting
@@ -773,24 +778,25 @@ type ServiceOperationList = original.ServiceOperationList
 type ServiceOperationListIterator = original.ServiceOperationListIterator
 type ServiceOperationListPage = original.ServiceOperationListPage
 type ServiceProperties = original.ServiceProperties
-type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
-type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServiceSku = original.ServiceSku
 type ServiceSkuList = original.ServiceSkuList
 type ServiceSkuListIterator = original.ServiceSkuListIterator
 type ServiceSkuListPage = original.ServiceSkuListPage
+type ServiceStatusResponse = original.ServiceStatusResponse
+type ServicesClient = original.ServicesClient
+type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
+type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesStartFuture = original.ServicesStartFuture
 type ServicesStopFuture = original.ServicesStopFuture
-type ServiceStatusResponse = original.ServiceStatusResponse
 type ServicesUpdateFuture = original.ServicesUpdateFuture
-type SQLConnectionInfo = original.SQLConnectionInfo
-type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type SyncMigrationDatabaseErrorEvent = original.SyncMigrationDatabaseErrorEvent
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
+type TasksClient = original.TasksClient
 type TrackedResource = original.TrackedResource
+type UsagesClient = original.UsagesClient
 type ValidateMigrationInputSQLServerSQLDbSyncTaskProperties = original.ValidateMigrationInputSQLServerSQLDbSyncTaskProperties
 type ValidateMigrationInputSQLServerSQLMITaskInput = original.ValidateMigrationInputSQLServerSQLMITaskInput
 type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigrationInputSQLServerSQLMITaskOutput
@@ -800,24 +806,102 @@ type ValidateSyncMigrationInputSQLServerTaskInput = original.ValidateSyncMigrati
 type ValidateSyncMigrationInputSQLServerTaskOutput = original.ValidateSyncMigrationInputSQLServerTaskOutput
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
-type OperationsClient = original.OperationsClient
-type ProjectsClient = original.ProjectsClient
-type ResourceSkusClient = original.ResourceSkusClient
-type ServicesClient = original.ServicesClient
-type TasksClient = original.TasksClient
-type UsagesClient = original.UsagesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewFileListIterator(page FileListPage) FileListIterator {
+	return original.NewFileListIterator(page)
+}
+func NewFileListPage(getNextPage func(context.Context, FileList) (FileList, error)) FileListPage {
+	return original.NewFileListPage(getNextPage)
 }
 func NewFilesClient(subscriptionID string) FilesClient {
 	return original.NewFilesClient(subscriptionID)
 }
 func NewFilesClientWithBaseURI(baseURI string, subscriptionID string) FilesClient {
 	return original.NewFilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
+	return original.NewProjectListIterator(page)
+}
+func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return original.NewProjectListPage(getNextPage)
+}
+func NewProjectsClient(subscriptionID string) ProjectsClient {
+	return original.NewProjectsClient(subscriptionID)
+}
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
+	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
+	return original.NewQuotaListIterator(page)
+}
+func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return original.NewQuotaListPage(getNextPage)
+}
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return original.NewResourceSkusResultIterator(page)
+}
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(getNextPage)
+}
+func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
+	return original.NewServiceListIterator(page)
+}
+func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return original.NewServiceListPage(getNextPage)
+}
+func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
+	return original.NewServiceOperationListIterator(page)
+}
+func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return original.NewServiceOperationListPage(getNextPage)
+}
+func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
+	return original.NewServiceSkuListIterator(page)
+}
+func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return original.NewServiceSkuListPage(getNextPage)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTaskListIterator(page TaskListPage) TaskListIterator {
+	return original.NewTaskListIterator(page)
+}
+func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(getNextPage)
+}
+func NewTasksClient(subscriptionID string) TasksClient {
+	return original.NewTasksClient(subscriptionID)
+}
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
+	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
+}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
@@ -906,9 +990,6 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 func PossibleResultCodeValues() []ResultCode {
 	return original.PossibleResultCodeValues()
 }
-func PossibleResultTypeValues() []ResultType {
-	return original.PossibleResultTypeValues()
-}
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
 }
@@ -918,9 +999,6 @@ func PossibleResultTypeBasicMigrateMySQLAzureDbForMySQLSyncTaskOutputValues() []
 func PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues() []ResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutput {
 	return original.PossibleResultTypeBasicMigratePostgreSQLAzureDbForPostgreSQLSyncTaskOutputValues()
 }
-func PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput {
-	return original.PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues()
-}
 func PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutput {
 	return original.PossibleResultTypeBasicMigrateSQLServerSQLDbSyncTaskOutputValues()
 }
@@ -929,6 +1007,15 @@ func PossibleResultTypeBasicMigrateSQLServerSQLDbTaskOutputValues() []ResultType
 }
 func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMITaskOutput {
 	return original.PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues()
+}
+func PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues()
+}
+func PossibleResultTypeValues() []ResultType {
+	return original.PossibleResultTypeValues()
+}
+func PossibleSQLSourcePlatformValues() []SQLSourcePlatform {
+	return original.PossibleSQLSourcePlatformValues()
 }
 func PossibleSchemaMigrationOptionValues() []SchemaMigrationOption {
 	return original.PossibleSchemaMigrationOptionValues()
@@ -947,9 +1034,6 @@ func PossibleServiceScalabilityValues() []ServiceScalability {
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
-}
-func PossibleSQLSourcePlatformValues() []SQLSourcePlatform {
-	return original.PossibleSQLSourcePlatformValues()
 }
 func PossibleSyncDatabaseMigrationReportingStateValues() []SyncDatabaseMigrationReportingState {
 	return original.PossibleSyncDatabaseMigrationReportingStateValues()
@@ -971,90 +1055,6 @@ func PossibleUpdateActionTypeValues() []UpdateActionType {
 }
 func PossibleValidationStatusValues() []ValidationStatus {
 	return original.PossibleValidationStatusValues()
-}
-func NewFileListIterator(page FileListPage) FileListIterator {
-	return original.NewFileListIterator(page)
-}
-func NewFileListPage(getNextPage func(context.Context, FileList) (FileList, error)) FileListPage {
-	return original.NewFileListPage(getNextPage)
-}
-func NewProjectListIterator(page ProjectListPage) ProjectListIterator {
-	return original.NewProjectListIterator(page)
-}
-func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
-	return original.NewProjectListPage(getNextPage)
-}
-func NewQuotaListIterator(page QuotaListPage) QuotaListIterator {
-	return original.NewQuotaListIterator(page)
-}
-func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
-	return original.NewQuotaListPage(getNextPage)
-}
-func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
-	return original.NewResourceSkusResultIterator(page)
-}
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
-}
-func NewServiceListIterator(page ServiceListPage) ServiceListIterator {
-	return original.NewServiceListIterator(page)
-}
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return original.NewServiceListPage(getNextPage)
-}
-func NewServiceOperationListIterator(page ServiceOperationListPage) ServiceOperationListIterator {
-	return original.NewServiceOperationListIterator(page)
-}
-func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return original.NewServiceOperationListPage(getNextPage)
-}
-func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
-	return original.NewServiceSkuListIterator(page)
-}
-func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
-	return original.NewServiceSkuListPage(getNextPage)
-}
-func NewTaskListIterator(page TaskListPage) TaskListIterator {
-	return original.NewTaskListIterator(page)
-}
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return original.NewTaskListPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProjectsClient(subscriptionID string) ProjectsClient {
-	return original.NewProjectsClient(subscriptionID)
-}
-func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
-	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTasksClient(subscriptionID string) TasksClient {
-	return original.NewTasksClient(subscriptionID)
-}
-func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
-	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
-}
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

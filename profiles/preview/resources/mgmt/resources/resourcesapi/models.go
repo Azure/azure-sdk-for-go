@@ -21,10 +21,10 @@ package resourcesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources/resourcesapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type DeploymentsClientAPI = original.DeploymentsClientAPI
-type ProvidersClientAPI = original.ProvidersClientAPI
 type ClientAPI = original.ClientAPI
-type GroupsClientAPI = original.GroupsClientAPI
-type TagsClientAPI = original.TagsClientAPI
 type DeploymentOperationsClientAPI = original.DeploymentOperationsClientAPI
+type DeploymentsClientAPI = original.DeploymentsClientAPI
+type GroupsClientAPI = original.GroupsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type ProvidersClientAPI = original.ProvidersClientAPI
+type TagsClientAPI = original.TagsClientAPI

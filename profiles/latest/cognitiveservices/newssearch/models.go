@@ -25,7 +25,6 @@ const (
 	DefaultEndpoint = original.DefaultEndpoint
 )
 
-type BaseClient = original.BaseClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -98,38 +97,42 @@ const (
 	TypeVideoObject         Type = original.TypeVideoObject
 )
 
-type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
-type BasicArticle = original.BasicArticle
 type Article = original.Article
+type BaseClient = original.BaseClient
+type BasicAnswer = original.BasicAnswer
+type BasicArticle = original.BasicArticle
 type BasicCreativeWork = original.BasicCreativeWork
+type BasicIdentifiable = original.BasicIdentifiable
+type BasicMediaObject = original.BasicMediaObject
+type BasicResponse = original.BasicResponse
+type BasicResponseBase = original.BasicResponseBase
+type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
+type BasicThing = original.BasicThing
 type CreativeWork = original.CreativeWork
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
-type BasicIdentifiable = original.BasicIdentifiable
 type Identifiable = original.Identifiable
 type ImageObject = original.ImageObject
-type BasicMediaObject = original.BasicMediaObject
 type MediaObject = original.MediaObject
 type News = original.News
 type NewsArticle = original.NewsArticle
+type NewsClient = original.NewsClient
 type NewsTopic = original.NewsTopic
 type Organization = original.Organization
 type Query = original.Query
-type BasicResponse = original.BasicResponse
 type Response = original.Response
-type BasicResponseBase = original.BasicResponseBase
 type ResponseBase = original.ResponseBase
-type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
 type SearchResultsAnswer = original.SearchResultsAnswer
-type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TrendingTopics = original.TrendingTopics
 type VideoObject = original.VideoObject
-type NewsClient = original.NewsClient
 
 func New() BaseClient {
 	return original.New()
+}
+func NewNewsClient() NewsClient {
+	return original.NewNewsClient()
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
@@ -151,9 +154,6 @@ func PossibleTextFormatValues() []TextFormat {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
-}
-func NewNewsClient() NewsClient {
-	return original.NewNewsClient()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

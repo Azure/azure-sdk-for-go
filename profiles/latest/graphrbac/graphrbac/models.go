@@ -25,16 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 )
 
-type ApplicationsClient = original.ApplicationsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type DeletedApplicationsClient = original.DeletedApplicationsClient
-type DomainsClient = original.DomainsClient
-type GroupsClient = original.GroupsClient
 type ObjectType = original.ObjectType
 
 const (
@@ -52,24 +46,28 @@ const (
 	Member UserType = original.Member
 )
 
-type AddOwnerParameters = original.AddOwnerParameters
 type ADGroup = original.ADGroup
+type AddOwnerParameters = original.AddOwnerParameters
+type AppRole = original.AppRole
 type Application = original.Application
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
-type AppRole = original.AppRole
+type ApplicationsClient = original.ApplicationsClient
+type BaseClient = original.BaseClient
+type BasicDirectoryObject = original.BasicDirectoryObject
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
-type BasicDirectoryObject = original.BasicDirectoryObject
+type DeletedApplicationsClient = original.DeletedApplicationsClient
 type DirectoryObject = original.DirectoryObject
 type DirectoryObjectListResult = original.DirectoryObjectListResult
 type DirectoryObjectListResultIterator = original.DirectoryObjectListResultIterator
 type DirectoryObjectListResultPage = original.DirectoryObjectListResultPage
 type Domain = original.Domain
 type DomainListResult = original.DomainListResult
+type DomainsClient = original.DomainsClient
 type ErrorMessage = original.ErrorMessage
 type GetObjectsParameters = original.GetObjectsParameters
 type GraphError = original.GraphError
@@ -80,9 +78,12 @@ type GroupGetMemberGroupsResult = original.GroupGetMemberGroupsResult
 type GroupListResult = original.GroupListResult
 type GroupListResultIterator = original.GroupListResultIterator
 type GroupListResultPage = original.GroupListResultPage
+type GroupsClient = original.GroupsClient
 type KeyCredential = original.KeyCredential
 type KeyCredentialListResult = original.KeyCredentialListResult
 type KeyCredentialsUpdateParameters = original.KeyCredentialsUpdateParameters
+type OAuth2Client = original.OAuth2Client
+type ObjectsClient = original.ObjectsClient
 type OdataError = original.OdataError
 type PasswordCredential = original.PasswordCredential
 type PasswordCredentialListResult = original.PasswordCredentialListResult
@@ -97,7 +98,9 @@ type ServicePrincipalListResult = original.ServicePrincipalListResult
 type ServicePrincipalListResultIterator = original.ServicePrincipalListResultIterator
 type ServicePrincipalListResultPage = original.ServicePrincipalListResultPage
 type ServicePrincipalUpdateParameters = original.ServicePrincipalUpdateParameters
+type ServicePrincipalsClient = original.ServicePrincipalsClient
 type SignInName = original.SignInName
+type SignedInUserClient = original.SignedInUserClient
 type User = original.User
 type UserBase = original.UserBase
 type UserCreateParameters = original.UserCreateParameters
@@ -107,47 +110,10 @@ type UserListResult = original.UserListResult
 type UserListResultIterator = original.UserListResultIterator
 type UserListResultPage = original.UserListResultPage
 type UserUpdateParameters = original.UserUpdateParameters
-type OAuth2Client = original.OAuth2Client
-type ObjectsClient = original.ObjectsClient
-type ServicePrincipalsClient = original.ServicePrincipalsClient
-type SignedInUserClient = original.SignedInUserClient
 type UsersClient = original.UsersClient
 
-func NewApplicationsClient(tenantID string) ApplicationsClient {
-	return original.NewApplicationsClient(tenantID)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
-}
 func New(tenantID string) BaseClient {
 	return original.New(tenantID)
-}
-func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, tenantID)
-}
-func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
-	return original.NewDeletedApplicationsClient(tenantID)
-}
-func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
-	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID)
-}
-func NewDomainsClient(tenantID string) DomainsClient {
-	return original.NewDomainsClient(tenantID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
-}
-func NewGroupsClient(tenantID string) GroupsClient {
-	return original.NewGroupsClient(tenantID)
-}
-func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
-}
-func PossibleObjectTypeValues() []ObjectType {
-	return original.PossibleObjectTypeValues()
-}
-func PossibleUserTypeValues() []UserType {
-	return original.PossibleUserTypeValues()
 }
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)
@@ -155,11 +121,29 @@ func NewApplicationListResultIterator(page ApplicationListResultPage) Applicatio
 func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
 	return original.NewApplicationListResultPage(getNextPage)
 }
+func NewApplicationsClient(tenantID string) ApplicationsClient {
+	return original.NewApplicationsClient(tenantID)
+}
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
+}
+func NewDeletedApplicationsClient(tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClient(tenantID)
+}
+func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) DeletedApplicationsClient {
+	return original.NewDeletedApplicationsClientWithBaseURI(baseURI, tenantID)
+}
 func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
 	return original.NewDirectoryObjectListResultIterator(page)
 }
 func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
 	return original.NewDirectoryObjectListResultPage(getNextPage)
+}
+func NewDomainsClient(tenantID string) DomainsClient {
+	return original.NewDomainsClient(tenantID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
 }
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
@@ -167,17 +151,11 @@ func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterato
 func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
 	return original.NewGroupListResultPage(getNextPage)
 }
-func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
-	return original.NewServicePrincipalListResultIterator(page)
+func NewGroupsClient(tenantID string) GroupsClient {
+	return original.NewGroupsClient(tenantID)
 }
-func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
-	return original.NewServicePrincipalListResultPage(getNextPage)
-}
-func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
-	return original.NewUserListResultIterator(page)
-}
-func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
-	return original.NewUserListResultPage(getNextPage)
+func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
 }
 func NewOAuth2Client(tenantID string) OAuth2Client {
 	return original.NewOAuth2Client(tenantID)
@@ -191,6 +169,12 @@ func NewObjectsClient(tenantID string) ObjectsClient {
 func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
 	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
 }
+func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
+	return original.NewServicePrincipalListResultIterator(page)
+}
+func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return original.NewServicePrincipalListResultPage(getNextPage)
+}
 func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClient(tenantID)
 }
@@ -203,11 +187,26 @@ func NewSignedInUserClient(tenantID string) SignedInUserClient {
 func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInUserClient {
 	return original.NewSignedInUserClientWithBaseURI(baseURI, tenantID)
 }
+func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
+	return original.NewUserListResultIterator(page)
+}
+func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
+	return original.NewUserListResultPage(getNextPage)
+}
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)
 }
 func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
+}
+func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func PossibleObjectTypeValues() []ObjectType {
+	return original.PossibleObjectTypeValues()
+}
+func PossibleUserTypeValues() []UserType {
+	return original.PossibleUserTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

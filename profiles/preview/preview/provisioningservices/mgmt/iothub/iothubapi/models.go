@@ -21,7 +21,7 @@ package iothubapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub/iothubapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type DpsCertificateClientAPI = original.DpsCertificateClientAPI
-type IotDpsResourceClientAPI = original.IotDpsResourceClientAPI
 type DpsCertificatesClientAPI = original.DpsCertificatesClientAPI
+type IotDpsResourceClientAPI = original.IotDpsResourceClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

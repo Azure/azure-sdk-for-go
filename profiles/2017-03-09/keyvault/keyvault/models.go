@@ -25,7 +25,6 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault"
 )
 
-type BaseClient = original.BaseClient
 type ActionType = original.ActionType
 
 const (
@@ -115,6 +114,7 @@ type AdministratorDetails = original.AdministratorDetails
 type Attributes = original.Attributes
 type BackupKeyResult = original.BackupKeyResult
 type BackupSecretResult = original.BackupSecretResult
+type BaseClient = original.BaseClient
 type CertificateAttributes = original.CertificateAttributes
 type CertificateBundle = original.CertificateBundle
 type CertificateCreateParameters = original.CertificateCreateParameters
@@ -211,33 +211,6 @@ type X509CertificateProperties = original.X509CertificateProperties
 func New() BaseClient {
 	return original.New()
 }
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
-func PossibleActionTypeValues() []ActionType {
-	return original.PossibleActionTypeValues()
-}
-func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
-	return original.PossibleDeletionRecoveryLevelValues()
-}
-func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
-	return original.PossibleJSONWebKeyCurveNameValues()
-}
-func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
-	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()
-}
-func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
-	return original.PossibleJSONWebKeyOperationValues()
-}
-func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
-	return original.PossibleJSONWebKeySignatureAlgorithmValues()
-}
-func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
-	return original.PossibleJSONWebKeyTypeValues()
-}
-func PossibleKeyUsageTypeValues() []KeyUsageType {
-	return original.PossibleKeyUsageTypeValues()
-}
 func NewCertificateIssuerListResultIterator(page CertificateIssuerListResultPage) CertificateIssuerListResultIterator {
 	return original.NewCertificateIssuerListResultIterator(page)
 }
@@ -291,6 +264,33 @@ func NewStorageListResultIterator(page StorageListResultPage) StorageListResultI
 }
 func NewStorageListResultPage(getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
 	return original.NewStorageListResultPage(getNextPage)
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return original.PossibleDeletionRecoveryLevelValues()
+}
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+	return original.PossibleJSONWebKeyCurveNameValues()
+}
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()
+}
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return original.PossibleJSONWebKeyOperationValues()
+}
+func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
+	return original.PossibleJSONWebKeySignatureAlgorithmValues()
+}
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return original.PossibleJSONWebKeyTypeValues()
+}
+func PossibleKeyUsageTypeValues() []KeyUsageType {
+	return original.PossibleKeyUsageTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"

@@ -21,6 +21,6 @@ package databoxapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox/databoxapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type JobsClientAPI = original.JobsClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type ServiceClientAPI = original.ServiceClientAPI

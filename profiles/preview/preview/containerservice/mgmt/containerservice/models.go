@@ -29,9 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ContainerServicesClient = original.ContainerServicesClient
-type ManagedClustersClient = original.ManagedClustersClient
 type Kind = original.Kind
 
 const (
@@ -50,6 +47,13 @@ type NetworkPolicy = original.NetworkPolicy
 
 const (
 	Calico NetworkPolicy = original.Calico
+)
+
+type OSType = original.OSType
+
+const (
+	Linux   OSType = original.Linux
+	Windows OSType = original.Windows
 )
 
 type OpenShiftAgentPoolProfileRole = original.OpenShiftAgentPoolProfileRole
@@ -74,13 +78,6 @@ const (
 	DockerCE   OrchestratorTypes = original.DockerCE
 	Kubernetes OrchestratorTypes = original.Kubernetes
 	Swarm      OrchestratorTypes = original.Swarm
-)
-
-type OSType = original.OSType
-
-const (
-	Linux   OSType = original.Linux
-	Windows OSType = original.Windows
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -271,9 +268,12 @@ const (
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
+type BaseClient = original.BaseClient
+type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ContainerService = original.ContainerService
+type ContainerServicesClient = original.ContainerServicesClient
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
 type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType
 type CredentialResult = original.CredentialResult
@@ -295,12 +295,13 @@ type ManagedClusterListResultIterator = original.ManagedClusterListResultIterato
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterProperties = original.ManagedClusterProperties
-type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
-type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
-type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
+type ManagedClustersClient = original.ManagedClustersClient
+type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdateFuture
+type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
+type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
 type NetworkProfileType = original.NetworkProfileType
@@ -308,11 +309,11 @@ type OpenShiftManagedCluster = original.OpenShiftManagedCluster
 type OpenShiftManagedClusterAADIdentityProvider = original.OpenShiftManagedClusterAADIdentityProvider
 type OpenShiftManagedClusterAgentPoolProfile = original.OpenShiftManagedClusterAgentPoolProfile
 type OpenShiftManagedClusterAuthProfile = original.OpenShiftManagedClusterAuthProfile
-type BasicOpenShiftManagedClusterBaseIdentityProvider = original.BasicOpenShiftManagedClusterBaseIdentityProvider
 type OpenShiftManagedClusterBaseIdentityProvider = original.OpenShiftManagedClusterBaseIdentityProvider
 type OpenShiftManagedClusterIdentityProvider = original.OpenShiftManagedClusterIdentityProvider
 type OpenShiftManagedClusterMasterPoolProfile = original.OpenShiftManagedClusterMasterPoolProfile
 type OpenShiftManagedClusterProperties = original.OpenShiftManagedClusterProperties
+type OpenShiftManagedClustersClient = original.OpenShiftManagedClustersClient
 type OpenShiftManagedClustersCreateOrUpdateFuture = original.OpenShiftManagedClustersCreateOrUpdateFuture
 type OpenShiftManagedClustersDeleteFuture = original.OpenShiftManagedClustersDeleteFuture
 type OpenShiftManagedClustersUpdateTagsFuture = original.OpenShiftManagedClustersUpdateTagsFuture
@@ -320,6 +321,7 @@ type OpenShiftRouterProfile = original.OpenShiftRouterProfile
 type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
+type OperationsClient = original.OperationsClient
 type OrchestratorProfile = original.OrchestratorProfile
 type OrchestratorProfileType = original.OrchestratorProfileType
 type OrchestratorVersionProfile = original.OrchestratorVersionProfile
@@ -328,59 +330,21 @@ type OrchestratorVersionProfileProperties = original.OrchestratorVersionProfileP
 type Properties = original.Properties
 type PurchasePlan = original.PurchasePlan
 type Resource = original.Resource
-type ServicePrincipalProfile = original.ServicePrincipalProfile
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type ServicePrincipalProfile = original.ServicePrincipalProfile
 type TagsObject = original.TagsObject
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
-type OpenShiftManagedClustersClient = original.OpenShiftManagedClustersClient
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClient(subscriptionID)
 }
 func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClient(subscriptionID)
-}
-func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
-func PossibleNetworkPluginValues() []NetworkPlugin {
-	return original.PossibleNetworkPluginValues()
-}
-func PossibleNetworkPolicyValues() []NetworkPolicy {
-	return original.PossibleNetworkPolicyValues()
-}
-func PossibleOpenShiftAgentPoolProfileRoleValues() []OpenShiftAgentPoolProfileRole {
-	return original.PossibleOpenShiftAgentPoolProfileRoleValues()
-}
-func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerServiceVMSize {
-	return original.PossibleOpenShiftContainerServiceVMSizeValues()
-}
-func PossibleOrchestratorTypesValues() []OrchestratorTypes {
-	return original.PossibleOrchestratorTypesValues()
-}
-func PossibleOSTypeValues() []OSType {
-	return original.PossibleOSTypeValues()
-}
-func PossibleStorageProfileTypesValues() []StorageProfileTypes {
-	return original.PossibleStorageProfileTypesValues()
-}
-func PossibleVMSizeTypesValues() []VMSizeTypes {
-	return original.PossibleVMSizeTypesValues()
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -394,6 +358,12 @@ func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) Mana
 func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
 	return original.NewManagedClusterListResultPage(getNextPage)
 }
+func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClient(subscriptionID)
+}
+func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOpenShiftManagedClustersClient(subscriptionID string) OpenShiftManagedClustersClient {
 	return original.NewOpenShiftManagedClustersClient(subscriptionID)
 }
@@ -405,6 +375,36 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleNetworkPluginValues() []NetworkPlugin {
+	return original.PossibleNetworkPluginValues()
+}
+func PossibleNetworkPolicyValues() []NetworkPolicy {
+	return original.PossibleNetworkPolicyValues()
+}
+func PossibleOSTypeValues() []OSType {
+	return original.PossibleOSTypeValues()
+}
+func PossibleOpenShiftAgentPoolProfileRoleValues() []OpenShiftAgentPoolProfileRole {
+	return original.PossibleOpenShiftAgentPoolProfileRoleValues()
+}
+func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerServiceVMSize {
+	return original.PossibleOpenShiftContainerServiceVMSizeValues()
+}
+func PossibleOrchestratorTypesValues() []OrchestratorTypes {
+	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleStorageProfileTypesValues() []StorageProfileTypes {
+	return original.PossibleStorageProfileTypesValues()
+}
+func PossibleVMSizeTypesValues() []VMSizeTypes {
+	return original.PossibleVMSizeTypesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

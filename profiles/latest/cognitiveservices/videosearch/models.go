@@ -25,7 +25,6 @@ const (
 	DefaultEndpoint = original.DefaultEndpoint
 )
 
-type BaseClient = original.BaseClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -136,27 +135,28 @@ const (
 	VideoResolutionSD480p  VideoResolution = original.VideoResolutionSD480p
 )
 
-type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
+type BaseClient = original.BaseClient
+type BasicAnswer = original.BasicAnswer
 type BasicCreativeWork = original.BasicCreativeWork
+type BasicIdentifiable = original.BasicIdentifiable
+type BasicMediaObject = original.BasicMediaObject
+type BasicResponse = original.BasicResponse
+type BasicResponseBase = original.BasicResponseBase
+type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
+type BasicThing = original.BasicThing
 type CreativeWork = original.CreativeWork
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
-type BasicIdentifiable = original.BasicIdentifiable
 type Identifiable = original.Identifiable
 type ImageObject = original.ImageObject
-type BasicMediaObject = original.BasicMediaObject
 type MediaObject = original.MediaObject
 type PivotSuggestions = original.PivotSuggestions
 type Query = original.Query
 type QueryContext = original.QueryContext
-type BasicResponse = original.BasicResponse
 type Response = original.Response
-type BasicResponseBase = original.BasicResponseBase
 type ResponseBase = original.ResponseBase
-type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
 type SearchResultsAnswer = original.SearchResultsAnswer
-type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TrendingVideos = original.TrendingVideos
 type TrendingVideosCategory = original.TrendingVideosCategory
@@ -165,11 +165,14 @@ type TrendingVideosTile = original.TrendingVideosTile
 type VideoDetails = original.VideoDetails
 type VideoObject = original.VideoObject
 type Videos = original.Videos
-type VideosModule = original.VideosModule
 type VideosClient = original.VideosClient
+type VideosModule = original.VideosModule
 
 func New() BaseClient {
 	return original.New()
+}
+func NewVideosClient() VideosClient {
+	return original.NewVideosClient()
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
@@ -212,7 +215,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewVideosClient() VideosClient {
-	return original.NewVideosClient()
 }

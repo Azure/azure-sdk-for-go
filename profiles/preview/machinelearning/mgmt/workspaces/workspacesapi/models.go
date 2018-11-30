@@ -21,5 +21,5 @@ package workspacesapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-04-01/workspaces/workspacesapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
 type ClientAPI = original.ClientAPI
+type OperationsClientAPI = original.OperationsClientAPI

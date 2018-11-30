@@ -22,6 +22,6 @@ package reservationsapi
 import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations/reservationsapi"
 
 type BaseClientAPI = original.BaseClientAPI
-type OrderClientAPI = original.OrderClientAPI
 type ClientAPI = original.ClientAPI
 type OperationClientAPI = original.OperationClientAPI
+type OrderClientAPI = original.OrderClientAPI

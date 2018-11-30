@@ -25,13 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
 )
 
-type CapacitiesClient = original.CapacitiesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -72,6 +69,8 @@ const (
 	StateUpdating     State = original.StateUpdating
 )
 
+type BaseClient = original.BaseClient
+type CapacitiesClient = original.CapacitiesClient
 type CapacitiesCreateFuture = original.CapacitiesCreateFuture
 type CapacitiesDeleteFuture = original.CapacitiesDeleteFuture
 type CapacitiesResumeFuture = original.CapacitiesResumeFuture
@@ -91,33 +90,21 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
-type OperationsClient = original.OperationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
 	return original.NewCapacitiesClient(subscriptionID)
 }
 func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
 	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -130,6 +117,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

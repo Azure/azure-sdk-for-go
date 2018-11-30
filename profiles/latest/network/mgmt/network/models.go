@@ -25,33 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-01-01/network"
 )
 
-type ApplicationGatewaysClient = original.ApplicationGatewaysClient
-type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
-type AvailableEndpointServicesClient = original.AvailableEndpointServicesClient
-type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ConnectionMonitorsClient = original.ConnectionMonitorsClient
-type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
-type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
-type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
-type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
-type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
-type InboundNatRulesClient = original.InboundNatRulesClient
-type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
-type InterfaceLoadBalancersClient = original.InterfaceLoadBalancersClient
-type InterfacesClient = original.InterfacesClient
-type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
-type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
-type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
-type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
-type LoadBalancerProbesClient = original.LoadBalancerProbesClient
-type LoadBalancersClient = original.LoadBalancersClient
-type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
 type Access = original.Access
 
 const (
@@ -323,6 +300,20 @@ const (
 	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )
 
+type IPAllocationMethod = original.IPAllocationMethod
+
+const (
+	Dynamic IPAllocationMethod = original.Dynamic
+	Static  IPAllocationMethod = original.Static
+)
+
+type IPVersion = original.IPVersion
+
+const (
+	IPv4 IPVersion = original.IPv4
+	IPv6 IPVersion = original.IPv6
+)
+
 type IkeEncryption = original.IkeEncryption
 
 const (
@@ -340,13 +331,6 @@ const (
 	SHA1   IkeIntegrity = original.SHA1
 	SHA256 IkeIntegrity = original.SHA256
 	SHA384 IkeIntegrity = original.SHA384
-)
-
-type IPAllocationMethod = original.IPAllocationMethod
-
-const (
-	Dynamic IPAllocationMethod = original.Dynamic
-	Static  IPAllocationMethod = original.Static
 )
 
 type IpsecEncryption = original.IpsecEncryption
@@ -372,13 +356,6 @@ const (
 	IpsecIntegrityMD5       IpsecIntegrity = original.IpsecIntegrityMD5
 	IpsecIntegritySHA1      IpsecIntegrity = original.IpsecIntegritySHA1
 	IpsecIntegritySHA256    IpsecIntegrity = original.IpsecIntegritySHA256
-)
-
-type IPVersion = original.IPVersion
-
-const (
-	IPv4 IPVersion = original.IPv4
-	IPv6 IPVersion = original.IPv6
 )
 
 type IssueType = original.IssueType
@@ -654,12 +631,12 @@ type ApplicationGatewayAvailableWafRuleSetsResult = original.ApplicationGatewayA
 type ApplicationGatewayBackendAddress = original.ApplicationGatewayBackendAddress
 type ApplicationGatewayBackendAddressPool = original.ApplicationGatewayBackendAddressPool
 type ApplicationGatewayBackendAddressPoolPropertiesFormat = original.ApplicationGatewayBackendAddressPoolPropertiesFormat
+type ApplicationGatewayBackendHTTPSettings = original.ApplicationGatewayBackendHTTPSettings
+type ApplicationGatewayBackendHTTPSettingsPropertiesFormat = original.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
 type ApplicationGatewayBackendHealth = original.ApplicationGatewayBackendHealth
 type ApplicationGatewayBackendHealthHTTPSettings = original.ApplicationGatewayBackendHealthHTTPSettings
 type ApplicationGatewayBackendHealthPool = original.ApplicationGatewayBackendHealthPool
 type ApplicationGatewayBackendHealthServer = original.ApplicationGatewayBackendHealthServer
-type ApplicationGatewayBackendHTTPSettings = original.ApplicationGatewayBackendHTTPSettings
-type ApplicationGatewayBackendHTTPSettingsPropertiesFormat = original.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
 type ApplicationGatewayConnectionDraining = original.ApplicationGatewayConnectionDraining
 type ApplicationGatewayFirewallDisabledRuleGroup = original.ApplicationGatewayFirewallDisabledRuleGroup
 type ApplicationGatewayFirewallRule = original.ApplicationGatewayFirewallRule
@@ -687,26 +664,28 @@ type ApplicationGatewayRedirectConfiguration = original.ApplicationGatewayRedire
 type ApplicationGatewayRedirectConfigurationPropertiesFormat = original.ApplicationGatewayRedirectConfigurationPropertiesFormat
 type ApplicationGatewayRequestRoutingRule = original.ApplicationGatewayRequestRoutingRule
 type ApplicationGatewayRequestRoutingRulePropertiesFormat = original.ApplicationGatewayRequestRoutingRulePropertiesFormat
-type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
-type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreateOrUpdateFuture
-type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
 type ApplicationGatewaySku = original.ApplicationGatewaySku
 type ApplicationGatewaySslCertificate = original.ApplicationGatewaySslCertificate
 type ApplicationGatewaySslCertificatePropertiesFormat = original.ApplicationGatewaySslCertificatePropertiesFormat
 type ApplicationGatewaySslPolicy = original.ApplicationGatewaySslPolicy
 type ApplicationGatewaySslPredefinedPolicy = original.ApplicationGatewaySslPredefinedPolicy
 type ApplicationGatewaySslPredefinedPolicyPropertiesFormat = original.ApplicationGatewaySslPredefinedPolicyPropertiesFormat
-type ApplicationGatewaysStartFuture = original.ApplicationGatewaysStartFuture
-type ApplicationGatewaysStopFuture = original.ApplicationGatewaysStopFuture
-type ApplicationGatewaysUpdateTagsFuture = original.ApplicationGatewaysUpdateTagsFuture
 type ApplicationGatewayURLPathMap = original.ApplicationGatewayURLPathMap
 type ApplicationGatewayURLPathMapPropertiesFormat = original.ApplicationGatewayURLPathMapPropertiesFormat
 type ApplicationGatewayWebApplicationFirewallConfiguration = original.ApplicationGatewayWebApplicationFirewallConfiguration
+type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
+type ApplicationGatewaysClient = original.ApplicationGatewaysClient
+type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreateOrUpdateFuture
+type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
+type ApplicationGatewaysStartFuture = original.ApplicationGatewaysStartFuture
+type ApplicationGatewaysStopFuture = original.ApplicationGatewaysStopFuture
+type ApplicationGatewaysUpdateTagsFuture = original.ApplicationGatewaysUpdateTagsFuture
 type ApplicationSecurityGroup = original.ApplicationSecurityGroup
 type ApplicationSecurityGroupListResult = original.ApplicationSecurityGroupListResult
 type ApplicationSecurityGroupListResultIterator = original.ApplicationSecurityGroupListResultIterator
 type ApplicationSecurityGroupListResultPage = original.ApplicationSecurityGroupListResultPage
 type ApplicationSecurityGroupPropertiesFormat = original.ApplicationSecurityGroupPropertiesFormat
+type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
 type ApplicationSecurityGroupsCreateOrUpdateFuture = original.ApplicationSecurityGroupsCreateOrUpdateFuture
 type ApplicationSecurityGroupsDeleteFuture = original.ApplicationSecurityGroupsDeleteFuture
 type AuthorizationListResult = original.AuthorizationListResult
@@ -714,6 +693,7 @@ type AuthorizationListResultIterator = original.AuthorizationListResultIterator
 type AuthorizationListResultPage = original.AuthorizationListResultPage
 type AuthorizationPropertiesFormat = original.AuthorizationPropertiesFormat
 type Availability = original.Availability
+type AvailableEndpointServicesClient = original.AvailableEndpointServicesClient
 type AvailableProvidersList = original.AvailableProvidersList
 type AvailableProvidersListCity = original.AvailableProvidersListCity
 type AvailableProvidersListCountry = original.AvailableProvidersListCountry
@@ -725,11 +705,13 @@ type AzureReachabilityReportItem = original.AzureReachabilityReportItem
 type AzureReachabilityReportLatencyInfo = original.AzureReachabilityReportLatencyInfo
 type AzureReachabilityReportLocation = original.AzureReachabilityReportLocation
 type AzureReachabilityReportParameters = original.AzureReachabilityReportParameters
+type BGPCommunity = original.BGPCommunity
 type BackendAddressPool = original.BackendAddressPool
 type BackendAddressPoolPropertiesFormat = original.BackendAddressPoolPropertiesFormat
-type BGPCommunity = original.BGPCommunity
+type BaseClient = original.BaseClient
 type BgpPeerStatus = original.BgpPeerStatus
 type BgpPeerStatusListResult = original.BgpPeerStatusListResult
+type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient
 type BgpServiceCommunity = original.BgpServiceCommunity
 type BgpServiceCommunityListResult = original.BgpServiceCommunityListResult
 type BgpServiceCommunityListResultIterator = original.BgpServiceCommunityListResultIterator
@@ -743,9 +725,10 @@ type ConnectionMonitorParameters = original.ConnectionMonitorParameters
 type ConnectionMonitorQueryResult = original.ConnectionMonitorQueryResult
 type ConnectionMonitorResult = original.ConnectionMonitorResult
 type ConnectionMonitorResultProperties = original.ConnectionMonitorResultProperties
+type ConnectionMonitorSource = original.ConnectionMonitorSource
+type ConnectionMonitorsClient = original.ConnectionMonitorsClient
 type ConnectionMonitorsCreateOrUpdateFuture = original.ConnectionMonitorsCreateOrUpdateFuture
 type ConnectionMonitorsDeleteFuture = original.ConnectionMonitorsDeleteFuture
-type ConnectionMonitorSource = original.ConnectionMonitorSource
 type ConnectionMonitorsQueryFuture = original.ConnectionMonitorsQueryFuture
 type ConnectionMonitorsStartFuture = original.ConnectionMonitorsStartFuture
 type ConnectionMonitorsStopFuture = original.ConnectionMonitorsStopFuture
@@ -758,9 +741,10 @@ type ConnectivityInformation = original.ConnectivityInformation
 type ConnectivityIssue = original.ConnectivityIssue
 type ConnectivityParameters = original.ConnectivityParameters
 type ConnectivitySource = original.ConnectivitySource
+type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
+type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type DhcpOptions = original.DhcpOptions
 type Dimension = original.Dimension
-type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
 type EffectiveNetworkSecurityGroup = original.EffectiveNetworkSecurityGroup
 type EffectiveNetworkSecurityGroupAssociation = original.EffectiveNetworkSecurityGroupAssociation
 type EffectiveNetworkSecurityGroupListResult = original.EffectiveNetworkSecurityGroupListResult
@@ -776,6 +760,7 @@ type ErrorDetails = original.ErrorDetails
 type ExpressRouteCircuit = original.ExpressRouteCircuit
 type ExpressRouteCircuitArpTable = original.ExpressRouteCircuitArpTable
 type ExpressRouteCircuitAuthorization = original.ExpressRouteCircuitAuthorization
+type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
 type ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture = original.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture
 type ExpressRouteCircuitAuthorizationsDeleteFuture = original.ExpressRouteCircuitAuthorizationsDeleteFuture
 type ExpressRouteCircuitListResult = original.ExpressRouteCircuitListResult
@@ -787,22 +772,24 @@ type ExpressRouteCircuitPeeringListResult = original.ExpressRouteCircuitPeeringL
 type ExpressRouteCircuitPeeringListResultIterator = original.ExpressRouteCircuitPeeringListResultIterator
 type ExpressRouteCircuitPeeringListResultPage = original.ExpressRouteCircuitPeeringListResultPage
 type ExpressRouteCircuitPeeringPropertiesFormat = original.ExpressRouteCircuitPeeringPropertiesFormat
+type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
 type ExpressRouteCircuitPeeringsCreateOrUpdateFuture = original.ExpressRouteCircuitPeeringsCreateOrUpdateFuture
 type ExpressRouteCircuitPeeringsDeleteFuture = original.ExpressRouteCircuitPeeringsDeleteFuture
 type ExpressRouteCircuitPropertiesFormat = original.ExpressRouteCircuitPropertiesFormat
 type ExpressRouteCircuitRoutesTable = original.ExpressRouteCircuitRoutesTable
 type ExpressRouteCircuitRoutesTableSummary = original.ExpressRouteCircuitRoutesTableSummary
-type ExpressRouteCircuitsArpTableListResult = original.ExpressRouteCircuitsArpTableListResult
-type ExpressRouteCircuitsCreateOrUpdateFuture = original.ExpressRouteCircuitsCreateOrUpdateFuture
-type ExpressRouteCircuitsDeleteFuture = original.ExpressRouteCircuitsDeleteFuture
 type ExpressRouteCircuitServiceProviderProperties = original.ExpressRouteCircuitServiceProviderProperties
 type ExpressRouteCircuitSku = original.ExpressRouteCircuitSku
+type ExpressRouteCircuitStats = original.ExpressRouteCircuitStats
+type ExpressRouteCircuitsArpTableListResult = original.ExpressRouteCircuitsArpTableListResult
+type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
+type ExpressRouteCircuitsCreateOrUpdateFuture = original.ExpressRouteCircuitsCreateOrUpdateFuture
+type ExpressRouteCircuitsDeleteFuture = original.ExpressRouteCircuitsDeleteFuture
 type ExpressRouteCircuitsListArpTableFuture = original.ExpressRouteCircuitsListArpTableFuture
 type ExpressRouteCircuitsListRoutesTableFuture = original.ExpressRouteCircuitsListRoutesTableFuture
 type ExpressRouteCircuitsListRoutesTableSummaryFuture = original.ExpressRouteCircuitsListRoutesTableSummaryFuture
 type ExpressRouteCircuitsRoutesTableListResult = original.ExpressRouteCircuitsRoutesTableListResult
 type ExpressRouteCircuitsRoutesTableSummaryListResult = original.ExpressRouteCircuitsRoutesTableSummaryListResult
-type ExpressRouteCircuitStats = original.ExpressRouteCircuitStats
 type ExpressRouteCircuitsUpdateTagsFuture = original.ExpressRouteCircuitsUpdateTagsFuture
 type ExpressRouteServiceProvider = original.ExpressRouteServiceProvider
 type ExpressRouteServiceProviderBandwidthsOffered = original.ExpressRouteServiceProviderBandwidthsOffered
@@ -810,6 +797,7 @@ type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProvide
 type ExpressRouteServiceProviderListResultIterator = original.ExpressRouteServiceProviderListResultIterator
 type ExpressRouteServiceProviderListResultPage = original.ExpressRouteServiceProviderListResultPage
 type ExpressRouteServiceProviderPropertiesFormat = original.ExpressRouteServiceProviderPropertiesFormat
+type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
 type FlowLogInformation = original.FlowLogInformation
 type FlowLogProperties = original.FlowLogProperties
 type FlowLogStatusParameters = original.FlowLogStatusParameters
@@ -817,6 +805,10 @@ type FrontendIPConfiguration = original.FrontendIPConfiguration
 type FrontendIPConfigurationPropertiesFormat = original.FrontendIPConfigurationPropertiesFormat
 type GatewayRoute = original.GatewayRoute
 type GatewayRouteListResult = original.GatewayRouteListResult
+type IPAddressAvailabilityResult = original.IPAddressAvailabilityResult
+type IPConfiguration = original.IPConfiguration
+type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
+type IPTag = original.IPTag
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
 type InboundNatRule = original.InboundNatRule
@@ -824,6 +816,7 @@ type InboundNatRuleListResult = original.InboundNatRuleListResult
 type InboundNatRuleListResultIterator = original.InboundNatRuleListResultIterator
 type InboundNatRuleListResultPage = original.InboundNatRuleListResultPage
 type InboundNatRulePropertiesFormat = original.InboundNatRulePropertiesFormat
+type InboundNatRulesClient = original.InboundNatRulesClient
 type InboundNatRulesCreateOrUpdateFuture = original.InboundNatRulesCreateOrUpdateFuture
 type InboundNatRulesDeleteFuture = original.InboundNatRulesDeleteFuture
 type Interface = original.Interface
@@ -834,44 +827,49 @@ type InterfaceIPConfigurationListResult = original.InterfaceIPConfigurationListR
 type InterfaceIPConfigurationListResultIterator = original.InterfaceIPConfigurationListResultIterator
 type InterfaceIPConfigurationListResultPage = original.InterfaceIPConfigurationListResultPage
 type InterfaceIPConfigurationPropertiesFormat = original.InterfaceIPConfigurationPropertiesFormat
+type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
 type InterfaceListResult = original.InterfaceListResult
 type InterfaceListResultIterator = original.InterfaceListResultIterator
 type InterfaceListResultPage = original.InterfaceListResultPage
 type InterfaceLoadBalancerListResult = original.InterfaceLoadBalancerListResult
 type InterfaceLoadBalancerListResultIterator = original.InterfaceLoadBalancerListResultIterator
 type InterfaceLoadBalancerListResultPage = original.InterfaceLoadBalancerListResultPage
+type InterfaceLoadBalancersClient = original.InterfaceLoadBalancersClient
 type InterfacePropertiesFormat = original.InterfacePropertiesFormat
+type InterfacesClient = original.InterfacesClient
 type InterfacesCreateOrUpdateFuture = original.InterfacesCreateOrUpdateFuture
 type InterfacesDeleteFuture = original.InterfacesDeleteFuture
 type InterfacesGetEffectiveRouteTableFuture = original.InterfacesGetEffectiveRouteTableFuture
 type InterfacesListEffectiveNetworkSecurityGroupsFuture = original.InterfacesListEffectiveNetworkSecurityGroupsFuture
 type InterfacesUpdateTagsFuture = original.InterfacesUpdateTagsFuture
-type IPAddressAvailabilityResult = original.IPAddressAvailabilityResult
-type IPConfiguration = original.IPConfiguration
-type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
 type IpsecPolicy = original.IpsecPolicy
-type IPTag = original.IPTag
 type Ipv6ExpressRouteCircuitPeeringConfig = original.Ipv6ExpressRouteCircuitPeeringConfig
 type LoadBalancer = original.LoadBalancer
 type LoadBalancerBackendAddressPoolListResult = original.LoadBalancerBackendAddressPoolListResult
 type LoadBalancerBackendAddressPoolListResultIterator = original.LoadBalancerBackendAddressPoolListResultIterator
 type LoadBalancerBackendAddressPoolListResultPage = original.LoadBalancerBackendAddressPoolListResultPage
+type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
 type LoadBalancerFrontendIPConfigurationListResult = original.LoadBalancerFrontendIPConfigurationListResult
 type LoadBalancerFrontendIPConfigurationListResultIterator = original.LoadBalancerFrontendIPConfigurationListResultIterator
 type LoadBalancerFrontendIPConfigurationListResultPage = original.LoadBalancerFrontendIPConfigurationListResultPage
+type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
 type LoadBalancerListResult = original.LoadBalancerListResult
 type LoadBalancerListResultIterator = original.LoadBalancerListResultIterator
 type LoadBalancerListResultPage = original.LoadBalancerListResultPage
 type LoadBalancerLoadBalancingRuleListResult = original.LoadBalancerLoadBalancingRuleListResult
 type LoadBalancerLoadBalancingRuleListResultIterator = original.LoadBalancerLoadBalancingRuleListResultIterator
 type LoadBalancerLoadBalancingRuleListResultPage = original.LoadBalancerLoadBalancingRuleListResultPage
+type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
+type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
 type LoadBalancerProbeListResult = original.LoadBalancerProbeListResult
 type LoadBalancerProbeListResultIterator = original.LoadBalancerProbeListResultIterator
 type LoadBalancerProbeListResultPage = original.LoadBalancerProbeListResultPage
+type LoadBalancerProbesClient = original.LoadBalancerProbesClient
 type LoadBalancerPropertiesFormat = original.LoadBalancerPropertiesFormat
+type LoadBalancerSku = original.LoadBalancerSku
+type LoadBalancersClient = original.LoadBalancersClient
 type LoadBalancersCreateOrUpdateFuture = original.LoadBalancersCreateOrUpdateFuture
 type LoadBalancersDeleteFuture = original.LoadBalancersDeleteFuture
-type LoadBalancerSku = original.LoadBalancerSku
 type LoadBalancersUpdateTagsFuture = original.LoadBalancersUpdateTagsFuture
 type LoadBalancingRule = original.LoadBalancingRule
 type LoadBalancingRulePropertiesFormat = original.LoadBalancingRulePropertiesFormat
@@ -880,6 +878,7 @@ type LocalNetworkGatewayListResult = original.LocalNetworkGatewayListResult
 type LocalNetworkGatewayListResultIterator = original.LocalNetworkGatewayListResultIterator
 type LocalNetworkGatewayListResultPage = original.LocalNetworkGatewayListResultPage
 type LocalNetworkGatewayPropertiesFormat = original.LocalNetworkGatewayPropertiesFormat
+type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
 type LocalNetworkGatewaysCreateOrUpdateFuture = original.LocalNetworkGatewaysCreateOrUpdateFuture
 type LocalNetworkGatewaysDeleteFuture = original.LocalNetworkGatewaysDeleteFuture
 type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateTagsFuture
@@ -894,6 +893,7 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationPropertiesFormat = original.OperationPropertiesFormat
 type OperationPropertiesFormatServiceSpecification = original.OperationPropertiesFormatServiceSpecification
+type OperationsClient = original.OperationsClient
 type OutboundNatRule = original.OutboundNatRule
 type OutboundNatRulePropertiesFormat = original.OutboundNatRulePropertiesFormat
 type PacketCapture = original.PacketCapture
@@ -903,25 +903,27 @@ type PacketCaptureParameters = original.PacketCaptureParameters
 type PacketCaptureQueryStatusResult = original.PacketCaptureQueryStatusResult
 type PacketCaptureResult = original.PacketCaptureResult
 type PacketCaptureResultProperties = original.PacketCaptureResultProperties
+type PacketCaptureStorageLocation = original.PacketCaptureStorageLocation
+type PacketCapturesClient = original.PacketCapturesClient
 type PacketCapturesCreateFuture = original.PacketCapturesCreateFuture
 type PacketCapturesDeleteFuture = original.PacketCapturesDeleteFuture
 type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
-type PacketCaptureStorageLocation = original.PacketCaptureStorageLocation
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
-type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture
-type PublicIPAddressesDeleteFuture = original.PublicIPAddressesDeleteFuture
-type PublicIPAddressesUpdateTagsFuture = original.PublicIPAddressesUpdateTagsFuture
 type PublicIPAddressListResult = original.PublicIPAddressListResult
 type PublicIPAddressListResultIterator = original.PublicIPAddressListResultIterator
 type PublicIPAddressListResultPage = original.PublicIPAddressListResultPage
 type PublicIPAddressPropertiesFormat = original.PublicIPAddressPropertiesFormat
 type PublicIPAddressSku = original.PublicIPAddressSku
+type PublicIPAddressesClient = original.PublicIPAddressesClient
+type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture
+type PublicIPAddressesDeleteFuture = original.PublicIPAddressesDeleteFuture
+type PublicIPAddressesUpdateTagsFuture = original.PublicIPAddressesUpdateTagsFuture
 type QueryTroubleshootingParameters = original.QueryTroubleshootingParameters
 type Resource = original.Resource
 type ResourceNavigationLink = original.ResourceNavigationLink
@@ -938,9 +940,11 @@ type RouteFilterRuleListResult = original.RouteFilterRuleListResult
 type RouteFilterRuleListResultIterator = original.RouteFilterRuleListResultIterator
 type RouteFilterRuleListResultPage = original.RouteFilterRuleListResultPage
 type RouteFilterRulePropertiesFormat = original.RouteFilterRulePropertiesFormat
+type RouteFilterRulesClient = original.RouteFilterRulesClient
 type RouteFilterRulesCreateOrUpdateFuture = original.RouteFilterRulesCreateOrUpdateFuture
 type RouteFilterRulesDeleteFuture = original.RouteFilterRulesDeleteFuture
 type RouteFilterRulesUpdateFuture = original.RouteFilterRulesUpdateFuture
+type RouteFiltersClient = original.RouteFiltersClient
 type RouteFiltersCreateOrUpdateFuture = original.RouteFiltersCreateOrUpdateFuture
 type RouteFiltersDeleteFuture = original.RouteFiltersDeleteFuture
 type RouteFiltersUpdateFuture = original.RouteFiltersUpdateFuture
@@ -948,46 +952,51 @@ type RouteListResult = original.RouteListResult
 type RouteListResultIterator = original.RouteListResultIterator
 type RouteListResultPage = original.RouteListResultPage
 type RoutePropertiesFormat = original.RoutePropertiesFormat
-type RoutesCreateOrUpdateFuture = original.RoutesCreateOrUpdateFuture
-type RoutesDeleteFuture = original.RoutesDeleteFuture
 type RouteTable = original.RouteTable
 type RouteTableListResult = original.RouteTableListResult
 type RouteTableListResultIterator = original.RouteTableListResultIterator
 type RouteTableListResultPage = original.RouteTableListResultPage
 type RouteTablePropertiesFormat = original.RouteTablePropertiesFormat
+type RouteTablesClient = original.RouteTablesClient
 type RouteTablesCreateOrUpdateFuture = original.RouteTablesCreateOrUpdateFuture
 type RouteTablesDeleteFuture = original.RouteTablesDeleteFuture
 type RouteTablesUpdateTagsFuture = original.RouteTablesUpdateTagsFuture
+type RoutesClient = original.RoutesClient
+type RoutesCreateOrUpdateFuture = original.RoutesCreateOrUpdateFuture
+type RoutesDeleteFuture = original.RoutesDeleteFuture
 type SecurityGroup = original.SecurityGroup
 type SecurityGroupListResult = original.SecurityGroupListResult
 type SecurityGroupListResultIterator = original.SecurityGroupListResultIterator
 type SecurityGroupListResultPage = original.SecurityGroupListResultPage
 type SecurityGroupNetworkInterface = original.SecurityGroupNetworkInterface
 type SecurityGroupPropertiesFormat = original.SecurityGroupPropertiesFormat
+type SecurityGroupViewParameters = original.SecurityGroupViewParameters
+type SecurityGroupViewResult = original.SecurityGroupViewResult
+type SecurityGroupsClient = original.SecurityGroupsClient
 type SecurityGroupsCreateOrUpdateFuture = original.SecurityGroupsCreateOrUpdateFuture
 type SecurityGroupsDeleteFuture = original.SecurityGroupsDeleteFuture
 type SecurityGroupsUpdateTagsFuture = original.SecurityGroupsUpdateTagsFuture
-type SecurityGroupViewParameters = original.SecurityGroupViewParameters
-type SecurityGroupViewResult = original.SecurityGroupViewResult
 type SecurityRule = original.SecurityRule
 type SecurityRuleAssociations = original.SecurityRuleAssociations
 type SecurityRuleListResult = original.SecurityRuleListResult
 type SecurityRuleListResultIterator = original.SecurityRuleListResultIterator
 type SecurityRuleListResultPage = original.SecurityRuleListResultPage
 type SecurityRulePropertiesFormat = original.SecurityRulePropertiesFormat
+type SecurityRulesClient = original.SecurityRulesClient
 type SecurityRulesCreateOrUpdateFuture = original.SecurityRulesCreateOrUpdateFuture
 type SecurityRulesDeleteFuture = original.SecurityRulesDeleteFuture
 type ServiceEndpointPropertiesFormat = original.ServiceEndpointPropertiesFormat
 type String = original.String
+type SubResource = original.SubResource
 type Subnet = original.Subnet
 type SubnetAssociation = original.SubnetAssociation
 type SubnetListResult = original.SubnetListResult
 type SubnetListResultIterator = original.SubnetListResultIterator
 type SubnetListResultPage = original.SubnetListResultPage
 type SubnetPropertiesFormat = original.SubnetPropertiesFormat
+type SubnetsClient = original.SubnetsClient
 type SubnetsCreateOrUpdateFuture = original.SubnetsCreateOrUpdateFuture
 type SubnetsDeleteFuture = original.SubnetsDeleteFuture
-type SubResource = original.SubResource
 type TagsObject = original.TagsObject
 type Topology = original.Topology
 type TopologyAssociation = original.TopologyAssociation
@@ -1003,6 +1012,7 @@ type TroubleshootingResult = original.TroubleshootingResult
 type TunnelConnectionHealth = original.TunnelConnectionHealth
 type Usage = original.Usage
 type UsageName = original.UsageName
+type UsagesClient = original.UsagesClient
 type UsagesListResult = original.UsagesListResult
 type UsagesListResultIterator = original.UsagesListResultIterator
 type UsagesListResultPage = original.UsagesListResultPage
@@ -1018,6 +1028,7 @@ type VirtualNetworkGatewayConnectionListResult = original.VirtualNetworkGatewayC
 type VirtualNetworkGatewayConnectionListResultIterator = original.VirtualNetworkGatewayConnectionListResultIterator
 type VirtualNetworkGatewayConnectionListResultPage = original.VirtualNetworkGatewayConnectionListResultPage
 type VirtualNetworkGatewayConnectionPropertiesFormat = original.VirtualNetworkGatewayConnectionPropertiesFormat
+type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
 type VirtualNetworkGatewayConnectionsCreateOrUpdateFuture = original.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture
 type VirtualNetworkGatewayConnectionsDeleteFuture = original.VirtualNetworkGatewayConnectionsDeleteFuture
 type VirtualNetworkGatewayConnectionsResetSharedKeyFuture = original.VirtualNetworkGatewayConnectionsResetSharedKeyFuture
@@ -1032,15 +1043,16 @@ type VirtualNetworkGatewayListResult = original.VirtualNetworkGatewayListResult
 type VirtualNetworkGatewayListResultIterator = original.VirtualNetworkGatewayListResultIterator
 type VirtualNetworkGatewayListResultPage = original.VirtualNetworkGatewayListResultPage
 type VirtualNetworkGatewayPropertiesFormat = original.VirtualNetworkGatewayPropertiesFormat
+type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
+type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
 type VirtualNetworkGatewaysCreateOrUpdateFuture = original.VirtualNetworkGatewaysCreateOrUpdateFuture
 type VirtualNetworkGatewaysDeleteFuture = original.VirtualNetworkGatewaysDeleteFuture
-type VirtualNetworkGatewaysGeneratevpnclientpackageFuture = original.VirtualNetworkGatewaysGeneratevpnclientpackageFuture
 type VirtualNetworkGatewaysGenerateVpnProfileFuture = original.VirtualNetworkGatewaysGenerateVpnProfileFuture
+type VirtualNetworkGatewaysGeneratevpnclientpackageFuture = original.VirtualNetworkGatewaysGeneratevpnclientpackageFuture
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture = original.VirtualNetworkGatewaysGetAdvertisedRoutesFuture
 type VirtualNetworkGatewaysGetBgpPeerStatusFuture = original.VirtualNetworkGatewaysGetBgpPeerStatusFuture
 type VirtualNetworkGatewaysGetLearnedRoutesFuture = original.VirtualNetworkGatewaysGetLearnedRoutesFuture
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture = original.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture
-type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysResetFuture = original.VirtualNetworkGatewaysResetFuture
 type VirtualNetworkGatewaysUpdateTagsFuture = original.VirtualNetworkGatewaysUpdateTagsFuture
 type VirtualNetworkListResult = original.VirtualNetworkListResult
@@ -1054,14 +1066,16 @@ type VirtualNetworkPeeringListResult = original.VirtualNetworkPeeringListResult
 type VirtualNetworkPeeringListResultIterator = original.VirtualNetworkPeeringListResultIterator
 type VirtualNetworkPeeringListResultPage = original.VirtualNetworkPeeringListResultPage
 type VirtualNetworkPeeringPropertiesFormat = original.VirtualNetworkPeeringPropertiesFormat
+type VirtualNetworkPeeringsClient = original.VirtualNetworkPeeringsClient
 type VirtualNetworkPeeringsCreateOrUpdateFuture = original.VirtualNetworkPeeringsCreateOrUpdateFuture
 type VirtualNetworkPeeringsDeleteFuture = original.VirtualNetworkPeeringsDeleteFuture
 type VirtualNetworkPropertiesFormat = original.VirtualNetworkPropertiesFormat
+type VirtualNetworkUsage = original.VirtualNetworkUsage
+type VirtualNetworkUsageName = original.VirtualNetworkUsageName
+type VirtualNetworksClient = original.VirtualNetworksClient
 type VirtualNetworksCreateOrUpdateFuture = original.VirtualNetworksCreateOrUpdateFuture
 type VirtualNetworksDeleteFuture = original.VirtualNetworksDeleteFuture
 type VirtualNetworksUpdateTagsFuture = original.VirtualNetworksUpdateTagsFuture
-type VirtualNetworkUsage = original.VirtualNetworkUsage
-type VirtualNetworkUsageName = original.VirtualNetworkUsageName
 type VpnClientConfiguration = original.VpnClientConfiguration
 type VpnClientParameters = original.VpnClientParameters
 type VpnClientRevokedCertificate = original.VpnClientRevokedCertificate
@@ -1073,6 +1087,7 @@ type Watcher = original.Watcher
 type WatcherListResult = original.WatcherListResult
 type WatcherPropertiesFormat = original.WatcherPropertiesFormat
 type WatchersCheckConnectivityFuture = original.WatchersCheckConnectivityFuture
+type WatchersClient = original.WatchersClient
 type WatchersDeleteFuture = original.WatchersDeleteFuture
 type WatchersGetAzureReachabilityReportFuture = original.WatchersGetAzureReachabilityReportFuture
 type WatchersGetFlowLogStatusFuture = original.WatchersGetFlowLogStatusFuture
@@ -1083,34 +1098,45 @@ type WatchersGetVMSecurityRulesFuture = original.WatchersGetVMSecurityRulesFutur
 type WatchersListAvailableProvidersFuture = original.WatchersListAvailableProvidersFuture
 type WatchersSetFlowLogConfigurationFuture = original.WatchersSetFlowLogConfigurationFuture
 type WatchersVerifyIPFlowFuture = original.WatchersVerifyIPFlowFuture
-type OperationsClient = original.OperationsClient
-type PacketCapturesClient = original.PacketCapturesClient
-type PublicIPAddressesClient = original.PublicIPAddressesClient
-type RouteFilterRulesClient = original.RouteFilterRulesClient
-type RouteFiltersClient = original.RouteFiltersClient
-type RoutesClient = original.RoutesClient
-type RouteTablesClient = original.RouteTablesClient
-type SecurityGroupsClient = original.SecurityGroupsClient
-type SecurityRulesClient = original.SecurityRulesClient
-type SubnetsClient = original.SubnetsClient
-type UsagesClient = original.UsagesClient
-type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
-type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
-type VirtualNetworkPeeringsClient = original.VirtualNetworkPeeringsClient
-type VirtualNetworksClient = original.VirtualNetworksClient
-type WatchersClient = original.WatchersClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewApplicationGatewayAvailableSslPredefinedPoliciesIterator(page ApplicationGatewayAvailableSslPredefinedPoliciesPage) ApplicationGatewayAvailableSslPredefinedPoliciesIterator {
+	return original.NewApplicationGatewayAvailableSslPredefinedPoliciesIterator(page)
+}
+func NewApplicationGatewayAvailableSslPredefinedPoliciesPage(getNextPage func(context.Context, ApplicationGatewayAvailableSslPredefinedPolicies) (ApplicationGatewayAvailableSslPredefinedPolicies, error)) ApplicationGatewayAvailableSslPredefinedPoliciesPage {
+	return original.NewApplicationGatewayAvailableSslPredefinedPoliciesPage(getNextPage)
+}
+func NewApplicationGatewayListResultIterator(page ApplicationGatewayListResultPage) ApplicationGatewayListResultIterator {
+	return original.NewApplicationGatewayListResultIterator(page)
+}
+func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
+	return original.NewApplicationGatewayListResultPage(getNextPage)
+}
 func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClient(subscriptionID)
 }
 func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewApplicationSecurityGroupListResultIterator(page ApplicationSecurityGroupListResultPage) ApplicationSecurityGroupListResultIterator {
+	return original.NewApplicationSecurityGroupListResultIterator(page)
+}
+func NewApplicationSecurityGroupListResultPage(getNextPage func(context.Context, ApplicationSecurityGroupListResult) (ApplicationSecurityGroupListResult, error)) ApplicationSecurityGroupListResultPage {
+	return original.NewApplicationSecurityGroupListResultPage(getNextPage)
+}
 func NewApplicationSecurityGroupsClient(subscriptionID string) ApplicationSecurityGroupsClient {
 	return original.NewApplicationSecurityGroupsClient(subscriptionID)
 }
 func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationSecurityGroupsClient {
 	return original.NewApplicationSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAuthorizationListResultIterator(page AuthorizationListResultPage) AuthorizationListResultIterator {
+	return original.NewAuthorizationListResultIterator(page)
+}
+func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
+	return original.NewAuthorizationListResultPage(getNextPage)
 }
 func NewAvailableEndpointServicesClient(subscriptionID string) AvailableEndpointServicesClient {
 	return original.NewAvailableEndpointServicesClient(subscriptionID)
@@ -1124,11 +1150,11 @@ func NewBgpServiceCommunitiesClient(subscriptionID string) BgpServiceCommunities
 func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID string) BgpServiceCommunitiesClient {
 	return original.NewBgpServiceCommunitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewBgpServiceCommunityListResultIterator(page BgpServiceCommunityListResultPage) BgpServiceCommunityListResultIterator {
+	return original.NewBgpServiceCommunityListResultIterator(page)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewBgpServiceCommunityListResultPage(getNextPage func(context.Context, BgpServiceCommunityListResult) (BgpServiceCommunityListResult, error)) BgpServiceCommunityListResultPage {
+	return original.NewBgpServiceCommunityListResultPage(getNextPage)
 }
 func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient {
 	return original.NewConnectionMonitorsClient(subscriptionID)
@@ -1142,11 +1168,29 @@ func NewDefaultSecurityRulesClient(subscriptionID string) DefaultSecurityRulesCl
 func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) DefaultSecurityRulesClient {
 	return original.NewDefaultSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewEndpointServicesListResultIterator(page EndpointServicesListResultPage) EndpointServicesListResultIterator {
+	return original.NewEndpointServicesListResultIterator(page)
+}
+func NewEndpointServicesListResultPage(getNextPage func(context.Context, EndpointServicesListResult) (EndpointServicesListResult, error)) EndpointServicesListResultPage {
+	return original.NewEndpointServicesListResultPage(getNextPage)
+}
 func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
 	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
 }
 func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
 	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitListResultIterator(page ExpressRouteCircuitListResultPage) ExpressRouteCircuitListResultIterator {
+	return original.NewExpressRouteCircuitListResultIterator(page)
+}
+func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
+	return original.NewExpressRouteCircuitListResultPage(getNextPage)
+}
+func NewExpressRouteCircuitPeeringListResultIterator(page ExpressRouteCircuitPeeringListResultPage) ExpressRouteCircuitPeeringListResultIterator {
+	return original.NewExpressRouteCircuitPeeringListResultIterator(page)
+}
+func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
+	return original.NewExpressRouteCircuitPeeringListResultPage(getNextPage)
 }
 func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
 	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
@@ -1160,11 +1204,23 @@ func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsCl
 func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
 	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewExpressRouteServiceProviderListResultIterator(page ExpressRouteServiceProviderListResultPage) ExpressRouteServiceProviderListResultIterator {
+	return original.NewExpressRouteServiceProviderListResultIterator(page)
+}
+func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
+	return original.NewExpressRouteServiceProviderListResultPage(getNextPage)
+}
 func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
 	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
 }
 func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
 	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
+	return original.NewInboundNatRuleListResultIterator(page)
+}
+func NewInboundNatRuleListResultPage(getNextPage func(context.Context, InboundNatRuleListResult) (InboundNatRuleListResult, error)) InboundNatRuleListResultPage {
+	return original.NewInboundNatRuleListResultPage(getNextPage)
 }
 func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
 	return original.NewInboundNatRulesClient(subscriptionID)
@@ -1172,11 +1228,29 @@ func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
 func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) InboundNatRulesClient {
 	return original.NewInboundNatRulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInterfaceIPConfigurationListResultIterator(page InterfaceIPConfigurationListResultPage) InterfaceIPConfigurationListResultIterator {
+	return original.NewInterfaceIPConfigurationListResultIterator(page)
+}
+func NewInterfaceIPConfigurationListResultPage(getNextPage func(context.Context, InterfaceIPConfigurationListResult) (InterfaceIPConfigurationListResult, error)) InterfaceIPConfigurationListResultPage {
+	return original.NewInterfaceIPConfigurationListResultPage(getNextPage)
+}
 func NewInterfaceIPConfigurationsClient(subscriptionID string) InterfaceIPConfigurationsClient {
 	return original.NewInterfaceIPConfigurationsClient(subscriptionID)
 }
 func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceIPConfigurationsClient {
 	return original.NewInterfaceIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInterfaceListResultIterator(page InterfaceListResultPage) InterfaceListResultIterator {
+	return original.NewInterfaceListResultIterator(page)
+}
+func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
+	return original.NewInterfaceListResultPage(getNextPage)
+}
+func NewInterfaceLoadBalancerListResultIterator(page InterfaceLoadBalancerListResultPage) InterfaceLoadBalancerListResultIterator {
+	return original.NewInterfaceLoadBalancerListResultIterator(page)
+}
+func NewInterfaceLoadBalancerListResultPage(getNextPage func(context.Context, InterfaceLoadBalancerListResult) (InterfaceLoadBalancerListResult, error)) InterfaceLoadBalancerListResultPage {
+	return original.NewInterfaceLoadBalancerListResultPage(getNextPage)
 }
 func NewInterfaceLoadBalancersClient(subscriptionID string) InterfaceLoadBalancersClient {
 	return original.NewInterfaceLoadBalancersClient(subscriptionID)
@@ -1190,17 +1264,41 @@ func NewInterfacesClient(subscriptionID string) InterfacesClient {
 func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
 	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLoadBalancerBackendAddressPoolListResultIterator(page LoadBalancerBackendAddressPoolListResultPage) LoadBalancerBackendAddressPoolListResultIterator {
+	return original.NewLoadBalancerBackendAddressPoolListResultIterator(page)
+}
+func NewLoadBalancerBackendAddressPoolListResultPage(getNextPage func(context.Context, LoadBalancerBackendAddressPoolListResult) (LoadBalancerBackendAddressPoolListResult, error)) LoadBalancerBackendAddressPoolListResultPage {
+	return original.NewLoadBalancerBackendAddressPoolListResultPage(getNextPage)
+}
 func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string) LoadBalancerBackendAddressPoolsClient {
 	return original.NewLoadBalancerBackendAddressPoolsClient(subscriptionID)
 }
 func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerBackendAddressPoolsClient {
 	return original.NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLoadBalancerFrontendIPConfigurationListResultIterator(page LoadBalancerFrontendIPConfigurationListResultPage) LoadBalancerFrontendIPConfigurationListResultIterator {
+	return original.NewLoadBalancerFrontendIPConfigurationListResultIterator(page)
+}
+func NewLoadBalancerFrontendIPConfigurationListResultPage(getNextPage func(context.Context, LoadBalancerFrontendIPConfigurationListResult) (LoadBalancerFrontendIPConfigurationListResult, error)) LoadBalancerFrontendIPConfigurationListResultPage {
+	return original.NewLoadBalancerFrontendIPConfigurationListResultPage(getNextPage)
+}
 func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
 	return original.NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID)
 }
 func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
 	return original.NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLoadBalancerListResultIterator(page LoadBalancerListResultPage) LoadBalancerListResultIterator {
+	return original.NewLoadBalancerListResultIterator(page)
+}
+func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
+	return original.NewLoadBalancerListResultPage(getNextPage)
+}
+func NewLoadBalancerLoadBalancingRuleListResultIterator(page LoadBalancerLoadBalancingRuleListResultPage) LoadBalancerLoadBalancingRuleListResultIterator {
+	return original.NewLoadBalancerLoadBalancingRuleListResultIterator(page)
+}
+func NewLoadBalancerLoadBalancingRuleListResultPage(getNextPage func(context.Context, LoadBalancerLoadBalancingRuleListResult) (LoadBalancerLoadBalancingRuleListResult, error)) LoadBalancerLoadBalancingRuleListResultPage {
+	return original.NewLoadBalancerLoadBalancingRuleListResultPage(getNextPage)
 }
 func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string) LoadBalancerLoadBalancingRulesClient {
 	return original.NewLoadBalancerLoadBalancingRulesClient(subscriptionID)
@@ -1214,6 +1312,12 @@ func NewLoadBalancerNetworkInterfacesClient(subscriptionID string) LoadBalancerN
 func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerNetworkInterfacesClient {
 	return original.NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLoadBalancerProbeListResultIterator(page LoadBalancerProbeListResultPage) LoadBalancerProbeListResultIterator {
+	return original.NewLoadBalancerProbeListResultIterator(page)
+}
+func NewLoadBalancerProbeListResultPage(getNextPage func(context.Context, LoadBalancerProbeListResult) (LoadBalancerProbeListResult, error)) LoadBalancerProbeListResultPage {
+	return original.NewLoadBalancerProbeListResultPage(getNextPage)
+}
 func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
 	return original.NewLoadBalancerProbesClient(subscriptionID)
 }
@@ -1226,11 +1330,212 @@ func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLocalNetworkGatewayListResultIterator(page LocalNetworkGatewayListResultPage) LocalNetworkGatewayListResultIterator {
+	return original.NewLocalNetworkGatewayListResultIterator(page)
+}
+func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
+	return original.NewLocalNetworkGatewayListResultPage(getNextPage)
+}
 func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClient(subscriptionID)
 }
 func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPacketCapturesClient(subscriptionID string) PacketCapturesClient {
+	return original.NewPacketCapturesClient(subscriptionID)
+}
+func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) PacketCapturesClient {
+	return original.NewPacketCapturesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPublicIPAddressListResultIterator(page PublicIPAddressListResultPage) PublicIPAddressListResultIterator {
+	return original.NewPublicIPAddressListResultIterator(page)
+}
+func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
+	return original.NewPublicIPAddressListResultPage(getNextPage)
+}
+func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClient(subscriptionID)
+}
+func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRouteFilterListResultIterator(page RouteFilterListResultPage) RouteFilterListResultIterator {
+	return original.NewRouteFilterListResultIterator(page)
+}
+func NewRouteFilterListResultPage(getNextPage func(context.Context, RouteFilterListResult) (RouteFilterListResult, error)) RouteFilterListResultPage {
+	return original.NewRouteFilterListResultPage(getNextPage)
+}
+func NewRouteFilterRuleListResultIterator(page RouteFilterRuleListResultPage) RouteFilterRuleListResultIterator {
+	return original.NewRouteFilterRuleListResultIterator(page)
+}
+func NewRouteFilterRuleListResultPage(getNextPage func(context.Context, RouteFilterRuleListResult) (RouteFilterRuleListResult, error)) RouteFilterRuleListResultPage {
+	return original.NewRouteFilterRuleListResultPage(getNextPage)
+}
+func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
+	return original.NewRouteFilterRulesClient(subscriptionID)
+}
+func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string) RouteFilterRulesClient {
+	return original.NewRouteFilterRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRouteFiltersClient(subscriptionID string) RouteFiltersClient {
+	return original.NewRouteFiltersClient(subscriptionID)
+}
+func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) RouteFiltersClient {
+	return original.NewRouteFiltersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRouteListResultIterator(page RouteListResultPage) RouteListResultIterator {
+	return original.NewRouteListResultIterator(page)
+}
+func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
+	return original.NewRouteListResultPage(getNextPage)
+}
+func NewRouteTableListResultIterator(page RouteTableListResultPage) RouteTableListResultIterator {
+	return original.NewRouteTableListResultIterator(page)
+}
+func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
+	return original.NewRouteTableListResultPage(getNextPage)
+}
+func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
+	return original.NewRouteTablesClient(subscriptionID)
+}
+func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) RouteTablesClient {
+	return original.NewRouteTablesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoutesClient(subscriptionID string) RoutesClient {
+	return original.NewRoutesClient(subscriptionID)
+}
+func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
+	return original.NewRoutesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecurityGroupListResultIterator(page SecurityGroupListResultPage) SecurityGroupListResultIterator {
+	return original.NewSecurityGroupListResultIterator(page)
+}
+func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
+	return original.NewSecurityGroupListResultPage(getNextPage)
+}
+func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
+	return original.NewSecurityGroupsClient(subscriptionID)
+}
+func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
+	return original.NewSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecurityRuleListResultIterator(page SecurityRuleListResultPage) SecurityRuleListResultIterator {
+	return original.NewSecurityRuleListResultIterator(page)
+}
+func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
+	return original.NewSecurityRuleListResultPage(getNextPage)
+}
+func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
+	return original.NewSecurityRulesClient(subscriptionID)
+}
+func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
+	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubnetListResultIterator(page SubnetListResultPage) SubnetListResultIterator {
+	return original.NewSubnetListResultIterator(page)
+}
+func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
+	return original.NewSubnetListResultPage(getNextPage)
+}
+func NewSubnetsClient(subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClient(subscriptionID)
+}
+func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
+}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIterator {
+	return original.NewUsagesListResultIterator(page)
+}
+func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
+	return original.NewUsagesListResultPage(getNextPage)
+}
+func NewVirtualNetworkGatewayConnectionListResultIterator(page VirtualNetworkGatewayConnectionListResultPage) VirtualNetworkGatewayConnectionListResultIterator {
+	return original.NewVirtualNetworkGatewayConnectionListResultIterator(page)
+}
+func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
+	return original.NewVirtualNetworkGatewayConnectionListResultPage(getNextPage)
+}
+func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
+	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
+}
+func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
+	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkGatewayListConnectionsResultIterator(page VirtualNetworkGatewayListConnectionsResultPage) VirtualNetworkGatewayListConnectionsResultIterator {
+	return original.NewVirtualNetworkGatewayListConnectionsResultIterator(page)
+}
+func NewVirtualNetworkGatewayListConnectionsResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListConnectionsResult) (VirtualNetworkGatewayListConnectionsResult, error)) VirtualNetworkGatewayListConnectionsResultPage {
+	return original.NewVirtualNetworkGatewayListConnectionsResultPage(getNextPage)
+}
+func NewVirtualNetworkGatewayListResultIterator(page VirtualNetworkGatewayListResultPage) VirtualNetworkGatewayListResultIterator {
+	return original.NewVirtualNetworkGatewayListResultIterator(page)
+}
+func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
+	return original.NewVirtualNetworkGatewayListResultPage(getNextPage)
+}
+func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
+}
+func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkListResultIterator(page VirtualNetworkListResultPage) VirtualNetworkListResultIterator {
+	return original.NewVirtualNetworkListResultIterator(page)
+}
+func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
+	return original.NewVirtualNetworkListResultPage(getNextPage)
+}
+func NewVirtualNetworkListUsageResultIterator(page VirtualNetworkListUsageResultPage) VirtualNetworkListUsageResultIterator {
+	return original.NewVirtualNetworkListUsageResultIterator(page)
+}
+func NewVirtualNetworkListUsageResultPage(getNextPage func(context.Context, VirtualNetworkListUsageResult) (VirtualNetworkListUsageResult, error)) VirtualNetworkListUsageResultPage {
+	return original.NewVirtualNetworkListUsageResultPage(getNextPage)
+}
+func NewVirtualNetworkPeeringListResultIterator(page VirtualNetworkPeeringListResultPage) VirtualNetworkPeeringListResultIterator {
+	return original.NewVirtualNetworkPeeringListResultIterator(page)
+}
+func NewVirtualNetworkPeeringListResultPage(getNextPage func(context.Context, VirtualNetworkPeeringListResult) (VirtualNetworkPeeringListResult, error)) VirtualNetworkPeeringListResultPage {
+	return original.NewVirtualNetworkPeeringListResultPage(getNextPage)
+}
+func NewVirtualNetworkPeeringsClient(subscriptionID string) VirtualNetworkPeeringsClient {
+	return original.NewVirtualNetworkPeeringsClient(subscriptionID)
+}
+func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkPeeringsClient {
+	return original.NewVirtualNetworkPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClient(subscriptionID)
+}
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWatchersClient(subscriptionID string) WatchersClient {
+	return original.NewWatchersClient(subscriptionID)
+}
+func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
+	return original.NewWatchersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessValues() []Access {
 	return original.PossibleAccessValues()
@@ -1325,23 +1630,23 @@ func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
 	return original.PossibleExpressRouteCircuitSkuTierValues()
 }
+func PossibleIPAllocationMethodValues() []IPAllocationMethod {
+	return original.PossibleIPAllocationMethodValues()
+}
+func PossibleIPVersionValues() []IPVersion {
+	return original.PossibleIPVersionValues()
+}
 func PossibleIkeEncryptionValues() []IkeEncryption {
 	return original.PossibleIkeEncryptionValues()
 }
 func PossibleIkeIntegrityValues() []IkeIntegrity {
 	return original.PossibleIkeIntegrityValues()
 }
-func PossibleIPAllocationMethodValues() []IPAllocationMethod {
-	return original.PossibleIPAllocationMethodValues()
-}
 func PossibleIpsecEncryptionValues() []IpsecEncryption {
 	return original.PossibleIpsecEncryptionValues()
 }
 func PossibleIpsecIntegrityValues() []IpsecIntegrity {
 	return original.PossibleIpsecIntegrityValues()
-}
-func PossibleIPVersionValues() []IPVersion {
-	return original.PossibleIPVersionValues()
 }
 func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
@@ -1433,315 +1738,9 @@ func PossibleVpnClientProtocolValues() []VpnClientProtocol {
 func PossibleVpnTypeValues() []VpnType {
 	return original.PossibleVpnTypeValues()
 }
-func NewApplicationGatewayAvailableSslPredefinedPoliciesIterator(page ApplicationGatewayAvailableSslPredefinedPoliciesPage) ApplicationGatewayAvailableSslPredefinedPoliciesIterator {
-	return original.NewApplicationGatewayAvailableSslPredefinedPoliciesIterator(page)
-}
-func NewApplicationGatewayAvailableSslPredefinedPoliciesPage(getNextPage func(context.Context, ApplicationGatewayAvailableSslPredefinedPolicies) (ApplicationGatewayAvailableSslPredefinedPolicies, error)) ApplicationGatewayAvailableSslPredefinedPoliciesPage {
-	return original.NewApplicationGatewayAvailableSslPredefinedPoliciesPage(getNextPage)
-}
-func NewApplicationGatewayListResultIterator(page ApplicationGatewayListResultPage) ApplicationGatewayListResultIterator {
-	return original.NewApplicationGatewayListResultIterator(page)
-}
-func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
-	return original.NewApplicationGatewayListResultPage(getNextPage)
-}
-func NewApplicationSecurityGroupListResultIterator(page ApplicationSecurityGroupListResultPage) ApplicationSecurityGroupListResultIterator {
-	return original.NewApplicationSecurityGroupListResultIterator(page)
-}
-func NewApplicationSecurityGroupListResultPage(getNextPage func(context.Context, ApplicationSecurityGroupListResult) (ApplicationSecurityGroupListResult, error)) ApplicationSecurityGroupListResultPage {
-	return original.NewApplicationSecurityGroupListResultPage(getNextPage)
-}
-func NewAuthorizationListResultIterator(page AuthorizationListResultPage) AuthorizationListResultIterator {
-	return original.NewAuthorizationListResultIterator(page)
-}
-func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
-	return original.NewAuthorizationListResultPage(getNextPage)
-}
-func NewBgpServiceCommunityListResultIterator(page BgpServiceCommunityListResultPage) BgpServiceCommunityListResultIterator {
-	return original.NewBgpServiceCommunityListResultIterator(page)
-}
-func NewBgpServiceCommunityListResultPage(getNextPage func(context.Context, BgpServiceCommunityListResult) (BgpServiceCommunityListResult, error)) BgpServiceCommunityListResultPage {
-	return original.NewBgpServiceCommunityListResultPage(getNextPage)
-}
-func NewEndpointServicesListResultIterator(page EndpointServicesListResultPage) EndpointServicesListResultIterator {
-	return original.NewEndpointServicesListResultIterator(page)
-}
-func NewEndpointServicesListResultPage(getNextPage func(context.Context, EndpointServicesListResult) (EndpointServicesListResult, error)) EndpointServicesListResultPage {
-	return original.NewEndpointServicesListResultPage(getNextPage)
-}
-func NewExpressRouteCircuitListResultIterator(page ExpressRouteCircuitListResultPage) ExpressRouteCircuitListResultIterator {
-	return original.NewExpressRouteCircuitListResultIterator(page)
-}
-func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
-	return original.NewExpressRouteCircuitListResultPage(getNextPage)
-}
-func NewExpressRouteCircuitPeeringListResultIterator(page ExpressRouteCircuitPeeringListResultPage) ExpressRouteCircuitPeeringListResultIterator {
-	return original.NewExpressRouteCircuitPeeringListResultIterator(page)
-}
-func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
-	return original.NewExpressRouteCircuitPeeringListResultPage(getNextPage)
-}
-func NewExpressRouteServiceProviderListResultIterator(page ExpressRouteServiceProviderListResultPage) ExpressRouteServiceProviderListResultIterator {
-	return original.NewExpressRouteServiceProviderListResultIterator(page)
-}
-func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
-	return original.NewExpressRouteServiceProviderListResultPage(getNextPage)
-}
-func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
-	return original.NewInboundNatRuleListResultIterator(page)
-}
-func NewInboundNatRuleListResultPage(getNextPage func(context.Context, InboundNatRuleListResult) (InboundNatRuleListResult, error)) InboundNatRuleListResultPage {
-	return original.NewInboundNatRuleListResultPage(getNextPage)
-}
-func NewInterfaceIPConfigurationListResultIterator(page InterfaceIPConfigurationListResultPage) InterfaceIPConfigurationListResultIterator {
-	return original.NewInterfaceIPConfigurationListResultIterator(page)
-}
-func NewInterfaceIPConfigurationListResultPage(getNextPage func(context.Context, InterfaceIPConfigurationListResult) (InterfaceIPConfigurationListResult, error)) InterfaceIPConfigurationListResultPage {
-	return original.NewInterfaceIPConfigurationListResultPage(getNextPage)
-}
-func NewInterfaceListResultIterator(page InterfaceListResultPage) InterfaceListResultIterator {
-	return original.NewInterfaceListResultIterator(page)
-}
-func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
-	return original.NewInterfaceListResultPage(getNextPage)
-}
-func NewInterfaceLoadBalancerListResultIterator(page InterfaceLoadBalancerListResultPage) InterfaceLoadBalancerListResultIterator {
-	return original.NewInterfaceLoadBalancerListResultIterator(page)
-}
-func NewInterfaceLoadBalancerListResultPage(getNextPage func(context.Context, InterfaceLoadBalancerListResult) (InterfaceLoadBalancerListResult, error)) InterfaceLoadBalancerListResultPage {
-	return original.NewInterfaceLoadBalancerListResultPage(getNextPage)
-}
-func NewLoadBalancerBackendAddressPoolListResultIterator(page LoadBalancerBackendAddressPoolListResultPage) LoadBalancerBackendAddressPoolListResultIterator {
-	return original.NewLoadBalancerBackendAddressPoolListResultIterator(page)
-}
-func NewLoadBalancerBackendAddressPoolListResultPage(getNextPage func(context.Context, LoadBalancerBackendAddressPoolListResult) (LoadBalancerBackendAddressPoolListResult, error)) LoadBalancerBackendAddressPoolListResultPage {
-	return original.NewLoadBalancerBackendAddressPoolListResultPage(getNextPage)
-}
-func NewLoadBalancerFrontendIPConfigurationListResultIterator(page LoadBalancerFrontendIPConfigurationListResultPage) LoadBalancerFrontendIPConfigurationListResultIterator {
-	return original.NewLoadBalancerFrontendIPConfigurationListResultIterator(page)
-}
-func NewLoadBalancerFrontendIPConfigurationListResultPage(getNextPage func(context.Context, LoadBalancerFrontendIPConfigurationListResult) (LoadBalancerFrontendIPConfigurationListResult, error)) LoadBalancerFrontendIPConfigurationListResultPage {
-	return original.NewLoadBalancerFrontendIPConfigurationListResultPage(getNextPage)
-}
-func NewLoadBalancerListResultIterator(page LoadBalancerListResultPage) LoadBalancerListResultIterator {
-	return original.NewLoadBalancerListResultIterator(page)
-}
-func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
-	return original.NewLoadBalancerListResultPage(getNextPage)
-}
-func NewLoadBalancerLoadBalancingRuleListResultIterator(page LoadBalancerLoadBalancingRuleListResultPage) LoadBalancerLoadBalancingRuleListResultIterator {
-	return original.NewLoadBalancerLoadBalancingRuleListResultIterator(page)
-}
-func NewLoadBalancerLoadBalancingRuleListResultPage(getNextPage func(context.Context, LoadBalancerLoadBalancingRuleListResult) (LoadBalancerLoadBalancingRuleListResult, error)) LoadBalancerLoadBalancingRuleListResultPage {
-	return original.NewLoadBalancerLoadBalancingRuleListResultPage(getNextPage)
-}
-func NewLoadBalancerProbeListResultIterator(page LoadBalancerProbeListResultPage) LoadBalancerProbeListResultIterator {
-	return original.NewLoadBalancerProbeListResultIterator(page)
-}
-func NewLoadBalancerProbeListResultPage(getNextPage func(context.Context, LoadBalancerProbeListResult) (LoadBalancerProbeListResult, error)) LoadBalancerProbeListResultPage {
-	return original.NewLoadBalancerProbeListResultPage(getNextPage)
-}
-func NewLocalNetworkGatewayListResultIterator(page LocalNetworkGatewayListResultPage) LocalNetworkGatewayListResultIterator {
-	return original.NewLocalNetworkGatewayListResultIterator(page)
-}
-func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
-	return original.NewLocalNetworkGatewayListResultPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewPublicIPAddressListResultIterator(page PublicIPAddressListResultPage) PublicIPAddressListResultIterator {
-	return original.NewPublicIPAddressListResultIterator(page)
-}
-func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
-	return original.NewPublicIPAddressListResultPage(getNextPage)
-}
-func NewRouteFilterListResultIterator(page RouteFilterListResultPage) RouteFilterListResultIterator {
-	return original.NewRouteFilterListResultIterator(page)
-}
-func NewRouteFilterListResultPage(getNextPage func(context.Context, RouteFilterListResult) (RouteFilterListResult, error)) RouteFilterListResultPage {
-	return original.NewRouteFilterListResultPage(getNextPage)
-}
-func NewRouteFilterRuleListResultIterator(page RouteFilterRuleListResultPage) RouteFilterRuleListResultIterator {
-	return original.NewRouteFilterRuleListResultIterator(page)
-}
-func NewRouteFilterRuleListResultPage(getNextPage func(context.Context, RouteFilterRuleListResult) (RouteFilterRuleListResult, error)) RouteFilterRuleListResultPage {
-	return original.NewRouteFilterRuleListResultPage(getNextPage)
-}
-func NewRouteListResultIterator(page RouteListResultPage) RouteListResultIterator {
-	return original.NewRouteListResultIterator(page)
-}
-func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
-	return original.NewRouteListResultPage(getNextPage)
-}
-func NewRouteTableListResultIterator(page RouteTableListResultPage) RouteTableListResultIterator {
-	return original.NewRouteTableListResultIterator(page)
-}
-func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
-	return original.NewRouteTableListResultPage(getNextPage)
-}
-func NewSecurityGroupListResultIterator(page SecurityGroupListResultPage) SecurityGroupListResultIterator {
-	return original.NewSecurityGroupListResultIterator(page)
-}
-func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
-	return original.NewSecurityGroupListResultPage(getNextPage)
-}
-func NewSecurityRuleListResultIterator(page SecurityRuleListResultPage) SecurityRuleListResultIterator {
-	return original.NewSecurityRuleListResultIterator(page)
-}
-func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
-	return original.NewSecurityRuleListResultPage(getNextPage)
-}
-func NewSubnetListResultIterator(page SubnetListResultPage) SubnetListResultIterator {
-	return original.NewSubnetListResultIterator(page)
-}
-func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
-	return original.NewSubnetListResultPage(getNextPage)
-}
-func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIterator {
-	return original.NewUsagesListResultIterator(page)
-}
-func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
-	return original.NewUsagesListResultPage(getNextPage)
-}
-func NewVirtualNetworkGatewayConnectionListResultIterator(page VirtualNetworkGatewayConnectionListResultPage) VirtualNetworkGatewayConnectionListResultIterator {
-	return original.NewVirtualNetworkGatewayConnectionListResultIterator(page)
-}
-func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
-	return original.NewVirtualNetworkGatewayConnectionListResultPage(getNextPage)
-}
-func NewVirtualNetworkGatewayListConnectionsResultIterator(page VirtualNetworkGatewayListConnectionsResultPage) VirtualNetworkGatewayListConnectionsResultIterator {
-	return original.NewVirtualNetworkGatewayListConnectionsResultIterator(page)
-}
-func NewVirtualNetworkGatewayListConnectionsResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListConnectionsResult) (VirtualNetworkGatewayListConnectionsResult, error)) VirtualNetworkGatewayListConnectionsResultPage {
-	return original.NewVirtualNetworkGatewayListConnectionsResultPage(getNextPage)
-}
-func NewVirtualNetworkGatewayListResultIterator(page VirtualNetworkGatewayListResultPage) VirtualNetworkGatewayListResultIterator {
-	return original.NewVirtualNetworkGatewayListResultIterator(page)
-}
-func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
-	return original.NewVirtualNetworkGatewayListResultPage(getNextPage)
-}
-func NewVirtualNetworkListResultIterator(page VirtualNetworkListResultPage) VirtualNetworkListResultIterator {
-	return original.NewVirtualNetworkListResultIterator(page)
-}
-func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
-	return original.NewVirtualNetworkListResultPage(getNextPage)
-}
-func NewVirtualNetworkListUsageResultIterator(page VirtualNetworkListUsageResultPage) VirtualNetworkListUsageResultIterator {
-	return original.NewVirtualNetworkListUsageResultIterator(page)
-}
-func NewVirtualNetworkListUsageResultPage(getNextPage func(context.Context, VirtualNetworkListUsageResult) (VirtualNetworkListUsageResult, error)) VirtualNetworkListUsageResultPage {
-	return original.NewVirtualNetworkListUsageResultPage(getNextPage)
-}
-func NewVirtualNetworkPeeringListResultIterator(page VirtualNetworkPeeringListResultPage) VirtualNetworkPeeringListResultIterator {
-	return original.NewVirtualNetworkPeeringListResultIterator(page)
-}
-func NewVirtualNetworkPeeringListResultPage(getNextPage func(context.Context, VirtualNetworkPeeringListResult) (VirtualNetworkPeeringListResult, error)) VirtualNetworkPeeringListResultPage {
-	return original.NewVirtualNetworkPeeringListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPacketCapturesClient(subscriptionID string) PacketCapturesClient {
-	return original.NewPacketCapturesClient(subscriptionID)
-}
-func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) PacketCapturesClient {
-	return original.NewPacketCapturesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClient(subscriptionID)
-}
-func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
-	return original.NewRouteFilterRulesClient(subscriptionID)
-}
-func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string) RouteFilterRulesClient {
-	return original.NewRouteFilterRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRouteFiltersClient(subscriptionID string) RouteFiltersClient {
-	return original.NewRouteFiltersClient(subscriptionID)
-}
-func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) RouteFiltersClient {
-	return original.NewRouteFiltersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoutesClient(subscriptionID string) RoutesClient {
-	return original.NewRoutesClient(subscriptionID)
-}
-func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
-	return original.NewRoutesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
-	return original.NewRouteTablesClient(subscriptionID)
-}
-func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) RouteTablesClient {
-	return original.NewRouteTablesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
-	return original.NewSecurityGroupsClient(subscriptionID)
-}
-func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
-	return original.NewSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
-	return original.NewSecurityRulesClient(subscriptionID)
-}
-func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
-	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSubnetsClient(subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClient(subscriptionID)
-}
-func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
-}
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
-}
-func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
-}
-func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
-}
-func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualNetworkPeeringsClient(subscriptionID string) VirtualNetworkPeeringsClient {
-	return original.NewVirtualNetworkPeeringsClient(subscriptionID)
-}
-func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkPeeringsClient {
-	return original.NewVirtualNetworkPeeringsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClient(subscriptionID)
-}
-func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWatchersClient(subscriptionID string) WatchersClient {
-	return original.NewWatchersClient(subscriptionID)
-}
-func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
-	return original.NewWatchersClientWithBaseURI(baseURI, subscriptionID)
 }

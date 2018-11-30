@@ -21,5 +21,5 @@ package databricksapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/databricks/mgmt/2018-04-01/databricks/databricksapi"
 
-type WorkspacesClientAPI = original.WorkspacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type WorkspacesClientAPI = original.WorkspacesClientAPI

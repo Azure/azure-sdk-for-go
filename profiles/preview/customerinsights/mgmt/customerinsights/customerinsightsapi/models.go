@@ -21,20 +21,20 @@ package customerinsightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights/customerinsightsapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type HubsClientAPI = original.HubsClientAPI
-type ProfilesClientAPI = original.ProfilesClientAPI
-type InteractionsClientAPI = original.InteractionsClientAPI
-type RelationshipsClientAPI = original.RelationshipsClientAPI
-type RelationshipLinksClientAPI = original.RelationshipLinksClientAPI
 type AuthorizationPoliciesClientAPI = original.AuthorizationPoliciesClientAPI
-type ConnectorsClientAPI = original.ConnectorsClientAPI
 type ConnectorMappingsClientAPI = original.ConnectorMappingsClientAPI
-type KpiClientAPI = original.KpiClientAPI
-type WidgetTypesClientAPI = original.WidgetTypesClientAPI
-type ViewsClientAPI = original.ViewsClientAPI
-type LinksClientAPI = original.LinksClientAPI
-type RolesClientAPI = original.RolesClientAPI
-type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
+type ConnectorsClientAPI = original.ConnectorsClientAPI
+type HubsClientAPI = original.HubsClientAPI
 type ImagesClientAPI = original.ImagesClientAPI
+type InteractionsClientAPI = original.InteractionsClientAPI
+type KpiClientAPI = original.KpiClientAPI
+type LinksClientAPI = original.LinksClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
 type PredictionsClientAPI = original.PredictionsClientAPI
+type ProfilesClientAPI = original.ProfilesClientAPI
+type RelationshipLinksClientAPI = original.RelationshipLinksClientAPI
+type RelationshipsClientAPI = original.RelationshipsClientAPI
+type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
+type RolesClientAPI = original.RolesClientAPI
+type ViewsClientAPI = original.ViewsClientAPI
+type WidgetTypesClientAPI = original.WidgetTypesClientAPI

@@ -21,19 +21,19 @@ package insightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights/insightsapi"
 
-type OperationsClientAPI = original.OperationsClientAPI
-type AnnotationsClientAPI = original.AnnotationsClientAPI
 type APIKeysClientAPI = original.APIKeysClientAPI
-type ExportConfigurationsClientAPI = original.ExportConfigurationsClientAPI
-type ComponentCurrentBillingFeaturesClientAPI = original.ComponentCurrentBillingFeaturesClientAPI
-type ComponentQuotaStatusClientAPI = original.ComponentQuotaStatusClientAPI
-type ComponentFeatureCapabilitiesClientAPI = original.ComponentFeatureCapabilitiesClientAPI
+type AnalyticsItemsClientAPI = original.AnalyticsItemsClientAPI
+type AnnotationsClientAPI = original.AnnotationsClientAPI
 type ComponentAvailableFeaturesClientAPI = original.ComponentAvailableFeaturesClientAPI
-type ProactiveDetectionConfigurationsClientAPI = original.ProactiveDetectionConfigurationsClientAPI
+type ComponentCurrentBillingFeaturesClientAPI = original.ComponentCurrentBillingFeaturesClientAPI
+type ComponentFeatureCapabilitiesClientAPI = original.ComponentFeatureCapabilitiesClientAPI
+type ComponentQuotaStatusClientAPI = original.ComponentQuotaStatusClientAPI
 type ComponentsClientAPI = original.ComponentsClientAPI
-type WorkItemConfigurationsClientAPI = original.WorkItemConfigurationsClientAPI
+type ExportConfigurationsClientAPI = original.ExportConfigurationsClientAPI
 type FavoritesClientAPI = original.FavoritesClientAPI
+type OperationsClientAPI = original.OperationsClientAPI
+type ProactiveDetectionConfigurationsClientAPI = original.ProactiveDetectionConfigurationsClientAPI
 type WebTestLocationsClientAPI = original.WebTestLocationsClientAPI
 type WebTestsClientAPI = original.WebTestsClientAPI
-type AnalyticsItemsClientAPI = original.AnalyticsItemsClientAPI
+type WorkItemConfigurationsClientAPI = original.WorkItemConfigurationsClientAPI
 type WorkbooksClientAPI = original.WorkbooksClientAPI

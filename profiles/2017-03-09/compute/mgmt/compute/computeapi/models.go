@@ -22,11 +22,11 @@ package computeapi
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2016-03-30/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
+type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI
 type VirtualMachineExtensionsClientAPI = original.VirtualMachineExtensionsClientAPI
-type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI
 type VirtualMachineImagesClientAPI = original.VirtualMachineImagesClientAPI
-type UsageClientAPI = original.UsageClientAPI
-type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI
-type VirtualMachineScaleSetsClientAPI = original.VirtualMachineScaleSetsClientAPI
 type VirtualMachineScaleSetVMsClientAPI = original.VirtualMachineScaleSetVMsClientAPI
+type VirtualMachineScaleSetsClientAPI = original.VirtualMachineScaleSetsClientAPI
+type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI
+type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI

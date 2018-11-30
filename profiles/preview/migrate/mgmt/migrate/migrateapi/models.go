@@ -21,11 +21,11 @@ package migrateapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2018-02-02/migrate/migrateapi"
 
-type LocationClientAPI = original.LocationClientAPI
-type AssessmentOptionsClientAPI = original.AssessmentOptionsClientAPI
-type ProjectsClientAPI = original.ProjectsClientAPI
-type MachinesClientAPI = original.MachinesClientAPI
-type GroupsClientAPI = original.GroupsClientAPI
-type AssessmentsClientAPI = original.AssessmentsClientAPI
 type AssessedMachinesClientAPI = original.AssessedMachinesClientAPI
+type AssessmentOptionsClientAPI = original.AssessmentOptionsClientAPI
+type AssessmentsClientAPI = original.AssessmentsClientAPI
+type GroupsClientAPI = original.GroupsClientAPI
+type LocationClientAPI = original.LocationClientAPI
+type MachinesClientAPI = original.MachinesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ProjectsClientAPI = original.ProjectsClientAPI

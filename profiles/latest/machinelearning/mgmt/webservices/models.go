@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type AssetType = original.AssetType
 
 const (
@@ -124,7 +123,10 @@ const (
 type AssetItem = original.AssetItem
 type AsyncOperationErrorInfo = original.AsyncOperationErrorInfo
 type AsyncOperationStatus = original.AsyncOperationStatus
+type BaseClient = original.BaseClient
+type BasicProperties = original.BasicProperties
 type BlobLocation = original.BlobLocation
+type Client = original.Client
 type ColumnSpecification = original.ColumnSpecification
 type CommitmentPlan = original.CommitmentPlan
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
@@ -144,13 +146,13 @@ type ModuleAssetParameter = original.ModuleAssetParameter
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
+type OperationsClient = original.OperationsClient
 type OutputPort = original.OutputPort
 type PaginatedWebServicesList = original.PaginatedWebServicesList
 type PaginatedWebServicesListIterator = original.PaginatedWebServicesListIterator
 type PaginatedWebServicesListPage = original.PaginatedWebServicesListPage
 type Parameter = original.Parameter
 type PatchFuture = original.PatchFuture
-type BasicProperties = original.BasicProperties
 type Properties = original.Properties
 type PropertiesForGraph = original.PropertiesForGraph
 type RealtimeConfiguration = original.RealtimeConfiguration
@@ -160,11 +162,27 @@ type ServiceInputOutputSpecification = original.ServiceInputOutputSpecification
 type StorageAccount = original.StorageAccount
 type TableSpecification = original.TableSpecification
 type WebService = original.WebService
-type OperationsClient = original.OperationsClient
-type Client = original.Client
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPaginatedWebServicesListIterator(page PaginatedWebServicesListPage) PaginatedWebServicesListIterator {
+	return original.NewPaginatedWebServicesListIterator(page)
+}
+func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
+	return original.NewPaginatedWebServicesListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -196,27 +214,9 @@ func PossibleParameterTypeValues() []ParameterType {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
-func NewPaginatedWebServicesListIterator(page PaginatedWebServicesListPage) PaginatedWebServicesListIterator {
-	return original.NewPaginatedWebServicesListIterator(page)
-}
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return original.NewPaginatedWebServicesListPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }

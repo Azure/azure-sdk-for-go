@@ -29,10 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
-type FileServersClient = original.FileServersClient
-type JobsClient = original.JobsClient
 type AllocationState = original.AllocationState
 
 const (
@@ -131,6 +127,8 @@ type AutoScaleSettings = original.AutoScaleSettings
 type AzureBlobFileSystemReference = original.AzureBlobFileSystemReference
 type AzureFileShareReference = original.AzureFileShareReference
 type AzureStorageCredentialsInfo = original.AzureStorageCredentialsInfo
+type BaseClient = original.BaseClient
+type CNTKsettings = original.CNTKsettings
 type Caffe2Settings = original.Caffe2Settings
 type CaffeSettings = original.CaffeSettings
 type ChainerSettings = original.ChainerSettings
@@ -143,11 +141,11 @@ type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
 type ClusterListResultPage = original.ClusterListResultPage
 type ClusterProperties = original.ClusterProperties
-type ClustersCreateFuture = original.ClustersCreateFuture
-type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClusterUpdateParameters = original.ClusterUpdateParameters
 type ClusterUpdateProperties = original.ClusterUpdateProperties
-type CNTKsettings = original.CNTKsettings
+type ClustersClient = original.ClustersClient
+type ClustersCreateFuture = original.ClustersCreateFuture
+type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ContainerSettings = original.ContainerSettings
 type CustomToolkitSettings = original.CustomToolkitSettings
 type DataDisks = original.DataDisks
@@ -166,6 +164,7 @@ type FileServerListResultIterator = original.FileServerListResultIterator
 type FileServerListResultPage = original.FileServerListResultPage
 type FileServerProperties = original.FileServerProperties
 type FileServerReference = original.FileServerReference
+type FileServersClient = original.FileServersClient
 type FileServersCreateFuture = original.FileServersCreateFuture
 type FileServersDeleteFuture = original.FileServersDeleteFuture
 type ImageReference = original.ImageReference
@@ -182,6 +181,7 @@ type JobPreparation = original.JobPreparation
 type JobProperties = original.JobProperties
 type JobPropertiesConstraints = original.JobPropertiesConstraints
 type JobPropertiesExecutionInfo = original.JobPropertiesExecutionInfo
+type JobsClient = original.JobsClient
 type JobsCreateFuture = original.JobsCreateFuture
 type JobsDeleteFuture = original.JobsDeleteFuture
 type JobsTerminateFuture = original.JobsTerminateFuture
@@ -199,6 +199,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type OutputDirectory = original.OutputDirectory
 type PrivateRegistryCredentials = original.PrivateRegistryCredentials
 type RemoteLoginInformation = original.RemoteLoginInformation
@@ -207,20 +208,22 @@ type RemoteLoginInformationListResultIterator = original.RemoteLoginInformationL
 type RemoteLoginInformationListResultPage = original.RemoteLoginInformationListResultPage
 type Resource = original.Resource
 type ResourceID = original.ResourceID
+type SSHConfiguration = original.SSHConfiguration
 type ScaleSettings = original.ScaleSettings
 type SetupTask = original.SetupTask
-type SSHConfiguration = original.SSHConfiguration
 type TensorFlowSettings = original.TensorFlowSettings
 type UnmanagedFileSystemReference = original.UnmanagedFileSystemReference
 type UserAccountSettings = original.UserAccountSettings
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
-type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return original.NewClusterListResultIterator(page)
+}
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return original.NewClusterListResultPage(getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -228,17 +231,56 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
+	return original.NewFileListResultIterator(page)
+}
+func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return original.NewFileListResultPage(getNextPage)
+}
+func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
+	return original.NewFileServerListResultIterator(page)
+}
+func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return original.NewFileServerListResultPage(getNextPage)
+}
 func NewFileServersClient(subscriptionID string) FileServersClient {
 	return original.NewFileServersClient(subscriptionID)
 }
 func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) FileServersClient {
 	return original.NewFileServersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
+	return original.NewJobListResultIterator(page)
+}
+func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return original.NewJobListResultPage(getNextPage)
+}
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
+	return original.NewRemoteLoginInformationListResultIterator(page)
+}
+func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return original.NewRemoteLoginInformationListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
@@ -272,48 +314,6 @@ func PossibleToolTypeValues() []ToolType {
 }
 func PossibleVMPriorityValues() []VMPriority {
 	return original.PossibleVMPriorityValues()
-}
-func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
-	return original.NewClusterListResultIterator(page)
-}
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return original.NewClusterListResultPage(getNextPage)
-}
-func NewFileListResultIterator(page FileListResultPage) FileListResultIterator {
-	return original.NewFileListResultIterator(page)
-}
-func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
-	return original.NewFileListResultPage(getNextPage)
-}
-func NewFileServerListResultIterator(page FileServerListResultPage) FileServerListResultIterator {
-	return original.NewFileServerListResultIterator(page)
-}
-func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
-	return original.NewFileServerListResultPage(getNextPage)
-}
-func NewJobListResultIterator(page JobListResultPage) JobListResultIterator {
-	return original.NewJobListResultIterator(page)
-}
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return original.NewJobListResultPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewRemoteLoginInformationListResultIterator(page RemoteLoginInformationListResultPage) RemoteLoginInformationListResultIterator {
-	return original.NewRemoteLoginInformationListResultIterator(page)
-}
-func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
-	return original.NewRemoteLoginInformationListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -25,17 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
 )
 
-type AccountClient = original.AccountClient
-type ApplicationClient = original.ApplicationClient
-type ApplicationPackageClient = original.ApplicationPackageClient
-type CertificateClient = original.CertificateClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type LocationClient = original.LocationClient
 type AccountKeyType = original.AccountKeyType
 
 const (
@@ -188,6 +181,7 @@ const (
 )
 
 type Account = original.Account
+type AccountClient = original.AccountClient
 type AccountCreateFuture = original.AccountCreateFuture
 type AccountCreateParameters = original.AccountCreateParameters
 type AccountCreateProperties = original.AccountCreateProperties
@@ -202,8 +196,10 @@ type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountUpdateProperties = original.AccountUpdateProperties
 type ActivateApplicationPackageParameters = original.ActivateApplicationPackageParameters
 type Application = original.Application
+type ApplicationClient = original.ApplicationClient
 type ApplicationCreateParameters = original.ApplicationCreateParameters
 type ApplicationPackage = original.ApplicationPackage
+type ApplicationPackageClient = original.ApplicationPackageClient
 type ApplicationPackageReference = original.ApplicationPackageReference
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
 type AutoScaleRun = original.AutoScaleRun
@@ -212,8 +208,10 @@ type AutoScaleSettings = original.AutoScaleSettings
 type AutoStorageBaseProperties = original.AutoStorageBaseProperties
 type AutoStorageProperties = original.AutoStorageProperties
 type AutoUserSpecification = original.AutoUserSpecification
+type BaseClient = original.BaseClient
 type Certificate = original.Certificate
 type CertificateBaseProperties = original.CertificateBaseProperties
+type CertificateClient = original.CertificateClient
 type CertificateCreateFuture = original.CertificateCreateFuture
 type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
 type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
@@ -243,17 +241,20 @@ type ListCertificatesResultPage = original.ListCertificatesResultPage
 type ListPoolsResult = original.ListPoolsResult
 type ListPoolsResultIterator = original.ListPoolsResultIterator
 type ListPoolsResultPage = original.ListPoolsResultPage
+type LocationClient = original.LocationClient
 type LocationQuota = original.LocationQuota
 type MetadataItem = original.MetadataItem
 type NetworkConfiguration = original.NetworkConfiguration
 type NetworkSecurityGroupRule = original.NetworkSecurityGroupRule
+type OSDisk = original.OSDisk
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type OSDisk = original.OSDisk
+type OperationsClient = original.OperationsClient
 type Pool = original.Pool
+type PoolClient = original.PoolClient
 type PoolCreateFuture = original.PoolCreateFuture
 type PoolDeleteFuture = original.PoolDeleteFuture
 type PoolEndpointConfiguration = original.PoolEndpointConfiguration
@@ -270,14 +271,21 @@ type UserAccount = original.UserAccount
 type UserIdentity = original.UserIdentity
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
-type OperationsClient = original.OperationsClient
-type PoolClient = original.PoolClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewAccountClient(subscriptionID string) AccountClient {
 	return original.NewAccountClient(subscriptionID)
 }
 func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
 	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
 }
 func NewApplicationClient(subscriptionID string) ApplicationClient {
 	return original.NewApplicationClient(subscriptionID)
@@ -297,17 +305,50 @@ func NewCertificateClient(subscriptionID string) CertificateClient {
 func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
 	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewListApplicationsResultIterator(page ListApplicationsResultPage) ListApplicationsResultIterator {
+	return original.NewListApplicationsResultIterator(page)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return original.NewListApplicationsResultPage(getNextPage)
+}
+func NewListCertificatesResultIterator(page ListCertificatesResultPage) ListCertificatesResultIterator {
+	return original.NewListCertificatesResultIterator(page)
+}
+func NewListCertificatesResultPage(getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
+	return original.NewListCertificatesResultPage(getNextPage)
+}
+func NewListPoolsResultIterator(page ListPoolsResultPage) ListPoolsResultIterator {
+	return original.NewListPoolsResultIterator(page)
+}
+func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
+	return original.NewListPoolsResultPage(getNextPage)
 }
 func NewLocationClient(subscriptionID string) LocationClient {
 	return original.NewLocationClient(subscriptionID)
 }
 func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
 	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoolClient(subscriptionID string) PoolClient {
+	return original.NewPoolClient(subscriptionID)
+}
+func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
+	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccountKeyTypeValues() []AccountKeyType {
 	return original.PossibleAccountKeyTypeValues()
@@ -368,48 +409,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
-}
-func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
-	return original.NewAccountListResultIterator(page)
-}
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
-}
-func NewListApplicationsResultIterator(page ListApplicationsResultPage) ListApplicationsResultIterator {
-	return original.NewListApplicationsResultIterator(page)
-}
-func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
-	return original.NewListApplicationsResultPage(getNextPage)
-}
-func NewListCertificatesResultIterator(page ListCertificatesResultPage) ListCertificatesResultIterator {
-	return original.NewListCertificatesResultIterator(page)
-}
-func NewListCertificatesResultPage(getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
-	return original.NewListCertificatesResultPage(getNextPage)
-}
-func NewListPoolsResultIterator(page ListPoolsResultPage) ListPoolsResultIterator {
-	return original.NewListPoolsResultIterator(page)
-}
-func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
-	return original.NewListPoolsResultPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPoolClient(subscriptionID string) PoolClient {
-	return original.NewPoolClient(subscriptionID)
-}
-func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
-	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

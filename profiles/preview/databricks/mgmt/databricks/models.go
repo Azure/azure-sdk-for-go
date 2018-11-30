@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -46,6 +45,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type BaseClient = original.BaseClient
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
 type ErrorResponse = original.ErrorResponse
@@ -54,6 +54,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
@@ -63,21 +64,14 @@ type WorkspaceListResultIterator = original.WorkspaceListResultIterator
 type WorkspaceListResultPage = original.WorkspaceListResultPage
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspaceProviderAuthorization = original.WorkspaceProviderAuthorization
+type WorkspaceUpdate = original.WorkspaceUpdate
+type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
 type WorkspacesUpdateFuture = original.WorkspacesUpdateFuture
-type WorkspaceUpdate = original.WorkspaceUpdate
-type OperationsClient = original.OperationsClient
-type WorkspacesClient = original.WorkspacesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -85,27 +79,33 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
-	return original.NewWorkspaceListResultIterator(page)
-}
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return original.NewWorkspaceListResultPage(getNextPage)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
+	return original.NewWorkspaceListResultIterator(page)
+}
+func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return original.NewWorkspaceListResultPage(getNextPage)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

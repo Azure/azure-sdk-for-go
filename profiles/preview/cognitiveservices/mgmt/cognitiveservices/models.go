@@ -25,14 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 )
 
-type AccountsClient = original.AccountsClient
-type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type KeyName = original.KeyName
 
 const (
@@ -143,6 +139,9 @@ type AccountListResultIterator = original.AccountListResultIterator
 type AccountListResultPage = original.AccountListResultPage
 type AccountProperties = original.AccountProperties
 type AccountUpdateParameters = original.AccountUpdateParameters
+type AccountsClient = original.AccountsClient
+type BaseClient = original.BaseClient
+type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 type CheckSkuAvailabilityParameter = original.CheckSkuAvailabilityParameter
 type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
 type CheckSkuAvailabilityResultList = original.CheckSkuAvailabilityResultList
@@ -154,20 +153,29 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
+type OperationsClient = original.OperationsClient
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
 type ResourceSku = original.ResourceSku
 type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
-type OperationsClient = original.OperationsClient
-type ResourceSkusClient = original.ResourceSkusClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
+}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -180,8 +188,29 @@ func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityCl
 func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
 	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
+	return original.NewOperationEntityListResultIterator(page)
+}
+func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return original.NewResourceSkusResultIterator(page)
+}
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -212,36 +241,6 @@ func PossibleSkuTierValues() []SkuTier {
 }
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
-}
-func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
-	return original.NewAccountListResultIterator(page)
-}
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
-}
-func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
-	return original.NewOperationEntityListResultIterator(page)
-}
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
-}
-func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
-	return original.NewResourceSkusResultIterator(page)
-}
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

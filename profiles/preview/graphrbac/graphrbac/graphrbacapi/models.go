@@ -21,12 +21,12 @@ package graphrbacapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac/graphrbacapi"
 
-type SignedInUserClientAPI = original.SignedInUserClientAPI
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type DeletedApplicationsClientAPI = original.DeletedApplicationsClientAPI
-type GroupsClientAPI = original.GroupsClientAPI
-type ServicePrincipalsClientAPI = original.ServicePrincipalsClientAPI
-type UsersClientAPI = original.UsersClientAPI
-type ObjectsClientAPI = original.ObjectsClientAPI
 type DomainsClientAPI = original.DomainsClientAPI
+type GroupsClientAPI = original.GroupsClientAPI
 type OAuth2ClientAPI = original.OAuth2ClientAPI
+type ObjectsClientAPI = original.ObjectsClientAPI
+type ServicePrincipalsClientAPI = original.ServicePrincipalsClientAPI
+type SignedInUserClientAPI = original.SignedInUserClientAPI
+type UsersClientAPI = original.UsersClientAPI

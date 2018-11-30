@@ -29,13 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type UserAssignedIdentities = original.UserAssignedIdentities
 
 const (
 	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = original.MicrosoftManagedIdentityuserAssignedIdentities
 )
 
+type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Identity = original.Identity
@@ -45,32 +45,20 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
+type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
 type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListResultPage
-type OperationsClient = original.OperationsClient
-type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
-	return original.PossibleUserAssignedIdentitiesValues()
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
-}
-func NewUserAssignedIdentitiesListResultIterator(page UserAssignedIdentitiesListResultPage) UserAssignedIdentitiesListResultIterator {
-	return original.NewUserAssignedIdentitiesListResultIterator(page)
-}
-func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
-	return original.NewUserAssignedIdentitiesListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -83,6 +71,18 @@ func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentiti
 }
 func NewUserAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUserAssignedIdentitiesListResultIterator(page UserAssignedIdentitiesListResultPage) UserAssignedIdentitiesListResultIterator {
+	return original.NewUserAssignedIdentitiesListResultIterator(page)
+}
+func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
+	return original.NewUserAssignedIdentitiesListResultPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
+	return original.PossibleUserAssignedIdentitiesValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

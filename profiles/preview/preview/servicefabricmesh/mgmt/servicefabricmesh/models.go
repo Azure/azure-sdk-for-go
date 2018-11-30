@@ -25,15 +25,10 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh"
 )
 
-type ApplicationClient = original.ApplicationClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
-type CodePackageClient = original.CodePackageClient
-type GatewayClient = original.GatewayClient
 type ApplicationScopedVolumeKind = original.ApplicationScopedVolumeKind
 
 const (
@@ -184,6 +179,7 @@ const (
 )
 
 type AddRemoveReplicaScalingMechanism = original.AddRemoveReplicaScalingMechanism
+type ApplicationClient = original.ApplicationClient
 type ApplicationProperties = original.ApplicationProperties
 type ApplicationResourceDescription = original.ApplicationResourceDescription
 type ApplicationResourceDescriptionList = original.ApplicationResourceDescriptionList
@@ -191,20 +187,27 @@ type ApplicationResourceDescriptionListIterator = original.ApplicationResourceDe
 type ApplicationResourceDescriptionListPage = original.ApplicationResourceDescriptionListPage
 type ApplicationResourceProperties = original.ApplicationResourceProperties
 type ApplicationScopedVolume = original.ApplicationScopedVolume
-type BasicApplicationScopedVolumeCreationParameters = original.BasicApplicationScopedVolumeCreationParameters
 type ApplicationScopedVolumeCreationParameters = original.ApplicationScopedVolumeCreationParameters
 type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk = original.ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk
-type BasicAutoScalingMechanism = original.BasicAutoScalingMechanism
 type AutoScalingMechanism = original.AutoScalingMechanism
-type BasicAutoScalingMetric = original.BasicAutoScalingMetric
 type AutoScalingMetric = original.AutoScalingMetric
 type AutoScalingPolicy = original.AutoScalingPolicy
 type AutoScalingResourceMetric = original.AutoScalingResourceMetric
-type BasicAutoScalingTrigger = original.BasicAutoScalingTrigger
 type AutoScalingTrigger = original.AutoScalingTrigger
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AverageLoadScalingTrigger = original.AverageLoadScalingTrigger
 type AzureInternalMonitoringPipelineSinkDescription = original.AzureInternalMonitoringPipelineSinkDescription
+type BaseClient = original.BaseClient
+type BasicApplicationScopedVolumeCreationParameters = original.BasicApplicationScopedVolumeCreationParameters
+type BasicAutoScalingMechanism = original.BasicAutoScalingMechanism
+type BasicAutoScalingMetric = original.BasicAutoScalingMetric
+type BasicAutoScalingTrigger = original.BasicAutoScalingTrigger
+type BasicDiagnosticsSinkProperties = original.BasicDiagnosticsSinkProperties
+type BasicNetworkResourceProperties = original.BasicNetworkResourceProperties
+type BasicNetworkResourcePropertiesBase = original.BasicNetworkResourcePropertiesBase
+type BasicSecretResourceProperties = original.BasicSecretResourceProperties
+type BasicSecretResourcePropertiesBase = original.BasicSecretResourcePropertiesBase
+type CodePackageClient = original.CodePackageClient
 type ContainerCodePackageProperties = original.ContainerCodePackageProperties
 type ContainerEvent = original.ContainerEvent
 type ContainerInstanceView = original.ContainerInstanceView
@@ -213,7 +216,6 @@ type ContainerLogs = original.ContainerLogs
 type ContainerState = original.ContainerState
 type DiagnosticsDescription = original.DiagnosticsDescription
 type DiagnosticsRef = original.DiagnosticsRef
-type BasicDiagnosticsSinkProperties = original.BasicDiagnosticsSinkProperties
 type DiagnosticsSinkProperties = original.DiagnosticsSinkProperties
 type EndpointProperties = original.EndpointProperties
 type EndpointRef = original.EndpointRef
@@ -221,6 +223,7 @@ type EnvironmentVariable = original.EnvironmentVariable
 type ErrorDetailsModel = original.ErrorDetailsModel
 type ErrorErrorModel = original.ErrorErrorModel
 type ErrorModel = original.ErrorModel
+type GatewayClient = original.GatewayClient
 type GatewayDestination = original.GatewayDestination
 type GatewayProperties = original.GatewayProperties
 type GatewayResourceDescription = original.GatewayResourceDescription
@@ -238,19 +241,19 @@ type ImageRegistryCredential = original.ImageRegistryCredential
 type InlinedValueSecretResourceProperties = original.InlinedValueSecretResourceProperties
 type LocalNetworkResourceProperties = original.LocalNetworkResourceProperties
 type ManagedProxyResource = original.ManagedProxyResource
+type NetworkClient = original.NetworkClient
 type NetworkRef = original.NetworkRef
 type NetworkResourceDescription = original.NetworkResourceDescription
 type NetworkResourceDescriptionList = original.NetworkResourceDescriptionList
 type NetworkResourceDescriptionListIterator = original.NetworkResourceDescriptionListIterator
 type NetworkResourceDescriptionListPage = original.NetworkResourceDescriptionListPage
-type BasicNetworkResourceProperties = original.BasicNetworkResourceProperties
 type NetworkResourceProperties = original.NetworkResourceProperties
-type BasicNetworkResourcePropertiesBase = original.BasicNetworkResourcePropertiesBase
 type NetworkResourcePropertiesBase = original.NetworkResourcePropertiesBase
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResult = original.OperationResult
+type OperationsClient = original.OperationsClient
 type ProvisionedResourceProperties = original.ProvisionedResourceProperties
 type ProxyResource = original.ProxyResource
 type ReliableCollectionsRef = original.ReliableCollectionsRef
@@ -258,22 +261,24 @@ type Resource = original.Resource
 type ResourceLimits = original.ResourceLimits
 type ResourceRequests = original.ResourceRequests
 type ResourceRequirements = original.ResourceRequirements
+type SecretClient = original.SecretClient
 type SecretResourceDescription = original.SecretResourceDescription
 type SecretResourceDescriptionList = original.SecretResourceDescriptionList
 type SecretResourceDescriptionListIterator = original.SecretResourceDescriptionListIterator
 type SecretResourceDescriptionListPage = original.SecretResourceDescriptionListPage
-type BasicSecretResourceProperties = original.BasicSecretResourceProperties
 type SecretResourceProperties = original.SecretResourceProperties
-type BasicSecretResourcePropertiesBase = original.BasicSecretResourcePropertiesBase
 type SecretResourcePropertiesBase = original.SecretResourcePropertiesBase
 type SecretValue = original.SecretValue
+type SecretValueClient = original.SecretValueClient
 type SecretValueProperties = original.SecretValueProperties
 type SecretValueResourceDescription = original.SecretValueResourceDescription
 type SecretValueResourceDescriptionList = original.SecretValueResourceDescriptionList
 type SecretValueResourceDescriptionListIterator = original.SecretValueResourceDescriptionListIterator
 type SecretValueResourceDescriptionListPage = original.SecretValueResourceDescriptionListPage
 type SecretValueResourceProperties = original.SecretValueResourceProperties
+type ServiceClient = original.ServiceClient
 type ServiceProperties = original.ServiceProperties
+type ServiceReplicaClient = original.ServiceReplicaClient
 type ServiceReplicaDescription = original.ServiceReplicaDescription
 type ServiceReplicaDescriptionList = original.ServiceReplicaDescriptionList
 type ServiceReplicaDescriptionListIterator = original.ServiceReplicaDescriptionListIterator
@@ -287,6 +292,7 @@ type ServiceResourceProperties = original.ServiceResourceProperties
 type Setting = original.Setting
 type TCPConfig = original.TCPConfig
 type TrackedResource = original.TrackedResource
+type VolumeClient = original.VolumeClient
 type VolumeProperties = original.VolumeProperties
 type VolumeProviderParametersAzureFile = original.VolumeProviderParametersAzureFile
 type VolumeReference = original.VolumeReference
@@ -295,25 +301,21 @@ type VolumeResourceDescriptionList = original.VolumeResourceDescriptionList
 type VolumeResourceDescriptionListIterator = original.VolumeResourceDescriptionListIterator
 type VolumeResourceDescriptionListPage = original.VolumeResourceDescriptionListPage
 type VolumeResourceProperties = original.VolumeResourceProperties
-type NetworkClient = original.NetworkClient
-type OperationsClient = original.OperationsClient
-type SecretClient = original.SecretClient
-type SecretValueClient = original.SecretValueClient
-type ServiceClient = original.ServiceClient
-type ServiceReplicaClient = original.ServiceReplicaClient
-type VolumeClient = original.VolumeClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
 func NewApplicationClient(subscriptionID string) ApplicationClient {
 	return original.NewApplicationClient(subscriptionID)
 }
 func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
 	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewApplicationResourceDescriptionListIterator(page ApplicationResourceDescriptionListPage) ApplicationResourceDescriptionListIterator {
+	return original.NewApplicationResourceDescriptionListIterator(page)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return original.NewApplicationResourceDescriptionListPage(getNextPage)
 }
 func NewCodePackageClient(subscriptionID string) CodePackageClient {
 	return original.NewCodePackageClient(subscriptionID)
@@ -326,6 +328,99 @@ func NewGatewayClient(subscriptionID string) GatewayClient {
 }
 func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
 	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayResourceDescriptionListIterator(page GatewayResourceDescriptionListPage) GatewayResourceDescriptionListIterator {
+	return original.NewGatewayResourceDescriptionListIterator(page)
+}
+func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
+	return original.NewGatewayResourceDescriptionListPage(getNextPage)
+}
+func NewNetworkClient(subscriptionID string) NetworkClient {
+	return original.NewNetworkClient(subscriptionID)
+}
+func NewNetworkClientWithBaseURI(baseURI string, subscriptionID string) NetworkClient {
+	return original.NewNetworkClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNetworkResourceDescriptionListIterator(page NetworkResourceDescriptionListPage) NetworkResourceDescriptionListIterator {
+	return original.NewNetworkResourceDescriptionListIterator(page)
+}
+func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return original.NewNetworkResourceDescriptionListPage(getNextPage)
+}
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecretClient(subscriptionID string) SecretClient {
+	return original.NewSecretClient(subscriptionID)
+}
+func NewSecretClientWithBaseURI(baseURI string, subscriptionID string) SecretClient {
+	return original.NewSecretClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecretResourceDescriptionListIterator(page SecretResourceDescriptionListPage) SecretResourceDescriptionListIterator {
+	return original.NewSecretResourceDescriptionListIterator(page)
+}
+func NewSecretResourceDescriptionListPage(getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
+	return original.NewSecretResourceDescriptionListPage(getNextPage)
+}
+func NewSecretValueClient(subscriptionID string) SecretValueClient {
+	return original.NewSecretValueClient(subscriptionID)
+}
+func NewSecretValueClientWithBaseURI(baseURI string, subscriptionID string) SecretValueClient {
+	return original.NewSecretValueClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecretValueResourceDescriptionListIterator(page SecretValueResourceDescriptionListPage) SecretValueResourceDescriptionListIterator {
+	return original.NewSecretValueResourceDescriptionListIterator(page)
+}
+func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
+	return original.NewSecretValueResourceDescriptionListPage(getNextPage)
+}
+func NewServiceClient(subscriptionID string) ServiceClient {
+	return original.NewServiceClient(subscriptionID)
+}
+func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
+	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceReplicaClient(subscriptionID string) ServiceReplicaClient {
+	return original.NewServiceReplicaClient(subscriptionID)
+}
+func NewServiceReplicaClientWithBaseURI(baseURI string, subscriptionID string) ServiceReplicaClient {
+	return original.NewServiceReplicaClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceReplicaDescriptionListIterator(page ServiceReplicaDescriptionListPage) ServiceReplicaDescriptionListIterator {
+	return original.NewServiceReplicaDescriptionListIterator(page)
+}
+func NewServiceReplicaDescriptionListPage(getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
+	return original.NewServiceReplicaDescriptionListPage(getNextPage)
+}
+func NewServiceResourceDescriptionListIterator(page ServiceResourceDescriptionListPage) ServiceResourceDescriptionListIterator {
+	return original.NewServiceResourceDescriptionListIterator(page)
+}
+func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
+	return original.NewServiceResourceDescriptionListPage(getNextPage)
+}
+func NewVolumeClient(subscriptionID string) VolumeClient {
+	return original.NewVolumeClient(subscriptionID)
+}
+func NewVolumeClientWithBaseURI(baseURI string, subscriptionID string) VolumeClient {
+	return original.NewVolumeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVolumeResourceDescriptionListIterator(page VolumeResourceDescriptionListPage) VolumeResourceDescriptionListIterator {
+	return original.NewVolumeResourceDescriptionListIterator(page)
+}
+func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
+	return original.NewVolumeResourceDescriptionListPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleApplicationScopedVolumeKindValues() []ApplicationScopedVolumeKind {
 	return original.PossibleApplicationScopedVolumeKindValues()
@@ -351,9 +446,6 @@ func PossibleHeaderMatchTypeValues() []HeaderMatchType {
 func PossibleHealthStateValues() []HealthState {
 	return original.PossibleHealthStateValues()
 }
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
 func PossibleKindBasicApplicationScopedVolumeCreationParametersValues() []KindBasicApplicationScopedVolumeCreationParameters {
 	return original.PossibleKindBasicApplicationScopedVolumeCreationParametersValues()
 }
@@ -371,6 +463,9 @@ func PossibleKindBasicDiagnosticsSinkPropertiesValues() []KindBasicDiagnosticsSi
 }
 func PossibleKindBasicNetworkResourcePropertiesBaseValues() []KindBasicNetworkResourcePropertiesBase {
 	return original.PossibleKindBasicNetworkResourcePropertiesBaseValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
 }
 func PossibleNetworkKindValues() []NetworkKind {
 	return original.PossibleNetworkKindValues()
@@ -390,105 +485,9 @@ func PossibleSizeTypesValues() []SizeTypes {
 func PossibleVolumeProviderValues() []VolumeProvider {
 	return original.PossibleVolumeProviderValues()
 }
-func NewApplicationResourceDescriptionListIterator(page ApplicationResourceDescriptionListPage) ApplicationResourceDescriptionListIterator {
-	return original.NewApplicationResourceDescriptionListIterator(page)
-}
-func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
-	return original.NewApplicationResourceDescriptionListPage(getNextPage)
-}
-func NewGatewayResourceDescriptionListIterator(page GatewayResourceDescriptionListPage) GatewayResourceDescriptionListIterator {
-	return original.NewGatewayResourceDescriptionListIterator(page)
-}
-func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
-	return original.NewGatewayResourceDescriptionListPage(getNextPage)
-}
-func NewNetworkResourceDescriptionListIterator(page NetworkResourceDescriptionListPage) NetworkResourceDescriptionListIterator {
-	return original.NewNetworkResourceDescriptionListIterator(page)
-}
-func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
-	return original.NewNetworkResourceDescriptionListPage(getNextPage)
-}
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
-}
-func NewSecretResourceDescriptionListIterator(page SecretResourceDescriptionListPage) SecretResourceDescriptionListIterator {
-	return original.NewSecretResourceDescriptionListIterator(page)
-}
-func NewSecretResourceDescriptionListPage(getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
-	return original.NewSecretResourceDescriptionListPage(getNextPage)
-}
-func NewSecretValueResourceDescriptionListIterator(page SecretValueResourceDescriptionListPage) SecretValueResourceDescriptionListIterator {
-	return original.NewSecretValueResourceDescriptionListIterator(page)
-}
-func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
-	return original.NewSecretValueResourceDescriptionListPage(getNextPage)
-}
-func NewServiceReplicaDescriptionListIterator(page ServiceReplicaDescriptionListPage) ServiceReplicaDescriptionListIterator {
-	return original.NewServiceReplicaDescriptionListIterator(page)
-}
-func NewServiceReplicaDescriptionListPage(getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
-	return original.NewServiceReplicaDescriptionListPage(getNextPage)
-}
-func NewServiceResourceDescriptionListIterator(page ServiceResourceDescriptionListPage) ServiceResourceDescriptionListIterator {
-	return original.NewServiceResourceDescriptionListIterator(page)
-}
-func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
-	return original.NewServiceResourceDescriptionListPage(getNextPage)
-}
-func NewVolumeResourceDescriptionListIterator(page VolumeResourceDescriptionListPage) VolumeResourceDescriptionListIterator {
-	return original.NewVolumeResourceDescriptionListIterator(page)
-}
-func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
-	return original.NewVolumeResourceDescriptionListPage(getNextPage)
-}
-func NewNetworkClient(subscriptionID string) NetworkClient {
-	return original.NewNetworkClient(subscriptionID)
-}
-func NewNetworkClientWithBaseURI(baseURI string, subscriptionID string) NetworkClient {
-	return original.NewNetworkClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSecretClient(subscriptionID string) SecretClient {
-	return original.NewSecretClient(subscriptionID)
-}
-func NewSecretClientWithBaseURI(baseURI string, subscriptionID string) SecretClient {
-	return original.NewSecretClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSecretValueClient(subscriptionID string) SecretValueClient {
-	return original.NewSecretValueClient(subscriptionID)
-}
-func NewSecretValueClientWithBaseURI(baseURI string, subscriptionID string) SecretValueClient {
-	return original.NewSecretValueClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceClient(subscriptionID string) ServiceClient {
-	return original.NewServiceClient(subscriptionID)
-}
-func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
-	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceReplicaClient(subscriptionID string) ServiceReplicaClient {
-	return original.NewServiceReplicaClient(subscriptionID)
-}
-func NewServiceReplicaClientWithBaseURI(baseURI string, subscriptionID string) ServiceReplicaClient {
-	return original.NewServiceReplicaClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
-}
-func NewVolumeClient(subscriptionID string) VolumeClient {
-	return original.NewVolumeClient(subscriptionID)
-}
-func NewVolumeClientWithBaseURI(baseURI string, subscriptionID string) VolumeClient {
-	return original.NewVolumeClientWithBaseURI(baseURI, subscriptionID)
 }

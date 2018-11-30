@@ -29,7 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
 type SpendingLimit = original.SpendingLimit
 
 const (
@@ -48,6 +47,8 @@ const (
 	Warned   State = original.Warned
 )
 
+type BaseClient = original.BaseClient
+type Client = original.Client
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -58,27 +59,23 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationsClient = original.OperationsClient
 type Policies = original.Policies
 type Subscription = original.Subscription
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
-type OperationsClient = original.OperationsClient
-type Client = original.Client
 type TenantsClient = original.TenantsClient
 
 func New() BaseClient {
 	return original.New()
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewClient() Client {
+	return original.NewClient()
 }
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -92,29 +89,32 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
-	return original.NewTenantListResultIterator(page)
-}
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return original.NewTenantListResultPage(getNextPage)
-}
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewClient() Client {
-	return original.NewClient()
+func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
+	return original.NewTenantListResultIterator(page)
 }
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
+func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
+	return original.NewTenantListResultPage(getNextPage)
 }
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
 }
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

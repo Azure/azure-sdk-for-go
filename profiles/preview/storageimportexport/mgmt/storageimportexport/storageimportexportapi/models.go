@@ -21,7 +21,7 @@ package storageimportexportapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport/storageimportexportapi"
 
-type LocationsClientAPI = original.LocationsClientAPI
-type JobsClientAPI = original.JobsClientAPI
 type BitLockerKeysClientAPI = original.BitLockerKeysClientAPI
+type JobsClientAPI = original.JobsClientAPI
+type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

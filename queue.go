@@ -116,14 +116,6 @@ func QueueWithReceiveAndDelete() QueueOption {
 	}
 }
 
-//// QueueWithRequiredSession configures a queue to use a session
-//func QueueWithRequiredSession(sessionID string) QueueOption {
-//	return func(q *Queue) error {
-//		q.requiredSessionID = &sessionID
-//		return nil
-//	}
-//}
-
 // NewQueue creates a new Queue Sender / Receiver
 func (ns *Namespace) NewQueue(name string, opts ...QueueOption) (*Queue, error) {
 	queue := &Queue{

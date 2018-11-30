@@ -645,7 +645,7 @@ func (client SubscriptionsClient) RegenerateSecondaryKeyResponder(resp *http.Res
 	return
 }
 
-// Update updates the details of a subscription specificied by its identifier.
+// Update updates the details of a subscription specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

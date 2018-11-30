@@ -41,7 +41,7 @@ func NewTagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) T
 	return TagDescriptionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create/Update tag fescription in scope of the Api.
+// CreateOrUpdate create/Update tag description in scope of the Api.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

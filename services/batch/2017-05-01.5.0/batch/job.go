@@ -1565,7 +1565,7 @@ func (client JobClient) TerminateResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Update this fully replaces all the updateable properties of the job. For example, if the job has constraints
+// Update this fully replaces all the updatable properties of the job. For example, if the job has constraints
 // associated with it and if constraints is not specified with this request, then the Batch service will remove the
 // existing constraints.
 // Parameters:

@@ -2336,7 +2336,7 @@ type ExitConditions struct {
 	PreProcessingError *ExitOptions            `json:"preProcessingError,omitempty"`
 	// FileUploadError - If the task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
 	FileUploadError *ExitOptions `json:"fileUploadError,omitempty"`
-	// Default - This value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behaviour on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+	// Default - This value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
 	Default *ExitOptions `json:"default,omitempty"`
 }
 

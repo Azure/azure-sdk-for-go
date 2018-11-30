@@ -1862,7 +1862,7 @@ func (client PoolClient) StopResizeResponder(resp *http.Response) (result autore
 	return
 }
 
-// UpdateProperties this fully replaces all the updateable properties of the pool. For example, if the pool has a start
+// UpdateProperties this fully replaces all the updatable properties of the pool. For example, if the pool has a start
 // task associated with it and if start task is not specified with this request, then the Batch service will remove the
 // existing start task.
 // Parameters:

@@ -2221,13 +2221,13 @@ type ServiceProviderParameter struct {
 type ServiceProviderProperties struct {
 	// ID - Id for Service Provider
 	ID *string `json:"id,omitempty"`
-	// DisplayName - Diplay Name of the Service Provider
+	// DisplayName - Display Name of the Service Provider
 	DisplayName *string `json:"displayName,omitempty"`
-	// ServiceProviderName - Diplay Name of the Service Provider
+	// ServiceProviderName - Display Name of the Service Provider
 	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
-	// DevPortalURL - Diplay Name of the Service Provider
+	// DevPortalURL - Display Name of the Service Provider
 	DevPortalURL *string `json:"devPortalUrl,omitempty"`
-	// IconURL - Diplay Name of the Service Provider
+	// IconURL - Display Name of the Service Provider
 	IconURL *string `json:"iconUrl,omitempty"`
 	// Parameters - The list of parameters for the Service Provider
 	Parameters *[]ServiceProviderParameter `json:"parameters,omitempty"`

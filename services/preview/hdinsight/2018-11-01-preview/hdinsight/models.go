@@ -24,11 +24,38 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight"
 
+// ApplicationState enumerates the values for application state.
+type ApplicationState string
+
+const (
+	// ACCEPTED ...
+	ACCEPTED ApplicationState = "ACCEPTED"
+	// FAILED ...
+	FAILED ApplicationState = "FAILED"
+	// FINISHED ...
+	FINISHED ApplicationState = "FINISHED"
+	// KILLED ...
+	KILLED ApplicationState = "KILLED"
+	// NEW ...
+	NEW ApplicationState = "NEW"
+	// NEWSAVING ...
+	NEWSAVING ApplicationState = "NEW_SAVING"
+	// RUNNING ...
+	RUNNING ApplicationState = "RUNNING"
+	// SUBMITTED ...
+	SUBMITTED ApplicationState = "SUBMITTED"
+)
+
+// PossibleApplicationStateValues returns an array of possible values for the ApplicationState const type.
+func PossibleApplicationStateValues() []ApplicationState {
+	return []ApplicationState{ACCEPTED, FAILED, FINISHED, KILLED, NEW, NEWSAVING, RUNNING, SUBMITTED}
+}
+
 // AppState the State of the application.
 type AppState struct {
 	autorest.Response `json:"-"`
-	// State - The State of the application. Possible values are “NEW”, “NEW_SAVING”, “SUBMITTED”, “ACCEPTED”, “RUNNING”, “FINISHED”, “FAILED”, “KILLED”
-	State *string `json:"state,omitempty"`
+	// State - The State of the application. Possible values include: 'NEW', 'NEWSAVING', 'SUBMITTED', 'ACCEPTED', 'RUNNING', 'FINISHED', 'FAILED', 'KILLED'
+	State ApplicationState `json:"state,omitempty"`
 }
 
 // JobDetailRootJSONObject the object containing the job details.
@@ -115,7 +142,7 @@ type Status struct {
 	CleanupProgress *float64 `json:"cleanupProgress,omitempty"`
 	// FailureInfo - The information about any failures that have occurred.
 	FailureInfo *string `json:"failureInfo,omitempty"`
-	// FinishTime - The time at which the job completed.
+	// FinishTime - The time at which the job completed. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
 	FinishTime *int64 `json:"finishTime,omitempty"`
 	// HistoryFile - The history file of the job.
 	HistoryFile *string `json:"historyFile,omitempty"`
@@ -151,11 +178,11 @@ type Status struct {
 	Retired *bool `json:"retired,omitempty"`
 	// RunState - The current state of the job.
 	RunState *int32 `json:"runState,omitempty"`
-	// SchedulingInfo - The information about the scheduling of the
+	// SchedulingInfo - The information about the scheduling of the job.
 	SchedulingInfo *string `json:"schedulingInfo,omitempty"`
 	// SetupProgress - The progress made on the setup.
 	SetupProgress *float64 `json:"setupProgress,omitempty"`
-	// StartTime - The time at which the job started.
+	// StartTime - The time at which the job started. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
 	StartTime *int64 `json:"startTime,omitempty"`
 	// State - The state of the job.
 	State *string `json:"state,omitempty"`

@@ -23,6 +23,19 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/20
 
 type BaseClient = original.BaseClient
 type JobClient = original.JobClient
+type ApplicationState = original.ApplicationState
+
+const (
+	ACCEPTED  ApplicationState = original.ACCEPTED
+	FAILED    ApplicationState = original.FAILED
+	FINISHED  ApplicationState = original.FINISHED
+	KILLED    ApplicationState = original.KILLED
+	NEW       ApplicationState = original.NEW
+	NEWSAVING ApplicationState = original.NEWSAVING
+	RUNNING   ApplicationState = original.RUNNING
+	SUBMITTED ApplicationState = original.SUBMITTED
+)
+
 type AppState = original.AppState
 type JobDetailRootJSONObject = original.JobDetailRootJSONObject
 type JobID = original.JobID
@@ -42,6 +55,9 @@ func NewWithoutDefaults(clusterDNSName string, userName string) BaseClient {
 }
 func NewJobClient(clusterDNSName string, userName string) JobClient {
 	return original.NewJobClient(clusterDNSName, userName)
+}
+func PossibleApplicationStateValues() []ApplicationState {
+	return original.PossibleApplicationStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

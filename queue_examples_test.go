@@ -244,7 +244,8 @@ func ExampleQueue_sessionsRoundTrip() {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	for i := 0; i < numSessions; i++ {
 		handler := &SessionPrinter{}
-		if err := client.ReceiveOneSession(ctx, nil, handler); err != nil {
+		qs := client.NewSession(nil)
+		if err := qs.ReceiveOne(ctx, handler); err != nil {
 			fmt.Println("FATAL: ", err)
 			return
 		}

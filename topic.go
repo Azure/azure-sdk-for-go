@@ -43,7 +43,7 @@ type (
 	// Messages are received from a subscription identically to the way they are received from a queue.
 	Topic struct {
 		*entity
-		sender   *sender
+		sender   *Sender
 		senderMu sync.Mutex
 	}
 
@@ -124,13 +124,15 @@ func (t *Topic) ensureSender(ctx context.Context) error {
 	t.senderMu.Lock()
 	defer t.senderMu.Unlock()
 
-	if t.sender == nil {
-		s, err := t.namespace.newSender(ctx, t.Name)
-		if err != nil {
-			log.For(ctx).Error(err)
-			return err
-		}
-		t.sender = s
+	if t.sender != nil {
+		return nil
 	}
+
+	s, err := t.namespace.NewSender(ctx, t.Name)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+	t.sender = s
 	return nil
 }

@@ -71,7 +71,7 @@ func ExampleMessage_ScheduleAt() {
 }
 
 func purgeMessages(ns *servicebus.Namespace) {
-	purgeCtx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	purgeCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	client, _ := ns.NewQueue("scheduledmessages")
 	defer func() {
 		_ = client.Close(purgeCtx)

@@ -53,7 +53,8 @@ func (suite *serviceBusSuite) TestMessageSession() {
 			msg.GroupID = &sessionID
 
 			suite.Require().NoError(q.Send(ctx, msg))
-			err = q.ReceiveOneSession(ctx, &sessionID, NewSessionHandler(
+			qs := q.NewSession(&sessionID)
+			err = qs.ReceiveOne(ctx, NewSessionHandler(
 				HandlerFunc(func(ctx context.Context, msg *Message) error {
 					defer cancel()
 					assert.Equal(t, string(msg.Data), want)

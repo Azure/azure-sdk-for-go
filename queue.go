@@ -50,8 +50,8 @@ type (
 	// message consumer.
 	Queue struct {
 		*entity
-		sender            *sender
-		receiver          *receiver
+		sender            *Sender
+		receiver          *Receiver
 		receiverMu        sync.Mutex
 		senderMu          sync.Mutex
 		receiveMode       ReceiveMode
@@ -99,10 +99,10 @@ type (
 )
 
 const (
-	// PeekLockMode causes a receiver to peek at a message, lock it so no others can consume and have the queue wait for
+	// PeekLockMode causes a Receiver to peek at a message, lock it so no others can consume and have the queue wait for
 	// the DispositionAction
 	PeekLockMode ReceiveMode = 0
-	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
+	// ReceiveAndDeleteMode causes a Receiver to pop messages off of the queue without waiting for DispositionAction
 	ReceiveAndDeleteMode ReceiveMode = 1
 )
 
@@ -354,87 +354,25 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
-// ReceiveOneSession waits for the lock on a particular session to become available, takes it, then process the session.
-// The session can contain multiple messages. ReceiveOneSession will receive all messages within that session.
+// NewSession will create a new session based receiver and sender for the queue
 //
-// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
-// have a disposition set, the Queue's DefaultDisposition will be used.
-//
-// If the handler returns an error, the receive loop will be terminated.
-func (q *Queue) ReceiveOneSession(ctx context.Context, sessionID *string, handler SessionHandler) error {
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOneSession")
-	defer span.Finish()
-
-	// Establish a receiver that reads a particular session.
-	q.requiredSessionID = sessionID
-	if err := q.ensureReceiver(ctx, receiverWithSession(sessionID)); err != nil {
-		return err
-	}
-
-	ms, err := newMessageSession(q.receiver, q.entity, sessionID)
-	if err != nil {
-		return err
-	}
-
-	err = handler.Start(ms)
-	if err != nil {
-		return err
-	}
-
-	defer handler.End()
-	handle := q.receiver.Listen(ctx, handler)
-
-	select {
-	case <-handle.Done():
-		return handle.Err()
-	case <-ms.done:
-		return nil
-	}
+// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
+// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
+// relationship between the messages, and also does not define a particular model for determining where a message
+// sequence starts or ends.
+func (q *Queue) NewSession(sessionID *string) *SubscriptionSession {
+	return NewSubscriptionSession(q, sessionID)
 }
 
-// ReceiveSessions is the session-based counterpart of `Receive`. It subscribes to a Queue and waits for new sessions to
-// become available.
-//
-// Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
-// have a disposition set, the Queue's DefaultDisposition will be used.
-//
-// If the handler returns an error, the receive loop will be terminated.
-func (q *Queue) ReceiveSessions(ctx context.Context, handler SessionHandler) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveSessions")
-	defer span.Finish()
-
-	for {
-		if err := q.ReceiveOneSession(ctx, nil, handler); err != nil {
-			return err
-		}
-	}
+// NewReceiver will create a new Receiver for receiving messages off of a queue
+func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
+	return q.namespace.NewReceiver(ctx, q.Name, opts...)
 }
 
-func (q *Queue) ensureReceiver(ctx context.Context, opts ...receiverOption) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
-	defer span.Finish()
-
-	q.receiverMu.Lock()
-	defer q.receiverMu.Unlock()
-
-	// TODO: this is where the receiver connection is leaked -- fix me.
-	//if q.receiver != nil {
-	//	return nil
-	//}
-
-	opts = append(opts, receiverWithReceiveMode(q.receiveMode))
-
-	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)
-	if err != nil {
-		log.For(ctx).Error(err)
-		return err
-	}
-
-	q.receiver = receiver
-	return nil
+// NewSender will create a new Sender for sending messages to the queue
+func (q *Queue) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
+	return q.namespace.NewSender(ctx, q.Name)
 }
 
 // Close the underlying connection to Service Bus
@@ -461,6 +399,35 @@ func (q *Queue) Close(ctx context.Context) error {
 	return nil
 }
 
+func (q *Queue) newReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")
+	defer span.Finish()
+
+	opts = append(opts, ReceiverWithReceiveMode(q.receiveMode))
+	return q.namespace.NewReceiver(ctx, q.Name, opts...)
+}
+
+func (q *Queue) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
+	defer span.Finish()
+
+	q.receiverMu.Lock()
+	defer q.receiverMu.Unlock()
+
+	if q.receiver != nil {
+		return nil
+	}
+
+	receiver, err := q.newReceiver(ctx, opts...)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
+	}
+
+	q.receiver = receiver
+	return nil
+}
+
 func (q *Queue) ensureSender(ctx context.Context) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureSender")
 	defer span.Finish()
@@ -468,19 +435,16 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 	q.senderMu.Lock()
 	defer q.senderMu.Unlock()
 
-	var opts []senderOption
-	if q.requiredSessionID != nil {
-		opts = append(opts, sendWithSession(*q.requiredSessionID))
+	if q.sender != nil {
+		return nil
 	}
 
-	if q.sender == nil {
-		s, err := q.namespace.newSender(ctx, q.Name, opts...)
-		if err != nil {
-			log.For(ctx).Error(err)
-			return err
-		}
-		q.sender = s
+	s, err := q.NewSender(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return err
 	}
+	q.sender = s
 	return nil
 }
 

@@ -2788,7 +2788,7 @@ func (brc *BackendReconnectContract) UnmarshalJSON(body []byte) error {
 
 // BackendReconnectProperties properties to control reconnect requests.
 type BackendReconnectProperties struct {
-	// After - Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconect is PT2M.
+	// After - Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconnect is PT2M.
 	After *string `json:"after,omitempty"`
 }
 
@@ -3028,7 +3028,7 @@ type CertificateConfiguration struct {
 	EncodedCertificate *string `json:"encodedCertificate,omitempty"`
 	// CertificatePassword - Certificate Password.
 	CertificatePassword *string `json:"certificatePassword,omitempty"`
-	// StoreName - The System.Security.Cryptography.x509certificates.Storename certificate store location. Only Root and CertificateAuthority are valid locations. Possible values include: 'CertificateAuthority', 'Root'
+	// StoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority are valid locations. Possible values include: 'CertificateAuthority', 'Root'
 	StoreName StoreName `json:"storeName,omitempty"`
 	// Certificate - Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
@@ -8389,7 +8389,7 @@ type ReportRecordContract struct {
 	Name *string `json:"name,omitempty"`
 	// Timestamp - Start of aggregation period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Interval - Length of agregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+	// Interval - Length of aggregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
 	Interval *string `json:"interval,omitempty"`
 	// Country - Country to which this record data is related.
 	Country *string `json:"country,omitempty"`
@@ -8409,9 +8409,9 @@ type ReportRecordContract struct {
 	APIRegion *string `json:"apiRegion,omitempty"`
 	// SubscriptionID - Subscription identifier path. /subscriptions/{subscriptionId}
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// CallCountSuccess - Number of succesful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
+	// CallCountSuccess - Number of successful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
 	CallCountSuccess *int32 `json:"callCountSuccess,omitempty"`
-	// CallCountBlocked - Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorize and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
+	// CallCountBlocked - Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
 	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
 	// CallCountFailed - Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600
 	CallCountFailed *int32 `json:"callCountFailed,omitempty"`
@@ -8498,7 +8498,7 @@ type RequestReportRecordContract struct {
 	ResponseSize *int32 `json:"responseSize,omitempty"`
 	// Timestamp - The date and time when this request was received by the gateway in ISO 8601 format.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Cache - Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup resulted in a miss and request was fullfilled by the backend.
+	// Cache - Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup resulted in a miss and request was fulfilled by the backend.
 	Cache *string `json:"cache,omitempty"`
 	// APITime - The total time it took to process this request.
 	APITime *float64 `json:"apiTime,omitempty"`
@@ -8943,7 +8943,7 @@ type ServiceBaseProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -9251,7 +9251,7 @@ type ServiceProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -9748,7 +9748,7 @@ type ServiceUpdateProperties struct {
 	CustomProperties map[string]*string `json:"customProperties"`
 	// Certificates - List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.
 	Certificates *[]CertificateConfiguration `json:"certificates,omitempty"`
-	// VirtualNetworkType - The type of VPN in which API Managemet service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
+	// VirtualNetworkType - The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management service is not part of any Virtual Network, External means the API Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only. Possible values include: 'VirtualNetworkTypeNone', 'VirtualNetworkTypeExternal', 'VirtualNetworkTypeInternal'
 	VirtualNetworkType VirtualNetworkType `json:"virtualNetworkType,omitempty"`
 }
 
@@ -10086,7 +10086,7 @@ type SubscriptionContractProperties struct {
 type SubscriptionCreateParameterProperties struct {
 	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
 	UserID *string `json:"userId,omitempty"`
-	// ProductID - Product (product id path) for which subscription is being created in form /products/{productid}
+	// ProductID - Product (product id path) for which subscription is being created in form /products/{productId}
 	ProductID *string `json:"productId,omitempty"`
 	// DisplayName - Subscription name.
 	DisplayName *string `json:"displayName,omitempty"`

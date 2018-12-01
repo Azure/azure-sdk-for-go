@@ -299,7 +299,7 @@ func (client Client) CreateResponder(resp *http.Response) (result DataLakeAnalyt
 	return
 }
 
-// Delete begins the delete delete process for the Data Lake Analytics account object specified by the account name.
+// Delete begins the delete process for the Data Lake Analytics account object specified by the account name.
 // Parameters:
 // resourceGroupName - the name of the Azure resource group that contains the Data Lake Analytics account.
 // accountName - the name of the Data Lake Analytics account to delete
@@ -869,7 +869,7 @@ func (client Client) GetStorageContainerResponder(resp *http.Response) (result B
 // resources in the response, e.g. Categories?$count=true. Optional.
 // search - a free form search. A free-text search expression to match for whether a particular entry should be
 // included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular formatxii without access to
+// formatParameter - the desired return format. Return the response in particular format without access to
 // request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
 func (client Client) List(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -1025,7 +1025,7 @@ func (client Client) ListComplete(ctx context.Context, filter string, top *int32
 // resources in the response, e.g. Categories?$count=true. Optional.
 // search - a free form search. A free-text search expression to match for whether a particular entry should be
 // included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the return format. Return the response in particular formatxii without access to request
+// formatParameter - the return format. Return the response in particular format without access to request
 // headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
 func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -1183,7 +1183,7 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 // resources in the response, e.g. Categories?$count=true. Optional.
 // search - a free form search. A free-text search expression to match for whether a particular entry should be
 // included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular formatxii without access to
+// formatParameter - the desired return format. Return the response in particular format without access to
 // request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
 func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -1463,7 +1463,7 @@ func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupNam
 // resources in the response, e.g. Categories?$count=true. Optional.
 // search - a free form search. A free-text search expression to match for whether a particular entry should be
 // included in the feed, e.g. Categories?$search=blue OR green. Optional.
-// formatParameter - the desired return format. Return the response in particular formatxii without access to
+// formatParameter - the desired return format. Return the response in particular format without access to
 // request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
 func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResultPage, err error) {
 	if tracing.IsEnabled() {

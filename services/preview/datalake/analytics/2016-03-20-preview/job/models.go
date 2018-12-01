@@ -183,11 +183,11 @@ type DataPath struct {
 
 // Diagnostics ...
 type Diagnostics struct {
-	// ColumnNumber - the column where the error occured.
+	// ColumnNumber - the column where the error occurred.
 	ColumnNumber *int32 `json:"columnNumber,omitempty"`
 	// End - the ending index of the error.
 	End *int32 `json:"end,omitempty"`
-	// LineNumber - the line number the error occured on.
+	// LineNumber - the line number the error occurred on.
 	LineNumber *int32 `json:"lineNumber,omitempty"`
 	// Message - the error message.
 	Message *string `json:"message,omitempty"`
@@ -213,7 +213,7 @@ type ErrorDetails struct {
 	HelpLink *string `json:"helpLink,omitempty"`
 	// InternalDiagnostics - the internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
 	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
-	// LineNumber - the specific line number in the job where the error occured.
+	// LineNumber - the specific line number in the job where the error occurred.
 	LineNumber *int32 `json:"lineNumber,omitempty"`
 	// Message - the user friendly error message for the failure.
 	Message *string `json:"message,omitempty"`
@@ -827,7 +827,7 @@ type StatisticsVertexStage struct {
 	DataWritten *int64 `json:"dataWritten,omitempty"`
 	// DuplicateDiscardCount - the number of duplicates that were discarded.
 	DuplicateDiscardCount *int32 `json:"duplicateDiscardCount,omitempty"`
-	// FailedCount - the number of failures that occured in this stage.
+	// FailedCount - the number of failures that occurred in this stage.
 	FailedCount *int32 `json:"failedCount,omitempty"`
 	// MaxVertexDataRead - the maximum amount of data read in a single vertex, in bytes.
 	MaxVertexDataRead *int64 `json:"maxVertexDataRead,omitempty"`

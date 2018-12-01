@@ -187,7 +187,7 @@ type ErrorDetails struct {
 	HelpLink *string `json:"helpLink,omitempty"`
 	// InternalDiagnostics - Gets the internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
 	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
-	// LineNumber - Gets the specific line number in the job where the error occured.
+	// LineNumber - Gets the specific line number in the job where the error occurred.
 	LineNumber *int32 `json:"lineNumber,omitempty"`
 	// Message - Gets the user friendly error message for the failure.
 	Message *string `json:"message,omitempty"`
@@ -795,7 +795,7 @@ type StatisticsVertexStage struct {
 	DataWritten *int64 `json:"dataWritten,omitempty"`
 	// DuplicateDiscardCount - Gets the number of duplicates that were discarded.
 	DuplicateDiscardCount *int32 `json:"duplicateDiscardCount,omitempty"`
-	// FailedCount - Gets the number of failures that occured in this stage.
+	// FailedCount - Gets the number of failures that occurred in this stage.
 	FailedCount *int32 `json:"failedCount,omitempty"`
 	// MaxVertexDataRead - Gets the maximum amount of data read in a single vertex, in bytes.
 	MaxVertexDataRead *int64 `json:"maxVertexDataRead,omitempty"`

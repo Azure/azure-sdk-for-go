@@ -119,7 +119,7 @@ func (client OAuth2Client) GetResponder(resp *http.Response) (result Permissions
 
 // Grant grants OAuth2 permissions for the relevant resource Ids of an app.
 // Parameters:
-// body - the relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
+// body - the relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
 func (client OAuth2Client) Grant(ctx context.Context, body *Permissions) (result Permissions, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OAuth2Client.Grant")

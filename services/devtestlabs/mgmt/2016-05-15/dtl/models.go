@@ -1328,7 +1328,7 @@ type AttachDiskProperties struct {
 
 // AttachNewDataDiskOptions properties to attach new disk to the Virtual Machine.
 type AttachNewDataDiskOptions struct {
-	// DiskSizeGiB - Size of the disk to be attached in GibiBytes.
+	// DiskSizeGiB - Size of the disk to be attached in Gibibytes.
 	DiskSizeGiB *int32 `json:"diskSizeGiB,omitempty"`
 	// DiskName - The name of the disk to be attached.
 	DiskName *string `json:"diskName,omitempty"`
@@ -1800,7 +1800,7 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 type DiskProperties struct {
 	// DiskType - The storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'
 	DiskType StorageType `json:"diskType,omitempty"`
-	// DiskSizeGiB - The size of the disk in GibiBytes.
+	// DiskSizeGiB - The size of the disk in Gibibytes.
 	DiskSizeGiB *int32 `json:"diskSizeGiB,omitempty"`
 	// LeasedByLabVMID - The resource ID of the VM to which this disk is leased.
 	LeasedByLabVMID *string `json:"leasedByLabVmId,omitempty"`
@@ -2496,7 +2496,7 @@ type GenerateUploadURIParameter struct {
 	BlobName *string `json:"blobName,omitempty"`
 }
 
-// GenerateUploadURIResponse reponse body for generating an upload URI.
+// GenerateUploadURIResponse response body for generating an upload URI.
 type GenerateUploadURIResponse struct {
 	autorest.Response `json:"-"`
 	// UploadURI - The upload URI for the VHD.

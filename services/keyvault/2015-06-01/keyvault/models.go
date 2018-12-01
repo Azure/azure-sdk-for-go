@@ -170,7 +170,7 @@ type AdministratorDetails struct {
 	FirstName *string `json:"first_name,omitempty"`
 	// LastName - Last name.
 	LastName *string `json:"last_name,omitempty"`
-	// EmailAddress - Email addresss.
+	// EmailAddress - Email address.
 	EmailAddress *string `json:"email,omitempty"`
 	// Phone - Phone number.
 	Phone *string `json:"phone,omitempty"`
@@ -782,7 +782,7 @@ func (cup CertificateUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // Contact the contact information for the vault certificates.
 type Contact struct {
-	// EmailAddress - Email addresss.
+	// EmailAddress - Email address.
 	EmailAddress *string `json:"email,omitempty"`
 	// Name - Name.
 	Name *string `json:"name,omitempty"`
@@ -1603,6 +1603,6 @@ type X509CertificateProperties struct {
 	SubjectAlternativeNames *SubjectAlternativeNames `json:"sans,omitempty"`
 	// KeyUsage - List of key usages.
 	KeyUsage *[]KeyUsageType `json:"key_usage,omitempty"`
-	// ValidityInMonths - The duration that the ceritifcate is valid in months.
+	// ValidityInMonths - The duration that the certificate is valid in months.
 	ValidityInMonths *int32 `json:"validity_months,omitempty"`
 }

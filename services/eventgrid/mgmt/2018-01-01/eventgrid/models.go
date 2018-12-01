@@ -868,7 +868,7 @@ type TopicProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-// TopicRegenerateKeyRequest topic regenerate share access key key request
+// TopicRegenerateKeyRequest topic regenerate share access key request
 type TopicRegenerateKeyRequest struct {
 	// KeyName - Key name to regenerate key1 or key2
 	KeyName *string `json:"keyName,omitempty"`

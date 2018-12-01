@@ -559,7 +559,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - Type of operation: get, read, delete, etc.
 	Operation *string `json:"operation,omitempty"`
-	// Description - Decription of operation.
+	// Description - Description of operation.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -973,7 +973,7 @@ type VaultAccessPolicyParameters struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The resource name of the access policy.
 	Type *string `json:"type,omitempty"`
-	// Location - The resource type of the the access policy.
+	// Location - The resource type of the access policy.
 	Location *string `json:"location,omitempty"`
 	// Properties - Properties of the access policy
 	Properties *VaultAccessPolicyProperties `json:"properties,omitempty"`
@@ -985,7 +985,7 @@ type VaultAccessPolicyProperties struct {
 	AccessPolicies *[]AccessPolicyEntry `json:"accessPolicies,omitempty"`
 }
 
-// VaultCheckNameAvailabilityParameters the parameters used to check the availabity of the vault name.
+// VaultCheckNameAvailabilityParameters the parameters used to check the availability of the vault name.
 type VaultCheckNameAvailabilityParameters struct {
 	// Name - The vault name.
 	Name *string `json:"name,omitempty"`

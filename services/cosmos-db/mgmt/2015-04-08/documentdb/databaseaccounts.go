@@ -916,7 +916,7 @@ func (client DatabaseAccountsClient) ListKeysResponder(resp *http.Response) (res
 	return
 }
 
-// ListMetricDefinitions retrieves metric defintions for the given database account.
+// ListMetricDefinitions retrieves metric definitions for the given database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.

@@ -1545,7 +1545,7 @@ type Target struct {
 	MediaType *string `json:"mediaType,omitempty"`
 	// Size - The number of bytes of the content. Same as Length field.
 	Size *int64 `json:"size,omitempty"`
-	// Digest - The digest of the content, as defined by the Registry V2 HTTP API Specificiation.
+	// Digest - The digest of the content, as defined by the Registry V2 HTTP API Specification.
 	Digest *string `json:"digest,omitempty"`
 	// Length - The number of bytes of the content. Same as Size field.
 	Length *int64 `json:"length,omitempty"`

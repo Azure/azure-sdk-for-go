@@ -78,6 +78,21 @@ func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return []BaseImageTriggerType{All, Runtime}
 }
 
+// DefaultAction enumerates the values for default action.
+type DefaultAction string
+
+const (
+	// Allow ...
+	Allow DefaultAction = "Allow"
+	// Deny ...
+	Deny DefaultAction = "Deny"
+)
+
+// PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
+func PossibleDefaultActionValues() []DefaultAction {
+	return []DefaultAction{Allow, Deny}
+}
+
 // ImportMode enumerates the values for import mode.
 type ImportMode string
 
@@ -580,7 +595,7 @@ type DockerBuildRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
@@ -830,7 +845,7 @@ type EncodedTaskRunRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
@@ -1305,7 +1320,7 @@ type FileTaskRunRequest struct {
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
 	AgentConfiguration *AgentProperties `json:"agentConfiguration,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+	// SourceLocation - The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
 	// If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled for the run or not.
@@ -1570,6 +1585,14 @@ type ImportSourceCredentials struct {
 	Username *string `json:"username,omitempty"`
 	// Password - The password used to authenticate with the source registry.
 	Password *string `json:"password,omitempty"`
+}
+
+// NetworkRuleSet the network rule set for a container registry.
+type NetworkRuleSet struct {
+	// DefaultAction - The default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'
+	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
+	// VirtualNetworkRules - The virtual network rules.
+	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
 // OperationDefinition the definition of a container registry operation.
@@ -2373,6 +2396,8 @@ type RegistryProperties struct {
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The properties of the storage account for the container registry. Only applicable to Classic SKU.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	// NetworkRuleSet - The network rule set for a container registry.
+	NetworkRuleSet *NetworkRuleSet `json:"networkRuleSet,omitempty"`
 }
 
 // RegistryPropertiesUpdateParameters the parameters for updating the properties of a container registry.
@@ -2381,6 +2406,8 @@ type RegistryPropertiesUpdateParameters struct {
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	// NetworkRuleSet - The network rule set for a container registry.
+	NetworkRuleSet *NetworkRuleSet `json:"networkRuleSet,omitempty"`
 }
 
 // RegistryUpdateParameters the parameters for updating a container registry.
@@ -3364,7 +3391,7 @@ type Source struct {
 type SourceProperties struct {
 	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
-	// RepositoryURL - The full URL to the source code respository
+	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// Branch - The branch name of the source code.
 	Branch *string `json:"branch,omitempty"`
@@ -3419,7 +3446,7 @@ type SourceTriggerUpdateParameters struct {
 type SourceUpdateParameters struct {
 	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
-	// RepositoryURL - The full URL to the source code respository
+	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// Branch - The branch name of the source code.
 	Branch *string `json:"branch,omitempty"`
@@ -3473,7 +3500,7 @@ type Target struct {
 }
 
 // Task the task that has the ARM resource and task properties.
-// The  task will have all information to schedule a run against it.
+// The task will have all information to schedule a run against it.
 type Task struct {
 	autorest.Response `json:"-"`
 	// TaskProperties - The properties of a task.
@@ -4346,6 +4373,12 @@ type TrustPolicy struct {
 	Type TrustPolicyType `json:"type,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	Status PolicyStatus `json:"status,omitempty"`
+}
+
+// VirtualNetworkRule the virtual network rule for a container registry.
+type VirtualNetworkRule struct {
+	// ID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	ID *string `json:"id,omitempty"`
 }
 
 // Webhook an object that represents a webhook for a container registry.

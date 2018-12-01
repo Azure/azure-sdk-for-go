@@ -1084,7 +1084,7 @@ func (client ReportsClient) GetResponder(resp *http.Response) (result Report, er
 	return
 }
 
-// GetByBillingAccount gets the report for a billing acount by report name.
+// GetByBillingAccount gets the report for a billing account by report name.
 // Parameters:
 // billingAccountID - billingAccount ID
 // reportName - report Name.

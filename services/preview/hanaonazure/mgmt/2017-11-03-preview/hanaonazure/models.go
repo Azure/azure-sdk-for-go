@@ -424,7 +424,7 @@ type HardwareProfile struct {
 	HanaInstanceSize HanaInstanceSizeNamesEnum `json:"hanaInstanceSize,omitempty"`
 }
 
-// IPAddress specifies the IP address of the network interaface.
+// IPAddress specifies the IP address of the network interface.
 type IPAddress struct {
 	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`

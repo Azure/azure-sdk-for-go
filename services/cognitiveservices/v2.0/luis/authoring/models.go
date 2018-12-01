@@ -819,9 +819,9 @@ func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
 type ExampleLabelObject struct {
 	// Text - The sample's utterance.
 	Text *string `json:"text,omitempty"`
-	// EntityLabels - The idenfied entities within the utterance.
+	// EntityLabels - The identified entities within the utterance.
 	EntityLabels *[]EntityLabelObject `json:"entityLabels,omitempty"`
-	// IntentName - The idenfitied intent representing the utterance.
+	// IntentName - The identified intent representing the utterance.
 	IntentName *string `json:"intentName,omitempty"`
 }
 
@@ -1797,7 +1797,7 @@ type PublishSettings struct {
 	autorest.Response `json:"-"`
 	// ID - The application ID.
 	ID *uuid.UUID `json:"id,omitempty"`
-	// IsSentimentAnalysisEnabled - Setting sentiment analysis as true returns the Sentiment of the input utterance along with the resopnse
+	// IsSentimentAnalysisEnabled - Setting sentiment analysis as true returns the Sentiment of the input utterance along with the response
 	IsSentimentAnalysisEnabled *bool `json:"sentimentAnalysis,omitempty"`
 	// IsSpeechEnabled - Setting speech as public enables speech priming in your app
 	IsSpeechEnabled *bool `json:"speech,omitempty"`
@@ -1807,7 +1807,7 @@ type PublishSettings struct {
 
 // PublishSettingUpdateObject object model for updating an application's publish settings.
 type PublishSettingUpdateObject struct {
-	// SentimentAnalysis - Setting sentiment analysis as true returns the Sentiment of the input utterance along with the resopnse
+	// SentimentAnalysis - Setting sentiment analysis as true returns the Sentiment of the input utterance along with the response
 	SentimentAnalysis *bool `json:"sentimentAnalysis,omitempty"`
 	// Speech - Setting speech as public enables speech priming in your app
 	Speech *bool `json:"speech,omitempty"`

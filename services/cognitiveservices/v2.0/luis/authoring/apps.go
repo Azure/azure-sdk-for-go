@@ -545,7 +545,7 @@ func (client AppsClient) GetSettingsResponder(resp *http.Response) (result Appli
 	return
 }
 
-// Import imports an application to LUIS, the application's structure should be included in in the request body.
+// Import imports an application to LUIS, the application's structure should be included in the request body.
 // Parameters:
 // luisApp - a LUIS application structure.
 // appName - the application name to create. If not specified, the application name will be read from the

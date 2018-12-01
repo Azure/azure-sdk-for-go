@@ -459,7 +459,7 @@ func (client AccountsClient) ListByResourceGroupResponder(resp *http.Response) (
 // ListKeys lists the account keys for the specified Cognitive Services account.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
-// accountName - the name of the cognitive services account within the specified resource group. Congitive
+// accountName - the name of the cognitive services account within the specified resource group. Cognitive
 // Services account names must be between 3 and 24 characters in length and use numbers and lower-case letters
 // only.
 func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result AccountKeys, err error) {

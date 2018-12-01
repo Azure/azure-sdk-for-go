@@ -40,7 +40,7 @@ func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) Rout
 	return RouteTablesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the Put RouteTable operation creates/updates a route tablein the specified resource group.
+// CreateOrUpdate the Put RouteTable operation creates/updates a route table in the specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // routeTableName - the name of the route table.
@@ -120,7 +120,7 @@ func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete the Delete RouteTable operation deletes the specifed Route Table
+// Delete the Delete RouteTable operation deletes the specified Route Table
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // routeTableName - the name of the route table.

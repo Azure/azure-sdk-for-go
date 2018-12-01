@@ -208,7 +208,7 @@ func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (resu
 	return
 }
 
-// Get the Get publicIpAddress operation retreives information about the specified pubicIpAddress
+// Get the Get publicIpAddress operation retrieves information about the specified pubicIpAddress
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // publicIPAddressName - the name of the subnet.
@@ -289,7 +289,7 @@ func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result 
 	return
 }
 
-// List the List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
+// List the List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client PublicIPAddressesClient) List(ctx context.Context, resourceGroupName string) (result PublicIPAddressListResultPage, err error) {
@@ -402,7 +402,7 @@ func (client PublicIPAddressesClient) ListComplete(ctx context.Context, resource
 	return
 }
 
-// ListAll the List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
+// ListAll the List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
 func (client PublicIPAddressesClient) ListAll(ctx context.Context) (result PublicIPAddressListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPAddressesClient.ListAll")

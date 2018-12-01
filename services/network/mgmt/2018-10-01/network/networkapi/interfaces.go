@@ -136,6 +136,7 @@ type ExpressRouteCircuitConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters network.ExpressRouteCircuitConnection) (result network.ExpressRouteCircuitConnectionsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.ExpressRouteCircuitConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result network.ExpressRouteCircuitConnection, err error)
+	List(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result network.ExpressRouteCircuitConnectionListResultPage, err error)
 }
 
 var _ ExpressRouteCircuitConnectionsClientAPI = (*network.ExpressRouteCircuitConnectionsClient)(nil)

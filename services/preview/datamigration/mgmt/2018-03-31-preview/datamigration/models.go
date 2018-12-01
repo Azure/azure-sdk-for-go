@@ -932,7 +932,7 @@ type ConnectToSourceSQLServerTaskOutputAgentJobLevel struct {
 	JobOwner *string `json:"jobOwner,omitempty"`
 	// LastExecutedOn - UTC Date and time when the AgentJob was last executed.
 	LastExecutedOn *date.Time `json:"lastExecutedOn,omitempty"`
-	// MigrationEligibility - Information about eligiblity of agent job for migration.
+	// MigrationEligibility - Information about eligibility of agent job for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
@@ -1089,7 +1089,7 @@ type ConnectToSourceSQLServerTaskOutputLoginLevel struct {
 	DefaultDatabase *string `json:"defaultDatabase,omitempty"`
 	// IsEnabled - The state of the login.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
-	// MigrationEligibility - Information about eligiblity of login for migration.
+	// MigrationEligibility - Information about eligibility of login for migration.
 	MigrationEligibility *MigrationEligibilityInfo `json:"migrationEligibility,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
@@ -4372,7 +4372,7 @@ type ResourceSku struct {
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
-// ResourceSkuCapabilities describes The SKU capabilites object.
+// ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
 	// Name - An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`

@@ -56,6 +56,7 @@ Get a TLS cert (from certificate and key):
 	}
 */
 // +build go1.9
+
 package easykey
 
 //go:generate stringer -type=DeletionRecoveryLevel

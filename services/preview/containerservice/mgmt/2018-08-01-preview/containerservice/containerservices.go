@@ -541,7 +541,7 @@ func (client ContainerServicesClient) ListByResourceGroupComplete(ctx context.Co
 }
 
 // ListOrchestrators gets a list of supported orchestrators in the specified subscription. The operation returns
-// properties of each orchestrator including verison and available upgrades.
+// properties of each orchestrator including version and available upgrades.
 // Parameters:
 // location - the name of a supported Azure region.
 // resourceType - resource type for which the list of orchestrators needs to be returned

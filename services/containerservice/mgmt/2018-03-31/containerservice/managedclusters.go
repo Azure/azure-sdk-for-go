@@ -687,7 +687,7 @@ func (client ManagedClustersClient) ListByResourceGroupComplete(ctx context.Cont
 	return
 }
 
-// ListClusterAdminCredentials gets clusteradmin credential of the managed cluster with a specified resource group and
+// ListClusterAdminCredentials gets cluster admin credential of the managed cluster with a specified resource group and
 // name.
 // Parameters:
 // resourceGroupName - the name of the resource group.

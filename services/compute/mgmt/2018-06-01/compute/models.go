@@ -2068,11 +2068,11 @@ type DiagnosticsProfile struct {
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
 }
 
-// DiffDiskSettings describes the parameters of differencing disk settings that can be be specified for
-// operating system disk. <br><br> NOTE: The differencing disk settings can only be specified for managed
+// DiffDiskSettings describes the parameters of ephemeral disk settings that can be be specified for
+// operating system disk. <br><br> NOTE: The ephemeral disk settings can only be specified for managed
 // disk.
 type DiffDiskSettings struct {
-	// Option - Specifies the differencing disk settings for operating system disk. Possible values include: 'Local'
+	// Option - Specifies the ephemeral disk settings for operating system disk. Possible values include: 'Local'
 	Option DiffDiskOptions `json:"option,omitempty"`
 }
 
@@ -4695,7 +4695,7 @@ type OSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// DiffDiskSettings - Specifies the differencing Disk Settings for the operating system disk used by the virtual machine.
+	// DiffDiskSettings - Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
 	DiffDiskSettings *DiffDiskSettings `json:"diffDiskSettings,omitempty"`
 	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
@@ -7187,7 +7187,7 @@ type VirtualMachineProperties struct {
 // VirtualMachineReimageParameters paramaters for Reimaging Virtual Machine. Default value for OSDisk :
 // true.
 type VirtualMachineReimageParameters struct {
-	// TempDisk - Specified whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 
@@ -8524,7 +8524,7 @@ type VirtualMachineScaleSetOSDisk struct {
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
 	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-	// DiffDiskSettings - Specifies the differencing Disk Settings for the operating system disk used by the virtual machine scale set.
+	// DiffDiskSettings - Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
 	DiffDiskSettings *DiffDiskSettings `json:"diffDiskSettings,omitempty"`
 	// DiskSizeGB - Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
@@ -8653,7 +8653,7 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 type VirtualMachineScaleSetReimageParameters struct {
 	// InstanceIds - The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set.
 	InstanceIds *[]string `json:"instanceIds,omitempty"`
-	// TempDisk - Specified whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 
@@ -9900,7 +9900,7 @@ type VirtualMachineScaleSetVMProperties struct {
 
 // VirtualMachineScaleSetVMReimageParameters describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetVMReimageParameters struct {
-	// TempDisk - Specified whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 

@@ -54,8 +54,9 @@ Get a TLS cert (from certificate and key):
 	if err != nil {
 		// Do something
 	}
+
++build go1.9
 */
-// +build go1.9
 
 package easykey
 

@@ -24,9 +24,10 @@ package servicebus
 
 import (
 	"context"
-	"github.com/Azure/azure-amqp-common-go/log"
 	"sync"
 	"sync/atomic"
+
+	"github.com/Azure/azure-amqp-common-go/log"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"pack.ag/amqp"
@@ -55,6 +56,14 @@ type (
 		builderMu sync.Mutex
 		sessionID *string
 		receiver  *Receiver
+	}
+
+	// TopicSession wraps Service Bus session functionality over a Topic
+	TopicSession struct {
+		builder   SenderBuilder
+		builderMu sync.Mutex
+		sessionID *string
+		sender    *Sender
 	}
 
 	// ReceiverBuilder describes the ability of an entity to build receiver links
@@ -297,4 +306,58 @@ func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
 // SessionID is the identifier for the Service Bus session
 func (ss *SubscriptionSession) SessionID() *string {
 	return ss.sessionID
+}
+
+// NewTopicSession creates a new session receiver to receive from a Service Bus topic.
+//
+// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
+// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
+// relationship between the messages, and also does not define a particular model for determining where a message
+// sequence starts or ends.
+func NewTopicSession(builder SenderBuilder, sessionID *string) *TopicSession {
+	return &TopicSession{
+		sessionID: sessionID,
+		builder:   builder,
+	}
+}
+
+// Send the message to the queue within a session
+func (ts *TopicSession) Send(ctx context.Context, msg *Message) error {
+	if err := ts.ensureSender(ctx); err != nil {
+		return err
+	}
+
+	if msg.GroupID == nil {
+		msg.GroupID = ts.sessionID
+	}
+	return ts.sender.Send(ctx, msg)
+}
+
+// Close the underlying connection to Service Bus
+func (ts *TopicSession) Close(ctx context.Context) error {
+	if ts.sender != nil {
+		if err := ts.sender.Close(ctx); err != nil {
+			log.For(ctx).Error(err)
+			return err
+		}
+	}
+	return nil
+}
+
+// SessionID is the identifier for the Service Bus session
+func (ts *TopicSession) SessionID() *string {
+	return ts.sessionID
+}
+
+func (ts *TopicSession) ensureSender(ctx context.Context) error {
+	ts.builderMu.Lock()
+	defer ts.builderMu.Unlock()
+
+	s, err := ts.builder.NewSender(ctx, SenderWithSession(ts.sessionID))
+	if err != nil {
+		return err
+	}
+
+	ts.sender = s
+	return nil
 }

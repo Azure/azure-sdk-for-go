@@ -36,10 +36,6 @@ func (suite *serviceBusSuite) TestMessageSession() {
 				QueueEntityWithDuplicateDetection(&window))
 			defer cleanup()
 
-			q, err := ns.NewQueue(queueName)
-			defer suite.NoError(q.Close(context.Background()))
-			suite.NoError(err)
-
 			var sessionID string
 			if rawSession, err := uuid.NewV4(); err == nil {
 				sessionID = rawSession.String()
@@ -50,10 +46,14 @@ func (suite *serviceBusSuite) TestMessageSession() {
 
 			const want = "I rode my bicycle past your window last night"
 			msg := NewMessageFromString(want)
-			msg.GroupID = &sessionID
 
-			suite.Require().NoError(q.Send(ctx, msg))
+			q, err := ns.NewQueue(queueName)
+			defer suite.NoError(q.Close(context.Background()))
+			suite.NoError(err)
+
 			qs := q.NewSession(&sessionID)
+			defer suite.NoError(qs.Close(context.Background()))
+			suite.Require().NoError(q.Send(ctx, msg))
 			err = qs.ReceiveOne(ctx, NewSessionHandler(
 				HandlerFunc(func(ctx context.Context, msg *Message) error {
 					defer cancel()

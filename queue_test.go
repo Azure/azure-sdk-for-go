@@ -647,6 +647,15 @@ func (suite *serviceBusSuite) TestIssue73QueueClient() {
 	}
 }
 
+func (suite *serviceBusSuite) TestNewQueueSession() {
+	ns := suite.getNewSasInstance()
+	q, err := ns.NewQueue("foo")
+	suite.NoError(err)
+	sessionID := "123"
+	qs := NewQueueSession(q, &sessionID)
+	suite.Equal(sessionID, qs.SessionID())
+}
+
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
 	qm := ns.NewQueueManager()
 	entity, err := qm.Get(ctx, name)

@@ -105,6 +105,21 @@ func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) er
 	return t.sender.Send(ctx, event, opts...)
 }
 
+// NewSession will create a new session based sender for the topic
+//
+// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
+// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
+// relationship between the messages, and also does not define a particular model for determining where a message
+// sequence starts or ends.
+func (t *Topic) NewSession(sessionID *string) *TopicSession {
+	return NewTopicSession(t, sessionID)
+}
+
+// NewSender will create a new Sender for sending messages to the queue
+func (t *Topic) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
+	return t.namespace.NewSender(ctx, t.Name)
+}
+
 // Close the underlying connection to Service Bus
 func (t *Topic) Close(ctx context.Context) error {
 	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.Close")

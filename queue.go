@@ -360,8 +360,8 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 // To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
 // relationship between the messages, and also does not define a particular model for determining where a message
 // sequence starts or ends.
-func (q *Queue) NewSession(sessionID *string) *SubscriptionSession {
-	return NewSubscriptionSession(q, sessionID)
+func (q *Queue) NewSession(sessionID *string) *QueueSession {
+	return NewQueueSession(q, sessionID)
 }
 
 // NewReceiver will create a new Receiver for receiving messages off of a queue

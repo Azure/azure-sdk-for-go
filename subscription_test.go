@@ -29,6 +29,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/stretchr/testify/assert"
 )
@@ -286,6 +287,64 @@ func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic,
 		err := sub.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
 			return msg.Complete(ctx)
 		}))
+		assert.NoError(t, err)
+	}
+}
+
+func (suite *serviceBusSuite) TestSubscriptionSessionClient() {
+	tests := map[string]func(context.Context, *testing.T, *TopicSession, *SubscriptionSession){
+		"ReceiveOne": testSubscriptionSessionReceiveOne,
+	}
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			topicName := suite.randEntityName()
+			ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+			defer cancel()
+
+			topicCleanup := makeTopic(ctx, t, ns, topicName)
+			topic, err := ns.NewTopic(topicName)
+			if suite.NoError(err) {
+				subName := suite.randEntityName()
+				subCleanup := makeSubscription(ctx, t, topic, subName)
+				subscription, err := topic.NewSubscription(subName)
+				id, err := uuid.NewV4()
+				suite.Require().NoError(err)
+				sessionID := id.String()
+
+				ts := topic.NewSession(&sessionID)
+				defer suite.NoError(ts.Close(context.Background()))
+				ss := subscription.NewSession(&sessionID)
+				defer suite.NoError(ss.Close(context.Background()))
+
+				if suite.NoError(err) {
+					defer subCleanup()
+					testFunc(ctx, t, ts, ss)
+					if !t.Failed() {
+						checkZeroSubscriptionMessages(ctx, t, topic, subName)
+					}
+				}
+				defer topicCleanup()
+			}
+		}
+
+		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic *TopicSession, sub *SubscriptionSession) {
+	const want = "hello!"
+	if assert.NoError(t, topic.Send(ctx, NewMessageFromString(want))) {
+		err := sub.ReceiveOne(ctx, NewSessionHandler(
+			HandlerFunc(func(ctx context.Context, msg *Message) error {
+				assert.Equal(t, string(msg.Data), want)
+				return msg.Complete(ctx)
+			}),
+			func(ms *MessageSession) error {
+				return nil
+			},
+			func() {}))
 		assert.NoError(t, err)
 	}
 }

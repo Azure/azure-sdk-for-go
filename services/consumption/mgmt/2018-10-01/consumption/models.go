@@ -315,7 +315,7 @@ type Budget struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// ETag - eTag of the resource. To handle concurrent update scenarion, this field will be used to determine whether the user is updating the latest version or not.
+	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
 }
 
@@ -408,7 +408,7 @@ type BudgetProperties struct {
 	Amount *decimal.Decimal `json:"amount,omitempty"`
 	// TimeGrain - The time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'TimeGrainTypeMonthly', 'TimeGrainTypeQuarterly', 'TimeGrainTypeAnnually'
 	TimeGrain TimeGrainType `json:"timeGrain,omitempty"`
-	// TimePeriod - Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should not be more than three months. Past start date should  be selected within the timegrain preiod. There are no restrictions on the end date.
+	// TimePeriod - Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should not be more than three months. Past start date should  be selected within the timegrain period. There are no restrictions on the end date.
 	TimePeriod *BudgetTimePeriod `json:"timePeriod,omitempty"`
 	// Filters - May be used to filter budgets by resource group, resource, or meter.
 	Filters *Filters `json:"filters,omitempty"`
@@ -1650,7 +1650,7 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// ETag - eTag of the resource. To handle concurrent update scenarion, this field will be used to determine whether the user is updating the latest version or not.
+	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
 }
 
@@ -1754,7 +1754,7 @@ type ReservationDetailProperties struct {
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
 	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty"`
-	// SkuName - This is the ARM Sku name. It can be used to join with the servicetype field in additoinalinfo in usage records.
+	// SkuName - This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
 	SkuName *string `json:"skuName,omitempty"`
 	// ReservedHours - This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days.
 	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
@@ -1764,7 +1764,7 @@ type ReservationDetailProperties struct {
 	UsedHours *decimal.Decimal `json:"usedHours,omitempty"`
 	// InstanceID - This identifier is the name of the resource or the fully qualified Resource ID.
 	InstanceID *string `json:"instanceId,omitempty"`
-	// TotalReservedQuantity - This is the total count of instances that are reserved for the reservationid.
+	// TotalReservedQuantity - This is the total count of instances that are reserved for the reservationId.
 	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
 }
 
@@ -2046,7 +2046,7 @@ type ReservationRecommendationProperties struct {
 	Term *string `json:"term,omitempty"`
 	// CostWithNoReservedInstances - The total amount of cost without reserved instances.
 	CostWithNoReservedInstances *decimal.Decimal `json:"costWithNoReservedInstances,omitempty"`
-	// RecommendedQuantity - Recomended quality for reserved instances.
+	// RecommendedQuantity - Recommended quality for reserved instances.
 	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
 	// TotalCostWithReservedInstances - The total amount of cost with reserved instances.
 	TotalCostWithReservedInstances *decimal.Decimal `json:"totalCostWithReservedInstances,omitempty"`
@@ -2452,7 +2452,7 @@ type ReservationSummaryProperties struct {
 	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
 	// ReservationID - The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit scope and also specifies the number of instances to which the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty"`
-	// SkuName - This is the ARM Sku name. It can be used to join with the servicetype field in additoinalinfo in usage records.
+	// SkuName - This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
 	SkuName *string `json:"skuName,omitempty"`
 	// ReservedHours - This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from subsequent days
 	ReservedHours *decimal.Decimal `json:"reservedHours,omitempty"`
@@ -2528,7 +2528,7 @@ type TagsResult struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// ETag - eTag of the resource. To handle concurrent update scenarion, this field will be used to determine whether the user is updating the latest version or not.
+	// ETag - eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
 }
 

@@ -120,6 +120,21 @@ func PossibleBuildTypeValues() []BuildType {
 	return []BuildType{AutoBuild, QuickBuild}
 }
 
+// DefaultAction enumerates the values for default action.
+type DefaultAction string
+
+const (
+	// Allow ...
+	Allow DefaultAction = "Allow"
+	// Deny ...
+	Deny DefaultAction = "Deny"
+)
+
+// PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
+func PossibleDefaultActionValues() []DefaultAction {
+	return []DefaultAction{Allow, Deny}
+}
+
 // ImportMode enumerates the values for import mode.
 type ImportMode string
 
@@ -2359,6 +2374,14 @@ type ImportSourceCredentials struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// NetworkRuleSet the network rule set for a container registry.
+type NetworkRuleSet struct {
+	// DefaultAction - The default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'
+	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
+	// VirtualNetworkRules - The virtual network rules.
+	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+}
+
 // OperationDefinition the definition of a container registry operation.
 type OperationDefinition struct {
 	// Origin - The origin information of the container registry operation.
@@ -2739,7 +2762,7 @@ func (qbr QueueBuildRequest) AsBasicQueueBuildRequest() (BasicQueueBuildRequest,
 type QuickBuildRequest struct {
 	// ImageNames - The fully qualified image names including the repository and tag.
 	ImageNames *[]string `json:"imageNames,omitempty"`
-	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
+	// SourceLocation - The URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repository as supported by Docker.
 	// If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
 	SourceLocation *string `json:"sourceLocation,omitempty"`
 	// BuildArguments - The collection of build arguments to be used.
@@ -3309,6 +3332,8 @@ type RegistryProperties struct {
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The properties of the storage account for the container registry. Only applicable to Classic SKU.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	// NetworkRuleSet - The network rule set for a container registry.
+	NetworkRuleSet *NetworkRuleSet `json:"networkRuleSet,omitempty"`
 }
 
 // RegistryPropertiesUpdateParameters the parameters for updating the properties of a container registry.
@@ -3317,6 +3342,8 @@ type RegistryPropertiesUpdateParameters struct {
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	// NetworkRuleSet - The network rule set for a container registry.
+	NetworkRuleSet *NetworkRuleSet `json:"networkRuleSet,omitempty"`
 }
 
 // RegistryUpdateParameters the parameters for updating a container registry.
@@ -3850,7 +3877,7 @@ type SourceRepositoryProperties struct {
 	autorest.Response `json:"-"`
 	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
-	// RepositoryURL - The full URL to the source code respository
+	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// IsCommitTriggerEnabled - The value of this property indicates whether the source control commit trigger is enabled or not.
 	IsCommitTriggerEnabled *bool `json:"isCommitTriggerEnabled,omitempty"`
@@ -3916,6 +3943,12 @@ type TrustPolicy struct {
 	Type TrustPolicyType `json:"type,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
 	Status PolicyStatus `json:"status,omitempty"`
+}
+
+// VirtualNetworkRule the virtual network rule for a container registry.
+type VirtualNetworkRule struct {
+	// ID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	ID *string `json:"id,omitempty"`
 }
 
 // Webhook an object that represents a webhook for a container registry.

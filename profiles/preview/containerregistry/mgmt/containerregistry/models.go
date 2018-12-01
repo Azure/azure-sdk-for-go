@@ -51,6 +51,13 @@ const (
 	Runtime BaseImageTriggerType = original.Runtime
 )
 
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
+)
+
 type ImportMode = original.ImportMode
 
 const (
@@ -264,6 +271,7 @@ type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
 type ImportSourceCredentials = original.ImportSourceCredentials
+type NetworkRuleSet = original.NetworkRuleSet
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
 type OperationListResult = original.OperationListResult
@@ -352,6 +360,7 @@ type TasksUpdateFuture = original.TasksUpdateFuture
 type TriggerProperties = original.TriggerProperties
 type TriggerUpdateParameters = original.TriggerUpdateParameters
 type TrustPolicy = original.TrustPolicy
+type VirtualNetworkRule = original.VirtualNetworkRule
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -458,6 +467,9 @@ func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
 }
 func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return original.PossibleBaseImageTriggerTypeValues()
+}
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
 }
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()

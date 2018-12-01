@@ -233,7 +233,7 @@ type IotDpsPropertiesDescription struct {
 	State State `json:"state,omitempty"`
 	// ProvisioningState - The ARM provisioning state of the provisioning service.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// IotHubs - List of IoT hubs assosciated with this provisioning service.
+	// IotHubs - List of IoT hubs associated with this provisioning service.
 	IotHubs *[]DefinitionDescription `json:"iotHubs,omitempty"`
 	// AllocationPolicy - Allocation policy to be used by this provisioning service. Possible values include: 'Hashed', 'GeoLatency', 'Static'
 	AllocationPolicy AllocationPolicy `json:"allocationPolicy,omitempty"`
@@ -449,7 +449,7 @@ func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotD
 	return IotDpsSkuDefinitionListResultPage{fn: getNextPage}
 }
 
-// IotDpsSkuInfo list of possible provisoning service SKUs.
+// IotDpsSkuInfo list of possible provisioning service SKUs.
 type IotDpsSkuInfo struct {
 	// Name - Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
